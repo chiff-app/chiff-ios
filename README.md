@@ -1,1 +1,2 @@
-# athena
+# Athena swift app
+OSX App
