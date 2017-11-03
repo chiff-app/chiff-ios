@@ -7,27 +7,56 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class AccountViewController: UITableViewController {
 
-    @IBOutlet weak var websiteNameCell: UITableViewCell!
-    @IBOutlet weak var websiteURLcell: UITableViewCell!
-    @IBOutlet weak var userNameCell: UITableViewCell!
-    @IBOutlet weak var userPasswordCell: UITableViewCell!
+    //MARK: Properties
+
+    var account: Account?
+    @IBOutlet weak var websiteNameTextField: UITextField!
+    @IBOutlet weak var websiteURLTextField: UITextField!
+    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet weak var userPasswordTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+
+        if let account = account {
+            websiteNameTextField.text = account.site.name
+            websiteURLTextField.text = account.site.urls[0]
+            userNameTextField.text = account.username
+            userPasswordTextField.text = account.password()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    // MARK: Actions
+    @IBAction func showPassword(_ sender: UIButton) {
+        if account != nil {
+            let showPasswordHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+            showPasswordHUD.mode = .text
+            showPasswordHUD.label.text = userPasswordTextField.text
+            showPasswordHUD.label.textColor = .black
+            showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
+            showPasswordHUD.margin = 10
+            showPasswordHUD.label.numberOfLines = 0
+            showPasswordHUD.removeFromSuperViewOnHide = true
+            showPasswordHUD.addGestureRecognizer(
+                UITapGestureRecognizer(
+                    target: showPasswordHUD,
+                    action: #selector(showPasswordHUD.hide(animated:)))
+            )
+        }
+    }
+
 
 
     /*

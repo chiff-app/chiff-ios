@@ -14,9 +14,9 @@ class AccountsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
 
+        loadSampleData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,8 +59,10 @@ class AccountsTableViewController: UITableViewController {
         super.prepare(for: segue, sender: sender)
         switch(segue.identifier ?? "") {
         case "ShowAccountDetail":
-            if let accountViewController = (segue.destination.contents as? AccountViewController) {
-                print("TODO: Account in AccountViewController of set textfields?")
+            if let accountViewController = (segue.destination.contents as? AccountViewController),
+                let selectedAccountCell = sender as? UITableViewCell,
+                let indexPath = tableView.indexPath(for: selectedAccountCell) {
+                    accountViewController.account = accounts[indexPath.row]
             }
         case "AddAccount":
             if let accountViewController = (segue.destination.contents as? AccountViewController) {
@@ -71,6 +73,23 @@ class AccountsTableViewController: UITableViewController {
         }
     }
 
+
+    // MARK: Temporary sample data
+
+    private func loadSampleData() {
+        let sampleUsername = "athenademo@protonmail.com"
+        var sampleSites = [Site]()
+        sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"]))
+        sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"]))
+        sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"]))
+        sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"]))
+        sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"]))
+        sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"]))
+        for site in sampleSites {
+            let account = Account(username: sampleUsername, site: site, passwordIndex: "0")
+            accounts.append(account)
+        }
+    }
 
 }
 
