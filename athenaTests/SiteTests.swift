@@ -14,7 +14,7 @@ class SiteTests: XCTestCase {
     }
 
     func testInitAssignsURL() {
-        let site = Site(id: "GOOGLE", urls: ["google.com", "accounts.google.com"])
+        let site = Site(name : "", id: "GOOGLE", urls: ["google.com", "accounts.google.com"])
         XCTAssertEqual(site.urls, ["google.com", "accounts.google.com"])
     }
 
