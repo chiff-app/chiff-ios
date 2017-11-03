@@ -1,3 +1,4 @@
 .DS_Store
-AthenaPrototype.xcworkspace/xcuserdata/*xcuserdatad
+athena.xcworkspace/xcuserdata/*xcuserdatad
+athena.xcodeproj/xcuserdata/*.xcuserdatad
 Pods
