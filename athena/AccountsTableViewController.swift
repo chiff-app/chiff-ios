@@ -10,7 +10,7 @@ import UIKit
 
 class AccountsTableViewController: UITableViewController {
 
-    var accounts = [String]() // TODO: Change to account objects
+    var accounts = [Account]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class AccountsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Account Cell", for: indexPath)
 
         let account = accounts[indexPath.row]
-        cell.textLabel?.text = account // TODO: Change to account.siteName
+        cell.textLabel?.text = account.site // TODO: Change to account.siteName
         cell.detailTextLabel?.text = "username" // TODO: Change to account.userName
 
         return cell
