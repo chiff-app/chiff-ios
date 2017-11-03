@@ -35,8 +35,8 @@ class AccountsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Account Cell", for: indexPath)
 
         let account = accounts[indexPath.row]
-        cell.textLabel?.text = account.site // TODO: Change to account.siteName
-        cell.detailTextLabel?.text = "username" // TODO: Change to account.userName
+        cell.textLabel?.text = account.site.name // TODO: Change to account.siteName
+        cell.detailTextLabel?.text = account.username // TODO: Change to account.userName
 
         return cell
     }
