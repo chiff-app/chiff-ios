@@ -6,13 +6,13 @@ import CryptoSwift
  */
 struct Account {
 
-    var username: String?
-    var site: Site?
+    var username: String
+    var site: Site
     let SEED = "THISISASEED"
     var passwordIndex = "1"
 
     func password() -> String {
-        let uniqueCombination = SEED + username! + site!.id + passwordIndex
+        let uniqueCombination = SEED + username + site.id + passwordIndex
         return self.generatePseudoDeterministicPassword(with: uniqueCombination.data(using: .utf8))
     }
 
