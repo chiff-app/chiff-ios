@@ -30,49 +30,48 @@ class AccountsTableViewController: UITableViewController {
         return accounts.count
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Account Cell", for: indexPath)
 
         let account = accounts[indexPath.row]
-        cell.textLabel?.text = account.site.name // TODO: Change to account.siteName
-        cell.detailTextLabel?.text = account.username // TODO: Change to account.userName
+        cell.textLabel?.text = account.site.name
+        cell.detailTextLabel?.text = account.username
 
         return cell
     }
     
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             accounts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-            // TODO: Check if this is more appropriate for adding a new accunt manually.
-        }    
+        }     
     }
 
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        switch(segue.identifier ?? "") {
-        case "ShowAccountDetail":
+        if segue.identifier == "ShowAccountDetail" {
             if let accountViewController = (segue.destination.contents as? AccountViewController),
                 let selectedAccountCell = sender as? UITableViewCell,
                 let indexPath = tableView.indexPath(for: selectedAccountCell) {
-                    accountViewController.account = accounts[indexPath.row]
+                accountViewController.account = accounts[indexPath.row]
             }
-        case "AddAccount":
-            if let accountViewController = (segue.destination.contents as? AccountViewController) {
-                print("TODO: add account VC")
-            }
-        default:
-            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
-
+    
+    //MARK: Actions
+    
+    @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
+            
+            let newIndexPath = IndexPath(row: accounts.count, section: 0)
+            
+            accounts.append(account)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
 
     // MARK: Temporary sample data
 
@@ -86,7 +85,7 @@ class AccountsTableViewController: UITableViewController {
         sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"]))
         sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"]))
         for site in sampleSites {
-            let account = Account(username: sampleUsername, site: site, passwordIndex: "0")
+            let account = Account(username: sampleUsername, site: site, passwordIndex: 0)
             accounts.append(account)
         }
     }
