@@ -20,6 +20,7 @@
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
 		49E7666B1F7E6F420022C042 /* athenaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7666A1F7E6F420022C042 /* athenaTests.swift */; };
 		49E766761F7E6F420022C042 /* athenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* athenaUITests.swift */; };
+		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		C352FFF3E69333BEDCE2A927 /* Pods_athena.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		49E766751F7E6F420022C042 /* athenaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = athenaUITests.swift; sourceTree = "<group>"; };
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
+		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
 		B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_athena.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */,
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
+				61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */,
 				49E766591F7E6F420022C042 /* Main.storyboard */,
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
 				49E7665C1F7E6F420022C042 /* Assets.xcassets */,
@@ -364,6 +367,7 @@
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
+				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 			);
