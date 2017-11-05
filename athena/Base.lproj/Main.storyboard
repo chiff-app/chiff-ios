@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -62,6 +63,103 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JD0-oZ-Qop" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1474" y="-863"/>
+        </scene>
+        <!--Devices-->
+        <scene sceneID="xhh-pn-jET">
+            <objects>
+                <tableViewController id="BPB-9Q-CQ9" customClass="DevicesTableViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="x3T-md-5kf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Device Cell" id="hpe-XJ-hgo" customClass="DeviceTableViewCell" customModule="athena" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hpe-XJ-hgo" id="5YZ-J4-oBm">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yEQ-Aj-jhk">
+                                            <rect key="frame" x="8" y="16" width="359" height="74"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvh-oF-RqI">
+                                                    <rect key="frame" x="8" y="18" width="308" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Grp-hV-V1e">
+                                                    <rect key="frame" x="8" y="37" width="308" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                        </view>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="deviceName" destination="Gvh-oF-RqI" id="egg-Gg-D8q"/>
+                                    <outlet property="sessionStartTime" destination="Grp-hV-V1e" id="xXV-NM-kTx"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="BPB-9Q-CQ9" id="kLG-j1-neR"/>
+                            <outlet property="delegate" destination="BPB-9Q-CQ9" id="KNp-fi-mCe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Devices" id="SuS-RW-U2Y">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="I40-pT-nGe">
+                            <connections>
+                                <segue destination="aIx-K6-rgV" kind="presentation" identifier="Add Session" id="BhG-h7-qWc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="GUZ-7x-PXx" kind="show" identifier="First Session" animates="NO" id="Pra-PH-7FD"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M1Y-bu-Orm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1438" y="0.0"/>
+        </scene>
+        <!--Scan QR-->
+        <scene sceneID="6bL-vc-E5e">
+            <objects>
+                <viewController id="GUZ-7x-PXx" customClass="QRViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LiW-7p-eyh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ncc-o9-ouo">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="lw2-rd-ems"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Scan QR" id="lOO-CV-sbZ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="gWm-lQ-3aW">
+                            <connections>
+                                <action selector="cancel:" destination="GUZ-7x-PXx" id="Crg-JI-8hZ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="videoView" destination="Ncc-o9-ouo" id="cY7-gB-TI6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Usj-t7-X98" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3223" y="0.0"/>
         </scene>
         <!--Account Details-->
         <scene sceneID="cAC-ze-XyQ">
@@ -213,6 +311,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="swI-XK-cqa" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="DUk-EI-Mjk" kind="relationship" relationship="viewControllers" id="v3i-Eh-aDw"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -223,7 +322,7 @@
         <scene sceneID="dOy-5w-acO">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Accounts" image="lock-selected" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Accounts" image="password-icon" selectedImage="lock-selected" id="acW-dT-cKf"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NkV-Bq-4Iq">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -409,9 +508,52 @@
             </objects>
             <point key="canvasLocation" x="2372" y="-1585"/>
         </scene>
+        <!--Devices-->
+        <scene sceneID="42s-2K-oBj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DUk-EI-Mjk" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Devices" image="pair-icon" selectedImage="pair-selected" id="bi3-qV-eMP"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jSq-r7-S9E">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BPB-9Q-CQ9" kind="relationship" relationship="rootViewController" id="UqC-uT-dsd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4IG-jh-igQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="489" y="0.0"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="P89-fd-e6F">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aIx-K6-rgV" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Vdb-le-RQz">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="GUZ-7x-PXx" kind="relationship" relationship="rootViewController" id="2Kh-fU-dDl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QQN-Zs-1hf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2372" y="421"/>
+        </scene>
     </scenes>
     <resources>
         <image name="eye_logo" width="20" height="14"/>
         <image name="lock-selected" width="21" height="26"/>
+        <image name="pair-icon" width="24" height="25"/>
+        <image name="pair-selected" width="24" height="24"/>
+        <image name="password-icon" width="22" height="27"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Pra-PH-7FD"/>
+    </inferredMetricsTieBreakers>
 </document>
