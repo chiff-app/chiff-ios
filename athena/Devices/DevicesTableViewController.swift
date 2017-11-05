@@ -1,12 +1,8 @@
-//
-//  DevicesTableViewController.swift
-//  athena
-//
-//  Created by Bas Doorn on 04/11/2017.
-//  Copyright © 2017 athena. All rights reserved.
-//
-
 import UIKit
+
+protocol isAbleToReceiveData {
+    func addSession(session: Session)
+}
 
 class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     
@@ -15,10 +11,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // TODO: Can this be implemented more smoothly, e.g. not with segue?
-        if sessions.count == 0 {
-            performSegue(withIdentifier: "First Session", sender: self)
-        }
+        goToQrScannerIfEmpty()
     }
 
     // MARK: - Table view data source
@@ -26,10 +19,14 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sessions.count
     }
-        
-    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        sessions.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+    
+    @objc func deleteDevice(_ sender: UIButton) {
+        let buttonPosition = sender.convert(CGPoint(), to:tableView)
+        if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
+            sessions.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        goToQrScannerIfEmpty()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -38,7 +35,12 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
             let session = sessions[indexPath.row]
             cell.deviceName.text = session.name
             cell.sessionStartTime.text = session.URL
-            // TODO: Add delete button
+            // TODO: Add delete image, align position, autolayout
+            let deleteButton = UIButton(type: .system)
+            deleteButton.frame = CGRect(x: 50, y: 50, width: 150, height: 45)
+            deleteButton.setTitle("Delete", for: .normal)
+            deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
+            cell.accessoryView = deleteButton
         }
         return cell
     }
@@ -70,22 +72,28 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
         }
     }
     
+    private func goToQrScannerIfEmpty() {
+        guard sessions.count == tableView.numberOfRows(inSection: 0) else {
+            fatalError("Inconsistency between data model and tableView.")
+        }
+        
+        // TODO: Can this be implemented more smoothly, e.g. not with segue?
+        if sessions.count == 0 {
+            performSegue(withIdentifier: "First Session", sender: self)
+        }
+    }
+    
     
     //MARK: Actions
     
     func addSession(session: Session) {
         let newIndexPath = IndexPath(row: sessions.count, section: 0)
-        
         sessions.append(session)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
 
 }
 
-// TODO: Where should this protocol be defined?
-protocol isAbleToReceiveData {
-    func addSession(session: Session)
-}
 
 // TODO: Temporary Session struct that parses prototype QR JSON objects
 struct Session: Codable {
