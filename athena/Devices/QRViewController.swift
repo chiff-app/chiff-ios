@@ -1,13 +1,6 @@
-//
-//  QRViewController.swift
-//  athena
-//
-//  Created by Bas Doorn on 04/11/2017.
-//  Copyright © 2017 athena. All rights reserved.
-//
-
 import UIKit
 import AVFoundation
+
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
@@ -19,6 +12,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var qrFound = false
     var isFirstSession = false
     @IBOutlet weak var videoView: UIView!
+    //@IBOutlet weak var errorLabel: UILabel!
+    var errorLabel: UILabel?
 
     enum CameraError: Error {
         case noCamera
@@ -31,7 +26,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         do {
            try scanQR()
         } catch {
-            print("TODO: find out which error can be thrown")
+            displayError(message: "Camera not available.")
+            print("Camera could not be instantiated: \(error)")
         }
     }
     
@@ -58,6 +54,18 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     
     // MARK: Private Methods
+
+    private func displayError(message: String) {
+        let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
+        errorLabel.backgroundColor = UIColor.darkGray
+        errorLabel.textColor = UIColor.white
+        errorLabel.textAlignment = .center
+        errorLabel.text = message
+        errorLabel.alpha = 0.85
+        view.addSubview(errorLabel)
+        view.bringSubview(toFront: errorLabel)
+        UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
+    }
     
     private func decodeSessionData(_ json: String) {
         let decoder = JSONDecoder()
@@ -71,8 +79,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 dismiss(animated: true, completion: nil)
             }
         } else {
-            // TODO: Notify user that QR code is invalid.
-            print("QR code could not be decoded.")
+            displayError(message: "QR code could not be decoded.")
         }
     }
     
