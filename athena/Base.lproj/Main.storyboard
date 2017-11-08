@@ -98,12 +98,18 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PSn-pR-OSS">
+                                                    <rect key="frame" x="310" y="18" width="41" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" image="close-icon"/>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         </view>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="deleteButton" destination="PSn-pR-OSS" id="ON0-2N-1mc"/>
                                     <outlet property="deviceName" destination="Gvh-oF-RqI" id="egg-Gg-D8q"/>
                                     <outlet property="sessionStartTime" destination="Grp-hV-V1e" id="xXV-NM-kTx"/>
                                 </connections>
@@ -127,7 +133,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M1Y-bu-Orm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1438" y="0.0"/>
+            <point key="canvasLocation" x="1437.5999999999999" y="-0.44977511244377816"/>
         </scene>
         <!--Scan QR-->
         <scene sceneID="6bL-vc-E5e">
@@ -142,14 +148,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4mO-nP-btz">
-                                <rect key="frame" x="0.0" y="562" width="375" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="lw2-rd-ems"/>
@@ -555,6 +553,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="close-icon" width="16" height="16"/>
         <image name="eye_logo" width="20" height="14"/>
         <image name="lock-selected" width="21" height="26"/>
         <image name="pair-icon" width="24" height="25"/>
