@@ -35,28 +35,14 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
             let session = sessions[indexPath.row]
             cell.deviceName.text = session.name
             cell.sessionStartTime.text = session.URL
-            // TODO: Add delete image, align position, autolayout
-            let deleteButton = UIButton(type: .system)
-            deleteButton.frame = CGRect(x: 50, y: 50, width: 150, height: 45)
-            deleteButton.setTitle("Delete", for: .normal)
-            deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
-            cell.accessoryView = deleteButton
+            cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
         return cell
     }
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
-    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Add Session" {
             if let destination = (segue.destination.contents) as? QRViewController {

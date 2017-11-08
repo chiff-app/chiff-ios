@@ -12,7 +12,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var qrFound = false
     var isFirstSession = false
     @IBOutlet weak var videoView: UIView!
-    //@IBOutlet weak var errorLabel: UILabel!
     var errorLabel: UILabel?
 
     enum CameraError: Error {
