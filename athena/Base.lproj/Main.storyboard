@@ -82,10 +82,10 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yEQ-Aj-jhk">
-                                            <rect key="frame" x="8" y="16" width="359" height="74"/>
+                                            <rect key="frame" x="20" y="20" width="335" height="70"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PSn-pR-OSS">
-                                                    <rect key="frame" x="315" y="15.5" width="44" height="44"/>
+                                                    <rect key="frame" x="291" y="13.5" width="44" height="44"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="JCR-65-OlD"/>
                                                         <constraint firstAttribute="width" constant="44" id="LJR-CB-3Id"/>
@@ -93,16 +93,16 @@
                                                     <state key="normal" image="close-icon"/>
                                                 </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ysO-c7-foc">
-                                                    <rect key="frame" x="12" y="15.5" width="303" height="44"/>
+                                                    <rect key="frame" x="20" y="13.5" width="271" height="44"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gvh-oF-RqI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="303" height="29.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="271" height="29.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Grp-hV-V1e">
-                                                            <rect key="frame" x="0.0" y="29.5" width="303" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="29.5" width="271" height="14.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -112,21 +112,21 @@
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                             <constraints>
-                                                <constraint firstItem="ysO-c7-foc" firstAttribute="leading" secondItem="yEQ-Aj-jhk" secondAttribute="leading" constant="12" id="6eW-Zu-uC3"/>
-                                                <constraint firstItem="PSn-pR-OSS" firstAttribute="bottom" secondItem="ysO-c7-foc" secondAttribute="bottom" id="83u-uR-C1q"/>
+                                                <constraint firstItem="ysO-c7-foc" firstAttribute="leading" secondItem="yEQ-Aj-jhk" secondAttribute="leading" constant="20" symbolic="YES" id="6eW-Zu-uC3"/>
+                                                <constraint firstItem="PSn-pR-OSS" firstAttribute="bottom" secondItem="ysO-c7-foc" secondAttribute="bottom" id="AQj-hK-IEA"/>
                                                 <constraint firstItem="PSn-pR-OSS" firstAttribute="leading" secondItem="ysO-c7-foc" secondAttribute="trailing" id="HQh-y0-iUZ"/>
+                                                <constraint firstItem="PSn-pR-OSS" firstAttribute="top" secondItem="ysO-c7-foc" secondAttribute="top" id="M5y-VB-bhs"/>
                                                 <constraint firstItem="ysO-c7-foc" firstAttribute="centerY" secondItem="yEQ-Aj-jhk" secondAttribute="centerY" id="QGM-Tg-1WV"/>
-                                                <constraint firstItem="PSn-pR-OSS" firstAttribute="leading" secondItem="ysO-c7-foc" secondAttribute="trailing" id="SjG-jo-fua"/>
                                                 <constraint firstAttribute="trailing" secondItem="PSn-pR-OSS" secondAttribute="trailing" id="f7w-Zb-pLt"/>
-                                                <constraint firstItem="PSn-pR-OSS" firstAttribute="top" secondItem="ysO-c7-foc" secondAttribute="top" id="sPj-xh-Avr"/>
                                             </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="centerX" secondItem="5YZ-J4-oBm" secondAttribute="centerX" id="ZJ7-VA-6Nb"/>
-                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="leading" secondItem="5YZ-J4-oBm" secondAttribute="leadingMargin" id="kzl-tX-58T"/>
-                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="top" secondItem="5YZ-J4-oBm" secondAttribute="topMargin" constant="8" id="lwZ-lq-Wx3"/>
-                                        <constraint firstAttribute="bottom" secondItem="yEQ-Aj-jhk" secondAttribute="bottom" id="pWK-R5-AeO"/>
+                                        <constraint firstAttribute="bottom" secondItem="yEQ-Aj-jhk" secondAttribute="bottom" id="MBY-aa-sws"/>
+                                        <constraint firstAttribute="trailing" secondItem="yEQ-Aj-jhk" secondAttribute="trailing" constant="20" symbolic="YES" id="iYN-iT-rcE"/>
+                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="centerX" secondItem="5YZ-J4-oBm" secondAttribute="centerX" id="jj7-AI-ztx"/>
+                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="leading" secondItem="5YZ-J4-oBm" secondAttribute="leading" constant="20" symbolic="YES" id="ntH-Rm-jb9"/>
+                                        <constraint firstItem="yEQ-Aj-jhk" firstAttribute="top" secondItem="5YZ-J4-oBm" secondAttribute="top" constant="20" symbolic="YES" id="yH1-0Z-lZN"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
