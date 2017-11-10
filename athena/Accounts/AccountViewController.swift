@@ -1,11 +1,3 @@
-//
-//  AccountViewController.swift
-//  athena
-//
-//  Created by bas on 03/11/2017.
-//  Copyright © 2017 athena. All rights reserved.
-//
-
 import UIKit
 import MBProgressHUD
 
@@ -63,4 +55,5 @@ class AccountViewController: UITableViewController {
                 action: #selector(showPasswordHUD.hide(animated:)))
         )
     }
+
 }

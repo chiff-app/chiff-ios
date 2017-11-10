@@ -1,11 +1,3 @@
-//
-//  AccountsTableViewController.swift
-//  athena
-//
-//  Created by bas on 03/11/2017.
-//  Copyright © 2017 athena. All rights reserved.
-//
-
 import UIKit
 
 class AccountsTableViewController: UITableViewController {
@@ -15,13 +7,11 @@ class AccountsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem
-
         loadSampleData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -31,7 +21,7 @@ class AccountsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Account Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
 
         let account = accounts[indexPath.row]
         cell.textLabel?.text = account.site.name
@@ -52,15 +42,16 @@ class AccountsTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if segue.identifier == "ShowAccountDetail" {
-            if let accountViewController = (segue.destination.contents as? AccountViewController),
-                let selectedAccountCell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPath(for: selectedAccountCell) {
-                accountViewController.account = accounts[indexPath.row]
+
+        if segue.identifier == "ShowAccount" {
+            if let controller = (segue.destination.contents as? AccountViewController),
+               let cell = sender as? UITableViewCell,
+               let indexPath = tableView.indexPath(for: cell) {
+                 controller.account = accounts[indexPath.row]
             }
         }
     }
-    
+
     //MARK: Actions
     
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
@@ -78,12 +69,14 @@ class AccountsTableViewController: UITableViewController {
     private func loadSampleData() {
         let sampleUsername = "athenademo@protonmail.com"
         var sampleSites = [Site]()
+
         sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"]))
         sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"]))
         sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"]))
         sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"]))
         sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"]))
         sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"]))
+
         for site in sampleSites {
             let account = Account(username: sampleUsername, site: site, passwordIndex: 0)
             accounts.append(account)
@@ -93,6 +86,7 @@ class AccountsTableViewController: UITableViewController {
 }
 
 extension UIViewController {
+
     var contents: UIViewController {
         if let navigationController = self as? UINavigationController {
             return navigationController.visibleViewController ?? self

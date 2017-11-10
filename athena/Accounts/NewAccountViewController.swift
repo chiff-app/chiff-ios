@@ -1,11 +1,3 @@
-//
-//  NewAccountViewController.swift
-//  athena
-//
-//  Created by Bas Doorn on 04/11/2017.
-//  Copyright © 2017 athena. All rights reserved.
-//
-
 import UIKit
 
 class NewAccountViewController: AccountViewController, UITextFieldDelegate {
@@ -23,13 +15,12 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
         userNameTextField.delegate = self
         
         updateSaveButtonState()
-        
+
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction override func showPassword(_ sender: UIButton) {
@@ -51,8 +42,8 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     
     // MARK: UITextFieldDelegate
     
+    // Hide the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Hide the keyboard.
         textField.resignFirstResponder()
         return true
     }
@@ -77,11 +68,12 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     
     // MARK: Private Methods
     
+    // Disable the Save button if one the text fields is empty.
     private func updateSaveButtonState() {
-        // Disable the Save button if one the text fields is empty.
         let websiteName = websiteNameTextField.text ?? ""
         let websiteURL = websiteURLTextField.text ?? ""
         let userName = userNameTextField.text ?? ""
+
         if (websiteName.isEmpty || websiteURL.isEmpty || userName.isEmpty) {
             saveButton.isEnabled = false
         } else {
@@ -93,12 +85,15 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     private func createAccount() {
         if let websiteName = websiteNameTextField.text,
             let websiteURL = websiteURLTextField.text,
-            let userName = userNameTextField.text
-        {
+            let userName = userNameTextField.text {
+
             // TODO: Where to get site(ID) from if account is manually added?
+            //       How to determine password requirements? > Maybe don't allow creation in app.
             print("TODO: Site info + id should be fetched from somewhere instead of generated here..")
+
             let id = String((websiteName + websiteURL).hashValue)
             let site = Site(name: websiteName, id: id, urls: [websiteURL])
+
             account = Account(username: userName, site: site, passwordIndex: 0)
             userPasswordTextField.text = account?.password()
         }
@@ -112,6 +107,5 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             print("TODO: This should save the account to database.")
         }
     }
-    
 
 }
