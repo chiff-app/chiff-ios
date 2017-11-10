@@ -2,20 +2,23 @@ import Foundation
 import CryptoSwift
 
 /*
- * No definitive code
+ * An account belongs to the user and can have one or more Sites.
  */
 struct Account {
 
     var username: String
     var site: Site
-    let SEED = "THISISASEED"
     var passwordIndex = 0
 
     func password() -> String {
-        let uniqueCombination = SEED + username + site.id + String(passwordIndex)
+        // TODO
+        // let seed = User.seed()
+        let uniqueCombination = "SEED" + username + site.id + String(passwordIndex)
+
         guard let uniqueCombinationData = uniqueCombination.data(using: .utf8) else {
             fatalError("UniqueCombinationString cannot be converted to data.")
         }
+
         return self.generatePseudoDeterministicPassword(with: uniqueCombinationData)
     }
 
