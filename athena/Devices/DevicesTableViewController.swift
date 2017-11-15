@@ -33,8 +33,8 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
         if let cell = cell as? DeviceTableViewCell {
             let session = sessions[indexPath.row]
-            cell.deviceName.text = session.name
-            cell.sessionStartTime.text = session.URL
+            cell.deviceName.text = session.keyIdentifier
+            cell.sessionStartTime.text = session.sqsURL
             cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
         return cell
@@ -80,9 +80,3 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
 
 }
 
-
-// TODO: Temporary Session struct that parses prototype QR JSON objects
-struct Session: Codable {
-    let name: String
-    let URL: String
-}
