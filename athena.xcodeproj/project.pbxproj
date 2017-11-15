@@ -21,6 +21,7 @@
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
 		49E7666B1F7E6F420022C042 /* athenaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7666A1F7E6F420022C042 /* athenaTests.swift */; };
 		49E766761F7E6F420022C042 /* athenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* athenaUITests.swift */; };
+		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61E9FA171FADFB7F009C893B /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FA161FADFB7F009C893B /* DevicesTableViewController.swift */; };
@@ -66,6 +67,7 @@
 		49E766711F7E6F420022C042 /* athenaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = athenaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766751F7E6F420022C042 /* athenaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = athenaUITests.swift; sourceTree = "<group>"; };
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
 		610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				610C63BD1FAE1E8200A00FB0 /* Devices */,
 				01839A701FACA93A00698B69 /* Account.swift */,
 				01B469841FB5B6BC00F2C720 /* User.swift */,
+				49FA7F751FB9E08E00EDB367 /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
 				49E766591F7E6F420022C042 /* Main.storyboard */,
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
@@ -399,6 +402,7 @@
 				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
 				61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
+				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				01B469851FB5B6BC00F2C720 /* User.swift in Sources */,
@@ -574,7 +578,7 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = athena/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = athena.athena;
+				PRODUCT_BUNDLE_IDENTIFIER = com.athena.athena;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -590,7 +594,7 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = athena/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = athena.athena;
+				PRODUCT_BUNDLE_IDENTIFIER = com.athena.athena;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
