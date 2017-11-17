@@ -34,7 +34,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
         if let cell = cell as? DeviceTableViewCell {
             let session = sessions[indexPath.row]
             cell.deviceName.text = session.keyIdentifier
-            cell.sessionStartTime.text = session.sqsURL
+            cell.sessionStartTime.text = session.sqsURL.absoluteString
             cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
         return cell

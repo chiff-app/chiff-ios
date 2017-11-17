@@ -9,8 +9,8 @@
 import Foundation
 
 
-struct Session: Codable {
-    let sqsURL: String
+struct Session {
+    let sqsURL: URL
     let nonce: String
     let keyIdentifier: String
 
@@ -20,12 +20,14 @@ struct Session: Codable {
         case storeKey
     }
 
-    init(sqs: String, nonce: String, pubKey: String)  {
-        // TODO: This doesn't work with decoding JSON string, check https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
+    init(sqs: URL, nonce: String, pubKey: String)  {
         self.sqsURL = sqs
         self.nonce = nonce
-        let keyIdentifier = (sqsURL + nonce).sha256()
-        self.keyIdentifier = keyIdentifier.substring(to: keyIdentifier.index(keyIdentifier.startIndex, offsetBy: 8))
+
+        // TODO: How can we best determine an identifier?
+        let keyIdentifier = (pubKey + sqs.absoluteString + nonce).sha256()
+        let index = keyIdentifier.index(keyIdentifier.startIndex, offsetBy: 8)
+        self.keyIdentifier = String(keyIdentifier[..<index])
         do {
             try importPublicKey(from: pubKey, to: self.keyIdentifier)
         } catch {

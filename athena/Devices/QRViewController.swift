@@ -44,8 +44,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         if metadataObjects.count > 0 {
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
-                if let json = machineReadableCode.stringValue, !qrFound {
-                    decodeSessionData(json)
+                if let urlString = machineReadableCode.stringValue, !qrFound {
+                    decodeSessionData(url: urlString)
                 }
             }
         } else { return }
@@ -65,11 +65,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         view.bringSubview(toFront: errorLabel)
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
-    
-    private func decodeSessionData(_ json: String) {
-        let decoder = JSONDecoder()
-        if let jsonData = json.data(using: .utf8),
-            let session = try? decoder.decode(Session.self, from: jsonData) {
+
+    private func decodeSessionData(url: String) {
+        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let nonce = parameters["n"], let sqs = parameters["s"], let sqsURL = URL(string: "http://sqs.us-east-2.amazonaws.com/" + sqs) {
+            let session = Session(sqs: sqsURL, nonce: nonce, pubKey: pubKey)
             qrFound = true
             delegate?.addSession(session: session)
             if isFirstSession {
@@ -81,6 +80,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             displayError(message: "QR code could not be decoded.")
         }
     }
+
     
     private func scanQR() throws {
         
@@ -109,4 +109,20 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         captureSession.startRunning()
     }
 
+}
+
+extension URL {
+
+    public var queryParameters: [String: String]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true), let queryItems = components.queryItems else {
+            return nil
+        }
+
+        var parameters = [String: String]()
+        for item in queryItems {
+            parameters[item.name] = item.value
+        }
+
+        return parameters
+    }
 }
