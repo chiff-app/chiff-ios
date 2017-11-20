@@ -68,13 +68,22 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
 
     private func decodeSessionData(url: String) {
         if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let nonce = parameters["n"], let sqs = parameters["s"], let sqsURL = URL(string: "http://sqs.us-east-2.amazonaws.com/" + sqs) {
-            let session = Session(sqs: sqsURL, nonce: nonce, pubKey: pubKey)
-            qrFound = true
-            delegate?.addSession(session: session)
-            if isFirstSession {
-                _ = navigationController?.popViewController(animated: false)
-            } else {
-                dismiss(animated: true, completion: nil)
+            do {
+                let session = try Session(sqs: sqsURL, nonce: nonce, pubKey: pubKey)
+                qrFound = true
+                delegate?.addSession(session: session)
+                if isFirstSession {
+                    _ = navigationController?.popViewController(animated: false)
+                } else {
+                    dismiss(animated: true, completion: nil)
+                }
+            } catch {
+                switch error {
+                case KeychainError.storeKey:
+                    displayError(message: "This QR code was already scanned.")
+                default:
+                    print(error)
+                }
             }
         } else {
             displayError(message: "QR code could not be decoded.")

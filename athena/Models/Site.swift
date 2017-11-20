@@ -10,6 +10,6 @@ struct Site {
     var urls: [String]
 
     // How will be store this?
-    // var passwordRequirements: String?
+    //var passwordRestrictions: PasswordRestrictions?
 
 }

@@ -16,7 +16,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Override point for customization after application launch.a
+
+        // FOR TESTING PURPOSES
+        deleteSessionKeys() // Uncomment if session keys shouldn't be cleaned before startup
+        deletePasswords()   // Uncomment if passwords shouldn't be cleaned before startup
+        //deleteSeed()      // Uncomment if you want to force seed regeneration
+
+        // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain.
+        if !Keychain.hasSeed() { try! Crypto.generateSeed() }
+
         return true
     }
 
@@ -47,6 +56,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+
+    private func deleteSessionKeys() {
+        // Remove session keys
+        let query: [String: Any] = [kSecClass as String: kSecClassKey,
+                                    kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom]
+
+        let status = SecItemDelete(query as CFDictionary)
+
+        if status == errSecItemNotFound { print("No session keys found") } else {
+            print(status)
+        }
+
+    }
+
+    private func deletePasswords() {
+        // Remove passwords
+        let query: [String: Any] = [kSecClass as String: kSecClassInternetPassword]
+
+        // Try to delete the seed if it exists.
+        let status = SecItemDelete(query as CFDictionary)
+
+        if status == errSecItemNotFound { print("No generic passwords found") } else {
+            print(status)
+        }
+    }
+
+    private func deleteSeed() {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                     kSecAttrAccount as String: "com.athena.seed"]
+
+        // Try to delete the seed if it exists.
+        let status = SecItemDelete(query as CFDictionary)
+        if status == errSecItemNotFound { print("No seed found.") } else {
+            print(status)
+        }
     }
 
 

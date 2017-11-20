@@ -20,7 +20,12 @@ class AccountViewController: UITableViewController {
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.urls[0]
             userNameTextField.text = account.username
-            userPasswordTextField.text = account.password()
+            do {
+                userPasswordTextField.text = try account.password()
+            } catch {
+                // TODO: Password could not be loaded, present error?
+                print(error)
+            }
             navigationItem.title = account.site.name
         }
     }
@@ -41,10 +46,11 @@ class AccountViewController: UITableViewController {
     // MARK: Private methods
     
     private func showHiddenPasswordPopup() {
-        let showPasswordHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
         showPasswordHUD.mode = .text
+        showPasswordHUD.bezelView.color = .black
         showPasswordHUD.label.text = userPasswordTextField.text
-        showPasswordHUD.label.textColor = .black
+        showPasswordHUD.label.textColor = .white
         showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
         showPasswordHUD.margin = 10
         showPasswordHUD.label.numberOfLines = 0
