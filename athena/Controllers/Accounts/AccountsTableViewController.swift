@@ -77,8 +77,10 @@ class AccountsTableViewController: UITableViewController {
         sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"]))
         sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"]))
 
+        let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+
         for site in sampleSites {
-            let account = Account(username: sampleUsername, site: site, passwordIndex: 0)
+            let account = try! Account(username: sampleUsername, site: site, restrictions: restrictions)
             accounts.append(account)
         }
     }

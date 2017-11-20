@@ -78,14 +78,33 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
-            createAccount()
+            showPasswordPreview()
+        }
+    }
+
+    private func showPasswordPreview() {
+        if let websiteName = websiteNameTextField.text,
+            let websiteURL = websiteURLTextField.text,
+            let username = userNameTextField.text {
+
+            let id = String((websiteName + websiteURL).hashValue)
+            let site = Site(name: websiteName, id: id, urls: [websiteURL])
+            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+            do {
+
+                // This is only a preview, password will be generated when account is created
+                let password = try Crypto.generatePassword(username: username, passwordIndex: 0, siteID: site.id, restrictions: restrictions)
+                userPasswordTextField.text = password
+            } catch {
+                print(error)
+            }
         }
     }
     
     private func createAccount() {
         if let websiteName = websiteNameTextField.text,
             let websiteURL = websiteURLTextField.text,
-            let userName = userNameTextField.text {
+            let username = userNameTextField.text {
 
             // TODO: Where to get site(ID) from if account is manually added?
             //       How to determine password requirements? > Maybe don't allow creation in app.
@@ -93,9 +112,15 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
 
             let id = String((websiteName + websiteURL).hashValue)
             let site = Site(name: websiteName, id: id, urls: [websiteURL])
+            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+            do {
+                account = try Account(username: username, site: site, restrictions: restrictions)
+            } catch {
+                // TODO: Handle errors in UX
+                print(error)
+            }
 
-            account = Account(username: userName, site: site, passwordIndex: 0)
-            userPasswordTextField.text = account?.password()
+
         }
     }
     
@@ -104,7 +129,8 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let button = sender as? UIBarButtonItem, button === saveButton {
-            print("TODO: This should save the account to database.")
+            print("TODO: This should save the account to database. Now only password is saved to keychain")
+            createAccount()
         }
     }
 

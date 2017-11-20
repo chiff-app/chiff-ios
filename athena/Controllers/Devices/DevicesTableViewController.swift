@@ -23,6 +23,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     @objc func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
+            sessions[indexPath.row].removeSession()
             sessions.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
