@@ -8,6 +8,7 @@ class AccountsTableViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         loadSampleData()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,8 +34,13 @@ class AccountsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            accounts.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            do {
+                let account = accounts.remove(at: indexPath.row)
+                try account.deleteAccount()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            } catch {
+                print("Account could not be delete: \(error)")
+            }
         }     
     }
 
@@ -67,22 +73,30 @@ class AccountsTableViewController: UITableViewController {
     // MARK: Temporary sample data
 
     private func loadSampleData() {
-        let sampleUsername = "athenademo@protonmail.com"
-        var sampleSites = [Site]()
+        // try loading persistent data:
+        if let savedAccounts = try? Keychain.getAllAccounts() {
+            print("Loading accounts from keychain.")
+            accounts.append(contentsOf: savedAccounts)
+        } else {
+            let sampleUsername = "athenademo@protonmail.com"
+            var sampleSites = [Site]()
 
-        sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"]))
-        sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"]))
-        sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"]))
-        sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"]))
-        sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"]))
-        sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"]))
+            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
 
-        let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+            sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions))
+            sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"], restrictions: restrictions))
+            sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
+            sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
+            sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
+            sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
 
-        for site in sampleSites {
-            let account = try! Account(username: sampleUsername, site: site, restrictions: restrictions)
-            accounts.append(account)
+            for site in sampleSites {
+                let account = Account(username: sampleUsername, site: site, restrictions: nil)
+                try! account.save()
+                accounts.append(account)
+            }
         }
+
     }
 
 }
