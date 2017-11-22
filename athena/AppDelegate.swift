@@ -60,8 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func deleteSessionKeys() {
         // Remove session keys
-        let query: [String: Any] = [kSecClass as String: kSecClassKey,
-                                    kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom]
+        let query: [String: Any] = [kSecClass as String: kSecClassKey]
 
         let status = SecItemDelete(query as CFDictionary)
 
@@ -73,7 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func deletePasswords() {
         // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassInternetPassword]
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: Keychain.passwordService]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
@@ -85,7 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func deleteSeed() {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                     kSecAttrAccount as String: "com.athena.seed"]
+                                    kSecAttrAccount as String: Keychain.seedService,
+                                    kSecAttrService as String: Keychain.seedService]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
