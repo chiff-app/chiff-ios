@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // FOR TESTING PURPOSES
         deleteSessionKeys() // Uncomment if session keys shouldn't be cleaned before startup
-        deletePasswords()   // Uncomment if passwords shouldn't be cleaned before startup
+        //deletePasswords()   // Uncomment if passwords shouldn't be cleaned before startup
         //deleteSeed()      // Uncomment if you want to force seed regeneration
 
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain.
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // App opened with url
         // TODO: Add session persistently and do other stuff
-        print(url.queryParameters)
+        print(url.queryParameters!)
         return true
     }
 

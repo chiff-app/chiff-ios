@@ -4,7 +4,7 @@ import CryptoSwift
 /*
  * An account belongs to the user and can have one or more Sites.
  */
-struct Account {
+struct Account: Codable {
 
     let id: String
     let username: String
@@ -12,7 +12,7 @@ struct Account {
     var passwordIndex: Int
     let restrictions: PasswordRestrictions
 
-    init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions) throws {
+    init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions?) {
 
         // Temporary generated storage ID for dummy data.
         let storageID = "\(site.id)\(username)".sha256()
@@ -22,16 +22,14 @@ struct Account {
         self.username = username
         self.site = site
         self.passwordIndex = passwordIndex
-        self.restrictions = restrictions
+        self.restrictions = restrictions ?? site.restrictions // Use site default restrictions of no custom restrictions are provided
 
-        do {
-            let password = try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
-            // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
-            try Keychain.savePassword(password, with: id)
-        } catch {
-            print(error)
-        }
+    }
 
+    func save() throws {
+        // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.savePassword(try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions), account: accountData, with: id)
     }
 
     func password() throws -> String {
@@ -41,24 +39,27 @@ struct Account {
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
         passwordIndex += 1
         let newPassword = try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
-        print(newPassword)
-        // TODO: update password in keychain
+        try Keychain.updatePassword(newPassword, with: id)
     }
 
-    func deletePassword() throws {
+    func deleteAccount() throws {
         try Keychain.deletePassword(with: id)
     }
 
 }
 
-struct PasswordRestrictions {
+struct PasswordRestrictions: Codable {
     let length: Int
     let characters: [Characters]
 
-    enum Characters {
+    enum Characters: String, Codable {
         case lower
         case upper
         case numbers
         case symbols
     }
+
 }
+
+
+
