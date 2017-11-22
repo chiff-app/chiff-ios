@@ -27,7 +27,7 @@ struct Account {
         do {
             let password = try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
             // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
-            try Keychain.savePassword(password, with: "com.athena.passwords.\(id)")
+            try Keychain.savePassword(password, with: id)
         } catch {
             print(error)
         }
@@ -35,7 +35,7 @@ struct Account {
     }
 
     func password() throws -> String {
-        return try Keychain.getPassword(with: "com.athena.passwords.\(id)")
+        return try Keychain.getPassword(with: id)
     }
 
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
@@ -46,7 +46,7 @@ struct Account {
     }
 
     func deletePassword() throws {
-        try Keychain.deletePassword(with: "com.athena.passwords.\(id)")
+        try Keychain.deletePassword(with: id)
     }
 
 }
