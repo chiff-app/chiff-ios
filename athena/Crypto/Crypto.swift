@@ -96,14 +96,14 @@ class Crypto {
 
     class func convertPublicKey(from base64EncodedKey: String) throws -> Box.PublicKey  {
         // Convert from base64 to Data
-        guard let pkData = Data.init(base64Encoded: base64EncodedKey) else {
+
+        let sodium = Sodium()
+        guard let pkData = sodium.utils.base642bin(base64EncodedKey, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
 
-        // TODO: convert base64 public key to PublicKey
-        // Mock data
-        let sodium = Sodium()
-        let keyPair = sodium.box.keyPair()
+
+        let keyPair = sodium.box.keyPair(seed: pkData)
         return keyPair!.publicKey
     }
 

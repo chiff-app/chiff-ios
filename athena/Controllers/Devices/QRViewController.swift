@@ -71,7 +71,9 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 qrFound = true
                 let session = Session(sqs: sqsURL, pubKey: pubKey)
                 try session.save(pubKey: pubKey)
-                self.tabBarController?.selectedIndex = 1
+                DispatchQueue.main.async {
+                    self.tabBarController?.selectedIndex = 1
+                }
                 qrFound = false
             } catch {
                 switch error {
@@ -84,8 +86,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 }
             }
         } else {
-            qrFound = false
             displayError(message: "QR code could not be decoded.")
+            qrFound = false
         }
     }
 
