@@ -626,7 +626,7 @@
         <scene sceneID="42s-2K-oBj">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DUk-EI-Mjk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Devices" image="pair-icon" selectedImage="pair-selected" id="bi3-qV-eMP"/>
+                    <tabBarItem key="tabBarItem" title="Devices" image="device-icon" selectedImage="device-selected-icon" id="bi3-qV-eMP"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jSq-r7-S9E">
                         <rect key="frame" x="0.0" y="-44" width="375" height="44"/>
@@ -644,7 +644,6 @@
         <!--Pair-->
         <scene sceneID="P89-fd-e6F">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QQN-Zs-1hf" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aIx-K6-rgV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Pair" image="pair-icon" selectedImage="pair-selected" id="o3t-x8-Vcx"/>
                     <toolbarItems/>
@@ -657,12 +656,15 @@
                         <segue destination="GUZ-7x-PXx" kind="relationship" relationship="rootViewController" id="2Kh-fU-dDl"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QQN-Zs-1hf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="489" y="849"/>
         </scene>
     </scenes>
     <resources>
         <image name="close-icon" width="16" height="16"/>
+        <image name="device-icon" width="34" height="23"/>
+        <image name="device-selected-icon" width="34" height="23"/>
         <image name="eye_logo" width="20" height="14"/>
         <image name="lock-selected" width="21" height="26"/>
         <image name="pair-icon" width="24" height="25"/>

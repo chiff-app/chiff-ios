@@ -145,8 +145,11 @@ class Keychain {
         try setData(keyData, with: identifier, service: sessionAppService, attributes: nil)
     }
 
-    // Maybe this function will never be needed since public keys are only set, used directly and deleted
-    class func getSessionKey(with identifier: String) throws -> Data {
+    class func getBrowserSessionKey(with identifier: String) throws -> Data {
+        return try getData(with: identifier, service: sessionBrowserService)
+    }
+
+    class func getAppSessionKey(with identifier: String) throws -> Data {
         return try getData(with: identifier, service: sessionAppService)
     }
 

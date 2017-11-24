@@ -53,15 +53,15 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
 
 
     // MARK: - Navigation
-
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "Add Session" {
-//            if let destination = (segue.destination.contents) as? QRViewController {
-//                destination.delegate = self
-//            }
-//        }
+        if segue.identifier == "Add Session" {
+            if let destination = (segue.destination.contents) as? QRViewController {
+                destination.delegate = self
+            }
+        }
     }
-    
+    */
     
     //MARK: Actions
     

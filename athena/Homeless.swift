@@ -25,8 +25,6 @@ extension UIViewController {
 }
 
 
-
-
 // Extension for URL that return parameters as dict
 extension URL {
 

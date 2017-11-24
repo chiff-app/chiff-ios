@@ -7,6 +7,7 @@ enum CryptoError: Error {
     case base64Decoding
     case hkdfInput
     case keyGeneration
+    case encryption
 }
 
 
@@ -102,9 +103,7 @@ class Crypto {
             throw CryptoError.base64Decoding
         }
 
-
-        let keyPair = sodium.box.keyPair(seed: pkData)
-        return keyPair!.publicKey
+        return pkData
     }
 
     class func createSessionKeyPair() throws -> Box.KeyPair {
@@ -118,9 +117,20 @@ class Crypto {
         return keyPair!
     }
 
+    // This function should encrypt a password message with a browser public key
+    class func encrypt(_ message: Data, with id: String) throws -> Data {
 
-    class func encrypt(_ message: String, with pubKeyID: String) {
-        // This function should encrypt a password message with a browser public key
+        let sodium = Sodium()
+
+        let pubBrowserKey = try Keychain.getBrowserSessionKey(with: Session.KeyIdentifier.browser.identifier(for: id))
+        let secretAppKey = try Keychain.getAppSessionKey(with: Session.KeyIdentifier.priv.identifier(for: id))
+
+        guard let ciphertext: Data = sodium.box.seal(message: message, recipientPublicKey: pubBrowserKey, senderSecretKey: secretAppKey) else {
+            throw CryptoError.encryption
+        }
+
+        return ciphertext
+
     }
 
     class func decrypt(with privKeyID: String) -> String {

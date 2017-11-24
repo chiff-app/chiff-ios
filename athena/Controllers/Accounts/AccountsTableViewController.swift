@@ -39,7 +39,7 @@ class AccountsTableViewController: UITableViewController {
                 try account.deleteAccount()
                 tableView.deleteRows(at: [indexPath], with: .fade)
             } catch {
-                print("Account could not be delete: \(error)")
+                print("Account could not be deleted: \(error)")
             }
         }     
     }

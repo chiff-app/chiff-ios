@@ -28,6 +28,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             print("Camera could not be instantiated: \(error)")
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        qrFound = false
+    }
     
     
     // MARK: Actions
@@ -73,8 +77,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 try session.save(pubKey: pubKey)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1
+                    self.qrFound = false
                 }
-                qrFound = false
             } catch {
                 switch error {
                 case KeychainError.storeKey:
