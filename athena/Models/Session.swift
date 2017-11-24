@@ -31,8 +31,9 @@ struct Session: Codable {
 
         // Generate and save own keypair
         let keyPair = try Crypto.createSessionKeyPair()
-        try Keychain.saveAppSessionKey(keyPair.publicKey.base64EncodedData(), with: KeyIdentifier.pub.identifier(for: id))
-        try Keychain.saveAppSessionKey(keyPair.secretKey.base64EncodedData(), with: KeyIdentifier.priv.identifier(for: id))
+        try Keychain.saveAppSessionKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
+        try Keychain.saveAppSessionKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
+
     }
 
     // Send public key to sqsURL
@@ -41,9 +42,10 @@ struct Session: Codable {
 
     }
 
-    func sendCredentials() {
-        // TODO: Send credentials to SQS queue
-
+    func sendPassword(_ message: Data) throws {
+        // encrypts message with browser public key for this session.
+        let ciphertext = try Crypto.encrypt(message, with: id)
+        print(ciphertext.base64EncodedString())
     }
 
     func removeSession() throws {
