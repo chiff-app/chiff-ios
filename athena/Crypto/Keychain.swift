@@ -1,5 +1,6 @@
 import Foundation
 import Security
+import Sodium
 
 
 enum KeychainError: Error {
@@ -15,6 +16,8 @@ class Keychain {
 
     static let passwordService = "com.athena.password"
     static let seedService = "com.athena.seed"
+    static let sessionBrowserService = "com.athena.session.browser"
+    static let sessionAppService = "com.athena.session"
 
     // TODO: Add accessability restrictions
 
@@ -48,7 +51,38 @@ class Keychain {
         try deleteData(with: identifier, service: passwordService)
     }
 
-    
+    class func getAllSessions() throws -> [Session] {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: sessionBrowserService,
+                                    kSecMatchLimit as String: kSecMatchLimitAll,
+                                    kSecReturnAttributes as String: true]
+
+        // Try to fetch the data if it exists.
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        // Check the return status and throw an error if appropriate.
+        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
+        guard status == noErr else { throw KeychainError.unhandledError(status) }
+
+        guard let dataArray = queryResult as? [[String: Any]] else {
+            throw KeychainError.unexpectedData
+        }
+
+        var sessions = [Session]()
+        let decoder = PropertyListDecoder()
+
+        for dict in dataArray {
+            guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
+                throw KeychainError.unexpectedData
+            }
+            sessions.append(try decoder.decode(Session.self, from: sessionData))
+        }
+        return sessions
+    }
+
     class func getAllAccounts() throws -> [Account] {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: passwordService,
@@ -103,57 +137,25 @@ class Keychain {
 
     // MARK: Session key operations
 
-    class func saveSessionKey(_ key: SecKey, with identifier: String) throws {
-        let tag = "com.athena.keys.\(identifier)".data(using: .utf8)!
-        let query: [String: Any] = [kSecClass as String: kSecClassKey,
-                                    kSecAttrApplicationTag as String: tag,
-                                    kSecValueRef as String: key]
-
-        // Try to add the session key to the keychain.
-        let status = SecItemAdd(query as CFDictionary, nil)
-
-        // Check the return status and throw an error if appropriate.
-        guard status == errSecSuccess else {
-            throw KeychainError.storeKey(status)
-        }
-
+    class func saveBrowserSessionKey(_ keyData: Data, with identifier: String, attributes: Data) throws {
+        try setData(keyData, with: identifier, service: sessionBrowserService, attributes: attributes)
     }
 
+    class func saveAppSessionKey(_ keyData: Data, with identifier: String) throws {
+        try setData(keyData, with: identifier, service: sessionAppService, attributes: nil)
+    }
 
     // Maybe this function will never be needed since public keys are only set, used directly and deleted
-    class func getSessionKey(with identifier: String) throws -> SecKey {
-        let tag = "com.athena.keys.\(identifier)".data(using: .utf8)!
-        let query: [String: Any] = [kSecClass as String: kSecClassKey,
-                                    kSecAttrApplicationTag as String: tag,
-                                    kSecReturnRef as String: true]
-
-        // Try to fetch the session key if it exists.
-        var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
-        }
-
-        // Check the return status and throw an error if appropriate.
-        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
-        guard status == noErr else { throw KeychainError.unhandledError(status) }
-        let pubKey = queryResult as! SecKey
-
-        return pubKey
+    class func getSessionKey(with identifier: String) throws -> Data {
+        return try getData(with: identifier, service: sessionAppService)
     }
 
+    class func removeBrowserSessionKey(with identifier: String) throws {
+        try deleteData(with: identifier, service: sessionBrowserService)
+    }
 
-    class func removeSessionKey(with identifier: String) throws {
-        let tag = "com.athena.keys.\(identifier)".data(using: .utf8)!
-
-        let query: [String: Any] = [kSecClass as String: kSecClassKey,
-                                    kSecAttrApplicationTag as String: tag]
-
-        // Try to delete the session key if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        // Check the return status and throw an error if appropriate.
-        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
+    class func removeAppSessionKey(with identifier: String) throws {
+        try deleteData(with: identifier, service: sessionAppService)
     }
 
 

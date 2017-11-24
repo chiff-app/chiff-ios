@@ -8,7 +8,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
-    var delegate: isAbleToReceiveData?
     var qrFound = false
     var isFirstSession = false
     @IBOutlet weak var videoView: UIView!
@@ -67,25 +66,25 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     private func decodeSessionData(url: String) {
-        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let nonce = parameters["n"], let sqs = parameters["s"], let sqsURL = URL(string: "http://sqs.us-east-2.amazonaws.com/" + sqs) {
+        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"], let sqsURL = URL(string: SQS_BASE_URL + sqs) {
             do {
-                let session = try Session(sqs: sqsURL, nonce: nonce, pubKey: pubKey)
                 qrFound = true
-                delegate?.addSession(session: session)
-                if isFirstSession {
-                    _ = navigationController?.popViewController(animated: false)
-                } else {
-                    dismiss(animated: true, completion: nil)
-                }
+                let session = Session(sqs: sqsURL, pubKey: pubKey)
+                try session.save(pubKey: pubKey)
+                self.tabBarController?.selectedIndex = 1
+                qrFound = false
             } catch {
                 switch error {
                 case KeychainError.storeKey:
+                    qrFound = false
                     displayError(message: "This QR code was already scanned.")
                 default:
-                    print(error)
+                    qrFound = false
+                    print("Unhandled error \(error)")
                 }
             }
         } else {
+            qrFound = false
             displayError(message: "QR code could not be decoded.")
         }
     }
@@ -118,20 +117,4 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         captureSession.startRunning()
     }
 
-}
-
-extension URL {
-
-    public var queryParameters: [String: String]? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true), let queryItems = components.queryItems else {
-            return nil
-        }
-
-        var parameters = [String: String]()
-        for item in queryItems {
-            parameters[item.name] = item.value
-        }
-
-        return parameters
-    }
 }

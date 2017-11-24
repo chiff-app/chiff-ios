@@ -10,8 +10,14 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        goToQrScannerIfEmpty()
+        do {
+            sessions = try Keychain.getAllSessions()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        } catch {
+            print("Sessions could not be loaded: \(error)")
+        }
     }
 
     // MARK: - Table view data source
@@ -23,18 +29,22 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     @objc func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
-            sessions[indexPath.row].removeSession()
-            sessions.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            do {
+                try sessions[indexPath.row].removeSession()
+                sessions.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            } catch {
+                print("Session could not be deleted: \(error)")
+            }
+
         }
-        goToQrScannerIfEmpty()
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
         if let cell = cell as? DeviceTableViewCell {
             let session = sessions[indexPath.row]
-            cell.deviceName.text = session.keyIdentifier
+            cell.deviceName.text = session.id
             cell.sessionStartTime.text = session.sqsURL.absoluteString
             cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
@@ -45,29 +55,11 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Add Session" {
-            if let destination = (segue.destination.contents) as? QRViewController {
-                destination.delegate = self
-            }
-        } else if segue.identifier == "First Session" {
-            if let destination = (segue.destination.contents) as? QRViewController {
-                destination.isFirstSession = true
-                destination.navigationItem.leftBarButtonItem?.isEnabled = false
-                destination.navigationItem.leftBarButtonItem?.tintColor = UIColor.clear
-                destination.delegate = self
-            }
-        }
-    }
-    
-    private func goToQrScannerIfEmpty() {
-        guard sessions.count == tableView.numberOfRows(inSection: 0) else {
-            fatalError("Inconsistency between data model and tableView.")
-        }
-        
-        // TODO: Can this be implemented more smoothly, e.g. not with segue?
-        if sessions.count == 0 {
-            performSegue(withIdentifier: "First Session", sender: self)
-        }
+//        if segue.identifier == "Add Session" {
+//            if let destination = (segue.destination.contents) as? QRViewController {
+//                destination.delegate = self
+//            }
+//        }
     }
     
     

@@ -1,10 +1,12 @@
 import Foundation
 import CryptoSwift
+import Sodium
 
 enum CryptoError: Error {
     case randomGeneration
     case base64Decoding
     case hkdfInput
+    case keyGeneration
 }
 
 
@@ -39,13 +41,13 @@ class Crypto {
             // TODO: Check with other passwordmanagers how to split this out
             switch character {
             case .lower:
-                chars.append(contentsOf: [Character]("abcdefghijklmnopqrstuvwxyz".characters))
+                chars.append(contentsOf: [Character]("abcdefghijklmnopqrstuvwxyz"))
             case .upper:
-                chars.append(contentsOf: [Character]("ABCDEFGHIJKLMNOPQRSTUVWXYZ".characters))
+                chars.append(contentsOf: [Character]("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
             case .numbers:
-                chars.append(contentsOf: [Character]("0123456789".characters))
+                chars.append(contentsOf: [Character]("0123456789"))
             case .symbols:
-                chars.append(contentsOf: [Character]("!@#$%^&*()_-+={[}]:;<,>.?/".characters))
+                chars.append(contentsOf: [Character]("!@#$%^&*()_-+={[}]:;<,>.?/"))
             }
         }
 
@@ -92,26 +94,28 @@ class Crypto {
         return Data(bytes: okm[0..<keyLengthBytes])
     }
 
-    class func convertPublicKey(from base64EncodedKey: String) throws -> SecKey {
+    class func convertPublicKey(from base64EncodedKey: String) throws -> Box.PublicKey  {
         // Convert from base64 to Data
         guard let pkData = Data.init(base64Encoded: base64EncodedKey) else {
             throw CryptoError.base64Decoding
         }
 
-        // Create SecKey item
-        let attributes: [String: Any] = [
-            kSecAttrKeyType as String: kSecAttrKeyTypeECSECPrimeRandom,
-            kSecAttrKeyClass as String: kSecAttrKeyClassPublic,
-            kSecAttrKeySizeInBits as String: 256
-        ]
+        // TODO: convert base64 public key to PublicKey
+        // Mock data
+        let sodium = Sodium()
+        let keyPair = sodium.box.keyPair()
+        return keyPair!.publicKey
+    }
 
-        var error: Unmanaged<CFError>?
+    class func createSessionKeyPair() throws -> Box.KeyPair {
+        let sodium = Sodium()
+        let keyPair = sodium.box.keyPair()
 
-        guard let publicKey = SecKeyCreateWithData(pkData as CFData, attributes as CFDictionary, &error) else {
-            throw error!.takeRetainedValue() as Error
+        guard keyPair != nil else {
+            throw CryptoError.keyGeneration
         }
 
-        return publicKey
+        return keyPair!
     }
 
 

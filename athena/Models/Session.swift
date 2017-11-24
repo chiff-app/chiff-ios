@@ -1,33 +1,59 @@
 import Foundation
+import Sodium
 
-struct Session {
+struct Session: Codable {
+    let id: String
     let sqsURL: URL
-    let nonce: String
-    let keyIdentifier: String
 
-    init(sqs: URL, nonce: String, pubKey: String) throws {
-        self.sqsURL = sqs
-        self.nonce = nonce
+    enum KeyIdentifier: String, Codable {
+        case pub = "public"
+        case priv = "private"
+        case browser = "browser"
 
-        // TODO: How can we best determine an identifier?
-        let keyIdentifier = (pubKey + sqs.absoluteString + nonce).sha256()
-        self.keyIdentifier = String(keyIdentifier.prefix(8))
-        try savePublicKey(from: pubKey, to: self.keyIdentifier)
-    }
-
-    func removeSession() {
-        do {
-            try Keychain.removeSessionKey(with: keyIdentifier)
-        } catch {
-            print(error)
+        func identifier(for id:String) -> String {
+            return "\(id)-\(self.rawValue)"
         }
     }
 
-    func savePublicKey(from base64EncodedKey: String, to keyIdentifier: String) throws {
-        // Convert from base64 to SecKey
-        let publicKey = try Crypto.convertPublicKey(from: base64EncodedKey)
+    init(sqs: URL, pubKey: String) {
+        self.sqsURL = sqs
+        
+        // TODO: How can we best determine an identifier? Generate random or deterministic?
+        id = (pubKey + sqs.absoluteString).sha256()
 
-        // Store key
-        try Keychain.saveSessionKey(publicKey, with: keyIdentifier)
     }
+
+    func save(pubKey: String) throws {
+        // Save browser public key
+        let publicKey = try Crypto.convertPublicKey(from: pubKey)
+        let sessionData = try PropertyListEncoder().encode(self)
+        try Keychain.saveBrowserSessionKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
+
+        // Generate and save own keypair
+        let keyPair = try Crypto.createSessionKeyPair()
+        try Keychain.saveAppSessionKey(keyPair.publicKey.base64EncodedData(), with: KeyIdentifier.pub.identifier(for: id))
+        try Keychain.saveAppSessionKey(keyPair.secretKey.base64EncodedData(), with: KeyIdentifier.priv.identifier(for: id))
+    }
+
+    // Send public key to sqsURL
+    func sendSessionInfo(ownPublicKey: Box.PublicKey) throws {
+        // TODO: Implement sending to SQS queue
+
+    }
+
+    func sendCredentials() {
+        // TODO: Send credentials to SQS queue
+
+    }
+
+    func removeSession() throws {
+        do {
+            try Keychain.removeBrowserSessionKey(with: KeyIdentifier.browser.identifier(for: id))
+            try Keychain.removeAppSessionKey(with: KeyIdentifier.pub.identifier(for: id))
+            try Keychain.removeAppSessionKey(with: KeyIdentifier.priv.identifier(for: id))
+        } catch {
+            throw error
+        }
+    }
+
 }
