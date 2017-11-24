@@ -48,18 +48,4 @@ struct Account: Codable {
 
 }
 
-struct PasswordRestrictions: Codable {
-    let length: Int
-    let characters: [Characters]
-
-    enum Characters: String, Codable {
-        case lower
-        case upper
-        case numbers
-        case symbols
-    }
-
-}
-
-
 

@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.a
 
         // FOR TESTING PURPOSES
-        deleteSessionKeys() // Uncomment if session keys shouldn't be cleaned before startup
+        //deleteSessionKeys() // Uncomment if session keys shouldn't be cleaned before startup
         //deletePasswords()   // Uncomment if passwords shouldn't be cleaned before startup
         //deleteSeed()      // Uncomment if you want to force seed regeneration
 
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // App opened with url
         // TODO: Add session persistently and do other stuff
         print(url.queryParameters!)
@@ -59,15 +59,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func deleteSessionKeys() {
-        // Remove session keys
-        let query: [String: Any] = [kSecClass as String: kSecClassKey]
+        // Remove passwords
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: Keychain.sessionBrowserService]
 
+        // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
 
-        if status == errSecItemNotFound { print("No session keys found") } else {
+        if status == errSecItemNotFound { print("No browser sessions found") } else {
             print(status)
         }
 
+        // Remove passwords
+        let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: Keychain.sessionAppService]
+
+        // Try to delete the seed if it exists.
+        let status2 = SecItemDelete(query2 as CFDictionary)
+
+        if status2 == errSecItemNotFound { print("No own sessions keys found") } else {
+            print(status2)
+        }
     }
 
     private func deletePasswords() {

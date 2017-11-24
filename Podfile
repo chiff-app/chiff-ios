@@ -7,4 +7,5 @@ target 'athena' do
   use_frameworks!
   pod "CryptoSwift", '~> 0.8'
   pod 'MBProgressHUD', '~> 1.0.0'
+  pod 'Sodium', '~> 0.5'
 end
