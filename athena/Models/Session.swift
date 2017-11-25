@@ -27,12 +27,12 @@ struct Session: Codable {
         // Save browser public key
         let publicKey = try Crypto.sharedInstance.convertPublicKey(from: pubKey)
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.saveBrowserSessionKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
+        try Keychain.sharedInstance.saveBrowserSessionKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
 
         // Generate and save own keypair
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.saveAppSessionKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
-        try Keychain.saveAppSessionKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
+        try Keychain.sharedInstance.saveAppSessionKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
+        try Keychain.sharedInstance.saveAppSessionKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
 
     }
 
@@ -50,9 +50,9 @@ struct Session: Codable {
 
     func removeSession() throws {
         do {
-            try Keychain.removeBrowserSessionKey(with: KeyIdentifier.browser.identifier(for: id))
-            try Keychain.removeAppSessionKey(with: KeyIdentifier.pub.identifier(for: id))
-            try Keychain.removeAppSessionKey(with: KeyIdentifier.priv.identifier(for: id))
+            try Keychain.sharedInstance.removeBrowserSessionKey(with: KeyIdentifier.browser.identifier(for: id))
+            try Keychain.sharedInstance.removeAppSessionKey(with: KeyIdentifier.pub.identifier(for: id))
+            try Keychain.sharedInstance.removeAppSessionKey(with: KeyIdentifier.priv.identifier(for: id))
         } catch {
             throw error
         }

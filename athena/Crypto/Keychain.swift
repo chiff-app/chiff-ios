@@ -12,25 +12,28 @@ enum KeychainError: Error {
 
 
 class Keychain {
-
+    
+    static let sharedInstance = Keychain()
     static let passwordService = "com.athena.password"
     static let seedService = "com.athena.seed"
     static let sessionBrowserService = "com.athena.session.browser"
     static let sessionAppService = "com.athena.session"
+    
+    private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
     // TODO: Add accessability restrictions
 
     // MARK: Password operations
 
-    class func savePassword(_ password: String, account: Data, with identifier: String) throws {
+    func savePassword(_ password: String, account: Data, with identifier: String) throws {
         guard let passwordData = password.data(using: .utf8) else {
             throw KeychainError.stringEncoding
         }
-        try setData(passwordData, with: identifier, service: passwordService, attributes: account)
+        try Keychain.sharedInstance.setData(passwordData, with: identifier, service: Keychain.passwordService, attributes: account)
     }
 
-    class func getPassword(with identifier: String) throws -> String {
-        let data = try getData(with: identifier, service: passwordService)
+    func getPassword(with identifier: String) throws -> String {
+        let data = try getData(with: identifier, service: Keychain.passwordService)
         
         guard let password = String(data: data, encoding: .utf8) else {
             throw KeychainError.unexpectedData
@@ -39,20 +42,20 @@ class Keychain {
         return password
     }
 
-    class func updatePassword(_ newPassword: String, with identifier: String) throws {
+    func updatePassword(_ newPassword: String, with identifier: String) throws {
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding
         }
-        try updateData(passwordData, with: identifier, service: passwordService)
+        try updateData(passwordData, with: identifier, service: Keychain.passwordService)
     }
 
-    class func deletePassword(with identifier: String) throws {
-        try deleteData(with: identifier, service: passwordService)
+    func deletePassword(with identifier: String) throws {
+        try deleteData(with: identifier, service: Keychain.passwordService)
     }
 
-    class func getAllSessions() throws -> [Session] {
+    func getAllSessions() throws -> [Session] {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: sessionBrowserService,
+                                    kSecAttrService as String: Keychain.sessionBrowserService,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true]
 
@@ -82,9 +85,9 @@ class Keychain {
         return sessions
     }
 
-    class func getAllAccounts() throws -> [Account] {
+    func getAllAccounts() throws -> [Account] {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: passwordService,
+                                    kSecAttrService as String: Keychain.passwordService,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true]
 
@@ -117,53 +120,53 @@ class Keychain {
 
     // MARK: Seed operations
 
-    class func saveSeed(seed: Data) throws {
-        try setData(seed, with: seedService, service: seedService, attributes: nil)
+    func saveSeed(seed: Data) throws {
+        try setData(seed, with: Keychain.seedService, service: Keychain.seedService, attributes: nil)
     }
 
-    class func getSeed() throws -> Data {
-        return try getData(with: seedService, service: seedService)
+    func getSeed() throws -> Data {
+        return try getData(with: Keychain.seedService, service: Keychain.seedService)
     }
 
-    class func hasSeed() -> Bool {
-        return hasData(with: seedService, service: seedService)
+    func hasSeed() -> Bool {
+        return hasData(with: Keychain.seedService, service: Keychain.seedService)
     }
 
-    class func deleteSeed() throws {
-        try deleteData(with: seedService, service: seedService)
+    func deleteSeed() throws {
+        try deleteData(with: Keychain.seedService, service: Keychain.seedService)
     }
 
 
     // MARK: Session key operations
 
-    class func saveBrowserSessionKey(_ keyData: Data, with identifier: String, attributes: Data) throws {
-        try setData(keyData, with: identifier, service: sessionBrowserService, attributes: attributes)
+    func saveBrowserSessionKey(_ keyData: Data, with identifier: String, attributes: Data) throws {
+        try setData(keyData, with: identifier, service: Keychain.sessionBrowserService, attributes: attributes)
     }
 
-    class func saveAppSessionKey(_ keyData: Data, with identifier: String) throws {
-        try setData(keyData, with: identifier, service: sessionAppService, attributes: nil)
+    func saveAppSessionKey(_ keyData: Data, with identifier: String) throws {
+        try setData(keyData, with: identifier, service: Keychain.sessionAppService, attributes: nil)
     }
 
-    class func getBrowserSessionKey(with identifier: String) throws -> Data {
-        return try getData(with: identifier, service: sessionBrowserService)
+    func getBrowserSessionKey(with identifier: String) throws -> Data {
+        return try getData(with: identifier, service: Keychain.sessionBrowserService)
     }
 
-    class func getAppSessionKey(with identifier: String) throws -> Data {
-        return try getData(with: identifier, service: sessionAppService)
+    func getAppSessionKey(with identifier: String) throws -> Data {
+        return try getData(with: identifier, service: Keychain.sessionAppService)
     }
 
-    class func removeBrowserSessionKey(with identifier: String) throws {
-        try deleteData(with: identifier, service: sessionBrowserService)
+    func removeBrowserSessionKey(with identifier: String) throws {
+        try deleteData(with: identifier, service: Keychain.sessionBrowserService)
     }
 
-    class func removeAppSessionKey(with identifier: String) throws {
-        try deleteData(with: identifier, service: sessionAppService)
+    func removeAppSessionKey(with identifier: String) throws {
+        try deleteData(with: identifier, service: Keychain.sessionAppService)
     }
 
 
     // MARK: Private CRUD methods
 
-    private class func setData(_ data: Data, with identifier: String, service: String, attributes: Data?) throws {
+    private func setData(_ data: Data, with identifier: String, service: String, attributes: Data?) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -177,7 +180,7 @@ class Keychain {
 
     }
 
-    private class func getData(with identifier: String, service: String) throws -> Data {
+    private func getData(with identifier: String, service: String) throws -> Data {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -201,7 +204,7 @@ class Keychain {
         return data
     }
 
-    private class func hasData(with identifier: String, service: String) -> Bool {
+    private func hasData(with identifier: String, service: String) -> Bool {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -213,7 +216,7 @@ class Keychain {
         return status != errSecItemNotFound
     }
 
-    private class func deleteData(with identifier: String, service: String) throws {
+    private func deleteData(with identifier: String, service: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
@@ -226,7 +229,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    private class func updateData(_ data: Data, with identifier: String, service: String) throws {
+    private func updateData(_ data: Data, with identifier: String, service: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
