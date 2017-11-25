@@ -1,6 +1,5 @@
 import Foundation
 import Security
-import Sodium
 
 
 enum KeychainError: Error {

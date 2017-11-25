@@ -29,7 +29,7 @@ struct Account: Codable {
     func save() throws {
         // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.savePassword(try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions), account: accountData, with: id)
+        try Keychain.savePassword(try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions), account: accountData, with: id)
     }
 
     func password() throws -> String {
@@ -38,7 +38,7 @@ struct Account: Codable {
 
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
         passwordIndex += 1
-        let newPassword = try Crypto.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
+        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
         try Keychain.updatePassword(newPassword, with: id)
     }
 
