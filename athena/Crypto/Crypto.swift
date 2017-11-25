@@ -36,7 +36,7 @@ class Crypto {
 
         // Store key
         // TODO: Should seed be stored by this class or by caller?
-        try Keychain.saveSeed(seed: seed)
+        try Keychain.sharedInstance.saveSeed(seed: seed)
     }
 
 
@@ -71,7 +71,7 @@ class Crypto {
     }
 
     private func hkdf(username: String, passwordIndex: Int, siteID: String, keyLengthBytes: Int = 32) throws -> Data {
-        let seed = try Keychain.getSeed()
+        let seed = try Keychain.sharedInstance.getSeed()
         guard let accountInput = (username + siteID + String(passwordIndex)).data(using: .utf8) else {
             throw CryptoError.hkdfInput
         }
@@ -123,8 +123,8 @@ class Crypto {
     // This function should encrypt a password message with a browser public key
     func encrypt(_ message: Data, with id: String) throws -> Data {
 
-        let pubBrowserKey = try Keychain.getBrowserSessionKey(with: Session.KeyIdentifier.browser.identifier(for: id))
-        let secretAppKey = try Keychain.getAppSessionKey(with: Session.KeyIdentifier.priv.identifier(for: id))
+        let pubBrowserKey = try Keychain.sharedInstance.getBrowserSessionKey(with: Session.KeyIdentifier.browser.identifier(for: id))
+        let secretAppKey = try Keychain.sharedInstance.getAppSessionKey(with: Session.KeyIdentifier.priv.identifier(for: id))
 
         guard let ciphertext: Data = sodium.box.seal(message: message, recipientPublicKey: pubBrowserKey, senderSecretKey: secretAppKey) else {
             throw CryptoError.encryption

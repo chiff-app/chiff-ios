@@ -11,7 +11,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         do {
-            sessions = try Keychain.getAllSessions()
+            sessions = try Keychain.sharedInstance.getAllSessions()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

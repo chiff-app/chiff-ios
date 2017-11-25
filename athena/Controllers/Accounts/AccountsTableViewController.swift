@@ -74,7 +74,7 @@ class AccountsTableViewController: UITableViewController {
 
     private func loadSampleData() {
         // try loading persistent data:
-        if let savedAccounts = try? Keychain.getAllAccounts() {
+        if let savedAccounts = try? Keychain.sharedInstance.getAllAccounts() {
             print("Loading accounts from keychain.")
             accounts.append(contentsOf: savedAccounts)
         } else {
