@@ -11,7 +11,6 @@
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
-		01B469851FB5B6BC00F2C720 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B469841FB5B6BC00F2C720 /* User.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -55,7 +54,6 @@
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
-		01B469841FB5B6BC00F2C720 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
-				01B469841FB5B6BC00F2C720 /* User.swift */,
 				49FA7F751FB9E08E00EDB367 /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
 			);
@@ -455,7 +452,6 @@
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,
-				01B469851FB5B6BC00F2C720 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

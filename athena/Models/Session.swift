@@ -25,12 +25,12 @@ struct Session: Codable {
 
     func save(pubKey: String) throws {
         // Save browser public key
-        let publicKey = try Crypto.convertPublicKey(from: pubKey)
+        let publicKey = try Crypto.sharedInstance.convertPublicKey(from: pubKey)
         let sessionData = try PropertyListEncoder().encode(self)
         try Keychain.saveBrowserSessionKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
 
         // Generate and save own keypair
-        let keyPair = try Crypto.createSessionKeyPair()
+        let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
         try Keychain.saveAppSessionKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
         try Keychain.saveAppSessionKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
 
@@ -44,7 +44,7 @@ struct Session: Codable {
 
     func sendPassword(_ message: Data) throws {
         // encrypts message with browser public key for this session.
-        let ciphertext = try Crypto.encrypt(message, with: id)
+        let ciphertext = try Crypto.sharedInstance.encrypt(message, with: id)
         print(ciphertext.base64EncodedString())
     }
 

@@ -12,14 +12,18 @@ enum CryptoError: Error {
 
 
 class Crypto {
-
+    
+    static let sharedInstance = Crypto()
+    
+    private let sodium = Sodium()
+    private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
     /*
      * The first time we use the app, we need to generate the seed and put it in the
      * keychain. This function will need to be called in the setup process and from
      * the resulting seed all passwords will be generated.
      */
-    class func generateSeed() throws {
+    func generateSeed() throws {
 
         // Generate random seed
         var seed = Data(count: 32)
@@ -36,7 +40,7 @@ class Crypto {
     }
 
 
-    class func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions) throws -> String {
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions) throws -> String {
         var chars = [Character]()
         for character in restrictions.characters {
             // TODO: Check with other passwordmanagers how to split this out
@@ -66,7 +70,7 @@ class Crypto {
         return String(password.prefix(restrictions.length))
     }
 
-    private class func hkdf(username: String, passwordIndex: Int, siteID: String, keyLengthBytes: Int = 32) throws -> Data {
+    private func hkdf(username: String, passwordIndex: Int, siteID: String, keyLengthBytes: Int = 32) throws -> Data {
         let seed = try Keychain.getSeed()
         guard let accountInput = (username + siteID + String(passwordIndex)).data(using: .utf8) else {
             throw CryptoError.hkdfInput
@@ -95,10 +99,9 @@ class Crypto {
         return Data(bytes: okm[0..<keyLengthBytes])
     }
 
-    class func convertPublicKey(from base64EncodedKey: String) throws -> Box.PublicKey  {
+    func convertPublicKey(from base64EncodedKey: String) throws -> Box.PublicKey  {
         // Convert from base64 to Data
 
-        let sodium = Sodium()
         guard let pkData = sodium.utils.base642bin(base64EncodedKey, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
@@ -106,8 +109,8 @@ class Crypto {
         return pkData
     }
 
-    class func createSessionKeyPair() throws -> Box.KeyPair {
-        let sodium = Sodium()
+    func createSessionKeyPair() throws -> Box.KeyPair {
+
         let keyPair = sodium.box.keyPair()
 
         guard keyPair != nil else {
@@ -118,9 +121,7 @@ class Crypto {
     }
 
     // This function should encrypt a password message with a browser public key
-    class func encrypt(_ message: Data, with id: String) throws -> Data {
-
-        let sodium = Sodium()
+    func encrypt(_ message: Data, with id: String) throws -> Data {
 
         let pubBrowserKey = try Keychain.getBrowserSessionKey(with: Session.KeyIdentifier.browser.identifier(for: id))
         let secretAppKey = try Keychain.getAppSessionKey(with: Session.KeyIdentifier.priv.identifier(for: id))
@@ -133,7 +134,7 @@ class Crypto {
 
     }
 
-    class func decrypt(with privKeyID: String) -> String {
+    func decrypt(with privKeyID: String) -> String {
         // This function should decrypt a password request with the sessions corresponding session / private key
         return "TODO"
     }
