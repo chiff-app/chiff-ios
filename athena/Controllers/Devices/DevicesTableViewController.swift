@@ -11,9 +11,16 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         do {
-            sessions = try Keychain.sharedInstance.getAllSessions()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            // TODO: Now retrieves sessions from Keychain every time view appears. Perhaps can be implemented more efficient.
+            if let storedSessions = try Keychain.sessions.getAll() {
+                print("Loading sessions from keychain.")
+                sessions = storedSessions
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                // TODO: Display message with segue to QR scanner.
+                print("No stored sessions found.")
             }
         } catch {
             print("Sessions could not be loaded: \(error)")

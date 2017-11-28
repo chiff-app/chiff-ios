@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //deleteSeed()      // Uncomment if you want to force seed regeneration
 
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain.
-        if !Keychain.sharedInstance.hasSeed() { try! Crypto.sharedInstance.generateSeed() }
+        if !Keychain.seed.has() { try! Crypto.sharedInstance.generateSeed() }
 
         return true
     }
@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func deleteSessionKeys() {
         // Remove passwords
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: Keychain.sessionBrowserService]
+                                    kSecAttrService as String: Keychain.sessions.browserService]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Remove passwords
         let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: Keychain.sessionAppService]
+                                    kSecAttrService as String: Keychain.sessions.appService]
 
         // Try to delete the seed if it exists.
         let status2 = SecItemDelete(query2 as CFDictionary)
@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func deletePasswords() {
         // Remove passwords
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: Keychain.passwordService]
+                                    kSecAttrService as String: Keychain.passwords.service]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
@@ -97,8 +97,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func deleteSeed() {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: Keychain.seedService,
-                                    kSecAttrService as String: Keychain.seedService]
+                                    kSecAttrAccount as String: Keychain.seed.service,
+                                    kSecAttrService as String: Keychain.seed.service]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)

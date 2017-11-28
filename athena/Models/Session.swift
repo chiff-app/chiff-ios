@@ -27,18 +27,20 @@ struct Session: Codable {
         // Save browser public key
         let publicKey = try Crypto.sharedInstance.convertPublicKey(from: pubKey)
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.sharedInstance.saveBrowserSessionKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
+        try Keychain.sessions.saveBrowserKey(publicKey, with: KeyIdentifier.browser.identifier(for: id), attributes: sessionData)
 
         // Generate and save own keypair
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.saveAppSessionKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
-        try Keychain.sharedInstance.saveAppSessionKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
+        try Keychain.sessions.saveAppKey(keyPair.publicKey, with: KeyIdentifier.pub.identifier(for: id))
+        try Keychain.sessions.saveAppKey(keyPair.secretKey, with: KeyIdentifier.priv.identifier(for: id))
 
     }
 
     // Send public key to sqsURL
-    func sendSessionInfo(ownPublicKey: Box.PublicKey) throws {
-        // TODO: Implement sending to SQS queue
+    func sendSessionInfo() throws {
+        // TODO: Implement sending to SQS queue. Make struct and convert to JSON?
+        //let appPublicKey = try Keychain.sessions.getAppKey(with: KeyIdentifier.pub.identifier(for: id))
+        //let snsURL = "TODO"
 
     }
 
@@ -50,9 +52,9 @@ struct Session: Codable {
 
     func removeSession() throws {
         do {
-            try Keychain.sharedInstance.removeBrowserSessionKey(with: KeyIdentifier.browser.identifier(for: id))
-            try Keychain.sharedInstance.removeAppSessionKey(with: KeyIdentifier.pub.identifier(for: id))
-            try Keychain.sharedInstance.removeAppSessionKey(with: KeyIdentifier.priv.identifier(for: id))
+            try Keychain.sessions.deleteBrowserKey(with: KeyIdentifier.browser.identifier(for: id))
+            try Keychain.sessions.deleteAppKey(with: KeyIdentifier.pub.identifier(for: id))
+            try Keychain.sessions.deleteAppKey(with: KeyIdentifier.priv.identifier(for: id))
         } catch {
             throw error
         }
