@@ -74,27 +74,31 @@ class AccountsTableViewController: UITableViewController {
 
     private func loadSampleData() {
         // try loading persistent data:
-        if let savedAccounts = try? Keychain.sharedInstance.getAllAccounts() {
-            print("Loading accounts from keychain.")
-            accounts.append(contentsOf: savedAccounts)
-        } else {
-            let sampleUsername = "athenademo@protonmail.com"
-            var sampleSites = [Site]()
-
-            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-
-            sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions))
-            sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"], restrictions: restrictions))
-            sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
-            sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
-            sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
-            sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
-
-            for site in sampleSites {
-                let account = Account(username: sampleUsername, site: site, restrictions: nil)
-                try! account.save()
-                accounts.append(account)
+        do {
+            if let savedAccounts = try Keychain.passwords.getAll() {
+                print("Loading accounts from keychain.")
+                accounts.append(contentsOf: savedAccounts)
+            } else {
+                let sampleUsername = "athenademo@protonmail.com"
+                var sampleSites = [Site]()
+                
+                let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+                
+                sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions))
+                sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"], restrictions: restrictions))
+                sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
+                sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
+                sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
+                sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
+                
+                for site in sampleSites {
+                    let account = Account(username: sampleUsername, site: site, restrictions: nil)
+                    try! account.save()
+                    accounts.append(account)
+                }
             }
+        } catch {
+            print("Account could not be fetched from keychain: \(error)")
         }
 
     }
