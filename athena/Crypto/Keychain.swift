@@ -13,166 +13,15 @@ enum KeychainError: Error {
 
 class Keychain {
     
-    private static let sharedInstance = Keychain()
-    
-    static let passwords = Passwords(keychain: sharedInstance)
-    static let sessions = Sessions(keychain: sharedInstance)
-    static let seed = Seed(keychain: sharedInstance)
+    static let sharedInstance = Keychain()
     
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
     // TODO: Add accessability restrictions
 
-    // MARK: Password operations
-    
-    class Passwords {
-        
-        private let keychain: Keychain
-        let service = "com.athena.password"
-        
-        fileprivate init(keychain: Keychain) {
-            self.keychain = keychain
-        }
-        
-        func save(_ password: String, account: Data, with identifier: String) throws {
-            guard let passwordData = password.data(using: .utf8) else {
-                throw KeychainError.stringEncoding
-            }
-            try keychain.setData(passwordData, with: identifier, service: service, attributes: account)
-        }
-        
-        func get(with identifier: String) throws -> String {
-            let data = try keychain.getData(with: identifier, service: service)
-            
-            guard let password = String(data: data, encoding: .utf8) else {
-                throw KeychainError.unexpectedData
-            }
-            
-            return password
-        }
-        
-        func update(_ newPassword: String, with identifier: String) throws {
-            guard let passwordData = newPassword.data(using: .utf8) else {
-                throw KeychainError.stringEncoding
-            }
-            try keychain.updateData(passwordData, with: identifier, service: service)
-        }
-        
-        func delete(with identifier: String) throws {
-            try keychain.deleteData(with: identifier, service: service)
-        }
-        
-        func getAll() throws -> [Account]? {
-            guard let dataArray = try keychain.getAll(service: service) else {
-                return nil
-            }
-            
-            var accounts = [Account]()
-            let decoder = PropertyListDecoder()
-            
-            for dict in dataArray {
-                guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                    throw KeychainError.unexpectedData
-                }
-                accounts.append(try decoder.decode(Account.self, from: accountData))
-            }
-            return accounts
-        }
-        
-    }
+    // MARK:  CRUD methods
 
-
-    // MARK: Seed operations
-    
-    class Seed {
-        
-        private let keychain: Keychain
-        let service = "com.athena.seed"
-        
-        fileprivate init(keychain: Keychain) {
-            self.keychain = keychain
-        }
-        
-        func save(seed: Data) throws {
-            try keychain.setData(seed, with: service, service: service, attributes: nil)
-        }
-        
-        func get() throws -> Data {
-            return try keychain.getData(with: service, service: service)
-        }
-        
-        func has() -> Bool {
-            return keychain.hasData(with: service, service: service)
-        }
-        
-        func delete() throws {
-            try keychain.deleteData(with: service, service: service)
-        }
-    }
-
-    
-    // MARK: Session key operations
-    
-    class Sessions {
-        
-        private let keychain: Keychain
-        let browserService = "com.athena.session.browser"
-        let appService = "com.athena.session"
-        
-        fileprivate init(keychain: Keychain) {
-            self.keychain = keychain
-        }
-    
-        
-        func saveBrowserKey(_ keyData: Data, with identifier: String, attributes: Data) throws {
-            try keychain.setData(keyData, with: identifier, service: browserService, attributes: attributes)
-        }
-        
-        func getBrowserKey(with identifier: String) throws -> Data {
-            return try keychain.getData(with: identifier, service: browserService)
-        }
-        
-        func deleteBrowserKey(with identifier: String) throws {
-            try keychain.deleteData(with: identifier, service: browserService)
-        }
-        
-        func saveAppKey(_ keyData: Data, with identifier: String) throws {
-            try keychain.setData(keyData, with: identifier, service: appService, attributes: nil)
-        }
-        
-        
-        func getAppKey(with identifier: String) throws -> Data {
-            return try keychain.getData(with: identifier, service: appService)
-        }
-        
-        
-        func deleteAppKey(with identifier: String) throws {
-            try keychain.deleteData(with: identifier, service: appService)
-        }
-        
-        func getAll() throws -> [Session]? {
-            guard let dataArray = try keychain.getAll(service: browserService) else {
-                return nil
-            }
-            
-            var sessions = [Session]()
-            let decoder = PropertyListDecoder()
-            
-            for dict in dataArray {
-                guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
-                    throw KeychainError.unexpectedData
-                }
-                sessions.append(try decoder.decode(Session.self, from: sessionData))
-            }
-            return sessions
-        }
-        
-    }
-
-
-    // MARK: fileprivate CRUD methods
-
-    fileprivate func setData(_ data: Data, with identifier: String, service: String, attributes: Data?) throws {
+   func save(_ data: Data, id identifier: String, service: String, attributes: Data? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -186,7 +35,7 @@ class Keychain {
 
     }
 
-    fileprivate func getData(with identifier: String, service: String) throws -> Data {
+    func get(id identifier: String, service: String) throws -> Data {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -210,7 +59,7 @@ class Keychain {
         return data
     }
 
-    fileprivate func hasData(with identifier: String, service: String) -> Bool {
+    func has(id identifier: String, service: String) -> Bool {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -222,7 +71,7 @@ class Keychain {
         return status != errSecItemNotFound
     }
 
-    fileprivate func deleteData(with identifier: String, service: String) throws {
+    func delete(id identifier: String, service: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
@@ -235,7 +84,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    fileprivate func updateData(_ data: Data, with identifier: String, service: String) throws {
+    func update(_ data: Data, id identifier: String, service: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -251,7 +100,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
     
-    fileprivate func getAll(service: String) throws -> [[String: Any]]? {
+    func all(service: String) throws -> [[String: Any]]? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitAll,

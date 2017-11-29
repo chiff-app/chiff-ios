@@ -12,7 +12,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
         super.viewWillAppear(animated)
         do {
             // TODO: Now retrieves sessions from Keychain every time view appears. Perhaps can be implemented more efficient.
-            if let storedSessions = try Keychain.sessions.getAll() {
+            if let storedSessions = try Session.all() {
                 print("Loading sessions from keychain.")
                 sessions = storedSessions
                 DispatchQueue.main.async {
@@ -37,7 +37,7 @@ class DevicesTableViewController: UITableViewController, isAbleToReceiveData {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             do {
-                try sessions[indexPath.row].removeSession()
+                try sessions[indexPath.row].delete()
                 sessions.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             } catch {

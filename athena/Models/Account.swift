@@ -11,6 +11,7 @@ struct Account: Codable {
     let site: Site
     var passwordIndex: Int
     let restrictions: PasswordRestrictions
+    static let keychainService = "com.athena.account"
 
     init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions?) {
 
@@ -29,21 +30,55 @@ struct Account: Codable {
     func save() throws {
         // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.passwords.save(try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions), account: accountData, with: id)
+
+        guard let password = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions).data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+
+        try Keychain.sharedInstance.save(password, id: id, service: Account.keychainService, attributes: accountData)
     }
 
     func password() throws -> String {
-        return try Keychain.passwords.get(with: id)
+        let data = try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
+
+        guard let password = String(data: data, encoding: .utf8) else {
+            throw KeychainError.unexpectedData
+        }
+
+        return password
     }
 
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
         passwordIndex += 1
+
         let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
-        try Keychain.passwords.update(newPassword, with: id)
+
+        guard let passwordData = newPassword.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+
+        try Keychain.sharedInstance.update(passwordData, id: id, service: Account.keychainService)
     }
 
-    func deleteAccount() throws {
-        try Keychain.passwords.delete(with: id)
+    func delete() throws {
+        try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
+    }
+
+    static func all() throws -> [Account]? {
+        guard let dataArray = try Keychain.sharedInstance.all(service: keychainService) else {
+            return nil
+        }
+
+        var accounts = [Account]()
+        let decoder = PropertyListDecoder()
+
+        for dict in dataArray {
+            guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
+                throw KeychainError.unexpectedData
+            }
+            accounts.append(try decoder.decode(Account.self, from: accountData))
+        }
+        return accounts
     }
 
 }
