@@ -36,7 +36,7 @@ class AccountsTableViewController: UITableViewController {
             // Delete the row from the data source
             do {
                 let account = accounts.remove(at: indexPath.row)
-                try account.deleteAccount()
+                try account.delete()
                 tableView.deleteRows(at: [indexPath], with: .fade)
             } catch {
                 print("Account could not be deleted: \(error)")
@@ -75,7 +75,7 @@ class AccountsTableViewController: UITableViewController {
     private func loadSampleData() {
         // try loading persistent data:
         do {
-            if let savedAccounts = try Keychain.passwords.getAll() {
+            if let savedAccounts = try Account.all() {
                 print("Loading accounts from keychain.")
                 accounts.append(contentsOf: savedAccounts)
             } else {
