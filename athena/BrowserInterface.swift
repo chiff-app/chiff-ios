@@ -24,8 +24,8 @@ class AWS {
 
     private init() {}
 
-    func getQueueUrl(queueName: String, completionHandler: @escaping (URL) -> Void) throws {
-
+    func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
+        print("URL requested for queue: \(queueName)")
         guard let queueUrlRequest = AWSSQSGetQueueUrlRequest() else {
             throw AWSError.queueUrl(error: nil)
         }
@@ -34,7 +34,7 @@ class AWS {
             if error != nil {
                 print(error)
             }
-            if let queueUrlString = result?.queueUrl, let queueUrl = URL(string: queueUrlString) {
+            if let queueUrl = result?.queueUrl {
                 completionHandler(queueUrl)
             } else {
                 print("Something went wrong...")

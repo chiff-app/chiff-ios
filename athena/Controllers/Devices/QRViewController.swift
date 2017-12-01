@@ -77,7 +77,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 try session.save(pubKey: pubKey)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1
-                    self.qrFound = false
                 }
             } catch {
                 switch error {
