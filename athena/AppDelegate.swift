@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //AWS Testing
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.EUCentral1,
-                                                                identityPoolId:"eu-central-1:f126204f-f7d6-4379-9bd9-50e4aa798604")
+                                                                identityPoolId:"eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
 

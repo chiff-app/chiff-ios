@@ -3,7 +3,7 @@ import Sodium
 
 class Session: Codable {
     let id: String
-    var sqsURL: URL?
+    var sqsURL: String?
     static let browserService = "com.athena.session.browser"
     static let appService = "com.athena.session.app"
 
@@ -21,12 +21,15 @@ class Session: Codable {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
         id = (pubKey + sqs).sha256()
 
-        do {
-            try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
-                self.sqsURL = queueUrl
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
+                    print("Queue URL received: \(queueUrl)")
+                    self.sqsURL = queueUrl
+                }
+            } catch {
+                print(error)
             }
-        } catch {
-            print(error)
         }
 
     }
