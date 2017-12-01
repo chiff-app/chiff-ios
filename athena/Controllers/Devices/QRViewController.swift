@@ -12,6 +12,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var isFirstSession = false
     @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
+    var recentlyScannedUrls = [String]()
 
     enum CameraError: Error {
         case noCamera
@@ -70,19 +71,24 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     private func decodeSessionData(url: String) {
+        guard !recentlyScannedUrls.contains(url) else {
+            displayError(message: "This QR code was already scanned.")
+            return
+        }
         if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"] {
             do {
                 qrFound = true
                 let session = Session(sqs: sqs, pubKey: pubKey)
                 try session.save(pubKey: pubKey)
+                recentlyScannedUrls.append(url)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1
                 }
             } catch {
                 switch error {
                 case KeychainError.storeKey:
-                    qrFound = false
                     displayError(message: "This QR code was already scanned.")
+                    self.qrFound = false
                 default:
                     qrFound = false
                     print("Unhandled error \(error)")
@@ -90,7 +96,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             }
         } else {
             displayError(message: "QR code could not be decoded.")
-            qrFound = false
+            self.qrFound = false
+
         }
     }
 

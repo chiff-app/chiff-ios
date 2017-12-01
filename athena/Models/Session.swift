@@ -3,7 +3,11 @@ import Sodium
 
 class Session: Codable {
     let id: String
-    var sqsURL: String?
+    var sqsURL: String? {
+        didSet {
+            AWS.sharedInstance.sendToSqs(message: "Test12345", to: sqsURL!)
+        }
+    }
     static let browserService = "com.athena.session.browser"
     static let appService = "com.athena.session.app"
 
