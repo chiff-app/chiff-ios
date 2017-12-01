@@ -64,6 +64,19 @@ struct Account: Codable {
         try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
     }
 
+    static func get(siteID: String) throws -> Account? {
+        // TODO: optimize when we're bored
+        guard let accounts = try Account.all() else {
+            return nil
+        }
+        for account in accounts {
+            if account.site.id == siteID {
+                return account
+            }
+        }
+        return nil
+    }
+
     static func all() throws -> [Account]? {
         guard let dataArray = try Keychain.sharedInstance.all(service: keychainService) else {
             return nil
