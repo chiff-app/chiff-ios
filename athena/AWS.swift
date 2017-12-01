@@ -18,11 +18,19 @@ enum AWSError: Error {
 
 class AWS {
 
-
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
 
+
     private init() {}
+
+    func getIdentification() {
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.EUCentral1,
+                                                                identityPoolId:"eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
+        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+
 
     func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
         print("URL requested for queue: \(queueName)")
@@ -32,9 +40,8 @@ class AWS {
         queueUrlRequest.queueName = queueName
         sqs.getQueueUrl(queueUrlRequest) { (result, error) in
             if error != nil {
-                print(error)
-            }
-            if let queueUrl = result?.queueUrl {
+                print("\(String(describing: error))")
+            } else if let queueUrl = result?.queueUrl {
                 completionHandler(queueUrl)
             } else {
                 print("Something went wrong...")
@@ -43,20 +50,16 @@ class AWS {
     }
 
 
-
-    private func sendToSqs(message: String, to queueUrl: String) {
-
-        let sqs = AWSSQS.default()
-
+    func sendToSqs(message: String, to queueUrl: String) {
         if let sendRequest = AWSSQSSendMessageRequest() {
             sendRequest.queueUrl = queueUrl
             sendRequest.messageBody = message
             sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
-                guard error == nil else {
-                    print("Error: \(String(describing: error))")
-                    return
+                if error != nil {
+                    print("\(String(describing: error))")
+                } else {
+                    print("Message ID: \(String(describing: result?.messageId))")
                 }
-                print("Message ID: \(result?.messageId)")
             })
         }
     }
