@@ -1,18 +1,32 @@
 PODS:
+  - AWSCognito (2.6.5):
+    - AWSCore (= 2.6.5)
+  - AWSCore (2.6.5)
+  - AWSSNS (2.6.5):
+    - AWSCore (= 2.6.5)
+  - AWSSQS (2.6.5):
+    - AWSCore (= 2.6.5)
   - CryptoSwift (0.8.0)
   - MBProgressHUD (1.0.0)
   - Sodium (0.5)
 
 DEPENDENCIES:
+  - AWSCognito
+  - AWSSNS
+  - AWSSQS
   - CryptoSwift (~> 0.8)
   - MBProgressHUD (~> 1.0.0)
   - Sodium (~> 0.5)
 
 SPEC CHECKSUMS:
+  AWSCognito: 763ef7a193e6eaeddff382db4daa7608ec61be69
+  AWSCore: b4895b4a5256d0040f8825ad31f3477d081f508f
+  AWSSNS: 8f29af433238455d0dbaa455a18da948e0856ed5
+  AWSSQS: 631a59b6cc783271cbd7244224d5a0a924796111
   CryptoSwift: f81907430ebbe38b8404b4f6fb40f3c576a8755f
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Sodium: a3a17f2ba2dc1b83547e13db0075e7c5d426fc55
 
-PODFILE CHECKSUM: c84a1b921b0950afaf37d69d32548217c5294cea
+PODFILE CHECKSUM: 381fa1ba4cb5431818ffdb74672f12d5a1382364
 
 COCOAPODS: 1.3.1

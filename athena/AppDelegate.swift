@@ -8,6 +8,9 @@
 //
 
 import UIKit
+import AWSCore
+import AWSCognito
+import AWSSQS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.a
+        // Override point for customization after application launch.
+
+        //AWS Testing
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.EUCentral1,
+                                                                identityPoolId:"eu-central-1:f126204f-f7d6-4379-9bd9-50e4aa798604")
+        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
 
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys shouldn't be cleaned before startup

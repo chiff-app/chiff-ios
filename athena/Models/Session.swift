@@ -1,9 +1,9 @@
 import Foundation
 import Sodium
 
-struct Session: Codable {
+class Session: Codable {
     let id: String
-    let sqsURL: URL
+    var sqsURL: URL?
     static let browserService = "com.athena.session.browser"
     static let appService = "com.athena.session.app"
 
@@ -17,13 +17,21 @@ struct Session: Codable {
         }
     }
 
-    init(sqs: URL, pubKey: String) {
-        self.sqsURL = sqs
-        
+    init(sqs: String, pubKey: String) {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
-        id = (pubKey + sqs.absoluteString).sha256()
+        id = (pubKey + sqs).sha256()
+
+        do {
+            try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
+                self.sqsURL = queueUrl
+            }
+        } catch {
+            print(error)
+        }
 
     }
+
+
 
     func save(pubKey: String) throws {
         // Save browser public key

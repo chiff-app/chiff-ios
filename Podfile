@@ -8,4 +8,7 @@ target 'athena' do
   pod "CryptoSwift", '~> 0.8'
   pod 'MBProgressHUD', '~> 1.0.0'
   pod 'Sodium', '~> 0.5'
+  pod 'AWSCognito'
+  pod 'AWSSNS'
+  pod 'AWSSQS'
 end
