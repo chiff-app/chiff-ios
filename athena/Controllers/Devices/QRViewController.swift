@@ -70,10 +70,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     private func decodeSessionData(url: String) {
-        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"], let sqsURL = URL(string: SQS_BASE_URL + sqs) {
+        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"] {
             do {
                 qrFound = true
-                let session = Session(sqs: sqsURL, pubKey: pubKey)
+                let session = Session(sqs: sqs, pubKey: pubKey)
                 try session.save(pubKey: pubKey)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1

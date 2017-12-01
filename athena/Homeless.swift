@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
-let SQS_BASE_URL = "http://sqs.us-east-2.amazonaws.com/123456789012/"
+let SQS_BASE_URL = "https://sqs.eu-central-1.amazonaws.com/787429400306/"
 
 extension UIViewController {
 
