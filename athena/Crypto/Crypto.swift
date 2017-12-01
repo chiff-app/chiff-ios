@@ -5,6 +5,7 @@ import Sodium
 enum CryptoError: Error {
     case randomGeneration
     case base64Decoding
+    case base64Encoding
     case hkdfInput
     case keyGeneration
     case keyDerivation
@@ -106,6 +107,16 @@ class Crypto {
         }
 
         return pkData
+    }
+
+    func convertPublicKey(from publicKeyData: Box.PublicKey) throws -> String  {
+        // Convert from Data to base64
+
+        guard let base64EncodedKey = sodium.utils.bin2base64(publicKeyData, variant: .URLSAFE_NO_PADDING) else {
+            throw CryptoError.base64Encoding
+        }
+
+        return base64EncodedKey
     }
 
     func createSessionKeyPair() throws -> Box.KeyPair {

@@ -3,11 +3,9 @@ import Sodium
 
 class Session: Codable {
     let id: String
-    var sqsURL: String? {
-        didSet {
-            AWS.sharedInstance.sendToSqs(message: "Test12345", to: sqsURL!)
-        }
-    }
+    var sqsURL: String?
+    var appPublicKey: Box.PublicKey?
+    
     static let browserService = "com.athena.session.browser"
     static let appService = "com.athena.session.app"
 
@@ -21,23 +19,10 @@ class Session: Codable {
         }
     }
 
-    init(sqs: String, pubKey: String) {
+    init(sqs: String, browserPublicKey: String) {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
-        id = (pubKey + sqs).sha256()
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
-                    print("Queue URL received: \(queueUrl)")
-                    self.sqsURL = queueUrl
-                }
-            } catch {
-                print(error)
-            }
-        }
-
+        id = (browserPublicKey + sqs).sha256()
     }
-
 
 
     func save(pubKey: String) throws {
@@ -52,17 +37,12 @@ class Session: Codable {
         try Keychain.sharedInstance.save(keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
         try Keychain.sharedInstance.save(keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
 
+        // TODO: should we do this is or implement in function and fetch from Keychain?
+        appPublicKey = keyPair.publicKey
     }
 
-    // Send public key to sqsURL
-    func sendSessionInfo() throws {
-        // TODO: Implement sending to SQS queue. Make struct and convert to JSON?
-        //let appPublicKey = try Keychain.sessions.getAppKey(with: KeyIdentifier.pub.identifier(for: id))
-        //let snsURL = "TODO"
 
-    }
-
-    // TODO: Functie verplaatsen
+    // TODO: Move function to sessionManager?
     func sendPassword(_ message: Data) throws {
         // encrypts message with browser public key for this session.
         let ciphertext = try Crypto.sharedInstance.encrypt(message, pubKey: browserPublicKey(), privKey: appPrivateKey())

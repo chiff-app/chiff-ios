@@ -10,10 +10,7 @@ import Foundation
 import UIKit
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
-let SQS_BASE_URL = "https://sqs.eu-central-1.amazonaws.com/787429400306/"
-
 extension UIViewController {
-
     var contents: UIViewController {
         if let navigationController = self as? UINavigationController {
             return navigationController.visibleViewController ?? self
@@ -21,13 +18,11 @@ extension UIViewController {
             return self
         }
     }
-
 }
 
 
 // Extension for URL that return parameters as dict
 extension URL {
-
     public var queryParameters: [String: String]? {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true), let queryItems = components.queryItems else {
             return nil
@@ -53,6 +48,20 @@ struct PasswordRestrictions: Codable {
         case numbers
         case symbols
     }
+    
 
 }
+
+// Used by SessionManager
+struct PasswordMessage: Codable {
+    let pubKey: String
+    let sns: String
+    let creds: Credentials
+}
+
+struct Credentials: Codable {
+    let username: String
+    let password: String
+}
+
 

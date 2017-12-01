@@ -75,11 +75,11 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             displayError(message: "This QR code was already scanned.")
             return
         }
+        // TODO: add site parameter and pass to initiateSession
         if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"] {
             do {
                 qrFound = true
-                let session = Session(sqs: sqs, pubKey: pubKey)
-                try session.save(pubKey: pubKey)
+                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: "")
                 recentlyScannedUrls.append(url)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1
@@ -88,15 +88,15 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 switch error {
                 case KeychainError.storeKey:
                     displayError(message: "This QR code was already scanned.")
-                    self.qrFound = false
-                default:
                     qrFound = false
+                default:
                     print("Unhandled error \(error)")
+                    qrFound = false
                 }
             }
         } else {
             displayError(message: "QR code could not be decoded.")
-            self.qrFound = false
+            qrFound = false
 
         }
     }

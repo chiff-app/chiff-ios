@@ -16,6 +16,7 @@
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
+		4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997200D1FD19CEE00EA3436 /* SessionManager.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A547961FC8559900CD4382 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
@@ -61,6 +62,7 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		4997200D1FD19CEE00EA3436 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 			children = (
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49F448281FD1652C00643C4D /* AWS.swift */,
+				4997200D1FD19CEE00EA3436 /* SessionManager.swift */,
 				49A547951FC8559900CD4382 /* Homeless.swift */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49E7D3401FC318CD0059D97E /* Models */,
@@ -468,6 +471,7 @@
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,
+				4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

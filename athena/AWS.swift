@@ -8,7 +8,6 @@
 
 import Foundation
 import AWSCore
-import AWSCognito
 import AWSSQS
 import AWSSNS
 
@@ -20,17 +19,10 @@ class AWS {
 
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
+    let snsARN = "TODO:fixARN"
 
 
     private init() {}
-
-    func getIdentification() {
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:.EUCentral1,
-                                                                identityPoolId:"eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
-        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-    }
-
 
     func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
         print("URL requested for queue: \(queueName)")
