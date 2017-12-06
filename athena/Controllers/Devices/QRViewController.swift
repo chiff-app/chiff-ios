@@ -37,6 +37,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     // MARK: Actions
     
+    // TODO: is this still used?
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
@@ -48,6 +49,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         if metadataObjects.count > 0 {
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
+                // TODO: Check if this can be exploited with specially crafted QR codes?
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     decodeSessionData(url: urlString)
                 }
@@ -75,11 +77,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             displayError(message: "This QR code was already scanned.")
             return
         }
-        // TODO: add site parameter and pass to initiateSession
-        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["s"] {
+        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"] {
             do {
                 qrFound = true
-                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: "")
+                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: siteID)
                 recentlyScannedUrls.append(url)
                 DispatchQueue.main.async {
                     self.tabBarController?.selectedIndex = 1

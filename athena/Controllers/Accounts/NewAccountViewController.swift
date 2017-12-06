@@ -94,7 +94,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             do {
 
                 // This is only a preview, password will be generated when account is created
-                let customRestrictions = PasswordRestrictions(length: 16, characters: [.lower, .numbers, .upper])
+                let customRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
                 let password = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: 0, siteID: site.id, restrictions: customRestrictions)
                 userPasswordTextField.text = password
             } catch {
@@ -117,7 +117,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             let site = Site(name: websiteName, id: id, urls: [websiteURL], restrictions: siteRestrictions)
 
             do {
-                let customRestrictions = PasswordRestrictions(length: 16, characters: [.lower, .numbers, .upper])
+                let customRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
                 let newAccount = Account(username: username, site: site, restrictions: customRestrictions)
                 try newAccount.save()
                 account = newAccount
