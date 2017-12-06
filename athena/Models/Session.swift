@@ -1,15 +1,13 @@
 import Foundation
-import Sodium
 
 class Session: Codable {
     let id: String
     var sqsURL: String?
-    var appPublicKey: Box.PublicKey?
     
-    static let browserService = "com.athena.session.browser"
-    static let appService = "com.athena.session.app"
+    private static let browserService = "com.athena.session.browser"
+    private static let appService = "com.athena.session.app"
 
-    enum KeyIdentifier: String, Codable {
+    private enum KeyIdentifier: String, Codable {
         case pub = "public"
         case priv = "private"
         case browser = "browser"
@@ -27,7 +25,7 @@ class Session: Codable {
 
     func save(pubKey: String) throws {
         // Save browser public key
-        let publicKey = try Crypto.sharedInstance.convertPublicKey(from: pubKey)
+        let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
 
         let sessionData = try PropertyListEncoder().encode(self)
         try Keychain.sharedInstance.save(publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, attributes: sessionData)
@@ -37,16 +35,6 @@ class Session: Codable {
         try Keychain.sharedInstance.save(keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
         try Keychain.sharedInstance.save(keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
 
-        // TODO: should we do this is or implement in function and fetch from Keychain?
-        appPublicKey = keyPair.publicKey
-    }
-
-
-    // TODO: Move function to sessionManager?
-    func sendPassword(_ message: Data) throws {
-        // encrypts message with browser public key for this session.
-        let ciphertext = try Crypto.sharedInstance.encrypt(message, pubKey: browserPublicKey(), privKey: appPrivateKey())
-        print(ciphertext.base64EncodedString())
     }
 
     func delete() throws {
@@ -76,12 +64,16 @@ class Session: Codable {
         return sessions
     }
 
-    private func browserPublicKey() throws -> Box.PublicKey {
+    func browserPublicKey() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
     }
 
-    private func appPrivateKey() throws -> Box.SecretKey {
+    func appPrivateKey() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+    }
+    
+    func appPublicKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
     }
 
 }

@@ -60,6 +60,7 @@ struct PasswordMessage: Codable {
 }
 
 struct Credentials: Codable {
+    let siteID: String
     let username: String
     let password: String
 }
