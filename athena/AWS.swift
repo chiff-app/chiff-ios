@@ -25,7 +25,6 @@ class AWS {
     private init() {}
 
     func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
-        print("URL requested for queue: \(queueName)")
         guard let queueUrlRequest = AWSSQSGetQueueUrlRequest() else {
             throw AWSError.queueUrl(error: nil)
         }
@@ -36,7 +35,7 @@ class AWS {
             } else if let queueUrl = result?.queueUrl {
                 completionHandler(queueUrl)
             } else {
-                print("Something went wrong...")
+                print("AWS did not produce error, still result is empty.")
             }
         }
     }

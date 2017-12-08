@@ -1,5 +1,4 @@
 import Foundation
-import CryptoSwift
 
 /*
  * An account belongs to the user and can have one or more Sites.
@@ -13,22 +12,17 @@ struct Account: Codable {
     let restrictions: PasswordRestrictions
     static let keychainService = "com.athena.account"
 
-    init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions?) {
-
-        // Temporary generated storage ID for dummy data.
-        let storageID = "\(site.id)\(username)".sha256()
-        let index = storageID.index(storageID.startIndex, offsetBy: 8)
-        id = String(storageID[..<index]) // TODO: how to get an ID?
+    init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions?) throws {
+        id = try "\(site.id)_\(username)".hash()
 
         self.username = username
         self.site = site
         self.passwordIndex = passwordIndex
         self.restrictions = restrictions ?? site.restrictions // Use site default restrictions of no custom restrictions are provided
-
+        try save()
     }
 
-    func save() throws {
-        // This should print storeKey error if keys are already in keychain, so if this is not the first time you run this config
+    private func save() throws {
         let accountData = try PropertyListEncoder().encode(self)
 
         guard let password = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions).data(using: .utf8) else {

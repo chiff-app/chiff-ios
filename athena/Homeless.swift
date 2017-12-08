@@ -20,6 +20,12 @@ extension UIViewController {
     }
 }
 
+extension String {
+    func hash() throws -> String {
+        return try Crypto.sharedInstance.hash(self)
+    }
+}
+
 
 // Extension for URL that return parameters as dict
 extension URL {

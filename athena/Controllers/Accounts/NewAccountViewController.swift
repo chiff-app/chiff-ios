@@ -118,8 +118,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
 
             do {
                 let customRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-                let newAccount = Account(username: username, site: site, restrictions: customRestrictions)
-                try newAccount.save()
+                let newAccount = try Account(username: username, site: site, restrictions: customRestrictions)
                 account = newAccount
             } catch {
                 // TODO: Handle errors in UX

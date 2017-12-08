@@ -1,16 +1,17 @@
 import Foundation
-import CryptoSwift
 import Sodium
 
 enum CryptoError: Error {
     case randomGeneration
     case base64Decoding
     case base64Encoding
-    case hkdfInput
     case keyGeneration
     case keyDerivation
     case encryption
     case decryption
+    case convertToData
+    case convertToHex
+    case hashing
 }
 
 
@@ -58,76 +59,38 @@ class Crypto {
         }
 
         // Generate key from seed and parameters
-        let key = try hkdf(username: username, passwordIndex: passwordIndex, siteID: siteID)
-        let key2 = try deriveKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-        
-        // Convert key2 to password
-        var password2 = ""
-        for (_, element) in key2.enumerated() {
-            let index = Int(element) % chars.count
-            password2 += String(chars[index])
-            if password2.count >= restrictions.length { break }
+        guard let usernameData = username.data(using: .utf8),
+            let siteData = siteID.data(using: .utf8) else {
+                throw CryptoError.keyDerivation
         }
+        let key = try deriveKey(keyData: deriveKey(keyData: Seed.get(), context: siteData), context: usernameData, passwordIndex: passwordIndex)
         
         // Convert key to password
+        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
+            throw CryptoError.keyDerivation
+        }
         var password = ""
-        for (_, element) in key.enumerated() {
+        for (_, element) in keyData.enumerated() {
             let index = Int(element) % chars.count
             password += String(chars[index])
-            if password.count >= restrictions.length { break }
         }
-        print("HKDF_password: \(password)")
-        print("Sodium_password: \(password2)")
         
         return password
     }
-    
-    // TODO: choose between HKDF and deriveKey
-    private func deriveKey(username: String, passwordIndex: Int, siteID: String, keyLengthBytes: Int = 32) throws ->  Data {
-        let seed = try Seed.get()
-        
-        guard let contextData = "\(username)_\(siteID)".data(using: .utf8),
-            let contextHash = sodium.genericHash.hash(message: contextData, outputLength: 8),
-            let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING), // Is this OK or should hash be converted to string otherwise to maximise entropy in context?
-            let key = sodium.keyDerivation.derive(secretKey: seed, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
+
+
+    private func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
+        guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8),
+            let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING),
+            let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
                 throw CryptoError.keyDerivation
         }
 
         return key
     }
 
-    private func hkdf(username: String, passwordIndex: Int, siteID: String, keyLengthBytes: Int = 32) throws -> Data {
-        let seed = try Seed.get()
-        guard let accountInput = (username + siteID + String(passwordIndex)).data(using: .utf8) else {
-            throw CryptoError.hkdfInput
-        }
-
-        // Extract
-        // TODO: use salt?
-        let salt = Data().bytes
-        let prk = try HMAC(key: salt, variant: .sha256).authenticate(seed.bytes)
-
-        // Expand
-        let hashLength = 32
-        let iterations = Int(ceil(Double(keyLengthBytes) / Double(hashLength)))
-        var block = [UInt8]()
-        var okm = [UInt8]()
-
-        for i in 1...iterations {
-            var input = Array<UInt8>()
-            input.append(contentsOf: block)
-            input.append(contentsOf: accountInput.bytes)
-            input.append(UInt8(i))
-            block = try HMAC(key: prk, variant: .sha256).authenticate(input)
-            okm.append(contentsOf: block)
-        }
-        
-        return Data(bytes: okm[0..<keyLengthBytes])
-    }
-
     func convertFromBase64(from base64String: String) throws -> Data  {
         // Convert from base64 to Data
-
         guard let data = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
@@ -137,7 +100,6 @@ class Crypto {
 
     func convertToBase64(from data: Data) throws -> String  {
         // Convert from Data to base64
-
         guard let b64String = sodium.utils.bin2base64(data, variant: .URLSAFE_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
@@ -146,7 +108,6 @@ class Crypto {
     }
 
     func createSessionKeyPair() throws -> Box.KeyPair {
-
         guard let keyPair = sodium.box.keyPair() else {
             throw CryptoError.keyGeneration
         }
@@ -154,20 +115,39 @@ class Crypto {
         return keyPair
     }
 
-    //This function should encrypt a password message with a browser public key
-    func encrypt(_ plaintext: Data, pubKey : Box.PublicKey, privKey: Box.SecretKey) throws -> Data {
+    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey, privKey: Box.SecretKey) throws -> Data {
         guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {
             throw CryptoError.encryption
         }
         return ciphertext
     }
 
+    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey) throws -> Data {
+        guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey) else {
+            throw CryptoError.encryption
+        }
+        return ciphertext
+    }
+
     // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key
-    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey : Box.PublicKey) throws -> Data {
+    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey: Box.PublicKey) throws -> Data {
         guard let plaintext: Data = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext, senderPublicKey: pubKey, recipientSecretKey: privKey) else {
             throw CryptoError.decryption
         }
         return plaintext
+    }
+
+    func hash(_ message: String) throws -> String {
+        guard let messageData = message.data(using: .utf8) else {
+            throw CryptoError.convertToData
+        }
+        guard let hashData = sodium.genericHash.hash(message: messageData) else {
+            throw CryptoError.hashing
+        }
+        guard let hash = sodium.utils.bin2hex(hashData) else {
+            throw CryptoError.convertToHex
+        }
+        return hash
     }
     
 }

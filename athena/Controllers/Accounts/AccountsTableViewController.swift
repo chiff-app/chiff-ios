@@ -92,8 +92,7 @@ class AccountsTableViewController: UITableViewController {
                 sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
                 
                 for site in sampleSites {
-                    let account = Account(username: sampleUsername, site: site, restrictions: nil)
-                    try! account.save()
+                    let account = try! Account(username: sampleUsername, site: site, restrictions: nil)
                     accounts.append(account)
                 }
             }
