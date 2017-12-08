@@ -12,6 +12,9 @@
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
+		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */; };
+		494E35D21FDAF57600ED6E3D /* noSessionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E35D11FDAF57600ED6E3D /* noSessionsViewController.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
@@ -30,7 +33,6 @@
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
-		61E9FA171FADFB7F009C893B /* DevicesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FA161FADFB7F009C893B /* DevicesTableViewController.swift */; };
 		61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FA181FADFF05009C893B /* QRViewController.swift */; };
 		C352FFF3E69333BEDCE2A927 /* Pods_athena.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */; };
 /* End PBXBuildFile section */
@@ -58,6 +60,9 @@
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
+		493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
+		494E35D11FDAF57600ED6E3D /* noSessionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = noSessionsViewController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +88,6 @@
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
 		610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
-		61E9FA161FADFB7F009C893B /* DevicesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesTableViewController.swift; sourceTree = "<group>"; };
 		61E9FA181FADFF05009C893B /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
 		B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_athena.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +167,7 @@
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49F448281FD1652C00643C4D /* AWS.swift */,
 				4997200D1FD19CEE00EA3436 /* SessionManager.swift */,
+				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49A547951FC8559900CD4382 /* Homeless.swift */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49E7D3401FC318CD0059D97E /* Models */,
@@ -227,9 +232,10 @@
 		610C63BD1FAE1E8200A00FB0 /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				61E9FA161FADFB7F009C893B /* DevicesTableViewController.swift */,
+				493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */,
 				61E9FA181FADFF05009C893B /* QRViewController.swift */,
 				610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */,
+				494E35D11FDAF57600ED6E3D /* noSessionsViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -455,17 +461,19 @@
 			files = (
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
+				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
-				61E9FA171FADFB7F009C893B /* DevicesTableViewController.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
 				61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
+				493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
+				494E35D21FDAF57600ED6E3D /* noSessionsViewController.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,

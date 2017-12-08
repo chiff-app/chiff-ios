@@ -77,13 +77,13 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             displayError(message: "This QR code was already scanned.")
             return
         }
-        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"] {
+        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"], let device = parameters["a"] {
             do {
                 qrFound = true
-                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: siteID)
+                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: siteID, device: device)
                 recentlyScannedUrls.append(url)
                 DispatchQueue.main.async {
-                    self.tabBarController?.selectedIndex = 1
+                    self.tabBarController?.selectedIndex = 2
                 }
             } catch {
                 switch error {

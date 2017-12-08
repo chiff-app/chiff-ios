@@ -3,7 +3,10 @@ import Foundation
 class Session: Codable {
     let id: String
     let sqsQueueName: String
-    
+    let creationDate: Date
+    let browser: String
+    let device: String
+
     private static let browserService = "com.athena.session.browser"
     private static let appService = "com.athena.session.app"
 
@@ -17,10 +20,13 @@ class Session: Codable {
         }
     }
 
-    init(sqs: String, browserPublicKey: String) throws {
+    init(sqs: String, browserPublicKey: String, device: String) throws {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
         id = try "\(browserPublicKey)_\(sqs)".hash()
         sqsQueueName = sqs
+        creationDate = Date()
+        browser = device
+        self.device = device
         try save(pubKey: browserPublicKey)
     }
 

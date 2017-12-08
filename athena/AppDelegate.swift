@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
         //deleteSeed()      // Uncomment if you want to force seed regeneration
 
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain.
