@@ -19,9 +19,9 @@ class SessionManager {
 
     private init() { }
 
-    func initiateSession(sqs: String, pubKey: String, siteID: String) throws {
+    func initiateSession(sqs: String, pubKey: String, siteID: String, device: String) throws {
         // Create session and save to Keychain
-        let session = try Session(sqs: sqs, browserPublicKey: pubKey)
+        let session = try Session(sqs: sqs, browserPublicKey: pubKey, device: device)
 
         // Get Account object for site x
         // TODO: What if there are multiple accounts with same siteID (different usernames). Present choice to user?
@@ -33,13 +33,13 @@ class SessionManager {
 
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
-            AWS.sharedInstance.sendToSqs(message: passwordMessage, to: queueUrl)
+            AWS.sharedInstance.sendToSqs(message: passwordMessage, to: queueUrl, sessionID: session.id)
         }
     }
 
     
     private func createPasswordMessage(session: Session, account: Account, siteID: String) throws -> String {
-        let passwordMessage = try PasswordMessage(pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: AWS.sharedInstance.snsARN, creds: Credentials(siteID: siteID, username: account.username, password: account.password()))
+        let passwordMessage = try PasswordMessage(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: AWS.sharedInstance.snsARN, creds: Credentials(siteID: siteID, username: account.username, password: account.password()))
         let jsonPasswordMessage = try JSONEncoder().encode(passwordMessage)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
