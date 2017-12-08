@@ -2,7 +2,7 @@ import Foundation
 
 class Session: Codable {
     let id: String
-    var sqsURL: String?
+    let sqsQueueName: String
     
     private static let browserService = "com.athena.session.browser"
     private static let appService = "com.athena.session.app"
@@ -17,13 +17,15 @@ class Session: Codable {
         }
     }
 
-    init(sqs: String, browserPublicKey: String) {
+    init(sqs: String, browserPublicKey: String) throws {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
-        id = (browserPublicKey + sqs).sha256()
+        id = try "\(browserPublicKey)_\(sqs)".hash()
+        sqsQueueName = sqs
+        try save(pubKey: browserPublicKey)
     }
 
 
-    func save(pubKey: String) throws {
+    private func save(pubKey: String) throws {
         // Save browser public key
         let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
 
