@@ -17,22 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-
         fetchAWSIdentification()
-
-        // FOR TESTING PURPOSES
-        //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
-        //deleteSeed()      // Uncomment if you want to force seed regeneration
-
-        // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain.
-        if !Seed.exists() { try! Seed.create() }
-
+        deleteSeed()
+        launchInitialView()
+        
         return true
     }
+
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // App opened with url
@@ -50,12 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        DispatchQueue.main.async {
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
-            self.window?.rootViewController = viewController
-        }
+        // Called as part of the transition from the background to the active state; here you can undo
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+        self.window?.rootViewController = viewController
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -64,6 +55,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // FOR TESTING PURPOSES
+        //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
+        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        //deleteSeed()      // Uncomment if you want to force seed regeneration
     }
 
     private func deleteSessionKeys() {
@@ -119,6 +115,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                                 identityPoolId: "eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+    
+    private func launchInitialView() {
+        // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController: UIViewController?
+        if !Seed.exists() {
+            try! Seed.create()
+            let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+            rootController.isFirstLaunch = true
+            viewController = rootController
+            
+        } else {
+            viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+        }
+        
+        self.window?.rootViewController = viewController
+        self.window?.makeKeyAndVisible()
+
     }
 
 

@@ -31,6 +31,8 @@
 		49E766761F7E6F420022C042 /* athenaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* athenaUITests.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
+		6105598C1FDC41C30030F871 /* Backup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Backup.storyboard */; };
+		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
@@ -87,6 +89,8 @@
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
+		6105598B1FDC41C30030F871 /* Backup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Backup.storyboard; sourceTree = "<group>"; };
+		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				610C63BD1FAE1E8200A00FB0 /* Devices */,
+				6105598D1FDC553C0030F871 /* Backup */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 				49E766591F7E6F420022C042 /* Main.storyboard */,
 				499BE4FA1FC0955D001038DF /* Request.storyboard */,
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
+				6105598B1FDC41C30030F871 /* Backup.storyboard */,
 			);
 			path = UX;
 			sourceTree = "<group>";
@@ -220,6 +226,14 @@
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 			);
 			path = Crypto;
+			sourceTree = "<group>";
+		};
+		6105598D1FDC553C0030F871 /* Backup */ = {
+			isa = PBXGroup;
+			children = (
+				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
+			);
+			path = Backup;
 			sourceTree = "<group>";
 		};
 		610C63BC1FAE1E6900A00FB0 /* Accounts */ = {
@@ -370,6 +384,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6105598C1FDC41C30030F871 /* Backup.storyboard in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				49E7665D1F7E6F420022C042 /* Assets.xcassets in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
@@ -471,6 +486,7 @@
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
+				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */,

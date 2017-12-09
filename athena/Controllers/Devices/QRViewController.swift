@@ -90,6 +90,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             } catch {
                 switch error {
                 case KeychainError.storeKey:
+                    //TODO: This error is now displayed after permission was granted, which looks weird. To change this we should either split session creation and saving or implement a way to check if this Session already exists in the keychain and check before asking permission.
                     displayError(message: "This QR code was already scanned.")
                     qrFound = false
                 default:
