@@ -32,6 +32,7 @@
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */; };
+		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FA181FADFF05009C893B /* QRViewController.swift */; };
 		C352FFF3E69333BEDCE2A927 /* Pods_athena.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */; };
@@ -87,6 +88,7 @@
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
 		610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
+		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61E9FA181FADFF05009C893B /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				610C63BD1FAE1E8200A00FB0 /* Devices */,
 			);
@@ -467,6 +470,7 @@
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
+				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */,
