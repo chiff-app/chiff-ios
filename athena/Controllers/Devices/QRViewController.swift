@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import LocalAuthentication
 
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
@@ -9,7 +10,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
-    var isFirstSession = false
     @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
@@ -50,8 +50,19 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 // TODO: Check if this can be exploited with specially crafted QR codes?
-                if let urlString = machineReadableCode.stringValue, !qrFound {
-                    decodeSessionData(url: urlString)
+                if let url = machineReadableCode.stringValue, !qrFound {
+                    guard !recentlyScannedUrls.contains(url) else {
+                        displayError(message: "This QR code was already scanned.")
+                        return
+                    }
+                    if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"], let device = parameters["a"] {
+                        qrFound = true
+                        recentlyScannedUrls.append(url)
+                        pairPermission(pubKey: pubKey, sqs: sqs, siteID: siteID, device: device)
+                    } else {
+                        displayError(message: "QR code could not be decoded.")
+                        qrFound = false
+                    }
                 }
             }
         } else { return }
@@ -72,22 +83,14 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
 
-    private func decodeSessionData(url: String) {
-        guard !recentlyScannedUrls.contains(url) else {
-            displayError(message: "This QR code was already scanned.")
-            return
-        }
-        if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"], let device = parameters["a"] {
+    private func decodeSessionData(pubKey: String, sqs: String, siteID: String, device: String) {
             do {
-                qrFound = true
                 try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: siteID, device: device)
-                recentlyScannedUrls.append(url)
-                DispatchQueue.main.async {
-                    self.tabBarController?.selectedIndex = 2
-                }
+                self.tabBarController?.selectedIndex = 2
             } catch {
                 switch error {
                 case KeychainError.storeKey:
+                    //TODO: This error is now displayed after permission was granted, which looks weird. To change this we should either split session creation and saving or implement a way to check if this Session already exists in the keychain and check before asking permission.
                     displayError(message: "This QR code was already scanned.")
                     qrFound = false
                 default:
@@ -95,11 +98,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     qrFound = false
                 }
             }
-        } else {
-            displayError(message: "QR code could not be decoded.")
-            qrFound = false
-
-        }
     }
 
     
@@ -128,6 +126,31 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         videoView.layer.addSublayer(previewLayer!)
         
         captureSession.startRunning()
+    }
+    
+    private func pairPermission(pubKey: String, sqs: String, siteID: String, device: String) {
+        let authenticationContext = LAContext()
+        var error: NSError?
+        
+        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            print("Todo: handle fingerprint absence \(String(describing: error))")
+            return
+        }
+        
+        authenticationContext.evaluatePolicy(
+            .deviceOwnerAuthenticationWithBiometrics,
+            localizedReason: "Pair with \(device)?",
+            reply: { [weak self] (success, error) -> Void in
+                if (success) {
+                    DispatchQueue.main.async {
+                        self?.decodeSessionData(pubKey: pubKey, sqs: sqs, siteID: siteID, device: device)
+                    }
+                } else {
+                    self?.recentlyScannedUrls.removeLast()
+                    self?.qrFound = false
+                }
+            }
+        )
     }
 
 }
