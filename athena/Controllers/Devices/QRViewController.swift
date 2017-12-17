@@ -55,10 +55,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         displayError(message: "This QR code was already scanned.")
                         return
                     }
-                    if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let siteID = parameters["s"], let device = parameters["a"] {
+                    if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let browser = parameters["b"], let os = parameters["o"]{
                         qrFound = true
                         recentlyScannedUrls.append(url)
-                        pairPermission(pubKey: pubKey, sqs: sqs, siteID: siteID, device: device)
+                        pairPermission(pubKey: pubKey, sqs: sqs, browser: browser, os: os)
                     } else {
                         displayError(message: "QR code could not be decoded.")
                         qrFound = false
@@ -83,9 +83,9 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
 
-    private func decodeSessionData(pubKey: String, sqs: String, siteID: String, device: String) {
+    private func decodeSessionData(pubKey: String, sqs: String, browser: String, os: String) {
             do {
-                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, siteID: siteID, device: device)
+                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
                 self.tabBarController?.selectedIndex = 2
             } catch {
                 switch error {
@@ -128,7 +128,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         captureSession.startRunning()
     }
     
-    private func pairPermission(pubKey: String, sqs: String, siteID: String, device: String) {
+    private func pairPermission(pubKey: String, sqs: String, browser: String, os: String) {
         let authenticationContext = LAContext()
         var error: NSError?
         
@@ -139,11 +139,11 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         authenticationContext.evaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: "Pair with \(device)?",
+            localizedReason: "Pair with \(browser) on \(os).",
             reply: { [weak self] (success, error) -> Void in
                 if (success) {
                     DispatchQueue.main.async {
-                        self?.decodeSessionData(pubKey: pubKey, sqs: sqs, siteID: siteID, device: device)
+                        self?.decodeSessionData(pubKey: pubKey, sqs: sqs, browser: browser, os: os)
                     }
                 } else {
                     self?.recentlyScannedUrls.removeLast()

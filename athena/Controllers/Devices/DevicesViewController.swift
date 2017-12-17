@@ -63,7 +63,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
         if let cell = cell as? DeviceTableViewCell {
             let session = sessions[indexPath.row]
-            cell.deviceName.text = "\(session.browser) at \(session.device)"
+            cell.deviceName.text = "\(session.browser) on \(session.os)"
             cell.sessionStartTime.text = session.creationDate.timeAgoSinceNow()
             cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }

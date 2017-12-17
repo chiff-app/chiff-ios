@@ -19,28 +19,28 @@ class SessionManager {
 
     private init() { }
 
-    func initiateSession(sqs: String, pubKey: String, siteID: String, device: String) throws {
+    func initiateSession(sqs: String, pubKey: String, browser: String, os: String) throws {
         // Create session and save to Keychain
-        let session = try Session(sqs: sqs, browserPublicKey: pubKey, device: device)
+        let session = try Session(sqs: sqs, browserPublicKey: pubKey, browser: browser, os: os)
+//
+//        // Get Account object for site x
+//        // TODO: What if there are multiple accounts with same siteID (different usernames). Present choice to user?
+//        guard let account = try Account.get(siteID: siteID) else {
+//            throw SessionError.accountNotFound
+//        }
 
-        // Get Account object for site x
-        // TODO: What if there are multiple accounts with same siteID (different usernames). Present choice to user?
-        guard let account = try Account.get(siteID: siteID) else {
-            throw SessionError.accountNotFound
-        }
-
-        let passwordMessage = try self.createPasswordMessage(session: session, account: account, siteID: siteID)
+        let pairingResponse = try self.createPairingResponse(session: session)
 
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
-            AWS.sharedInstance.sendToSqs(message: passwordMessage, to: queueUrl, sessionID: session.id)
+            AWS.sharedInstance.sendToSqs(message: pairingResponse, to: queueUrl, sessionID: session.id)
         }
     }
 
     
-    private func createPasswordMessage(session: Session, account: Account, siteID: String) throws -> String {
-        let passwordMessage = try PasswordMessage(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: AWS.sharedInstance.snsARN, creds: Credentials(siteID: siteID, username: account.username, password: account.password()))
-        let jsonPasswordMessage = try JSONEncoder().encode(passwordMessage)
+    private func createPairingResponse(session: Session) throws -> String {
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: AWS.sharedInstance.snsARN)
+        let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 

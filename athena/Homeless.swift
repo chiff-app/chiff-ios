@@ -59,11 +59,10 @@ struct PasswordRestrictions: Codable {
 }
 
 // Used by SessionManager
-struct PasswordMessage: Codable {
+struct PairingResponse: Codable {
     let sessionID: String
     let pubKey: String
     let sns: String
-    let creds: Credentials
 }
 
 struct Credentials: Codable {
