@@ -33,8 +33,10 @@ class BackupWizardViewController: UIViewController {
     */
     
     // MARK: Actions
-    @IBAction func finish(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func cancel(_ sender: UIButton) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+        UIApplication.shared.keyWindow?.rootViewController = rootController
     }
     
 }

@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        deletePasswords()   // Uncomment if passwords should be cleaned before startup
         //deleteSeed()      // Uncomment if you want to force seed regeneration
     }
 
@@ -120,15 +120,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func launchInitialView() {
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController: UIViewController?
         if !Seed.exists() {
-            try! Seed.create()
-            let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-            rootController.isFirstLaunch = true
+            let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
             viewController = rootController
             
         } else {
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
         }
         

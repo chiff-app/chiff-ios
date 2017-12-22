@@ -12,6 +12,7 @@ enum CryptoError: Error {
     case convertToData
     case convertToHex
     case hashing
+    case mnemonicConversion
 }
 
 
@@ -137,13 +138,18 @@ class Crypto {
         return plaintext
     }
 
+    func hash(_ data: Data) throws -> Data {
+        guard let hashData = sodium.genericHash.hash(message: data) else {
+            throw CryptoError.hashing
+        }
+        return hashData
+    }
+
     func hash(_ message: String) throws -> String {
         guard let messageData = message.data(using: .utf8) else {
             throw CryptoError.convertToData
         }
-        guard let hashData = sodium.genericHash.hash(message: messageData) else {
-            throw CryptoError.hashing
-        }
+        let hashData = try hash(messageData)
         guard let hash = sodium.utils.bin2hex(hashData) else {
             throw CryptoError.convertToHex
         }
