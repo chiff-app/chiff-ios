@@ -12,6 +12,7 @@ class BackupWizardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        try! Seed.mnemonic()
 
         // Do any additional setup after loading the view.
     }

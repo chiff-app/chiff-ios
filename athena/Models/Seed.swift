@@ -11,23 +11,21 @@ import Foundation
 struct Seed {
     static let keychainService = "com.athena.seed"
 
-    static func create() throws -> [String] {
-        let seed = try Crypto.sharedInstance.generateSeed()
-        try Keychain.sharedInstance.save(seed, id: keychainService, service: keychainService, attributes: nil)
-        return try mnemonic()
+    static func create() throws {
+        try Keychain.sharedInstance.save(Crypto.sharedInstance.generateSeed(), id: keychainService, service: keychainService, attributes: nil)
     }
 
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.sharedInstance.get(id: keychainService, service: keychainService)
-        let seedHash = try Crypto.sharedInstance.hash(seed)
-        let checksum: Data = seedHash.prefix(seed.count / 32) // Now only works for 256 bit-keys, access bits to use 128 bit
+        let seedHash = try Crypto.sharedInstance.hash(seed).first!
         var bitstring = ""
-        for byte in Array<UInt8>(seed + checksum) {
+        for byte in Array<UInt8>(seed) {
             bitstring += pad(string: String(byte, radix: 2), toSize: 8)
         }
+        bitstring += pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4)
 
-        let data = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = data.components(separatedBy: .newlines)
+        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
+        let wordlist = wordlistData.components(separatedBy: .newlines)
 
         var mnemonic = [String]()
         for word in bitstring.components(withLength: 11) {
@@ -36,9 +34,39 @@ struct Seed {
             }
             mnemonic.append(wordlist[index])
         }
-        print(mnemonic.joined(separator: " "))
+
+        try recover(mnemonic: mnemonic)
 
         return mnemonic
+    }
+
+    static func recover(mnemonic: [String]) throws {
+        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
+        let wordlist = wordlistData.components(separatedBy: .newlines)
+
+        var bitstring = ""
+        for word in mnemonic {
+            guard let index: Int = wordlist.index(of: word) else {
+                throw CryptoError.mnemonicConversion
+            }
+            bitstring += pad(string: String(index, radix: 2), toSize: 11)
+        }
+
+        let checksum = bitstring.suffix(mnemonic.count / 3)
+        let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
+        var seed = Data(capacity: seedString.count)
+        for byteString in seedString.components(withLength: 8) {
+            guard let byte = UInt8(byteString, radix: 2) else {
+                throw CryptoError.mnemonicConversion
+            }
+            seed.append(byte)
+        }
+
+        let seedHash = try Crypto.sharedInstance.hash(seed).first!
+        guard checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) else {
+            throw CryptoError.mnemonicChecksum
+        }
+        print(bitstring)
     }
 
     private static func pad(string : String, toSize: Int) -> String {
