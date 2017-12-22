@@ -1,17 +1,18 @@
 //
-//  RootViewController.swift
+//  InitialisationViewController.swift
 //  athena
 //
-//  Created by bas on 03/11/2017.
+//  Created by bas on 22/12/2017.
 //  Copyright © 2017 athena. All rights reserved.
 //
 
 import UIKit
 
-class RootViewController: UITabBarController {
-    
+class InitialisationViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
 
@@ -19,6 +20,7 @@ class RootViewController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
     /*
     // MARK: - Navigation
@@ -30,4 +32,13 @@ class RootViewController: UITabBarController {
     }
     */
 
+    @IBAction func generateSeed(_ sender: UIButton) {
+        do {
+            try Seed.create()
+        } catch {
+            print("TODO: Present error when seed can't be created.")
+            print(error)
+        }
+    }
+    
 }
