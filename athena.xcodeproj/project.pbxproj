@@ -21,6 +21,7 @@
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
+		499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499569C51FED5B4B00D75848 /* Assets.xcassets */; };
 		4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997200D1FD19CEE00EA3436 /* SessionManager.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A547961FC8559900CD4382 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
@@ -73,7 +74,7 @@
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
-		499569C41FED493600D75848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/bas/Projects/Athena/athena-swift/athena/Assets.xcassets"; sourceTree = "<absolute>"; };
+		499569C51FED5B4B00D75848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4997200D1FD19CEE00EA3436 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
@@ -194,8 +195,8 @@
 				49E7D3411FC318D50059D97E /* Crypto */,
 				499BE4F91FC0953C001038DF /* UX */,
 				499569BF1FED477600D75848 /* Resources */,
+				499569C51FED5B4B00D75848 /* Assets.xcassets */,
 				49E766611F7E6F420022C042 /* Info.plist */,
-				499569C41FED493600D75848 /* Assets.xcassets */,
 			);
 			path = athena;
 			sourceTree = "<group>";
@@ -401,6 +402,7 @@
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
+				499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

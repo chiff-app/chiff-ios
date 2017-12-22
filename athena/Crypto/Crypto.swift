@@ -13,6 +13,7 @@ enum CryptoError: Error {
     case convertToHex
     case hashing
     case mnemonicConversion
+    case mnemonicChecksum
 }
 
 
@@ -29,9 +30,8 @@ class Crypto {
      * the resulting seed all passwords will be generated.
      */
     func generateSeed() throws -> Data {
-
         // Generate random seed
-        var seed = Data(count: 32)
+        var seed = Data(count: 16)
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
             SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
         }
