@@ -19,9 +19,6 @@ class BackupWizardViewController: UIViewController {
         } catch {
             tempLabel.text = "MNEMONIC ERROR!"
         }
-
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

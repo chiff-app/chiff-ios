@@ -31,7 +31,7 @@ class Crypto {
      */
     func generateSeed() throws -> Data {
         // Generate random seed
-        var seed = Data(count: 32)
+        var seed = Data(count: 16)
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
             SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
         }
@@ -64,7 +64,13 @@ class Crypto {
             let siteData = siteID.data(using: .utf8) else {
                 throw CryptoError.keyDerivation
         }
-        let siteKey = try deriveKey(keyData: Seed.get(), context: siteData)
+        
+        // TODO: Check if this is OK. Seed (128 bit) --> hash (256 bit) --> Key derivation
+        guard let seedHash = try sodium.genericHash.hash(message: Seed.get()) else {
+            throw CryptoError.hashing
+        }
+        
+        let siteKey = try deriveKey(keyData: seedHash, context: siteData)
         let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
         
         // Convert key to password
