@@ -31,7 +31,7 @@ class Crypto {
      */
     func generateSeed() throws -> Data {
         // Generate random seed
-        var seed = Data(count: 16)
+        var seed = Data(count: 32)
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
             SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
         }
@@ -64,7 +64,8 @@ class Crypto {
             let siteData = siteID.data(using: .utf8) else {
                 throw CryptoError.keyDerivation
         }
-        let key = try deriveKey(keyData: deriveKey(keyData: Seed.get(), context: siteData), context: usernameData, passwordIndex: passwordIndex)
+        let siteKey = try deriveKey(keyData: Seed.get(), context: siteData)
+        let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
         
         // Convert key to password
         guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
@@ -81,12 +82,16 @@ class Crypto {
 
 
     private func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
-        guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8),
-            let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING),
-            let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
-                throw CryptoError.keyDerivation
+        guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8) else {
+            throw CryptoError.hashing
         }
-
+        guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
+            throw CryptoError.base64Encoding
+        }
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
+            throw CryptoError.keyDerivation
+        }
+        
         return key
     }
 

@@ -18,9 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // FOR TESTING PURPOSES
+        //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
+        deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        deleteSeed()      // Uncomment if you want to force seed regeneration
+        
         // Override point for customization after application launch.
         fetchAWSIdentification()
-        deleteSeed()
         launchInitialView()
         
         return true
@@ -58,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
         //deleteSeed()      // Uncomment if you want to force seed regeneration
     }
 

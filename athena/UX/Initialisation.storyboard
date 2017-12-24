@@ -22,17 +22,27 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Not now"/>
                                 <connections>
-                                    <action selector="cancel:" destination="G4M-SE-Rv6" eventType="touchUpInside" id="rCr-2E-Dnt"/>
+                                    <action selector="cancel:" destination="G4M-SE-Rv6" eventType="touchUpInside" id="O6e-9I-AxA"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KcU-go-Ayi">
+                                <rect key="frame" x="22" y="210" width="337" height="246"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="SWu-ec-ZVQ"/>
                     </view>
+                    <connections>
+                        <outlet property="tempLabel" destination="KcU-go-Ayi" id="SDq-pP-AgE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKm-32-cAP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-423" y="-47"/>
+            <point key="canvasLocation" x="-423.19999999999999" y="-47.226386806596707"/>
         </scene>
         <!--Initialisation View Controller-->
         <scene sceneID="WWv-3H-Erj">
