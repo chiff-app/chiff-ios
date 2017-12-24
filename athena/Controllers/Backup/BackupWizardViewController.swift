@@ -10,9 +10,16 @@ import UIKit
 
 class BackupWizardViewController: UIViewController {
 
+    @IBOutlet weak var tempLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        try! Seed.mnemonic()
+        do {
+            let mnemonic = try Seed.mnemonic()
+            tempLabel.text = mnemonic.joined(separator: " ")
+        } catch {
+            tempLabel.text = "MNEMONIC ERROR!"
+        }
+
 
         // Do any additional setup after loading the view.
     }

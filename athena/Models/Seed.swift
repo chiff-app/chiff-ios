@@ -35,12 +35,10 @@ struct Seed {
             mnemonic.append(wordlist[index])
         }
 
-        try recover(mnemonic: mnemonic)
-
         return mnemonic
     }
 
-    static func recover(mnemonic: [String]) throws {
+    static func recover(mnemonic: [String]) throws -> Bool {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
         let wordlist = wordlistData.components(separatedBy: .newlines)
 
@@ -64,9 +62,12 @@ struct Seed {
 
         let seedHash = try Crypto.sharedInstance.hash(seed).first!
         guard checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) else {
-            throw CryptoError.mnemonicChecksum
+            return false
         }
-        print(bitstring)
+        
+        try Keychain.sharedInstance.save(seed, id: keychainService, service: keychainService, attributes: nil)
+        
+        return true
     }
 
     private static func pad(string : String, toSize: Int) -> String {
