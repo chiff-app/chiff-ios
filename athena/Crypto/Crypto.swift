@@ -14,6 +14,7 @@ enum CryptoError: Error {
     case hashing
     case mnemonicConversion
     case mnemonicChecksum
+    case characterNotAllowed
 }
 
 
@@ -41,9 +42,57 @@ class Crypto {
 
         return seed
     }
+    
+    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
+        
+        let chars = restrictionCharacterArray(restrictions: restrictions)
+        var indices = [Int]()
+        for char in password {
+            guard let index = chars.index(of: char) else {
+                throw CryptoError.characterNotAllowed
+            }
+            indices.append(index)
+        }
+        
+        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
+        
+        guard let keyData = sodium.randomBytes.deterministic(length: password.count, seed: key) else {
+            throw CryptoError.keyDerivation
+        }
+        
+        var offsets = [Int]()
+        var i = 0
+        for (_, element) in keyData.enumerated() {
+            offsets.append(indices[i] - (Int(element) % chars.count))
+            i += 1
+        }
+        
+        return offsets
+    }
+    
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
+        let chars = restrictionCharacterArray(restrictions: restrictions)
+        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
+        
+        // Zero-offsets is no offset is given
+        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
 
+        guard let keyData = sodium.randomBytes.deterministic(length: offset.count, seed: key) else {
+            throw CryptoError.keyDerivation
+        }
+        
+        var i = 0
+        var password = ""
+        for (_, element) in keyData.enumerated() {
+            password += String(chars[(Int(element) + offset[i]) % chars.count])
+            i += 1
+        }
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions) throws -> String {
+        return password
+    }
+    
+    
+    private func restrictionCharacterArray(restrictions: PasswordRestrictions) -> [Character] {
         var chars = [Character]()
         for character in restrictions.characters {
             // TODO: Check with other passwordmanagers how to split this out
@@ -58,8 +107,11 @@ class Crypto {
                 chars.append(contentsOf: [Character]("!@#$%^&*()_-+={[}]:;<,>.?/"))
             }
         }
+        
+        return chars
+    }
 
-        // Generate key from seed and parameters
+    private func generateKey(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.data(using: .utf8) else {
                 throw CryptoError.keyDerivation
@@ -73,19 +125,8 @@ class Crypto {
         let siteKey = try deriveKey(keyData: seedHash, context: siteData)
         let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
         
-        // Convert key to password
-        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
-            throw CryptoError.keyDerivation
-        }
-        var password = ""
-        for (_, element) in keyData.enumerated() {
-            let index = Int(element) % chars.count
-            password += String(chars[index])
-        }
-        
-        return password
+        return key
     }
-
 
     private func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
         guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8) else {

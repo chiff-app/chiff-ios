@@ -441,7 +441,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
-                            <tableViewSection headerTitle="website details" id="V7M-Sz-gPj">
+                            <tableViewSection headerTitle="details" id="V7M-Sz-gPj">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="0j9-iI-M38">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -513,12 +513,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection headerTitle="user details" id="48E-YQ-PB8">
-                                <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="2Gh-YK-qVZ">
-                                        <rect key="frame" x="0.0" y="199.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Gh-YK-qVZ" id="Dsf-Yu-8uU">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -553,7 +549,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="gbz-Z8-s5R">
-                                        <rect key="frame" x="0.0" y="243.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="187.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gbz-Z8-s5R" id="qTC-aI-Sgk">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -602,6 +598,35 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="password" id="48E-YQ-PB8">
+                                <string key="footerTitle">It is recommended to let Athena generate strong random passwords for you. Only choose a custom password unless absolutely necessary.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="02X-Xj-mw5">
+                                        <rect key="frame" x="0.0" y="295" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="02X-Xj-mw5" id="Wnq-CI-ysU">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" text="Custom password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ub9-Te-Dzr">
+                                                    <rect key="frame" x="16" y="11" width="138" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="urb-RI-elp">
+                                                    <rect key="frame" x="312" y="6" width="49" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="customPasswordSwitch:" destination="ndI-SS-mi6" eventType="valueChanged" id="JE7-1H-wDY"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="ndI-SS-mi6" id="Eff-TT-nqH"/>
@@ -633,7 +658,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fY-An-iQc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="nsX-YL-Foe" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3100" y="-1585"/>
+            <point key="canvasLocation" x="3204" y="-1585"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="85X-Xm-p3i">
@@ -709,7 +734,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhK-uh-cjP">
-                                        <rect key="frame" x="23" y="20.5" width="140" height="30"/>
+                                        <rect key="frame" x="23.5" y="20.5" width="140" height="30"/>
                                         <state key="normal" title="Pair with new device"/>
                                         <connections>
                                             <action selector="addSession:" destination="35i-ao-Edj" eventType="touchUpInside" id="KLr-Cc-fBg"/>
