@@ -10,26 +10,37 @@ struct Account: Codable {
     let site: Site
     var passwordIndex: Int
     let restrictions: PasswordRestrictions
+    var offset: [Int]?
     static let keychainService = "com.athena.account"
 
-    init(username: String, site: Site, passwordIndex: Int = 0, restrictions: PasswordRestrictions?) throws {
+    init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
         id = try "\(site.id)_\(username)".hash()
 
         self.username = username
         self.site = site
         self.passwordIndex = passwordIndex
-        self.restrictions = restrictions ?? site.restrictions // Use site default restrictions of no custom restrictions are provided
-        try save()
+        self.restrictions = site.restrictions // Use site default restrictions of no custom restrictions are provided
+        if let password = password {
+            offset = try Crypto.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, password: password)
+        }
+        
+        try save(password: password)
     }
 
-    private func save() throws {
+    private func save(password: String?) throws {
         let accountData = try PropertyListEncoder().encode(self)
+        
+        let generatedPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, offset: offset)
+        
+        if password != nil {
+            assert(generatedPassword == password, "Password offset wasn't properly generated.")
+        }
 
-        guard let password = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions).data(using: .utf8) else {
+        guard let passwordData = generatedPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.sharedInstance.save(password, id: id, service: Account.keychainService, attributes: accountData)
+        try Keychain.sharedInstance.save(passwordData, id: id, service: Account.keychainService, attributes: accountData)
     }
 
     func password() throws -> String {
@@ -45,7 +56,8 @@ struct Account: Codable {
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
         passwordIndex += 1
 
-        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions)
+        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, offset: offset)
+        //TODO: Implement custom passwords here
 
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding

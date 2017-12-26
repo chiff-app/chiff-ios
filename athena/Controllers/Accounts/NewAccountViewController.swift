@@ -5,14 +5,16 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     // MARK: Properties
     
     var passwordIsHidden = true
+    var customPassword = false
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        websiteNameTextField.delegate = self
-        websiteURLTextField.delegate = self
-        userNameTextField.delegate = self
+        for textField in [websiteNameTextField, websiteURLTextField, userNameTextField, userPasswordTextField] {
+            textField?.delegate = self
+            textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        }
         
         updateSaveButtonState()
 
@@ -24,15 +26,9 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     }
 
     @IBAction override func showPassword(_ sender: UIButton) {
-        if passwordIsHidden {
-            passwordIsHidden = false
-            userPasswordTextField.isSecureTextEntry = false
-            showPasswordButton.setImage(UIImage(named: "eye_logo"), for: UIControlState.normal)
-        } else {
-            passwordIsHidden = true
-            userPasswordTextField.isSecureTextEntry = true
-            showPasswordButton.setImage(UIImage(named: "eye_logo_off"), for: UIControlState.normal)
-        }
+        passwordIsHidden = !passwordIsHidden
+        userPasswordTextField.isSecureTextEntry = passwordIsHidden
+        showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
@@ -48,21 +44,45 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Disable the Save button while editing.
-        saveButton.isEnabled = false
-    }
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateSaveButtonState()
     }
     
+    @objc func textFieldDidChange(textField: UITextField){
+        updateSaveButtonState()
+    }
     
     // MARK: Actions
     
     func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status and drop into background
         view.endEditing(true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.section == 0 && indexPath.row == 3) {
+            return customPassword ? 44 : 0
+        }
+        return 44
+    }
+    
+    @IBAction func customPasswordSwitch(_ sender: UISwitch) {
+        let passwordRowIndex = IndexPath(row: 3, section: 0)
+        if sender.isOn {
+            customPassword = true
+            userPasswordTextField.isEnabled = true
+            userPasswordTextField.text = ""
+            tableView.reloadRows(at: [passwordRowIndex], with: .bottom)
+            tableView.reloadSections([1], with: .fade)
+            tableView.reloadData()
+        } else {
+            customPassword = false
+            tableView.reloadRows(at: [passwordRowIndex], with: .top)
+            tableView.reloadSections([1], with: .fade)
+            tableView.reloadData()
+            userPasswordTextField.isEnabled = false
+            updateSaveButtonState()
+        }
     }
     
     
@@ -73,33 +93,12 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
         let websiteName = websiteNameTextField.text ?? ""
         let websiteURL = websiteURLTextField.text ?? ""
         let userName = userNameTextField.text ?? ""
+        let password = userPasswordTextField.text ?? ""
 
-        if (websiteName.isEmpty || websiteURL.isEmpty || userName.isEmpty) {
+        if (websiteName.isEmpty || websiteURL.isEmpty || userName.isEmpty || (customPassword && password.isEmpty)) {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
-            showPasswordPreview()
-        }
-    }
-
-    private func showPasswordPreview() {
-        if let websiteName = websiteNameTextField.text,
-            let websiteURL = websiteURLTextField.text,
-            let username = userNameTextField.text {
-
-            let id = String((websiteName + websiteURL).hashValue)
-            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-            let site = Site(name: websiteName, id: id, urls: [websiteURL], restrictions: restrictions)
-
-            do {
-
-                // This is only a preview, password will be generated when account is created
-                let customRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-                let password = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: 0, siteID: site.id, restrictions: customRestrictions)
-                userPasswordTextField.text = password
-            } catch {
-                print(error)
-            }
         }
     }
     
@@ -113,12 +112,11 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             print("TODO: Site info + id should be fetched from somewhere instead of generated here..")
 
             let id = String((websiteName + websiteURL).hashValue)
-            let siteRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-            let site = Site(name: websiteName, id: id, urls: [websiteURL], restrictions: siteRestrictions)
+            let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+            let site = Site(name: websiteName, id: id, urls: [websiteURL], restrictions: restrictions)
 
             do {
-                let customRestrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-                let newAccount = try Account(username: username, site: site, restrictions: customRestrictions)
+                let newAccount = try Account(username: username, site: site, password: customPassword ? userPasswordTextField.text : nil)
                 account = newAccount
             } catch {
                 // TODO: Handle errors in UX

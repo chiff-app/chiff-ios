@@ -89,12 +89,15 @@ class AccountsTableViewController: UITableViewController {
                 sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
                 sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
                 sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
-                sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
                 
                 for site in sampleSites {
-                    let account = try! Account(username: sampleUsername, site: site, restrictions: nil)
+                    let account = try! Account(username: sampleUsername, site: site, password: nil)
                     accounts.append(account)
                 }
+                
+                let customSite = Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions)
+                accounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
+                
             }
         } catch {
             print("Account could not be fetched from keychain: \(error)")
