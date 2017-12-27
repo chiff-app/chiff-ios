@@ -555,8 +555,7 @@
         <!--Devices-->
         <scene sceneID="eQc-NM-rWF">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="IwT-dj-fu6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="AlternativeNavCon" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="DevicesNavigationController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Devices" image="device-icon" selectedImage="device-selected-icon" id="GWP-vo-zZa"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="e0j-3u-woH">
@@ -565,14 +564,14 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IwT-dj-fu6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="489" y="0.0"/>
         </scene>
         <!--Devices-->
         <scene sceneID="Hkr-gv-fbm">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wVc-y4-mrD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController storyboardIdentifier="Alternative Devices" id="3aw-Co-zND" customClass="AlternativeDevicesViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Devices Controller" id="3aw-Co-zND" customClass="DevicesViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MAS-2q-ELF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -582,7 +581,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Device Cell" rowHeight="90" id="kQW-dK-czc" customClass="AlternativeDevicesViewCell" customModule="athena" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Device Cell" rowHeight="90" id="kQW-dK-czc" customClass="DevicesViewCell" customModule="athena" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kQW-dK-czc" id="ptg-WT-R4i">
@@ -647,7 +646,7 @@
                                             <outlet property="titleLabel" destination="w47-dm-ku8" id="Cbj-Zv-rHY"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Scan QR" textLabel="fhC-Az-aRa" style="IBUITableViewCellStyleDefault" id="Z4W-c3-x0c" customClass="AlternativeDevicesViewCell" customModule="athena" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Scan QR" textLabel="fhC-Az-aRa" style="IBUITableViewCellStyleDefault" id="Z4W-c3-x0c" customClass="DevicesViewCell" customModule="athena" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="145.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Z4W-c3-x0c" id="lZo-eV-tMu">
@@ -683,13 +682,14 @@
                         <outlet property="tableView" destination="WHP-x0-joA" id="Qog-Ez-pLJ"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wVc-y4-mrD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1473" y="0.0"/>
         </scene>
         <!--Scan QR-->
         <scene sceneID="mhC-e7-9cD">
             <objects>
-                <viewController storyboardIdentifier="Alternative QR" id="Zdy-j7-Tbj" customClass="AlternativeQRViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="QR Controller" id="Zdy-j7-Tbj" customClass="QRViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0KW-T6-djj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
