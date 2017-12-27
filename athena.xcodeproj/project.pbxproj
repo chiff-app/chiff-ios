@@ -35,10 +35,10 @@
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
-		61D0BE9B1FF2A2980072631D /* AlternativeDevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* AlternativeDevicesViewController.swift */; };
-		61D0BE9D1FF2A7920072631D /* AlternativeDevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* AlternativeDevicesViewCell.swift */; };
-		61F938C41FF4161300AF0880 /* AlternativeQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* AlternativeQRViewController.swift */; };
-		61F938C61FF4199900AF0880 /* AlternativeNavCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* AlternativeNavCon.swift */; };
+		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
+		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
+		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
+		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
 		C352FFF3E69333BEDCE2A927 /* Pods_athena.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,10 +95,10 @@
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
-		61D0BE9A1FF2A2980072631D /* AlternativeDevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeDevicesViewController.swift; sourceTree = "<group>"; };
-		61D0BE9C1FF2A7920072631D /* AlternativeDevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeDevicesViewCell.swift; sourceTree = "<group>"; };
-		61F938C31FF4161300AF0880 /* AlternativeQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeQRViewController.swift; sourceTree = "<group>"; };
-		61F938C51FF4199900AF0880 /* AlternativeNavCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeNavCon.swift; sourceTree = "<group>"; };
+		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
+		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
+		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
 		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
 		B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_athena.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -143,7 +143,7 @@
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
-				61D0BE991FF2A26F0072631D /* Devices_alt */,
+				61D0BE991FF2A26F0072631D /* Devices */,
 				6105598D1FDC553C0030F871 /* Backup */,
 			);
 			path = Controllers;
@@ -260,15 +260,15 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		61D0BE991FF2A26F0072631D /* Devices_alt */ = {
+		61D0BE991FF2A26F0072631D /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				61D0BE9A1FF2A2980072631D /* AlternativeDevicesViewController.swift */,
-				61F938C51FF4199900AF0880 /* AlternativeNavCon.swift */,
-				61D0BE9C1FF2A7920072631D /* AlternativeDevicesViewCell.swift */,
-				61F938C31FF4161300AF0880 /* AlternativeQRViewController.swift */,
+				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
+				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
+				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
+				61F938C31FF4161300AF0880 /* QRViewController.swift */,
 			);
-			path = Devices_alt;
+			path = Devices;
 			sourceTree = "<group>";
 		};
 		9C59233641B71D82B45CC67E /* Pods */ = {
@@ -502,12 +502,12 @@
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
-				61F938C41FF4161300AF0880 /* AlternativeQRViewController.swift in Sources */,
-				61F938C61FF4199900AF0880 /* AlternativeNavCon.swift in Sources */,
+				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
+				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
-				61D0BE9B1FF2A2980072631D /* AlternativeDevicesViewController.swift in Sources */,
-				61D0BE9D1FF2A7920072631D /* AlternativeDevicesViewCell.swift in Sources */,
+				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
+				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
