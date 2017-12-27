@@ -3,30 +3,11 @@
  */
 import UIKit
 
+let chars = [Character]("abcdefghijklmnopqrstuvwxyzABCDED")
+let y = chars.count
+let r = 2123
+let p = chars.index(of: "a")! // This is now calculated in f()
+//let x = p - (r % y) // Offset needs be calculated AFTER random values are generated.
+let x = 0
+print(chars[(r + x) % y])
 
-let accessControl =
-    SecAccessControlCreateWithFlags(kCFAllocatorDefault,
-                                    kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-                                    [.privateKeyUsage, .userPresence],
-                                    nil)! // Ignore error
-
-let attributes: [String: Any] = [
-    kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-    kSecAttrKeySizeInBits as String: 256,
-    kSecAttrTokenID as String: kSecAttrTokenIDSecureEnclave,
-    kSecPrivateKeyAttrs as String: [
-        kSecAttrIsPermanent as String: true,
-        kSecAttrApplicationTag as String: "AthenaPrivateKey",
-        kSecAttrAccessControl as String: accessControl
-    ]
-]
-
-var error: Unmanaged<CFError>?
-
-guard let privateKey = SecKeyCreateRandomKey(attributes as CFDictionary, &error) else {
-    print(error!.takeRetainedValue() as Error)
-    throw error!.takeRetainedValue() as Error
-}
-
-print(privateKey)
-print(privateKey.hashValue)
