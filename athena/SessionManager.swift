@@ -19,22 +19,17 @@ class SessionManager {
 
     private init() { }
 
-    func initiateSession(sqs: String, pubKey: String, browser: String, os: String) throws {
+    func initiateSession(sqs: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
         let session = try Session(sqs: sqs, browserPublicKey: pubKey, browser: browser, os: os)
-//
-//        // Get Account object for site x
-//        // TODO: What if there are multiple accounts with same siteID (different usernames). Present choice to user?
-//        guard let account = try Account.get(siteID: siteID) else {
-//            throw SessionError.accountNotFound
-//        }
-
         let pairingResponse = try self.createPairingResponse(session: session)
 
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
             AWS.sharedInstance.sendToSqs(message: pairingResponse, to: queueUrl, sessionID: session.id)
         }
+
+        return session
     }
 
     

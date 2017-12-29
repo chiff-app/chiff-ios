@@ -18,8 +18,8 @@ class DevicesNavigationController: UINavigationController {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
             } else {
-                let qrViewController = storyboard?.instantiateViewController(withIdentifier: "QR Controller") as? QRViewController
-                pushViewController(qrViewController!, animated: false)
+                let qrViewController = storyboard?.instantiateViewController(withIdentifier: "QR Controller") as! QRViewController
+                pushViewController(qrViewController, animated: false)
             }
         } catch {
             print(error)
