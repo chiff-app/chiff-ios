@@ -1,25 +1,33 @@
 import UIKit
 
+protocol canReceiveSession {
+    func addSession(session: Session)
+}
 
-class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, canReceiveSession {
     
     var sessions = [Session]()
     @IBOutlet weak var tableView: UITableView!
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         do {
-            // TODO: Now retrieves sessions from Keychain every time view appears. Perhaps can be implemented more efficient.
             if let storedSessions = try Session.all() {
                 print("Loading sessions from keychain.")
                 sessions = storedSessions
             }
-            tableView.reloadData()
         } catch {
             print("Sessions could not be loaded: \(error)")
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: true)
+        }
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
@@ -113,29 +121,24 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     // MARK: - Navigation
-    /*
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Add Session" {
             if let destination = (segue.destination.contents) as? QRViewController {
-                destination.delegate = self
+                destination.devicesDelegate = self
             }
         }
     }
-    */
+
     
     //MARK: Actions
     
-//    func addSession(session: Session) {
-//        let newIndexPath = IndexPath(row: sessions.count, section: 0)
-//        sessions.append(session)
-//        tableView.insertRows(at: [newIndexPath], with: .automatic)
-//        if !sessions.isEmpty {
-//            DispatchQueue.main.async {
-//                //self.qrView.isHidden = false
-//            }
-//        }
-//    }
-//    
+    func addSession(session: Session) {
+        let newIndexPath = IndexPath(row: sessions.count, section: 0)
+        sessions.append(session)
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+
 }
 
 

@@ -13,6 +13,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
+    var devicesDelegate: canReceiveSession?
     
     enum CameraError: Error {
         case noCamera
@@ -67,10 +68,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     // MARK: Private Methods
     
     private func displayError(message: String) {
-        //self.edgesForExtendedLayout = []
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
         errorLabel.backgroundColor = UIColor.white
-        //errorLabel.textColor = UIColor.white
         errorLabel.textAlignment = .center
         errorLabel.text = message
         errorLabel.alpha = 0.85
@@ -81,9 +80,14 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     private func decodeSessionData(pubKey: String, sqs: String, browser: String, os: String) {
         do {
-            try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
-            let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
-            self.navigationController?.setViewControllers([devicesVC!], animated: false)
+            let session = try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
+            if navigationController?.viewControllers[0] == self {
+                let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
+                navigationController?.setViewControllers([devicesVC], animated: false)
+            } else {
+                devicesDelegate?.addSession(session: session)
+                _ = navigationController?.popViewController(animated: true)
+            }
         } catch {
             switch error {
             case KeychainError.storeKey:
