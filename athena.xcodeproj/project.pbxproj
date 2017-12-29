@@ -22,6 +22,8 @@
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
 		499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499569C51FED5B4B00D75848 /* Assets.xcassets */; };
+		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
+		499569D91FED717900D75848 /* test.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 499569D21FED717900D75848 /* test.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997200D1FD19CEE00EA3436 /* SessionManager.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A547961FC8559900CD4382 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
@@ -43,6 +45,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		499569D71FED717900D75848 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 499569D11FED717900D75848;
+			remoteInfo = test;
+		};
 		49E766671F7E6F420022C042 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
@@ -58,6 +67,20 @@
 			remoteInfo = athena;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		499569DD1FED717900D75848 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				499569D91FED717900D75848 /* test.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		01839A701FACA93A00698B69 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -75,6 +98,8 @@
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
 		499569C51FED5B4B00D75848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
+		499569D21FED717900D75848 /* test.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = test.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4997200D1FD19CEE00EA3436 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
@@ -104,6 +129,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		499569CF1FED717900D75848 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664D1F7E6F420022C042 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -144,7 +176,7 @@
 				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				610C63BD1FAE1E8200A00FB0 /* Devices */,
-				6105598D1FDC553C0030F871 /* Backup */,
+				6105598D1FDC553C0030F871 /* Initialisation */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -178,6 +210,7 @@
 				49E766501F7E6F420022C042 /* athena.app */,
 				49E766661F7E6F420022C042 /* athenaTests.xctest */,
 				49E766711F7E6F420022C042 /* athenaUITests.xctest */,
+				499569D21FED717900D75848 /* test.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,13 +274,14 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
-		6105598D1FDC553C0030F871 /* Backup */ = {
+		6105598D1FDC553C0030F871 /* Initialisation */ = {
 			isa = PBXGroup;
 			children = (
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
+				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
 			);
-			path = Backup;
+			path = Initialisation;
 			sourceTree = "<group>";
 		};
 		610C63BC1FAE1E6900A00FB0 /* Accounts */ = {
@@ -291,6 +325,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		499569D11FED717900D75848 /* test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 499569DA1FED717900D75848 /* Build configuration list for PBXNativeTarget "test" */;
+			buildPhases = (
+				499569CE1FED717900D75848 /* Sources */,
+				499569CF1FED717900D75848 /* Frameworks */,
+				499569D01FED717900D75848 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = test;
+			productName = test;
+			productReference = 499569D21FED717900D75848 /* test.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		49E7664F1F7E6F420022C042 /* athena */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "athena" */;
@@ -301,10 +352,12 @@
 				49E7664E1F7E6F420022C042 /* Resources */,
 				85A45794F744A82A701DCEF1 /* [CP] Embed Pods Frameworks */,
 				BD32DD255FA36C476AE9A9E4 /* [CP] Copy Pods Resources */,
+				499569DD1FED717900D75848 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				499569D81FED717900D75848 /* PBXTargetDependency */,
 			);
 			name = athena;
 			productName = athena;
@@ -353,10 +406,14 @@
 		49E766481F7E6F420022C042 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = athena;
 				TargetAttributes = {
+					499569D11FED717900D75848 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					49E7664F1F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
@@ -389,11 +446,19 @@
 				49E7664F1F7E6F420022C042 /* athena */,
 				49E766651F7E6F420022C042 /* athenaTests */,
 				49E766701F7E6F420022C042 /* athenaUITests */,
+				499569D11FED717900D75848 /* test */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		499569D01FED717900D75848 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664E1F7E6F420022C042 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -488,6 +553,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		499569CE1FED717900D75848 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664C1F7E6F420022C042 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -499,6 +571,7 @@
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
+				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
@@ -538,6 +611,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		499569D81FED717900D75848 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 499569D11FED717900D75848 /* test */;
+			targetProxy = 499569D71FED717900D75848 /* PBXContainerItemProxy */;
+		};
 		49E766681F7E6F420022C042 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49E7664F1F7E6F420022C042 /* athena */;
@@ -570,6 +648,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		499569DB1FED717900D75848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = test/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.athena.athena.test;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		499569DC1FED717900D75848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = test/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.athena.athena.test;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		49E766781F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -782,6 +892,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		499569DA1FED717900D75848 /* Build configuration list for PBXNativeTarget "test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				499569DB1FED717900D75848 /* Debug */,
+				499569DC1FED717900D75848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "athena" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
