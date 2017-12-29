@@ -13,8 +13,6 @@
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
-		493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */; };
-		494E35D21FDAF57600ED6E3D /* NoSessionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494E35D11FDAF57600ED6E3D /* NoSessionsViewController.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
@@ -36,10 +34,12 @@
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
-		610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
-		61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FA181FADFF05009C893B /* QRViewController.swift */; };
+		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
+		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
+		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
+		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
 		C352FFF3E69333BEDCE2A927 /* Pods_athena.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,8 +67,6 @@
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
-		493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
-		494E35D11FDAF57600ED6E3D /* NoSessionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSessionsViewController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -97,10 +95,12 @@
 		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
-		610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
-		61E9FA181FADFF05009C893B /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
+		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
+		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
 		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
 		B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_athena.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -145,8 +145,8 @@
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
-				610C63BD1FAE1E8200A00FB0 /* Devices */,
-				6105598D1FDC553C0030F871 /* Initialisation */,
+				61D0BE991FF2A26F0072631D /* Devices */,
+				6105598D1FDC553C0030F871 /* Backup */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -263,13 +263,13 @@
 			path = Accounts;
 			sourceTree = "<group>";
 		};
-		610C63BD1FAE1E8200A00FB0 /* Devices */ = {
+		61D0BE991FF2A26F0072631D /* Devices */ = {
 			isa = PBXGroup;
 			children = (
-				493FCF7A1FDAE67700D31AE7 /* DevicesViewController.swift */,
-				61E9FA181FADFF05009C893B /* QRViewController.swift */,
-				610C63BA1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift */,
-				494E35D11FDAF57600ED6E3D /* NoSessionsViewController.swift */,
+				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
+				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
+				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
+				61F938C31FF4161300AF0880 /* QRViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -504,16 +504,16 @@
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
-				610C63BB1FAE1E5A00A00FB0 /* DeviceTableViewCell.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
-				61E9FA191FADFF05009C893B /* QRViewController.swift in Sources */,
+				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
+				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
-				493FCF7B1FDAE67700D31AE7 /* DevicesViewController.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
+				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
+				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
-				494E35D21FDAF57600ED6E3D /* NoSessionsViewController.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,

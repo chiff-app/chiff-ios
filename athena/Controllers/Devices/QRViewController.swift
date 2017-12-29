@@ -4,16 +4,16 @@ import LocalAuthentication
 
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-
-    // MARK: Properties
     
+    // MARK: Properties
+
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
     @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
-
+    
     enum CameraError: Error {
         case noCamera
         case videoInputInitFailed
@@ -21,17 +21,13 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        qrFound = false
         do {
-           try scanQR()
+            try scanQR()
         } catch {
             displayError(message: "Camera not available.")
             print("Camera could not be instantiated: \(error)")
         }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        qrFound = false
     }
     
     
@@ -70,8 +66,9 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     
     // MARK: Private Methods
-
+    
     private func displayError(message: String) {
+        self.edgesForExtendedLayout = []
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
         errorLabel.backgroundColor = UIColor.darkGray
         errorLabel.textColor = UIColor.white
@@ -82,24 +79,25 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         view.bringSubview(toFront: errorLabel)
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
-
+    
     private func decodeSessionData(pubKey: String, sqs: String, browser: String, os: String) {
-            do {
-                try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
-                self.tabBarController?.selectedIndex = 2
-            } catch {
-                switch error {
-                case KeychainError.storeKey:
-                    //TODO: This error is now displayed after permission was granted, which looks weird. To change this we should either split session creation and saving or implement a way to check if this Session already exists in the keychain and check before asking permission.
-                    displayError(message: "This QR code was already scanned.")
-                    qrFound = false
-                default:
-                    print("Unhandled error \(error)")
-                    qrFound = false
-                }
+        do {
+            try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
+            let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
+            self.navigationController?.setViewControllers([devicesVC!], animated: false)
+        } catch {
+            switch error {
+            case KeychainError.storeKey:
+                //TODO: This error is now displayed after permission was granted, which looks weird. To change this we should either split session creation and saving or implement a way to check if this Session already exists in the keychain and check before asking permission.
+                displayError(message: "This QR code was already scanned.")
+                qrFound = false
+            default:
+                print("Unhandled error \(error)")
+                qrFound = false
             }
+        }
     }
-
+    
     
     private func scanQR() throws {
         
@@ -152,5 +150,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             }
         )
     }
-
+    
 }
+
