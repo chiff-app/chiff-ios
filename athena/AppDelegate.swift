@@ -116,10 +116,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func fetchAWSIdentification() {
-//        let credentialsProvider = AWSStaticCredentialsProvider(accessKey: "AKIAIPSH6JLWAEOLEXDA", secretKey: "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"))
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
                                                                 identityPoolId: "eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
-
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
