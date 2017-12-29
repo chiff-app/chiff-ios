@@ -30,7 +30,6 @@ class Session: Codable {
         try save(pubKey: browserPublicKey)
     }
 
-
     private func save(pubKey: String) throws {
         // Save browser public key
         let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
@@ -55,6 +54,21 @@ class Session: Codable {
         }
     }
 
+    func browserPublicKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+    }
+
+    func appPrivateKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+    }
+    
+    func appPublicKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
+    }
+
+
+    // MARK: Static functions
+
     static func all() throws -> [Session]? {
         guard let dataArray = try Keychain.sharedInstance.all(service: browserService) else {
             return nil
@@ -72,16 +86,9 @@ class Session: Codable {
         return sessions
     }
 
-    func browserPublicKey() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
-    }
-
-    func appPrivateKey() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+    static func exists(sqs: String, browserPublicKey: String) throws -> Bool {
+        let id = try "\(browserPublicKey)_\(sqs)".hash()
+        return Keychain.sharedInstance.has(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
     }
     
-    func appPublicKey() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
-    }
-
 }

@@ -29,15 +29,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             print("Camera could not be instantiated: \(error)")
         }
     }
-    
-    
-    // MARK: Actions
-    
-    // TODO: is this still used?
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-    
+
     
     // MARK: AVCaptureMetadataOutputObjectsDelegate
     
@@ -47,16 +39,23 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 // TODO: Check if this can be exploited with specially crafted QR codes?
                 if let url = machineReadableCode.stringValue, !qrFound {
-                    guard !recentlyScannedUrls.contains(url) else {
-                        displayError(message: "This QR code was already scanned.")
-                        return
-                    }
+                    qrFound = true
                     if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let sqs = parameters["q"], let browser = parameters["b"], let os = parameters["o"]{
-                        qrFound = true
+                        do {
+                            guard try !recentlyScannedUrls.contains(url) && !Session.exists(sqs: sqs, browserPublicKey: pubKey) else {
+                                displayError(message: "This QR-code was already scanned.")
+                                qrFound = false
+                                return
+                            }
+                        } catch {
+                            displayError(message: "This QR-code could not be decoded.")
+                            qrFound = false
+                            return
+                        }
                         recentlyScannedUrls.append(url)
                         pairPermission(pubKey: pubKey, sqs: sqs, browser: browser, os: os)
                     } else {
-                        displayError(message: "QR code could not be decoded.")
+                        displayError(message: "This QR-code could not be decoded.")
                         qrFound = false
                     }
                 }
@@ -68,10 +67,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     // MARK: Private Methods
     
     private func displayError(message: String) {
-        self.edgesForExtendedLayout = []
+        //self.edgesForExtendedLayout = []
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
-        errorLabel.backgroundColor = UIColor.darkGray
-        errorLabel.textColor = UIColor.white
+        errorLabel.backgroundColor = UIColor.white
+        //errorLabel.textColor = UIColor.white
         errorLabel.textAlignment = .center
         errorLabel.text = message
         errorLabel.alpha = 0.85
@@ -88,8 +87,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         } catch {
             switch error {
             case KeychainError.storeKey:
-                //TODO: This error is now displayed after permission was granted, which looks weird. To change this we should either split session creation and saving or implement a way to check if this Session already exists in the keychain and check before asking permission.
                 displayError(message: "This QR code was already scanned.")
+                print("TODO: This shouldn't happen and be logged somewhere.")
                 qrFound = false
             default:
                 print("Unhandled error \(error)")
@@ -150,6 +149,5 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             }
         )
     }
-    
 }
 
