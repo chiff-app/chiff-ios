@@ -46,24 +46,27 @@ class Crypto {
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
         
         let chars = restrictionCharacterArray(restrictions: restrictions)
-        var indices = [Int]()
+        var characterIndices = [Int](repeatElement(chars.count, count: restrictions.length))
+        var index = 0
         for char in password {
-            guard let index = chars.index(of: char) else {
+            guard let characterIndex = chars.index(of: char) else {
                 throw CryptoError.characterNotAllowed
             }
-            indices.append(index)
+            characterIndices[index] = characterIndex
+            index += 1
         }
+
         
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
         
-        guard let keyData = sodium.randomBytes.deterministic(length: password.count, seed: key) else {
+        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
             throw CryptoError.keyDerivation
         }
         
         var offsets = [Int]()
         var i = 0
         for (_, element) in keyData.enumerated() {
-            offsets.append(indices[i] - (Int(element) % chars.count))
+            offsets.append((characterIndices[i] - Int(element)) % (chars.count + 1))
             i += 1
         }
         
@@ -73,18 +76,22 @@ class Crypto {
     func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
         let chars = restrictionCharacterArray(restrictions: restrictions)
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
-        
-        // Zero-offsets is no offset is given
-        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
 
-        guard let keyData = sodium.randomBytes.deterministic(length: offset.count, seed: key) else {
+        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
             throw CryptoError.keyDerivation
         }
-        
+
+        // Zero-offsets if no offset is given
+        let modulus = offset == nil ? chars.count : chars.count + 1
+        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
+
         var i = 0
         var password = ""
         for (_, element) in keyData.enumerated() {
-            password += String(chars[(Int(element) + offset[i]) % chars.count])
+            let characterValue = (Int(element) + offset[i]) % modulus
+            if characterValue != chars.count {
+                password += String(chars[characterValue])
+            }
             i += 1
         }
 
