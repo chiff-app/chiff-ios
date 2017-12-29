@@ -68,6 +68,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     // MARK: Private Methods
     
     private func displayError(message: String) {
+        self.edgesForExtendedLayout = []
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
         errorLabel.backgroundColor = UIColor.darkGray
         errorLabel.textColor = UIColor.white
