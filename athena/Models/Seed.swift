@@ -12,7 +12,7 @@ struct Seed {
     static let keychainService = "com.athena.seed"
 
     static func create() throws {
-        try Keychain.sharedInstance.save(Crypto.sharedInstance.generateSeed(), id: keychainService, service: keychainService, attributes: nil)
+        try Keychain.sharedInstance.save(secretData: Crypto.sharedInstance.generateSeed(), id: keychainService, service: keychainService)
     }
 
     static func mnemonic() throws -> [String] {
@@ -65,11 +65,12 @@ struct Seed {
             return false
         }
         
-        try Keychain.sharedInstance.save(seed, id: keychainService, service: keychainService, attributes: nil)
+        try Keychain.sharedInstance.save(secretData: seed, id: keychainService, service: keychainService)
         
         return true
     }
 
+    // TODO: Make this a String extension
     private static func pad(string : String, toSize: Int) -> String {
         var padded = string
         for _ in 0..<(toSize - string.count) {
@@ -88,6 +89,22 @@ struct Seed {
 
     static func delete() throws {
         try Keychain.sharedInstance.delete(id: keychainService, service: keychainService)
+    }
+
+    static func setBackedUp() throws {
+        try Keychain.sharedInstance.update(id: keychainService, service: keychainService, secretData: nil, objectData: nil, label: "true")
+    }
+
+    static func isBackedUp() throws -> Bool {
+        guard let dataArray = try Keychain.sharedInstance.attributes(id: keychainService, service: keychainService) else {
+            return false
+        }
+
+        guard let label = dataArray[kSecAttrLabel as String] as? String else {
+            return false
+        }
+
+        return label == "true"
     }
     
 }

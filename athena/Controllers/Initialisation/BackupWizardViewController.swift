@@ -10,14 +10,20 @@ import UIKit
 
 class BackupWizardViewController: UIViewController {
 
-    @IBOutlet weak var tempLabel: UILabel!
+    @IBOutlet weak var wordLabel: UILabel!
+    @IBOutlet weak var previousButton: UIButton!
+    var mnemonic: [String]?
+    var counter: Int = 0
+    @IBOutlet weak var counterLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
-            let mnemonic = try Seed.mnemonic()
-            tempLabel.text = mnemonic.joined(separator: " ")
+            mnemonic = try Seed.mnemonic()
+            wordLabel.text = mnemonic![counter]
+            counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
         } catch {
-            tempLabel.text = "MNEMONIC ERROR!"
+            // Handle error and total destruction
         }
     }
 
@@ -25,7 +31,7 @@ class BackupWizardViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
 
     /*
     // MARK: - Navigation
@@ -38,10 +44,36 @@ class BackupWizardViewController: UIViewController {
     */
     
     // MARK: Actions
-    @IBAction func cancel(_ sender: UIButton) {
+    @IBAction func next(_ sender: Any) {
+        if counter < mnemonic!.count - 1 {
+            counter += 1
+            wordLabel.text = mnemonic![counter]
+            counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
+            if (counter >= 1) {
+                previousButton.isEnabled = true
+            }
+        } else {
+            let checkViewController = storyboard?.instantiateViewController(withIdentifier: "Mnemonic Check") as! BackupCheckViewController
+            checkViewController.mnemonic = mnemonic
+            navigationController?.pushViewController(checkViewController, animated: true)
+        }
+    }
+
+    @IBAction func previous(_ sender: UIButton) {
+        if counter > 0 {
+            counter -= 1
+            wordLabel.text = mnemonic![counter]
+            counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
+            if (counter <= 0) {
+                previousButton.isEnabled = false
+            }
+        }
+    }
+
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
         UIApplication.shared.keyWindow?.rootViewController = rootController
     }
-    
+
 }

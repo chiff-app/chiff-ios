@@ -40,7 +40,7 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.sharedInstance.save(passwordData, id: id, service: Account.keychainService, attributes: accountData)
+        try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData)
     }
 
     func password() throws -> String {
@@ -63,7 +63,7 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.sharedInstance.update(passwordData, id: id, service: Account.keychainService)
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: nil, label: nil)
     }
 
     func delete() throws {

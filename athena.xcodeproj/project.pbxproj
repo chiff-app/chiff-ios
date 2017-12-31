@@ -17,6 +17,7 @@
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
+		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
 		499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499569C51FED5B4B00D75848 /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
 		499569C51FED5B4B00D75848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,7 +148,7 @@
 				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
-				6105598D1FDC553C0030F871 /* Backup */,
+				6105598D1FDC553C0030F871 /* Initialisation */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -246,9 +248,10 @@
 		6105598D1FDC553C0030F871 /* Initialisation */ = {
 			isa = PBXGroup;
 			children = (
-				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
-				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
+				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
+				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
+				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 			);
 			path = Initialisation;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
+				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,

@@ -35,12 +35,12 @@ class Session: Codable {
         let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
 
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.sharedInstance.save(publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, attributes: sessionData)
+        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData)
 
         // Generate and save own keypair
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.save(keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
-        try Keychain.sharedInstance.save(keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
+        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
 
     }
 
