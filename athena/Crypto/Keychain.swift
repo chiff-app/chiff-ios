@@ -8,6 +8,7 @@ enum KeychainError: Error {
     case storeKey(OSStatus?)
     case notFound(OSStatus?)
     case unhandledError(OSStatus?)
+    case noData
 }
 
 
@@ -21,13 +22,13 @@ class Keychain {
 
     // MARK:  CRUD methods
 
-   func save(_ data: Data, id identifier: String, service: String, attributes: Data? = nil) throws {
+   func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
-                                    kSecValueData as String: data]
-        if attributes != nil {
-            query[kSecAttrGeneric as String] = attributes
+                                    kSecValueData as String: secretData]
+        if objectData != nil {
+            query[kSecAttrGeneric as String] = objectData
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -84,21 +85,36 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    func update(_ data: Data, id identifier: String, service: String) throws {
+    func update(id identifier: String, service: String, secretData: Data?, objectData: Data?, label: String?) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service,
-                                    kSecMatchLimit as String: kSecMatchLimitOne]
+                                    kSecAttrService as String: service]
 
-        let attributes: [String: Any] = [kSecValueData as String: data]
+        guard (secretData != nil || label != nil || objectData != nil) else {
+            throw KeychainError.noData
+        }
 
-        // Try to fetch the data if it exists.
+        var attributes = [String: Any]()
+
+        if secretData != nil {
+            attributes[kSecValueData as String] = secretData
+        }
+
+        if objectData != nil {
+            attributes[kSecAttrGeneric as String] = objectData
+        }
+
+        if label != nil {
+            attributes[kSecAttrLabel as String] = label
+        }
+
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
 
         // Check the return status and throw an error if appropriate.
         guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
+
     
     func all(service: String) throws -> [[String: Any]]? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -123,6 +139,34 @@ class Keychain {
             throw KeychainError.unexpectedData
         }
     
+        return dataArray
+    }
+
+
+    func attributes(id identifier: String, service: String) throws -> [String: Any]? {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrAccount as String: identifier,
+                                    kSecAttrService as String: service,
+                                    kSecMatchLimit as String: kSecMatchLimitOne,
+                                    kSecReturnAttributes as String: true]
+
+        // Try to fetch the data if it exists.
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        // Check the return status and throw an error if appropriate.
+        if status == errSecItemNotFound {
+            // No attributes found, return nil
+            return nil
+        }
+        guard status == noErr else { throw KeychainError.unhandledError(status) }
+
+        guard let dataArray = queryResult as? [String: Any] else {
+            throw KeychainError.unexpectedData
+        }
+
         return dataArray
     }
 
