@@ -44,7 +44,7 @@ class BackupWizardViewController: UIViewController {
     */
     
     // MARK: Actions
-    @IBAction func next(_ sender: Any) {
+    @IBAction func next(_ sender: UIButton) {
         if counter < mnemonic!.count - 1 {
             counter += 1
             wordLabel.text = mnemonic![counter]

@@ -32,6 +32,7 @@ class Crypto {
      */
     func generateSeed() throws -> Data {
         // Generate random seed
+        // TODO: Should this be replaced by libsodium key generation function?
         var seed = Data(count: 16)
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
             SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
@@ -41,6 +42,21 @@ class Crypto {
         }
 
         return seed
+    }
+
+    func deriveKeyFromSeed(seed: Data, index: Int, context: String) throws -> Data {
+        // This expands the 128-bit seed to 256 bits by hashing. Necessary for key derivation.
+        guard let seedHash = sodium.genericHash.hash(message: seed) else {
+            throw CryptoError.hashing
+        }
+
+        // This derives a subkey from the seed for a given index and context
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: UInt64(index), length: 32, context: String(context.prefix(8))) else {
+            throw CryptoError.keyDerivation
+        }
+
+        return key
+
     }
     
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
@@ -123,13 +139,9 @@ class Crypto {
             let siteData = siteID.data(using: .utf8) else {
                 throw CryptoError.keyDerivation
         }
-        
-        // TODO: Check if this is OK. Seed (128 bit) --> hash (256 bit) --> Key derivation
-        guard let seedHash = try sodium.genericHash.hash(message: Seed.get()) else {
-            throw CryptoError.hashing
-        }
-        
-        let siteKey = try deriveKey(keyData: seedHash, context: siteData)
+
+        // TODO: If siteID is Int, use that as index.
+        let siteKey = try deriveKey(keyData: Seed.getPasswordKey(), context: siteData)
         let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
         
         return key

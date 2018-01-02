@@ -36,7 +36,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="roe-1P-jaZ"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Backup" id="jau-qi-MKa"/>
+                    <navigationItem key="navigationItem" title="Backup" id="jau-qi-MKa">
+                        <barButtonItem key="backBarButtonItem" title=" " id="OMa-GG-SO5"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SSs-fW-WwS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -96,7 +98,8 @@
                         <viewLayoutGuide key="safeArea" id="SWu-ec-ZVQ"/>
                     </view>
                     <navigationItem key="navigationItem" title="Backup" id="LLc-6c-iqf">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="3ms-fU-jQ4">
+                        <barButtonItem key="backBarButtonItem" title="Words" id="N8t-uk-pMg"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="3ms-fU-jQ4">
                             <connections>
                                 <action selector="cancel:" destination="G4M-SE-Rv6" id="1QB-7d-qQp"/>
                             </connections>

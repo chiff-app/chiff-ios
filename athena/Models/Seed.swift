@@ -10,13 +10,29 @@ import Foundation
 
 struct Seed {
     static let keychainService = "com.athena.seed"
+    private enum KeyIdentifier: String, Codable {
+        case password = "password"
+        case backup = "backup"
+        case master = "master"
 
-    static func create() throws {
-        try Keychain.sharedInstance.save(secretData: Crypto.sharedInstance.generateSeed(), id: keychainService, service: keychainService)
+        func identifier(for keychainService: String) -> String {
+            return "\(keychainService).\(self.rawValue)"
+        }
     }
 
+    static func create() throws {
+        let seed = try Crypto.sharedInstance.generateSeed()
+        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 0, context: KeyIdentifier.password.rawValue)
+        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 1, context: KeyIdentifier.backup.rawValue)
+
+        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+    }
+
+
     static func mnemonic() throws -> [String] {
-        let seed = try Keychain.sharedInstance.get(id: keychainService, service: keychainService)
+        let seed = try Keychain.sharedInstance.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
         let seedHash = try Crypto.sharedInstance.hash(seed).first!
         var bitstring = ""
         for byte in Array<UInt8>(seed) {
@@ -64,8 +80,14 @@ struct Seed {
         guard checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) else {
             return false
         }
-        
-        try Keychain.sharedInstance.save(secretData: seed, id: keychainService, service: keychainService)
+
+
+        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 0, context: KeyIdentifier.password.rawValue)
+        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 1, context: KeyIdentifier.backup.rawValue)
+
+        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
         
         return true
     }
@@ -79,8 +101,12 @@ struct Seed {
         return padded
     }
 
-    static func get() throws -> Data {
-        return try Keychain.sharedInstance.get(id: keychainService, service: keychainService)
+    static func getPasswordKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+    }
+
+    static func getBackupKey() throws -> Data {
+        return try Keychain.sharedInstance.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
     }
 
     static func exists() -> Bool {
