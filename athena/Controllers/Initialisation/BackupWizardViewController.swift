@@ -15,6 +15,7 @@ class BackupWizardViewController: UIViewController {
     var mnemonic: [String]?
     var counter: Int = 0
     @IBOutlet weak var counterLabel: UILabel!
+    var isInitialSetup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,17 +32,6 @@ class BackupWizardViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // MARK: Actions
     @IBAction func next(_ sender: UIButton) {
@@ -55,6 +45,7 @@ class BackupWizardViewController: UIViewController {
         } else {
             let checkViewController = storyboard?.instantiateViewController(withIdentifier: "Mnemonic Check") as! BackupCheckViewController
             checkViewController.mnemonic = mnemonic
+            checkViewController.isInitialSetup = isInitialSetup
             navigationController?.pushViewController(checkViewController, animated: true)
         }
     }
@@ -71,9 +62,13 @@ class BackupWizardViewController: UIViewController {
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-        UIApplication.shared.keyWindow?.rootViewController = rootController
+        if isInitialSetup {
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+            UIApplication.shared.keyWindow?.rootViewController = rootController
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
 
 }
