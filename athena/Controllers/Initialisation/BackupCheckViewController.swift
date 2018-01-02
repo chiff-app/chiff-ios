@@ -9,7 +9,6 @@
 import UIKit
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
-
     @IBOutlet weak var firstWordLabel: UILabel!
     @IBOutlet weak var secondWordLabel: UILabel!
     @IBOutlet weak var firstWordTextField: UITextField!
@@ -22,11 +21,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        firstWordIndex = Int(arc4random_uniform(11))
-        secondWordIndex = Int(arc4random_uniform(11))
-        while secondWordIndex == firstWordIndex {
-            secondWordIndex = Int(arc4random_uniform(11))
-        }
+        firstWordIndex = Int(arc4random_uniform(5))
+        secondWordIndex = Int(arc4random_uniform(5)) + 6
 
         firstWordLabel.text = "Word #\(firstWordIndex+1)"
         secondWordLabel.text = "Word #\(secondWordIndex+1)"
@@ -35,8 +31,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         secondWordTextField.delegate = self
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-
     }
+
 
     //MARK: UITextFieldDelegate
 
@@ -59,6 +55,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
 
+    // MARK: Actions
+
     @IBAction func finish(_ sender: UIButton) {
 
         do {
@@ -66,7 +64,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         } catch {
             print("Keychain couldn't be updated: \(error)")
         }
+        loadRootController()
+    }
 
+    private func loadRootController() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
         UIApplication.shared.keyWindow?.rootViewController = rootController
