@@ -110,19 +110,21 @@ struct Seed {
     }
 
     static func exists() -> Bool {
-        return Keychain.sharedInstance.has(id: keychainService, service: keychainService)
+        return Keychain.sharedInstance.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
     }
 
     static func delete() throws {
-        try Keychain.sharedInstance.delete(id: keychainService, service: keychainService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
     }
 
     static func setBackedUp() throws {
-        try Keychain.sharedInstance.update(id: keychainService, service: keychainService, secretData: nil, objectData: nil, label: "true")
+        try Keychain.sharedInstance.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, secretData: nil, objectData: nil, label: "true")
     }
 
     static func isBackedUp() throws -> Bool {
-        guard let dataArray = try Keychain.sharedInstance.attributes(id: keychainService, service: keychainService) else {
+        guard let dataArray = try Keychain.sharedInstance.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
             return false
         }
 

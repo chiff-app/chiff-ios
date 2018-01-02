@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        deletePasswords()   // Uncomment if passwords should be cleaned before startup
-        deleteSeed()      // Uncomment if you want to force seed regeneration
+        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
+        //deleteSeed()      // Uncomment if you want to force seed regeneration
         
         // Override point for customization after application launch.
         fetchAWSIdentification()
@@ -140,9 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.rootViewController = viewController
         self.window?.makeKeyAndVisible()
-
     }
-
 
 }
 

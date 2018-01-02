@@ -18,6 +18,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     var mnemonic: [String]?
     var firstWordIndex = 0
     var secondWordIndex = 0
+    var isInitialSetup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,15 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: Actions
 
+
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        if isInitialSetup {
+            loadRootController()
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
+    }
+
     @IBAction func finish(_ sender: UIButton) {
 
         do {
@@ -64,7 +74,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         } catch {
             print("Keychain couldn't be updated: \(error)")
         }
-        loadRootController()
+        if isInitialSetup {
+            loadRootController()
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     private func loadRootController() {

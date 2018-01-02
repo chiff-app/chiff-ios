@@ -12,8 +12,8 @@
         <!--Backup-->
         <scene sceneID="eih-dt-fvP">
             <objects>
-                <viewController id="t4l-dO-PAi" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="I5Y-w9-xx5">
+                <viewController storyboardIdentifier="Backup Start" id="t4l-dO-PAi" customClass="BackupStartViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="Backup Start" id="I5Y-w9-xx5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -29,7 +29,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start"/>
                                 <connections>
-                                    <segue destination="G4M-SE-Rv6" kind="show" id="bHO-Jf-8Tw"/>
+                                    <action selector="startBackupWizard:" destination="t4l-dO-PAi" eventType="touchUpInside" id="wcI-AX-VYo"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -47,7 +47,7 @@
         <!--Backup-->
         <scene sceneID="823-MT-xbl">
             <objects>
-                <viewController id="G4M-SE-Rv6" customClass="BackupWizardViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Backup Wizard" id="G4M-SE-Rv6" customClass="BackupWizardViewController" customModule="athena" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="E3Q-Hm-ash">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -113,7 +113,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKm-32-cAP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1140" y="-48.125937031484263"/>
+            <point key="canvasLocation" x="2148" y="-48.125937031484263"/>
         </scene>
         <!--Backup Check View Controller-->
         <scene sceneID="lCm-9a-FSK">
@@ -202,6 +202,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vjU-dO-5bG"/>
                     </view>
+                    <navigationItem key="navigationItem" id="ym0-3n-u3a">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="13e-rh-NJm">
+                            <connections>
+                                <action selector="cancel:" destination="KKn-1Y-xqx" id="uVg-iI-hbn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="finishButton" destination="bV8-f9-fe0" id="SRz-8m-UqX"/>
                         <outlet property="firstWordLabel" destination="HZ1-EA-kKW" id="kKK-Ga-spS"/>
@@ -212,7 +219,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="38R-RF-4vw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1864.8" y="-51.724137931034484"/>
+            <point key="canvasLocation" x="2872.8000000000002" y="-48.125937031484263"/>
         </scene>
         <!--Initialisation View Controller-->
         <scene sceneID="WWv-3H-Erj">
@@ -411,6 +418,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aHc-yu-KUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-424" y="-47.676161919040482"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hqG-Lo-GB7">
+            <objects>
+                <navigationController storyboardIdentifier="Wizard Navigator" automaticallyAdjustsScrollViewInsets="NO" id="eoa-ox-bSp" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Var-QI-AjP">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="G4M-SE-Rv6" kind="relationship" relationship="rootViewController" id="Qf7-dS-v5z"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3bN-zL-dOv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1223" y="-825"/>
         </scene>
     </scenes>
 </document>
