@@ -13,9 +13,7 @@ class RootViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if try! !Seed.isBackedUp() {
-            print("Seed is not backed up yet, an annoying banner should appear until this is done.")
-        }
+
     }
 
     override func didReceiveMemoryWarning() {
