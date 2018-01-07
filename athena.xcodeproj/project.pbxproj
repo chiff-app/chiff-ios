@@ -27,6 +27,8 @@
 		4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997200D1FD19CEE00EA3436 /* SessionManager.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A547961FC8559900CD4382 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
+		49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */; };
+		49B6B75820024BC300310BC3 /* PersonalDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
@@ -84,6 +86,8 @@
 		4997200D1FD19CEE00EA3436 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
+		49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailsTableViewController.swift; path = athena/Controllers/Settings/PersonalDetailsTableViewController.swift; sourceTree = SOURCE_ROOT; };
+		49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailTableViewCell.swift; path = athena/Controllers/Settings/PersonalDetailTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		49E766501F7E6F420022C042 /* athena.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = athena.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
+				49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */,
+				49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */,
 			);
 			name = Settings;
 			path = "New Group";
@@ -533,7 +539,9 @@
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
+				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
+				49B6B75820024BC300310BC3 /* PersonalDetailTableViewCell.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,

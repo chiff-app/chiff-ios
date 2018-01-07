@@ -15,11 +15,7 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         do {
-            if try !Seed.isBackedUp() {
-                paperBackupWarningLabel.isHidden = false
-            } else {
-                paperBackupWarningLabel.isHidden = true
-            }
+            paperBackupWarningLabel.isHidden = try Seed.isBackedUp()
         } catch {
             print("TODO: Handle error")
         }
