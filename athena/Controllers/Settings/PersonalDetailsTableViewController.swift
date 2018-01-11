@@ -15,7 +15,6 @@ class PersonalDetailsTableViewController: UITableViewController, UITextFieldDele
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let dict = Dictionary<String,String>
         if let defaults = UserDefaults.standard.dictionary(forKey: "personalDetails") as? [String:String] {
             personalDetails = defaults
         }

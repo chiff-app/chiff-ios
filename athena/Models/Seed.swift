@@ -53,11 +53,25 @@ struct Seed {
 
         return mnemonic
     }
-
-    static func recover(mnemonic: [String]) throws -> Bool {
+    
+    static func validate(mnemonic: [String]) -> Bool {
+        guard let (checksum, seed) = try? generateSeedFromMnemonic(mnemonic: mnemonic) else {
+            return false
+        }
+        
+        guard let seedHash = try? Crypto.sharedInstance.hash(seed).first! else {
+            return false
+        }
+        if checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) {
+            return true
+        }
+        return false
+    }
+    
+    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
         let wordlist = wordlistData.components(separatedBy: .newlines)
-
+        
         var bitstring = ""
         for word in mnemonic {
             guard let index: Int = wordlist.index(of: word) else {
@@ -65,7 +79,7 @@ struct Seed {
             }
             bitstring += pad(string: String(index, radix: 2), toSize: 11)
         }
-
+        
         let checksum = bitstring.suffix(mnemonic.count / 3)
         let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
         var seed = Data(capacity: seedString.count)
@@ -75,6 +89,12 @@ struct Seed {
             }
             seed.append(byte)
         }
+        
+        return (String(checksum), seed)
+    }
+
+    static func recover(mnemonic: [String]) throws -> Bool {
+        let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
 
         let seedHash = try Crypto.sharedInstance.hash(seed).first!
         guard checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) else {
@@ -85,7 +105,7 @@ struct Seed {
         let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 0, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 1, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
         try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
         try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
         
@@ -120,7 +140,7 @@ struct Seed {
     }
 
     static func setBackedUp() throws {
-        try Keychain.sharedInstance.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, secretData: nil, objectData: nil, label: "true")
+        try Keychain.sharedInstance.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
     }
 
     static func isBackedUp() throws -> Bool {

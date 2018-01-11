@@ -22,13 +22,17 @@ class Keychain {
 
     // MARK:  CRUD methods
 
-   func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil) throws {
+    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
                                     kSecValueData as String: secretData]
         if objectData != nil {
             query[kSecAttrGeneric as String] = objectData
+        }
+    
+        if label != nil {
+            query[kSecAttrLabel as String] = label
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -85,7 +89,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    func update(id identifier: String, service: String, secretData: Data?, objectData: Data?, label: String?) throws {
+    func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
