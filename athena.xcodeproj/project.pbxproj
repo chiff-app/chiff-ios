@@ -148,8 +148,7 @@
 				49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */,
 				49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */,
 			);
-			name = Settings;
-			path = "New Group";
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		499569BF1FED477600D75848 /* Resources */ = {
