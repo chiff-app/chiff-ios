@@ -1,2 +1,2 @@
-# Athena swift app
-OSX App
+# Keyn swift app
+iOS App
