@@ -106,6 +106,7 @@
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
@@ -211,6 +212,7 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
+				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49F448281FD1652C00643C4D /* AWS.swift */,
 				4997200D1FD19CEE00EA3436 /* SessionManager.swift */,
@@ -393,6 +395,11 @@
 					49E7664F1F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					49E766651F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
@@ -721,12 +728,13 @@
 			baseConfigurationReference = F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.keyn.keyn;
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
@@ -739,12 +747,13 @@
 			baseConfigurationReference = C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.keyn.keyn;
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;

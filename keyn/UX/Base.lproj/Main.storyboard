@@ -261,7 +261,13 @@
                     <view key="view" contentMode="scaleToFill" id="M7J-Ow-gEZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
+                                <rect key="frame" x="138" y="289" width="99" height="88"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.27404850720000001" green="0.190571934" blue="0.60955005880000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="low-6y-hba"/>
                     </view>
                 </viewController>
@@ -966,6 +972,7 @@
         <image name="device-selected-icon" width="34" height="23"/>
         <image name="eye_logo" width="20" height="14"/>
         <image name="lock-selected" width="21" height="26"/>
+        <image name="logo" width="384" height="428"/>
         <image name="password-icon" width="22" height="27"/>
         <image name="settings-icon" width="26" height="27"/>
         <image name="settings-selected-icon" width="26" height="27"/>
