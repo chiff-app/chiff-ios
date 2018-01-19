@@ -19,7 +19,9 @@ class AWS {
 
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
-    let snsARN = "TODO:fixARN"
+    private let sns = AWSSNS.default()
+    let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:787429400306:app/APNS_SANDBOX/Keyn"
+    var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
 
     private init() {}
@@ -58,5 +60,69 @@ class AWS {
             })
         }
     }
-    
+
+    func snsRegistration(deviceToken: Data) {
+        // TODO: Is this the best way to convert Data to AWS-accepted string. If so make String extension
+        var token = ""
+        for i in 0..<deviceToken.count {
+            token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+        }
+        print("Device token: \(token)")
+
+        // Should this be saved here or in ApplicationDelegate?
+        UserDefaults.standard.set(token, forKey: "deviceToken")
+
+        // Check if endpointARN is stored
+        // TODO: should this be saved in userDefaults or perhaps Keychain?
+        snsDeviceEndpointArn = UserDefaults.standard.string(forKey: "snsEndpointArn")
+        print("Endpoint: \(snsDeviceEndpointArn)")
+        guard let request = AWSSNSCreatePlatformEndpointInput() else {
+            print("TODO: handle error")
+            return
+        }
+
+        // Create new endpoint if not found in storage
+        if snsDeviceEndpointArn == nil {
+            createPlatformEndpoint(request: request, token: token)
+        }
+
+        // TODO: Check if endpoint needs to be updated
+
+        //    if (while getting the attributes a not-found exception is thrown)
+        //    # the platform endpoint was deleted
+        //    call create platform endpoint with the latest device token
+        //    store the returned platform endpoint ARN
+        //    else
+        //    if (the device token in the endpoint does not match the latest one) or
+        //    (get endpoint attributes shows the endpoint as disabled)
+        //    call set endpoint attributes to set the latest device token and then enable the platform endpoint
+        //    endif
+        //    endif
+
+        // See: https://docs.aws.amazon.com/sns/latest/dg/mobile-platform-endpoint.html
+
+    }
+
+    // MARK: Private functions
+
+    private func createPlatformEndpoint(request: AWSSNSCreatePlatformEndpointInput, token: String) {
+        request.token = token
+        request.platformApplicationArn = snsPlatformApplicationArn
+        sns.createPlatformEndpoint(request).continueWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
+            if task.error != nil {
+                print("Error: \(String(describing: task.error))")
+            } else {
+                guard let response = task.result else {
+                    print("TODO: handle error")
+                    return nil
+                }
+                if let endpointArn = response.endpointArn {
+                    print("endpointArn: \(endpointArn)")
+                    self.snsDeviceEndpointArn = endpointArn
+                    UserDefaults.standard.set(endpointArn, forKey: "snsEndpointArn")
+                }
+            }
+            return nil
+        })
+    }
 }

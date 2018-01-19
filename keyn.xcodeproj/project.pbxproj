@@ -12,6 +12,9 @@
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
+		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
+		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -49,6 +52,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4919DAE920123FE50048B060 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4919DAE320123FE50048B060;
+			remoteInfo = keynNotificationExtension;
+		};
 		49E766671F7E6F420022C042 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
@@ -65,12 +75,31 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4919DAEF20123FE50048B060 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		01839A701FACA93A00698B69 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		4919DAE820123FE50048B060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4919DAF0201244FE0048B060 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
+		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +149,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4919DAE120123FE50048B060 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664D1F7E6F420022C042 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -145,6 +181,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4919DAE520123FE50048B060 /* keynNotificationExtension */ = {
+			isa = PBXGroup;
+			children = (
+				4919DAF0201244FE0048B060 /* keynNotificationExtension.entitlements */,
+				4919DAE620123FE50048B060 /* NotificationService.swift */,
+				4919DAE820123FE50048B060 /* Info.plist */,
+			);
+			path = keynNotificationExtension;
+			sourceTree = "<group>";
+		};
+		4919DAF32012620A0048B060 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				4919DAF1201261FE0048B060 /* RequestViewController.swift */,
+			);
+			name = Requests;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		497FDD8C1FFBDB5F00AAB0DA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,6 +227,7 @@
 				61D0BE991FF2A26F0072631D /* Devices */,
 				497FDD8C1FFBDB5F00AAB0DA /* Settings */,
 				6105598D1FDC553C0030F871 /* Initialisation */,
+				4919DAF32012620A0048B060 /* Requests */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -193,6 +249,7 @@
 				49E766521F7E6F420022C042 /* keyn */,
 				49E766691F7E6F420022C042 /* keynTests */,
 				49E766741F7E6F420022C042 /* keynUITests */,
+				4919DAE520123FE50048B060 /* keynNotificationExtension */,
 				49E766511F7E6F420022C042 /* Products */,
 				9C59233641B71D82B45CC67E /* Pods */,
 				DA12BC503DD66E19451F494A /* Frameworks */,
@@ -205,6 +262,7 @@
 				49E766501F7E6F420022C042 /* keyn.app */,
 				49E766661F7E6F420022C042 /* keynTests.xctest */,
 				49E766711F7E6F420022C042 /* keynUITests.xctest */,
+				4919DAE420123FE50048B060 /* keynNotificationExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -326,6 +384,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4919DAE320123FE50048B060 /* keynNotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */;
+			buildPhases = (
+				4919DAE020123FE50048B060 /* Sources */,
+				4919DAE120123FE50048B060 /* Frameworks */,
+				4919DAE220123FE50048B060 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = keynNotificationExtension;
+			productName = keynNotificationExtension;
+			productReference = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		49E7664F1F7E6F420022C042 /* keyn */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
@@ -336,10 +411,12 @@
 				49E7664E1F7E6F420022C042 /* Resources */,
 				85A45794F744A82A701DCEF1 /* [CP] Embed Pods Frameworks */,
 				BD32DD255FA36C476AE9A9E4 /* [CP] Copy Pods Resources */,
+				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4919DAEA20123FE50048B060 /* PBXTargetDependency */,
 			);
 			name = keyn;
 			productName = athena;
@@ -388,14 +465,26 @@
 		49E766481F7E6F420022C042 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = keyn;
 				TargetAttributes = {
+					4919DAE320123FE50048B060 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+						};
+					};
 					49E7664F1F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -429,11 +518,19 @@
 				49E7664F1F7E6F420022C042 /* keyn */,
 				49E766651F7E6F420022C042 /* keynTests */,
 				49E766701F7E6F420022C042 /* keynUITests */,
+				4919DAE320123FE50048B060 /* keynNotificationExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4919DAE220123FE50048B060 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664E1F7E6F420022C042 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -528,6 +625,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4919DAE020123FE50048B060 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49E7664C1F7E6F420022C042 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -535,6 +640,7 @@
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
+				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
@@ -584,6 +690,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4919DAEA20123FE50048B060 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4919DAE320123FE50048B060 /* keynNotificationExtension */;
+			targetProxy = 4919DAE920123FE50048B060 /* PBXContainerItemProxy */;
+		};
 		49E766681F7E6F420022C042 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49E7664F1F7E6F420022C042 /* keyn */;
@@ -616,6 +727,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4919DAEC20123FE50048B060 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4919DAED20123FE50048B060 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		49E766781F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -727,6 +870,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -746,6 +890,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -830,6 +975,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4919DAEC20123FE50048B060 /* Debug */,
+				4919DAED20123FE50048B060 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "keyn" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
