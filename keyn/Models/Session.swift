@@ -66,6 +66,12 @@ class Session: Codable {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
     }
 
+    func decrypt(message: String) throws -> String {
+        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
+        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: try appPrivateKey(), pubKey: try browserPublicKey())
+        return String(data: data, encoding: .utf8)!
+    }
+
 
     // MARK: Static functions
 
@@ -89,6 +95,21 @@ class Session: Codable {
     static func exists(sqs: String, browserPublicKey: String) throws -> Bool {
         let id = try "\(browserPublicKey)_\(sqs)".hash()
         return Keychain.sharedInstance.has(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+    }
+
+    static func exists(id: String) throws -> Bool {
+        return Keychain.sharedInstance.has(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+    }
+
+    static func getSession(id: String) throws -> Session? {
+        guard let sessionDict = try Keychain.sharedInstance.attributes(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService) else {
+            return nil
+        }
+        guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
+            throw KeychainError.unexpectedData
+        }
+        let decoder = PropertyListDecoder()
+        return try decoder.decode(Session.self, from: sessionData)
     }
     
 }

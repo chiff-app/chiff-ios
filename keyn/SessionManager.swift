@@ -34,13 +34,15 @@ class SessionManager {
 
     
     private func createPairingResponse(session: Session) throws -> String {
-        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: AWS.sharedInstance.snsARN)
+        guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
+            return "" // TODO Throw error
+        }
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint)
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 
         return b64ciphertext
     }
-
     
 }

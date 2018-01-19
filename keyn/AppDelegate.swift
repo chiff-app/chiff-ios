@@ -10,10 +10,12 @@
 import UIKit
 import AWSCore
 import AWSCognito
+import AWSSNS
+import UserNotifications
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -27,8 +29,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         fetchAWSIdentification()
         launchInitialView()
-        
+        registerForPushNotifications()
+
         return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("TODO: Enable stuff")
+        AWS.sharedInstance.snsRegistration(deviceToken: deviceToken)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // The token is not currently available.
+        print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
+        print("TODO: Disable stuff")
+    }
+
+    // Called when a notification is delivered to a foreground app.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        if let ciphertext = notification.request.content.userInfo["data"] as? String,
+            let id = notification.request.content.userInfo["id"] as? String {
+            print("Received request for session with id \(id) with payload \(ciphertext)")
+            do {
+                if let session = try Session.getSession(id: id) {
+                    DispatchQueue.main.async {
+                        let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
+                        let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
+                        viewController.session = session
+                        UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
+                    }
+                }
+            } catch {
+                print("Session could not be decoded: \(error)")
+            }
+        }
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    // Called to let your app know which action was selected by the user for a given notification.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if let ciphertext = response.notification.request.content.userInfo["data"] as? String,
+            let id = response.notification.request.content.userInfo["id"] as? String{
+            print("Received request for session with id \(id) with payload \(ciphertext)")
+        }
+        if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            print("App is launched!")
+        }
+        completionHandler()
     }
 
 
@@ -114,15 +163,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(status)
         }
     }
-
-    private func fetchAWSIdentification() {
-//        let credentialsProvider = AWSStaticCredentialsProvider(accessKey: "AKIAIPSH6JLWAEOLEXDA", secretKey: "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"))
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
-                                                                identityPoolId: "eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
-
-        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-    }
     
     private func launchInitialView() {
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
@@ -140,6 +180,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.rootViewController = viewController
         self.window?.makeKeyAndVisible()
+    }
+
+    func fetchAWSIdentification() {
+        //        let credentialsProvider = AWSStaticCredentialsProvider(accessKey: "AKIAIPSH6JLWAEOLEXDA", secretKey: "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"))
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
+                                                                identityPoolId: "eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
+
+        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+
+    private func registerForPushNotifications() {
+        // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
+        let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
+                                                       title: "Accept",
+                                                       options: .authenticationRequired)
+        let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
+                                                       title: "Reject",
+                                                       options: .destructive)
+        let passwordRequestNotificationCategory = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
+                                                                         actions: [acceptRequestAction, rejectRequestAction],
+                                                                         intentIdentifiers: [],
+                                                                         options: .customDismissAction)
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.setNotificationCategories([passwordRequestNotificationCategory])
+        center.requestAuthorization(options: [.badge, .alert, .sound]) { (granted, error) in
+            if granted {
+                DispatchQueue.main.sync {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else {
+                //Do stuff if unsuccessful… Inform user that app can't be used without push notifications
+            }
+        }
+
+
     }
 
 }
