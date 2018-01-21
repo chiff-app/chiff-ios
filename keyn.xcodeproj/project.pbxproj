@@ -40,15 +40,25 @@
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
+		4DAE2A13548F5CC12B9AA130 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
+		613CFB0120135DD700460CC6 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
+		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
+		613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
+		613CFB0420135E3000460CC6 /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 613CFB0520135E3000460CC6 /* Pods_keyn.framework */; };
+		613CFB0620135E8400460CC6 /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 613CFB0520135E3000460CC6 /* Pods_keyn.framework */; };
+		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
+		613CFB08201360C200460CC6 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
+		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		613CFB0A201360D800460CC6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
+		613CFB0B201360DB00460CC6 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		9DD5FACA0822366762353AA8 /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE854E94C67DA09AE316D32 /* Pods_keyn.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,7 +108,6 @@
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4919DAE820123FE50048B060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4919DAF0201244FE0048B060 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
@@ -131,20 +140,21 @@
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.debug.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
+		613CFB0520135E3000460CC6 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
-		8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-athena.release.xcconfig"; path = "Pods/Target Support Files/Pods-athena/Pods-athena.release.xcconfig"; sourceTree = "<group>"; };
-		B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_athena.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BCE854E94C67DA09AE316D32 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.release.xcconfig"; sourceTree = "<group>"; };
+		D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				613CFB0420135E3000460CC6 /* Pods_keyn.framework in Frameworks */,
+				4DAE2A13548F5CC12B9AA130 /* Pods_keynNotificationExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,7 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DD5FACA0822366762353AA8 /* Pods_keyn.framework in Frameworks */,
+				613CFB0620135E8400460CC6 /* Pods_keyn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,7 +196,7 @@
 		4919DAE520123FE50048B060 /* keynNotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
-				4919DAF0201244FE0048B060 /* keynNotificationExtension.entitlements */,
+				613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */,
 				4919DAE620123FE50048B060 /* NotificationService.swift */,
 				4919DAE820123FE50048B060 /* Info.plist */,
 			);
@@ -364,10 +376,10 @@
 		9C59233641B71D82B45CC67E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5D17A1047E1BA0EF984F4459 /* Pods-athena.debug.xcconfig */,
-				8A7A7AF491EEB357F7270FAF /* Pods-athena.release.xcconfig */,
 				F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */,
 				C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */,
+				D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */,
+				C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -375,8 +387,8 @@
 		DA12BC503DD66E19451F494A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B0CF2A6A7ED6E0560AA8D149 /* Pods_athena.framework */,
-				BCE854E94C67DA09AE316D32 /* Pods_keyn.framework */,
+				613CFB0520135E3000460CC6 /* Pods_keyn.framework */,
+				6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -388,9 +400,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */;
 			buildPhases = (
+				2CE4B6413D19C36400D20B2E /* [CP] Check Pods Manifest.lock */,
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
 				4919DAE220123FE50048B060 /* Resources */,
+				50540880B1367F121509DEB0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -476,6 +490,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 						};
 					};
 					49E7664F1F7E6F420022C042 = {
@@ -484,6 +501,12 @@
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
 							};
 							com.apple.Push = {
 								enabled = 1;
@@ -561,6 +584,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2CE4B6413D19C36400D20B2E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keynNotificationExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2CF75E9FE6D16F6BE657C38E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -577,6 +618,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50540880B1367F121509DEB0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		85A45794F744A82A701DCEF1 /* [CP] Embed Pods Frameworks */ = {
@@ -629,7 +685,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */,
+				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
+				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
+				613CFB0120135DD700460CC6 /* Session.swift in Sources */,
+				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
+				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
+				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
+				613CFB07201360B300460CC6 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,7 +793,9 @@
 /* Begin XCBuildConfiguration section */
 		4919DAEC20123FE50048B060 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
@@ -745,7 +811,9 @@
 		};
 		4919DAED20123FE50048B060 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynNotificationExtension/Info.plist;

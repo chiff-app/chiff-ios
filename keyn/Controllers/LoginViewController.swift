@@ -13,11 +13,11 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        authenticateUser()
+        //authenticateUser()
         // Do any additional setup after loading the view.
     }
 
-    private func authenticateUser() {
+    func authenticateUser() {
         let authenticationContext = LAContext()
         var error: NSError?
 
@@ -32,6 +32,9 @@ class LoginViewController: UIViewController {
             reply: { [weak self] (success, error) -> Void in
                 if (success) {
                     DispatchQueue.main.async {
+                        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                            appDelegate.authenticated = true
+                        }
                         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                         let viewController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
                         UIApplication.shared.keyWindow?.rootViewController = viewController

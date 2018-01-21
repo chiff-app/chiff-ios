@@ -68,8 +68,20 @@ class Session: Codable {
 
     func decrypt(message: String) throws -> String {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: try appPrivateKey(), pubKey: try browserPublicKey())
+        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return String(data: data, encoding: .utf8)!
+    }
+    
+    func sendPassword(account: Account) throws {
+        let ciphertext = try Crypto.sharedInstance.encrypt(account.password(), pubKey: browserPublicKey(), privKey: appPrivateKey())
+        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+       
+        // TODO, add request ID etc
+        
+        // Get SQS queue and send message to queue
+        try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
+            AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: queueUrl, sessionID: self.id, type: "login")
+        }
     }
 
 

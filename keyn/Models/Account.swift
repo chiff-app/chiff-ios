@@ -52,6 +52,10 @@ struct Account: Codable {
 
         return password
     }
+    
+    func password() throws -> Data {
+        return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
+    }
 
     mutating func updatePassword(restrictions: PasswordRestrictions) throws {
         passwordIndex += 1

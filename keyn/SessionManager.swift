@@ -26,7 +26,7 @@ class SessionManager {
 
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqs) { (queueUrl) in
-            AWS.sharedInstance.sendToSqs(message: pairingResponse, to: queueUrl, sessionID: session.id)
+            AWS.sharedInstance.sendToSqs(message: pairingResponse, to: queueUrl, sessionID: session.id, type: "pair")
         }
 
         return session

@@ -8,6 +8,7 @@
 
 import UserNotifications
 
+
 class NotificationService: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
@@ -16,14 +17,19 @@ class NotificationService: UNNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        
         if let bestAttemptContent = bestAttemptContent {
-            // Modify the notification content here...
-            // decrypt, add site + device info to body
-            //print(bestAttemptContent.userInfo["data"])
-            //bestAttemptContent.userInfo["data"] = "Plaintext"
-
-
+            if let ciphertext = bestAttemptContent.userInfo["data"] as? String,
+                let id = bestAttemptContent.userInfo["id"] as? String {
+                do {
+                    if let session = try Session.getSession(id: id) {
+                        bestAttemptContent.userInfo["data"] = try session.decrypt(message: ciphertext)
+                    } else {
+                        print("Received request for session that doesn't exist.")
+                    }
+                } catch {
+                    print("Session could not be decoded: \(error)")
+                }
+            }
             contentHandler(bestAttemptContent)
         }
     }
