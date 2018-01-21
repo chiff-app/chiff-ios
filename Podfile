@@ -2,12 +2,20 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '11.0'
 
-target 'keyn' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
+use_frameworks!
+
+def pods
   pod 'MBProgressHUD', '~> 1.0.0'
   pod 'Sodium', '~> 0.5'
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
+end
+
+target 'keyn' do
+  pods
+end
+
+target 'keynNotificationExtension' do
+  pods
 end
