@@ -26,6 +26,7 @@ class Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
+                                    kSecAttrAccessible as  String: kSecAttrAccessibleAlwaysThisDeviceOnly,
                                     kSecValueData as String: secretData]
         if objectData != nil {
             query[kSecAttrGeneric as String] = objectData

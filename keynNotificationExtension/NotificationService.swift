@@ -22,9 +22,12 @@ class NotificationService: UNNotificationServiceExtension {
                 let id = bestAttemptContent.userInfo["id"] as? String {
                 do {
                     if let session = try Session.getSession(id: id) {
-                        bestAttemptContent.userInfo["data"] = try session.decrypt(message: ciphertext)
-                    } else {
-                        print("Received request for session that doesn't exist.")
+                        let siteID = try session.decrypt(message: ciphertext)
+                        if let account = try Account.get(siteID: siteID) {
+                            //bestAttemptContent.title = "Login request for \(account.site.name)"
+                            bestAttemptContent.body = "Login request for \(account.site.name) from \(session.browser) on \(session.os)."
+                        }
+                        bestAttemptContent.userInfo["data"] = siteID
                     }
                 } catch {
                     print("Session could not be decoded: \(error)")
