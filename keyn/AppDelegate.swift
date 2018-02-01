@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     var notificationUserInfo: [String:String]?
     var authenticated = false
+    var requestInProgress = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -119,12 +120,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         authenticated = false
+        requestInProgress = false
     }
 
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo
-        notificationUserInfo = nil
+        //notificationUserInfo = nil
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
@@ -134,22 +136,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         print("applicationDidBecomeActive")
-        print(notificationUserInfo)
-        if let info = notificationUserInfo {
-            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, sandboxed: true, accepted: info["sessionID"]! == "true")
+        if notificationUserInfo != nil && !requestInProgress {
+            requestInProgress = true
+            let info = notificationUserInfo!
+            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, sandboxed: true, accepted: info["accepted"] == "true")
             notificationUserInfo = nil
-        } else if !authenticated {
+        } else if !authenticated && !requestInProgress {
             if let viewController = UIApplication.shared.visibleViewController as? LoginViewController {
                 viewController.authenticateUser()
             } else {
-                print("TODO: test if this can happen..")
+                print("TODO: test if this can happen..: \(UIApplication.shared.visibleViewController)")
+                // This means TouchID is cancelled in RequestViewController. What should happen if you do this? 
             }
         }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        authenticated = false
         
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
@@ -215,7 +218,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 viewController.sandboxed = sandboxed
                 viewController.accepted = accepted
                 if sandboxed {
-                    UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
+                    UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
+                        self.requestInProgress = false
+                    })
                 } else {
                     UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
                 }
