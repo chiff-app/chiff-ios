@@ -10,8 +10,13 @@ import UIKit
 
 class AuthenticationViewController: UIViewController {
 
+    @IBOutlet var passcodeButtons: [UIButton]!
+    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var touchIDButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        drawButtons()
 
         // Do any additional setup after loading the view.
     }
@@ -31,5 +36,24 @@ class AuthenticationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+    // MARK: Actions
+
+    @IBAction func touchID(_ sender: UIButton) {
+        authenticateUser()
+    }
+
+    // MARK: Private methods
+
+    private func drawButtons() {
+        touchIDButton.imageView!.contentMode = .scaleAspectFit
+        touchIDButton.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13)
+
+        for button in passcodeButtons {
+            button.layer.borderWidth = 1.3
+            button.layer.borderColor = UIColor.white.cgColor
+            button.layer.cornerRadius = button.frame.width/2
+        }
+    }
 
 }

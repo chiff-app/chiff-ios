@@ -12,60 +12,24 @@ import SmileLock
 
 class LoginViewController: UIViewController {
 
-    @IBOutlet weak var touchIdButton: UIButton!
     var autoAuthentication = true
     
     override func viewDidLoad() {
-        print("Login view controller loaded")
         super.viewDidLoad()
-        touchIdButton.imageView!.contentMode = .scaleAspectFit
 
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("Login view controller appeared")
         if autoAuthentication {
             authenticateUser()
         }
     }
 
-//    func authenticateUser() {
-//        let authenticationContext = LAContext()
-//        var error: NSError?
-//
-//        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-//            print("Todo: handle fingerprint absence \(String(describing: error))")
-//            return
-//        }
-//
-//        authenticationContext.evaluatePolicy(
-//            .deviceOwnerAuthenticationWithBiometrics,
-//            localizedReason: "Unlock Keyn",
-//            reply: { [weak self] (success, error) -> Void in
-//                if (success) {
-//                    DispatchQueue.main.async {
-//                        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-//                            appDelegate.authenticated = true
-//                        }
-//                        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                        let viewController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-//                        UIApplication.shared.keyWindow?.rootViewController = viewController
-//                    }
-//                } else {
-//                    print("Todo")
-//                }
-//            }
-//        )
-//    }
-
-    @IBAction func authenticateButton(_ sender: UIButton) {
-        authenticateUser()
-    }
 }
 
-extension LoginViewController {
+extension UIViewController  {
 
     func authenticateUser() {
 
