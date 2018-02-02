@@ -279,27 +279,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F8h-P9-LbK">
-                                <rect key="frame" x="28" y="181" width="318" height="367"/>
+                                <rect key="frame" x="28" y="181" width="318" height="466"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="gHc-rU-sGC" kind="embed" id="vVq-V8-lw9"/>
                                 </connections>
                             </containerView>
-                            <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aHL-jI-GUs">
-                                <rect key="frame" x="166" y="574" width="42" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="fingerprint"/>
-                                <connections>
-                                    <action selector="authenticateButton:" destination="Pqc-6s-Pnr" eventType="touchUpInside" id="b6Z-Lr-iC1"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.27450980392156865" green="0.19215686274509802" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="low-6y-hba"/>
                     </view>
-                    <connections>
-                        <outlet property="touchIdButton" destination="aHL-jI-GUs" id="gwO-Oj-2Tn"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaW-Ua-YRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1009,24 +998,190 @@
             <objects>
                 <viewController id="gHc-rU-sGC" customClass="AuthenticationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pUx-x9-oQA">
-                        <rect key="frame" x="0.0" y="0.0" width="318" height="367"/>
+                        <rect key="frame" x="0.0" y="0.0" width="318" height="466"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This should become passcode entry form" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W79-C3-XM8">
-                                <rect key="frame" x="55" y="145" width="221" height="77"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="SHR-aw-Wcz">
+                                <rect key="frame" x="10" y="0.0" width="298" height="458"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0fl-gr-OCg">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="27"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <viewLayoutGuide key="safeArea" id="p1G-zj-WkL"/>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="v9R-EI-z4S">
+                                        <rect key="frame" x="0.0" y="52" width="298" height="83"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FEs-FJ-JhT">
+                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="FEs-FJ-JhT" secondAttribute="height" multiplier="1:1" id="U0W-Kv-Aq0"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="1">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dMF-Br-0I2">
+                                                <rect key="frame" x="107.5" y="0.0" width="83" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="dMF-Br-0I2" secondAttribute="height" multiplier="1:1" id="YJE-fY-Kfd"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="2">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIh-MB-mgE">
+                                                <rect key="frame" x="215.5" y="0.0" width="82.5" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="XIh-MB-mgE" secondAttribute="height" multiplier="1:1" id="RG0-xj-gvm"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="3">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="wUv-SA-QTi">
+                                        <rect key="frame" x="0.0" y="160" width="298" height="82.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lcA-PZ-spU">
+                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="lcA-PZ-spU" secondAttribute="height" multiplier="1:1" id="B9S-rF-hFn"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="4">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PwI-oY-qLT">
+                                                <rect key="frame" x="107.5" y="0.0" width="83" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="PwI-oY-qLT" secondAttribute="height" multiplier="1:1" id="AAV-bL-cfa"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="5">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pXq-W1-p3V">
+                                                <rect key="frame" x="215.5" y="0.0" width="82.5" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="pXq-W1-p3V" secondAttribute="height" multiplier="1:1" id="dKr-WI-gnl"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="6">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="sdz-XA-FWu">
+                                        <rect key="frame" x="0.0" y="267.5" width="298" height="83"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0d-to-9yy">
+                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Z0d-to-9yy" secondAttribute="height" multiplier="1:1" id="vLp-ya-dpJ"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="7">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7F4-kl-bYs">
+                                                <rect key="frame" x="107.5" y="0.0" width="83" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="7F4-kl-bYs" secondAttribute="height" multiplier="1:1" id="nTa-Ww-vDt"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="8">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fNc-xw-Dmu">
+                                                <rect key="frame" x="215.5" y="0.0" width="82.5" height="83"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="fNc-xw-Dmu" secondAttribute="height" multiplier="1:1" id="08C-dG-ICX"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="9">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="VZ4-DI-WQ1">
+                                        <rect key="frame" x="0.0" y="375.5" width="298" height="82.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m4j-qB-Z5n">
+                                                <rect key="frame" x="0.0" y="0.0" width="82.5" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="m4j-qB-Z5n" secondAttribute="height" multiplier="1:1" id="g0d-0B-rhQ"/>
+                                                </constraints>
+                                                <state key="normal" image="fingerprint">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="touchID:" destination="gHc-rU-sGC" eventType="touchUpInside" id="YYw-Z7-UyW"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Win-t6-JvK">
+                                                <rect key="frame" x="107.5" y="0.0" width="83" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Win-t6-JvK" secondAttribute="height" multiplier="1:1" id="Jlh-CW-vms"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="25"/>
+                                                <state key="normal" title="0">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AY1-Pf-8jK">
+                                                <rect key="frame" x="215.5" y="0.0" width="82.5" height="82.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="AY1-Pf-8jK" secondAttribute="height" multiplier="1:1" id="Npm-gK-s4w"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                                <state key="normal" title="Delete">
+                                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.27450980392156865" green="0.19215686274509802" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="SHR-aw-Wcz" firstAttribute="leading" secondItem="pUx-x9-oQA" secondAttribute="leading" constant="10" id="LbX-il-i3S"/>
+                            <constraint firstItem="SHR-aw-Wcz" firstAttribute="top" secondItem="oTG-GX-DBz" secondAttribute="top" id="Zks-mx-gIb"/>
+                            <constraint firstItem="oTG-GX-DBz" firstAttribute="bottom" secondItem="SHR-aw-Wcz" secondAttribute="bottom" constant="8" id="nvx-XW-FH5"/>
+                            <constraint firstItem="oTG-GX-DBz" firstAttribute="trailing" secondItem="SHR-aw-Wcz" secondAttribute="trailing" constant="10" id="zUA-L7-oNM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="oTG-GX-DBz"/>
                     </view>
+                    <connections>
+                        <outlet property="deleteButton" destination="AY1-Pf-8jK" id="nWa-aL-hLY"/>
+                        <outlet property="touchIDButton" destination="m4j-qB-Z5n" id="WQw-Ef-wiC"/>
+                        <outletCollection property="passcodeButtons" destination="dMF-Br-0I2" collectionClass="NSMutableArray" id="H2L-ii-j9Z"/>
+                        <outletCollection property="passcodeButtons" destination="PwI-oY-qLT" collectionClass="NSMutableArray" id="yEh-y5-I4f"/>
+                        <outletCollection property="passcodeButtons" destination="Win-t6-JvK" collectionClass="NSMutableArray" id="Xhn-v1-vfo"/>
+                        <outletCollection property="passcodeButtons" destination="7F4-kl-bYs" collectionClass="NSMutableArray" id="4vK-fm-AOA"/>
+                        <outletCollection property="passcodeButtons" destination="FEs-FJ-JhT" collectionClass="NSMutableArray" id="FP9-ka-ihz"/>
+                        <outletCollection property="passcodeButtons" destination="XIh-MB-mgE" collectionClass="NSMutableArray" id="Mgk-Ua-yBB"/>
+                        <outletCollection property="passcodeButtons" destination="lcA-PZ-spU" collectionClass="NSMutableArray" id="4Yr-lv-wdz"/>
+                        <outletCollection property="passcodeButtons" destination="pXq-W1-p3V" collectionClass="NSMutableArray" id="20b-TQ-Ozu"/>
+                        <outletCollection property="passcodeButtons" destination="Z0d-to-9yy" collectionClass="NSMutableArray" id="OEr-4v-NAB"/>
+                        <outletCollection property="passcodeButtons" destination="fNc-xw-Dmu" collectionClass="NSMutableArray" id="hz2-rm-rzZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8rU-Lp-kOU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-274" y="1592"/>
+            <point key="canvasLocation" x="-1480" y="685"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="i4a-kZ-fZF">
@@ -1045,6 +1200,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.27450980390000002" green="0.19215686269999999" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="wIl-fL-VBz"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YrW-p7-wQc" userLabel="First Responder" sceneMemberID="firstResponder"/>

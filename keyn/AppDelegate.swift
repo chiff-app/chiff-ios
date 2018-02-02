@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("userNotificationCenter: foreground called")
         guard let siteID = notification.request.content.userInfo["data"] as? String else {
             completionHandler([])
             return
@@ -70,7 +69,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("userNotificationCenter: background called")
         guard let siteID = response.notification.request.content.userInfo["data"] as? String else {
             completionHandler()
             return
@@ -138,7 +136,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called as part of the transition from the background to the active state; here you can undo
         //notificationUserInfo = nil
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
-        print("Application entered foreground")
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
         self.window?.rootViewController = viewController
@@ -146,7 +143,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        print("applicationDidBecomeActive")
         if notificationUserInfo != nil && !requestInProgress {
             requestInProgress = true
             let info = notificationUserInfo!
@@ -235,6 +231,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
     }
+
+    // MARK: Debugging methods
 
     private func deleteSessionKeys() {
         // Remove passwords
