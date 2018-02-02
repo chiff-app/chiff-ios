@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
+        <array key="Amiko-Regular.ttf">
+            <string>Amiko-Regular</string>
+        </array>
+        <array key="Amiko-SemiBold.ttf">
+            <string>Amiko-SemiBold</string>
         </array>
     </customFonts>
     <scenes>
@@ -16,26 +22,14 @@
             <objects>
                 <viewController storyboardIdentifier="PasswordRequest" id="SIn-CL-JCH" customClass="RequestViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DHB-O1-PVe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4QI-Wg-Aye">
-                                <rect key="frame" x="43" y="288" width="120" height="91"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.98289698362350464" green="0.70581239461898804" blue="0.18042173981666565" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <state key="normal" title="Accept">
-                                    <color key="titleColor" red="0.22708415985107422" green="0.15862122178077698" blue="0.50603783130645752" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="accept:" destination="SIn-CL-JCH" eventType="touchUpInside" id="BD7-pi-3ux"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdB-Zh-duc">
-                                <rect key="frame" x="209" y="288" width="120" height="91"/>
+                                <rect key="frame" x="207" y="359" width="115" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.9828969836" green="0.7058123946" blue="0.18042173980000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="19"/>
                                 <state key="normal" title="Reject">
                                     <color key="titleColor" red="0.2270841599" green="0.15862122179999999" blue="0.50603783130000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -43,14 +37,43 @@
                                     <action selector="reject:" destination="SIn-CL-JCH" eventType="touchUpInside" id="nMV-3J-iKJ"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="aPc-IB-dSI">
+                                <rect key="frame" x="146" y="59" width="83" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4QI-Wg-Aye">
+                                <rect key="frame" x="37" y="360" width="115" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.98289698362350464" green="0.70581239461898804" blue="0.18042173981666565" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="19"/>
+                                <state key="normal" title="Accept">
+                                    <color key="titleColor" red="0.22708415985107422" green="0.15862122178077698" blue="0.50603783130645752" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="accept:" destination="SIn-CL-JCH" eventType="touchUpInside" id="BD7-pi-3ux"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login to site?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5b5-e1-HGE">
+                                <rect key="frame" x="16" y="250" width="343" height="65"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="20"/>
+                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.28582200407981873" green="0.19759389758110046" blue="0.63343566656112671" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="uGL-N3-7NY"/>
                     </view>
+                    <connections>
+                        <outlet property="siteLabel" destination="5b5-e1-HGE" id="WXe-Pm-SHW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ci9-uT-2Ci" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="444" y="-223.53823088455775"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo" width="384" height="428"/>
+    </resources>
 </document>

@@ -15,6 +15,8 @@
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
+		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
+		491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C485A2024AB2F00397071 /* AuthenticationViewController.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -25,10 +27,12 @@
 		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
-		499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 499569C51FED5B4B00D75848 /* Assets.xcassets */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		4997200E1FD19CEE00EA3436 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4997200D1FD19CEE00EA3436 /* SessionManager.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
+		49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */; };
+		49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */; };
+		49A4F2D120247E5F00CE904E /* Amiko-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */; };
 		49A547961FC8559900CD4382 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
 		49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */; };
 		49B6B75820024BC300310BC3 /* PersonalDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */; };
@@ -109,6 +113,8 @@
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4919DAE820123FE50048B060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
+		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -119,10 +125,12 @@
 		497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupStartViewController.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
-		499569C51FED5B4B00D75848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		4997200D1FD19CEE00EA3436 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
+		49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Regular.ttf"; sourceTree = "<group>"; };
+		49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-SemiBold.ttf"; sourceTree = "<group>"; };
+		49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Bold.ttf"; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
 		49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailsTableViewController.swift; path = keyn/Controllers/Settings/PersonalDetailsTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailTableViewCell.swift; path = keyn/Controllers/Settings/PersonalDetailTableViewCell.swift; sourceTree = SOURCE_ROOT; };
@@ -212,6 +220,15 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
+		491C48592024AB0200397071 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
+				491C485A2024AB2F00397071 /* AuthenticationViewController.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		497FDD8C1FFBDB5F00AAB0DA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +242,9 @@
 		499569BF1FED477600D75848 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */,
+				49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */,
+				49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */,
 				499569C21FED47BF00D75848 /* english_wordlist.txt */,
 			);
 			path = Resources;
@@ -234,7 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
-				611470F21FDC229D00AE7593 /* LoginViewController.swift */,
+				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
 				497FDD8C1FFBDB5F00AAB0DA /* Settings */,
@@ -293,8 +313,8 @@
 				49E7D3411FC318D50059D97E /* Crypto */,
 				499BE4F91FC0953C001038DF /* UX */,
 				499569BF1FED477600D75848 /* Resources */,
-				499569C51FED5B4B00D75848 /* Assets.xcassets */,
 				49E766611F7E6F420022C042 /* Info.plist */,
+				491C485720249D3B00397071 /* Assets.xcassets */,
 			);
 			path = keyn;
 			sourceTree = "<group>";
@@ -558,11 +578,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
+				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
+				49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
-				499569C61FED5B4B00D75848 /* Assets.xcassets in Resources */,
+				49A4F2D120247E5F00CE904E /* Amiko-Bold.ttf in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -647,6 +670,7 @@
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSQS/AWSSQS.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SmileLock/SmileLock.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -656,6 +680,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSQS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SmileLock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -723,6 +748,7 @@
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
+				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49B6B75820024BC300310BC3 /* PersonalDetailTableViewCell.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
