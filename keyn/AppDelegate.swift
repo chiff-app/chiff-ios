@@ -163,7 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func deleteSessionKeys() {
         // Remove passwords
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "com.keyn.session.browser"]
+                                    kSecAttrService as String: "io.keyn.session.browser"]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
@@ -174,7 +174,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Remove passwords
         let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "com.keyn.session.app"]
+                                    kSecAttrService as String: "io.keyn.session.app"]
 
         // Try to delete the seed if it exists.
         let status2 = SecItemDelete(query2 as CFDictionary)
@@ -187,7 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func deletePasswords() {
         // Remove passwords
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "com.keyn.account"]
+                                    kSecAttrService as String: "io.keyn.account"]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)
@@ -199,7 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     private func deleteSeed() {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "com.keyn.seed"]
+                                    kSecAttrService as String: "io.keyn.seed"]
 
         // Try to delete the seed if it exists.
         let status = SecItemDelete(query as CFDictionary)

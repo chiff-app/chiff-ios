@@ -22,11 +22,10 @@ class Keychain {
 
     // MARK:  CRUD methods
 
-    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil) throws {
+    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, restricted: Bool = true) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
-                                    kSecAttrAccessible as  String: kSecAttrAccessibleAlwaysThisDeviceOnly,
                                     kSecValueData as String: secretData]
         if objectData != nil {
             query[kSecAttrGeneric as String] = objectData
@@ -34,6 +33,16 @@ class Keychain {
     
         if label != nil {
             query[kSecAttrLabel as String] = label
+        }
+
+        if restricted {
+            // Only accesible by Keyn app and when device unlocked (for passwords and seed)
+            query[kSecAttrAccessible as  String] = kSecAttrAccessibleWhenUnlocked
+            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keyn"
+        } else {
+            // Also accesible from Extensions and also when device is unlocked (for app private session keys and browser public keys)
+            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keynGroup"
+            query[kSecAttrAccessible as  String] = kSecAttrAccessibleAlwaysThisDeviceOnly
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
