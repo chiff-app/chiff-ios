@@ -23,10 +23,8 @@ class NotificationService: UNNotificationServiceExtension {
                 do {
                     if let session = try Session.getSession(id: id) {
                         let siteID = try session.decrypt(message: ciphertext)
-                        if let account = try Account.get(siteID: siteID) {
-                            //bestAttemptContent.title = "Login request for \(account.site.name)"
-                            bestAttemptContent.body = "Login request for \(account.site.name) from \(session.browser) on \(session.os)."
-                        }
+                        let site = Site.get(id: siteID)
+                        bestAttemptContent.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
                         bestAttemptContent.userInfo["data"] = siteID
                     }
                 } catch {

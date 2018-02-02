@@ -9,7 +9,7 @@
 import Foundation
 
 struct Seed {
-    static let keychainService = "com.keyn.seed"
+    static let keychainService = "io.keyn.seed"
     private enum KeyIdentifier: String, Codable {
         case password = "password"
         case backup = "backup"

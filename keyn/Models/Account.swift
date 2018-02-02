@@ -11,7 +11,7 @@ struct Account: Codable {
     var passwordIndex: Int
     let restrictions: PasswordRestrictions
     var offset: [Int]?
-    static let keychainService = "com.keyn.account"
+    static let keychainService = "io.keyn.account"
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
         id = try "\(site.id)_\(username)".hash()

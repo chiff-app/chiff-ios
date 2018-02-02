@@ -7,8 +7,8 @@ class Session: Codable {
     let browser: String
     let os: String
 
-    private static let browserService = "com.keyn.session.browser"
-    private static let appService = "com.keyn.session.app"
+    private static let browserService = "io.keyn.session.browser"
+    private static let appService = "io.keyn.session.app"
 
     private enum KeyIdentifier: String, Codable {
         case pub = "public"
@@ -35,12 +35,12 @@ class Session: Codable {
         let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
 
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData)
+        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData, restricted: false)
 
         // Generate and save own keypair
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
-        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
+        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
 
     }
 
