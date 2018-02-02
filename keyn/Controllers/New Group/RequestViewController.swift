@@ -13,33 +13,27 @@ class RequestViewController: UIViewController {
 
     var session: Session?
     var siteID: String?
-    var sandboxed = false
-    var accepted = false
+    @IBOutlet weak var siteLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if accepted {
-            if let id = siteID, let account = try! Account.get(siteID: id), let session = session {
-                authenticateUser(session: session, account: account, sandboxed: sandboxed)
-            }
+        if let id = siteID {
+            let site = Site.get(id: id)
+            siteLabel.text = "Login to \(site.name)?"
         }
     }
 
     @IBAction func accept(_ sender: UIButton) {
         if let id = siteID, let account = try! Account.get(siteID: id), let session = session {
-            authenticateUser(session: session, account: account, sandboxed: sandboxed)
+            authenticateUser(session: session, account: account)
         }
     }
     
     @IBAction func reject(_ sender: UIButton) {
-        if sandboxed {
-            // What should happen here?
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func authenticateUser(session: Session, account: Account, sandboxed: Bool) {
+    func authenticateUser(session: Session, account: Account) {
         let authenticationContext = LAContext()
         var error: NSError?
         
@@ -55,16 +49,7 @@ class RequestViewController: UIViewController {
                 if (success) {
                     DispatchQueue.main.async {
                         try! session.sendPassword(account: account)
-                        if !sandboxed {
-                            self!.dismiss(animated: true, completion: nil)
-                        } else {
-                            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-                                appDelegate.authenticated = true
-                            }
-                            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                            let viewController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-                            UIApplication.shared.keyWindow?.rootViewController = viewController
-                        }
+                        self!.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     print("Todo")

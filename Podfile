@@ -14,6 +14,7 @@ end
 
 target 'keyn' do
   pods
+  pod 'SmileLock'
 end
 
 target 'keynNotificationExtension' do

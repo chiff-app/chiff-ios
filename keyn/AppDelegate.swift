@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
     var notificationUserInfo: [String:String]?
-    var authenticated = false
     var requestInProgress = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -53,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("userNotificationCenter: foreground called")
         guard let siteID = notification.request.content.userInfo["data"] as? String else {
             completionHandler([])
             return
@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
         DispatchQueue.main.async {
-            self.launchRequestView(sessionID: sessionID, siteID: siteID, sandboxed: false)
+            self.launchRequestView(sessionID: sessionID, siteID: siteID)
         }
         completionHandler([.sound])
     }
@@ -70,6 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("userNotificationCenter: background called")
         guard let siteID = response.notification.request.content.userInfo["data"] as? String else {
             completionHandler()
             return
@@ -78,31 +79,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler()
             return
         }
+
         print("Identifier: \(response.actionIdentifier)")
         if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
             if response.actionIdentifier == "ACCEPT" {
-                //launchRequestView(sessionID: sessionID, siteID: siteID, sandboxed: true, accepted: true)
-                notificationUserInfo = [
-                    "sessionID": sessionID,
-                    "siteID": siteID,
-                    "accepted": "true"
-                ]
-            } else if response.actionIdentifier == "REJECT" {
-                // Do nothing / log?
+
+//                cancelAutoAuthentication()
+//                notificationUserInfo = [
+//                    "sessionID": sessionID,
+//                    "siteID": siteID,
+//                    "accepted": "true"
+//                ]
+
+                // Directly send password? Is this a security risk? Should be tested
+                if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
+                    try! session.sendPassword(account: account)
+                }
+
             }
         }
         
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             // This should present request page --> Yes / NO. AUthentication after or before?
-            //launchRequestView(sessionID: sessionID, siteID: siteID, sandboxed: true)
-            print("Identifier: default")
+            cancelAutoAuthentication()
             notificationUserInfo = [
                 "sessionID": sessionID,
-                "siteID": siteID,
-                "accepted": "false"
+                "siteID": siteID
             ]
         }
         completionHandler()
+    }
+
+    private func cancelAutoAuthentication() {
+        if let viewController = self.window?.rootViewController as? LoginViewController {
+            viewController.autoAuthentication = false
+        } 
     }
 
 
@@ -119,7 +130,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        authenticated = false
         requestInProgress = false
     }
 
@@ -128,6 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called as part of the transition from the background to the active state; here you can undo
         //notificationUserInfo = nil
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
+        print("Application entered foreground")
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
         self.window?.rootViewController = viewController
@@ -139,15 +150,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if notificationUserInfo != nil && !requestInProgress {
             requestInProgress = true
             let info = notificationUserInfo!
-            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, sandboxed: true, accepted: info["accepted"] == "true")
+            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!)
             notificationUserInfo = nil
-        } else if !authenticated && !requestInProgress {
-            if let viewController = UIApplication.shared.visibleViewController as? LoginViewController {
-                viewController.authenticateUser()
-            } else {
-                print("TODO: test if this can happen..: \(UIApplication.shared.visibleViewController)")
-                // This means TouchID is cancelled in RequestViewController. What should happen if you do this? 
-            }
         }
     }
 
@@ -160,70 +164,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //deleteSeed()      // Uncomment if you want to force seed regeneration
     }
 
-    private func deleteSessionKeys() {
-        // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.session.browser"]
 
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status == errSecItemNotFound { print("No browser sessions found") } else {
-            print(status)
-        }
-
-        // Remove passwords
-        let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.session.app"]
-
-        // Try to delete the seed if it exists.
-        let status2 = SecItemDelete(query2 as CFDictionary)
-
-        if status2 == errSecItemNotFound { print("No own sessions keys found") } else {
-            print(status2)
-        }
-    }
-
-    private func deletePasswords() {
-        // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.account"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status == errSecItemNotFound { print("No generic passwords found") } else {
-            print(status)
-        }
-    }
-
-    private func deleteSeed() {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.seed"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-        if status == errSecItemNotFound { print("No seed found.") } else {
-            print(status)
-        }
-    }
-    
-    private func launchRequestView(sessionID: String, siteID: String, sandboxed: Bool, accepted: Bool = false) {
+    private func launchRequestView(sessionID: String, siteID: String) {
         do {
             if let session = try Session.getSession(id: sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
                 viewController.session = session
                 viewController.siteID = siteID
-                viewController.sandboxed = sandboxed
-                viewController.accepted = accepted
-                if sandboxed {
-                    UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
-                        self.requestInProgress = false
-                    })
-                } else {
-                    UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
-                }
+                UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
+                    self.requestInProgress = false
+                })
             } else {
                 print("Received request for session that doesn't exist.")
             }
@@ -262,7 +213,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
         let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
                                                        title: "Accept",
-                                                       options: .foreground)
+                                                       options: .authenticationRequired)
         let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
                                                        title: "Reject",
                                                        options: .destructive)
@@ -279,10 +230,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     UIApplication.shared.registerForRemoteNotifications()
                 }
             } else {
-                //Do stuff if unsuccessful… Inform user that app can't be used without push notifications
+                // TODO: Do stuff if unsuccessful… Inform user that app can't be used without push notifications
             }
         }
 
+    }
+
+    private func deleteSessionKeys() {
+        // Remove passwords
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: "io.keyn.session.browser"]
+
+        // Try to delete the seed if it exists.
+        let status = SecItemDelete(query as CFDictionary)
+
+        if status == errSecItemNotFound { print("No browser sessions found") } else {
+            print(status)
+        }
+
+        // Remove passwords
+        let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                     kSecAttrService as String: "io.keyn.session.app"]
+
+        // Try to delete the seed if it exists.
+        let status2 = SecItemDelete(query2 as CFDictionary)
+
+        if status2 == errSecItemNotFound { print("No own sessions keys found") } else {
+            print(status2)
+        }
+    }
+
+    private func deletePasswords() {
+        // Remove passwords
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: "io.keyn.account"]
+
+        // Try to delete the seed if it exists.
+        let status = SecItemDelete(query as CFDictionary)
+
+        if status == errSecItemNotFound { print("No generic passwords found") } else {
+            print(status)
+        }
+    }
+
+    private func deleteSeed() {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: "io.keyn.seed"]
+
+        // Try to delete the seed if it exists.
+        let status = SecItemDelete(query as CFDictionary)
+        if status == errSecItemNotFound { print("No seed found.") } else {
+            print(status)
+        }
     }
 
 }
