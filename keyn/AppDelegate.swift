@@ -108,7 +108,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             cancelAutoAuthentication()
             notificationUserInfo = [
                 "sessionID": sessionID,
-                "siteID": siteID
+                "siteID": siteID,
+                "browserTab": browserTab
             ]
         }
 
