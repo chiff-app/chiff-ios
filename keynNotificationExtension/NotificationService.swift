@@ -8,7 +8,6 @@
 
 import UserNotifications
 
-
 class NotificationService: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
@@ -18,14 +17,18 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         if let bestAttemptContent = bestAttemptContent {
-            if let ciphertext = bestAttemptContent.userInfo["data"] as? String,
-                let id = bestAttemptContent.userInfo["id"] as? String {
+            if let ciphertext = bestAttemptContent.userInfo["data"] as? String, let id = bestAttemptContent.userInfo["sessionID"] as? String {
                 do {
                     if let session = try Session.getSession(id: id) {
-                        let siteID = try session.decrypt(message: ciphertext)
-                        let site = Site.get(id: siteID)
+                        let message = try session.decrypt(message: ciphertext)
+                        let parts = message.split(separator: " ")
+                        let siteID = parts[0]
+                        let browserTab = parts[1]
+
+                        let site = Site.get(id: String(siteID))
                         bestAttemptContent.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
-                        bestAttemptContent.userInfo["data"] = siteID
+                        bestAttemptContent.userInfo["siteID"] = siteID
+                        bestAttemptContent.userInfo["browserTab"] = browserTab
                     }
                 } catch {
                     print("Session could not be decoded: \(error)")
@@ -34,7 +37,7 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(bestAttemptContent)
         }
     }
-    
+
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.

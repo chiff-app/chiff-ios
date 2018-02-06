@@ -13,6 +13,8 @@ class RequestViewController: UIViewController {
 
     var session: Session?
     var siteID: String?
+    var browserTab: String? // Is this a good location?
+
     @IBOutlet weak var siteLabel: UILabel!
 
     override func viewDidLoad() {
@@ -24,8 +26,8 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func accept(_ sender: UIButton) {
-        if let id = siteID, let account = try! Account.get(siteID: id), let session = session {
-            authenticateUser(session: session, account: account)
+        if let id = siteID, let account = try! Account.get(siteID: id), let session = session, let browserTab = browserTab  {
+            authenticateUser(session: session, account: account, browserTab: browserTab)
         }
     }
     
@@ -33,7 +35,7 @@ class RequestViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func authenticateUser(session: Session, account: Account) {
+    func authenticateUser(session: Session, account: Account, browserTab: String) {
         let authenticationContext = LAContext()
         var error: NSError?
         
@@ -48,7 +50,7 @@ class RequestViewController: UIViewController {
             reply: { [weak self] (success, error) -> Void in
                 if (success) {
                     DispatchQueue.main.async {
-                        try! session.sendPassword(account: account)
+                        try! session.sendCredentials(account: account, browserTab: browserTab)
                         self!.dismiss(animated: true, completion: nil)
                     }
                 } else {

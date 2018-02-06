@@ -20,6 +20,11 @@ class Session: Codable {
         }
     }
 
+    struct CredentialsMessage: Encodable {
+        var p: String // password
+        var b: String // browser tab identifier
+    }
+
     init(sqs: String, browserPublicKey: String, browser: String, os: String) throws {
         // TODO: How can we best determine an identifier? Generate random or deterministic?
         id = try "\(browserPublicKey)_\(sqs)".hash()
@@ -72,18 +77,20 @@ class Session: Codable {
         return String(data: data, encoding: .utf8)!
     }
     
-    func sendPassword(account: Account) throws {
-        let ciphertext = try Crypto.sharedInstance.encrypt(account.password(), pubKey: browserPublicKey(), privKey: appPrivateKey())
+    // TODO, add request ID etc
+    func sendCredentials(account: Account, browserTab: String) throws {
+        let password: String = try account.password()
+        let message = CredentialsMessage(p: password, b: browserTab)
+        let jsonMessage = try JSONEncoder().encode(message)
+
+        let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-       
-        // TODO, add request ID etc
-        
+
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
             AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: queueUrl, sessionID: self.id, type: "login")
         }
     }
-
 
     // MARK: Static functions
 
