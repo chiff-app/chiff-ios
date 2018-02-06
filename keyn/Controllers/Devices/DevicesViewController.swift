@@ -92,7 +92,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print("Session could not be deleted: \(error)")
             }
-            
         }
     }
     
@@ -116,9 +115,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             assert(false, "section \(indexPath.section)")
         }
-        
     }
-    
     
     // MARK: - Navigation
 
@@ -130,7 +127,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    
     //MARK: Actions
     
     func addSession(session: Session) {
@@ -140,6 +136,3 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
 }
-
-
-

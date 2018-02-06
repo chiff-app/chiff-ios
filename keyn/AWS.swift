@@ -23,7 +23,6 @@ class AWS {
     let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:787429400306:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
-
     private init() {}
 
     func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
@@ -41,7 +40,6 @@ class AWS {
             }
         }
     }
-
 
     func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: String) {
         if let sendRequest = AWSSQSSendMessageRequest() {
@@ -62,7 +60,7 @@ class AWS {
     }
 
     func snsRegistration(deviceToken: Data) {
-        // TODO: Is this the best way to convert Data to AWS-accepted string. If so make String extension
+        // TODO: Is this the best way to convert Data to AWS-accepted string? If so make String extension.
         var token = ""
         for i in 0..<deviceToken.count {
             token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
@@ -82,9 +80,9 @@ class AWS {
         }
 
         // Create new endpoint if not found in storage
-        if snsDeviceEndpointArn == nil {
+        // if snsDeviceEndpointArn == nil {
             createPlatformEndpoint(request: request, token: token)
-        }
+        // }
 
         // TODO: Check if endpoint needs to be updated
 
@@ -100,7 +98,6 @@ class AWS {
         //    endif
 
         // See: https://docs.aws.amazon.com/sns/latest/dg/mobile-platform-endpoint.html
-
     }
 
     // MARK: Private functions
