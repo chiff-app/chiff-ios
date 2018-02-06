@@ -67,13 +67,14 @@ class AWS {
         }
         print("Device token: \(token)")
 
-        // Should this be saved here or in ApplicationDelegate?
-        UserDefaults.standard.set(token, forKey: "deviceToken")
+        // Should this be saved here or in ApplicationDelegate? Frank: Or nowhere?
+        // UserDefaults.standard.set(token, forKey: "deviceToken")
 
         // Check if endpointARN is stored
         // TODO: should this be saved in userDefaults or perhaps Keychain?
-        snsDeviceEndpointArn = UserDefaults.standard.string(forKey: "snsEndpointArn")
-        print("Endpoint: \(snsDeviceEndpointArn)")
+//        snsDeviceEndpointArn = UserDefaults.standard.string(forKey: "snsEndpointArn")
+//        print("Endpoint: \(snsDeviceEndpointArn)")
+
         guard let request = AWSSNSCreatePlatformEndpointInput() else {
             print("TODO: handle error")
             return
@@ -114,9 +115,9 @@ class AWS {
                     return nil
                 }
                 if let endpointArn = response.endpointArn {
-                    print("endpointArn: \(endpointArn)")
+                    print("Created endpointArn: \(endpointArn)")
                     self.snsDeviceEndpointArn = endpointArn
-                    UserDefaults.standard.set(endpointArn, forKey: "snsEndpointArn")
+//                    UserDefaults.standard.set(endpointArn, forKey: "snsEndpointArn")
                 }
             }
             return nil
