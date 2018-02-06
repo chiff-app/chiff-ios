@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import keyn
+@testable import keynNotificationExtension
 
 class keynTests: XCTestCase {
     
