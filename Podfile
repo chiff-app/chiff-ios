@@ -4,7 +4,7 @@ platform :ios, '11.0'
 
 use_frameworks!
 
-def pods
+def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
   pod 'Sodium', '~> 0.5'
   pod 'AWSCognito'
@@ -13,10 +13,14 @@ def pods
 end
 
 target 'keyn' do
-  pods
+  shared_pods
   pod 'SmileLock'
 end
 
 target 'keynNotificationExtension' do
-  pods
+  shared_pods
+end
+
+target 'keynTests' do
+  shared_pods
 end
