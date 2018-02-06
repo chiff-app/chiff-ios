@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0155741C202A4AA000F97DA2 /* NotificationServiceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationServiceHelper.swift */; };
-		0155741D202A4AE500F97DA2 /* NotificationServiceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationServiceHelper.swift */; };
+		0155741D202A4AE500F97DA2 /* NotificationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */; };
+		0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
+		01557422202A57DA00F97DA2 /* NotificationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */; };
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
@@ -108,7 +109,8 @@
 
 /* Begin PBXFileReference section */
 		00DDE290FF6D1E0FE05F2382 /* Pods-keynTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0155741B202A4AA000F97DA2 /* NotificationServiceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceHelper.swift; sourceTree = "<group>"; };
+		0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessor.swift; sourceTree = "<group>"; };
+		0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessorTests.swift; sourceTree = "<group>"; };
 		01839A701FACA93A00698B69 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
@@ -316,7 +318,7 @@
 				4997200D1FD19CEE00EA3436 /* SessionManager.swift */,
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49A547951FC8559900CD4382 /* Homeless.swift */,
-				0155741B202A4AA000F97DA2 /* NotificationServiceHelper.swift */,
+				0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49E7D3401FC318CD0059D97E /* Models */,
 				49E7D3411FC318D50059D97E /* Crypto */,
@@ -332,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				49E7666A1F7E6F420022C042 /* keynTests.swift */,
+				0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */,
 				01839A761FACA99B00698B69 /* AccountTests.swift */,
 				49E7666C1F7E6F420022C042 /* Info.plist */,
 				01839A741FACA98E00698B69 /* SiteTests.swift */,
@@ -791,7 +794,7 @@
 				613CFB0120135DD700460CC6 /* Session.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
-				0155741D202A4AE500F97DA2 /* NotificationServiceHelper.swift in Sources */,
+				0155741D202A4AE500F97DA2 /* NotificationPreprocessor.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
 				613CFB07201360B300460CC6 /* Keychain.swift in Sources */,
@@ -820,7 +823,7 @@
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
-				0155741C202A4AA000F97DA2 /* NotificationServiceHelper.swift in Sources */,
+				01557422202A57DA00F97DA2 /* NotificationPreprocessor.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
@@ -843,6 +846,7 @@
 				01839A751FACA98E00698B69 /* SiteTests.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
 				49E7666B1F7E6F420022C042 /* keynTests.swift in Sources */,
+				0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

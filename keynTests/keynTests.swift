@@ -7,8 +7,9 @@
 //
 
 import XCTest
+import UserNotifications
+
 @testable import keyn
-@testable import keynNotificationExtension
 
 class keynTests: XCTestCase {
     
@@ -23,8 +24,8 @@ class keynTests: XCTestCase {
     }
     
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        var content: UNMutableNotificationContent? = nil
+        var enriched = NotificationPreprocessor.enrich(notification: content)
     }
     
     func testPerformanceExample() {

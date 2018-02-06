@@ -9,7 +9,7 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         content = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
-        if let content = NotificationServiceHelper.decrypt(content) {
+        if let content = NotificationPreprocessor.enrich(notification: content) {
             contentHandler(content)
         }
     }
@@ -18,7 +18,7 @@ class NotificationService: UNNotificationServiceExtension {
     // Use this as an opportunity to deliver your "best attempt" at modified content,
     // otherwise the original push payload will be used.
     override func serviceExtensionTimeWillExpire() {
-        if let contentHandler = contentHandler, let content =  content {
+        if let contentHandler = contentHandler, let content = content {
             contentHandler(content)
         }
     }
