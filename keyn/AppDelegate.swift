@@ -1,4 +1,3 @@
-
 //
 //  AppDelegate.swift
 //  keyn
@@ -12,7 +11,6 @@ import AWSCore
 import AWSCognito
 import AWSSNS
 import UserNotifications
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -52,36 +50,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        guard let siteID = notification.request.content.userInfo["data"] as? String else {
+        guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
             completionHandler([])
             return
         }
-        guard let sessionID = notification.request.content.userInfo["id"] as? String else {
+        guard let sessionID = notification.request.content.userInfo["sessionID"] as? String else {
             completionHandler([])
             return
         }
+        guard let browserTab = notification.request.content.userInfo["browserTab"] as? String else {
+            completionHandler([])
+            return
+        }
+
         DispatchQueue.main.async {
-            self.launchRequestView(sessionID: sessionID, siteID: siteID)
+            self.launchRequestView(sessionID: sessionID, siteID: siteID, browserTab: browserTab)
         }
+
         completionHandler([.sound])
     }
 
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        guard let siteID = response.notification.request.content.userInfo["data"] as? String else {
+        guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
             completionHandler()
             return
         }
-        guard let sessionID = response.notification.request.content.userInfo["id"] as? String else {
+        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
+            completionHandler()
+            return
+        }
+        guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? String else {
             completionHandler()
             return
         }
 
         print("Identifier: \(response.actionIdentifier)")
+
         if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
             if response.actionIdentifier == "ACCEPT" {
-
 //                cancelAutoAuthentication()
 //                notificationUserInfo = [
 //                    "sessionID": sessionID,
@@ -91,9 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                 // Directly send password? Is this a security risk? Should be tested
                 if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-                    try! session.sendPassword(account: account)
+                    try! session.sendCredentials(account: account, browserTab: browserTab)
                 }
-
             }
         }
         
@@ -105,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 "siteID": siteID
             ]
         }
+
         completionHandler()
     }
 
@@ -113,7 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             viewController.autoAuthentication = false
         } 
     }
-
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         // App opened with url
@@ -146,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if notificationUserInfo != nil && !requestInProgress {
             requestInProgress = true
             let info = notificationUserInfo!
-            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!)
+            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, browserTab: info["browserTab"]!)
             notificationUserInfo = nil
         }
     }
@@ -161,13 +168,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
 
-    private func launchRequestView(sessionID: String, siteID: String) {
+    private func launchRequestView(sessionID: String, siteID: String, browserTab: String) {
         do {
             if let session = try Session.getSession(id: sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
+
                 viewController.session = session
                 viewController.siteID = siteID
+                viewController.browserTab = browserTab
+
                 UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
                     self.requestInProgress = false
                 })
@@ -283,4 +293,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
 }
-
