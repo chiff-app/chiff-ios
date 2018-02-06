@@ -1,11 +1,3 @@
-//
-//  keynUITests.swift
-//  keynUITests
-//
-//  Created by bas on 29/09/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
 import XCTest
 
 class keynUITests: XCTestCase {
