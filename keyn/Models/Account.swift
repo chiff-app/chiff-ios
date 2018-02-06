@@ -105,5 +105,3 @@ struct Account: Codable {
     }
 
 }
-
-

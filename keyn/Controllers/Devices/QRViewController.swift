@@ -2,7 +2,6 @@ import UIKit
 import AVFoundation
 import LocalAuthentication
 
-
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     // MARK: Properties
@@ -30,7 +29,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             print("Camera could not be instantiated: \(error)")
         }
     }
-
     
     // MARK: AVCaptureMetadataOutputObjectsDelegate
     
@@ -101,7 +99,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         }
     }
     
-    
     private func scanQR() throws {
         
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
@@ -153,5 +150,5 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             }
         )
     }
-}
 
+}

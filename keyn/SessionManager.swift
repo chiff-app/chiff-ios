@@ -32,7 +32,6 @@ class SessionManager {
         return session
     }
 
-    
     private func createPairingResponse(session: Session) throws -> String {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
             return "" // TODO Throw error
