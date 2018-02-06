@@ -1,8 +1,9 @@
 import UserNotifications
 
-class NotificationServiceHelper {
+class NotificationPreprocessor {
 
-    static func decrypt(_ content: UNMutableNotificationContent?) -> UNMutableNotificationContent? {
+    // Decrypt message, get session info so we can show pretty push message.
+    static func enrich(notification content: UNMutableNotificationContent?) -> UNMutableNotificationContent? {
         guard let content = content else {
             return nil
         }
