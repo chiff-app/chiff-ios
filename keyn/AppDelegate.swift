@@ -55,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler([])
             return
         }
-        guard let browserTab = notification.request.content.userInfo["browserTab"] as? String else {
+        guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
             completionHandler([])
             return
         }
@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler()
             return
         }
-        guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? String else {
+        guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
             completionHandler()
             return
         }
@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             notificationUserInfo = [
                 "sessionID": sessionID,
                 "siteID": siteID,
-                "browserTab": browserTab
+                "browserTab": String(browserTab)
             ]
         }
 
@@ -156,7 +156,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if notificationUserInfo != nil && !requestInProgress {
             requestInProgress = true
             let info = notificationUserInfo!
-            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, browserTab: info["browserTab"]!)
+
+            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, browserTab: Int(info["browserTab"]!)!)
             notificationUserInfo = nil
         }
     }
@@ -170,7 +171,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //deleteSeed()        // Uncomment if you want to force seed regeneration
     }
 
-    private func launchRequestView(sessionID: String, siteID: String, browserTab: String) {
+    private func launchRequestView(sessionID: String, siteID: String, browserTab: Int) {
         do {
             if let session = try Session.getSession(id: sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)

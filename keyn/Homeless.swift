@@ -121,3 +121,9 @@ struct Credentials: Codable {
 }
 
 
+struct CredentialsMessage: Codable {
+    var p: String // password
+    var b: Int // browser tab identifier
+}
+
+

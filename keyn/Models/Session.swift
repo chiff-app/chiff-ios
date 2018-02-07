@@ -25,11 +25,6 @@ class Session: Codable {
         }
     }
 
-    struct CredentialsMessage: Encodable {
-        var p: String // password
-        var b: String // browser tab identifier
-    }
-
     init(sqs: String, browserPublicKey: String, browser: String, os: String) throws {
         self.sqsQueueName = sqs
         self.creationDate = Date()
@@ -73,9 +68,15 @@ class Session: Codable {
         let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return String(data: data, encoding: .utf8)!
     }
+
+    func decrypt(message: String) throws -> CredentialsMessage {
+        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
+        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        return try JSONDecoder().decode(CredentialsMessage.self, from: data)
+    }
     
     // TODO, add request ID etc
-    func sendCredentials(account: Account, browserTab: String) throws {
+    func sendCredentials(account: Account, browserTab: Int) throws {
         let password: String = try account.password()
         let message = CredentialsMessage(p: password, b: browserTab)
         let jsonMessage = try JSONEncoder().encode(message)

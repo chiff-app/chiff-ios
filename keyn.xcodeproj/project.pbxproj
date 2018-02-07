@@ -230,8 +230,7 @@
 			children = (
 				4919DAF1201261FE0048B060 /* RequestViewController.swift */,
 			);
-			name = Requests;
-			path = "New Group";
+			path = Requests;
 			sourceTree = "<group>";
 		};
 		491C48592024AB0200397071 /* Authentication */ = {
