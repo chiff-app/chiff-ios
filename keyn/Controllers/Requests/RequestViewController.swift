@@ -13,7 +13,7 @@ class RequestViewController: UIViewController {
 
     var session: Session?
     var siteID: String?
-    var browserTab: String? // Is this a good location?
+    var browserTab: Int? // Is this a good location?
 
     @IBOutlet weak var siteLabel: UILabel!
 
@@ -26,7 +26,7 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func accept(_ sender: UIButton) {
-        if let id = siteID, let account = try! Account.get(siteID: id), let session = session, let browserTab = browserTab  {
+        if let id = siteID, let account = try! Account.get(siteID: id), let session = session, let browserTab = browserTab {
             authenticateUser(session: session, account: account, browserTab: browserTab)
         }
     }
@@ -35,7 +35,7 @@ class RequestViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func authenticateUser(session: Session, account: Account, browserTab: String) {
+    func authenticateUser(session: Session, account: Account, browserTab: Int) {
         let authenticationContext = LAContext()
         var error: NSError?
         
