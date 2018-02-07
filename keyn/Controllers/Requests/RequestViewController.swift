@@ -1,11 +1,3 @@
-//
-//  RequestViewController.swift
-//  keyn
-//
-//  Created by bas on 19/01/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
 import UIKit
 import LocalAuthentication
 
@@ -19,9 +11,10 @@ class RequestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if let id = siteID {
-            let site = Site.get(id: id)
-            siteLabel.text = "Login to \(site?.name)?"
+            let site = Site.get(id: id)!
+            siteLabel.text = "Login to \(site.name)?"
         }
     }
 
