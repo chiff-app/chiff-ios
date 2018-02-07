@@ -8,8 +8,6 @@
 
 import UIKit
 import AWSCore
-import AWSCognito
-import AWSSNS
 import UserNotifications
 
 @UIApplicationMain
@@ -219,6 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
 
+    @available(iOS 10.0, *)
     private func registerForPushNotifications() {
         // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
         let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
@@ -234,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         center.setNotificationCategories([passwordRequestNotificationCategory])
-        center.requestAuthorization(options: [.badge, .alert, .sound]) { (granted, error) in
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.sync {
                     UIApplication.shared.registerForRemoteNotifications()

@@ -20,6 +20,8 @@ class AWS {
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
+    private let awsService = "io.keyn.aws"
+    private let endpointIdentifier = "snsDeviceEndpointArn"
     let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:787429400306:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
@@ -60,65 +62,100 @@ class AWS {
     }
 
     func snsRegistration(deviceToken: Data) {
-        // TODO: Is this the best way to convert Data to AWS-accepted string? If so make String extension.
-        var token = ""
-        for i in 0..<deviceToken.count {
-            token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+        let token = deviceToken.hexEncodedString()
+        if Keychain.sharedInstance.has(id: endpointIdentifier, service: awsService) {
+            // Get endpoint from Keychain
+            do  {
+                let endpointData = try Keychain.sharedInstance.get(id: endpointIdentifier, service: awsService)
+                snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
+                checkIfUpdateIsNeeded(token: token)
+            } catch {
+                print("Error getting endpoint from Keychain: \(error). Create new endpoint?")
+                // Delete from Keychain
+                createPlatformEndpoint(token: token)
+            }
+        } else {
+            // Create new endpoint if not found in storage
+            createPlatformEndpoint(token: token)
         }
-        print("Device token: \(token)")
-
-        // Should this be saved here or in ApplicationDelegate? Frank: Or nowhere?
-        // UserDefaults.standard.set(token, forKey: "deviceToken")
-
-        // Check if endpointARN is stored
-        // TODO: should this be saved in userDefaults or perhaps Keychain?
-//        snsDeviceEndpointArn = UserDefaults.standard.string(forKey: "snsEndpointArn")
-//        print("Endpoint: \(snsDeviceEndpointArn)")
-
-        guard let request = AWSSNSCreatePlatformEndpointInput() else {
-            print("TODO: handle error")
-            return
-        }
-
-        // Create new endpoint if not found in storage
-        // if snsDeviceEndpointArn == nil {
-            createPlatformEndpoint(request: request, token: token)
-        // }
-
-        // TODO: Check if endpoint needs to be updated
-
-        //    if (while getting the attributes a not-found exception is thrown)
-        //    # the platform endpoint was deleted
-        //    call create platform endpoint with the latest device token
-        //    store the returned platform endpoint ARN
-        //    else
-        //    if (the device token in the endpoint does not match the latest one) or
-        //    (get endpoint attributes shows the endpoint as disabled)
-        //    call set endpoint attributes to set the latest device token and then enable the platform endpoint
-        //    endif
-        //    endif
-
-        // See: https://docs.aws.amazon.com/sns/latest/dg/mobile-platform-endpoint.html
     }
 
     // MARK: Private functions
 
-    private func createPlatformEndpoint(request: AWSSNSCreatePlatformEndpointInput, token: String) {
-        request.token = token
-        request.platformApplicationArn = snsPlatformApplicationArn
-        sns.createPlatformEndpoint(request).continueWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
+    private func checkIfUpdateIsNeeded(token: String) {
+        guard let endpoint = snsDeviceEndpointArn else {
+            // No endpoint found. Should not happen, but recreate?
+            createPlatformEndpoint(token: token)
+            return
+        }
+        guard let attributesRequest = AWSSNSGetEndpointAttributesInput() else {
+            print("Attributes request could not be created: handle error")
+            return
+        }
+        attributesRequest.endpointArn = endpoint
+        sns.getEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
             if task.error != nil {
                 print("Error: \(String(describing: task.error))")
+                // If there's a 'not found exception' here, endpoint should be recreated
+                // createPlatformEndpoint(token: token)
             } else {
                 guard let response = task.result else {
                     print("TODO: handle error")
                     return nil
                 }
-                if let endpointArn = response.endpointArn {
-                    print("Created endpointArn: \(endpointArn)")
-                    self.snsDeviceEndpointArn = endpointArn
-//                    UserDefaults.standard.set(endpointArn, forKey: "snsEndpointArn")
+                if response.attributes!["Token"]! != token || response.attributes!["Enabled"]! != "true" {
+                    self.updatePlatformEndpoint(token: token)
                 }
+            }
+            return nil
+        })
+    }
+
+    private func updatePlatformEndpoint(token: String) {
+        guard let attributesRequest = AWSSNSSetEndpointAttributesInput() else {
+            print("Attributes set request could not be created: handle error")
+            return
+        }
+        attributesRequest.attributes = [
+            "Token": token,
+            "Enabled": "true"
+        ]
+        attributesRequest.endpointArn = snsDeviceEndpointArn!
+        sns.setEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
+            if task.error != nil {
+                print("Error: \(String(describing: task.error))")
+            }
+            return nil
+        })
+    }
+
+    private func createPlatformEndpoint(token: String) {
+        guard let request = AWSSNSCreatePlatformEndpointInput() else {
+            print("Endpoint could not be created: handle error")
+            return
+        }
+        request.token = token
+        request.platformApplicationArn = snsPlatformApplicationArn
+        sns.createPlatformEndpoint(request).continueOnSuccessWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
+            guard let response = task.result else {
+                print("TODO: handle error")
+                return nil
+            }
+            if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
+                do {
+                    // Try to remove anything from Keychain to avoid conflicts
+                    try? Keychain.sharedInstance.delete(id: self.endpointIdentifier, service: self.awsService)
+                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
+                    self.snsDeviceEndpointArn = endpointArn
+                    self.checkIfUpdateIsNeeded(token: token)
+                } catch {
+                    print(error)
+                }
+            }
+            return nil
+        }).continueWith(block: { (task: AWSTask!) -> Any? in
+            if task.error != nil {
+                print("Error: \(String(describing: task.error))")
             }
             return nil
         })
