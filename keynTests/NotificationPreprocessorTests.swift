@@ -6,6 +6,10 @@ import UserNotifications
 class NotificationPreprocessorTests: XCTestCase {
 
     override func setUp() {
+        TestHelper.deleteSessionKeys()
+        // TODO
+        // Set up example site. Actually this is now still
+        // already done because we already use sample data.
         super.setUp()
     }
 
@@ -14,30 +18,10 @@ class NotificationPreprocessorTests: XCTestCase {
         TestHelper.deleteSessionKeys()
     }
 
-    private func createSession() -> String? {
-        do {
-            let session = try Session(sqs: "sqs", browserPublicKey: "YQ", browser: "browser", os: "OS")
-            return session.id
-        } catch {
-            print("Cannot create session, tests will fail")
-        }
-        return nil
-    }
-
-    private func fakeBrowserEncrypt(_ message: String, _ sessionID: String) -> Data? {
-        do {
-            let session = try Session.getSession(id: sessionID)
-            let cipherText = try Crypto.sharedInstance.encrypt(message.data(using: .utf8)!, pubKey: (session?.appPublicKey())!)
-            return cipherText
-        } catch {
-            print("Cannot fake browser encryption, tests will fail")
-        }
-        return nil
-    }
-
     func testEnrichReturnsNilIfContentIsNil() {
         let content: UNMutableNotificationContent? = nil
         let enriched = NotificationPreprocessor.enrich(notification: content)
+
         XCTAssertNil(enriched)
     }
 
@@ -51,6 +35,7 @@ class NotificationPreprocessorTests: XCTestCase {
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["sessionID": "123"]
         let enriched = NotificationPreprocessor.enrich(notification: content)
+
         XCTAssertNil(enriched)
     }
 
@@ -58,6 +43,7 @@ class NotificationPreprocessorTests: XCTestCase {
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["data": "test"]
         let enriched = NotificationPreprocessor.enrich(notification: content)
+
         XCTAssertNil(enriched)
     }
 
@@ -65,19 +51,22 @@ class NotificationPreprocessorTests: XCTestCase {
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["data": "test", "sessionID": "123"]
         let enriched = NotificationPreprocessor.enrich(notification: content)
+
         XCTAssertNil(enriched)
     }
 
     func testEnrichReturnsEnriched() {
-        guard let sessionID = createSession() else {
+        guard let sessionID = TestHelper.createSession() else {
             XCTAssertFalse(true)
             return
         }
 
-        let encryptedMessage = fakeBrowserEncrypt("data", sessionID)
+        let encryptedMessage =  TestHelper.fakeBrowserEncrypt("0 42", sessionID)!
+
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
         let enriched = NotificationPreprocessor.enrich(notification: content)
+
         XCTAssertNotNil(enriched)
     }
 

@@ -13,10 +13,14 @@ class NotificationPreprocessor {
                 if let session = try Session.getSession(id: id) {
                     let message = try session.decrypt(message: ciphertext)
                     let parts = message.split(separator: " ")
+
                     let siteID = parts[0]
                     let browserTab = parts[1]
 
-                    let site = Site.get(id: String(siteID))
+                    guard let site = Site.get(id: String(siteID)) else {
+                        return nil
+                    }
+
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
                     content.userInfo["siteID"] = siteID
                     content.userInfo["browserTab"] = browserTab

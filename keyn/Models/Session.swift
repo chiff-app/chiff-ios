@@ -6,6 +6,7 @@ enum SessionError: Error {
 }
 
 class Session: Codable {
+
     let id: String
     let sqsQueueName: String
     let creationDate: Date
