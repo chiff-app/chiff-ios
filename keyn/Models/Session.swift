@@ -1,5 +1,10 @@
 import Foundation
 
+enum SessionError: Error {
+    case exists
+    case invalid
+}
+
 class Session: Codable {
     let id: String
     let sqsQueueName: String
@@ -26,27 +31,19 @@ class Session: Codable {
     }
 
     init(sqs: String, browserPublicKey: String, browser: String, os: String) throws {
-        // TODO: How can we best determine an identifier? Generate random or deterministic?
-        id = try "\(browserPublicKey)_\(sqs)".hash()
-        sqsQueueName = sqs
-        creationDate = Date()
+        self.sqsQueueName = sqs
+        self.creationDate = Date()
         self.browser = browser
         self.os = os
-        try save(pubKey: browserPublicKey)
-    }
 
-    private func save(pubKey: String) throws {
-        // Save browser public key
-        let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
-
-        let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData, restricted: false)
-
-        // Generate and save own keypair
-        let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
-        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
-
+        do {
+            self.id = try "\(browserPublicKey)_\(sqs)".hash()
+            try save(pubKey: browserPublicKey)
+        } catch is KeychainError {
+            throw SessionError.exists
+        } catch is CryptoError {
+            throw SessionError.invalid
+        }
     }
 
     func delete() throws {
@@ -130,5 +127,20 @@ class Session: Codable {
         let decoder = PropertyListDecoder()
         return try decoder.decode(Session.self, from: sessionData)
     }
-    
+
+    // MARK: Private functions
+
+    private func save(pubKey: String) throws {
+        // Save browser public key
+        let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
+
+        let sessionData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData, restricted: false)
+
+        // Generate and save own keypair1
+        let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
+        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
+        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
+    }
+
 }

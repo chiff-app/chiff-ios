@@ -1,11 +1,3 @@
-//
-//  keynTests.swift
-//  keynTests
-//
-//  Created by bas on 29/09/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
 import XCTest
 import UserNotifications
 
@@ -24,8 +16,7 @@ class keynTests: XCTestCase {
     }
     
     func testExample() {
-        var content: UNMutableNotificationContent? = nil
-        var enriched = NotificationPreprocessor.enrich(notification: content)
+        XCTAssertEqual("", "")
     }
     
     func testPerformanceExample() {
