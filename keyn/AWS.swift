@@ -95,9 +95,13 @@ class AWS {
         attributesRequest.endpointArn = endpoint
         sns.getEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
             if task.error != nil {
-                print("Error: \(String(describing: task.error))")
-                // If there's a 'not found exception' here, endpoint should be recreated
-                // createPlatformEndpoint(token: token)
+                if let error = task.error as NSError? {
+                    if error.code == 6 {
+                        self.createPlatformEndpoint(token: token)
+                    } else {
+                        print("Error: \(error)")
+                    }
+                }
             } else {
                 guard let response = task.result else {
                     print("TODO: handle error")
