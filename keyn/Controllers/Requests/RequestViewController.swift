@@ -21,7 +21,7 @@ class RequestViewController: UIViewController {
         super.viewDidLoad()
         if let id = siteID {
             let site = Site.get(id: id)
-            siteLabel.text = "Login to \(site.name)?"
+            siteLabel.text = "Login to \(site?.name)?"
         }
     }
 

@@ -15,7 +15,10 @@ class NotificationPreprocessor {
                     let siteID = credentialsMessage.p
                     let browserTab = credentialsMessage.b
 
-                    let site = Site.get(id: String(siteID))
+                    guard let site = Site.get(id: String(siteID)) else {
+                        return nil
+                    }
+
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
                     content.userInfo["siteID"] = siteID
                     content.userInfo["browserTab"] = browserTab

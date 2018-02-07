@@ -10,8 +10,9 @@ struct Site: Codable {
     var urls: [String]
     var restrictions: PasswordRestrictions
 
-    // TODO: get Site object from some persistent storage or online database. This is sample data
-    static func get(id: String) -> Site {
+    // TODO:
+    // Get Site object from some persistent storage or online database. This is sample data
+    static func get(id: String) -> Site? {
         let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
         var sampleSites = [Site]()
 
@@ -21,7 +22,11 @@ struct Site: Codable {
         sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
         sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
 
-        return sampleSites[Int(id)!]
+        if Int(id)! >= sampleSites.count {
+            return nil
+        } else {
+            return sampleSites[Int(id)!]
+        }
     }
 
 }
