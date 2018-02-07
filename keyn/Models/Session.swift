@@ -1,5 +1,10 @@
 import Foundation
 
+enum SessionError: Error {
+    case exists
+    case invalidPubkey
+}
+
 class Session: Codable {
     let id: String
     let sqsQueueName: String
@@ -32,7 +37,14 @@ class Session: Codable {
         creationDate = Date()
         self.browser = browser
         self.os = os
-        try save(pubKey: browserPublicKey)
+
+        do {
+            try save(pubKey: browserPublicKey)
+        } catch is KeychainError {
+            throw SessionError.exists
+        } catch is CryptoError {
+            throw SessionError.invalidPubkey
+        }
     }
 
     private func save(pubKey: String) throws {
