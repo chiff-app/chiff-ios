@@ -49,11 +49,10 @@ class TestHelper {
         return nil
     }
 
-    static func fakeBrowserEncrypt(_ message: String, _ sessionID: String) -> String? {
+    static func encryptAsBrowser(_ message: String, _ sessionID: String) -> String? {
         do {
             let session = try Session.getSession(id: sessionID)!
             let appPublicKey: Data = try session.appPublicKey()
-            let appPrivateKey: Data = try session.appPrivateKey()
             let messageData = message.data(using: .utf8)!
             let ciphertext = try Crypto.sharedInstance.encrypt(messageData, pubKey: appPublicKey, privKey: browserPrivateKey)
 

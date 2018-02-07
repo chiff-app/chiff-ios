@@ -25,49 +25,91 @@ class NotificationPreprocessorTests: XCTestCase {
         XCTAssertNil(enriched)
     }
 
-    func testEnrichReturnsNilIfuserInfoIsNil() {
-        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-        let enriched = NotificationPreprocessor.enrich(notification: content)
-        XCTAssertNil(enriched)
-    }
-
-    func testEnrichReturnsNilIfuserInfoHasNoData() {
-        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-        content?.userInfo = ["sessionID": "123"]
-        let enriched = NotificationPreprocessor.enrich(notification: content)
-
-        XCTAssertNil(enriched)
-    }
-
-    func testEnrichReturnsNilIfuserInfoHasNoSessionID() {
-        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-        content?.userInfo = ["data": "test"]
-        let enriched = NotificationPreprocessor.enrich(notification: content)
-
-        XCTAssertNil(enriched)
-    }
-
-    func testEnrichReturnsNilIfSessionDoesntExist() {
-        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-        content?.userInfo = ["data": "test", "sessionID": "123"]
-        let enriched = NotificationPreprocessor.enrich(notification: content)
-
-        XCTAssertNil(enriched)
-    }
-
     func testEnrichReturnsEnriched() {
         guard let sessionID = TestHelper.createSession() else {
             XCTAssertFalse(true)
             return
         }
 
-        let encryptedMessage =  TestHelper.fakeBrowserEncrypt("0 42", sessionID)!
+        let encryptedMessage = TestHelper.encryptAsBrowser("0 42", sessionID)!
 
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
         let enriched = NotificationPreprocessor.enrich(notification: content)
 
         XCTAssertNotNil(enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfuserInfoIsNil() {
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedfuserInfoHasNoData() {
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["sessionID": "123"]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfuserInfoHasNoSessionID() {
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["data": "test"]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfSessionDoesntExist() {
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["data": "test", "sessionID": "123"]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfMessageCannotBeDecrypted() {
+        guard let sessionID = TestHelper.createSession() else {
+            return XCTAssertFalse(true)
+        }
+
+        let encryptedMessage = ".GarblEdMSsaAGe±"
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfDataCannotBeParsed() {
+        guard let sessionID = TestHelper.createSession() else {
+            XCTAssertFalse(true)
+            return
+        }
+
+        let encryptedMessage = TestHelper.encryptAsBrowser("oops", sessionID)!
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
+    }
+
+    func testEnrichReturnsUnchangedIfSiteCannotBeFound() {
+        guard let sessionID = TestHelper.createSession() else {
+            XCTAssertFalse(true)
+            return
+        }
+
+        let encryptedMessage = TestHelper.encryptAsBrowser("1000 42", sessionID)!
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+
+        XCTAssertEqual(content, enriched)
     }
 
 }
