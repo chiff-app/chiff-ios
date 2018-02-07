@@ -1,17 +1,4 @@
-//
-//  SessionManager.swift
-//  keyn
-//
-//  Created by bas on 01/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
 import Foundation
-
-enum SessionError: Error {
-    case accountNotFound
-    case JSONEncoding
-}
 
 class SessionManager {
 
