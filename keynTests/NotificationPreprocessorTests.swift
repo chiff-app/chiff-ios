@@ -13,10 +13,23 @@ class NotificationPreprocessorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testEnrichThrowNoErrorForNil() {
-//        var content: UNMutableNotificationContent? = nil
-//        var enriched = NotificationPreprocessor.enrich(notification: content)
-//        XCTAssertEqual(enriched, whatwewant)
+    func completeUserInfo() -> [String: String] {
+        return [
+            "data": "test",
+            "sessionID": "123"
+        ]
     }
 
+    func testEnrichReturnsNilIfContentIsNil() {
+        let content: UNMutableNotificationContent? = nil
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+        XCTAssertNil(enriched)
+    }
+
+    func testEnrichReturnsNilIfuserInfoDataIsNil() {
+        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+        content?.userInfo = completeUserInfo()
+        let enriched = NotificationPreprocessor.enrich(notification: content)
+        XCTAssertNil(enriched)
+    }
 }
