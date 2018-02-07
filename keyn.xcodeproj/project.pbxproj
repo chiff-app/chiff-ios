@@ -45,7 +45,6 @@
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
-		49E7666B1F7E6F420022C042 /* keynTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E7666A1F7E6F420022C042 /* keynTests.swift */; };
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
@@ -154,7 +153,6 @@
 		49E7665F1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49E766611F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E766661F7E6F420022C042 /* keynTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		49E7666A1F7E6F420022C042 /* keynTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keynTests.swift; sourceTree = "<group>"; };
 		49E7666C1F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E766711F7E6F420022C042 /* keynUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766751F7E6F420022C042 /* keynUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keynUITests.swift; sourceTree = "<group>"; };
@@ -336,7 +334,6 @@
 		49E766691F7E6F420022C042 /* keynTests */ = {
 			isa = PBXGroup;
 			children = (
-				49E7666A1F7E6F420022C042 /* keynTests.swift */,
 				0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */,
 				01839A761FACA99B00698B69 /* AccountTests.swift */,
 				49E7666C1F7E6F420022C042 /* Info.plist */,
@@ -851,7 +848,6 @@
 				01839A751FACA98E00698B69 /* SiteTests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
-				49E7666B1F7E6F420022C042 /* keynTests.swift in Sources */,
 				0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);

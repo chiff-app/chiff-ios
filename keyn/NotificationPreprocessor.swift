@@ -8,6 +8,7 @@ class NotificationPreprocessor {
         guard let content = content else {
             return nil
         }
+
         if let ciphertext = content.userInfo["data"] as? String, let id = content.userInfo["sessionID"] as? String {
             do {
                 if let session = try Session.getSession(id: id) {
@@ -16,7 +17,7 @@ class NotificationPreprocessor {
                     let browserTab = credentialsMessage.b
 
                     guard let site = Site.get(id: String(siteID)) else {
-                        return nil
+                        return content
                     }
 
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
@@ -30,7 +31,7 @@ class NotificationPreprocessor {
             }
         }
 
-        return nil
+        return content
     }
 
 }
