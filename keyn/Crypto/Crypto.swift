@@ -61,10 +61,10 @@ class Crypto {
     }
     
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
-        
         let chars = restrictionCharacterArray(restrictions: restrictions)
         var characterIndices = [Int](repeatElement(chars.count, count: restrictions.length))
         var index = 0
+
         for char in password {
             guard let characterIndex = chars.index(of: char) else {
                 throw CryptoError.characterNotAllowed
