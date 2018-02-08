@@ -141,6 +141,6 @@ enum RequestType: Int, Codable {
     case reset
 }
 
-enum KeyType {
+enum KeyType: UInt64 {
     case passwordSeed, backupSeed
 }
