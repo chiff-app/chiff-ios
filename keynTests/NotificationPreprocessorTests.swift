@@ -31,12 +31,12 @@ class NotificationPreprocessorTests: XCTestCase {
             return
         }
 
-        let encryptedMessage = TestHelper.encryptAsBrowser("0 42", sessionID)!
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
 
         let content: UNMutableNotificationContent? = UNMutableNotificationContent()
         content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
         let enriched = NotificationPreprocessor.enrich(notification: content)
-
+        print(enriched?.userInfo)
         XCTAssertNotNil(enriched)
     }
 
