@@ -64,4 +64,8 @@ class TestHelper {
         return nil
     }
 
+    static func examplePasswordRestrictions() -> PasswordRestrictions {
+        return PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+    }
+
 }

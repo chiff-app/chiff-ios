@@ -3,7 +3,9 @@ import XCTest
 @testable import keyn
 
 class CryptoTests: XCTestCase {
-    
+
+    let restrictions = TestHelper.examplePasswordRestrictions()
+
     override func setUp() {
         super.setUp()
     }
@@ -21,7 +23,7 @@ class CryptoTests: XCTestCase {
     }
 
     func testDeriveKeyFromSeedDoesntThrow() {
-        XCTAssertNoThrow(try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed(), index: 0, context: "0")
+        XCTAssertNoThrow(try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed(), keyType: .passwordSeed, context: "0")
         )
     }
 
@@ -33,6 +35,10 @@ class CryptoTests: XCTestCase {
     func testDeriveKeyFromSeedThrowsCryptoErrorKeyDerivationWhenSodiumDeriveFails() {
 //        CryptoError.keyDerivation
         XCTAssertTrue(false)
+    }
+
+    func testCalculatePasswordOffsetDoesntThrow() {
+        XCTAssertNoThrow(try Crypto.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: "0", restrictions: restrictions, password: "pass123"))
     }
 
 }

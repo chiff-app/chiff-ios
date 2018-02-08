@@ -3,7 +3,7 @@ import XCTest
 @testable import keyn
 
 class SiteTests: XCTestCase {
-    let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
+    let restrictions = TestHelper.examplePasswordRestrictions()
 
     override func setUp() {
         // TODO
