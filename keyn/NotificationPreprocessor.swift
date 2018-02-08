@@ -8,8 +8,6 @@ class NotificationPreprocessor {
         guard let content = content else {
             return nil
         }
-        content.userInfo["Hoi"] = "Hai"
-
 
         if let ciphertext = content.userInfo["data"] as? String, let id = content.userInfo["sessionID"] as? String {
             do {
@@ -23,8 +21,8 @@ class NotificationPreprocessor {
                     }
 
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
+                    
                     content.userInfo["siteID"] = siteID
-
                     content.userInfo["browserTab"] = credentialsRequest.b
                     content.userInfo["requestType"] = credentialsRequest.r.rawValue
 
