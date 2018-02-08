@@ -43,14 +43,14 @@ class AWS {
         }
     }
 
-    func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: String) {
+    func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: RequestType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
             sendRequest.queueUrl = queueUrl
             sendRequest.messageBody = message
-            let idAttribute = AWSSQSMessageAttributeValue()
-            idAttribute?.stringValue = type
-            idAttribute?.dataType = "String"
-            sendRequest.messageAttributes = ["type": idAttribute!]
+            let typeAttributeValue = AWSSQSMessageAttributeValue()
+            typeAttributeValue?.stringValue = String(type.rawValue)
+            typeAttributeValue?.dataType = "Number"
+            sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
             sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
                 if error != nil {
                     print("\(String(describing: error))")

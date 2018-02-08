@@ -70,24 +70,24 @@ class Session: Codable {
         return String(data: data, encoding: .utf8)!
     }
 
-    func decrypt(message: String) throws -> CredentialsMessage {
+    func decrypt(message: String) throws -> CredentialsRequest {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
         let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
-        return try JSONDecoder().decode(CredentialsMessage.self, from: data)
+        print(String(data: data, encoding: .utf8))
+        return try JSONDecoder().decode(CredentialsRequest.self, from: data)
     }
     
     // TODO, add request ID etc
-    func sendCredentials(account: Account, browserTab: Int) throws {
-        let password: String = try account.password()
-        let message = CredentialsMessage(p: password, b: browserTab)
-        let jsonMessage = try JSONEncoder().encode(message)
+    func sendCredentials(account: Account, browserTab: Int, type: RequestType) throws {
+        let response = CredentialsResponse(u: account.username, p: try account.password(), b: browserTab)
+        let jsonMessage = try JSONEncoder().encode(response)
 
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 
         // Get SQS queue and send message to queue
         try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
-            AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: queueUrl, sessionID: self.id, type: "login")
+            AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: queueUrl, sessionID: self.id, type: type)
         }
     }
 

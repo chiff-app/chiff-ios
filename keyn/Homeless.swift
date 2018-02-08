@@ -114,16 +114,29 @@ struct PairingResponse: Codable {
     let sns: String
 }
 
-struct Credentials: Codable {
-    let siteID: String
-    let username: String
-    let password: String
+// MARK: hallo
+struct CredentialsRequest: Codable {
+    let s: String          // SiteID
+    let r: RequestType
+    let b: Int          // browserTab
 }
 
-
-struct CredentialsMessage: Codable {
-    var p: String // password
-    var b: Int // browser tab identifier
+struct CredentialsResponse: Codable {
+    let u: String       // Username
+    let p: String       // Password
+    let b: Int
 }
 
+struct PushNotification {
+    let sessionID : String
+    let siteID: String // Wordt int
+    let browserTab: Int
+    let requestType: RequestType
+}
 
+enum RequestType: Int, Codable {
+    case pair
+    case login
+    case registration
+    case reset
+}

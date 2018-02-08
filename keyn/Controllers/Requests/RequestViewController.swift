@@ -3,24 +3,22 @@ import LocalAuthentication
 
 class RequestViewController: UIViewController {
 
+    var notification: PushNotification?
     var session: Session?
-    var siteID: String?
-    var browserTab: Int? // Is this a good location?
-
     @IBOutlet weak var siteLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let id = siteID {
+        if let id = notification?.siteID {
             let site = Site.get(id: id)!
             siteLabel.text = "Login to \(site.name)?"
         }
     }
 
     @IBAction func accept(_ sender: UIButton) {
-        if let id = siteID, let account = try! Account.get(siteID: id), let session = session, let browserTab = browserTab {
-            authenticateUser(session: session, account: account, browserTab: browserTab)
+        if let notification = notification, let account = try! Account.get(siteID: notification.siteID), let session = session {
+            authorizeRequest(session: session, account: account, browserTab: notification.browserTab, type: notification.requestType)
         }
     }
     
@@ -28,7 +26,7 @@ class RequestViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func authenticateUser(session: Session, account: Account, browserTab: Int) {
+    func authorizeRequest(session: Session, account: Account, browserTab: Int, type: RequestType) {
         let authenticationContext = LAContext()
         var error: NSError?
         
@@ -43,7 +41,7 @@ class RequestViewController: UIViewController {
             reply: { [weak self] (success, error) -> Void in
                 if (success) {
                     DispatchQueue.main.async {
-                        try! session.sendCredentials(account: account, browserTab: browserTab)
+                        try! session.sendCredentials(account: account, browserTab: browserTab, type: type)
                         self!.dismiss(animated: true, completion: nil)
                     }
                 } else {

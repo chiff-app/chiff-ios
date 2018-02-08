@@ -14,7 +14,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-    var notificationUserInfo: [String:String]?
+    var pushNotification: PushNotification?
     var requestInProgress = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //deleteSeed()      // Uncomment if you want to force seed regeneration
         
         // Override point for customization after application launch.
-        notificationUserInfo = nil
+        pushNotification = nil
         fetchAWSIdentification()
         launchInitialView()
         registerForPushNotifications()
@@ -59,9 +59,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler([])
             return
         }
+        // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard let requestTypeValue = notification.request.content.userInfo["requestType"] as? Int, let requestType = RequestType(rawValue: requestTypeValue) else {
+            completionHandler([])
+            return
+        }
 
         DispatchQueue.main.async {
-            self.launchRequestView(sessionID: sessionID, siteID: siteID, browserTab: browserTab)
+            self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: requestType))
         }
 
         completionHandler([.sound])
@@ -82,6 +87,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler()
             return
         }
+        // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard let requestTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let requestType = RequestType(rawValue: requestTypeValue) else {
+            completionHandler()
+            return
+        }
 
         print("Identifier: \(response.actionIdentifier)")
 
@@ -96,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                 // Directly send password? Is this a security risk? Should be tested
                 if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-                    try! session.sendCredentials(account: account, browserTab: browserTab)
+                    try! session.sendCredentials(account: account, browserTab: browserTab, type: requestType)
                 }
             }
         }
@@ -104,11 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             // This should present request page --> Yes / NO. AUthentication after or before?
             cancelAutoAuthentication()
-            notificationUserInfo = [
-                "sessionID": sessionID,
-                "siteID": siteID,
-                "browserTab": String(browserTab)
-            ]
+            pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: requestType)
         }
 
         completionHandler()
@@ -153,12 +159,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
-        if notificationUserInfo != nil && !requestInProgress {
+        if pushNotification != nil && !requestInProgress {
             requestInProgress = true
-            let info = notificationUserInfo!
-
-            launchRequestView(sessionID: info["sessionID"]!, siteID: info["siteID"]!, browserTab: Int(info["browserTab"]!)!)
-            notificationUserInfo = nil
+            launchRequestView(with: pushNotification!)
+            pushNotification = nil
         }
     }
 
@@ -171,15 +175,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //deleteSeed()        // Uncomment if you want to force seed regeneration
     }
 
-    private func launchRequestView(sessionID: String, siteID: String, browserTab: Int) {
+    private func launchRequestView(with notification: PushNotification) {
         do {
-            if let session = try Session.getSession(id: sessionID) {
+            if let session = try Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
 
+                viewController.notification = notification
                 viewController.session = session
-                viewController.siteID = siteID
-                viewController.browserTab = browserTab
 
                 UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
                     self.requestInProgress = false

@@ -8,21 +8,25 @@ class NotificationPreprocessor {
         guard let content = content else {
             return nil
         }
+        content.userInfo["Hoi"] = "Hai"
+
 
         if let ciphertext = content.userInfo["data"] as? String, let id = content.userInfo["sessionID"] as? String {
             do {
                 if let session = try Session.getSession(id: id) {
-                    let credentialsMessage: CredentialsMessage = try session.decrypt(message: ciphertext)
-                    let siteID = credentialsMessage.p
-                    let browserTab = credentialsMessage.b
+                    let credentialsRequest: CredentialsRequest = try session.decrypt(message: ciphertext)
+                    
+                    let siteID = credentialsRequest.s
 
-                    guard let site = Site.get(id: String(siteID)) else {
+                    guard let site = Site.get(id: siteID) else {
                         return content
                     }
 
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
                     content.userInfo["siteID"] = siteID
-                    content.userInfo["browserTab"] = browserTab
+
+                    content.userInfo["browserTab"] = credentialsRequest.b
+                    content.userInfo["requestType"] = credentialsRequest.r.rawValue
 
                     return content
                 }
