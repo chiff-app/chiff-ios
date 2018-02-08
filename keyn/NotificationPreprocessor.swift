@@ -21,7 +21,6 @@ class NotificationPreprocessor {
                     }
 
                     content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
-
                     content.userInfo["siteID"] = siteID
                     content.userInfo["browserTab"] = credentialsRequest.b
                     content.userInfo["requestType"] = credentialsRequest.r.rawValue

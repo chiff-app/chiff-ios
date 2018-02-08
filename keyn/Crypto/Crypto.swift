@@ -51,9 +51,9 @@ class Crypto {
         guard let seedHash = sodium.genericHash.hash(message: seed) else {
             throw CryptoError.hashing
         }
-
+        
         // This derives a subkey from the seed for a given index and context
-        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: UInt64(keyType), length: 32, context: String(context.prefix(8))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: 32, context: String(context.prefix(8))) else {
             throw CryptoError.keyDerivation
         }
 
@@ -73,7 +73,6 @@ class Crypto {
             index += 1
         }
 
-        
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
         
         guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {

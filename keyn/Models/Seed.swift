@@ -102,8 +102,8 @@ struct Seed {
         }
 
 
-        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 0, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, index: 1, context: KeyIdentifier.backup.rawValue)
+        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
+        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
         try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
         try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
