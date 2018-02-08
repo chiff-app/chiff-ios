@@ -16,6 +16,7 @@
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
+		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -118,6 +119,7 @@
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
+		01B79AEE202C8E8000425BD5 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
 		2623BA497D107393B1DB011E /* Pods-keynTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.release.xcconfig"; sourceTree = "<group>"; };
 		30FF956A7E9AEF18B2B949B5 /* Pods_keynTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				01839A741FACA98E00698B69 /* SiteTests.swift */,
 				01557423202AF75600F97DA2 /* SessionTests.swift */,
 				0155742A202B173F00F97DA2 /* TestHelper.swift */,
+				01B79AEE202C8E8000425BD5 /* CryptoTests.swift */,
 			);
 			path = keynTests;
 			sourceTree = "<group>";
@@ -845,6 +848,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */,
 				01839A751FACA98E00698B69 /* SiteTests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,

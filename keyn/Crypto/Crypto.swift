@@ -34,9 +34,11 @@ class Crypto {
         // Generate random seed
         // TODO: Should this be replaced by libsodium key generation function?
         var seed = Data(count: 16)
+
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
             SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
         }
+
         guard seedGenerationStatus == errSecSuccess else {
             throw CryptoError.randomGeneration
         }
@@ -56,7 +58,6 @@ class Crypto {
         }
 
         return key
-
     }
     
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {

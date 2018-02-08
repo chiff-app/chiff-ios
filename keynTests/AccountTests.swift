@@ -3,20 +3,23 @@ import XCTest
 @testable import keyn
 
 class AccountTests: XCTestCase {
-    
+
+    var site: Site!
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        site = Site.get(id: "0")
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+
+
+    func testInitValidAccountDoesntThrow() {
+        XCTAssertNoThrow(
+            try Account(username: "user@example.com", site: site, password: "pass123")
+        )
     }
-    
+
 }
