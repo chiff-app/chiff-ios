@@ -44,14 +44,14 @@ class Crypto {
         return seed
     }
 
-    func deriveKeyFromSeed(seed: Data, index: Int, context: String) throws -> Data {
+    func deriveKeyFromSeed(seed: Data, keyType: KeyType, context: String) throws -> Data {
         // This expands the 128-bit seed to 256 bits by hashing. Necessary for key derivation.
         guard let seedHash = sodium.genericHash.hash(message: seed) else {
             throw CryptoError.hashing
         }
 
         // This derives a subkey from the seed for a given index and context
-        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: UInt64(index), length: 32, context: String(context.prefix(8))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: UInt64(keyType), length: 32, context: String(context.prefix(8))) else {
             throw CryptoError.keyDerivation
         }
 
