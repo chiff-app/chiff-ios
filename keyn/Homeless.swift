@@ -140,3 +140,7 @@ enum RequestType: Int, Codable {
     case registration
     case reset
 }
+
+enum KeyType {
+    case passwordSeed, backupSeed
+}
