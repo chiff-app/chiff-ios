@@ -211,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         self.window?.rootViewController = viewController
         self.window?.makeKeyAndVisible()
     }
-
+    
     private func fetchAWSIdentification() {
         //        let credentialsProvider = AWSStaticCredentialsProvider(accessKey: "AKIAIPSH6JLWAEOLEXDA", secretKey: "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"))
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
