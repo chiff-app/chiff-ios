@@ -20,6 +20,7 @@ class PersonalDetailsTableViewController: UITableViewController, UITextFieldDele
         }
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        navigationItem.largeTitleDisplayMode = .never
     }
 
     override func viewWillDisappear(_ animated: Bool) {

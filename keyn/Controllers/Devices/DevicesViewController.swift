@@ -79,19 +79,25 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
-            do {
-                try sessions[indexPath.row].delete()
-                sessions.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                if sessions.isEmpty {
-                    DispatchQueue.main.async {
-                        let qrViewController = self.storyboard?.instantiateViewController(withIdentifier: "QR Controller")
-                        self.navigationController?.setViewControllers([qrViewController!], animated: false)
+            let session = sessions[indexPath.row]
+            let alert = UIAlertController(title: "Remove \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { action in
+                do {
+                    try self.sessions[indexPath.row].delete()
+                    self.sessions.remove(at: indexPath.row)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    if self.sessions.isEmpty {
+                        DispatchQueue.main.async {
+                            let qrViewController = self.storyboard?.instantiateViewController(withIdentifier: "QR Controller")
+                            self.navigationController?.setViewControllers([qrViewController!], animated: false)
+                        }
                     }
+                } catch {
+                    print("Session could not be deleted: \(error)")
                 }
-            } catch {
-                print("Session could not be deleted: \(error)")
-            }
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -103,7 +109,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let session = sessions[indexPath.row]
                 cell.titleLabel.text = "\(session.browser) on \(session.os)"
                 cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-                cell.locationLabel.text = "Started in El Rasillo de Cameros" // TODO: get location
+                cell.locationLabel.text = "Started in universe" // TODO: get location
                 cell.deviceLogo.image = UIImage(named: "Chrome")
                 cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
             }

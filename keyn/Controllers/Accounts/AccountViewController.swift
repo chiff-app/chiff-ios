@@ -27,6 +27,7 @@ class AccountViewController: UITableViewController {
                 print(error)
             }
             navigationItem.title = account.site.name
+            navigationItem.largeTitleDisplayMode = .never
         }
     }
 
