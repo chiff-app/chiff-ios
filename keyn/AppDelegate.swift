@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     var pushNotification: PushNotification?
     var requestInProgress = false
+    let lockViewTag = 390847239047
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -145,6 +146,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
         requestInProgress = false
+        if let frame = self.window?.frame {
+            let lockView = UIView(frame: frame)
+            let keynLogoView = UIImageView(image: UIImage(named: "logo"))
+            keynLogoView.frame = CGRect(x: 138, y: 289, width: 99, height: 88)
+            keynLogoView.contentMode = .scaleAspectFit
+            lockView.addSubview(keynLogoView)
+            lockView.backgroundColor = UIColor(rgb: 0x46319B)
+            lockView.tag = lockViewTag
+            self.window?.addSubview(lockView)
+            self.window?.bringSubview(toFront: lockView)
+        }
     }
 
     // Called as part of the transition from the background to the active state;
@@ -159,6 +171,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
+        if let lockView = self.window?.viewWithTag(lockViewTag) {
+            lockView.removeFromSuperview()
+        }
+
         if pushNotification != nil && !requestInProgress {
             requestInProgress = true
             launchRequestView(with: pushNotification!)

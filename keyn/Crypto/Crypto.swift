@@ -73,7 +73,7 @@ class Crypto {
             index += 1
         }
 
-        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
+        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
         
         guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
             throw CryptoError.keyDerivation
@@ -91,7 +91,7 @@ class Crypto {
     
     func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
         let chars = restrictionCharacterArray(restrictions: restrictions)
-        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID, restrictions: restrictions)
+        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
         guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
             throw CryptoError.keyDerivation
@@ -134,7 +134,7 @@ class Crypto {
         return chars
     }
 
-    private func generateKey(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions) throws -> Data {
+    private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.data(using: .utf8) else {
                 throw CryptoError.keyDerivation
