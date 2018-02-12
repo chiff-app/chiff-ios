@@ -41,4 +41,6 @@ class CryptoTests: XCTestCase {
         XCTAssertNoThrow(try Crypto.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: "0", restrictions: restrictions, password: "pass123"))
     }
 
+    
+
 }
