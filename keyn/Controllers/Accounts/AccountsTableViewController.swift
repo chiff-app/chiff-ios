@@ -1,14 +1,35 @@
 import UIKit
 
-class AccountsTableViewController: UITableViewController {
+class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
 
-    var accounts = [Account]()
+    var unfilteredAccounts = [Account]()
+    var filteredAccounts: [Account]?
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        //self.navigationItem.leftBarButtonItem = self.editButtonItem
         loadSampleData()
+        filteredAccounts = unfilteredAccounts
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.definesPresentationContext = true
+        navigationItem.searchController = searchController
+        // This hides the navigationBar.shadowImage, bug: https://forums.developer.apple.com/message/259206#259206
+    }
 
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
+                return account.site.name.lowercased().contains(searchText.lowercased())
+            })
+        } else {
+            filteredAccounts = unfilteredAccounts
+        }
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -18,31 +39,35 @@ class AccountsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let accounts = filteredAccounts else {
+            return 0
+        }
         return accounts.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
 
-        let account = accounts[indexPath.row]
-        cell.textLabel?.text = account.site.name
-        cell.detailTextLabel?.text = account.username
-
+        if let accounts = filteredAccounts {
+            let account = accounts[indexPath.row]
+            cell.textLabel?.text = account.site.name
+            cell.detailTextLabel?.text = account.username
+        }
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            do {
-                let account = accounts.remove(at: indexPath.row)
-                try account.delete()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            } catch {
-                print("Account could not be deleted: \(error)")
-            }
-        }     
-    }
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            do {
+//                let account = accounts.remove(at: indexPath.row)
+//                try account.delete()
+//                tableView.deleteRows(at: [indexPath], with: .fade)
+//            } catch {
+//                print("Account could not be deleted: \(error)")
+//            }
+//        }
+//    }
 
     // MARK: - Navigation
 
@@ -53,7 +78,7 @@ class AccountsTableViewController: UITableViewController {
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = accounts[indexPath.row]
+                 controller.account = unfilteredAccounts[indexPath.row]
             }
         }
     }
@@ -63,9 +88,9 @@ class AccountsTableViewController: UITableViewController {
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
             
-            let newIndexPath = IndexPath(row: accounts.count, section: 0)
+            let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
             
-            accounts.append(account)
+            unfilteredAccounts.append(account)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
     }
@@ -77,7 +102,7 @@ class AccountsTableViewController: UITableViewController {
         do {
             if let savedAccounts = try Account.all() {
                 print("Loading accounts from keychain.")
-                accounts.append(contentsOf: savedAccounts)
+                unfilteredAccounts.append(contentsOf: savedAccounts)
             } else {
                 let sampleUsername = "athenademo@protonmail.com"
                 var sampleSites = [Site]()
@@ -92,11 +117,11 @@ class AccountsTableViewController: UITableViewController {
                 
                 for site in sampleSites {
                     let account = try! Account(username: sampleUsername, site: site, password: nil)
-                    accounts.append(account)
+                    unfilteredAccounts.append(account)
                 }
                 
                 let customSite = Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions)
-                accounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
+                unfilteredAccounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
                 
             }
         } catch {
