@@ -672,7 +672,7 @@
                                             <outlet property="titleLabel" destination="w47-dm-ku8" id="Cbj-Zv-rHY"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Pair" textLabel="fhC-Az-aRa" style="IBUITableViewCellStyleDefault" id="Z4W-c3-x0c" customClass="DevicesViewCell" customModule="keyn" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Scan QR" textLabel="fhC-Az-aRa" style="IBUITableViewCellStyleDefault" id="Z4W-c3-x0c" customClass="DevicesViewCell" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="145.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Z4W-c3-x0c" id="lZo-eV-tMu">
