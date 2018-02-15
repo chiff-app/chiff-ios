@@ -141,7 +141,8 @@ struct CredentialsRequest: Codable {
 
 struct CredentialsResponse: Codable {
     let u: String       // Username
-    let p: String       // Password
+    let p: String      // Password
+    let np: String?     // New password (for reset only! When registering p will be set)
     let b: Int
 }
 
