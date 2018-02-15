@@ -57,17 +57,20 @@ struct Account: Codable {
         return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
     }
 
-    mutating func updatePassword(restrictions: PasswordRestrictions) throws {
+    mutating func updatePassword(restrictions: PasswordRestrictions?, offset: [Int]?) throws {
         passwordIndex += 1
 
-        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, offset: passwordOffset)
+        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions ?? self.restrictions, offset: offset)
+
         //TODO: Implement custom passwords here
 
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: nil, label: nil)
+        let accountData = try PropertyListEncoder().encode(self)
+
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
     }
 
     func delete() throws {

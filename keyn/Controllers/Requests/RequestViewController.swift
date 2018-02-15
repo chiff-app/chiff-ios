@@ -9,11 +9,7 @@ class RequestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let id = notification?.siteID {
-            let site = Site.get(id: id)!
-            siteLabel.text = "Login to \(site.name)?"
-        }
+        setLabel()
     }
 
     @IBAction func accept(_ sender: UIButton) {
@@ -29,6 +25,18 @@ class RequestViewController: UIViewController {
     func authorizeRequest(session: Session, account: Account, browserTab: Int, type: RequestType) {
         let authenticationContext = LAContext()
         var error: NSError?
+
+        var localizedReason = ""
+        switch type {
+        case .login:
+            localizedReason = "Login to \(account.site.name)"
+        case .reset:
+            localizedReason = "Reset password for \(account.site.name)"
+        case .registration:
+             localizedReason = "Register for \(account.site.name)"
+        default:
+            localizedReason = "\(account.site.name)"
+        }
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             print("Todo: handle fingerprint absence \(String(describing: error))")
@@ -37,7 +45,7 @@ class RequestViewController: UIViewController {
         
         authenticationContext.evaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: "Login to \(account.site.name)",
+            localizedReason: localizedReason,
             reply: { [weak self] (success, error) -> Void in
                 if (success) {
                     DispatchQueue.main.async {
@@ -51,4 +59,21 @@ class RequestViewController: UIViewController {
         )
     }
 
+    // MARK: Private functions
+
+    private func setLabel() {
+        if let id = notification?.siteID, let type = notification?.requestType {
+            let site = Site.get(id: id)!
+            switch type {
+            case .login:
+                siteLabel.text = "Login to \(site.name)?"
+            case .reset:
+                siteLabel.text = "Reset password for \(site.name)?"
+            case .registration:
+                siteLabel.text = "Register for \(site.name)?"
+            default:
+                siteLabel.text = ""
+            }
+        }
+    }
 }
