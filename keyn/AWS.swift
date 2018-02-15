@@ -32,14 +32,22 @@ class AWS {
             throw AWSError.queueUrl(error: nil)
         }
         queueUrlRequest.queueName = queueName
-        sqs.getQueueUrl(queueUrlRequest) { (result, error) in
-            if error != nil {
-                print("\(String(describing: error))")
-            } else if let queueUrl = result?.queueUrl {
-                completionHandler(queueUrl)
-            } else {
-                print("AWS did not produce error, still result is empty.")
+
+        // TODO: This getQueueUrl does not call the handler when request is accepted from Home screen (ACCEPT)?
+        sqs.getQueueUrl(queueUrlRequest).continueOnSuccessWith { (task: AWSTask!) -> Any? in
+            guard let response = task.result else {
+                print("TODO: handle error")
+                return nil
             }
+            if let queueUrl = response.queueUrl {
+                completionHandler(queueUrl)
+            }
+            return nil
+        }.continueWith { (task: AWSTask!) -> Any? in
+            if task.error != nil {
+                print("GetQueueError: \(String(describing: task.error))")
+            }
+            return nil
         }
     }
 
