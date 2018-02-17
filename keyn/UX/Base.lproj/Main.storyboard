@@ -319,7 +319,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Accounts" image="account_icon" selectedImage="account_icon_selected" id="acW-dT-cKf"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" shadowImage="line" largeTitles="YES" id="NkV-Bq-4Iq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="NkV-Bq-4Iq">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -565,7 +565,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" shadowImage="line" id="aZp-CQ-5qN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -584,7 +584,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="DevicesNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Devices" image="device-icon" selectedImage="device_icon_selected" id="GWP-vo-zZa"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" shadowImage="line" largeTitles="YES" id="e0j-3u-woH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="e0j-3u-woH">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -980,7 +980,7 @@
                 <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="b4Q-ze-Q2f" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="settings-icon" selectedImage="settings_icon_selected" id="u7q-tf-p2Q"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" shadowImage="line" largeTitles="YES" id="uga-m1-Yel">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uga-m1-Yel">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1216,7 +1216,6 @@
         <image name="device_icon_selected" width="34" height="23"/>
         <image name="eye_logo" width="20" height="14"/>
         <image name="fingerprint" width="104" height="116"/>
-        <image name="line" width="423" height="3"/>
         <image name="logo" width="384" height="428"/>
         <image name="settings-icon" width="26" height="27"/>
         <image name="settings_icon_selected" width="26" height="27"/>
