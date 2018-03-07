@@ -91,7 +91,22 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
             
             unfilteredAccounts.append(account)
+            filteredAccounts = unfilteredAccounts
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+        } else if let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
+            if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
+                return account.id == unfilteredAccount.id
+            }) {
+                let indexPath = IndexPath(row: index, section: 0)
+                do {
+                    try account.delete()
+                    unfilteredAccounts.remove(at: index)
+                    filteredAccounts = unfilteredAccounts
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                } catch {
+                    print("Account could not be deleted: \(error)")
+                }
+            }
         }
     }
 

@@ -13,10 +13,13 @@ import SmileLock
 class LoginViewController: UIViewController {
 
     var autoAuthentication = true
+    @IBOutlet weak var touchIDButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        touchIDButton.imageView!.contentMode = .scaleAspectFit
+        touchIDButton.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13)
         // Do any additional setup after loading the view.
     }
 
@@ -27,6 +30,10 @@ class LoginViewController: UIViewController {
         }
     }
 
+    // MARK: Actions
+    @IBAction func touchID(_ sender: UIButton) {
+        authenticateUser()
+    }
 }
 
 extension UIViewController  {
@@ -39,13 +46,13 @@ extension UIViewController  {
         var authError: NSError?
         let reasonString = "Unlock Keyn"
 
-        guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) else {
+        guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
             //TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled
             print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code))
             return
         }
 
-        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString) { success, evaluateError in
+        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString) { success, evaluateError in
 
             if success {
                 DispatchQueue.main.async {
