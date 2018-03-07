@@ -43,7 +43,16 @@ class AccountViewController: UITableViewController {
         showHiddenPasswordPopup()
     }
     
-    
+    @IBAction func deleteAccount(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            self.performSegue(withIdentifier: "DeleteAccount", sender: self)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+
     // MARK: Private methods
     
     private func showHiddenPasswordPopup() {
