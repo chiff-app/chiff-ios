@@ -13,13 +13,38 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         filteredAccounts = unfilteredAccounts
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = true
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.definesPresentationContext = true
+        self.extendedLayoutIncludesOpaqueBars = false
+        self.definesPresentationContext = true
         navigationItem.searchController = searchController
-        // This hides the navigationBar.shadowImage, bug: https://forums.developer.apple.com/message/259206#259206
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let navigationView = navigationController?.view {
+            fixShadowImage(inView: navigationView)
+        }
+    }
+    
+    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
+    func fixShadowImage(inView view: UIView) {
+        if let imageView = view as? UIImageView {
+            let size = imageView.bounds.size.height
+            if size <= 1 && size > 0 &&
+                imageView.subviews.count == 0,
+                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
+            {
+                let line = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 2))
+                line.backgroundColor = UIColor(rgb: 0x4932A2)
+                imageView.addSubview(line)
+                line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            }
+        }
+        for subview in view.subviews {
+            fixShadowImage(inView: subview)
+        }
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {

@@ -22,6 +22,16 @@ class CryptoTests: XCTestCase {
         XCTAssertNoThrow(try Crypto.sharedInstance.generateSeed())
     }
 
+    func testGenerateReturnsSeedWithCorrectType() throws {
+        let seed = try Crypto.sharedInstance.generateSeed()
+        assert((seed as Any) is Data)
+    }
+
+    func testGenerateReturnsSeedWithCorrectLength() throws {
+        let seed = try Crypto.sharedInstance.generateSeed()
+        XCTAssertEqual(seed.count, 16)
+    }
+
     func testDeriveKeyFromSeedDoesntThrow() {
         XCTAssertNoThrow(try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed(), keyType: .passwordSeed, context: "0")
         )
@@ -41,6 +51,8 @@ class CryptoTests: XCTestCase {
         XCTAssertNoThrow(try Crypto.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: "0", restrictions: restrictions, password: "pass123"))
     }
 
-    
+    func testCalculatePasswordOffsetThrowsWhenGenerateKeyThrows() {
+        assert(false, "TODO")
+    }
 
 }
