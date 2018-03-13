@@ -34,6 +34,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         
         // Do any additional setup after loading the view.
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
     
     private func checkMnemonic() -> Bool {
         for word in mnemonic {

@@ -13,7 +13,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var secondWordLabel: UILabel!
     @IBOutlet weak var firstWordTextField: UITextField!
     @IBOutlet weak var secondWordTextField: UITextField!
-    @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var finishButton: UIBarButtonItem!
+
 
     var mnemonic: [String]?
     var firstWordIndex = 0
@@ -27,11 +28,17 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         firstWordLabel.text = "Word #\(firstWordIndex+1)"
         secondWordLabel.text = "Word #\(secondWordIndex+1)"
+        firstWordTextField.placeholder = "Word #\(firstWordIndex+1)"
+        secondWordTextField.placeholder = "Word #\(secondWordIndex+1)"
 
         firstWordTextField.delegate = self
         secondWordTextField.delegate = self
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 
 
@@ -45,6 +52,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         if (firstWordTextField.text == mnemonic![firstWordIndex] && secondWordTextField.text == mnemonic![secondWordIndex]) {
+
             finishButton.isEnabled = true
         } else {
             finishButton.isEnabled = false

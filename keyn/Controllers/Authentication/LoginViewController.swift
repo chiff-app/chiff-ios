@@ -30,6 +30,10 @@ class LoginViewController: UIViewController {
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+
     // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
         authenticateUser()
