@@ -28,11 +28,13 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         firstWordLabel.text = "Word #\(firstWordIndex+1)"
         secondWordLabel.text = "Word #\(secondWordIndex+1)"
-        firstWordTextField.placeholder = "Word #\(firstWordIndex+1)"
-        secondWordTextField.placeholder = "Word #\(secondWordIndex+1)"
+        firstWordTextField.placeholder = "\(mnemonic![firstWordIndex].prefix(3))..."
+        secondWordTextField.placeholder = "\(mnemonic![secondWordIndex].prefix(3))..."
 
         firstWordTextField.delegate = self
         secondWordTextField.delegate = self
+        firstWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        secondWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
@@ -51,12 +53,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if (firstWordTextField.text == mnemonic![firstWordIndex] && secondWordTextField.text == mnemonic![secondWordIndex]) {
+        checkWords()
+    }
 
-            finishButton.isEnabled = true
-        } else {
-            finishButton.isEnabled = false
-        }
+    @objc func textFieldDidChange(textField: UITextField){
+        checkWords()
     }
 
     @objc func dismissKeyboard() {
@@ -75,7 +76,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @IBAction func finish(_ sender: UIButton) {
+    @IBAction func finish(_ sender: UIBarButtonItem) {
 
         do {
             try Seed.setBackedUp()
@@ -86,6 +87,16 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             loadRootController()
         } else {
             self.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    // MARK: Private functions
+
+    private func checkWords() {
+        if (firstWordTextField.text == mnemonic![firstWordIndex] && secondWordTextField.text == mnemonic![secondWordIndex]) {
+            finishButton.isEnabled = true
+        } else {
+            finishButton.isEnabled = false
         }
     }
 
