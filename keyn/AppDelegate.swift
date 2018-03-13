@@ -152,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let frame = self.window?.frame {
             let lockView = UIView(frame: frame)
             let keynLogoView = UIImageView(image: UIImage(named: "logo"))
-            keynLogoView.frame = CGRect(x: 138, y: 289, width: 99, height: 88)
+            keynLogoView.frame = CGRect(x: 138, y: 289, width: 99, height: 88) // TODO: Make autolayout constrained
             keynLogoView.contentMode = .scaleAspectFit
             lockView.addSubview(keynLogoView)
             lockView.backgroundColor = UIColor(rgb: 0x46319B)

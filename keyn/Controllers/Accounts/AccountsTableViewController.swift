@@ -144,12 +144,12 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 print("Loading accounts from keychain.")
                 unfilteredAccounts.append(contentsOf: savedAccounts)
             } else {
-                let sampleUsername = "athenademo@protonmail.com"
+                let sampleUsername = "demo@keyn.io"
                 var sampleSites = [Site]()
                 
                 let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-                
-                sampleSites.append(Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: PasswordRestrictions(length: 30, characters: [.lower, .numbers, .upper, .symbols])))
+
+                sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
                 sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"], restrictions: restrictions))
                 sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
                 sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
@@ -160,7 +160,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                     unfilteredAccounts.append(account)
                 }
 
-                let customSite = Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions)
+                let customSite = Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions)
                 unfilteredAccounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
                 
             }

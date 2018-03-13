@@ -27,7 +27,7 @@ CQkJA
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.27450980392156865" green="0.19215686274509802" blue="0.60784313725490191" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="1XB-G2-Kjy" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="20" symbolic="YES" id="4Re-oO-kdj"/>
