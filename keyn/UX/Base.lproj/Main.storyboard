@@ -251,7 +251,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HO-qZ-Te9">
-                                                    <rect key="frame" x="184.66666666666666" y="7" width="45" height="30"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                                     <state key="normal" title="Delete">
                                                         <color key="titleColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
@@ -261,8 +261,10 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="6HO-qZ-Te9" firstAttribute="centerY" secondItem="Smy-j3-k4H" secondAttribute="centerY" id="e8X-ud-Yx0"/>
-                                                <constraint firstItem="6HO-qZ-Te9" firstAttribute="centerX" secondItem="Smy-j3-k4H" secondAttribute="centerX" id="lyP-TZ-dta"/>
+                                                <constraint firstItem="6HO-qZ-Te9" firstAttribute="top" secondItem="Smy-j3-k4H" secondAttribute="top" id="bXE-Ri-Njo"/>
+                                                <constraint firstItem="6HO-qZ-Te9" firstAttribute="leading" secondItem="Smy-j3-k4H" secondAttribute="leading" id="dAO-3N-Iwu"/>
+                                                <constraint firstAttribute="bottom" secondItem="6HO-qZ-Te9" secondAttribute="bottom" id="h5z-Ms-hbj"/>
+                                                <constraint firstAttribute="trailing" secondItem="6HO-qZ-Te9" secondAttribute="trailing" id="t03-Z5-mqo"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -286,7 +288,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAD-fx-Eo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ibN-3J-G1l" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2372" y="-863.1184407796103"/>
+            <point key="canvasLocation" x="2371.0144927536235" y="-863.31521739130437"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SgE-Op-oyl">
@@ -769,7 +771,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Backup not finished" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" id="wyY-qk-hUJ">
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup not finished" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" id="wyY-qk-hUJ">
                             <rect key="frame" x="0.0" y="368.66666666666669" width="414" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
