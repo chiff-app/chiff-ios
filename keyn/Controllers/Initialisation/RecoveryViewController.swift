@@ -12,7 +12,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     var isInitialSetup = true // TODO: Implement calling recovery from settings?
     @IBOutlet var wordTextFields: Array<UITextField>?
-    @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var finishButton: UIBarButtonItem!
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
             mnemonicIsValid = checkMnemonic()
@@ -26,8 +26,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        wordTextFields?.sort(by: { (first, second) -> Bool in
+            return first.tag < second.tag
+        })
         for textField in wordTextFields! {
             textField.delegate = self
+            textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
@@ -37,13 +41,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
-    }
-    
-    private func checkMnemonic() -> Bool {
-        for word in mnemonic {
-            if word == "" { return false }
-        }
-        return Seed.validate(mnemonic: mnemonic)
     }
 
     //MARK: UITextFieldDelegate
@@ -59,6 +56,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             mnemonic[index] = textField.text ?? ""
         }
     }
+
+    @objc func textFieldDidChange(textField: UITextField){
+        if let index = wordTextFields?.index(of: textField) {
+            mnemonic[index] = textField.text ?? ""
+        }
+    }
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -66,7 +69,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Actions
     
-    @IBAction func finish(_ sender: UIButton) {
+    @IBAction func finish(_ sender: UIBarButtonItem) {
         do {
             if try Seed.recover(mnemonic: mnemonic) {
                 if isInitialSetup {
@@ -85,7 +88,15 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
         UIApplication.shared.keyWindow?.rootViewController = rootController
     }
-    
+
+    // MARK: Private functions
+
+    private func checkMnemonic() -> Bool {
+        for word in mnemonic {
+            if word == "" { return false }
+        }
+        return Seed.validate(mnemonic: mnemonic)
+    }
     
     /*
     // MARK: - Navigation
