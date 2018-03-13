@@ -40,6 +40,7 @@ class BackupWizardViewController: UIViewController {
             counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
             if (counter >= 1) {
                 previousButton.isEnabled = true
+                previousButton.alpha = 1.0
             }
         } else {
             let checkViewController = storyboard?.instantiateViewController(withIdentifier: "Mnemonic Check") as! BackupCheckViewController
@@ -56,18 +57,24 @@ class BackupWizardViewController: UIViewController {
             counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
             if (counter <= 0) {
                 previousButton.isEnabled = false
+                previousButton.alpha = 0.5
             }
         }
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        if isInitialSetup {
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-            UIApplication.shared.keyWindow?.rootViewController = rootController
-        } else {
-            dismiss(animated: true, completion: nil)
-        }
+        let alert = UIAlertController(title: "Cancel backup?", message: "You can complete the backup sequence later.", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { action in
+            if self.isInitialSetup {
+                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+                UIApplication.shared.keyWindow?.rootViewController = rootController
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
