@@ -81,18 +81,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         return cell
     }
     
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            do {
-//                let account = accounts.remove(at: indexPath.row)
-//                try account.delete()
-//                tableView.deleteRows(at: [indexPath], with: .fade)
-//            } catch {
-//                print("Account could not be deleted: \(error)")
-//            }
-//        }
-//    }
 
     // MARK: - Navigation
 
@@ -162,7 +150,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
                 let customSite = Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions)
                 unfilteredAccounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
-                
+
             }
         } catch {
             print("Account could not be fetched from keychain: \(error)")

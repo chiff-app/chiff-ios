@@ -25,6 +25,9 @@ class Crypto {
     private let sodium = Sodium()
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
+
+    // MARK: Key generation functions
+
     /*
      * The first time we use the app, we need to generate the seed and put it in the
      * keychain. This function will need to be called in the setup process and from
@@ -59,6 +62,128 @@ class Crypto {
 
         return key
     }
+
+
+    func createSessionKeyPair() throws -> Box.KeyPair {
+        guard let keyPair = sodium.box.keyPair() else {
+            throw CryptoError.keyGeneration
+        }
+
+        return keyPair
+    }
+
+
+    // MARK: Base64 conversion functions
+
+    func convertFromBase64(from base64String: String) throws -> Data  {
+        // Convert from base64 to Data
+        guard let data = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
+            throw CryptoError.base64Decoding
+        }
+
+        return data
+    }
+
+    func convertToBase64(from data: Data) throws -> String  {
+        // Convert from Data to base64
+        guard let b64String = sodium.utils.bin2base64(data, variant: .URLSAFE_NO_PADDING) else {
+            throw CryptoError.base64Encoding
+        }
+
+        return b64String
+    }
+
+
+    // MARK: Encryption & decryption functions
+
+    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey, privKey: Box.SecretKey) throws -> Data {
+        guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {
+            throw CryptoError.encryption
+        }
+        return ciphertext
+    }
+
+    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey) throws -> Data {
+        guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey) else {
+            throw CryptoError.encryption
+        }
+        return ciphertext
+    }
+
+    // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key
+    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey: Box.PublicKey) throws -> Data {
+        guard let plaintext: Data = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext, senderPublicKey: pubKey, recipientSecretKey: privKey) else {
+            throw CryptoError.decryption
+        }
+        return plaintext
+    }
+
+
+     // MARK: Hash functions
+
+    func hash(_ data: Data) throws -> Data {
+        guard let hashData = sodium.genericHash.hash(message: data) else {
+            throw CryptoError.hashing
+        }
+        return hashData
+    }
+
+    func hash(_ message: String) throws -> String {
+        guard let messageData = message.data(using: .utf8) else {
+            throw CryptoError.convertToData
+        }
+        let hashData = try hash(messageData)
+        guard let hash = sodium.utils.bin2hex(hashData) else {
+            throw CryptoError.convertToHex
+        }
+        return hash
+    }
+
+
+    // MARK: Password generation functions
+
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
+        let chars = restrictionCharacterArray(restrictions: restrictions)
+        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
+
+        // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
+        let bitLength = restrictions.length * Int(ceil(log2(Double(chars.count)))) + (128 + restrictions.length - (128 % restrictions.length))
+        let byteLength = roundUp(n: bitLength, m: (restrictions.length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
+        guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
+            throw CryptoError.keyDerivation
+        }
+
+        // Zero-offsets if no offset is given
+        let modulus = offset == nil ? chars.count : chars.count + 1
+        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
+        let bytesPerChar = byteLength / restrictions.length
+        var keyDataIterator = keyData.makeIterator()
+        var password = ""
+
+        // Generates the password
+        for index in 0..<restrictions.length {
+            var value = 0
+            var counter = 0
+
+            // Add up bytevalues to value
+            repeat {
+                guard let byte = keyDataIterator.next() else {
+                    throw CryptoError.keyGeneration
+                }
+                value += Int(byte)
+                counter += 1
+            } while counter < bytesPerChar
+
+            // Choose character from value, taking offset into account
+            let characterValue = (value + offset[index]) % modulus
+            if characterValue != chars.count {
+                password += String(chars[characterValue])
+            }
+        }
+
+        return password
+    }
+
     
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
         let chars = restrictionCharacterArray(restrictions: restrictions)
@@ -74,46 +199,44 @@ class Crypto {
         }
 
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-        
-        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
+
+        let bitLength = restrictions.length * Int(ceil(log2(Double(chars.count)))) + (128 + restrictions.length - (128 % restrictions.length))
+        let byteLength = roundUp(n: bitLength, m: (restrictions.length * 8)) / 8
+        guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
             throw CryptoError.keyDerivation
         }
-        
+
+        let bytesPerChar = byteLength / restrictions.length
+        var keyDataIterator = keyData.makeIterator()
         var offsets = [Int]()
-        var i = 0
-        for (_, element) in keyData.enumerated() {
-            offsets.append((characterIndices[i] - Int(element)) % (chars.count + 1))
-            i += 1
+
+        // Generates the offset
+        for index in 0..<restrictions.length {
+            var value = 0
+            var counter = 0
+
+            // Add up bytevalues to value
+            repeat {
+                guard let byte = keyDataIterator.next() else {
+                    throw CryptoError.keyGeneration
+                }
+                value += Int(byte)
+                counter += 1
+            } while counter < bytesPerChar
+
+            // Calculate offset and add to array
+            offsets.append((characterIndices[index] - value) % (chars.count + 1))
         }
-        
+
         return offsets
     }
-    
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
-        let chars = restrictionCharacterArray(restrictions: restrictions)
-        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
-        guard let keyData = sodium.randomBytes.deterministic(length: restrictions.length, seed: key) else {
-            throw CryptoError.keyDerivation
-        }
 
-        // Zero-offsets if no offset is given
-        let modulus = offset == nil ? chars.count : chars.count + 1
-        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
+    // MARK: Private functions
 
-        var i = 0
-        var password = ""
-        for (_, element) in keyData.enumerated() {
-            let characterValue = (Int(element) + offset[i]) % modulus
-            if characterValue != chars.count {
-                password += String(chars[characterValue])
-            }
-            i += 1
-        }
-
-        return password
+    private func roundUp(n: Int, m: Int) -> Int {
+        return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
-    
     
     private func restrictionCharacterArray(restrictions: PasswordRestrictions) -> [Character] {
         var chars = [Character]()
@@ -140,7 +263,7 @@ class Crypto {
                 throw CryptoError.keyDerivation
         }
 
-        // TODO: If siteID is Int, use that as index.
+        // TODO: If siteID is Int, use that as index. siteData is then not necessary anymore.
         let siteKey = try deriveKey(keyData: Seed.getPasswordKey(), context: siteData)
         let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
         
@@ -161,70 +284,4 @@ class Crypto {
         return key
     }
 
-    func convertFromBase64(from base64String: String) throws -> Data  {
-        // Convert from base64 to Data
-        guard let data = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
-            throw CryptoError.base64Decoding
-        }
-
-        return data
-    }
-
-    func convertToBase64(from data: Data) throws -> String  {
-        // Convert from Data to base64
-        guard let b64String = sodium.utils.bin2base64(data, variant: .URLSAFE_NO_PADDING) else {
-            throw CryptoError.base64Encoding
-        }
-
-        return b64String
-    }
-
-    func createSessionKeyPair() throws -> Box.KeyPair {
-        guard let keyPair = sodium.box.keyPair() else {
-            throw CryptoError.keyGeneration
-        }
-
-        return keyPair
-    }
-
-    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey, privKey: Box.SecretKey) throws -> Data {
-        guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {
-            throw CryptoError.encryption
-        }
-        return ciphertext
-    }
-
-    func encrypt(_ plaintext: Data, pubKey: Box.PublicKey) throws -> Data {
-        guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey) else {
-            throw CryptoError.encryption
-        }
-        return ciphertext
-    }
-
-    // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key
-    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey: Box.PublicKey) throws -> Data {
-        guard let plaintext: Data = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext, senderPublicKey: pubKey, recipientSecretKey: privKey) else {
-            throw CryptoError.decryption
-        }
-        return plaintext
-    }
-
-    func hash(_ data: Data) throws -> Data {
-        guard let hashData = sodium.genericHash.hash(message: data) else {
-            throw CryptoError.hashing
-        }
-        return hashData
-    }
-
-    func hash(_ message: String) throws -> String {
-        guard let messageData = message.data(using: .utf8) else {
-            throw CryptoError.convertToData
-        }
-        let hashData = try hash(messageData)
-        guard let hash = sodium.utils.bin2hex(hashData) else {
-            throw CryptoError.convertToHex
-        }
-        return hash
-    }
-    
 }
