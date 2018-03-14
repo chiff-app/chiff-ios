@@ -11,7 +11,7 @@ import Foundation
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]
     let properties: PPDProperties
-    let service: PPDService
+    //let service: PPDService
     let version: String
     let timestamp: Date
     let url: String // Can this be URL?
@@ -66,34 +66,34 @@ struct PPDRequirementRule: Codable {
 
 // TODO: Complete Service part. Perhaps first implement in JS?
 
-struct PPDService: Codable {
-    let login: PPDLogin
-    let register: PPDRegister
-    let passwordChange: PPDPasswordChange
-    let passwordReset: PPDPasswordReset
-}
-
-struct PPDLogin: Codable {
-    let url: String // Can this be URL?
-    let maxTries: Int
-    let routines: [PPDBaseRoutine]
-}
-
-struct PPDRegister: Codable {
-    let url: String
-}
-
-struct PPDPasswordChange: Codable {
-    let url: String
-    let maxTries: Int
-    let routines: [PPDBaseRoutine]
-}
-
-struct PPDPasswordReset: Codable {
-    let url: String
-    let maxTries: Int
-    let routines: [PPDPasswordResetRoutines]
-}
+//struct PPDService: Codable {
+//    let login: PPDLogin
+//    let register: PPDRegister
+//    let passwordChange: PPDPasswordChange
+//    let passwordReset: PPDPasswordReset
+//}
+//
+//struct PPDLogin: Codable {
+//    let url: String // Can this be URL?
+//    let maxTries: Int
+//    let routines: [PPDBaseRoutine]
+//}
+//
+//struct PPDRegister: Codable {
+//    let url: String
+//}
+//
+//struct PPDPasswordChange: Codable {
+//    let url: String
+//    let maxTries: Int
+//    let routines: [PPDBaseRoutine]
+//}
+//
+//struct PPDPasswordReset: Codable {
+//    let url: String
+//    let maxTries: Int
+//    let routines: [PPDPasswordResetRoutines]
+//}
 
 
 
