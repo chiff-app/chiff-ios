@@ -15,6 +15,7 @@ enum CryptoError: Error {
     case mnemonicConversion
     case mnemonicChecksum
     case characterNotAllowed
+    case passwordGeneration
 }
 
 
@@ -143,6 +144,12 @@ class Crypto {
     // MARK: Password generation functions
 
     func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
+        
+        // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
+        guard restrictions.length >= 8 else {
+            throw CryptoError.passwordGeneration
+        }
+        
         let chars = restrictionCharacterArray(restrictions: restrictions)
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
@@ -162,7 +169,7 @@ class Crypto {
 
         // Generates the password
         for index in 0..<restrictions.length {
-            var value = 0
+            var data = Data()
             var counter = 0
 
             // Add up bytevalues to value
@@ -170,11 +177,12 @@ class Crypto {
                 guard let byte = keyDataIterator.next() else {
                     throw CryptoError.keyGeneration
                 }
-                value += Int(byte)
+                data.append(byte)
                 counter += 1
             } while counter < bytesPerChar
 
             // Choose character from value, taking offset into account
+            let value: Int = data.withUnsafeBytes { $0.pointee }
             let characterValue = (value + offset[index]) % modulus
             if characterValue != chars.count {
                 password += String(chars[characterValue])
@@ -189,6 +197,11 @@ class Crypto {
         let chars = restrictionCharacterArray(restrictions: restrictions)
         var characterIndices = [Int](repeatElement(chars.count, count: restrictions.length))
         var index = 0
+        
+        // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
+        guard restrictions.length >= 8 else {
+            throw CryptoError.passwordGeneration
+        }
 
         for char in password {
             guard let characterIndex = chars.index(of: char) else {
@@ -212,7 +225,7 @@ class Crypto {
 
         // Generates the offset
         for index in 0..<restrictions.length {
-            var value = 0
+            var data = Data()
             var counter = 0
 
             // Add up bytevalues to value
@@ -220,14 +233,15 @@ class Crypto {
                 guard let byte = keyDataIterator.next() else {
                     throw CryptoError.keyGeneration
                 }
-                value += Int(byte)
+                data.append(byte)
                 counter += 1
             } while counter < bytesPerChar
 
             // Calculate offset and add to array
+            let value: Int = data.withUnsafeBytes { $0.pointee }
             offsets.append((characterIndices[index] - value) % (chars.count + 1))
         }
-
+        
         return offsets
     }
 
