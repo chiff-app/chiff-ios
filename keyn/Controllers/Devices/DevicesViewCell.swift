@@ -12,7 +12,6 @@ class DevicesViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var deviceLogo: UIImageView!
     @IBOutlet weak var deleteButton: UIButton!
     
