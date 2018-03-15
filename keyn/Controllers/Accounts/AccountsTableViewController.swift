@@ -134,22 +134,20 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             } else {
                 let sampleUsername = "demo@keyn.io"
                 var sampleSites = [Site]()
-                
-                let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
 
-                sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://cloud.digitalocean.com/login"], restrictions: restrictions))
-                sampleSites.append(Site(name: "Gmail", id: "1", urls: ["https://gmail.com/login"], restrictions: restrictions))
-                sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], restrictions: restrictions))
-                sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], restrictions: restrictions))
-                sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], restrictions: restrictions))
+                sampleSites.append(Site.get(id: "1")!)
+                sampleSites.append(Site.get(id: "2")!)
+                sampleSites.append(Site.get(id: "3")!)
+                sampleSites.append(Site.get(id: "4")!)
+                sampleSites.append(Site.get(id: "5")!)
+
                 
                 for site in sampleSites {
-                    let account = try! Account(username: sampleUsername, site: site, passwordIndex: 2, password: nil)
+                    let account = try! Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
                     unfilteredAccounts.append(account)
                 }
 
-                let customSite = Site(name: "LinkedIn", id: "0", urls: ["https://www.linkedin.com"], restrictions: restrictions)
-                unfilteredAccounts.append(try! Account(username: sampleUsername, site: customSite, password: "ExampleCustomPassword"))
+                unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: "0")!, password: "ExampleCustomPassword"))
 
             }
         } catch {

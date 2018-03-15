@@ -1,0 +1,37 @@
+{
+  "characterSets": [
+    {
+      "base": [],
+      "characters": "abcdefghijklmnopqrstuvwxyz",
+      "name": "LowerLetters"
+    },
+    {
+      "base": [],
+      "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "name": "UpperLetters"
+    },
+    {
+      "base": [],
+      "characters": "1234567890",
+      "name": "Numbers"
+    },
+    {
+    "base": [],
+    "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+    "name": "Specials"
+    }
+  ],
+  "properties": {
+    "characterSettings": null,
+    "maxConsecutive": null,
+    "minLength": 8,
+    "maxLength": 32,
+    "expires": null
+  },
+  "service": null,
+  "version": null,
+  "timestamp": null,
+  "url": "https://www.linkedin.com",
+  "redirect": null,
+  "name": "LinkedIn"
+}

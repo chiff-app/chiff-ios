@@ -143,32 +143,47 @@ class Crypto {
 
     // MARK: Password generation functions
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD, offset: [Int]?) throws -> String {
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> String {
 
-        // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-        guard restrictions.length >= 8 else {
-            throw CryptoError.passwordGeneration
+        var length = 22
+        var chars = [Character]()
+        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
+            // Get parameters from ppd
+            length = min(maxLength, 24)
+
+            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
+            guard length >= 8 else {
+                throw CryptoError.passwordGeneration
+            }
+
+            for characterSet in characterSets {
+                if let characters = characterSet.characters {
+                    chars.append(contentsOf: [Character](characters))
+                }
+            }
+        } else {
+            // Use optimal fallback composition rules
+            length = 22 // redundant, but for now for clarity
         }
-        
-        let chars = restrictionCharacterArray(restrictions: restrictions)
+
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
         // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
-        let bitLength = restrictions.length * Int(ceil(log2(Double(chars.count)))) + (128 + restrictions.length - (128 % restrictions.length))
-        let byteLength = roundUp(n: bitLength, m: (restrictions.length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
+        let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
+        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
         guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
             throw CryptoError.keyDerivation
         }
 
         // Zero-offsets if no offset is given
         let modulus = offset == nil ? chars.count : chars.count + 1
-        let offset = offset ?? Array<Int>(repeatElement(0, count: restrictions.length))
-        let bytesPerChar = byteLength / restrictions.length
+        let offset = offset ?? Array<Int>(repeatElement(0, count: length))
+        let bytesPerChar = byteLength / length
         var keyDataIterator = keyData.makeIterator()
         var password = ""
 
         // Generates the password
-        for index in 0..<restrictions.length {
+        for index in 0..<length {
             var data = Data()
             var counter = 0
 
@@ -189,20 +204,41 @@ class Crypto {
             }
         }
 
+        // TODO: Implement rejection sampling.
+
         return password
     }
 
     
-    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD, password: String) throws -> [Int] {
-        let chars = restrictionCharacterArray(restrictions: restrictions)
-        var characterIndices = [Int](repeatElement(chars.count, count: restrictions.length))
-        var index = 0
-        
-        // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-        guard restrictions.length >= 8 else {
-            throw CryptoError.passwordGeneration
+    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
+
+        // TODO: We should check first if password complies with PPD, otherwise throw error. Or use different function so custom passwords can be verified while typing
+
+        var length = 22
+        var chars = [Character]()
+        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
+            // Get parameters from ppd
+            length = min(maxLength, 24)
+
+            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
+            guard length >= 8 else {
+                throw CryptoError.passwordGeneration
+            }
+
+            for characterSet in characterSets {
+                if let characters = characterSet.characters {
+                    chars.append(contentsOf: [Character](characters))
+                }
+            }
+        } else {
+            // Use optimal fallback composition rules
+            length = 22 // redundant, but for now for clarity
         }
 
+        var characterIndices = [Int](repeatElement(chars.count, count: length))
+        var index = 0
+
+        // This is part of validating password: checking for disallowed characters
         for char in password {
             guard let characterIndex = chars.index(of: char) else {
                 throw CryptoError.characterNotAllowed
@@ -213,18 +249,18 @@ class Crypto {
 
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
-        let bitLength = restrictions.length * Int(ceil(log2(Double(chars.count)))) + (128 + restrictions.length - (128 % restrictions.length))
-        let byteLength = roundUp(n: bitLength, m: (restrictions.length * 8)) / 8
+        let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
+        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
         guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
             throw CryptoError.keyDerivation
         }
 
-        let bytesPerChar = byteLength / restrictions.length
+        let bytesPerChar = byteLength / length
         var keyDataIterator = keyData.makeIterator()
         var offsets = [Int]()
 
         // Generates the offset
-        for index in 0..<restrictions.length {
+        for index in 0..<length {
             var data = Data()
             var counter = 0
 

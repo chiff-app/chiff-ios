@@ -30,6 +30,18 @@
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		497D21B7205A80800040E0C0 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		497D21B9205A8E320040E0C0 /* 0.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21B8205A8E320040E0C0 /* 0.json */; };
+		497D21BA205A8E320040E0C0 /* 0.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21B8205A8E320040E0C0 /* 0.json */; };
+		497D21C0205A8E7E0040E0C0 /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BB205A8E7D0040E0C0 /* 4.json */; };
+		497D21C1205A8E7E0040E0C0 /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BB205A8E7D0040E0C0 /* 4.json */; };
+		497D21C2205A8E7E0040E0C0 /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BC205A8E7E0040E0C0 /* 2.json */; };
+		497D21C3205A8E7E0040E0C0 /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BC205A8E7E0040E0C0 /* 2.json */; };
+		497D21C4205A8E7E0040E0C0 /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 5.json */; };
+		497D21C5205A8E7E0040E0C0 /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 5.json */; };
+		497D21C6205A8E7E0040E0C0 /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BE205A8E7E0040E0C0 /* 3.json */; };
+		497D21C7205A8E7E0040E0C0 /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BE205A8E7E0040E0C0 /* 3.json */; };
+		497D21C8205A8E7E0040E0C0 /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BF205A8E7E0040E0C0 /* 1.json */; };
+		497D21C9205A8E7E0040E0C0 /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BF205A8E7E0040E0C0 /* 1.json */; };
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
@@ -138,6 +150,12 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		497D21B8205A8E320040E0C0 /* 0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0.json; sourceTree = "<group>"; };
+		497D21BB205A8E7D0040E0C0 /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
+		497D21BC205A8E7E0040E0C0 /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
+		497D21BD205A8E7E0040E0C0 /* 5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5.json; sourceTree = "<group>"; };
+		497D21BE205A8E7E0040E0C0 /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
+		497D21BF205A8E7E0040E0C0 /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 1.json; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupStartViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +278,12 @@
 		499569BF1FED477600D75848 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				497D21B8205A8E320040E0C0 /* 0.json */,
+				497D21BF205A8E7E0040E0C0 /* 1.json */,
+				497D21BC205A8E7E0040E0C0 /* 2.json */,
+				497D21BE205A8E7E0040E0C0 /* 3.json */,
+				497D21BB205A8E7D0040E0C0 /* 4.json */,
+				497D21BD205A8E7E0040E0C0 /* 5.json */,
 				49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */,
 				49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */,
 				49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */,
@@ -600,6 +624,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				497D21C7205A8E7E0040E0C0 /* 3.json in Resources */,
+				497D21C9205A8E7E0040E0C0 /* 1.json in Resources */,
+				497D21C1205A8E7E0040E0C0 /* 4.json in Resources */,
+				497D21BA205A8E320040E0C0 /* 0.json in Resources */,
+				497D21C3205A8E7E0040E0C0 /* 2.json in Resources */,
+				497D21C5205A8E7E0040E0C0 /* 5.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,13 +637,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				497D21C4205A8E7E0040E0C0 /* 5.json in Resources */,
 				49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */,
+				497D21C0205A8E7E0040E0C0 /* 4.json in Resources */,
+				497D21C6205A8E7E0040E0C0 /* 3.json in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
+				497D21C8205A8E7E0040E0C0 /* 1.json in Resources */,
+				497D21C2205A8E7E0040E0C0 /* 2.json in Resources */,
+				497D21B9205A8E320040E0C0 /* 0.json in Resources */,
 				49A4F2D120247E5F00CE904E /* Amiko-Bold.ttf in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 			);
