@@ -73,7 +73,6 @@ class Session: Codable {
     func decrypt(message: String) throws -> CredentialsRequest {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
         let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
-        print(String(data: data, encoding: .utf8))
         return try JSONDecoder().decode(CredentialsRequest.self, from: data)
     }
     
