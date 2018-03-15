@@ -54,7 +54,7 @@ struct PPDPositionRestrictions: Codable {
 
 struct PPDRequirementGroup: Codable {
     let minRules: Int = 1 // Minimum number of rules that must be fulfilled.
-    let requirementRule: [PPDRequirementRule]
+    let requirementRules: [PPDRequirementRule]
 }
 
 struct PPDRequirementRule: Codable {

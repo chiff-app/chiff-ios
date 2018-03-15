@@ -8,33 +8,35 @@
 
 import Foundation
 
+enum PasswordGenerationError: Error {
+    case characterNotAllowed
+    case tooShort
+    case keyGeneration
+    case dataConversion
+}
+
+
 class PasswordGenerator {
 
     static let sharedInstance = PasswordGenerator()
+    private let FALLBACK_PASSWORD_LENGTH = 22
+    private let MAX_PASSWORD_LENGTH_BOUND = 50
+    private let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
     func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> String {
+        let (length, chars) = parse(ppd: ppd)
 
-        var length = 22
-        var chars = [Character]()
-        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
-            length = min(maxLength, 24)
-
-            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-            guard length >= 8 else {
-                throw CryptoError.passwordGeneration
-            }
-
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
+        let minLength = ppd?.properties?.minLength ?? 8
+        guard length >= minLength else {
+            throw PasswordGenerationError.tooShort
         }
 
-        // TODO: Implement rejection sampling.
-        let password = try generatePasswordCandidate(username: username, passwordIndex: passwordIndex, siteID: siteID, length: length, chars: chars, offset: offset)
+        var password = ""
+        repeat {
+            password = try generatePasswordCandidate(username: username, passwordIndex: passwordIndex, siteID: siteID, length: length, chars: chars, offset: offset)
+        } while !validate(password: password, for: ppd)
 
         return password
     }
@@ -43,25 +45,11 @@ class PasswordGenerator {
 
         // TODO: We should check first if password complies with PPD, otherwise throw error. Or use different function so custom passwords can be verified while typing
 
-        var length = 22
-        var chars = [Character]()
-        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
-            // Get parameters from ppd
-            length = min(maxLength, 24)
+        let (length, chars) = parse(ppd: ppd)
 
-            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-            guard length >= 8 else {
-                throw CryptoError.passwordGeneration
-            }
-
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            // Use optimal fallback composition rules
-            length = 22 // redundant, but for now for clarity
+        let minLength = ppd?.properties?.minLength ?? 8
+        guard length >= minLength else {
+            throw PasswordGenerationError.tooShort
         }
 
         var characterIndices = [Int](repeatElement(chars.count, count: length))
@@ -70,7 +58,7 @@ class PasswordGenerator {
         // This is part of validating password: checking for disallowed characters
         for char in password {
             guard let characterIndex = chars.index(of: char) else {
-                throw CryptoError.characterNotAllowed
+                throw PasswordGenerationError.characterNotAllowed
             }
             characterIndices[index] = characterIndex
             index += 1
@@ -88,25 +76,25 @@ class PasswordGenerator {
 
         // Generates the offset
         for index in 0..<length {
-            var data = Data()
+            var data: UInt8 = 0
             var counter = 0
 
             // Add up bytevalues to value
             repeat {
                 guard let byte = keyDataIterator.next() else {
-                    throw CryptoError.keyGeneration
+                    throw PasswordGenerationError.keyGeneration
                 }
-                data.append(byte)
+                data ^= byte
                 counter += 1
             } while counter < bytesPerChar
 
             // Calculate offset and add to array
-            let value: Int = data.withUnsafeBytes { $0.pointee }
-            offsets.append((characterIndices[index] - value) % (chars.count + 1))
+            offsets.append((characterIndices[index] - Int(data)) % (chars.count + 1))
         }
 
         return offsets
     }
+
 
     // MARK: Private functions
 
@@ -119,6 +107,7 @@ class PasswordGenerator {
         let keyData = try Crypto.sharedInstance.deterministicRandomBytes(seed: key, length: byteLength)
 
         // Zero-offsets if no offset is given
+        // This will probably produce errors when password rejection is implemented because reference to offset is passed, not value
         let modulus = offset == nil ? chars.count : chars.count + 1
         let offset = offset ?? Array<Int>(repeatElement(0, count: length))
         let bytesPerChar = byteLength / length
@@ -127,21 +116,20 @@ class PasswordGenerator {
 
         // Generates the password
         for index in 0..<length {
-            var data = Data()
+            var data: UInt8 = 0
             var counter = 0
 
             // Add up bytevalues to value
             repeat {
                 guard let byte = keyDataIterator.next() else {
-                    throw CryptoError.keyGeneration
+                    throw PasswordGenerationError.keyGeneration
                 }
-                data.append(byte)
+                data ^= byte // TODO: Output from PRG is now XOR-ed with previous bytes. Check if this method produces equally unbiased results as described by Moritz (concatenating bitstrings), because the latter has a risk of producing overflow errors
                 counter += 1
             } while counter < bytesPerChar
 
             // Choose character from value, taking offset into account
-            let value: Int = data.withUnsafeBytes { $0.pointee }
-            let characterValue = (value + offset[index]) % modulus
+            let characterValue = (Int(data) + offset[index]) % modulus
             if characterValue != chars.count {
                 password += String(chars[characterValue])
             }
@@ -149,6 +137,73 @@ class PasswordGenerator {
 
         return password
     }
+
+    private func parse(ppd: PPD?) -> (Int, [Character]) {
+        var length = FALLBACK_PASSWORD_LENGTH
+        var chars = [Character]()
+
+        if let characterSets = ppd?.characterSets {
+            for characterSet in characterSets {
+                if let characters = characterSet.characters {
+                    chars.append(contentsOf: [Character](characters))
+                }
+            }
+        } else {
+            chars.append(contentsOf: [Character](OPTIMAL_CHARACTER_SET)) // Optimal character set
+        }
+
+        if let maxLength = ppd?.properties?.maxLength {
+            length = maxLength < MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
+        }
+
+        return (length, chars)
+    }
+
+    func validate(password: String, for ppd: PPD?) -> Bool {
+        // TODO: Implement rejection sampling.
+
+        if let maxConsecutive = ppd?.properties?.maxConsecutive {
+            let passwordConsecutive = 1 // TODO: implement method to count consecutive characters
+            guard passwordConsecutive <= maxConsecutive else {
+                return false
+            }
+        }
+
+        if let characterSetSettings = ppd?.properties?.characterSettings?.characterSetSettings {
+            for characterSet in characterSetSettings {
+                // TODO: Implement characterSet rules
+//                characterSet.maxOccurs
+//                guard passwordConsecutive <= maxConsecutive else {
+//                    return false
+//                }
+            }
+        }
+
+        if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
+            for positionRestriction in positionRestrictions {
+                // TODO: Implement positionRestriction Rules
+            }
+        }
+
+        if let requirementGroups = ppd?.properties?.characterSettings?.requirementGroups {
+            for requirementGroup in requirementGroups {
+                //requirementGroup.minRules = minimum amount of rules password
+                var validRules = 0
+                for requirementRule in requirementGroup.requirementRules {
+                    if requirementRule.maxOccurs! > 0 {
+                        validRules += 1
+                    }
+                }
+                if validRules < requirementGroup.minRules {
+                    return false
+                }
+            }
+        }
+
+        // assume
+        return true
+    }
+
 
     private func roundUp(n: Int, m: Int) -> Int {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
@@ -158,7 +213,7 @@ class PasswordGenerator {
     private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.data(using: .utf8) else {
-                throw CryptoError.keyDerivation
+                throw PasswordGenerationError.dataConversion
         }
 
         // TODO: If siteID is Int, use that as index. siteData is then not necessary anymore.
