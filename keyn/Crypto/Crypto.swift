@@ -73,6 +73,29 @@ class Crypto {
         return keyPair
     }
 
+    func deterministicRandomBytes(seed: Data, length: Int) throws -> Data {
+        guard let keyData = sodium.randomBytes.deterministic(length: length, seed: seed) else {
+            throw CryptoError.keyDerivation
+        }
+        return keyData
+    }
+
+
+    func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
+        guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8) else {
+            throw CryptoError.hashing
+        }
+        guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
+            throw CryptoError.base64Encoding
+        }
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
+            throw CryptoError.keyDerivation
+        }
+
+        return key
+    }
+
+
 
     // MARK: Base64 conversion functions
 
@@ -138,200 +161,6 @@ class Crypto {
             throw CryptoError.convertToHex
         }
         return hash
-    }
-
-
-    // MARK: Password generation functions
-
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> String {
-
-        var length = 22
-        var chars = [Character]()
-        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
-            // Get parameters from ppd
-            length = min(maxLength, 24)
-
-            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-            guard length >= 8 else {
-                throw CryptoError.passwordGeneration
-            }
-
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            // Use optimal fallback composition rules
-            length = 22 // redundant, but for now for clarity
-        }
-
-        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-
-        // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
-        let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
-        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
-        guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
-            throw CryptoError.keyDerivation
-        }
-
-        // Zero-offsets if no offset is given
-        let modulus = offset == nil ? chars.count : chars.count + 1
-        let offset = offset ?? Array<Int>(repeatElement(0, count: length))
-        let bytesPerChar = byteLength / length
-        var keyDataIterator = keyData.makeIterator()
-        var password = ""
-
-        // Generates the password
-        for index in 0..<length {
-            var data = Data()
-            var counter = 0
-
-            // Add up bytevalues to value
-            repeat {
-                guard let byte = keyDataIterator.next() else {
-                    throw CryptoError.keyGeneration
-                }
-                data.append(byte)
-                counter += 1
-            } while counter < bytesPerChar
-
-            // Choose character from value, taking offset into account
-            let value: Int = data.withUnsafeBytes { $0.pointee }
-            let characterValue = (value + offset[index]) % modulus
-            if characterValue != chars.count {
-                password += String(chars[characterValue])
-            }
-        }
-
-        // TODO: Implement rejection sampling.
-
-        return password
-    }
-
-    
-    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
-
-        // TODO: We should check first if password complies with PPD, otherwise throw error. Or use different function so custom passwords can be verified while typing
-
-        var length = 22
-        var chars = [Character]()
-        if let ppd = ppd, let properties = ppd.properties, let maxLength = properties.maxLength, let minLength = properties.minLength, let characterSets = ppd.characterSets {
-            // Get parameters from ppd
-            length = min(maxLength, 24)
-
-            // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
-            guard length >= 8 else {
-                throw CryptoError.passwordGeneration
-            }
-
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            // Use optimal fallback composition rules
-            length = 22 // redundant, but for now for clarity
-        }
-
-        var characterIndices = [Int](repeatElement(chars.count, count: length))
-        var index = 0
-
-        // This is part of validating password: checking for disallowed characters
-        for char in password {
-            guard let characterIndex = chars.index(of: char) else {
-                throw CryptoError.characterNotAllowed
-            }
-            characterIndices[index] = characterIndex
-            index += 1
-        }
-
-        let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-
-        let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
-        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
-        guard let keyData = sodium.randomBytes.deterministic(length: byteLength, seed: key) else {
-            throw CryptoError.keyDerivation
-        }
-
-        let bytesPerChar = byteLength / length
-        var keyDataIterator = keyData.makeIterator()
-        var offsets = [Int]()
-
-        // Generates the offset
-        for index in 0..<length {
-            var data = Data()
-            var counter = 0
-
-            // Add up bytevalues to value
-            repeat {
-                guard let byte = keyDataIterator.next() else {
-                    throw CryptoError.keyGeneration
-                }
-                data.append(byte)
-                counter += 1
-            } while counter < bytesPerChar
-
-            // Calculate offset and add to array
-            let value: Int = data.withUnsafeBytes { $0.pointee }
-            offsets.append((characterIndices[index] - value) % (chars.count + 1))
-        }
-        
-        return offsets
-    }
-
-
-    // MARK: Private functions
-
-    private func roundUp(n: Int, m: Int) -> Int {
-        return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
-    }
-    
-    private func restrictionCharacterArray(restrictions: PasswordRestrictions) -> [Character] {
-        var chars = [Character]()
-        for character in restrictions.characters {
-            // TODO: Check with other passwordmanagers how to split this out
-            switch character {
-            case .lower:
-                chars.append(contentsOf: [Character]("abcdefghijklmnopqrstuvwxyz"))
-            case .upper:
-                chars.append(contentsOf: [Character]("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
-            case .numbers:
-                chars.append(contentsOf: [Character]("0123456789"))
-            case .symbols:
-                chars.append(contentsOf: [Character]("!@#$%^&*()_-+={[}]:;<,>.?/"))
-            }
-        }
-        
-        return chars
-    }
-
-    private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
-        guard let usernameData = username.data(using: .utf8),
-            let siteData = siteID.data(using: .utf8) else {
-                throw CryptoError.keyDerivation
-        }
-
-        // TODO: If siteID is Int, use that as index. siteData is then not necessary anymore.
-        let siteKey = try deriveKey(keyData: Seed.getPasswordKey(), context: siteData)
-        let key = try deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
-        
-        return key
-    }
-
-    private func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
-        guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8) else {
-            throw CryptoError.hashing
-        }
-        guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
-            throw CryptoError.base64Encoding
-        }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
-            throw CryptoError.keyDerivation
-        }
-        
-        return key
     }
 
 }

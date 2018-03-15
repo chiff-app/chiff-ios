@@ -19,7 +19,7 @@ struct Account: Codable {
         self.site = site
         self.passwordIndex = passwordIndex
         if let password = password {
-            passwordOffset = try Crypto.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
+            passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
         }
         
         try save(password: password)
@@ -28,7 +28,7 @@ struct Account: Codable {
     private func save(password: String?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         
-        let generatedPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
+        let generatedPassword = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
         
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
@@ -58,7 +58,7 @@ struct Account: Codable {
     mutating func updatePassword(restrictions: PasswordRestrictions?, offset: [Int]?) throws {
         passwordIndex += 1
 
-        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+        let newPassword = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
         //TODO: Implement custom passwords here
 
