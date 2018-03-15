@@ -14,8 +14,6 @@ enum CryptoError: Error {
     case hashing
     case mnemonicConversion
     case mnemonicChecksum
-    case characterNotAllowed
-    case passwordGeneration
 }
 
 

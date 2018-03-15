@@ -1,7 +1,7 @@
 import Foundation
 
 /*
- * An account belongs to the user and can have one or more Sites.
+ * An account belongs to the user and can have one Site.
  */
 struct Account: Codable {
 
