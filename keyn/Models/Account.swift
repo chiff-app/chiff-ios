@@ -9,7 +9,7 @@ struct Account: Codable {
     let username: String
     let site: Site
     var passwordIndex: Int
-    let restrictions: PasswordRestrictions
+    let ppd: PPD
     var passwordOffset: [Int]?
     static let keychainService = "io.keyn.account"
 
@@ -19,9 +19,9 @@ struct Account: Codable {
         self.username = username
         self.site = site
         self.passwordIndex = passwordIndex
-        self.restrictions = site.restrictions // Use site default restrictions of no custom restrictions are provided
+        self.ppd = site.ppd // Use site default restrictions of no custom restrictions are provided
         if let password = password {
-            passwordOffset = try Crypto.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, password: password)
+            passwordOffset = try Crypto.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: ppd, password: password)
         }
         
         try save(password: password)
@@ -30,7 +30,7 @@ struct Account: Codable {
     private func save(password: String?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         
-        let generatedPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions, offset: passwordOffset)
+        let generatedPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: ppd, offset: passwordOffset)
         
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
@@ -60,7 +60,7 @@ struct Account: Codable {
     mutating func updatePassword(restrictions: PasswordRestrictions?, offset: [Int]?) throws {
         passwordIndex += 1
 
-        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, restrictions: restrictions ?? self.restrictions, offset: offset)
+        let newPassword = try Crypto.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: ppd ?? self.ppd, offset: offset)
 
         //TODO: Implement custom passwords here
 
