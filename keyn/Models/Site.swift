@@ -8,7 +8,7 @@ struct Site: Codable {
     var name: String
     var id: String
     var urls: [String]
-    var ppd: PPD
+    var ppd: PPD?
 
     // TODO:
     // Get Site object from some persistent storage or online database. This is sample data
@@ -20,6 +20,7 @@ struct Site: Codable {
         sampleSites.append(Site(name: "ProtonMail", id: "2", urls: ["https://mail.protonmail.com/login"], ppd: getSamplePPD(id: id)!))
         sampleSites.append(Site(name: "University of London", id: "3", urls: ["https://my.londoninternational.ac.uk/login"], ppd: getSamplePPD(id: id)!))
         sampleSites.append(Site(name: "Github", id: "4", urls: ["https://github.com/login"], ppd: getSamplePPD(id: id)!))
+        sampleSites.append(Site(name: "DigitalOcean", id: "5", urls: ["https://digitalocean.com/login"], ppd: getSamplePPD(id: id)!))
 
         if Int(id)! >= sampleSites.count {
             return nil
