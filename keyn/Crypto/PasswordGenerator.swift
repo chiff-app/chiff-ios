@@ -76,7 +76,7 @@ class PasswordGenerator {
 
         // Generates the offset
         for index in 0..<length {
-            var data: UInt8 = 0
+            var data: String = ""
             var counter = 0
 
             // Add up bytevalues to value
@@ -84,12 +84,12 @@ class PasswordGenerator {
                 guard let byte = keyDataIterator.next() else {
                     throw PasswordGenerationError.keyGeneration
                 }
-                data ^= byte
+                data += String(byte, radix: 2).pad(toSize: 8)
                 counter += 1
             } while counter < bytesPerChar
 
             // Calculate offset and add to array
-            offsets.append((characterIndices[index] - Int(data)) % (chars.count + 1))
+            offsets.append((characterIndices[index] - Int(data, radix: 2)!) % (chars.count + 1)) // TODO: check if this can be safely done
         }
 
         return offsets
@@ -116,7 +116,7 @@ class PasswordGenerator {
 
         // Generates the password
         for index in 0..<length {
-            var data: UInt8 = 0
+            var data: String = ""
             var counter = 0
 
             // Add up bytevalues to value
@@ -124,12 +124,12 @@ class PasswordGenerator {
                 guard let byte = keyDataIterator.next() else {
                     throw PasswordGenerationError.keyGeneration
                 }
-                data ^= byte // TODO: Output from PRG is now XOR-ed with previous bytes. Check if this method produces equally unbiased results as described by Moritz (concatenating bitstrings), because the latter has a risk of producing overflow errors
+                data += String(byte, radix: 2).pad(toSize: 8)
                 counter += 1
             } while counter < bytesPerChar
 
             // Choose character from value, taking offset into account
-            let characterValue = (Int(data) + offset[index]) % modulus
+            let characterValue = (Int(data, radix: 2)! + offset[index]) % modulus // TODO: check if this can be safely done
             if characterValue != chars.count {
                 password += String(chars[characterValue])
             }
