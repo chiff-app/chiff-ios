@@ -29,6 +29,7 @@
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
+		497D21B7205A80800040E0C0 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
@@ -698,7 +699,6 @@
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSQS/AWSSQS.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/SmileLock/SmileLock.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -708,7 +708,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSQS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SmileLock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -803,6 +802,7 @@
 				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
 				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
 				613CFB0120135DD700460CC6 /* Session.swift in Sources */,
+				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
 				0155741D202A4AE500F97DA2 /* NotificationPreprocessor.swift in Sources */,

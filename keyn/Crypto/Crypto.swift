@@ -143,8 +143,8 @@ class Crypto {
 
     // MARK: Password generation functions
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, offset: [Int]?) throws -> String {
-        
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD, offset: [Int]?) throws -> String {
+
         // If the password is less then 8 characters, current password generation may result in a integer overflow. Perhaps should be checked somewhere else.
         guard restrictions.length >= 8 else {
             throw CryptoError.passwordGeneration
@@ -193,7 +193,7 @@ class Crypto {
     }
 
     
-    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, restrictions: PasswordRestrictions, password: String) throws -> [Int] {
+    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD, password: String) throws -> [Int] {
         let chars = restrictionCharacterArray(restrictions: restrictions)
         var characterIndices = [Int](repeatElement(chars.count, count: restrictions.length))
         var index = 0
