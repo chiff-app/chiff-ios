@@ -73,14 +73,14 @@ class Session: Codable {
         return String(data: data, encoding: .utf8)!
     }
 
-    func decrypt(message: String) throws -> CredentialsRequest {
+    func decrypt(message: String) throws -> BrowserMessage {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
         let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
-        return try JSONDecoder().decode(CredentialsRequest.self, from: data)
+        return try JSONDecoder().decode(BrowserMessage.self, from: data)
     }
     
     // TODO, add request ID etc
-    func sendCredentials(account: Account, browserTab: Int, type: RequestType) throws {
+    func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
         var response: CredentialsResponse?
         var account = account
         switch type {

@@ -51,75 +51,96 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
+
+        // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             completionHandler([])
             return
         }
+
         guard let sessionID = notification.request.content.userInfo["sessionID"] as? String else {
             completionHandler([])
             return
         }
-        guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
-            completionHandler([])
-            return
-        }
-        // TODO: Find out why we cannot pass RequestType in userInfo..
-        guard let requestTypeValue = notification.request.content.userInfo["requestType"] as? Int, let requestType = RequestType(rawValue: requestTypeValue) else {
-            completionHandler([])
-            return
+
+        if browserMessageType == .end {
+            // TODO: If errors are thrown here, they should be logged.
+            try? Session.getSession(id: sessionID)?.delete()
+
+            // Delete session from tableView @ devicesViewController
+        } else {
+            guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
+                completionHandler([])
+                return
+            }
+            guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
+                completionHandler([])
+                return
+            }
+
+
+            DispatchQueue.main.async {
+                self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
+            }
         }
 
-        DispatchQueue.main.async {
-            self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: requestType))
-        }
-
-        completionHandler([.sound])
+        completionHandler([.alert,.sound])
     }
 
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
+
+        // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             completionHandler()
             return
         }
+
         guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
             completionHandler()
             return
         }
-        guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
-            completionHandler()
-            return
-        }
-        // TODO: Find out why we cannot pass RequestType in userInfo..
-        guard let requestTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let requestType = RequestType(rawValue: requestTypeValue) else {
-            completionHandler()
-            return
-        }
 
-        print("Identifier: \(response.actionIdentifier)")
+        if browserMessageType == .end {
+            // TODO: If errors are thrown here, they should be logged.
+            try? Session.getSession(id: sessionID)?.delete()
 
-        if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
-            if response.actionIdentifier == "ACCEPT" {
-//                cancelAutoAuthentication()
-//                notificationUserInfo = [
-//                    "sessionID": sessionID,
-//                    "siteID": siteID,
-//                    "accepted": "true"
-//                ]
+            // Delete session from tableView @ devicesViewController
+        } else {
+            guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
+                completionHandler()
+                return
+            }
+            guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
+                completionHandler()
+                return
+            }
 
-                // Directly send password? Is this a security risk? Should be tested
-                if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-                    try! session.sendCredentials(account: account, browserTab: browserTab, type: requestType)
+            if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
+                if response.actionIdentifier == "ACCEPT" {
+                    //                cancelAutoAuthentication()
+                    //                notificationUserInfo = [
+                    //                    "sessionID": sessionID,
+                    //                    "siteID": siteID,
+                    //                    "accepted": "true"
+                    //                ]
+
+                    // Directly send password? Is this a security risk? Should be tested
+                    if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
+                        try! session.sendCredentials(account: account, browserTab: browserTab, type: browserMessageType)
+                    }
+                }
+
+                if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+                    // This should present request page --> Yes / NO. AUthentication after or before?
+                    cancelAutoAuthentication()
+                    pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
                 }
             }
         }
-        
-        if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-            // This should present request page --> Yes / NO. AUthentication after or before?
-            cancelAutoAuthentication()
-            pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: requestType)
-        }
+
+
 
         completionHandler()
     }
@@ -253,9 +274,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                                                          actions: [acceptRequestAction, rejectRequestAction],
                                                                          intentIdentifiers: [],
                                                                          options: .customDismissAction)
+        let endSessionNotificationCategory = UNNotificationCategory(identifier: "END_SESSION",
+                                                                    actions: [],
+                                                                    intentIdentifiers: [],
+                                                                    options: UNNotificationCategoryOptions(rawValue: 0))
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.setNotificationCategories([passwordRequestNotificationCategory])
+        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.sync {

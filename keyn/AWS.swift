@@ -51,13 +51,12 @@ class AWS {
         }
     }
 
-    func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: RequestType) {
+    func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
             sendRequest.queueUrl = queueUrl
             sendRequest.messageBody = message
             let typeAttributeValue = AWSSQSMessageAttributeValue()
             typeAttributeValue?.stringValue = String(type.rawValue)
-            print("Type raw value = \(typeAttributeValue?.stringValue)")
             typeAttributeValue?.dataType = "Number"
             sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
             sqs.sendMessage(sendRequest, completionHandler: { (result, error) in

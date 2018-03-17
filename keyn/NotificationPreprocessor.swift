@@ -12,18 +12,23 @@ class NotificationPreprocessor {
         if let ciphertext = content.userInfo["data"] as? String, let id = content.userInfo["sessionID"] as? String {
             do {
                 if let session = try Session.getSession(id: id) {
-                    let credentialsRequest: CredentialsRequest = try session.decrypt(message: ciphertext)
-                    
-                    let siteID = credentialsRequest.s
+                    let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)
 
-                    guard let site = Site.get(id: siteID) else {
-                        return content
+                    content.userInfo["requestType"] = browserMessage.r.rawValue
+                    if browserMessage.r == .end {
+                        content.body = "Session ended by \(session.browser) on \(session.os)."
+                    } else {
+                        let siteID = browserMessage.s
+
+                        guard let site = Site.get(id: siteID!) else {
+                            return content
+                        }
+
+                        content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
+                        content.userInfo["siteID"] = siteID
+                        content.userInfo["browserTab"] = browserMessage.b
+                        content.userInfo["requestType"] = browserMessage.r.rawValue
                     }
-
-                    content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
-                    content.userInfo["siteID"] = siteID
-                    content.userInfo["browserTab"] = credentialsRequest.b
-                    content.userInfo["requestType"] = credentialsRequest.r.rawValue
 
                     return content
                 }
