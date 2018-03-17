@@ -100,6 +100,21 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.present(alert, animated: true, completion: nil)
         }
     }
+
+    func removeSessionFromTableView(sessionID: String) {
+        if let index = sessions.index(where: { (session) -> Bool in
+            sessionID == session.id
+        }) {
+            sessions.remove(at: index)
+            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            if self.sessions.isEmpty {
+                DispatchQueue.main.async {
+                    let qrViewController = self.storyboard?.instantiateViewController(withIdentifier: "QR Controller")
+                    self.navigationController?.setViewControllers([qrViewController!], animated: false)
+                }
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {

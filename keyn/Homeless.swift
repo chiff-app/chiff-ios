@@ -154,7 +154,7 @@ struct PairingResponse: Codable {
     let sns: String
 }
 
-// MARK: hallo
+
 struct BrowserMessage: Codable {
     let s: String?          // SiteID
     let r: BrowserMessageType
