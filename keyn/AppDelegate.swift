@@ -66,8 +66,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
             try? Session.getSession(id: sessionID)?.delete()
-
+            if let rootViewController = window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
+                for viewController in devicesNavigationController.viewControllers {
+                    if let devicesViewController = viewController as? DevicesViewController {
+                        if devicesViewController.isViewLoaded {
+                            devicesViewController.removeSessionFromTableView(sessionID: sessionID)
+                        }
+                    }
+                }
+            }
             // Delete session from tableView @ devicesViewController
+            completionHandler([.alert, .sound])
         } else {
             guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
                 completionHandler([])
@@ -82,9 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue.main.async {
                 self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
             }
+            completionHandler([.sound])
         }
-
-        completionHandler([.alert,.sound])
     }
 
     // Called to let your app know which action was selected by the user for a given notification.
@@ -105,7 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
             try? Session.getSession(id: sessionID)?.delete()
-
             // Delete session from tableView @ devicesViewController
         } else {
             guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
@@ -139,9 +146,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
-
-
-
         completionHandler()
     }
 
