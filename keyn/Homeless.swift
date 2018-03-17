@@ -80,6 +80,14 @@ extension String {
             return String(self[start..<end])
         }
     }
+
+    func pad(toSize: Int) -> String {
+        var padded = self
+        for _ in 0..<(toSize - self.count) {
+            padded = "0" + padded
+        }
+        return padded
+    }
 }
 
 extension Data {

@@ -113,7 +113,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
 
             let id = String((websiteName + websiteURL).hashValue)
             let restrictions = PasswordRestrictions(length: 24, characters: [.lower, .numbers, .upper, .symbols])
-            let site = Site(name: websiteName, id: id, urls: [websiteURL], restrictions: restrictions)
+            let site = Site(name: websiteName, id: id, urls: [websiteURL], ppd: nil)
 
             do {
                 let newAccount = try Account(username: username, site: site, password: customPassword ? userPasswordTextField.text : nil)
