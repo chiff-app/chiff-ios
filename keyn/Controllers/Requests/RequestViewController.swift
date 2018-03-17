@@ -22,7 +22,7 @@ class RequestViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func authorizeRequest(session: Session, account: Account, browserTab: Int, type: RequestType) {
+    func authorizeRequest(session: Session, account: Account, browserTab: Int, type: BrowserMessageType) {
         let authenticationContext = LAContext()
         var error: NSError?
 

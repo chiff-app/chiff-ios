@@ -155,10 +155,10 @@ struct PairingResponse: Codable {
 }
 
 // MARK: hallo
-struct CredentialsRequest: Codable {
-    let s: String          // SiteID
-    let r: RequestType
-    let b: Int          // browserTab
+struct BrowserMessage: Codable {
+    let s: String?          // SiteID
+    let r: BrowserMessageType
+    let b: Int?          // browserTab
 }
 
 struct CredentialsResponse: Codable {
@@ -172,10 +172,10 @@ struct PushNotification {
     let sessionID : String
     let siteID: String // Wordt int
     let browserTab: Int
-    let requestType: RequestType
+    let requestType: BrowserMessageType
 }
 
-enum RequestType: Int, Codable {
+enum BrowserMessageType: Int, Codable {
     case pair
     case login
     case register
