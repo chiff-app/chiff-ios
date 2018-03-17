@@ -178,8 +178,9 @@ struct PushNotification {
 enum RequestType: Int, Codable {
     case pair
     case login
-    case registration
+    case register
     case reset
+    case end
 }
 
 enum KeyType: UInt64 {

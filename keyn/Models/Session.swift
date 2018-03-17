@@ -47,6 +47,9 @@ class Session: Codable {
             try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+            try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
+                AWS.sharedInstance.sendToSqs(message: "bye", to: queueUrl, sessionID: self.id, type: .end)
+            }
         } catch {
             throw error
         }
@@ -83,7 +86,7 @@ class Session: Codable {
         switch type {
         case .login:
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
-        case .registration:
+        case .register:
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
         case .reset:
