@@ -36,7 +36,7 @@ class PasswordGenerator {
         var password = ""
         repeat {
             password = try generatePasswordCandidate(username: username, passwordIndex: passwordIndex, siteID: siteID, length: length, chars: chars, offset: offset)
-        } while !validate(password: password, for: ppd)
+        } while ppd != nil ? !validate(password: password, for: ppd) : false
 
         return password
     }
@@ -162,10 +162,21 @@ class PasswordGenerator {
     func validate(password: String, for ppd: PPD?) -> Bool {
         // TODO: Implement rejection sampling.
 
+
         if let maxConsecutive = ppd?.properties?.maxConsecutive {
-            let passwordConsecutive = 1 // TODO: implement method to count consecutive characters
-            guard passwordConsecutive <= maxConsecutive else {
-                return false
+//            //let pattern = "([\(characterSets)])\\1{\(maxConsecutive-1),}"
+//            let consecutiveRegex = try! NSRegularExpression(pattern: pattern, options: [])
+//            guard passwordConsecutive <= maxConsecutive else {
+//                return false
+//            }
+        }
+
+        // Loop over password
+        for (index, char) in password.enumerated() {
+            if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
+                for positionRestriction in positionRestrictions {
+                    // TODO: Check position restrictions.
+                }
             }
         }
 
@@ -179,11 +190,7 @@ class PasswordGenerator {
             }
         }
 
-        if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
-            for positionRestriction in positionRestrictions {
-                // TODO: Implement positionRestriction Rules
-            }
-        }
+
 
         if let requirementGroups = ppd?.properties?.characterSettings?.requirementGroups {
             for requirementGroup in requirementGroups {

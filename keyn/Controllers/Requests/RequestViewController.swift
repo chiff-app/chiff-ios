@@ -32,7 +32,7 @@ class RequestViewController: UIViewController {
             localizedReason = "Login to \(account.site.name)"
         case .reset:
             localizedReason = "Reset password for \(account.site.name)"
-        case .registration:
+        case .register:
              localizedReason = "Register for \(account.site.name)"
         default:
             localizedReason = "\(account.site.name)"
@@ -69,7 +69,7 @@ class RequestViewController: UIViewController {
                 siteLabel.text = "Login to \(site.name)?"
             case .reset:
                 siteLabel.text = "Reset password for \(site.name)?"
-            case .registration:
+            case .register:
                 siteLabel.text = "Register for \(site.name)?"
             default:
                 siteLabel.text = ""
