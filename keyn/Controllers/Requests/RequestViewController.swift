@@ -12,6 +12,10 @@ class RequestViewController: UIViewController {
         setLabel()
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let account = try! Account.get(siteID: notification.siteID), let session = session {
             authorizeRequest(session: session, account: account, browserTab: notification.browserTab, type: notification.requestType)
