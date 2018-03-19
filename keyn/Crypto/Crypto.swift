@@ -75,6 +75,7 @@ class Crypto {
         guard let keyData = sodium.randomBytes.deterministic(length: length, seed: seed) else {
             throw CryptoError.keyDerivation
         }
+        
         return keyData
     }
 
