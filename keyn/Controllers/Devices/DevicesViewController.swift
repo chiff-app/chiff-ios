@@ -84,7 +84,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { action in
                 do {
-                    try self.sessions[indexPath.row].delete()
+                    try self.sessions[indexPath.row].delete(includingQueue: true)
                     self.sessions.remove(at: indexPath.row)
                     self.tableView.deleteRows(at: [indexPath], with: .automatic)
                     if self.sessions.isEmpty {

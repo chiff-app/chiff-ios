@@ -1,13 +1,13 @@
 PODS:
-  - AWSCognito (2.6.5):
-    - AWSCore (= 2.6.5)
-  - AWSCore (2.6.5)
-  - AWSSNS (2.6.5):
-    - AWSCore (= 2.6.5)
-  - AWSSQS (2.6.5):
-    - AWSCore (= 2.6.5)
+  - AWSCognito (2.6.13):
+    - AWSCore (= 2.6.13)
+  - AWSCore (2.6.13)
+  - AWSSNS (2.6.13):
+    - AWSCore (= 2.6.13)
+  - AWSSQS (2.6.13):
+    - AWSCore (= 2.6.13)
   - MBProgressHUD (1.0.0)
-  - Sodium (0.5)
+  - Sodium (0.6)
 
 DEPENDENCIES:
   - AWSCognito
@@ -17,12 +17,12 @@ DEPENDENCIES:
   - Sodium (~> 0.5)
 
 SPEC CHECKSUMS:
-  AWSCognito: 763ef7a193e6eaeddff382db4daa7608ec61be69
-  AWSCore: b4895b4a5256d0040f8825ad31f3477d081f508f
-  AWSSNS: 8f29af433238455d0dbaa455a18da948e0856ed5
-  AWSSQS: 631a59b6cc783271cbd7244224d5a0a924796111
+  AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
+  AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
+  AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
+  AWSSQS: 3b8372e089be1d7ba3a1b6ab6cb3cb42f03af8b5
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  Sodium: a3a17f2ba2dc1b83547e13db0075e7c5d426fc55
+  Sodium: bf524b0a3d5ad6870dcf343205cca7e659c15ad5
 
 PODFILE CHECKSUM: d710b46f313efe2fc4ba98f096d01b03129c334d
 

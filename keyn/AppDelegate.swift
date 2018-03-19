@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let lockViewTag = 390847239047
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+
         // FOR TESTING PURPOSES
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
         deletePasswords()   // Uncomment if passwords should be cleaned before startup
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete()
+            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
             if let rootViewController = window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
                 for viewController in devicesNavigationController.viewControllers {
                     if let devicesViewController = viewController as? DevicesViewController {
@@ -75,7 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
             }
-            // Delete session from tableView @ devicesViewController
             completionHandler([.alert, .sound])
         } else {
             guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
@@ -86,7 +85,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 completionHandler([])
                 return
             }
-
 
             DispatchQueue.main.async {
                 self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
@@ -112,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete()
+            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
             // Delete session from tableView @ devicesViewController
         } else {
             guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
@@ -148,6 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         completionHandler()
     }
+
 
     private func cancelAutoAuthentication() {
         if let viewController = self.window?.rootViewController as? LoginViewController {
@@ -187,10 +186,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
+
     // Called as part of the transition from the background to the active state;
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
+        handlePendingEndSessionNotifications()
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
         self.window?.rootViewController = viewController
@@ -208,6 +209,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             launchRequestView(with: pushNotification!)
             pushNotification = nil
         }
+
+        // Clean up notifications
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -217,6 +222,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
         //deletePasswords()   // Uncomment if passwords should be cleaned before startup
         //deleteSeed()        // Uncomment if you want to force seed regeneration
+    }
+
+    private func handlePendingEndSessionNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                if let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int,
+                    let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
+                    let sessionID = notification.request.content.userInfo["sessionID"] as? String,
+                    browserMessageType == .end
+                {
+                    try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                }
+            }
+        }
     }
 
     private func launchRequestView(with notification: PushNotification) {
@@ -346,5 +366,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print(status)
         }
     }
+
+    
 
 }

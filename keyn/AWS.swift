@@ -22,6 +22,8 @@ class AWS {
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointIdentifier = "snsDeviceEndpointArn"
+    private let PAIR_TIMEOUT = 60.0
+    private let LOGIN_TIMEOUT = 180.0
     let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:787429400306:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
@@ -46,6 +48,7 @@ class AWS {
         }.continueWith { (task: AWSTask!) -> Any? in
             if task.error != nil {
                 print("GetQueueError: \(String(describing: task.error))")
+                // TODO: if this is a AWS.SimpleQueueService.NonExistentQueue error, should we delete the session (if any, and there shouldn't be) or do nothing?
             }
             return nil
         }
@@ -60,10 +63,19 @@ class AWS {
             typeAttributeValue?.dataType = "Number"
             sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
             sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
-                if error != nil {
-                    print("\(String(describing: error))")
-                } else {
-                    print("Message ID: \(String(describing: result?.messageId))")
+                if let error = error {
+                    print("Error sending message to SQS queue: \(String(describing: error))")
+                } else if let messageId = result?.messageId {
+                    switch type {
+                    case .login, .register, .reset:
+                        print("Fire timeout @ 180")
+                    case .pair:
+                        print("Fire timeout @ 60")
+                        //Timer.scheduledTimer(timeInterval: self.PAIR_TIMEOUT, target: AWS.sharedInstance, selector: #selector(AWS.sharedInstance.deleteFromSqs(timer:)), userInfo: messageId, repeats: false)
+                    default:
+                        // Is the sqs queue message retention period (2 weeks)
+                        print("End-session message sent.")
+                    }
                 }
             })
         }

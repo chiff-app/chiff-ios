@@ -42,13 +42,15 @@ class Session: Codable {
         }
     }
 
-    func delete() throws {
+    func delete(includingQueue: Bool) throws {
         do {
             try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-            try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
-                AWS.sharedInstance.sendToSqs(message: "bye", to: queueUrl, sessionID: self.id, type: .end)
+            if includingQueue {
+                try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
+                    AWS.sharedInstance.sendToSqs(message: "bye", to: queueUrl, sessionID: self.id, type: .end)
+                }
             }
         } catch {
             throw error
