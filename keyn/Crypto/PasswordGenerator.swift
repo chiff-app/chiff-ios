@@ -25,7 +25,7 @@ class PasswordGenerator {
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> String {
+    func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> String {
         let (length, chars) = parse(ppd: ppd)
 
         let minLength = ppd?.properties?.minLength ?? 8
@@ -41,7 +41,7 @@ class PasswordGenerator {
         return password
     }
 
-    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
+    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, password: String) throws -> [Int] {
 
         // TODO: We should check first if password complies with PPD, otherwise throw error. Or use different function so custom passwords can be verified while typing
 
@@ -98,7 +98,7 @@ class PasswordGenerator {
 
     // MARK: Private functions
 
-    private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: String, length: Int, chars: [Character], offset: [Int]?) throws -> String {
+    private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: Int, length: Int, chars: [Character], offset: [Int]?) throws -> String {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
         // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
@@ -250,15 +250,15 @@ class PasswordGenerator {
     }
 
 
-    private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
+    private func generateKey(username: String, passwordIndex: Int, siteID: Int) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
-            let siteData = siteID.data(using: .utf8) else {
+            let siteData = "sitedata".data(using: .utf8) else {
                 throw PasswordGenerationError.dataConversion
         }
 
-        // TODO: If siteID is Int, use that as index. siteData is then not necessary anymore.
-        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordKey(), context: siteData)
-        let key = try Crypto.sharedInstance.deriveKey(keyData: siteKey, context: usernameData, passwordIndex: passwordIndex)
+        // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)
+        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordKey(), context: siteData, index: siteID)
+        let key = try Crypto.sharedInstance.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
 
         return key
     }

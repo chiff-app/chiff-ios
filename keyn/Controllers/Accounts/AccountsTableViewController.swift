@@ -135,11 +135,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 let sampleUsername = "demo@keyn.io"
                 var sampleSites = [Site]()
 
-                sampleSites.append(Site.get(id: "1")!)
-                sampleSites.append(Site.get(id: "2")!)
-                sampleSites.append(Site.get(id: "3")!)
-                sampleSites.append(Site.get(id: "4")!)
-                sampleSites.append(Site.get(id: "5")!)
+                sampleSites.append(Site.get(id: 1)!)
+                sampleSites.append(Site.get(id: 2)!)
+                sampleSites.append(Site.get(id: 3)!)
+                sampleSites.append(Site.get(id: 4)!)
+                sampleSites.append(Site.get(id: 5)!)
 
                 
                 for site in sampleSites {
@@ -147,7 +147,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                     unfilteredAccounts.append(account)
                 }
 
-                unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: "0")!, password: "ExampleCustomPassword"))
+                unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword"))
 
             }
         } catch {
