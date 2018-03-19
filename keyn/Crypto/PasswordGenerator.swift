@@ -36,7 +36,7 @@ class PasswordGenerator {
         var password = ""
         repeat {
             password = try generatePasswordCandidate(username: username, passwordIndex: passwordIndex, siteID: siteID, length: length, chars: chars, offset: offset)
-        } while ppd != nil ? !validate(password: password, for: ppd) : false
+        } while ppd != nil ? !validate(password: password, for: ppd!) : false
 
         return password
     }
@@ -159,28 +159,62 @@ class PasswordGenerator {
         return (length, chars)
     }
 
-    func validate(password: String, for ppd: PPD?) -> Bool {
+    func validate(password: String, for ppd: PPD) -> Bool {
+        
         // TODO: Implement rejection sampling.
-
-
-        if let maxConsecutive = ppd?.properties?.maxConsecutive {
-//            //let pattern = "([\(characterSets)])\\1{\(maxConsecutive-1),}"
-//            let consecutiveRegex = try! NSRegularExpression(pattern: pattern, options: [])
-//            guard passwordConsecutive <= maxConsecutive else {
-//                return false
-//            }
-        }
-
-        // Loop over password
-        for (index, char) in password.enumerated() {
-            if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
-                for positionRestriction in positionRestrictions {
-                    // TODO: Check position restrictions.
+        var characters = ""
+        if let characterSets = ppd.characterSets {
+            for characterSet in characterSets {
+                if let chars = characterSet.characters {
+                    characters += characters
+                    if let maxConsecutive = ppd.properties?.maxConsecutive {
+                        if characterSet.name == "Letters" || characterSet.name == "Numbers" {
+                            // Check for consective characters. This tests if n characters are lexicigraphically ordered
+                            guard password.longestCommonSubsequence(String(chars.sorted())).count < maxConsecutive else {
+                                print("Password was rejected because of consecutive characters: \(password)")
+                                return false
+                            }
+                        }
+                    }
                 }
             }
         }
+        
+        // Max consecutive characters. This tests if n characters are the same.
+        if let maxConsecutive = ppd.properties?.maxConsecutive {
+            let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
+            let pattern = "([\(escapedCharacters)])\\1{\(maxConsecutive-1),}"
+            guard password.range(of: pattern, options: .regularExpression) == nil else {
+                print("Password was rejected because of consecutive characters: \(password)")
+                return false
+            }
+        }
+        
+        var positionDictionary = [Int: PPDPositionRestrictions]()
+        // Check position restrictions
+        if let positionRestrictions = ppd.properties?.characterSettings?.positionRestrictions {
+            for positionRestriction in positionRestrictions {
+                for position in positionRestriction.positions.split(separator: ",") {
+                    if let index = Int(position) {
+                        positionDictionary[index] = positionRestriction
+                        // TODO: Handle negative values and real numbers (see documentation)
+                    } else {
+                        print("TODO: PPD contains error \(ppd)")
+                    }
+                }
+            }
+        }
+        
+        
 
-        if let characterSetSettings = ppd?.properties?.characterSettings?.characterSetSettings {
+        // Loop over password
+        for (index, char) in password.enumerated() {
+            if let positionRestriction = positionDictionary[index] {
+                // TODO: Handle position restriction
+            }
+        }
+
+        if let characterSetSettings = ppd.properties?.characterSettings?.characterSetSettings {
             for characterSet in characterSetSettings {
                 // TODO: Implement characterSet rules
 //                characterSet.maxOccurs
@@ -191,8 +225,7 @@ class PasswordGenerator {
         }
 
 
-
-        if let requirementGroups = ppd?.properties?.characterSettings?.requirementGroups {
+        if let requirementGroups = ppd.properties?.characterSettings?.requirementGroups {
             for requirementGroup in requirementGroups {
                 //requirementGroup.minRules = minimum amount of rules password
                 var validRules = 0
