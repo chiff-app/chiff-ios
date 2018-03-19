@@ -80,9 +80,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "Remove \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "Delete \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
                 do {
                     try self.sessions[indexPath.row].delete(includingQueue: true)
                     self.sessions.remove(at: indexPath.row)
