@@ -105,4 +105,8 @@ struct Account: Codable {
         return accounts
     }
 
+    static func deleteAll() {
+        Keychain.sharedInstance.deleteAll(service: keychainService)
+    }
+
 }

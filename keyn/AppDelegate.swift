@@ -21,9 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         // FOR TESTING PURPOSES
-        //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        deletePasswords()   // Uncomment if passwords should be cleaned before startup
-        //deleteSeed()      // Uncomment if you want to force seed regeneration
+        //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
+        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
+        //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         
         // Override point for customization after application launch.
         pushNotification = nil
@@ -316,57 +316,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
     }
-
-    // MARK: Debugging methods
-
-    private func deleteSessionKeys() {
-        // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.session.browser"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status == errSecItemNotFound { print("No browser sessions found") } else {
-            print(status)
-        }
-
-        // Remove passwords
-        let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                     kSecAttrService as String: "io.keyn.session.app"]
-
-        // Try to delete the seed if it exists.
-        let status2 = SecItemDelete(query2 as CFDictionary)
-
-        if status2 == errSecItemNotFound { print("No own sessions keys found") } else {
-            print(status2)
-        }
-    }
-
-    private func deletePasswords() {
-        // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.account"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status == errSecItemNotFound { print("No generic passwords found") } else {
-            print(status)
-        }
-    }
-
-    private func deleteSeed() {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.seed"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-        if status == errSecItemNotFound { print("No seed found.") } else {
-            print(status)
-        }
-    }
-
-    
 
 }

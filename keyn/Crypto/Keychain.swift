@@ -184,4 +184,10 @@ class Keychain {
         return dataArray
     }
 
+    func deleteAll(service: String) {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrService as String: service]
+        let status = SecItemDelete(query as CFDictionary)
+    }
+
 }

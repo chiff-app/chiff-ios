@@ -151,6 +151,11 @@ class Session: Codable {
         return try decoder.decode(Session.self, from: sessionData)
     }
 
+    static func deleteAll() {
+        Keychain.sharedInstance.deleteAll(service: browserService)
+        Keychain.sharedInstance.deleteAll(service: appService)
+    }
+
     // MARK: Private functions
 
     private func save(pubKey: String) throws {
