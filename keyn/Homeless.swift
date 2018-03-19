@@ -227,7 +227,7 @@ struct PairingResponse: Codable {
 
 
 struct BrowserMessage: Codable {
-    let s: String?          // SiteID
+    let s: Int?          // SiteID
     let r: BrowserMessageType
     let b: Int?          // browserTab
 }
@@ -241,7 +241,7 @@ struct CredentialsResponse: Codable {
 
 struct PushNotification {
     let sessionID : String
-    let siteID: String // Wordt int
+    let siteID: Int
     let browserTab: Int
     let requestType: BrowserMessageType
 }

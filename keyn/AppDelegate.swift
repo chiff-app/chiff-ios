@@ -77,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             completionHandler([.alert, .sound])
         } else {
-            guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
+            guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
                 completionHandler([])
                 return
             }
@@ -113,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
             // Delete session from tableView @ devicesViewController
         } else {
-            guard let siteID = response.notification.request.content.userInfo["siteID"] as? String else {
+            guard let siteID = response.notification.request.content.userInfo["siteID"] as? Int else {
                 completionHandler()
                 return
             }

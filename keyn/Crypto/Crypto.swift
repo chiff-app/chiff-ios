@@ -80,14 +80,14 @@ class Crypto {
     }
 
 
-    func deriveKey(keyData: Data, context: Data, passwordIndex: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
+    func deriveKey(keyData: Data, context: Data, index: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
         guard let contextHash = sodium.genericHash.hash(message: context, outputLength: 8) else {
             throw CryptoError.hashing
         }
         guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(passwordIndex), length: keyLengthBytes, context: String(context.prefix(8))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(index), length: keyLengthBytes, context: String(context.prefix(8))) else {
             throw CryptoError.keyDerivation
         }
 
