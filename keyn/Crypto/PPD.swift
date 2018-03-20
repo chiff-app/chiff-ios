@@ -36,7 +36,13 @@ struct PPDProperties: Codable {
 struct PPDCharacterSettings: Codable {
     let characterSetSettings: [PPDCharacterSetSettings] // Settings element for a globally available character set.
     let requirementGroups: [PPDRequirementGroup]? // Character sets specified in the requirement groups are implicitly added to the available character sets for the given position (or all position if no positions are specified) if they were not allowed previously.
-    let positionRestrictions: [PPDPositionRestrictions]? // Restriction element used to restrict the allowed characters for a given character position.
+    let positionRestrictions: [PPDPositionRestriction]? // Restriction element used to restrict the allowed characters for a given character position.
+
+    init(characterSetSettings: [PPDCharacterSetSettings]?, requirementGroups: [PPDRequirementGroup]?, positionRestrictions: [PPDPositionRestriction]?) {
+        self.characterSetSettings = characterSetSettings ?? [PPDCharacterSetSettings]()
+        self.requirementGroups = requirementGroups
+        self.positionRestrictions = positionRestrictions
+    }
 }
 
 struct PPDCharacterSetSettings: Codable {
@@ -45,22 +51,43 @@ struct PPDCharacterSetSettings: Codable {
     let name: String
 }
 
-struct PPDPositionRestrictions: Codable {
+struct PPDPositionRestriction: Codable {
     let positions: String // Comma separated list of character positions the restriction is applied to. Each position can be a character position starting with 0. Negative character positions can be used to specify the position beginning from the end of the password. A value in the interval (0,1) can be used to specify a position by ratio. E.g. 0.5 refers to the center position of the password.
-    let minOccurs: Int = 0 // Minimum occurences of the character set for the given positions. A value of 0 means no restrictions of minimum occurences.
+    let minOccurs: Int // Minimum occurences of the character set for the given positions. A value of 0 means no restrictions of minimum occurences.
     let maxOccurs: Int?
     let characterSet: String
+
+    init(positions: String, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
+        self.positions = positions
+        self.minOccurs = minOccurs
+        self.maxOccurs = maxOccurs
+        self.characterSet = characterSet
+    }
 }
 
 struct PPDRequirementGroup: Codable {
-    let minRules: Int = 1 // Minimum number of rules that must be fulfilled.
+    let minRules: Int // Minimum number of rules that must be fulfilled.
     let requirementRules: [PPDRequirementRule]
+
+    init(minRules: Int = 1, requirementRules: [PPDRequirementRule]) {
+        self.minRules = minRules
+        self.requirementRules = requirementRules
+    }
 }
 
 struct PPDRequirementRule: Codable {
-    let minOccurs: Int = 0 // Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
+    let minOccurs: Int // Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
     let maxOccurs: Int? // Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
     let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
+    let characterSet: String
+
+    init(positions: String, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
+        self.positions = positions
+        self.minOccurs = minOccurs
+        self.maxOccurs = maxOccurs
+        self.characterSet = characterSet
+    }
+
 }
 
 // TODO: Complete Service part. Perhaps first implement in JS?

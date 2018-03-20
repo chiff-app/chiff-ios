@@ -159,38 +159,70 @@ class PasswordGenerator {
         return (length, chars)
     }
 
-    func validate(password: String, for ppd: PPD) -> Bool {
-        
-        // TODO: Implement rejection sampling.
-        var characters = ""
-        if let characterSets = ppd.characterSets {
-            for characterSet in characterSets {
-                if let chars = characterSet.characters {
-                    characters += characters
-                    if let maxConsecutive = ppd.properties?.maxConsecutive {
-                        if characterSet.name == "Letters" || characterSet.name == "Numbers" {
-                            // Check for consective characters. This tests if n characters are lexicigraphically ordered
-                            guard password.longestCommonSubsequence(String(chars.sorted())).count < maxConsecutive else {
-                                print("Password was rejected because of consecutive characters: \(password)")
-                                return false
-                            }
-                        }
-                    }
-                }
-            }
+    func checkConsecutiveCharacters(password: String, characters: String, maxConsecutive: Int) -> Bool {
+        let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
+        let pattern = "([\(escapedCharacters)])\\1{\(maxConsecutive),}"
+        return password.range(of: pattern, options: .regularExpression) == nil
+    }
+
+    func checkConsecutiveCharactersOrder(password: String, characters: String, maxConsecutive: Int) -> Bool {
+        var lastValue = 256
+        var longestSequence = 0
+        var counter = 1
+        for value in password.utf8 {
+            if value == lastValue + 1 && OPTIMAL_CHARACTER_SET.utf8.contains(value) {
+                counter += 1
+            } else { counter = 1 }
+            lastValue = Int(value)
+            if counter > longestSequence { longestSequence = counter }
         }
-        
-        // Max consecutive characters. This tests if n characters are the same.
-        if let maxConsecutive = ppd.properties?.maxConsecutive {
-            let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-            let pattern = "([\(escapedCharacters)])\\1{\(maxConsecutive-1),}"
-            guard password.range(of: pattern, options: .regularExpression) == nil else {
-                print("Password was rejected because of consecutive characters: \(password)")
+        print("Longest sequence: \(longestSequence)")
+        return longestSequence <= maxConsecutive
+    }
+
+    func checPositionRestrictions(password: String) -> Bool {
+        return false
+    }
+
+    func checkRequirementGroups(password: String) -> Bool {
+        return false
+    }
+
+
+    func validate(password: String, for ppd: PPD) -> Bool {
+
+        // Checks if password is less than or equal to maximum length. Relevant for custom passwords
+        if let maxLength = ppd.properties?.maxLength {
+            guard password.count <= maxLength else {
                 return false
             }
         }
+
+        // Checks if password is less than or equal to minimum length. Relevant for custom passwords
+        if let minLength = ppd.properties?.minLength {
+            guard password.count >= minLength else {
+                return false
+            }
+        }
+
+        // Joins all allowed characters into one string, which is used by consecutiveCharacters()
+        var characters = ""
+        if let characterSets = ppd.characterSets {
+            characterSets.forEach({ (characterSet) in characters += characterSet.characters ?? "" })
+        } else { characters += OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
         
-        var positionDictionary = [Int: PPDPositionRestrictions]()
+        // Max consecutive characters. This tests if n characters are the same or are an ordered sequence. TODO
+        if let maxConsecutive = ppd.properties?.maxConsecutive, maxConsecutive > 0 {
+            guard checkConsecutiveCharacters(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
+                return false
+            }
+            guard checkConsecutiveCharactersOrder(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
+                return false
+            }
+        }
+
+
+        var positionDictionary = [Int: PPDPositionRestriction]()
         // Check position restrictions
         if let positionRestrictions = ppd.properties?.characterSettings?.positionRestrictions {
             for positionRestriction in positionRestrictions {
@@ -240,7 +272,7 @@ class PasswordGenerator {
             }
         }
 
-        // assume
+        // All tests passed, password is valid.
         return true
     }
 

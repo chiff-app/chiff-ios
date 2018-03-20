@@ -15,12 +15,13 @@ struct Site: Codable {
     static func get(id: Int) -> Site? {
         var sampleSites = [Site]()
 
-        sampleSites.append(Site(name: "LinkedIn", id: 0, urls: ["https://www.linkedin.com"], ppd: getSamplePPD(id: id)!))
-        sampleSites.append(Site(name: "Gmail", id: 1, urls: ["https://gmail.com/login"], ppd: getSamplePPD(id: id)!))
-        sampleSites.append(Site(name: "ProtonMail", id: 2, urls: ["https://mail.protonmail.com/login"], ppd: getSamplePPD(id: id)!))
-        sampleSites.append(Site(name: "University of London", id: 3, urls: ["https://my.londoninternational.ac.uk/login"], ppd: getSamplePPD(id: id)!))
-        sampleSites.append(Site(name: "Github", id: 4, urls: ["https://github.com/login"], ppd: getSamplePPD(id: id)!))
-        sampleSites.append(Site(name: "DigitalOcean", id: 5, urls: ["https://digitalocean.com/login"], ppd: getSamplePPD(id: id)!))
+        sampleSites.append(Site(name: "LinkedIn", id: 0, urls: ["https://www.linkedin.com"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Gmail", id: 1, urls: ["google.com", "accounts.google.com"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "ProtonMail", id: 2, urls: ["https://mail.protonmail.com/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "University of London", id: 3, urls: ["https://my.londoninternational.ac.uk/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Github", id: 4, urls: ["https://github.com/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "DigitalOcean", id: 5, urls: ["https://digitalocean.com/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "DigitalOcean", id: 6, urls: ["https://complicatedExample.com"], ppd: getSamplePPD(id: id)))
 
         if id >= sampleSites.count {
             return nil

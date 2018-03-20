@@ -3,7 +3,8 @@ import XCTest
 @testable import keyn
 
 class SiteTests: XCTestCase {
-    let restrictions = TestHelper.examplePasswordRestrictions()
+    
+    let ppd = TestHelper.examplePPD()
 
     override func setUp() {
         // TODO
@@ -17,17 +18,17 @@ class SiteTests: XCTestCase {
     }
 
     func testInitAssignsURL() {
-        let site = Site(name : "Google", id: "0", urls: ["google.com", "accounts.google.com"], restrictions: restrictions)
+        let site = Site.get(id: 1)!
         XCTAssertEqual(site.urls, ["google.com", "accounts.google.com"])
     }
 
     func testGetReturnsSite() {
-        let site = Site.get(id: "0")
+        let site = Site.get(id: 0)
         XCTAssertNotNil(site)
     }
 
     func testGetReturnsNilIfNoSiteForID() {
-        let site = Site.get(id: "1000")
+        let site = Site.get(id: 1000)
         XCTAssertNil(site)
     }
 
