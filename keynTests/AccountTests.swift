@@ -8,7 +8,7 @@ class AccountTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        site = Site.get(id: "0")
+        site = Site.get(id: 0)
     }
     
     override func tearDown() {

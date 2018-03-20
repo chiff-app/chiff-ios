@@ -36,8 +36,8 @@
 		497D21C1205A8E7E0040E0C0 /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BB205A8E7D0040E0C0 /* 4.json */; };
 		497D21C2205A8E7E0040E0C0 /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BC205A8E7E0040E0C0 /* 2.json */; };
 		497D21C3205A8E7E0040E0C0 /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BC205A8E7E0040E0C0 /* 2.json */; };
-		497D21C4205A8E7E0040E0C0 /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 5.json */; };
-		497D21C5205A8E7E0040E0C0 /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 5.json */; };
+		497D21C4205A8E7E0040E0C0 /* 6.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 6.json */; };
+		497D21C5205A8E7E0040E0C0 /* 6.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BD205A8E7E0040E0C0 /* 6.json */; };
 		497D21C6205A8E7E0040E0C0 /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BE205A8E7E0040E0C0 /* 3.json */; };
 		497D21C7205A8E7E0040E0C0 /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BE205A8E7E0040E0C0 /* 3.json */; };
 		497D21C8205A8E7E0040E0C0 /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 497D21BF205A8E7E0040E0C0 /* 1.json */; };
@@ -47,6 +47,7 @@
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
+		4992CF3F206100DF00BF44B2 /* 5.json in Resources */ = {isa = PBXBuildFile; fileRef = 4992CF3E206100DF00BF44B2 /* 5.json */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
@@ -155,13 +156,14 @@
 		497D21B8205A8E320040E0C0 /* 0.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 0.json; sourceTree = "<group>"; };
 		497D21BB205A8E7D0040E0C0 /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
 		497D21BC205A8E7E0040E0C0 /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
-		497D21BD205A8E7E0040E0C0 /* 5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5.json; sourceTree = "<group>"; };
+		497D21BD205A8E7E0040E0C0 /* 6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 6.json; sourceTree = "<group>"; };
 		497D21BE205A8E7E0040E0C0 /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
 		497D21BF205A8E7E0040E0C0 /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 1.json; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupStartViewController.swift; sourceTree = "<group>"; };
+		4992CF3E206100DF00BF44B2 /* 5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 5.json; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
@@ -284,9 +286,10 @@
 				497D21B8205A8E320040E0C0 /* 0.json */,
 				497D21BF205A8E7E0040E0C0 /* 1.json */,
 				497D21BC205A8E7E0040E0C0 /* 2.json */,
+				4992CF3E206100DF00BF44B2 /* 5.json */,
 				497D21BE205A8E7E0040E0C0 /* 3.json */,
 				497D21BB205A8E7D0040E0C0 /* 4.json */,
-				497D21BD205A8E7E0040E0C0 /* 5.json */,
+				497D21BD205A8E7E0040E0C0 /* 6.json */,
 				49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */,
 				49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */,
 				49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */,
@@ -633,7 +636,7 @@
 				497D21C1205A8E7E0040E0C0 /* 4.json in Resources */,
 				497D21BA205A8E320040E0C0 /* 0.json in Resources */,
 				497D21C3205A8E7E0040E0C0 /* 2.json in Resources */,
-				497D21C5205A8E7E0040E0C0 /* 5.json in Resources */,
+				497D21C5205A8E7E0040E0C0 /* 6.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,9 +644,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				497D21C4205A8E7E0040E0C0 /* 5.json in Resources */,
+				497D21C4205A8E7E0040E0C0 /* 6.json in Resources */,
 				49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */,
 				497D21C0205A8E7E0040E0C0 /* 4.json in Resources */,
+				4992CF3F206100DF00BF44B2 /* 5.json in Resources */,
 				497D21C6205A8E7E0040E0C0 /* 3.json in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,

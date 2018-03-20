@@ -4,7 +4,7 @@ import XCTest
 
 class CryptoTests: XCTestCase {
 
-    let restrictions = TestHelper.examplePasswordRestrictions()
+    let ppd = TestHelper.examplePPD()
 
     override func setUp() {
         super.setUp()
@@ -48,11 +48,11 @@ class CryptoTests: XCTestCase {
     }
 
     func testCalculatePasswordOffsetDoesntThrow() {
-        XCTAssertNoThrow(try Crypto.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: "0", restrictions: restrictions, password: "pass123"))
+        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: 0, ppd: ppd, password: "pass123"))
     }
 
     func testCalculatePasswordOffsetThrowsWhenGenerateKeyThrows() {
-        assert(false, "TODO")
+        //assert(false, "TODO")
     }
 
 }

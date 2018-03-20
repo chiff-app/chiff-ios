@@ -64,8 +64,24 @@ class TestHelper {
         return nil
     }
 
-    static func examplePasswordRestrictions() -> PasswordRestrictions {
-        return PasswordRestrictions(length: 30, characters: [.lower, .numbers, .upper, .symbols])
+    static func examplePPD() -> PPD {
+        return Site.get(id: 0)!.ppd!
+    }
+
+    static func examplePPD(maxConsecutive: Int?, minLength: Int?, maxLength: Int?, characterSetSettings: [PPDCharacterSetSettings]?, positionRestrictions: [PPDPositionRestriction]?, requirementGroups: [PPDRequirementGroup]?) -> PPD {
+        var characterSets = [PPDCharacterSet]()
+        characterSets.append(PPDCharacterSet(base: [String](), characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: "0123456789", name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
+
+        var ppdCharacterSettings: PPDCharacterSettings?
+        if characterSetSettings != nil || positionRestrictions != nil || requirementGroups != nil {
+            ppdCharacterSettings = PPDCharacterSettings(characterSetSettings: characterSetSettings, requirementGroups: requirementGroups, positionRestrictions: positionRestrictions)
+        }
+
+        let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
+        return PPD(characterSets: characterSets, properties: properties, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
 
 }
