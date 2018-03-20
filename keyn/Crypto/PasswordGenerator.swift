@@ -211,7 +211,7 @@ class PasswordGenerator {
                     }
                 } else if let position = Double(position) {
                     print("TODO: Fix relative positions: \(position)")
-                    return false
+                    // TODO: minOccurs and maxOccurs are not yet taken into account.
                 }
             }
         }

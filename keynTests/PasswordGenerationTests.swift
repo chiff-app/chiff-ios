@@ -120,11 +120,21 @@ class PasswordGenerationTests: XCTestCase {
         positionRestrictions.append(PPDPositionRestriction(positions: "0", minOccurs: 1, maxOccurs: nil, characterSet: "UpperLetters")) // Password should start with a captial
         positionRestrictions.append(PPDPositionRestriction(positions: "-1,-2", minOccurs: 1, maxOccurs: 1, characterSet: "Numbers")) // Password should end with 2 numbers (?). Are occurences for the range or per position
         positionRestrictions.append(PPDPositionRestriction(positions: "0.3,0.8", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")) // There should be lower letters on positions 0.3 and 0.8
-        positionRestrictions.append(PPDPositionRestriction(positions: "1,-3,0.5", maxOccurs: 2, characterSet: "Specials")) // There should be no more than 2 specials on positions 1, -3 and 0.5
+        positionRestrictions.append(PPDPositionRestriction(positions: "1,-3,2", maxOccurs: 2, characterSet: "Specials")) // There should be no more than 2 specials on positions 1, -3 and 2
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
 
-        // TODO: Write testcases
-        XCTFail()
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpudfjkad", for: ppd))
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpuhfjkad45", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpu234fjkad45", for: ppd))
+
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "Osaydnaoiudsu4", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Osaydnaoiudsu49", for: ppd))
+
+        //XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "H-98174-98237lk", for: ppd))
+        //XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "a4sdp5Sd0)fj1kad", for: ppd))
+
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&sdSu12fjkad^54", for: ppd))
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sdSu12fjkad#68", for: ppd))
     }
 
     func testRequirementGroups() {
