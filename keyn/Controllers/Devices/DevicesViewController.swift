@@ -36,7 +36,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return 44
         default:
             assert(false, "section \(indexPath.section)")
+            // Dummy code for archive compiler
+            return 44
         }
+
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -47,6 +50,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return "Open the Keyn browser extension to display QR-code."
         default:
             assert(false, "section \(section)")
+
+            return nil
         }
     }
     
@@ -58,6 +63,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return nil
         default:
             assert(false, "section \(section)")
+            // Dummy code for archive compiler
+            return nil
         }
     }
     
@@ -69,6 +76,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return 1
         default:
             assert(false, "section \(section)")
+            // Dummy code for archive compiler
+            return 44
         }
     }
     
@@ -134,6 +143,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         default:
             assert(false, "section \(indexPath.section)")
+            // Dummy code for archive compiler
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
+            return cell
         }
     }
     
