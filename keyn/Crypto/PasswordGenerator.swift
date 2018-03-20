@@ -176,21 +176,66 @@ class PasswordGenerator {
             lastValue = Int(value)
             if counter > longestSequence { longestSequence = counter }
         }
-        print("Longest sequence: \(longestSequence)")
         return longestSequence <= maxConsecutive
     }
 
-    func checPositionRestrictions(password: String) -> Bool {
-        return false
+    func checkCharacterSetSettings(password: String, characterSetSettings: [PPDCharacterSetSettings], characterSetDictionary: [String:String]) -> Bool {
+        for characterSetSetting in characterSetSettings {
+            if let characterSet = characterSetDictionary[characterSetSetting.name] {
+                let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
+                do {
+                    let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
+                    let range = NSMakeRange(0, password.count)
+                    let numberOfMatches = regex.numberOfMatches(in: password, range: range)
+                    if let minOccurs = characterSetSetting.minOccurs {
+                        guard numberOfMatches >= minOccurs else { return false }
+                    }
+                    if let maxOccurs = characterSetSetting.maxOccurs {
+                        guard numberOfMatches <= maxOccurs else { return false }
+                    }
+                } catch {
+                    print("There was an error creating the NSRegularExpression: \(error)")
+                }
+            }
+        }
+        return true
     }
 
-    func checkRequirementGroups(password: String) -> Bool {
+    func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction], characterSetDictionary: [String:String]) -> Bool {
+        for positionRestriction in positionRestrictions {
+            for position in positionRestriction.positions.split(separator: ",") {
+                if let position = Int(position) {
+                    let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
+                    if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
+                        if !characterSet.contains(password[index]) { return false }
+                    }
+                } else if let position = Double(position) {
+                    print("TODO: Fix relative positions: \(position)")
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup]) -> Bool {
+        for requirementGroup in requirementGroups {
+            //requirementGroup.minRules = minimum amount of rules password
+            var validRules = 0
+            for requirementRule in requirementGroup.requirementRules {
+                if requirementRule.maxOccurs! > 0 {
+                    validRules += 1
+                }
+            }
+            if validRules < requirementGroup.minRules {
+                return false
+            }
+        }
         return false
     }
 
 
     func validate(password: String, for ppd: PPD) -> Bool {
-
         // Checks if password is less than or equal to maximum length. Relevant for custom passwords
         if let maxLength = ppd.properties?.maxLength {
             guard password.count <= maxLength else {
@@ -207,9 +252,20 @@ class PasswordGenerator {
 
         // Joins all allowed characters into one string, which is used by consecutiveCharacters()
         var characters = ""
+        var characterSetDictionary = [String:String]()
         if let characterSets = ppd.characterSets {
-            characterSets.forEach({ (characterSet) in characters += characterSet.characters ?? "" })
+            characterSets.forEach({ (characterSet) in
+                characters += characterSet.characters ?? ""
+                characterSetDictionary[characterSet.name] = characterSet.characters
+            })
         } else { characters += OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
+
+        // Checks if password doesn't contain unallowed characters
+        for char in password {
+            guard characters.contains(char) else {
+                return false
+            }
+        }
         
         // Max consecutive characters. This tests if n characters are the same or are an ordered sequence. TODO
         if let maxConsecutive = ppd.properties?.maxConsecutive, maxConsecutive > 0 {
@@ -221,54 +277,24 @@ class PasswordGenerator {
             }
         }
 
-
-        var positionDictionary = [Int: PPDPositionRestriction]()
-        // Check position restrictions
-        if let positionRestrictions = ppd.properties?.characterSettings?.positionRestrictions {
-            for positionRestriction in positionRestrictions {
-                for position in positionRestriction.positions.split(separator: ",") {
-                    if let index = Int(position) {
-                        positionDictionary[index] = positionRestriction
-                        // TODO: Handle negative values and real numbers (see documentation)
-                    } else {
-                        print("TODO: PPD contains error \(ppd)")
-                    }
-                }
-            }
-        }
-        
-        
-
-        // Loop over password
-        for (index, char) in password.enumerated() {
-            if let positionRestriction = positionDictionary[index] {
-                // TODO: Handle position restriction
-            }
-        }
-
+        // CharacterSet restrictions
         if let characterSetSettings = ppd.properties?.characterSettings?.characterSetSettings {
-            for characterSet in characterSetSettings {
-                // TODO: Implement characterSet rules
-//                characterSet.maxOccurs
-//                guard passwordConsecutive <= maxConsecutive else {
-//                    return false
-//                }
+            guard checkCharacterSetSettings(password: password, characterSetSettings: characterSetSettings, characterSetDictionary: characterSetDictionary) else {
+                return false
             }
         }
 
+        // Position restrictions
+        if let positionRestrictions = ppd.properties?.characterSettings?.positionRestrictions {
+            guard checkPositionRestrictions(password: password, positionRestrictions: positionRestrictions, characterSetDictionary: characterSetDictionary) else {
+                return false
+            }
+        }
 
+        // Requirement groups
         if let requirementGroups = ppd.properties?.characterSettings?.requirementGroups {
-            for requirementGroup in requirementGroups {
-                //requirementGroup.minRules = minimum amount of rules password
-                var validRules = 0
-                for requirementRule in requirementGroup.requirementRules {
-                    if requirementRule.maxOccurs! > 0 {
-                        validRules += 1
-                    }
-                }
-                if validRules < requirementGroup.minRules {
-                    return false
-                }
+            guard checkRequirementGroups(password: password, requirementGroups: requirementGroups) else {
+                return false
             }
         }
 
