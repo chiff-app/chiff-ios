@@ -40,13 +40,20 @@ class PasswordGenerationTests: XCTestCase {
     }
 
     func testPasswordLength() {
-        let ppd = TestHelper.examplePPD(maxConsecutive: 3, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
 
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: longPassword, for: ppd))
 
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: shortPassword, for: ppd))
+    }
+
+    func testUnallowedCharacters() {
+        let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "Ver8aspdi€sd8na", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Ver8aspdisd8na", for: ppd))
     }
 
 
