@@ -182,74 +182,95 @@ class PasswordGenerator {
     func checkCharacterSetSettings(password: String, characterSetSettings: [PPDCharacterSetSettings], characterSetDictionary: [String:String]) -> Bool {
         for characterSetSetting in characterSetSettings {
             if let characterSet = characterSetDictionary[characterSetSetting.name] {
-                let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-                do {
-                    let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
-                    let range = NSMakeRange(0, password.count)
-                    let numberOfMatches = regex.numberOfMatches(in: password, range: range)
-                    if let minOccurs = characterSetSetting.minOccurs {
-                        guard numberOfMatches >= minOccurs else { return false }
-                    }
-                    if let maxOccurs = characterSetSetting.maxOccurs {
-                        guard numberOfMatches <= maxOccurs else { return false }
-                    }
-                } catch {
-                    print("There was an error creating the NSRegularExpression: \(error)")
+                let occurences = countCharacterOccurences(password: password, characterSet: characterSet)
+                if let minOccurs = characterSetSetting.minOccurs {
+                    guard occurences >= minOccurs else { return false }
+                }
+                if let maxOccurs = characterSetSetting.maxOccurs {
+                    guard occurences <= maxOccurs else { return false }
                 }
             }
         }
         return true
+    }
+
+    private func countCharacterOccurences(password: String, characterSet: String) -> Int {
+        let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
+        do {
+            let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
+            let range = NSMakeRange(0, password.count)
+            return regex.numberOfMatches(in: password, range: range)
+        } catch {
+            print("There was an error creating the NSRegularExpression: \(error)")
+        }
+        return 0
     }
 
     func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction], characterSetDictionary: [String:String]) -> Bool {
         for positionRestriction in positionRestrictions {
-            var occurences = 0
-            for position in positionRestriction.positions.split(separator: ",") {
-                if let position = Int(position) {
-                    let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
-                    if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
-                        if characterSet.contains(password[index]) { occurences += 1 }
-                    }
-                } else if let position = Double(position) {
-                    let index = position * Double(password.count) - 0.5
-                    let upperIndex = Int(ceil(index))
-                    let lowerIndex = Int(floor(index))
-                    if upperIndex == lowerIndex {
-                        let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                        if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
-                            if characterSet.contains(letter) { occurences += 1 }
-                        }
-                    } else {
-                        let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                        let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
-                        if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
-                            if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
-                        }
-                    }
+            if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
+                let occurences = checkPositions(password: password, positions: positionRestriction.positions, characterSet: characterSet)
+                guard occurences >= positionRestriction.minOccurs else { return false }
+                if let maxOccurs = positionRestriction.maxOccurs {
+                    guard occurences <= maxOccurs else { return false }
                 }
-            }
-            guard occurences >= positionRestriction.minOccurs else { return false }
-            if let maxOccurs = positionRestriction.maxOccurs {
-                guard occurences <= maxOccurs else { return false }
+            } else {
+                print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
             }
         }
         return true
     }
 
-    func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup]) -> Bool {
+    private func checkPositions(password: String, positions: String, characterSet: String) -> Int {
+        var occurences = 0
+        for position in positions.split(separator: ",") {
+            if let position = Int(position) {
+                let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
+                if characterSet.contains(password[index]) { occurences += 1 }
+            } else if let position = Double(position) {
+                let index = position * Double(password.count) - 0.5
+                let upperIndex = Int(ceil(index))
+                let lowerIndex = Int(floor(index))
+                if upperIndex == lowerIndex {
+                    let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
+                    if characterSet.contains(letter) { occurences += 1 }
+                } else {
+                    let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
+                    let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
+                    if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
+                }
+            }
+        }
+        return occurences
+    }
+
+    func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup], characterSetDictionary: [String:String]) -> Bool {
         for requirementGroup in requirementGroups {
             //requirementGroup.minRules = minimum amount of rules password
             var validRules = 0
             for requirementRule in requirementGroup.requirementRules {
-                if requirementRule.maxOccurs! > 0 {
-                    validRules += 1
+                var occurences = 0
+                if let characterSet = characterSetDictionary[requirementRule.characterSet] {
+                    if let positions = requirementRule.positions {
+                        occurences += checkPositions(password: password, positions: positions, characterSet: characterSet)
+                    } else {
+                        occurences += countCharacterOccurences(password: password, characterSet: characterSet)
+                    }
+
+                    if let maxOccurs = requirementRule.maxOccurs {
+                        if occurences >= requirementRule.minOccurs && occurences <= maxOccurs { validRules += 1 }
+                    } else {
+                        if occurences >= requirementRule.minOccurs { validRules += 1 }
+                    }
+                } else {
+                    print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
                 }
             }
-            if validRules < requirementGroup.minRules {
+            guard validRules >= requirementGroup.minRules else  {
                 return false
             }
         }
-        return false
+        return true
     }
 
 
@@ -311,7 +332,7 @@ class PasswordGenerator {
 
         // Requirement groups
         if let requirementGroups = ppd.properties?.characterSettings?.requirementGroups {
-            guard checkRequirementGroups(password: password, requirementGroups: requirementGroups) else {
+            guard checkRequirementGroups(password: password, requirementGroups: requirementGroups, characterSetDictionary: characterSetDictionary) else {
                 return false
             }
         }
