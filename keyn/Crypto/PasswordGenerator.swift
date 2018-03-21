@@ -30,25 +30,13 @@ class PasswordGenerator {
             throw PasswordGenerationError.tooShort
         }
 
-        var password = ""
+        var password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
         var index = passwordIndex
-        password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
-        let passwordValidator = PasswordValidator(ppd: ppd)
-
-        // DEBUG
-        print("Validation: maxLength, result: \(passwordValidator.validateMaxLength(password: password))")
-        print("Validation: minLength, result: \(passwordValidator.validateMinLength(password: password))")
-        print("Validation: RequirementGroups, result: \(passwordValidator.validateRequirementGroups(password: password))")
-        print("Validation: PositionRestrictions, result: \(passwordValidator.validatePositionRestrictions(password: password))")
-        print("Validation: Characters, result: \(passwordValidator.validateCharacters(password: password))")
-        print("Validation: characterSet, result: \(passwordValidator.validateCharacterSet(password: password))")
-        print("Validation: consecutive, result: \(passwordValidator.validateConsecutiveCharacters(password: password))")
-
         if offset == nil { // Only validate generated password. Custom passwords should be validated in UI.
+            let passwordValidator = PasswordValidator(ppd: ppd)
             while !passwordValidator.validate(password: password) {
                 index += 1
                 password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
-                print("Password candidate: \(password) for site \(siteID) with index \(index)")
             }
         }
 
