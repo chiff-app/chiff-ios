@@ -13,54 +13,59 @@ enum PasswordGenerationError: Error {
     case tooShort
     case keyGeneration
     case dataConversion
+    case invalidPassword
 }
 
 
 class PasswordGenerator {
 
     static let sharedInstance = PasswordGenerator()
-    private let FALLBACK_PASSWORD_LENGTH = 22
-    private let MAX_PASSWORD_LENGTH_BOUND = 50
-    private let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
     func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
-        let (length, chars) = parse(ppd: ppd)
+        let (length, chars) = PasswordValidator.parse(ppd: ppd)
 
-        let minLength = ppd?.properties?.minLength ?? 8
-        guard length >= minLength else {
+        guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
             throw PasswordGenerationError.tooShort
         }
 
         var password = ""
         var index = passwordIndex
         password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
+        let passwordValidator = PasswordValidator(ppd: ppd)
 
-        while ppd != nil ? !validate(password: password, for: ppd!) : false {
-            index += 1
-            password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
-            print("Password candidate: \(password) for site \(siteID) with index \(index)")
+        // DEBUG
+        print("Validation: maxLength, result: \(passwordValidator.validateMaxLength(password: password))")
+        print("Validation: minLength, result: \(passwordValidator.validateMinLength(password: password))")
+        print("Validation: RequirementGroups, result: \(passwordValidator.validateRequirementGroups(password: password))")
+        print("Validation: PositionRestrictions, result: \(passwordValidator.validatePositionRestrictions(password: password))")
+        print("Validation: Characters, result: \(passwordValidator.validateCharacters(password: password))")
+        print("Validation: characterSet, result: \(passwordValidator.validateCharacterSet(password: password))")
+        print("Validation: consecutive, result: \(passwordValidator.validateConsecutiveCharacters(password: password))")
+
+        if offset == nil { // Only validate generated password. Custom passwords should be validated in UI.
+            while !passwordValidator.validate(password: password) {
+                index += 1
+                password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
+                print("Password candidate: \(password) for site \(siteID) with index \(index)")
+            }
         }
 
         return (password, index)
     }
 
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, password: String) throws -> [Int] {
-
-        // TODO: We should check first if password complies with PPD, otherwise throw error. Or use different function so custom passwords can be verified while typing
-
-        let (length, chars) = parse(ppd: ppd)
-
-        let minLength = ppd?.properties?.minLength ?? 8
-        guard length >= minLength else {
-            throw PasswordGenerationError.tooShort
+        guard PasswordValidator(ppd: ppd).validate(password: password) else {
+            // This shouldn't happen if we properly check the custom password in the UI
+            throw PasswordGenerationError.invalidPassword
         }
+
+        let (length, chars) = PasswordValidator.parse(ppd: ppd)
 
         var characterIndices = [Int](repeatElement(chars.count, count: length))
         var index = 0
 
-        // This is part of validating password: checking for disallowed characters
         for char in password {
             guard let characterIndex = chars.index(of: char) else {
                 throw PasswordGenerationError.characterNotAllowed
@@ -143,214 +148,9 @@ class PasswordGenerator {
         return password
     }
 
-    private func parse(ppd: PPD?) -> (Int, [Character]) {
-        var length = FALLBACK_PASSWORD_LENGTH
-        var chars = [Character]()
-
-        if let characterSets = ppd?.characterSets {
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            chars.append(contentsOf: [Character](OPTIMAL_CHARACTER_SET)) // Optimal character set
-        }
-
-        if let maxLength = ppd?.properties?.maxLength {
-            length = maxLength < MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
-        }
-
-        return (length, chars)
-    }
-
-    func checkConsecutiveCharacters(password: String, characters: String, maxConsecutive: Int) -> Bool {
-        let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-        let pattern = "([\(escapedCharacters)])\\1{\(maxConsecutive),}"
-        return password.range(of: pattern, options: .regularExpression) == nil
-    }
-
-    func checkConsecutiveCharactersOrder(password: String, characters: String, maxConsecutive: Int) -> Bool {
-        var lastValue = 256
-        var longestSequence = 0
-        var counter = 1
-        for value in password.utf8 {
-            if value == lastValue + 1 && OPTIMAL_CHARACTER_SET.utf8.contains(value) {
-                counter += 1
-            } else { counter = 1 }
-            lastValue = Int(value)
-            if counter > longestSequence { longestSequence = counter }
-        }
-        return longestSequence <= maxConsecutive
-    }
-
-    func checkCharacterSetSettings(password: String, characterSetSettings: [PPDCharacterSetSettings], characterSetDictionary: [String:String]) -> Bool {
-        for characterSetSetting in characterSetSettings {
-            if let characterSet = characterSetDictionary[characterSetSetting.name] {
-                let occurences = countCharacterOccurences(password: password, characterSet: characterSet)
-                if let minOccurs = characterSetSetting.minOccurs {
-                    guard occurences >= minOccurs else { return false }
-                }
-                if let maxOccurs = characterSetSetting.maxOccurs {
-                    guard occurences <= maxOccurs else { return false }
-                }
-            }
-        }
-        return true
-    }
-
-    private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-        let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-        do {
-            let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
-            let range = NSMakeRange(0, password.count)
-            return regex.numberOfMatches(in: password, range: range)
-        } catch {
-            print("There was an error creating the NSRegularExpression: \(error)")
-        }
-        return 0
-    }
-
-    func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction], characterSetDictionary: [String:String]) -> Bool {
-        for positionRestriction in positionRestrictions {
-            if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
-                let occurences = checkPositions(password: password, positions: positionRestriction.positions, characterSet: characterSet)
-                guard occurences >= positionRestriction.minOccurs else { return false }
-                if let maxOccurs = positionRestriction.maxOccurs {
-                    guard occurences <= maxOccurs else { return false }
-                }
-            } else {
-                print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
-            }
-        }
-        return true
-    }
-
-    private func checkPositions(password: String, positions: String, characterSet: String) -> Int {
-        var occurences = 0
-        for position in positions.split(separator: ",") {
-            if let position = Int(position) {
-                let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
-                if characterSet.contains(password[index]) { occurences += 1 }
-            } else if let position = Double(position) {
-                let index = position * Double(password.count) - 0.5
-                let upperIndex = Int(ceil(index))
-                let lowerIndex = Int(floor(index))
-                if upperIndex == lowerIndex {
-                    let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    if characterSet.contains(letter) { occurences += 1 }
-                } else {
-                    let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
-                    if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
-                }
-            }
-        }
-        return occurences
-    }
-
-    func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup], characterSetDictionary: [String:String]) -> Bool {
-        for requirementGroup in requirementGroups {
-            //requirementGroup.minRules = minimum amount of rules password
-            var validRules = 0
-            for requirementRule in requirementGroup.requirementRules {
-                var occurences = 0
-                if let characterSet = characterSetDictionary[requirementRule.characterSet] {
-                    if let positions = requirementRule.positions {
-                        occurences += checkPositions(password: password, positions: positions, characterSet: characterSet)
-                    } else {
-                        occurences += countCharacterOccurences(password: password, characterSet: characterSet)
-                    }
-
-                    if let maxOccurs = requirementRule.maxOccurs {
-                        if occurences >= requirementRule.minOccurs && occurences <= maxOccurs { validRules += 1 }
-                    } else {
-                        if occurences >= requirementRule.minOccurs { validRules += 1 }
-                    }
-                } else {
-                    print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
-                }
-            }
-            guard validRules >= requirementGroup.minRules else  {
-                return false
-            }
-        }
-        return true
-    }
-
-
-    func validate(password: String, for ppd: PPD) -> Bool {
-        // Checks if password is less than or equal to maximum length. Relevant for custom passwords
-        if let maxLength = ppd.properties?.maxLength {
-            guard password.count <= maxLength else {
-                return false
-            }
-        }
-
-        // Checks if password is less than or equal to minimum length. Relevant for custom passwords
-        if let minLength = ppd.properties?.minLength {
-            guard password.count >= minLength else {
-                return false
-            }
-        }
-
-        // Joins all allowed characters into one string, which is used by consecutiveCharacters()
-        var characters = ""
-        var characterSetDictionary = [String:String]()
-        if let characterSets = ppd.characterSets {
-            characterSets.forEach({ (characterSet) in
-                characters += characterSet.characters ?? ""
-                characterSetDictionary[characterSet.name] = characterSet.characters
-            })
-        } else { characters += OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
-
-        // Checks if password doesn't contain unallowed characters
-        for char in password {
-            guard characters.contains(char) else {
-                return false
-            }
-        }
-        
-        // Max consecutive characters. This tests if n characters are the same or are an ordered sequence. TODO
-        if let maxConsecutive = ppd.properties?.maxConsecutive, maxConsecutive > 0 {
-            guard checkConsecutiveCharacters(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
-                return false
-            }
-            guard checkConsecutiveCharactersOrder(password: password, characters: characters, maxConsecutive: maxConsecutive) else {
-                return false
-            }
-        }
-
-        // CharacterSet restrictions
-        if let characterSetSettings = ppd.properties?.characterSettings?.characterSetSettings {
-            guard checkCharacterSetSettings(password: password, characterSetSettings: characterSetSettings, characterSetDictionary: characterSetDictionary) else {
-                return false
-            }
-        }
-
-        // Position restrictions
-        if let positionRestrictions = ppd.properties?.characterSettings?.positionRestrictions {
-            guard checkPositionRestrictions(password: password, positionRestrictions: positionRestrictions, characterSetDictionary: characterSetDictionary) else {
-                return false
-            }
-        }
-
-        // Requirement groups
-        if let requirementGroups = ppd.properties?.characterSettings?.requirementGroups {
-            guard checkRequirementGroups(password: password, requirementGroups: requirementGroups, characterSetDictionary: characterSetDictionary) else {
-                return false
-            }
-        }
-
-        // All tests passed, password is valid.
-        return true
-    }
-
-
     private func roundUp(n: Int, m: Int) -> Int {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
-
 
     private func generateKey(username: String, passwordIndex: Int, siteID: Int) throws -> Data {
         guard let usernameData = username.data(using: .utf8),

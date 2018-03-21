@@ -23,7 +23,7 @@
   ],
   "properties": {
     "characterSettings": null,
-    "maxConsecutive": 2,
+    "maxConsecutive": null,
     "minLength": 8,
     "maxLength": 32,
     "expires": null

@@ -60,6 +60,8 @@
 		49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */; };
 		49B6B75820024BC300310BC3 /* PersonalDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
+		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
@@ -176,6 +178,7 @@
 		49B6B75520024AF300310BC3 /* PersonalDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailsTableViewController.swift; path = keyn/Controllers/Settings/PersonalDetailsTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		49B6B75720024BC300310BC3 /* PersonalDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PersonalDetailTableViewCell.swift; path = keyn/Controllers/Settings/PersonalDetailTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
+		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49E766501F7E6F420022C042 /* keyn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49E7665A1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -408,6 +411,7 @@
 			children = (
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
+				49CF311220628E9100272277 /* PasswordValidator.swift */,
 				4908103520598AC700C770F1 /* PPD.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 			);
@@ -845,6 +849,7 @@
 				613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */,
 				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
 				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
+				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
 				613CFB0120135DD700460CC6 /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
@@ -864,6 +869,7 @@
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
+				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
