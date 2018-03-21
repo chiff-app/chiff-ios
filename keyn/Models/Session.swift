@@ -94,7 +94,7 @@ class Session: Codable {
         case .reset:
             // TODO: change password. We should probably implement some kind of feedback mechanism from browser if reset was succesful, otherwise password will be deleted. Also, how to handle offsets? Request should allow user to type custom password somehow
             let oldPassword: String = try account.password()
-            try account.updatePassword(restrictions: nil, offset: nil)
+            try account.updatePassword(offset: nil)
             response = CredentialsResponse(u: account.username, p: oldPassword , np: try account.password(), b: browserTab)
         default:
             // TODO: throw error
