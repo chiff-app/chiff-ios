@@ -17,24 +17,24 @@ struct Account: Codable {
 
         self.username = username
         self.site = site
-        self.passwordIndex = passwordIndex
+
         if let password = password {
             passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
         }
-        
-        try save(password: password)
-    }
 
-    private func save(password: String?) throws {
-        let accountData = try PropertyListEncoder().encode(self)
-        
-        let generatedPassword = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
-        
+        let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
+        self.passwordIndex = index
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
+        
+        try save(password: generatedPassword)
+    }
 
-        guard let passwordData = generatedPassword.data(using: .utf8) else {
+    private func save(password: String) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+
+        guard let passwordData = password.data(using: .utf8) else {
             throw KeychainError.stringEncoding
         }
 
@@ -55,12 +55,11 @@ struct Account: Codable {
         return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
     }
 
-    mutating func updatePassword(restrictions: PasswordRestrictions?, offset: [Int]?) throws {
-        passwordIndex += 1
-
-        let newPassword = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+    mutating func updatePassword(offset: [Int]?) throws {
+        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
 
         //TODO: Implement custom passwords here
+        self.passwordIndex = newIndex
 
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding

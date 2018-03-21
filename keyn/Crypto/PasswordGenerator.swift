@@ -25,7 +25,7 @@ class PasswordGenerator {
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> String {
+    func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
         let (length, chars) = parse(ppd: ppd)
 
         let minLength = ppd?.properties?.minLength ?? 8
@@ -34,11 +34,16 @@ class PasswordGenerator {
         }
 
         var password = ""
-        repeat {
-            password = try generatePasswordCandidate(username: username, passwordIndex: passwordIndex, siteID: siteID, length: length, chars: chars, offset: offset)
-        } while ppd != nil ? !validate(password: password, for: ppd!) : false
+        var index = passwordIndex
+        password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
 
-        return password
+        while ppd != nil ? !validate(password: password, for: ppd!) : false {
+            index += 1
+            password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
+            print("Password candidate: \(password) for site \(siteID) with index \(index)")
+        }
+
+        return (password, index)
     }
 
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, password: String) throws -> [Int] {
