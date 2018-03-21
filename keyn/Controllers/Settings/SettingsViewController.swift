@@ -11,15 +11,18 @@ import UIKit
 class SettingsViewController: UITableViewController {
 
     var securityFooterText = "\u{26A0} Paper backup not finished."
+    var justLoaded = true
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setFooterText()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        do {
-            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
-            tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        } catch {
-            print("TODO: Handle error")
-        }
+        if !justLoaded {
+            setFooterText()
+        } else { justLoaded = false }
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -45,6 +48,19 @@ class SettingsViewController: UITableViewController {
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+
+
+    // MARK: Private functions
+
+
+    private func setFooterText() {
+        do {
+            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
+            tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        } catch {
+            print("TODO: Handle error")
+        }
     }
 
 

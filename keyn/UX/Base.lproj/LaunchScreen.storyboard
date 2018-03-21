@@ -18,19 +18,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="oyM-6e-d2o">
-                                <rect key="frame" x="0.0" y="289" width="375" height="88"/>
+                                <rect key="frame" x="-4.5" y="289" width="384" height="88"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="OM8-Uf-bZz"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="88" id="wsQ-rb-GSV"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="oyM-6e-d2o" firstAttribute="trailing" secondItem="Sme-pH-L6s" secondAttribute="trailing" id="DD8-Oa-MqR"/>
-                            <constraint firstItem="Sme-pH-L6s" firstAttribute="bottom" secondItem="oyM-6e-d2o" secondAttribute="bottom" constant="290" id="Jue-US-07z"/>
-                            <constraint firstItem="oyM-6e-d2o" firstAttribute="leading" secondItem="Sme-pH-L6s" secondAttribute="leading" id="Zch-el-AZL"/>
-                            <constraint firstItem="oyM-6e-d2o" firstAttribute="top" secondItem="Sme-pH-L6s" secondAttribute="top" constant="269" id="qLN-jZ-TYk"/>
+                            <constraint firstItem="oyM-6e-d2o" firstAttribute="centerY" secondItem="esK-xY-q7E" secondAttribute="centerY" id="MPJ-ol-20Y"/>
+                            <constraint firstItem="oyM-6e-d2o" firstAttribute="centerX" secondItem="esK-xY-q7E" secondAttribute="centerX" id="ycw-yU-KYc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Sme-pH-L6s"/>
                     </view>
