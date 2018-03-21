@@ -203,16 +203,34 @@ class PasswordGenerator {
 
     func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction], characterSetDictionary: [String:String]) -> Bool {
         for positionRestriction in positionRestrictions {
+            var occurences = 0
             for position in positionRestriction.positions.split(separator: ",") {
                 if let position = Int(position) {
                     let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
                     if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
-                        if !characterSet.contains(password[index]) { return false }
+                        if characterSet.contains(password[index]) { occurences += 1 }
                     }
                 } else if let position = Double(position) {
-                    print("TODO: Fix relative positions: \(position)")
-                    // TODO: minOccurs and maxOccurs are not yet taken into account.
+                    let index = position * Double(password.count) - 0.5
+                    let upperIndex = Int(ceil(index))
+                    let lowerIndex = Int(floor(index))
+                    if upperIndex == lowerIndex {
+                        let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
+                        if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
+                            if characterSet.contains(letter) { occurences += 1 }
+                        }
+                    } else {
+                        let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
+                        let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
+                        if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
+                            if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
+                        }
+                    }
                 }
+            }
+            guard occurences >= positionRestriction.minOccurs else { return false }
+            if let maxOccurs = positionRestriction.maxOccurs {
+                guard occurences <= maxOccurs else { return false }
             }
         }
         return true
