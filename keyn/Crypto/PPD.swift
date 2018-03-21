@@ -81,7 +81,7 @@ struct PPDRequirementRule: Codable {
     let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
     let characterSet: String
 
-    init(positions: String, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
+    init(positions: String?, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
         self.positions = positions
         self.minOccurs = minOccurs
         self.maxOccurs = maxOccurs

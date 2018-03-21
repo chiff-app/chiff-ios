@@ -141,17 +141,29 @@ class PasswordGenerationTests: XCTestCase {
         var requirementGroups = [PPDRequirementGroup]()
 
         let rule1 = PPDRequirementRule(positions: "0", minOccurs: 1, maxOccurs: nil, characterSet: "UpperLetters")
-        let rule2 = PPDRequirementRule(positions: "-1,-2", minOccurs: 1, maxOccurs: 1, characterSet: "Numbers")
-        let rule3 = PPDRequirementRule(positions: "0.3,0.8", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")
-        let rule4 = PPDRequirementRule(positions: "1,-3,0.5", maxOccurs: 2, characterSet: "Specials")
+        let rule2 = PPDRequirementRule(positions: "-1,-2", minOccurs: 2, maxOccurs: 2, characterSet: "Numbers")
+
+        let rule3 = PPDRequirementRule(positions: "0.5", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")
+        let rule4 = PPDRequirementRule(positions: "1,2,-3", maxOccurs: 2, characterSet: "Specials")
+        let rule5 = PPDRequirementRule(positions: nil, minOccurs: 1, maxOccurs: nil, characterSet: "Numbers")
+        // ADD rules with no position restrictions
 
         requirementGroups.append(PPDRequirementGroup(minRules: 1, requirementRules: [rule1, rule2]))
-        requirementGroups.append(PPDRequirementGroup(minRules: 1, requirementRules: [rule3, rule4]))
+        requirementGroups.append(PPDRequirementGroup(minRules: 2, requirementRules: [rule3, rule4, rule5]))
 
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: requirementGroups)
 
-        // TODO: Write testcases
-        XCTFail()
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpudfjkad", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "asdpuhfjkad45", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpuhfjkad", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpughyfjkad45", for: ppd))
+
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sd^*&^*%ad", for: ppd))
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sd^*&^*aad", for: ppd))
+        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*skashdjk*%ad", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&*sd^3*&^*aad", for: ppd))
+        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&skashdjk*%ad", for: ppd))
+
     }
 
     
