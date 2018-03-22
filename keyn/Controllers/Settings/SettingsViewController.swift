@@ -44,6 +44,7 @@ class SettingsViewController: UITableViewController {
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
+            AWS.sharedInstance.deleteEndpointArn()
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
@@ -52,7 +53,6 @@ class SettingsViewController: UITableViewController {
 
 
     // MARK: Private functions
-
 
     private func setFooterText() {
         do {

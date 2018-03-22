@@ -78,7 +78,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     private func decodeSessionData(pubKey: String, sqs: String, browser: String, os: String) {
         do {
-            let session = try SessionManager.sharedInstance.initiateSession(sqs: sqs, pubKey: pubKey, browser: browser, os: os)
+            let session = try Session.initiate(sqsQueueName: sqs, pubKey: pubKey, browser: browser, os: os)
             if navigationController?.viewControllers[0] == self {
                 let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
                 navigationController?.setViewControllers([devicesVC], animated: false)
