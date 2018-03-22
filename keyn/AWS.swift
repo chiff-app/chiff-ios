@@ -29,6 +29,8 @@ class AWS {
 
     private init() {}
 
+
+    // TODO: Unused --> This was replaced by getting the static URL from Properties. Delete if everything seems to work.
     func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
         guard let queueUrlRequest = AWSSQSGetQueueUrlRequest() else {
             throw AWSError.queueUrl(error: nil)
@@ -54,9 +56,9 @@ class AWS {
         }
     }
 
-    func sendToSqs(message: String, to queueUrl: String, sessionID: String, type: BrowserMessageType) {
+    func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
-            sendRequest.queueUrl = queueUrl
+            sendRequest.queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
             sendRequest.messageBody = message
             let typeAttributeValue = AWSSQSMessageAttributeValue()
             typeAttributeValue?.stringValue = String(type.rawValue)
@@ -98,6 +100,10 @@ class AWS {
             // Create new endpoint if not found in storage
             createPlatformEndpoint(token: token)
         }
+    }
+
+    func deleteEndpointArn() {
+        Keychain.sharedInstance.deleteAll(service: awsService)
     }
 
     // MARK: Private functions
@@ -159,7 +165,7 @@ class AWS {
             return
         }
         request.token = token
-        request.platformApplicationArn = snsPlatformApplicationArn
+        request.platformApplicationArn = Properties.isDebug ? Properties.AWSPlaformApplicationArn.sandbox : Properties.AWSPlaformApplicationArn.production
         sns.createPlatformEndpoint(request).continueOnSuccessWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
             guard let response = task.result else {
                 print("TODO: handle error")

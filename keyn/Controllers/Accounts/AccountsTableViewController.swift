@@ -8,8 +8,17 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationItem.leftBarButtonItem = self.editButtonItem
-        loadSampleData()
+
+        do {
+            if let savedAccounts = try Account.all() {
+                unfilteredAccounts.append(contentsOf: savedAccounts)
+            } else if Properties.isDebug {
+                try loadSampleData()
+            }
+        } catch {
+            print("Account could not be fetched from keychain: \(error)")
+        }
+
         filteredAccounts = unfilteredAccounts
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
@@ -125,35 +134,22 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     // MARK: Temporary sample data
 
-    private func loadSampleData() {
-        // try loading persistent data:
-        do {
-            if let savedAccounts = try Account.all() {
-                print("Loading accounts from keychain.")
-                unfilteredAccounts.append(contentsOf: savedAccounts)
-            } else {
-                let sampleUsername = "demo@keyn.io"
-                var sampleSites = [Site]()
+    private func loadSampleData() throws {
+        let sampleUsername = "demo@keyn.io"
+        var sampleSites = [Site]()
 
-                sampleSites.append(Site.get(id: 1)!)
-                sampleSites.append(Site.get(id: 2)!)
-                sampleSites.append(Site.get(id: 3)!)
-                sampleSites.append(Site.get(id: 4)!)
-                sampleSites.append(Site.get(id: 5)!)
+        sampleSites.append(Site.get(id: 1)!)
+        sampleSites.append(Site.get(id: 2)!)
+        sampleSites.append(Site.get(id: 3)!)
+        sampleSites.append(Site.get(id: 4)!)
+        sampleSites.append(Site.get(id: 5)!)
 
-                
-                for site in sampleSites {
-                    let account = try! Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
-                    unfilteredAccounts.append(account)
-                }
-
-                unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword"))
-
-            }
-        } catch {
-            print("Account could not be fetched from keychain: \(error)")
+        for site in sampleSites {
+            let account = try Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
+            unfilteredAccounts.append(account)
         }
 
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword"))
     }
 
 }

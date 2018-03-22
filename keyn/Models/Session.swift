@@ -47,11 +47,7 @@ class Session: Codable {
             try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-            if includingQueue {
-                try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
-                    AWS.sharedInstance.sendToSqs(message: "bye", to: queueUrl, sessionID: self.id, type: .end)
-                }
-            }
+            if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsQueueName, sessionID: self.id, type: .end) }
         } catch {
             throw error
         }
@@ -106,10 +102,7 @@ class Session: Codable {
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 
-        // Get SQS queue and send message to queue
-        try AWS.sharedInstance.getQueueUrl(queueName: sqsQueueName) { (queueUrl) in
-            AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: queueUrl, sessionID: self.id, type: type)
-        }
+        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsQueueName, sessionID: self.id, type: type)
     }
 
     // MARK: Static functions
@@ -156,7 +149,30 @@ class Session: Codable {
         Keychain.sharedInstance.deleteAll(service: appService)
     }
 
+    static func initiate(sqsQueueName: String, pubKey: String, browser: String, os: String) throws -> Session {
+        // Create session and save to Keychain
+        let session = try Session(sqs: sqsQueueName, browserPublicKey: pubKey, browser: browser, os: os)
+        let pairingResponse = try self.createPairingResponse(session: session)
+
+        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsQueueName, sessionID: session.id, type: .pair)
+
+        return session
+    }
+
+
     // MARK: Private functions
+
+    static private func createPairingResponse(session: Session) throws -> String {
+        guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
+            return "" // TODO Throw error
+        }
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint)
+        let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
+        let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
+        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+
+        return b64ciphertext
+    }
 
     private func save(pubKey: String) throws {
         // Save browser public key
