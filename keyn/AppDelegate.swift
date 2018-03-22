@@ -22,9 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // FOR TESTING PURPOSES
         //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
-        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
+        //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
-        
+        //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
+
         // Override point for customization after application launch.
         pushNotification = nil
         fetchAWSIdentification()
@@ -277,9 +278,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     private func fetchAWSIdentification() {
-        //        let credentialsProvider = AWSStaticCredentialsProvider(accessKey: "AKIAIPSH6JLWAEOLEXDA", secretKey: "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"))
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
-                                                                identityPoolId: "eu-central-1:ed666f3c-643e-4410-8ad8-d37b08a24ff6")
+                                                                identityPoolId: "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe")
 
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration

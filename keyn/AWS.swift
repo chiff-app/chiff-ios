@@ -24,7 +24,7 @@ class AWS {
     private let endpointIdentifier = "snsDeviceEndpointArn"
     private let PAIR_TIMEOUT = 60.0
     private let LOGIN_TIMEOUT = 180.0
-    let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:787429400306:app/APNS_SANDBOX/Keyn"
+    let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
     private init() {}

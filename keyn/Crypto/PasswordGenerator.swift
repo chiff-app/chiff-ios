@@ -30,8 +30,8 @@ class PasswordGenerator {
             throw PasswordGenerationError.tooShort
         }
 
-        var password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
         var index = passwordIndex
+        var password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
         if offset == nil { // Only validate generated password. Custom passwords should be validated in UI.
             let passwordValidator = PasswordValidator(ppd: ppd)
             while !passwordValidator.validate(password: password) {
