@@ -22,8 +22,8 @@ class AWS {
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointIdentifier = "snsDeviceEndpointArn"
-    private let PAIR_TIMEOUT = 60.0
-    private let LOGIN_TIMEOUT = 180.0
+    private let PAIR_TIMEOUT = 1 // 60
+    private let LOGIN_TIMEOUT = 1 // 180
     let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
@@ -58,7 +58,8 @@ class AWS {
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
-            sendRequest.queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+            let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+            sendRequest.queueUrl = queueUrl
             sendRequest.messageBody = message
             let typeAttributeValue = AWSSQSMessageAttributeValue()
             typeAttributeValue?.stringValue = String(type.rawValue)
@@ -68,18 +69,42 @@ class AWS {
                 if let error = error {
                     print("Error sending message to SQS queue: \(String(describing: error))")
                 } else if let messageId = result?.messageId {
-                    switch type {
-                    case .login, .register, .reset:
-                        print("Fire timeout @ 180")
-                    case .pair:
-                        print("Fire timeout @ 60")
-                        //Timer.scheduledTimer(timeInterval: self.PAIR_TIMEOUT, target: AWS.sharedInstance, selector: #selector(AWS.sharedInstance.deleteFromSqs(timer:)), userInfo: messageId, repeats: false)
-                    default:
-                        // Is the sqs queue message retention period (2 weeks)
-                        print("End-session message sent.")
-                    }
+                    // TODO: Message retention, zie trello
+//                    switch type {
+//                    case .login, .register, .reset:
+//                        AWS.sharedInstance.deleteFromQueue(delay: self.LOGIN_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
+//                    case .pair:
+//                        AWS.sharedInstance.deleteFromQueue(delay: self.PAIR_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
+//                    default:
+//                        // Is the sqs queue message retention period (2 weeks)
+//                        print("End-session message sent.")
+//                    }
                 }
             })
+        }
+    }
+
+    // Unused --> message retention
+    func deleteFromQueue(delay: Int, queueUrl: String, messageId: String) {
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(delay)) {
+            if let deleteMessageRequest = AWSSQSDeleteMessageRequest() {
+                deleteMessageRequest.queueUrl = queueUrl
+                deleteMessageRequest.receiptHandle = messageId
+                self.sqs.deleteMessage(deleteMessageRequest).continueWith(block: { (task: AWSTask!) -> Any? in
+                    if task.error != nil {
+                        if let error = task.error as NSError? {
+                            print("Error: \(error)")
+                        }
+                    } else {
+                        guard let response = task.result else {
+                            print("TODO: handle error")
+                            return nil
+                        }
+                        print(response)
+                    }
+                    return nil
+                })
+            }
         }
     }
 
