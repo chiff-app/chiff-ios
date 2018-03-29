@@ -10,6 +10,9 @@ class RequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabel()
+        if let notification = notification, let account = try! Account.get(siteID: notification.siteID), let session = session {
+            authorizeRequest(session: session, account: account, browserTab: notification.browserTab, type: notification.requestType)
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

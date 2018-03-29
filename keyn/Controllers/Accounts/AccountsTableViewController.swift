@@ -149,7 +149,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             unfilteredAccounts.append(account)
         }
 
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword3"))
     }
 
 }

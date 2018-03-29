@@ -112,7 +112,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
             try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
-            // Delete session from tableView @ devicesViewController
         } else {
             guard let siteID = response.notification.request.content.userInfo["siteID"] as? Int else {
                 completionHandler()
@@ -124,26 +123,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
 
             if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
+//                if response.actionIdentifier == "ACCEPT" {
+//                                    cancelAutoAuthentication()
+//                                    notificationUserInfo = [
+//                                        "sessionID": sessionID,
+//                                        "siteID": siteID,
+//                                        "accepted": "true"
+//                                    ]
+//
+//                    // Directly send password? Is this a security risk? Should be tested
+//                    if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
+//                        try! session.sendCredentials(account: account, browserTab: browserTab, type: browserMessageType)
+//                    }
+//                }
+
                 if response.actionIdentifier == "ACCEPT" {
-                    //                cancelAutoAuthentication()
-                    //                notificationUserInfo = [
-                    //                    "sessionID": sessionID,
-                    //                    "siteID": siteID,
-                    //                    "accepted": "true"
-                    //                ]
-
-                    // Directly send password? Is this a security risk? Should be tested
-                    if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-                        try! session.sendCredentials(account: account, browserTab: browserTab, type: browserMessageType)
-                    }
-                }
-
-                if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
                     // This should present request page --> Yes / NO. AUthentication after or before?
-                    cancelAutoAuthentication()
                     pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
                 }
             }
+
+            if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+                // This should present request page --> Yes / NO. AUthentication after or before?
+                cancelAutoAuthentication()
+                pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
+            }
+
         }
         completionHandler()
     }
@@ -196,6 +201,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
         self.window?.rootViewController = viewController
+
+        if  pushNotification != nil && !requestInProgress {
+            requestInProgress = true
+            launchRequestView(with: pushNotification!)
+            pushNotification = nil
+        }
     }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
@@ -218,11 +229,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        
-        // FOR TESTING PURPOSES
-        //deleteSessionKeys() // Uncomment if session keys should be cleaned before startup
-        //deletePasswords()   // Uncomment if passwords should be cleaned before startup
-        //deleteSeed()        // Uncomment if you want to force seed regeneration
     }
 
     private func handlePendingEndSessionNotifications() {
@@ -288,14 +294,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     private func registerForPushNotifications() {
         // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
-        let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
-                                                       title: "Accept",
-                                                       options: .authenticationRequired)
-        let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
-                                                       title: "Reject",
-                                                       options: .destructive)
+//        let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
+//                                                       title: "Accept",
+//                                                       options: UNNotificationActionOptions(rawValue: 0))
+//        let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
+//                                                       title: "Reject",
+//                                                       options: .destructive)
         let passwordRequestNotificationCategory = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
-                                                                         actions: [acceptRequestAction, rejectRequestAction],
+                                                                         actions: [],
                                                                          intentIdentifiers: [],
                                                                          options: .customDismissAction)
         let endSessionNotificationCategory = UNNotificationCategory(identifier: "END_SESSION",

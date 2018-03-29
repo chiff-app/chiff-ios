@@ -145,6 +145,17 @@ class Session: Codable {
     }
 
     static func deleteAll() {
+        do {
+            if let sessions = try Session.all() {
+                for session in sessions {
+                    try session.delete(includingQueue: true)
+                }
+            }
+        } catch {
+            print(error)
+        }
+
+        // To be sure
         Keychain.sharedInstance.deleteAll(service: browserService)
         Keychain.sharedInstance.deleteAll(service: appService)
     }
