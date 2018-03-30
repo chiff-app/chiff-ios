@@ -5,14 +5,13 @@ class RequestViewController: UIViewController {
 
     var notification: PushNotification?
     var session: Session?
+    var account: Account?
+    var site: Site?
     @IBOutlet weak var siteLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setLabel()
-        if let notification = notification, let account = try! Account.get(siteID: notification.siteID), let session = session {
-            authorizeRequest(session: session, account: account, browserTab: notification.browserTab, type: notification.requestType)
-        }
+        analyseRequest()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -20,8 +19,28 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func accept(_ sender: UIButton) {
-        if let notification = notification, let account = try! Account.get(siteID: notification.siteID), let session = session {
-            authorizeRequest(session: session, account: account, browserTab: notification.browserTab, type: notification.requestType)
+        if let notification = notification, let session = session {
+            switch notification.requestType {
+            case .login, .reset:
+                if let account = self.account {
+                    authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                        if (succes) {
+                            DispatchQueue.main.async {
+                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
+                                self!.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            print("TODO: Handle touchID errors.")
+                        }
+                    })
+                } else {
+                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                }
+            case .register:
+                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+            default:
+                print("Unknown requestType")
+            }
         }
     }
     
@@ -29,58 +48,69 @@ class RequestViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func authorizeRequest(session: Session, account: Account, browserTab: Int, type: BrowserMessageType) {
-        let authenticationContext = LAContext()
-        var error: NSError?
-
-        var localizedReason = ""
-        switch type {
-        case .login:
-            localizedReason = "Login to \(account.site.name)"
-        case .reset:
-            localizedReason = "Reset password for \(account.site.name)"
-        case .register:
-             localizedReason = "Register for \(account.site.name)"
-        default:
-            localizedReason = "\(account.site.name)"
-        }
-        
-        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            print("Todo: handle fingerprint absence \(String(describing: error))")
-            return
-        }
-        
-        authenticationContext.evaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: localizedReason,
-            reply: { [weak self] (success, error) -> Void in
-                if (success) {
-                    DispatchQueue.main.async {
-                        try! session.sendCredentials(account: account, browserTab: browserTab, type: type)
-                        self!.dismiss(animated: true, completion: nil)
-                    }
-                } else {
-                    print("Todo")
-                }
-            }
-        )
-    }
-
     // MARK: Private functions
 
-    private func setLabel() {
-        if let id = notification?.siteID, let type = notification?.requestType {
-            let site = Site.get(id: id)!
-            switch type {
-            case .login:
-                siteLabel.text = "Login to \(site.name)?"
-            case .reset:
-                siteLabel.text = "Reset password for \(site.name)?"
-            case .register:
-                siteLabel.text = "Register for \(site.name)?"
-            default:
-                siteLabel.text = ""
+    private func analyseRequest() {
+        if let notification = notification, let session = session {
+            site = Site.get(id: notification.siteID)
+            guard site != nil else {
+                siteLabel.text = "Unknown site"
+                return
+            }
+
+            do {
+                account = try Account.get(siteID: notification.siteID)
+                setLabel(requestType: notification.requestType)
+                if let account = self.account {
+                    // Automatically present the touchID popup
+                    //session: Session, account: Account, browserTab: Int, type: BrowserMessageType,
+                    authorizeRequest(site: site!, type: notification.requestType, completion: { [weak self] (succes, error) in
+                        if (succes) {
+                            DispatchQueue.main.async {
+                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
+                                self!.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            print("TODO: Handle touchID errors.")
+                        }
+                    })
+                }
+            } catch {
+                print("Error getting account: \(error)")
+            }
+        }
+    }
+
+    private func setLabel(requestType: BrowserMessageType) {
+        switch requestType {
+        case .login:
+            siteLabel.text = self.account != nil ? "Login to \(site!.name)?" : "Add \(site!.name)?"
+        case .reset:
+            siteLabel.text = "Reset password for \(site!.name)?"
+        case .register:
+            siteLabel.text = "Register for \(site!.name)?"
+        default:
+            siteLabel.text = ""
+        }
+    }
+
+
+    // MARK: - Navigation
+
+    @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
+        self.dismiss(animated: false, completion: nil)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "RegistrationRequestSegue" {
+            if let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
+                destinationController.site = site
+                destinationController.session = session
+                destinationController.notification = notification
             }
         }
     }
 }
+
+

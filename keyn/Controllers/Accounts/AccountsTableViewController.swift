@@ -105,16 +105,18 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
     }
 
+    func addAccount(account: Account) {
+        let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
+        unfilteredAccounts.append(account)
+        filteredAccounts = unfilteredAccounts
+        tableView.insertRows(at: [newIndexPath], with: .automatic)
+    }
+
     //MARK: Actions
     
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
-            
-            let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
-            
-            unfilteredAccounts.append(account)
-            filteredAccounts = unfilteredAccounts
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            addAccount(account: account)
         } else if let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
             if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
                 return account.id == unfilteredAccount.id
