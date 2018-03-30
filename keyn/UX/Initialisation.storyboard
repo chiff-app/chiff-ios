@@ -459,7 +459,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DVf-9c-q0h">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="740"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="760"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="diW-j3-j1S">
                                                 <rect key="frame" x="35" y="100" width="250" height="445"/>
@@ -593,7 +593,7 @@
                                             <constraint firstItem="nk6-TU-eK2" firstAttribute="width" secondItem="diW-j3-j1S" secondAttribute="width" id="MW6-4b-8QE"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="diW-j3-j1S" secondAttribute="bottom" constant="195" id="NXU-er-fS1"/>
                                             <constraint firstItem="nk6-TU-eK2" firstAttribute="top" secondItem="DVf-9c-q0h" secondAttribute="top" constant="30" id="SBM-JH-dS7"/>
-                                            <constraint firstAttribute="height" constant="740" id="VkW-ow-mj9"/>
+                                            <constraint firstAttribute="height" constant="760" id="VkW-ow-mj9"/>
                                             <constraint firstItem="nk6-TU-eK2" firstAttribute="centerX" secondItem="DVf-9c-q0h" secondAttribute="centerX" id="k2s-nq-uQd"/>
                                             <constraint firstItem="diW-j3-j1S" firstAttribute="leading" secondItem="DVf-9c-q0h" secondAttribute="leading" constant="35" id="kOg-f3-MB5"/>
                                             <constraint firstAttribute="trailing" secondItem="diW-j3-j1S" secondAttribute="trailing" constant="35" id="rMr-lE-K73"/>

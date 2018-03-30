@@ -30,10 +30,11 @@ class PasswordGenerationTests: XCTestCase {
         let randomIndex = Int(arc4random_uniform(100000000))
         let randomUsername = "TestUsername"
         do {
-            let randomPassword = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, offset: nil)
-            let offset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, password: randomPassword)
-            let calculatedPassword = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+            let (randomPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, offset: nil)
+            let offset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, password: randomPassword)
+            let (calculatedPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, offset: offset)
             XCTAssertEqual(randomPassword, calculatedPassword)
+            XCTAssertEqual(index, newIndex)
         } catch {
 
         }
@@ -41,53 +42,57 @@ class PasswordGenerationTests: XCTestCase {
 
     func testPasswordLength() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: longPassword, for: ppd))
+        XCTAssertFalse(validator.validate(password: longPassword))
 
         let shortPassword = "Sh0rt*r" // 7 characters
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: shortPassword, for: ppd))
+        XCTAssertFalse(validator.validate(password: shortPassword))
     }
 
     func testUnallowedCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "Ver8aspdi€sd8na", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Ver8aspdisd8na", for: ppd))
+        XCTAssertFalse(validator.validate(password: "Ver8aspdi€sd8na"))
+        XCTAssertTrue(validator.validate(password: "Ver8aspdisd8na"))
     }
 
 
     func testSameConsecutiveCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: 3, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
         let password = "sod8na9p8d7snaaaa" // 4 consecutive characters
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: password, for: ppd))
+        XCTAssertFalse(validator.validate(password: password))
 
         let password1 = "sod8na)))9p8d7sn" // 3 consecutive characters
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: password1, for: ppd))
+        XCTAssertTrue(validator.validate(password: password1))
     }
 
     func testNoConsecutiveCharacterRestriction() {
         let ppd = TestHelper.examplePPD(maxConsecutive: 0, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
         let password = "sod8na9p8d7snaaaa" // 4 consecutive characters
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: password, for: ppd))
+        XCTAssertTrue(validator.validate(password: password))
 
         let ppd2 = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator2 = PasswordValidator(ppd: ppd2)
 
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: password, for: ppd2))
+        XCTAssertTrue(validator2.validate(password: password))
     }
 
     func testOrderedConsecutiveCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: 3, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
         let password = "sod8na9p8d7snabcd" // 4 consecutive characters abcd
-        XCTAssertFalse(PasswordGenerator.sharedInstance.checkConsecutiveCharactersOrder(password: password, characters: commonCharacters, maxConsecutive: 3))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: password, for: ppd))
+        XCTAssertFalse(validator.validate(password: password))
 
         let password1 = "sod8na0129p8d7sn" // 3 consecutive characters: 012
-        XCTAssertTrue(PasswordGenerator.sharedInstance.checkConsecutiveCharactersOrder(password: password1, characters: commonCharacters, maxConsecutive: 3))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: password1, for: ppd))
+        XCTAssertTrue(validator.validate(password: password1))
     }
 
     func testCharacterSetProperties() {
@@ -98,20 +103,23 @@ class PasswordGenerationTests: XCTestCase {
         characterSetSettings.append(PPDCharacterSetSettings(minOccurs: 1, maxOccurs: 2, name: "Specials")) // 1 or 2 special characters
 
         let ppd = TestHelper.examplePPD(maxConsecutive: 0, minLength: 8, maxLength: 32, characterSetSettings: characterSetSettings, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpudfjkad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpuhfjkad.", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "asdpuHfjkad.", for: ppd))
+        ppd.export()
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "ONLYCAPITALS", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "ONL^YCAPITALS", for: ppd))
+        XCTAssertFalse(validator.validate(password: "asdpudfjkad"))
+        XCTAssertFalse(validator.validate(password: "asdpuhfjkad."))
+        XCTAssertTrue(validator.validate(password: "asdpuHfjkad."))
 
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "asdpSd01)fjkad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "a4sdp5Sd0)fj1kad", for: ppd))
+        XCTAssertFalse(validator.validate(password: "ONLYCAPITALS"))
+        XCTAssertTrue(validator.validate(password: "ONL^YCAPITALS"))
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpuHfjkad", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "asdSu12fjk$%ad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdS#u12fjk$%ad", for: ppd))
+        XCTAssertTrue(validator.validate(password: "asdpSd01)fjkad"))
+        XCTAssertFalse(validator.validate(password: "a4sdp5Sd0)fj1kad"))
+
+        XCTAssertFalse(validator.validate(password: "asdpuHfjkad"))
+        XCTAssertTrue(validator.validate(password: "asdSu12fjk$%ad"))
+        XCTAssertFalse(validator.validate(password: "asdS#u12fjk$%ad"))
     }
 
     func testPositionRestrictions() {
@@ -122,19 +130,20 @@ class PasswordGenerationTests: XCTestCase {
         positionRestrictions.append(PPDPositionRestriction(positions: "0.5", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")) // There should be lower letters on position 0.5
         positionRestrictions.append(PPDPositionRestriction(positions: "1,-3,2", maxOccurs: 2, characterSet: "Specials")) // There should be no more than 2 specials on positions 1, -3 and 2
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpudfjkad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpuhfjkad45", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpughyfjkad45", for: ppd))
+        XCTAssertFalse(validator.validate(password: "asdpudfjkad"))
+        XCTAssertFalse(validator.validate(password: "asdpuhfjkad45"))
+        XCTAssertTrue(validator.validate(password: "Asdpughyfjkad45"))
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "Osaydnaoiudsu4", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "O&saydnaoiuds(49", for: ppd))
+        XCTAssertFalse(validator.validate(password: "Osaydnaoiudsu4"))
+        XCTAssertTrue(validator.validate(password: "O&saydnaoiuds(49"))
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "Osay0387103dsu4", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Osaydnaoiudsu(49", for: ppd))
+        XCTAssertFalse(validator.validate(password: "Osay0387103dsu4"))
+        XCTAssertTrue(validator.validate(password: "Osaydnaoiudsu(49"))
 
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&sdSufgfjkad^54", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sdSughfjkad#68", for: ppd))
+        XCTAssertTrue(validator.validate(password: "A&sdSufgfjkad^54"))
+        XCTAssertFalse(validator.validate(password: "A&*sdSughfjkad#68"))
     }
 
     func testRequirementGroups() {
@@ -152,17 +161,19 @@ class PasswordGenerationTests: XCTestCase {
         requirementGroups.append(PPDRequirementGroup(minRules: 2, requirementRules: [rule3, rule4, rule5]))
 
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: requirementGroups)
+        let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "asdpudfjkad", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "asdpuhfjkad45", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpuhfjkad", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "Asdpughyfjkad45", for: ppd))
 
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sd^*&^*%ad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*sd^*&^*aad", for: ppd))
-        XCTAssertFalse(PasswordGenerator.sharedInstance.validate(password: "A&*skashdjk*%ad", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&*sd^3*&^*aad", for: ppd))
-        XCTAssertTrue(PasswordGenerator.sharedInstance.validate(password: "A&skashdjk*%ad", for: ppd))
+        XCTAssertFalse(validator.validate(password: "asdpudfjkad"))
+        XCTAssertTrue(validator.validate(password: "asdpuhfjkad45"))
+        XCTAssertTrue(validator.validate(password: "Asdpuhfjkad"))
+        XCTAssertTrue(validator.validate(password: "Asdpughyfjkad45"))
+
+        XCTAssertFalse(validator.validate(password: "A&*sd^*&^*%ad"))
+        XCTAssertFalse(validator.validate(password: "A&*sd^*&^*aad"))
+        XCTAssertFalse(validator.validate(password: "A&*skashdjk*%ad"))
+        XCTAssertTrue(validator.validate(password: "A&*sd^3*&^*aad"))
+        XCTAssertTrue(validator.validate(password: "A&skashdjk*%ad"))
 
     }
 
