@@ -181,7 +181,10 @@ enum BrowserMessageType: Int, Codable {
     case pair
     case login
     case register
+    case change
     case reset
+    case add
+    case addAndChange
     case end
 }
 

@@ -24,6 +24,7 @@
 		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
 		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
 		491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C485A2024AB2F00397071 /* AuthenticationViewController.swift */; };
+		491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -151,6 +152,7 @@
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
+		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				4919DAF1201261FE0048B060 /* RequestViewController.swift */,
+				491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -878,6 +881,7 @@
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
+				491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,

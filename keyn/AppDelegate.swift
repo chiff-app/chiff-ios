@@ -63,7 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler([])
             return
         }
-
         if browserMessageType == .end {
             // TODO: If errors are thrown here, they should be logged.
             try? Session.getSession(id: sessionID)?.delete(includingQueue: false)

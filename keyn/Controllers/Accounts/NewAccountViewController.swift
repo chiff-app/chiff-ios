@@ -80,6 +80,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     
     @IBAction func customPasswordSwitch(_ sender: UISwitch) {
         let passwordRowIndex = IndexPath(row: 3, section: 0)
+        let usernameRowIndex = IndexPath(row: 2, section: 0)
         if sender.isOn {
             customPassword = true
             userPasswordTextField.isEnabled = true
@@ -92,8 +93,10 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             tableView.reloadRows(at: [passwordRowIndex], with: .bottom)
             tableView.reloadSections([1], with: .fade)
             tableView.reloadData()
+            tableView.cellForRow(at: usernameRowIndex)?.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         } else {
             customPassword = false
+            tableView.cellForRow(at: usernameRowIndex)?.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             tableView.reloadRows(at: [passwordRowIndex], with: .top)
             tableView.reloadSections([1], with: .fade)
             tableView.reloadData()
