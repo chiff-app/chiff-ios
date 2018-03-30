@@ -17,6 +17,17 @@ struct PPD: Codable {
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String?
+
+    func export() {
+        do {
+            let jsonData = try JSONEncoder().encode(self)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print(jsonString)
+            }
+        } catch {
+            print("PPD could not be written: \(error)")
+        }
+    }
 }
 
 struct PPDCharacterSet: Codable {
