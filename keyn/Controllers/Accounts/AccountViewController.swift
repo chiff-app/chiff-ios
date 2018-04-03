@@ -52,6 +52,12 @@ class AccountViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            copyPassword(indexPath)
+        }
+    }
+
 
     // MARK: Private methods
     
@@ -70,6 +76,29 @@ class AccountViewController: UITableViewController {
                 target: showPasswordHUD,
                 action: #selector(showPasswordHUD.hide(animated:)))
         )
+    }
+
+    private func copyPassword(_ indexPath: IndexPath) {
+
+        guard let passwordCell = tableView.cellForRow(at: indexPath) else {
+            return
+        }
+
+        let pasteBoard = UIPasteboard.general
+        pasteBoard.string = userPasswordTextField.text
+
+        let copiedLabel = UILabel(frame: passwordCell.bounds)
+        copiedLabel.text = "Copied"
+        copiedLabel.font = copiedLabel.font.withSize(18)
+        copiedLabel.textAlignment = .center
+        copiedLabel.textColor = .white
+        copiedLabel.backgroundColor = UIColor(displayP3Red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
+
+        passwordCell.addSubview(copiedLabel)
+
+        UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
+            copiedLabel.alpha = 0.0
+        }) { if $0 { copiedLabel.removeFromSuperview() } }
     }
 
 }
