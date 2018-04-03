@@ -77,6 +77,10 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
         }
         return 44
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Override copy functionality
+    }
     
     @IBAction func customPasswordSwitch(_ sender: UISwitch) {
         let passwordRowIndex = IndexPath(row: 3, section: 0)

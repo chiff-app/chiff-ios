@@ -38,7 +38,11 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Override copy functionality
+    }
 
+    
     // MARK: UITextFieldDelegate
 
     // Hide the keyboard.
