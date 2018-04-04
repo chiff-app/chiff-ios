@@ -22,12 +22,10 @@ struct Site: Codable {
         sampleSites.append(Site(name: "Github", id: 4, urls: ["https://github.com/login"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "DigitalOcean", id: 5, urls: ["https://digitalocean.com/login"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "DigitalOcean", id: 6, urls: ["https://complicatedExample.com"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "AppleId", id: 7, urls: ["https://appleid.apple.com/"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Netflix", id: 8, urls: ["https://www.netflix.com/"], ppd: getSamplePPD(id: id)))
 
-        if id >= sampleSites.count {
-            return nil
-        } else {
-            return sampleSites[id]
-        }
+        return sampleSites[id]
     }
 
     private static func getSamplePPD(id: Int) -> PPD? {

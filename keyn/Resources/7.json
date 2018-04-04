@@ -1,0 +1,164 @@
+{
+    "characterSets": [{
+        "base": [],
+        "characters": "ABCDEFGHIJKLMNOPQRSTUVQXYZ",
+        "name": "Uppercase"
+    }, {
+        "base": [],
+        "characters": "abcdefghijklmnopqrstuvwxyz",
+        "name": "Lowercase"
+    }, {
+        "base": [],
+        "characters": "0123456789",
+        "name": "Numbers"
+    }, {
+        "base": [],
+        "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
+        "name": "Letters"
+    }],
+    "properties": {
+        "characterSettings": {
+            "characterSetSettings": [{
+                "minOccurs": 1,
+                "maxOccurs": null,
+                "name": "Uppercase"
+            }, {
+                "minOccurs": 1,
+                "maxOccurs": null,
+                "name": "Lowercase"
+            }, {
+                "minOccurs": 1,
+                "maxOccurs": null,
+                "name": "Numbers"
+            }, {
+                "minOccurs": null,
+                "maxOccurs": null,
+                "name": "Letters"
+            }],
+            "requirementGroups": [],
+            "positionRestrictions": []
+        },
+        "maxConsecutive": 2,
+        "minLength": 8,
+        "maxLength": null,
+        "expires": null
+    },
+    "version": null,
+    "timestamp": null,
+    "url": "https://appleid.apple.com/",
+    "redirect": null,
+    "name": null,
+    "service": {
+        "login": {
+            "url": "https://appleid.apple.com/",
+            "maxTries": 3,
+            "routines": [{
+                    "type": "extendedJSLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://appleid.apple.com/",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://appleid.apple.com/#!&page=signin"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "THERE IS NO FORM TAG"
+                            },
+                            "element": [{
+                                    "selector": {
+                                        "value": "#appleId"
+                                    },
+                                    "value": "{{username}}"
+                                },
+                                {
+                                    "selector": {
+                                        "value": "#pwd"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": "span.account-name",
+                                    "minOccurs": 1
+                                }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "javascript",
+                    "script": "var button = document.getElementById(\"sign-in\");button.click();"
+                }
+            ]
+        },
+        "register": {
+            "url": "https://appleid.apple.com"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "extendedJSPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.linkedin.com/psettings/change-password",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.linkedin.com/psettings/change-password"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#setting-change-password-content > form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#cp-current-pw"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#cp-new-pw"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#cp-repeat-pw"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "div.success",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "var button = document.querySelector(\"#save-new-password\");button.disabled=false;button.click();"
+                    }
+                ],
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.linkedin.com/uas/request-password-reset?trk=uno-reg-guest-home-forgot-password",
+            "maxTries": null,
+            "routines": null
+        }
+    }
+}
