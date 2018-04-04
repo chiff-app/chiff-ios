@@ -89,6 +89,8 @@ extension UIViewController  {
         switch type {
         case .add, .addAndChange:
             localizedReason = "Add \(site.name)"
+        case .change:
+            localizedReason = "Change password for \(site.name)"
         case .login:
             localizedReason = "Login to \(site.name)"
         case .reset:
