@@ -713,7 +713,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mcx-bo-yz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2372" y="-1585"/>
+            <point key="canvasLocation" x="2371" y="-1787"/>
         </scene>
         <!--Devices-->
         <scene sceneID="eQc-NM-rWF">
@@ -943,6 +943,30 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Alpha-test" footerTitle="Use this form to provide feedback :)" id="tCP-yx-ohN">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="KLj-dJ-Zfx" style="IBUITableViewCellStyleDefault" id="dSn-id-Ull">
+                                        <rect key="frame" x="0.0" y="370.66666666666669" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dSn-id-Ull" id="H7M-wl-DFI">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Feedback form" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KLj-dJ-Zfx">
+                                                    <rect key="frame" x="16" y="0.0" width="324" height="43.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Tsr-Ep-FMV" kind="show" id="KWt-hl-Es4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="dcO-2k-qG2" id="wER-7P-7af"/>
@@ -1014,6 +1038,59 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ez-l5-F9q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2596" y="792"/>
+        </scene>
+        <!--Feedback-->
+        <scene sceneID="Pdd-sj-TAu">
+            <objects>
+                <viewController id="Tsr-Ep-FMV" customClass="FeedbackViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Ui-ap-R7C">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BXV-cG-Utc">
+                                <rect key="frame" x="20" y="210" width="335" height="499"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Hallo!
+
+Leuke app hoor, maar..</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Naam" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="skh-C2-3qN">
+                                <rect key="frame" x="20" y="160" width="335" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="e4K-AZ-VaB" firstAttribute="trailing" secondItem="BXV-cG-Utc" secondAttribute="trailing" constant="20" id="8RM-Ee-OZL"/>
+                            <constraint firstItem="skh-C2-3qN" firstAttribute="top" secondItem="e4K-AZ-VaB" secondAttribute="top" constant="20" id="Gyn-XE-Frt"/>
+                            <constraint firstItem="BXV-cG-Utc" firstAttribute="top" secondItem="skh-C2-3qN" secondAttribute="bottom" constant="20" id="UB6-bl-prO"/>
+                            <constraint firstItem="e4K-AZ-VaB" firstAttribute="bottom" secondItem="BXV-cG-Utc" secondAttribute="bottom" constant="20" id="ZEJ-ax-58l"/>
+                            <constraint firstItem="skh-C2-3qN" firstAttribute="leading" secondItem="BXV-cG-Utc" secondAttribute="leading" id="eF0-db-Hme"/>
+                            <constraint firstItem="BXV-cG-Utc" firstAttribute="leading" secondItem="e4K-AZ-VaB" secondAttribute="leading" constant="20" id="jwk-tX-T8O"/>
+                            <constraint firstItem="skh-C2-3qN" firstAttribute="trailing" secondItem="BXV-cG-Utc" secondAttribute="trailing" id="s0s-8M-g7x"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="e4K-AZ-VaB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Feedback" id="dBS-SZ-HGM">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send!" id="Jv6-6U-WVf">
+                            <connections>
+                                <action selector="sendFeedback:" destination="Tsr-Ep-FMV" id="M6e-97-ORp"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nameTextField" destination="skh-C2-3qN" id="I6w-tK-CGi"/>
+                        <outlet property="sendButton" destination="Jv6-6U-WVf" id="p0o-F9-hDi"/>
+                        <outlet property="textView" destination="BXV-cG-Utc" id="QeC-mC-AL9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="joH-JE-z6J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3564" y="790.64039408866995"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="h3l-ar-Mlo">
