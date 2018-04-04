@@ -21,7 +21,7 @@ class RequestViewController: UIViewController {
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session {
             switch notification.requestType {
-            case .login, .reset:
+            case .login, .change:
                 if let account = self.account {
                     authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
@@ -57,7 +57,6 @@ class RequestViewController: UIViewController {
                 siteLabel.text = "Unknown site"
                 return
             }
-
             do {
                 account = try Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
@@ -85,6 +84,8 @@ class RequestViewController: UIViewController {
         switch requestType {
         case .login:
             siteLabel.text = self.account != nil ? "Login to \(site!.name)?" : "Add \(site!.name)?"
+        case .change:
+            siteLabel.text = "Change password for \(site!.name)?"
         case .reset:
             siteLabel.text = "Reset password for \(site!.name)?"
         case .register:

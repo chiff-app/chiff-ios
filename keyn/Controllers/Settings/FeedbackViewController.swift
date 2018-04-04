@@ -57,9 +57,12 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         // Data
         let debugLogUser = nameTextField.text ?? "Anonymous"
         let message = "userFeedback"
-        guard let context = textView.text else {
+        guard let userFeedback = textView.text else {
             return
         }
+        var context = ""
+        context += userFeedback
+        context += "\n\n"
         let postString = "user=\(debugLogUser)&message=\(message)&context=\(context)"
 
         // Request
