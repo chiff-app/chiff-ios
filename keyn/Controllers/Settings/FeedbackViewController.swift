@@ -62,7 +62,8 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         }
         var context = ""
         context += userFeedback
-        context += "\n\n"
+        context += "Type=\(UIDevice.current.model)."
+        context += "iOSVersion=\(UIDevice.current.systemVersion)."
         let postString = "user=\(debugLogUser)&message=\(message)&context=\(context)"
 
         // Request
