@@ -1,47 +1,45 @@
 {
-    "characterSets": [
-      {
-        "base": [],
-        "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
-        "name": "Letters"
-      },
-      {
-        "base": [],
-        "characters": "0123456789",
-        "name": "Numbers"
-      },
-      {
-        "base": [],
-        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
-        "name": "Specials"
-      }
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
+            "name": "Letters"
+        },
+        {
+            "base": [],
+            "characters": "0123456789",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "name": "Specials"
+        }
     ],
     "properties": {
-      "characterSettings": {
-        "characterSetSettings": [
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Letters"
-          },
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Numbers"
-          },
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Specials"
-          }
-        ],
-        "requirementGroups": [],
-        "positionRestrictions": []
-      },
-      "maxConsecutive": null,
-      "minLength": 8,
-      "maxLength": null,
-      "expires": null
+        "characterSettings": {
+            "characterSetSettings": [{
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Letters"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Numbers"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Specials"
+                }
+            ],
+            "requirementGroups": [],
+            "positionRestrictions": []
+        },
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": null,
+        "expires": null
     },
     "version": null,
     "timestamp": null,
@@ -49,117 +47,101 @@
     "redirect": null,
     "name": "Marktplaats",
     "service": {
-      "login": {
-        "url": "https://www.marktplaats.nl/account/login.html",
-        "maxTries": 3,
-        "routines": [
-          {
-            "type": "htmlLoginRoutine",
-            "instructions": [
-              {
-                "type": "get",
-                "url": "https://www.marktplaats.nl/account/login.html",
-                "assert": {
-                  "assertions": [
+        "login": {
+            "url": "https://www.marktplaats.nl/account/login.html",
+            "maxTries": 3,
+            "routines": [{
+                "type": "htmlLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.marktplaats.nl/account/login.html",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.marktplaats.nl/account/login.html"
+                            }]
+                        }
+                    },
                     {
-                      "expression": null,
-                      "prefix": "https://www.marktplaats.nl/account/login.html"
+                        "type": "form",
+                        "selector": {
+                            "value": "#account-login-form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#account-login-form > fieldset > div > div:nth-child(1) > input"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "#userMenu",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
                     }
-                  ]
-                }
-              },
-              {
-                "type": "form",
-                "selector": {
-                  "value": "#account-login-form"
-                },
-                "element": [
-                  {
-                    "selector": {
-                      "value": "#account-login-form > fieldset > div > div:nth-child(1) > input"
+                ]
+            }]
+        },
+        "register": {
+            "url": "https://www.marktplaats.nl/account/createAccount.html"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "htmlPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.marktplaats.nl/account/wachtwoordinstellen.html",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.marktplaats.nl/account/wachtwoordinstellen.html"
+                            }]
+                        }
                     },
-                    "value": "{{username}}"
-                  },
-                  {
-                    "selector": {
-                      "value": "#password"
-                    },
-                    "value": "{{password}}"
-                  }
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#new-password-form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#new-password"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#passwordConfirm"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.marktplaats.nl"
+                            }]
+                        }
+                    }
                 ],
-                "assert": {
-                  "assertions": [
-                    {
-                      "selector": "#userMenu",
-                      "minOccurs": 1,
-                      "maxOccurs": 1
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "register": {
-        "url": "https://www.marktplaats.nl/account/createAccount.html"
-      },
-      "passwordChange": {
-        "url": null,
-        "maxTries": null,
-        "routines": [
-          {
-            "type": "htmlPasswordChangeRoutine",
-            "instructions": [
-              {
-                "type": "get",
-                "url": "https://www.marktplaats.nl/account/wachtwoordinstellen.html",
-                "assert": {
-                  "assertions": [
-                    {
-                      "expression": null,
-                      "prefix": "https://www.marktplaats.nl/account/wachtwoordinstellen.html"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "form",
-                "selector": {
-                  "value": "#edit-email-form"
-                },
-                "element": [
-                  {
-                    "selector": {
-                      "value": "#new-password"
-                    },
-                    "value": "{{newPassword}}"
-                  },
-                  {
-                    "selector": {
-                      "value": "#passwordConfirm"
-                    },
-                    "value": "{{newPassword}}"
-                  }
-                ],
-                "assert": {
-                  "assertions": [
-                    {
-                      "expression": null,
-                      "prefix": "https://www.marktplaats.nl"
-                    }
-                  ]
-                }
-              }
-            ],
-            "login": "htmlLoginRoutine"
-          }
-        ]
-      },
-      "passwordReset": {
-        "url": "https://www.marktplaats.nl/account/wachtwoordvergeten.html",
-        "maxTries": null,
-        "routines": null
-      }
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.marktplaats.nl/account/wachtwoordvergeten.html",
+            "maxTries": null,
+            "routines": null
+        }
     }
-  }
+}
