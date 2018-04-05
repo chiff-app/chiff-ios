@@ -1,0 +1,194 @@
+{
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyz",
+            "name": "LowerLetters"
+        },
+        {
+            "base": [],
+            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "UpperLetters"
+        },
+        {
+            "base": [],
+            "characters": "1234567890",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+            "name": "Specials"
+        }
+    ],
+    "properties": {
+        "characterSettings": {
+            "characterSetSettings": [],
+            "requirementGroups": [{
+                "requirementRules": [{
+                        "characterSet": "Specials",
+                        "minOccurs": 1
+                    },
+                    {
+                        "characterSet": "Numbers",
+                        "minOccurs": 1
+                    }
+                ],
+                "minRules": 1
+            }]
+        },
+        "maxConsecutive": null,
+        "minLength": 6,
+        "maxLength": null,
+        "expires": null
+    },
+    "version": null,
+    "timestamp": null,
+    "url": "https://www.reddit.com",
+    "redirect": null,
+    "name": "Reddit",
+    "service": {
+        "login": {
+            "url": "https://www.coolblue.nl",
+            "maxTries": 3,
+            "routines": [{
+                "type": "htmlLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.coolblue.nl",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.coolblue.nl"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "body > div.coolblue-bar.sticky-header--bar.js-sticky-header-bar > div > div.coolblue-bar--navigation > ul > li.coolbar-navigation--item.coolbar-navigation--item-drop-down.js-coolbar-navigation-item.coolbar-navigation--item-login > div > div:nth-child(1) > div:nth-child(4) > form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#header_menu_emailaddress"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#header_menu_password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": ".profile-button",
+                                "minOccurs": 1,
+                                "maxOccurs": null
+                            }]
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "htmlLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.coolblue.nl/inloggen",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.coolblue.nl/inloggen"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#layout_wrapper > div > div.layout-content.js-layout-content > div > div > div > div > div.grid-unit-xs--col-12.grid-unit-m--col-6.border-right--m > div.login-page__section.js-login-page-password-forgotten > div:nth-child(4) > form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#login_page_emailaddress"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#login_page_password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": ".profile-button",
+                                "minOccurs": 1,
+                                "maxOccurs": null
+                            }]
+                        }
+                    }
+                ]
+            }]
+        },
+        "register": {
+            "url": "https://www.coolblue.nl/registreren"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "htmlPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.coolblue.nl/mijn-coolblue-account/gegevens/inloggegevens-wijzigen",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.coolblue.nl/mijn-coolblue-account/gegevens/inloggegevens-wijzigen"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#layout_wrapper > div > div.layout-content.js-layout-content > div > div > div.grid-unit-xs--col-12.grid-unit-l--col-9 > form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#password"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#newPassword"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#confirmPassword"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "TODO",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
+                    }
+                ],
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.coolblue.nl/wachtwoordvergeten",
+            "maxTries": null,
+            "routines": null
+        }
+    }
+}
