@@ -1,0 +1,142 @@
+{
+    "characterSets": [
+        {
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "Letters"
+        },
+        {
+            "base": [],
+            "characters": "0123456789",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+            "name": "Specials"
+        }
+    ],
+    "properties": {
+        "minLength": 8,
+        "expires": 0,
+        "characterSettings": {
+            "characterSetSettings": [
+                {
+                    "name": "Letters",
+                    "minOccurs": 1
+                }
+            ]
+        },
+        "maxConsecutive": 3,
+        "maxLength": 15
+    },
+    "timestamp": null,
+    "url": "https://www.mediamarkt.nl",
+    "name": "Mediamarkt",
+    "version": "1.0",
+    "service": {
+        "login": {
+            "url": "https://www.mediamarkt.nl/",
+            "maxTries": 3,
+            "routines": [{
+                "type": "htmlLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#login-form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#login-email"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#login-password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": ".profile-button",
+                                "minOccurs": 1,
+                                "maxOccurs": null
+                            }]
+                        }
+                    }
+                ]
+            }]
+        },
+        "register": {
+            "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMARegister"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "htmlPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#change-password-form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#current-password"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#new-password"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#new-password-confirm"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "TODO",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
+                    }
+                ],
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.coolblue.nl/wachtwoordvergeten",
+            "maxTries": null,
+            "routines": null
+        }
+    }
+}
