@@ -18,12 +18,13 @@ struct Site: Codable {
         sampleSites.append(Site(name: "LinkedIn", id: 0, urls: ["https://www.linkedin.com"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "Gmail", id: 1, urls: ["google.com", "accounts.google.com"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "ProtonMail", id: 2, urls: ["https://mail.protonmail.com/login"], ppd: getSamplePPD(id: id)))
-        sampleSites.append(Site(name: "University of London", id: 3, urls: ["https://my.londoninternational.ac.uk/login"], ppd: getSamplePPD(id: id)))
-        sampleSites.append(Site(name: "Github", id: 4, urls: ["https://github.com/login"], ppd: getSamplePPD(id: id)))
-        sampleSites.append(Site(name: "DigitalOcean", id: 5, urls: ["https://digitalocean.com/login"], ppd: getSamplePPD(id: id)))
-        sampleSites.append(Site(name: "DigitalOcean", id: 6, urls: ["https://complicatedExample.com"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Twitter", id: 3, urls: ["https://twitter.com/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Marktplaats", id: 4, urls: ["https://marktplaats.nl/login"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Instagram", id: 5, urls: ["https://www.instagram.com"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "BOL.com", id: 6, urls: ["https://bol.com"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "AppleId", id: 7, urls: ["https://appleid.apple.com/"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "Netflix", id: 8, urls: ["https://www.netflix.com/"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Reddit", id: 9, urls: ["https://www.reddit.com/"], ppd: getSamplePPD(id: id)))
 
         return sampleSites[id]
     }

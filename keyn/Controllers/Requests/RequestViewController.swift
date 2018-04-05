@@ -85,13 +85,13 @@ class RequestViewController: UIViewController {
         case .login:
             siteLabel.text = self.account != nil ? "Login to \(site!.name)?" : "Add \(site!.name)?"
         case .change:
-            siteLabel.text = "Change password for \(site!.name)?"
+            siteLabel.text = self.account != nil ? "Change password for \(site!.name)?" : "Add \(site!.name)?"
         case .reset:
             siteLabel.text = "Reset password for \(site!.name)?"
         case .register:
             siteLabel.text = "Register for \(site!.name)?"
         default:
-            siteLabel.text = ""
+            siteLabel.text = "Request error :("
         }
     }
 
