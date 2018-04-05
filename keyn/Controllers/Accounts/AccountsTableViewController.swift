@@ -28,14 +28,14 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         self.definesPresentationContext = true
         navigationItem.searchController = searchController
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let navigationView = navigationController?.view {
             fixShadowImage(inView: navigationView)
         }
     }
-    
+
     // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
     func fixShadowImage(inView view: UIView) {
         if let imageView = view as? UIImageView {
@@ -54,7 +54,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             fixShadowImage(inView: subview)
         }
     }
-    
+
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
@@ -89,7 +89,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         return cell
     }
-    
+
 
     // MARK: - Navigation
 
@@ -142,7 +142,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
         sampleSites.append(Site.get(id: 1)!)
         sampleSites.append(Site.get(id: 2)!)
-        sampleSites.append(Site.get(id: 3)!)
         sampleSites.append(Site.get(id: 4)!)
         sampleSites.append(Site.get(id: 5)!)
 
@@ -151,10 +150,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             unfilteredAccounts.append(account)
         }
 
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword3"))
-        unfilteredAccounts.append(try! Account(username: "apple@frankevers.nl", site: Site.get(id: 7)!, password: "REDACTED"))
-        unfilteredAccounts.append(try! Account(username: "thomas.bastet@gmail.com", site: Site.get(id: 8)!, password: "REDACTED"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword1"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 3)!, password: "ExampleCustomPassword1"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 6)!, password: "ExampleCustomPassword1"))
+        //unfilteredAccounts.append(try! Account(username: "apple@frankevers.nl", site: Site.get(id: 7)!, password: "REDACTED"))
+        //unfilteredAccounts.append(try! Account(username: "thomas.bastet@gmail.com", site: Site.get(id: 8)!, password: "REDACTED"))
     }
 
 }
-

@@ -16,22 +16,302 @@
       "name": "Numbers"
     },
     {
-    "base": [],
-    "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
-    "name": "Specials"
+      "base": [],
+      "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+      "name": "Specials"
     }
   ],
   "properties": {
-    "characterSettings": null,
+    "characterSettings": {
+      "characterSetSettings": [],
+      "requirementGroups": [
+        {
+          "requirementRules": [
+            {
+              "characterSet": "Specials",
+              "minOccurs": 1
+            },
+            {
+              "characterSet": "Numbers",
+              "minOccurs": 1
+            }
+          ],
+          "minRules": 1
+        }
+      ]
+    },
     "maxConsecutive": null,
     "minLength": 8,
     "maxLength": 32,
     "expires": null
   },
-  "service": null,
   "version": null,
   "timestamp": null,
   "url": "https://www.linkedin.com",
   "redirect": null,
-  "name": "LinkedIn"
+  "name": "LinkedIn",
+  "service": {
+    "login": {
+      "url": "https://www.linkedin.com",
+      "maxTries": 3,
+      "routines": [
+        {
+          "type": "htmlLoginRoutine",
+          "instructions": [
+            {
+              "type": "get",
+              "url": "https://www.linkedin.com/",
+              "assert": {
+                "assertions": [
+                  {
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "form",
+              "selector": {
+                "value": "#layout-main > div > div.header > div > form"
+              },
+              "element": [
+                {
+                  "selector": {
+                    "value": "#login-email"
+                  },
+                  "value": "{{username}}"
+                },
+                {
+                  "selector": {
+                    "value": "#login-password"
+                  },
+                  "value": "{{password}}"
+                }
+              ],
+              "assert": {
+                "assertions": [
+                  {
+                    "selector": "#userMenu",
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "htmlLoginRoutine",
+          "instructions": [
+            {
+              "type": "get",
+              "url": "https://www.linkedin.com/uas/login",
+              "assert": {
+                "assertions": [
+                  {
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/uas/login"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "form",
+              "selector": {
+                "value": "#login"
+              },
+              "element": [
+                {
+                  "selector": {
+                    "value": "#session_key-login"
+                  },
+                  "value": "{{username}}"
+                },
+                {
+                  "selector": {
+                    "value": "#session_password-login"
+                  },
+                  "value": "{{password}}"
+                }
+              ],
+              "assert": {
+                "assertions": [
+                  {
+                    "selector": "#userMenu",
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "htmlLoginRoutine",
+          "instructions": [
+            {
+              "type": "get",
+              "url": "https://www.linkedin.com/uas/login-submit",
+              "assert": {
+                "assertions": [
+                  {
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/uas/login-submit"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "form",
+              "selector": {
+                "value": "#login"
+              },
+              "element": [
+                {
+                  "selector": {
+                    "value": "#session_key-login"
+                  },
+                  "value": "{{username}}"
+                },
+                {
+                  "selector": {
+                    "value": "session_password-login"
+                  },
+                  "value": "{{password}}"
+                }
+              ],
+              "assert": {
+                "assertions": [
+                  {
+                    "selector": "#userMenu",
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "htmlLoginRoutine",
+          "instructions": [
+            {
+              "type": "get",
+              "url": "https://www.linkedin.com//m/logout/",
+              "assert": {
+                "assertions": [
+                  {
+                    "type": "get",
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com//m/logout/"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "form",
+              "selector": {
+                "value": "#layout-main > div > div > form.login-form"
+              },
+              "element": [
+                {
+                  "selector": {
+                    "value": "#login-email"
+                  },
+                  "value": "{{username}}"
+                },
+                {
+                  "selector": {
+                    "value": "#login-password"
+                  },
+                  "value": "{{password}}"
+                }
+              ],
+              "assert": {
+                "assertions": [
+                  {
+                    "selector": "#userMenu",
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "register": {
+      "url": "https://www.linkedin.com"
+    },
+    "passwordChange": {
+      "url": null,
+      "maxTries": null,
+      "routines": [
+        {
+          "type": "extendedJSPasswordChangeRoutine",
+          "instructions": [
+            {
+              "type": "get",
+              "url": "https://www.linkedin.com/psettings/change-password",
+              "assert": {
+                "assertions": [
+                  {
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/psettings/change-password"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "form",
+              "selector": {
+                "value": "#setting-change-password-content > form"
+              },
+              "element": [
+                {
+                  "selector": {
+                    "value": "#cp-current-pw"
+                  },
+                  "value": "{{password}}"
+                },
+                {
+                  "selector": {
+                    "value": "#cp-new-pw"
+                  },
+                  "value": "{{newPassword}}"
+                },
+                {
+                  "selector": {
+                    "value": "#cp-repeat-pw"
+                  },
+                  "value": "{{newPassword}}"
+                }
+              ],
+              "assert": {
+                "assertions": [
+                  {
+                    "selector": "div.success",
+                    "minOccurs": 1,
+                    "maxOccurs": 1
+                  }
+                ]
+              }
+            },
+            {
+              "type": "javascript",
+              "script": "var button = document.querySelector(\"#save-new-password\");button.disabled=false;button.click();"
+            }
+          ],
+          "login": "htmlLoginRoutine"
+        }
+      ]
+    },
+    "passwordReset": {
+      "url": "https://www.linkedin.com/uas/request-password-reset?trk=uno-reg-guest-home-forgot-password",
+      "maxTries": null,
+      "routines": null
+    }
+  }
 }

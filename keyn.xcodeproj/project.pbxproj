@@ -17,7 +17,9 @@
 		01839A751FACA98E00698B69 /* SiteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A741FACA98E00698B69 /* SiteTests.swift */; };
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
+		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		49190F832076338E0072849D /* 9.json in Resources */ = {isa = PBXBuildFile; fileRef = 49190F822076338E0072849D /* 9.json */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -72,15 +74,12 @@
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49FB40CA202C9B9A0060267C /* PasswordGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */; };
-		4DAE2A13548F5CC12B9AA130 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		613CFB0120135DD700460CC6 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
-		613CFB0420135E3000460CC6 /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 613CFB0520135E3000460CC6 /* Pods_keyn.framework */; };
-		613CFB0620135E8400460CC6 /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 613CFB0520135E3000460CC6 /* Pods_keyn.framework */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		613CFB08201360C200460CC6 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
@@ -91,7 +90,8 @@
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		9E3D5900F9AC455ED7806F4E /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30FF956A7E9AEF18B2B949B5 /* Pods_keynTests.framework */; };
+		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; };
+		E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +133,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00DDE290FF6D1E0FE05F2382 /* Pods-keynTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.debug.xcconfig"; sourceTree = "<group>"; };
 		0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessor.swift; sourceTree = "<group>"; };
 		0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessorTests.swift; sourceTree = "<group>"; };
 		01557423202AF75600F97DA2 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
@@ -143,9 +142,13 @@
 		01839A741FACA98E00698B69 /* SiteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTests.swift; sourceTree = "<group>"; };
 		01839A761FACA99B00698B69 /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		01B79AEE202C8E8000425BD5 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
-		2623BA497D107393B1DB011E /* Pods-keynTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.release.xcconfig"; sourceTree = "<group>"; };
-		30FF956A7E9AEF18B2B949B5 /* Pods_keynTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.release.xcconfig"; sourceTree = "<group>"; };
+		1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
+		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
+		49190F822076338E0072849D /* 9.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 9.json; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -197,22 +200,20 @@
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerationTests.swift; sourceTree = "<group>"; };
+		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
-		613CFB0520135E3000460CC6 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
-		6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
-		C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.release.xcconfig"; sourceTree = "<group>"; };
-		D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
+		7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.release.xcconfig"; sourceTree = "<group>"; };
+		8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.debug.xcconfig"; sourceTree = "<group>"; };
+		936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,8 +221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				613CFB0420135E3000460CC6 /* Pods_keyn.framework in Frameworks */,
-				4DAE2A13548F5CC12B9AA130 /* Pods_keynNotificationExtension.framework in Frameworks */,
+				3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				613CFB0620135E8400460CC6 /* Pods_keyn.framework in Frameworks */,
+				C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +237,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E3D5900F9AC455ED7806F4E /* Pods_keynTests.framework in Frameworks */,
+				E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +251,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A4E92B609DDA515653F86DA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */,
+				936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */,
+				07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4919DAE520123FE50048B060 /* keynNotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +307,7 @@
 				497D21BF205A8E7E0040E0C0 /* 1.json */,
 				497D21BC205A8E7E0040E0C0 /* 2.json */,
 				4992CF3E206100DF00BF44B2 /* 5.json */,
+				49190F822076338E0072849D /* 9.json */,
 				497D21BE205A8E7E0040E0C0 /* 3.json */,
 				497D21BB205A8E7D0040E0C0 /* 4.json */,
 				497D21BD205A8E7E0040E0C0 /* 6.json */,
@@ -341,8 +352,8 @@
 				49E766741F7E6F420022C042 /* keynUITests */,
 				4919DAE520123FE50048B060 /* keynNotificationExtension */,
 				49E766511F7E6F420022C042 /* Products */,
-				9C59233641B71D82B45CC67E /* Pods */,
-				DA12BC503DD66E19451F494A /* Frameworks */,
+				D5C581DF5092A799CE55441A /* Pods */,
+				2A4E92B609DDA515653F86DA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -458,27 +469,17 @@
 			path = Devices;
 			sourceTree = "<group>";
 		};
-		9C59233641B71D82B45CC67E /* Pods */ = {
+		D5C581DF5092A799CE55441A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */,
-				C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */,
-				D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */,
-				C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */,
-				00DDE290FF6D1E0FE05F2382 /* Pods-keynTests.debug.xcconfig */,
-				2623BA497D107393B1DB011E /* Pods-keynTests.release.xcconfig */,
+				3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */,
+				7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */,
+				5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */,
+				21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */,
+				8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */,
+				0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		DA12BC503DD66E19451F494A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				613CFB0520135E3000460CC6 /* Pods_keyn.framework */,
-				6603F888BADF0E611C592EE6 /* Pods_keynNotificationExtension.framework */,
-				30FF956A7E9AEF18B2B949B5 /* Pods_keynTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -488,11 +489,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */;
 			buildPhases = (
-				2CE4B6413D19C36400D20B2E /* [CP] Check Pods Manifest.lock */,
+				ED5534BD03C4EAFF37244AD4 /* [CP] Check Pods Manifest.lock */,
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
 				4919DAE220123FE50048B060 /* Resources */,
-				50540880B1367F121509DEB0 /* [CP] Copy Pods Resources */,
+				CDC160EDDCD88AA80DBCE53F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -507,13 +508,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
-				2CF75E9FE6D16F6BE657C38E /* [CP] Check Pods Manifest.lock */,
+				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				49E7664E1F7E6F420022C042 /* Resources */,
-				85A45794F744A82A701DCEF1 /* [CP] Embed Pods Frameworks */,
-				BD32DD255FA36C476AE9A9E4 /* [CP] Copy Pods Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
+				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
+				99C8F1A11C9CD1C653E3BF8E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -529,12 +530,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynTests" */;
 			buildPhases = (
-				8A8AF96488D49A7C0503307F /* [CP] Check Pods Manifest.lock */,
+				639DCD686255E348EB4F1E6C /* [CP] Check Pods Manifest.lock */,
 				49E766621F7E6F420022C042 /* Sources */,
 				49E766631F7E6F420022C042 /* Frameworks */,
 				49E766641F7E6F420022C042 /* Resources */,
-				E50A71EEF0D5CEA278675164 /* [CP] Embed Pods Frameworks */,
-				B57DCB4F264AB712FCA1B6F3 /* [CP] Copy Pods Resources */,
+				ACA79335589604C2E5229084 /* [CP] Embed Pods Frameworks */,
+				0F734A756BFAFBC29D06558A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -663,6 +664,7 @@
 				497D21C0205A8E7E0040E0C0 /* 4.json in Resources */,
 				4992CF3F206100DF00BF44B2 /* 5.json in Resources */,
 				497D21C6205A8E7E0040E0C0 /* 3.json in Resources */,
+				49190F832076338E0072849D /* 9.json in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
@@ -694,43 +696,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2CE4B6413D19C36400D20B2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keynNotificationExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2CF75E9FE6D16F6BE657C38E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keyn-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		50540880B1367F121509DEB0 /* [CP] Copy Pods Resources */ = {
+		0F734A756BFAFBC29D06558A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -742,10 +708,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		85A45794F744A82A701DCEF1 /* [CP] Embed Pods Frameworks */ = {
+		390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -773,7 +739,25 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8A8AF96488D49A7C0503307F /* [CP] Check Pods Manifest.lock */ = {
+		50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keyn-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		639DCD686255E348EB4F1E6C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -791,22 +775,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B57DCB4F264AB712FCA1B6F3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD32DD255FA36C476AE9A9E4 /* [CP] Copy Pods Resources */ = {
+		99C8F1A11C9CD1C653E3BF8E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -821,7 +790,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keyn/Pods-keyn-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E50A71EEF0D5CEA278675164 /* [CP] Embed Pods Frameworks */ = {
+		ACA79335589604C2E5229084 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -847,6 +816,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDC160EDDCD88AA80DBCE53F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED5534BD03C4EAFF37244AD4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keynNotificationExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -980,7 +982,7 @@
 /* Begin XCBuildConfiguration section */
 		4919DAEC20123FE50048B060 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0A8FF6B619205BF78F4219D /* Pods-keynNotificationExtension.debug.xcconfig */;
+			baseConfigurationReference = 5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1003,7 +1005,7 @@
 		};
 		4919DAED20123FE50048B060 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1F2F96A1C3AF5F0C4080D56 /* Pods-keynNotificationExtension.release.xcconfig */;
+			baseConfigurationReference = 21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1132,7 +1134,7 @@
 		};
 		49E7667B1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9AACCD952F1FE22E8E06BEB /* Pods-keyn.debug.xcconfig */;
+			baseConfigurationReference = 3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1153,7 +1155,7 @@
 		};
 		49E7667C1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C49403A93B6FF75DFBD17C4A /* Pods-keyn.release.xcconfig */;
+			baseConfigurationReference = 7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1174,7 +1176,7 @@
 		};
 		49E7667E1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00DDE290FF6D1E0FE05F2382 /* Pods-keynTests.debug.xcconfig */;
+			baseConfigurationReference = 8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1194,7 +1196,7 @@
 		};
 		49E7667F1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2623BA497D107393B1DB011E /* Pods-keynTests.release.xcconfig */;
+			baseConfigurationReference = 0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
