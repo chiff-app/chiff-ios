@@ -24,7 +24,7 @@ class PasswordGenerator {
 
 
     func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
-        let (length, chars) = PasswordValidator.parse(ppd: ppd)
+        let (length, chars) = parse(ppd: ppd, customPassword: false)
 
         guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
             throw PasswordGenerationError.tooShort
@@ -49,7 +49,7 @@ class PasswordGenerator {
             throw PasswordGenerationError.invalidPassword
         }
 
-        let (length, chars) = PasswordValidator.parse(ppd: ppd)
+        let (length, chars) = parse(ppd: ppd, customPassword: true)
 
         var characterIndices = [Int](repeatElement(chars.count, count: length))
         var index = 0
@@ -95,6 +95,27 @@ class PasswordGenerator {
 
 
     // MARK: Private functions
+    
+    private func parse(ppd: PPD?, customPassword: Bool) -> (Int, [Character]) {
+        var length = customPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.MAX_PASSWORD_LENGTH_BOUND
+        var chars = [Character]()
+        
+        if let characterSets = ppd?.characterSets {
+            for characterSet in characterSets {
+                if let characters = characterSet.characters {
+                    chars.append(contentsOf: [Character](characters))
+                }
+            }
+        } else {
+            chars.append(contentsOf: [Character](PasswordValidator.OPTIMAL_CHARACTER_SET)) // Optimal character set
+        }
+        
+        if let maxLength = ppd?.properties?.maxLength {
+            length = maxLength < PasswordValidator.MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
+        }
+        
+        return (length, chars)
+    }
 
     private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: Int, length: Int, chars: [Character], offset: [Int]?) throws -> String {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)

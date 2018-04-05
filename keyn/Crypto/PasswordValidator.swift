@@ -245,26 +245,4 @@ class PasswordValidator {
         return 0
     }
 
-    // MARK: Class functions
-
-    class func parse(ppd: PPD?) -> (Int, [Character]) {
-        var length = FALLBACK_PASSWORD_LENGTH
-        var chars = [Character]()
-
-        if let characterSets = ppd?.characterSets {
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            chars.append(contentsOf: [Character](OPTIMAL_CHARACTER_SET)) // Optimal character set
-        }
-
-        if let maxLength = ppd?.properties?.maxLength {
-            length = maxLength < MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
-        }
-
-        return (length, chars)
-    }
 }
