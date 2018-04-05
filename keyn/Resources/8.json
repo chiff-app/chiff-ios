@@ -21,21 +21,7 @@
         }
     ],
     "properties": {
-        "characterSettings": {
-            "characterSetSettings": [],
-            "requirementGroups": [{
-                "requirementRules": [{
-                        "characterSet": "Specials",
-                        "minOccurs": 1
-                    },
-                    {
-                        "characterSet": "Numbers",
-                        "minOccurs": 1
-                    }
-                ],
-                "minRules": 1
-            }]
-        },
+        "characterSettings": null,
         "maxConsecutive": null,
         "minLength": 8,
         "maxLength": 32,
@@ -45,7 +31,7 @@
     "timestamp": null,
     "url": "https://www.netflix.com",
     "redirect": null,
-    "name": "LinkedIn",
+    "name": "Netflix",
     "service": {
         "login": {
             "url": "https://www.netflix.com",
@@ -110,47 +96,15 @@
                         }
                     },
                     {
-                        "type": "form",
-                        "selector": {
-                            "value": ""
-                        },
-                        "element": [{
-                                "selector": {
-                                    "value": "#password"
-                                },
-                                "value": "{{password}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#pw_new"
-                                },
-                                "value": "{{newPassword}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#pw_confirmNOTWORKING"
-                                },
-                                "value": "{{newPassword}}"
-                            }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": "TODO",
-                                "minOccurs": 1,
-                                "maxOccurs": 1
-                            }]
-                        }
-                    },
-                    {
                         "type": "javascript",
-                        "script": "document.querySelector(\"input#password\").select(); var e = new Event(\"keydown\"); e.key=\"a\"; e.keyCode=e.key.charCodeAt(0); document.dispatchEvent(e);document.querySelector(\"button[type=submit]\").click()"
+                        "script": "var inputEvent = new Event('input', { bubbles: true }); inputEvent.simulated = true; document.querySelector('input#password').value = '{{password}}'; document.querySelector('input#password').dispatchEvent(inputEvent); document.querySelector('input#pw_new').value = '{{newPassword}}'; document.querySelector('input#pw_new').dispatchEvent(inputEvent); document.querySelector('input#pw_confirm').value = '{{newPassword}}'; document.querySelector('input#pw_confirm').dispatchEvent(inputEvent); document.querySelector('button[type=submit]').click();"
                     }
                 ],
                 "login": "htmlLoginRoutine"
             }]
         },
         "passwordReset": {
-            "url": "https://www.linkedin.com/uas/request-password-reset?trk=uno-reg-guest-home-forgot-password",
+            "url": "https://www.netflix.com/nl/loginhelp",
             "maxTries": null,
             "routines": null
         }
