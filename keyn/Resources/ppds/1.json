@@ -165,7 +165,7 @@
                     },
                     {
                         "type": "javascript",
-                        "script": "alert(\"TODO, click submit hehe\")"
+                        "script": "document.querySelector('input#password_confirm').click(); document.querySelector('#password > div > div > form [type=submit]').click();"
                     }
                 ],
                 "login": "htmlLoginRoutine"
