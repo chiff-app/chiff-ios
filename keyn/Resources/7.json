@@ -15,30 +15,14 @@
         "base": [],
         "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
         "name": "Letters"
+    }, {
+        "base": [],
+        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| ",
+        "name": "Specials"
     }],
     "properties": {
-        "characterSettings": {
-            "characterSetSettings": [{
-                "minOccurs": 1,
-                "maxOccurs": null,
-                "name": "Uppercase"
-            }, {
-                "minOccurs": 1,
-                "maxOccurs": null,
-                "name": "Lowercase"
-            }, {
-                "minOccurs": 1,
-                "maxOccurs": null,
-                "name": "Numbers"
-            }, {
-                "minOccurs": null,
-                "maxOccurs": null,
-                "name": "Letters"
-            }],
-            "requirementGroups": [],
-            "positionRestrictions": []
-        },
-        "maxConsecutive": 2,
+        "characterSettings": null,
+        "maxConsecutive": null,
         "minLength": 8,
         "maxLength": null,
         "expires": null
