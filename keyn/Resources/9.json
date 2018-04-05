@@ -16,7 +16,7 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
             "name": "Specials"
         }
     ],
@@ -51,125 +51,126 @@
             "url": "https://www.reddit.com",
             "maxTries": 3,
             "routines": [{
-                "type": "htmlLoginRoutine",
-                "instructions": [{
-                        "type": "get",
-                        "url": "https://www.reddit.com",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.reddit.com"
-                            }]
-                        }
-                    },
-                    {
-                        "type": "form",
-                        "selector": {
-                            "value": "#login-form"
-                        },
-                        "element": [{
-                                "selector": {
-                                    "value": "#user_login"
-                                },
-                                "value": "{{username}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#passwd_login"
-                                },
-                                "value": "{{password}}"
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://www.reddit.com",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://www.reddit.com"
+                                }]
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "htmlLoginRoutine",
-                "instructions": [{
-                        "type": "get",
-                        "url": "https://www.reddit.com/post/login",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.reddit.com/post/login"
-                            }]
-                        }
-                    },
-                    {
-                        "type": "form",
-                        "selector": {
-                            "value": "#login-form"
                         },
-                        "element": [{
-                                "selector": {
-                                    "value": "#user_login"
-                                },
-                                "value": "{{username}}"
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "#login-form"
                             },
-                            {
-                                "selector": {
-                                    "value": "#passwd_login"
+                            "element": [{
+                                    "selector": {
+                                        "value": "#user_login"
+                                    },
+                                    "value": "{{username}}"
                                 },
-                                "value": "{{password}}"
+                                {
+                                    "selector": {
+                                        "value": "#passwd_login"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": ".profile-button",
+                                    "minOccurs": 1,
+                                    "maxOccurs": null
+                                }]
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
                         }
-                    }
-                ]
-            },
-            {
-                "type": "htmlLoginRoutine",
-                "instructions": [{
-                        "type": "get",
-                        "url": "https://www.reddit.com/login",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.reddit.com/login"
-                            }]
-                        }
-                    },
-                    {
-                        "type": "form",
-                        "selector": {
-                            "value": "#login-form"
+                    ]
+                },
+                {
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://www.reddit.com/post/login",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://www.reddit.com/post/login"
+                                }]
+                            }
                         },
-                        "element": [{
-                                "selector": {
-                                    "value": "#user_login"
-                                },
-                                "value": "{{username}}"
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "#login-form"
                             },
-                            {
-                                "selector": {
-                                    "value": "#passwd_login"
+                            "element": [{
+                                    "selector": {
+                                        "value": "#user_login"
+                                    },
+                                    "value": "{{username}}"
                                 },
-                                "value": "{{password}}"
+                                {
+                                    "selector": {
+                                        "value": "#passwd_login"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": ".profile-button",
+                                    "minOccurs": 1,
+                                    "maxOccurs": null
+                                }]
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
                         }
-                    }
-                ]
-            }]
+                    ]
+                },
+                {
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://www.reddit.com/login",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://www.reddit.com/login"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "#login-form"
+                            },
+                            "element": [{
+                                    "selector": {
+                                        "value": "#user_login"
+                                    },
+                                    "value": "{{username}}"
+                                },
+                                {
+                                    "selector": {
+                                        "value": "#passwd_login"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": ".profile-button",
+                                    "minOccurs": 1,
+                                    "maxOccurs": null
+                                }]
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         "register": {
             "url": "https://www.reddit.com/register"
