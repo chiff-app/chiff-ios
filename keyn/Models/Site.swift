@@ -24,6 +24,7 @@ struct Site: Codable {
         sampleSites.append(Site(name: "BOL.com", id: 6, urls: ["https://bol.com"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "AppleId", id: 7, urls: ["https://appleid.apple.com/"], ppd: getSamplePPD(id: id)))
         sampleSites.append(Site(name: "Netflix", id: 8, urls: ["https://www.netflix.com/"], ppd: getSamplePPD(id: id)))
+        sampleSites.append(Site(name: "Reddit", id: 9, urls: ["https://www.reddit.com/"], ppd: getSamplePPD(id: id)))
 
         return sampleSites[id]
     }
