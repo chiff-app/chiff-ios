@@ -16,7 +16,7 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
             "name": "Specials"
         }
     ],
@@ -43,93 +43,94 @@
     },
     "version": null,
     "timestamp": null,
-    "url": "https://www.reddit.com",
+    "url": "https://www.coolblue.nl",
     "redirect": null,
-    "name": "Reddit",
+    "name": "Coolblue",
     "service": {
         "login": {
             "url": "https://www.coolblue.nl",
             "maxTries": 3,
             "routines": [{
-                "type": "htmlLoginRoutine",
-                "instructions": [{
-                        "type": "get",
-                        "url": "https://www.coolblue.nl",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.coolblue.nl"
-                            }]
-                        }
-                    },
-                    {
-                        "type": "form",
-                        "selector": {
-                            "value": "body > div.coolblue-bar.sticky-header--bar.js-sticky-header-bar > div > div.coolblue-bar--navigation > ul > li.coolbar-navigation--item.coolbar-navigation--item-drop-down.js-coolbar-navigation-item.coolbar-navigation--item-login > div > div:nth-child(1) > div:nth-child(4) > form"
-                        },
-                        "element": [{
-                                "selector": {
-                                    "value": "#header_menu_emailaddress"
-                                },
-                                "value": "{{username}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#header_menu_password"
-                                },
-                                "value": "{{password}}"
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://www.coolblue.nl",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://www.coolblue.nl"
+                                }]
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "htmlLoginRoutine",
-                "instructions": [{
-                        "type": "get",
-                        "url": "https://www.coolblue.nl/inloggen",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.coolblue.nl/inloggen"
-                            }]
-                        }
-                    },
-                    {
-                        "type": "form",
-                        "selector": {
-                            "value": "#layout_wrapper > div > div.layout-content.js-layout-content > div > div > div > div > div.grid-unit-xs--col-12.grid-unit-m--col-6.border-right--m > div.login-page__section.js-login-page-password-forgotten > div:nth-child(4) > form"
                         },
-                        "element": [{
-                                "selector": {
-                                    "value": "#login_page_emailaddress"
-                                },
-                                "value": "{{username}}"
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "body > div.coolblue-bar.sticky-header--bar.js-sticky-header-bar > div > div.coolblue-bar--navigation > ul > li.coolbar-navigation--item.coolbar-navigation--item-drop-down.js-coolbar-navigation-item.coolbar-navigation--item-login > div > div:nth-child(1) > div:nth-child(4) > form"
                             },
-                            {
-                                "selector": {
-                                    "value": "#login_page_password"
+                            "element": [{
+                                    "selector": {
+                                        "value": "#header_menu_emailaddress"
+                                    },
+                                    "value": "{{username}}"
                                 },
-                                "value": "{{password}}"
+                                {
+                                    "selector": {
+                                        "value": "#header_menu_password"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": ".profile-button",
+                                    "minOccurs": 1,
+                                    "maxOccurs": null
+                                }]
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
                         }
-                    }
-                ]
-            }]
+                    ]
+                },
+                {
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://www.coolblue.nl/inloggen",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://www.coolblue.nl/inloggen"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "#layout_wrapper > div > div.layout-content.js-layout-content > div > div > div > div > div.grid-unit-xs--col-12.grid-unit-m--col-6.border-right--m > div.login-page__section.js-login-page-password-forgotten > div:nth-child(4) > form"
+                            },
+                            "element": [{
+                                    "selector": {
+                                        "value": "#login_page_emailaddress"
+                                    },
+                                    "value": "{{username}}"
+                                },
+                                {
+                                    "selector": {
+                                        "value": "#login_page_password"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": ".profile-button",
+                                    "minOccurs": 1,
+                                    "maxOccurs": null
+                                }]
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         "register": {
             "url": "https://www.coolblue.nl/registreren"

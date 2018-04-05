@@ -1,217 +1,194 @@
 {
-  "characterSets": [
-    {
-      "base": [],
-      "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
-      "name": "Letters"
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "Letters"
+        },
+        {
+            "base": [],
+            "characters": "0123456789",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "name": "Specials"
+        }
+    ],
+    "properties": {
+        "characterSettings": {
+            "characterSetSettings": [{
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Letters"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Numbers"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Specials"
+                }
+            ],
+            "requirementGroups": [],
+            "positionRestrictions": []
+        },
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": null,
+        "expires": null
     },
-    {
-      "base": [],
-      "characters": "0123456789",
-      "name": "Numbers"
-    },
-    {
-      "base": [],
-      "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
-      "name": "Specials"
+    "version": null,
+    "timestamp": null,
+    "url": "https://twitter.com",
+    "redirect": null,
+    "name": "Twitter",
+    "service": {
+        "login": {
+            "url": "https://twitter.com/login",
+            "maxTries": 3,
+            "routines": [{
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://twitter.com/login",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://twitter.com/login"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "#page-container > div > div.signin-wrapper > form"
+                            },
+                            "element": [{
+                                    "selector": {
+                                        "value": "#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input"
+                                    },
+                                    "value": "{{username}}"
+                                },
+                                {
+                                    "selector": {
+                                        "value": "#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(3) > input"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": "#userMenu",
+                                    "minOccurs": 1,
+                                    "maxOccurs": 1
+                                }]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "htmlLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://twitter.com/",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://twitter.com/"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "form.LoginForm"
+                            },
+                            "element": [{
+                                    "selector": {
+                                        "value": "form.LoginForm > div.LoginForm-input.LoginForm-username > input"
+                                    },
+                                    "value": "{{username}}"
+                                },
+                                {
+                                    "selector": {
+                                        "value": "form.LoginForm > div.LoginForm-input.LoginForm-password > input"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ],
+                            "assert": {
+                                "assertions": [{
+                                    "selector": "#userMenu",
+                                    "minOccurs": 1,
+                                    "maxOccurs": 1
+                                }]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "register": {
+            "url": "https://twitter.com/signup"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "htmlPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://twitter.com/settings/password",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://twitter.com/settings/password"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#password-form"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#current_password"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#user_password"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#user_password_confirmation"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://twitter.com/settings/passwords/password_reset_confirmation"
+                            }]
+                        }
+                    }
+                ],
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.facebook.com/login/identify",
+            "maxTries": null,
+            "routines": null
+        }
     }
-  ],
-  "properties": {
-    "characterSettings": {
-      "characterSetSettings": [
-        {
-          "minOccurs": null,
-          "maxOccurs": null,
-          "name": "Letters"
-        },
-        {
-          "minOccurs": null,
-          "maxOccurs": null,
-          "name": "Numbers"
-        },
-        {
-          "minOccurs": null,
-          "maxOccurs": null,
-          "name": "Specials"
-        }
-      ],
-      "requirementGroups": [],
-      "positionRestrictions": []
-    },
-    "maxConsecutive": null,
-    "minLength": 8,
-    "maxLength": null,
-    "expires": null
-  },
-  "version": null,
-  "timestamp": null,
-  "url": "https://twitter.com",
-  "redirect": null,
-  "name": "Twitter",
-  "service": {
-    "login": {
-      "url": "https://twitter.com/login",
-      "maxTries": 3,
-      "routines": [
-        {
-          "type": "htmlLoginRoutine",
-          "instructions": [
-            {
-              "type": "get",
-              "url": "https://twitter.com/login",
-              "assert": {
-                "assertions": [
-                  {
-                    "expression": null,
-                    "prefix": "https://twitter.com/login"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "form",
-              "selector": {
-                "value": "#page-container > div > div.signin-wrapper > form"
-              },
-              "element": [
-                {
-                  "selector": {
-                    "value": "#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(2) > input"
-                  },
-                  "value": "{{username}}"
-                },
-                {
-                  "selector": {
-                    "value": "#page-container > div > div.signin-wrapper > form > fieldset > div:nth-child(3) > input"
-                  },
-                  "value": "{{password}}"
-                }
-              ],
-              "assert": {
-                "assertions": [
-                  {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "type": "htmlLoginRoutine",
-          "instructions": [
-            {
-              "type": "get",
-              "url": "https://twitter.com/",
-              "assert": {
-                "assertions": [
-                  {
-                    "expression": null,
-                    "prefix": "https://twitter.com/"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "form",
-              "selector": {
-                "value": "form.LoginForm"
-              },
-              "element": [
-                {
-                  "selector": {
-                    "value": "form.LoginForm > div.LoginForm-input.LoginForm-username > input"
-                  },
-                  "value": "{{username}}"
-                },
-                {
-                  "selector": {
-                    "value": "form.LoginForm > div.LoginForm-input.LoginForm-password > input"
-                  },
-                  "value": "{{password}}"
-                }
-              ],
-              "assert": {
-                "assertions": [
-                  {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "register": {
-      "url": "https://twitter.com/signup"
-    },
-    "passwordChange": {
-      "url": null,
-      "maxTries": null,
-      "routines": [
-        {
-          "type": "htmlPasswordChangeRoutine",
-          "instructions": [
-            {
-              "type": "get",
-              "url": "https://twitter.com/settings/password",
-              "assert": {
-                "assertions": [
-                  {
-                    "expression": null,
-                    "prefix": "https://twitter.com/settings/password"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "form",
-              "selector": {
-                "value": "#password-form"
-              },
-              "element": [
-                {
-                  "selector": {
-                    "value": "#current_password"
-                  },
-                  "value": "{{password}}"
-                },
-                {
-                  "selector": {
-                    "value": "#user_password"
-                  },
-                  "value": "{{newPassword}}"
-                },
-                {
-                  "selector": {
-                    "value": "#user_password_confirmation"
-                  },
-                  "value": "{{newPassword}}"
-                }
-              ],
-              "assert": {
-                "assertions": [
-                  {
-                    "expression": null,
-                    "prefix": "https://twitter.com/settings/passwords/password_reset_confirmation"
-                  }
-                ]
-              }
-            }
-          ],
-          "login": "htmlLoginRoutine"
-        }
-      ]
-    },
-    "passwordReset": {
-      "url": "https://www.facebook.com/login/identify",
-      "maxTries": null,
-      "routines": null
-    }
-  }
 }
