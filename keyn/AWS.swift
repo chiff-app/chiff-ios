@@ -29,33 +29,6 @@ class AWS {
 
     private init() {}
 
-
-    // TODO: Unused --> This was replaced by getting the static URL from Properties. Delete if everything seems to work.
-    func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
-        guard let queueUrlRequest = AWSSQSGetQueueUrlRequest() else {
-            throw AWSError.queueUrl(error: nil)
-        }
-        queueUrlRequest.queueName = queueName
-
-        // TODO: This getQueueUrl does not call the handler when request is accepted from Home screen (ACCEPT)?
-        sqs.getQueueUrl(queueUrlRequest).continueOnSuccessWith { (task: AWSTask!) -> Any? in
-            guard let response = task.result else {
-                print("TODO: handle error")
-                return nil
-            }
-            if let queueUrl = response.queueUrl {
-                completionHandler(queueUrl)
-            }
-            return nil
-        }.continueWith { (task: AWSTask!) -> Any? in
-            if task.error != nil {
-                print("GetQueueError: \(String(describing: task.error))")
-                // TODO: if this is a AWS.SimpleQueueService.NonExistentQueue error, should we delete the session (if any, and there shouldn't be) or do nothing?
-            }
-            return nil
-        }
-    }
-
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
             let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
@@ -68,43 +41,8 @@ class AWS {
             sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
                 if let error = error {
                     print("Error sending message to SQS queue: \(String(describing: error))")
-                } else if let messageId = result?.messageId {
-                    // TODO: Message retention, zie trello
-//                    switch type {
-//                    case .login, .register, .reset:
-//                        AWS.sharedInstance.deleteFromQueue(delay: self.LOGIN_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
-//                    case .pair:
-//                        AWS.sharedInstance.deleteFromQueue(delay: self.PAIR_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
-//                    default:
-//                        // Is the sqs queue message retention period (2 weeks)
-//                        print("End-session message sent.")
-//                    }
                 }
             })
-        }
-    }
-
-    // Unused --> message retention
-    func deleteFromQueue(delay: Int, queueUrl: String, messageId: String) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(delay)) {
-            if let deleteMessageRequest = AWSSQSDeleteMessageRequest() {
-                deleteMessageRequest.queueUrl = queueUrl
-                deleteMessageRequest.receiptHandle = messageId
-                self.sqs.deleteMessage(deleteMessageRequest).continueWith(block: { (task: AWSTask!) -> Any? in
-                    if task.error != nil {
-                        if let error = task.error as NSError? {
-                            print("Error: \(error)")
-                        }
-                    } else {
-                        guard let response = task.result else {
-                            print("TODO: handle error")
-                            return nil
-                        }
-                        print(response)
-                    }
-                    return nil
-                })
-            }
         }
     }
 
