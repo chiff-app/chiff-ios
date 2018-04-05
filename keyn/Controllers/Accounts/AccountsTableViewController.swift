@@ -144,6 +144,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         sampleSites.append(Site.get(id: 2)!)
         sampleSites.append(Site.get(id: 4)!)
         sampleSites.append(Site.get(id: 5)!)
+        sampleSites.append(Site.get(id: 11)!)
 
         for site in sampleSites {
             let account = try Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)

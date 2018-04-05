@@ -14,6 +14,7 @@ struct Site: Codable {
     // Get Site object from some persistent storage or online database. This is sample data
     static func get(id: Int) -> Site? {
         guard let ppd = getSamplePPD(id: id) else {
+            print("Cannot get site")
             return nil
         }
         let name = ppd.name ?? "Unknown"
@@ -25,7 +26,7 @@ struct Site: Codable {
 
     private static func getSamplePPD(id: Int) -> PPD? {
         // This gets the sitID.json file and unmarshals to PPD object
-        if let filepath = Bundle.main.path(forResource: String(id), ofType: "json") {
+        if let filepath = Bundle.main.path(forResource: String(id), ofType: "json"){
             do {
                 let contents = try String(contentsOfFile: filepath)
                 if let jsonData = contents.data(using: .utf8) {
