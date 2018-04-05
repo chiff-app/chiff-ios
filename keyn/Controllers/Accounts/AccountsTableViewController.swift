@@ -142,7 +142,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
         sampleSites.append(Site.get(id: 1)!)
         sampleSites.append(Site.get(id: 2)!)
-        sampleSites.append(Site.get(id: 3)!)
+        //sampleSites.append(Site.get(id: 3)!)
         sampleSites.append(Site.get(id: 4)!)
         sampleSites.append(Site.get(id: 5)!)
 
@@ -151,7 +151,8 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             unfilteredAccounts.append(account)
         }
 
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword3"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword1"))
+        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 3)!, password: "ExampleCustomPassword1"))
     }
 
 }
