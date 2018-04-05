@@ -75,7 +75,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+            guard error == nil, data != nil else {
                 print("error=\(String(describing: error))")
                 return
             }
