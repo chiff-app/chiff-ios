@@ -1,0 +1,158 @@
+{
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyz",
+            "name": "LowerLetters"
+        },
+        {
+            "base": [],
+            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "UpperLetters"
+        },
+        {
+            "base": [],
+            "characters": "1234567890",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
+            "name": "Specials"
+        }
+    ],
+    "properties": {
+        "characterSettings": {
+            "characterSetSettings": [],
+            "requirementGroups": [{
+                "requirementRules": [{
+                        "characterSet": "Specials",
+                        "minOccurs": 1
+                    },
+                    {
+                        "characterSet": "Numbers",
+                        "minOccurs": 1
+                    }
+                ],
+                "minRules": 1
+            }]
+        },
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": 32,
+        "expires": null
+    },
+    "version": null,
+    "timestamp": null,
+    "url": "https://www.netflix.com",
+    "redirect": null,
+    "name": "LinkedIn",
+    "service": {
+        "login": {
+            "url": "https://www.netflix.com",
+            "maxTries": 3,
+            "routines": [{
+                "type": "htmlLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.netflix.com/Login",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.netflix.com/Login"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#appMountPoint > div > div.login-body > div > div > form:nth-child(2)"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#email"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": ".profile-button",
+                                "minOccurs": 1,
+                                "maxOccurs": null
+                            }]
+                        }
+                    }
+                ]
+            }]
+        },
+        "register": {
+            "url": "https://www.netflix.com"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "extendedJSPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.netflix.com/password",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.netflix.com/password"
+                            }]
+                        }
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": ""
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#password"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#pw_new"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#pw_confirmNOTWORKING"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "TODO",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "document.querySelector(\"input#password\").select(); var e = new Event(\"keydown\"); e.key=\"a\"; e.keyCode=e.key.charCodeAt(0); document.dispatchEvent(e);document.querySelector(\"button[type=submit]\").click()"
+                    }
+                ],
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.linkedin.com/uas/request-password-reset?trk=uno-reg-guest-home-forgot-password",
+            "maxTries": null,
+            "routines": null
+        }
+    }
+}
