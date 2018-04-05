@@ -1,47 +1,45 @@
 {
-    "characterSets": [
-      {
-        "base": [],
-        "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
-        "name": "Letters"
-      },
-      {
-        "base": [],
-        "characters": "0123456789",
-        "name": "Numbers"
-      },
-      {
-        "base": [],
-        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
-        "name": "Specials"
-      }
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "Letters"
+        },
+        {
+            "base": [],
+            "characters": "0123456789",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "name": "Specials"
+        }
     ],
     "properties": {
-      "characterSettings": {
-        "characterSetSettings": [
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Letters"
-          },
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Numbers"
-          },
-          {
-            "minOccurs": null,
-            "maxOccurs": null,
-            "name": "Specials"
-          }
-        ],
-        "requirementGroups": [],
-        "positionRestrictions": []
-      },
-      "maxConsecutive": null,
-      "minLength": 8,
-      "maxLength": null,
-      "expires": null
+        "characterSettings": {
+            "characterSetSettings": [{
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Letters"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Numbers"
+                },
+                {
+                    "minOccurs": null,
+                    "maxOccurs": null,
+                    "name": "Specials"
+                }
+            ],
+            "requirementGroups": [],
+            "positionRestrictions": []
+        },
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": null,
+        "expires": null
     },
     "version": null,
     "timestamp": null,
@@ -49,117 +47,105 @@
     "redirect": null,
     "name": "BOL.com",
     "service": {
-      "login": {
-        "url": "https://www.bol.com/nl/account/login.html",
-        "maxTries": 3,
-        "routines": [
-          {
-            "type": "htmlLoginRoutine",
-            "instructions": [
-              {
-                "type": "get",
-                "url": "https://www.bol.com/nl/account/login.html",
-                "assert": {
-                  "assertions": [
+        "login": {
+            "url": "https://www.bol.com/nl/account/login.html",
+            "maxTries": 3,
+            "routines": [{
+                "type": "extendedJSLoginRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.bol.com/nl/account/login.html",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.bol.com/nl/rnwy/account/overzicht"
+                            }]
+                        }
+                    },
                     {
-                      "expression": null,
-                      "prefix": "https://www.bol.com/nl/account/login.html"
+                        "type": "form",
+                        "selector": {
+                            "value": "#existinguser"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#login_email"
+                                },
+                                "value": "{{username}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#login_password"
+                                },
+                                "value": "{{password}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "selector": "#userMenu",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }]
+                        }
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "document.querySelector(\"#existinguser > fieldset > div.c-btn-primary--large.h-btn--full-medium > input[type=\\\"submit\\\"]\").click()"
                     }
-                  ]
-                }
-              },
-              {
-                "type": "form",
-                "selector": {
-                  "value": "#existinguser"
-                },
-                "element": [
-                  {
-                    "selector": {
-                      "value": "#login_email"
+                ]
+            }]
+        },
+        "register": {
+            "url": "https://www.bol.com/nl/rnwy/account/newuser"
+        },
+        "passwordChange": {
+            "url": null,
+            "maxTries": null,
+            "routines": [{
+                "type": "htmlPasswordChangeRoutine",
+                "instructions": [{
+                        "type": "get",
+                        "url": "https://www.bol.com/nl/rnwy/account/changepassword",
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.bol.com/nl/rnwy/account/changepassword"
+                            }]
+                        }
                     },
-                    "value": "{{username}}"
-                  },
-                  {
-                    "selector": {
-                      "value": "#login_password"
-                    },
-                    "value": "{{password}}"
-                  }
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "#ChangePasswordForm"
+                        },
+                        "element": [{
+                                "selector": {
+                                    "value": "#account_oldpassword"
+                                },
+                                "value": "{{password}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "#new_password"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ],
+                        "assert": {
+                            "assertions": [{
+                                "expression": null,
+                                "prefix": "https://www.bol.com/nl/rnwy/account/changepassword"
+                            }]
+                        }
+                    }
                 ],
-                "assert": {
-                  "assertions": [
-                    {
-                      "selector": "#userMenu",
-                      "minOccurs": 1,
-                      "maxOccurs": 1
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "register": {
-        "url": "https://www.bol.com/nl/rnwy/account/newuser"
-      },
-      "passwordChange": {
-        "url": null,
-        "maxTries": null,
-        "routines": [
-          {
-            "type": "htmlPasswordChangeRoutine",
-            "instructions": [
-              {
-                "type": "get",
-                "url": "https://www.bol.com/nl/rnwy/account/changepassword",
-                "assert": {
-                  "assertions": [
-                    {
-                      "expression": null,
-                      "prefix": "https://www.bol.com/nl/rnwy/account/changepassword"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "form",
-                "selector": {
-                  "value": "#ChangePasswordForm"
-                },
-                "element": [
-                  {
-                    "selector": {
-                      "value": "#account_oldpassword"
-                    },
-                    "value": "{{password}}"
-                  },
-                  {
-                    "selector": {
-                      "value": "#new_password"
-                    },
-                    "value": "{{newPassword}}"
-                  }
-                ],
-                "assert": {
-                  "assertions": [
-                    {
-                      "expression": null,
-                      "prefix": "https://www.bol.com/nl/rnwy/account/changepassword"
-                    }
-                  ]
-                }
-              }
-            ],
-            "login": "htmlLoginRoutine"
-          }
-        ]
-      },
-      "passwordReset": {
-        "url": "https://www.bol.com/nl/rnwy/account/forgotpassword",
-        "maxTries": null,
-        "routines": null
-      }
+                "login": "htmlLoginRoutine"
+            }]
+        },
+        "passwordReset": {
+            "url": "https://www.bol.com/nl/rnwy/account/forgotpassword",
+            "maxTries": null,
+            "routines": null
+        }
     }
-  }
+}

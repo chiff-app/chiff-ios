@@ -1,7 +1,7 @@
-{
+{
     "characterSets": [{
         "base": [],
-        "characters": "ABCDEFGHIJKLMNOPQRSTUVQXYZ",
+        "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         "name": "Uppercase"
     }, {
         "base": [],
@@ -13,8 +13,12 @@
         "name": "Numbers"
     }, {
         "base": [],
-        "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVQXYZ",
+        "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
         "name": "Letters"
+    }, {
+        "base": [],
+        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+        "name": "Specials"
     }],
     "properties": {
         "characterSettings": {
@@ -162,5 +166,3 @@
         }
     }
 }
-
-
