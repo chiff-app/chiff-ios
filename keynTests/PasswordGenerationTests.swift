@@ -46,10 +46,33 @@ class PasswordGenerationTests: XCTestCase {
 
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertFalse(validator.validate(password: longPassword))
-
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(validator.validate(password: shortPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        
+        let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: veryLongPassword))
     }
+    
+    func testDefaultPasswordLength() {
+        let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: nil, maxLength: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let validator = PasswordValidator(ppd: ppd)
+        
+        let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
+        XCTAssertTrue(validator.validate(password: longPassword))
+        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        
+        let shortPassword = "Sh0rt*r" // 7 characters
+        XCTAssertFalse(validator.validate(password: shortPassword))
+        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        
+        let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
+        XCTAssertFalse(validator.validate(password: veryLongPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: veryLongPassword))
+    }
+    
 
     func testUnallowedCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
