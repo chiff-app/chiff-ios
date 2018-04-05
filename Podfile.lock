@@ -16,6 +16,15 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.0.0)
   - Sodium (~> 0.5)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AWSCognito
+    - AWSCore
+    - AWSSNS
+    - AWSSQS
+    - MBProgressHUD
+    - Sodium
+
 SPEC CHECKSUMS:
   AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
   AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
@@ -26,4 +35,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d710b46f313efe2fc4ba98f096d01b03129c334d
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
