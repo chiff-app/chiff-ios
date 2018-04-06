@@ -1,0 +1,70 @@
+{
+    "characterSets": [{
+            "base": [],
+            "characters": "abcdefghijklmnopqrstuvwxyz",
+            "name": "LowerLetters"
+        },
+        {
+            "base": [],
+            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "UpperLetters"
+        },
+        {
+            "base": [],
+            "characters": "1234567890",
+            "name": "Numbers"
+        },
+        {
+            "base": [],
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "name": "Specials"
+        }
+    ],
+    "properties": {
+        "characterSettings": null,
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": 32,
+        "expires": null
+    },
+    "version": null,
+    "timestamp": null,
+    "url": "https://login.live.com",
+    "redirect": null,
+    "name": "Microsoft Outlook/Live",
+    "service": {
+        "login": {
+            "url": "https://login.live.com",
+            "maxTries": 3,
+            "routines": [{
+                    "type": "extendedJSLoginRoutine",
+                    "instructions": [{
+                            "type": "get",
+                            "url": "https://login.live.com",
+                            "assert": {
+                                "assertions": [{
+                                    "expression": null,
+                                    "prefix": "https://login.live.com"
+                                }]
+                            }
+                        },
+                        {
+                            "type": "javascript",
+                            "script": "var ev = new Event('input', { bubbles: true }); ev.simulated = true; document.querySelector('input[name=loginfmt]').value = '{{username}}'; document.querySelector('input[name=loginfmt]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); function fillPasswordWhenReady(tries) { if (tries <= 0) { console.log('Cannot fill in password.'); } else { if (document.querySelector('#displayName')) { document.querySelector('input[name=passwd]').value = '{{password}}';  document.querySelector('input[name=passwd]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); } else { setTimeout(function() { fillPasswordWhenReady(tries - 1); }, 200); } } } fillPasswordWhenReady(25);"
+                        }
+                    ]
+                }
+            ]
+        },
+        "register": {
+            "url": "https://signup.live.com/signup"
+        },
+        "passwordChange": "TODO"
+        },
+        "passwordReset": {
+            "url": "https://login.live.com/password",
+            "maxTries": null,
+            "routines": null
+        }
+    }
+}
