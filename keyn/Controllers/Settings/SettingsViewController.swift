@@ -55,12 +55,14 @@ class SettingsViewController: UITableViewController {
     // MARK: Private functions
 
     private func setFooterText() {
-        do {
-            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
-            tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        } catch {
-            print("TODO: Handle error")
-        }
+        // TODO: Crash app for now.
+        securityFooterText = try! Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+//        do {
+//
+//        } catch {
+//            print("TODO: Handle error")
+//        }
     }
 
 

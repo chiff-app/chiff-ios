@@ -19,13 +19,10 @@ class BackupWizardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            mnemonic = try Seed.mnemonic()
-            wordLabel.text = mnemonic![counter]
-            counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
-        } catch {
-            // Handle error and total destruction
-        }
+        // TODO: Handle error and total destruction
+        mnemonic = try! Seed.mnemonic()
+        wordLabel.text = mnemonic![counter]
+        counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

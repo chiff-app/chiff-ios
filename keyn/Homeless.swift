@@ -52,7 +52,7 @@ extension UIApplication {
 
 extension String {
     func hash() throws -> String {
-        return try Crypto.sharedInstance.hash(self)
+        return try! Crypto.sharedInstance.hash(self)
     }
 }
 
@@ -90,6 +90,7 @@ extension String {
         }
         return padded
     }
+    
 }
 
 extension Data {
