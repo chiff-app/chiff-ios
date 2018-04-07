@@ -135,15 +135,16 @@ class AWS {
                 return nil
             }
             if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
-                do {
+                // TODO: Crash for now (with saving, not deleting)
+//                do {
                     // Try to remove anything from Keychain to avoid conflicts
                     try? Keychain.sharedInstance.delete(id: self.endpointIdentifier, service: self.awsService)
-                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
+                    try! Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
-                } catch {
-                    print(error)
-                }
+//                } catch {
+//                    print(error)
+//                }
             }
             return nil
         }).continueWith(block: { (task: AWSTask!) -> Any? in
