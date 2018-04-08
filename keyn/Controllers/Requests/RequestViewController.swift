@@ -57,8 +57,9 @@ class RequestViewController: UIViewController {
                 siteLabel.text = "Unknown site"
                 return
             }
-            do {
-                account = try Account.get(siteID: notification.siteID)
+            // TODO: Crash app for now.
+//            do {
+                account = try! Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
                 if let account = self.account {
                     // Automatically present the touchID popup
@@ -74,9 +75,9 @@ class RequestViewController: UIViewController {
                         }
                     })
                 }
-            } catch {
-                print("Error getting account: \(error)")
-            }
+//            } catch {
+//                print("Error getting account: \(error)")
+//            }
         }
     }
 

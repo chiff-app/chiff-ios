@@ -11,14 +11,15 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            if let storedSessions = try Session.all() {
+        // TODO: Crash app for now
+//        do {
+            if let storedSessions = try! Session.all() {
                 print("Loading sessions from keychain.")
                 sessions = storedSessions
             }
-        } catch {
-            print("Sessions could not be loaded: \(error)")
-        }
+//        } catch {
+//            print("Sessions could not be loaded: \(error)")
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

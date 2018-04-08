@@ -18,8 +18,6 @@ class Keychain {
     
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
-    // TODO: Add accessability restrictions
-
     // MARK:  CRUD methods
 
     func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, restricted: Bool = true) throws {

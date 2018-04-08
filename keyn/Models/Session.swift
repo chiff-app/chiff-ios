@@ -3,6 +3,7 @@ import Foundation
 enum SessionError: Error {
     case exists
     case invalid
+    case noEndpoint
 }
 
 class Session: Codable {
@@ -177,7 +178,7 @@ class Session: Codable {
 
     static private func createPairingResponse(session: Session) throws -> String {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
-            return "" // TODO Throw error
+            throw SessionError.noEndpoint
         }
         let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint)
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)

@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // FOR TESTING PURPOSES
         //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
-        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
+        //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
 
@@ -64,8 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return
         }
         if browserMessageType == .end {
-            // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+            // TODO: If errors are thrown here, they should be logged. App will now crash on errors
+            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
             if let rootViewController = window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
                 for viewController in devicesNavigationController.viewControllers {
                     if let devicesViewController = viewController as? DevicesViewController {
@@ -109,8 +109,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         if browserMessageType == .end {
-            // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+            // TODO: If errors are thrown here, they should be logged. App now crashes.
+            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
         } else {
             guard let siteID = response.notification.request.content.userInfo["siteID"] as? Int else {
                 completionHandler()
@@ -247,15 +247,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let sessionID = notification.request.content.userInfo["sessionID"] as? String,
                     browserMessageType == .end
                 {
-                    try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                    try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
                 }
             }
         }
     }
 
     private func launchRequestView(with notification: PushNotification) {
-        do {
-            if let session = try Session.getSession(id: notification.sessionID) {
+        // TODO: crash for now.
+        //do {
+            if let session = try! Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
 
@@ -268,9 +269,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             } else {
                 print("Received request for session that doesn't exist.")
             }
-        } catch {
-            print("Session could not be decoded: \(error)")
-        }
+//        } catch {
+//            print("Session could not be decoded: \(error)")
+//        }
     }
     
     private func launchInitialView() {

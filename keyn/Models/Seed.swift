@@ -36,9 +36,9 @@ struct Seed {
         let seedHash = try Crypto.sharedInstance.hash(seed).first!
         var bitstring = ""
         for byte in Array<UInt8>(seed) {
-            bitstring += pad(string: String(byte, radix: 2), toSize: 8)
+            bitstring += String(byte, radix: 2).pad(toSize: 8)
         }
-        bitstring += pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4)
+        bitstring += String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4)
 
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
         let wordlist = wordlistData.components(separatedBy: .newlines)
@@ -62,7 +62,7 @@ struct Seed {
         guard let seedHash = try? Crypto.sharedInstance.hash(seed).first! else {
             return false
         }
-        if checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) {
+        if checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) {
             return true
         }
         return false
@@ -77,7 +77,7 @@ struct Seed {
             guard let index: Int = wordlist.index(of: word) else {
                 throw CryptoError.mnemonicConversion
             }
-            bitstring += pad(string: String(index, radix: 2), toSize: 11)
+            bitstring += String(index, radix: 2).pad(toSize: 11)
         }
         
         let checksum = bitstring.suffix(mnemonic.count / 3)
@@ -97,7 +97,7 @@ struct Seed {
         let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
 
         let seedHash = try Crypto.sharedInstance.hash(seed).first!
-        guard checksum == pad(string: String(String(seedHash, radix: 2).prefix(seed.count / 4)), toSize: seed.count / 4) else {
+        guard checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) else {
             return false
         }
 
@@ -110,15 +110,6 @@ struct Seed {
         try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
         
         return true
-    }
-
-    // TODO: Make this a String extension
-    private static func pad(string : String, toSize: Int) -> String {
-        var padded = string
-        for _ in 0..<(toSize - string.count) {
-            padded = "0" + padded
-        }
-        return padded
     }
 
     static func getPasswordKey() throws -> Data {
