@@ -22,6 +22,7 @@ class Crypto {
     static let sharedInstance = Crypto()
     
     private let sodium = Sodium()
+    private let SEED_SIZE = 16
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
@@ -35,10 +36,9 @@ class Crypto {
     func generateSeed() throws -> Data {
         // Generate random seed
         // TODO: Should this be replaced by libsodium key generation function?
-        var seed = Data(count: 16)
-
+        var seed = Data(count: SEED_SIZE)
         let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
-            SecRandomCopyBytes(kSecRandomDefault, seed.count, mutableBytes)
+            SecRandomCopyBytes(kSecRandomDefault, SEED_SIZE, mutableBytes)
         }
 
         guard seedGenerationStatus == errSecSuccess else {

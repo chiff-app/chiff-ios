@@ -9,6 +9,7 @@
 import UIKit
 import AWSCore
 import UserNotifications
+import os.log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -96,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
+        os_log("Background notification called")
         // TODO: Find out why we cannot pass RequestType in userInfo..
         guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             completionHandler()
@@ -154,8 +155,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     private func cancelAutoAuthentication() {
+        os_log("Cancel auto authentication called")
         if let viewController = self.window?.rootViewController as? LoginViewController {
             viewController.autoAuthentication = false
+            os_log("Auto authentication cancelled")
         } 
     }
 
@@ -203,6 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called as part of the transition from the background to the active state;
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
+        os_log("Application will enter foreground")
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
         handlePendingEndSessionNotifications()
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -219,6 +223,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
+        os_log("Application did become active")
         if let lockView = self.window?.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }

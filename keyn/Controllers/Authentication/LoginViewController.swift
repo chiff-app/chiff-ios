@@ -8,6 +8,7 @@
 
 import UIKit
 import LocalAuthentication
+import os.log
 
 class LoginViewController: UIViewController {
 
@@ -25,7 +26,8 @@ class LoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if autoAuthentication {
-            authenticateUser()
+            os_log("Auto authenticate in viewDidAppear called", type: .debug)
+            self.authenticateUser()
         }
     }
 
@@ -35,7 +37,8 @@ class LoginViewController: UIViewController {
 
     // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
-        authenticateUser()
+        os_log("Manual authenticate in viewDidAppear called", type: .debug)
+        self.authenticateUser()
     }
 
     @IBAction func unwindToLoginViewController(sender: UIStoryboardSegue) { }
@@ -56,7 +59,6 @@ extension UIViewController  {
             print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code))
             return
         }
-
         localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString) { success, evaluateError in
 
             if success {
@@ -128,20 +130,9 @@ extension UIViewController  {
             default:
                 message = "Did not find error code on LAError object"
             }
-        } else {
-            switch errorCode {
-            case LAError.touchIDLockout.rawValue:
-                message = "Too many failed attempts."
-            case LAError.touchIDNotAvailable.rawValue:
-                message = "TouchID is not available on the device"
-            case LAError.touchIDNotEnrolled.rawValue:
-                message = "TouchID is not enrolled on the device"
-            default:
-                message = "Did not find error code on LAError object"
-            }
-        }
+        } 
 
-        return message;
+        return message
     }
 
 
