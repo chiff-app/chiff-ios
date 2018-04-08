@@ -241,9 +241,8 @@ class PasswordValidator {
             let range = NSMakeRange(0, password.count)
             return regex.numberOfMatches(in: password, range: range)
 //        } catch {
-//            print("There was an error creating the NSRegularExpression: \(error)")
+//            print("There was an error creating the NSRegularExpression: \(error)")        
 //        }
-        return 0
     }
 
 }
