@@ -96,8 +96,8 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
             authorizeRequest(site: site, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
-                        do {
-                            let newAccount = try Account(username: username, site: site, password: type == BrowserMessageType.addAndChange ? nil : password)
+                        //do {
+                            let newAccount = try! Account(username: username, site: site, password: type == BrowserMessageType.addAndChange ? nil : password)
                             self?.account = newAccount
                             try! session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type, password: type == BrowserMessageType.addAndChange ? password : nil)
 
@@ -111,10 +111,10 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
                                     }
                                 }
                             }
-                        } catch {
-                            // TODO: Handle errors in UX
-                            print("Account could not be saved: \(error)")
-                        }
+//                        } catch {
+//                            // TODO: Handle errors in UX
+//                            print("Account could not be saved: \(error)")
+//                        }
                         self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                     }
                 } else {

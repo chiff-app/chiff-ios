@@ -70,17 +70,18 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
-        do {
-            if try Seed.recover(mnemonic: mnemonic) {
+        // TODO: Crash app for now
+//        do {
+            if try! Seed.recover(mnemonic: mnemonic) {
                 if isInitialSetup {
                     loadRootController()
                 } else {
                     self.dismiss(animated: true, completion: nil)
                 }
             }
-        } catch {
-            print("Seed could not be recovered: \(error)")
-        }
+//        } catch {
+//            print("Seed could not be recovered: \(error)")
+//        }
     }
     
     private func loadRootController() {
