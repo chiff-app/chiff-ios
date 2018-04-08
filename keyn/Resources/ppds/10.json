@@ -1,5 +1,6 @@
 {
-    "characterSets": [{
+    "characterSets": [
+        {
             "base": [],
             "characters": "abcdefghijklmnopqrstuvwxyz",
             "name": "LowerLetters"
@@ -16,7 +17,7 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -=+",
             "name": "Specials"
         }
     ],
@@ -36,16 +37,20 @@
         "login": {
             "url": "https://login.live.com",
             "maxTries": 3,
-            "routines": [{
+            "routines": [
+                {
                     "type": "extendedJSLoginRoutine",
-                    "instructions": [{
+                    "instructions": [
+                        {
                             "type": "get",
                             "url": "https://login.live.com",
                             "assert": {
-                                "assertions": [{
-                                    "expression": null,
-                                    "prefix": "https://login.live.com"
-                                }]
+                                "assertions": [
+                                    {
+                                        "expression": null,
+                                        "prefix": "https://login.live.com"
+                                    }
+                                ]
                             }
                         },
                         {
@@ -60,11 +65,10 @@
             "url": "https://signup.live.com/signup"
         },
         "passwordChange": "TODO"
-        },
-        "passwordReset": {
-            "url": "https://login.live.com/password",
-            "maxTries": null,
-            "routines": null
-        }
+    },
+    "passwordReset": {
+        "url": "https://login.live.com/password",
+        "maxTries": null,
+        "routines": null
     }
 }

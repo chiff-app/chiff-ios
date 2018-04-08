@@ -1,5 +1,5 @@
 import UserNotifications
-
+import os.log
 
 class NotificationPreprocessor {
 
@@ -33,7 +33,7 @@ class NotificationPreprocessor {
                     return content
                 }
             } catch {
-                print("Session could not be decoded: \(error)")
+                print("Session could not be decoded")
             }
         }
 
