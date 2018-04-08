@@ -181,13 +181,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let frame = self.window?.frame {
             let lockView = UIView(frame: frame)
             let keynLogoView = UIImageView(image: UIImage(named: "logo"))
-            keynLogoView.frame = CGRect(x: 138, y: 289, width: 99, height: 88) // TODO: Make autolayout constrained
+            
+            keynLogoView.frame = CGRect(x: 0, y: 289, width: 375, height: 88)
             keynLogoView.contentMode = .scaleAspectFit
             lockView.addSubview(keynLogoView)
             lockView.backgroundColor = UIColor(rgb: 0x46319B)
             lockView.tag = lockViewTag
+            
             self.window?.addSubview(lockView)
             self.window?.bringSubview(toFront: lockView)
+            
+            // TODO: Make autolayout constrained
+//            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
+//            keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
+//            keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
+//            keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
         }
     }
 
