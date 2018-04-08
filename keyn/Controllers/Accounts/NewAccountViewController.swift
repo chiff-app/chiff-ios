@@ -33,9 +33,6 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
     @IBAction override func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
