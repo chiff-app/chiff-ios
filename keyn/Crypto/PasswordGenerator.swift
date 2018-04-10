@@ -24,7 +24,7 @@ class PasswordGenerator {
 
 
     func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
-        let (length, chars) = parse(ppd: ppd, customPassword: false)
+        let (length, chars) = parse(ppd: ppd, customPassword: offset != nil)
 
         guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
             throw PasswordGenerationError.tooShort
@@ -39,7 +39,7 @@ class PasswordGenerator {
                 password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
             }
         }
-
+        
         return (password, index)
     }
 
@@ -103,11 +103,11 @@ class PasswordGenerator {
         if let characterSets = ppd?.characterSets {
             for characterSet in characterSets {
                 if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
+                    chars.append(contentsOf: characters.sorted())
                 }
             }
         } else {
-            chars.append(contentsOf: [Character](PasswordValidator.OPTIMAL_CHARACTER_SET)) // Optimal character set
+            chars.append(contentsOf: PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()) // Optimal character set
         }
         
         if let maxLength = ppd?.properties?.maxLength {

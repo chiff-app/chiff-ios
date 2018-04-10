@@ -14,7 +14,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             if let savedAccounts = try! Account.all() {
                 unfilteredAccounts.append(contentsOf: savedAccounts)
             } else if Properties.isDebug {
-                try! loadSampleData()
+                //try! loadSampleData()
             }
 //        } catch {
 //            print("Account could not be fetched from keychain: \(error)")
