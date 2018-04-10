@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         pushNotification = nil
         fetchAWSIdentification()
-        launchInitialView()
         registerForPushNotifications()
         
         // Set purple line under NavigationBar
@@ -328,6 +327,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if granted {
                 DispatchQueue.main.sync {
                     UIApplication.shared.registerForRemoteNotifications()
+                    self.launchInitialView()
                 }
             } else {
                 // TODO: Do stuff if unsuccessful… Inform user that app can't be used without push notifications

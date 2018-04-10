@@ -7,7 +7,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     var notification: PushNotification?
     var session: Session?
     var passwordIsHidden = true
-    var newPassword = false
+    var newPassword = true
     var passwordValidator: PasswordValidator? = nil
     var site: Site?
     @IBOutlet weak var saveButton: UIBarButtonItem!
