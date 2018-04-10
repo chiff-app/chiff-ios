@@ -11,31 +11,12 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-+=",
             "name": "Specials"
         }
     ],
     "properties": {
-        "characterSettings": {
-            "characterSetSettings": [{
-                    "minOccurs": null,
-                    "maxOccurs": null,
-                    "name": "Letters"
-                },
-                {
-                    "minOccurs": null,
-                    "maxOccurs": null,
-                    "name": "Numbers"
-                },
-                {
-                    "minOccurs": null,
-                    "maxOccurs": null,
-                    "name": "Specials"
-                }
-            ],
-            "requirementGroups": [],
-            "positionRestrictions": []
-        },
+        "characterSettings": null,
         "maxConsecutive": null,
         "minLength": 8,
         "maxLength": null,
@@ -50,87 +31,109 @@
         "login": {
             "url": "https://accounts.google.com",
             "maxTries": 3,
-            "routines": [{
+            "routines": [
+                {
                     "type": "extendedJSLoginRoutine",
-                    "instructions": [{
+                    "instructions": [
+                        {
                             "type": "get",
-                            "url": "https://accounts.google.com/signin/v2/identifier",
-                            "assert": {
-                                "assertions": [{
+                            "url": "https://accounts.google.com/ServiceLogin/signinchooser",
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
-                                    "prefix": "https://accounts.google.com/signin/v2/identifier"
-                                }]
-                            }
+                                    "prefix": "https://accounts.google.com/ServiceLogin/signinchooser"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "javascript",
+                            "script": "document.querySelector(\"#identifierLink\").click()",
+                            "assert": [
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/ServiceLogin/identifier"
+                                }
+                            ]
+
                         },
                         {
                             "type": "form",
                             "selector": {
                                 "value": "form"
                             },
-                            "element": [{
+                            "element": [
+                                {
                                     "selector": {
                                         "value": "#identifierId"
                                     },
                                     "value": "{{username}}"
-                                },
-                                {
-                                    "selector": {
-                                        "value": "[type=password]"
-                                    },
-                                    "value": "{{password}}"
                                 }
-                            ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
-                                    "minOccurs": 1,
-                                    "maxOccurs": 1
-                                }]
-                            }
+                            ]
                         },
                         {
                             "type": "javascript",
-                            "script": "document.querySelector(\"#identifierId\").value={{username}};document.querySelector(\"form\").submit()"
-                        }
-                    ]
-                },
-                {
-                    "type": "htmlLoginRoutine",
-                    "instructions": [{
-                            "type": "get",
-                            "url": "https://www.facebook.com/login.php",
-                            "assert": {
-                                "assertions": [{
+                            "script": "document.querySelector(\"#identifierNext\").click()",
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
-                                    "prefix": "https://www.facebook.com"
-                                }]
-                            }
+                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                                }
+                            ]
                         },
                         {
                             "type": "form",
                             "selector": {
-                                "value": "#login_form"
+                                "value": "form"
                             },
-                            "element": [{
-                                    "selector": {
-                                        "value": "#email"
-                                    },
-                                    "value": "{{username}}"
-                                },
+                            "element": [
                                 {
                                     "selector": {
-                                        "value": "#pass"
+                                        "value": "input[name=password]"
                                     },
                                     "value": "{{password}}"
                                 }
-                            ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
-                                    "minOccurs": 1,
-                                    "maxOccurs": 1
-                                }]
-                            }
+                            ]
+                        },
+                        {
+                            "type": "javascript",
+                            "script": "document.querySelector(\"#passwordNext\").click()"
+                        }
+                    ]
+                },
+                {
+                    "type": "extendedJSLoginRoutine",
+                    "instructions": [
+                        {
+                            "type": "get",
+                            "url": "https://accounts.google.com/signin/v2/sl/pwd",
+                            "assert": [
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "form",
+                            "selector": {
+                                "value": "form"
+                            },
+                            "element": [
+                                {
+                                    "selector": {
+                                        "value": "input[name=password]"
+                                    },
+                                    "value": "{{password}}"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "javascript",
+                            "script": "document.querySelector(\"#passwordNext\").click()"
                         }
                     ]
                 }
@@ -146,52 +149,73 @@
                 "type": "extendedJSPasswordChangeRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.facebook.com/settings?tab=security&section=password&view",
-                        "assert": {
-                            "assertions": [{
+                        "url": "https://myaccount.google.com/signinoptions/password",
+                        "assert": [
+                            {
+                                "type": "url",
                                 "expression": null,
-                                "prefix": "https://www.facebook.com/settings?tab=security&section=password&view"
-                            }]
-                        }
+                                "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                            }
+                        ]
                     },
                     {
                         "type": "form",
                         "selector": {
                             "value": "form"
                         },
-                        "element": [{
+                        "element": [
+                            {
                                 "selector": {
-                                    "value": "#password_old"
+                                    "value": "input[name=password]"
                                 },
                                 "value": "{{password}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#password_new"
-                                },
-                                "value": "{{newPassword}}"
-                            },
-                            {
-                                "selector": {
-                                    "value": "#password_confirm"
-                                },
-                                "value": "{{newPassword}}"
                             }
-                        ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": "div.success",
-                                "minOccurs": 1,
-                                "maxOccurs": 1
-                            }]
-                        }
+                        ]
                     },
                     {
                         "type": "javascript",
-                        "script": "alert(\"TODO, click submit hehe\")"
+                        "script": "document.querySelector(\"#passwordNext\").click()",
+                        "assert": [
+                            {
+                                "type": "url",
+                                "expression": null,
+                                "prefix": "https://myaccount.google.com/signinoptions/password"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "form",
+                        "selector": {
+                            "value": "form"
+                        },
+                        "element": [
+                            {
+                                "selector": {
+                                    "value": "input[name=password]"
+                                },
+                                "value": "{{newPassword}}"
+                            },
+                            {
+                                "selector": {
+                                    "value": "input[name=confirmation_password]"
+                                },
+                                "value": "{{newPassword}}"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "var buttons=document.querySelectorAll(\"div[role=button]:only-child\");for (i=0;i<buttons.length;i++) { if(buttons[i].innerText === \"CHANGE PASSWORD\") {buttons[i].click()}}",
+                        "assert": [
+                            {
+                                "type": "url",
+                                "expression": null,
+                                "prefix": "https://myaccount.google.com/secureaccount/welcome"
+                            }
+                        ]
                     }
                 ],
-                "login": "htmlLoginRoutine"
+                "login": "extendedJSLoginRoutine"
             }]
         },
         "passwordReset": {

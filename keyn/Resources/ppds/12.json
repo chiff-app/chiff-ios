@@ -1,13 +1,17 @@
 {
-    "characterSets": [
-        {
+    "characterSets": [{
             "base": [],
-            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-            "name": "Letters"
+            "characters": "abcdefghijklmnopqrstuvwxyz",
+            "name": "LowerLetters"
         },
         {
             "base": [],
-            "characters": "0123456789",
+            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "UpperLetters"
+        },
+        {
+            "base": [],
+            "characters": "1234567890",
             "name": "Numbers"
         },
         {
@@ -17,70 +21,79 @@
         }
     ],
     "properties": {
-        "minLength": 8,
-        "expires": 0,
         "characterSettings": {
-            "characterSetSettings": [
-                {
-                    "name": "Letters",
-                    "minOccurs": 1
-                }
-            ]
+            "characterSetSettings": [],
+            "requirementGroups": [{
+                "requirementRules": [{
+                        "characterSet": "Specials",
+                        "minOccurs": 1
+                    },
+                    {
+                        "characterSet": "Numbers",
+                        "minOccurs": 1
+                    }
+                ],
+                "minRules": 1
+            }]
         },
-        "maxConsecutive": 3,
-        "maxLength": 15
+        "maxConsecutive": null,
+        "minLength": 8,
+        "maxLength": null,
+        "expires": null
     },
+    "version": null,
     "timestamp": null,
-    "url": "https://www.mediamarkt.nl",
-    "name": "Mediamarkt",
-    "version": "1.0",
+    "url": "https://www.airbnb.com/",
+    "redirect": null,
+    "name": "Airbnb",
     "service": {
         "login": {
-            "url": "https://www.mediamarkt.nl/",
+            "url": "https://www.airbnb.com",
             "maxTries": 3,
             "routines": [{
                 "type": "htmlLoginRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm",
-                        "assert": {
-                            "assertions": [{
+                        "url": "https://www.airbnb.com/login",
+                        "assert": [
+                            {
+                                "type": "url",
                                 "expression": null,
-                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm"
-                            }]
-                        }
+                                "prefix": "https://www.airbnb.com/login"
+                            }
+                        ]
                     },
                     {
                         "type": "form",
                         "selector": {
-                            "value": "#login-form"
+                            "value": "form[action$=authenticate]"
                         },
                         "element": [{
                                 "selector": {
-                                    "value": "#login-email"
+                                    "value": "#signin_email"
                                 },
                                 "value": "{{username}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#login-password"
+                                    "value": "#signin_password"
                                 },
                                 "value": "{{password}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
-                        }
+                        "assert": [
+                            {
+                                "type": "url",
+                                "expression": null,
+                                "prefix": "https://www.airbnb.com/dashboard"
+                            }
+                        ]
                     }
                 ]
             }]
         },
         "register": {
-            "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMARegister"
+            "url": "https://www.airbnb.com/signup_login"
         },
         "passwordChange": {
             "url": null,
@@ -89,52 +102,54 @@
                 "type": "htmlPasswordChangeRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword",
-                        "assert": {
-                            "assertions": [{
+                        "url": "https://www.airbnb.com/users/security/183519205",
+                        "assert": [
+                            {
+                                "type":"url",
                                 "expression": null,
-                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword"
-                            }]
-                        }
+                                "prefix": "https://www.airbnb.com/users/security/183519205"
+                            }
+                        ]
                     },
                     {
                         "type": "form",
                         "selector": {
-                            "value": "#change-password-form"
+                            "value": "#site-content > div > div > div.col-md-9 > form"
                         },
-                        "element": [{
+                        "element": [
+                            {
                                 "selector": {
-                                    "value": "#current-password"
+                                    "value": "#old_password"
                                 },
                                 "value": "{{password}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#new-password"
+                                    "value": "#new_password"
                                 },
                                 "value": "{{newPassword}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#new-password-confirm"
+                                    "value": "#user_password_confirmation"
                                 },
                                 "value": "{{newPassword}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
+                        "assert": [
+                            {
                                 "selector": "TODO",
                                 "minOccurs": 1,
                                 "maxOccurs": 1
-                            }]
-                        }
+                            }
+                        ]
                     }
                 ],
                 "login": "htmlLoginRoutine"
             }]
         },
         "passwordReset": {
-            "url": "https://www.coolblue.nl/wachtwoordvergeten",
+            "url": "https://www.airbnb.com/forgot_password",
             "maxTries": null,
             "routines": null
         }

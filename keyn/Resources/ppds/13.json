@@ -1,13 +1,17 @@
 {
-    "characterSets": [
-        {
+    "characterSets": [{
             "base": [],
-            "characters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-            "name": "Letters"
+            "characters": "abcdefghijklmnopqrstuvwxyz",
+            "name": "LowerLetters"
         },
         {
             "base": [],
-            "characters": "0123456789",
+            "characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "name": "UpperLetters"
+        },
+        {
+            "base": [],
+            "characters": "1234567890",
             "name": "Numbers"
         },
         {
@@ -17,70 +21,65 @@
         }
     ],
     "properties": {
-        "minLength": 8,
-        "expires": 0,
-        "characterSettings": {
-            "characterSetSettings": [
-                {
-                    "name": "Letters",
-                    "minOccurs": 1
-                }
-            ]
-        },
-        "maxConsecutive": 3,
-        "maxLength": 15
+        "characterSettings": null,
+        "maxConsecutive": null,
+        "minLength": 6,
+        "maxLength": null,
+        "expires": null
     },
+    "version": null,
     "timestamp": null,
-    "url": "https://www.mediamarkt.nl",
-    "name": "Mediamarkt",
-    "version": "1.0",
+    "url": "https://datumprikker.nl/",
+    "redirect": null,
+    "name": "Datumprikker",
     "service": {
         "login": {
-            "url": "https://www.mediamarkt.nl/",
+            "url": "https://datumprikker.nl/account/login",
             "maxTries": 3,
             "routines": [{
                 "type": "htmlLoginRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm",
-                        "assert": {
-                            "assertions": [{
+                        "url": "https://datumprikker.nl/account/login",
+                        "assert": [
+                            {
+                                "type": "url",
                                 "expression": null,
-                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/LogonForm"
-                            }]
-                        }
+                                "prefix": "https://datumprikker.nl/account/login"
+                            }
+                        ]
                     },
                     {
                         "type": "form",
                         "selector": {
-                            "value": "#login-form"
+                            "value": "#loginform"
                         },
                         "element": [{
                                 "selector": {
-                                    "value": "#login-email"
+                                    "value": "#email"
                                 },
                                 "value": "{{username}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#login-password"
+                                    "value": "#password"
                                 },
                                 "value": "{{password}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": ".profile-button",
-                                "minOccurs": 1,
-                                "maxOccurs": null
-                            }]
-                        }
+                        "assert": [
+                            {
+                                "type": "url",
+                                "expression": null,
+                                "prefix": "https://www.airbnb.com/dashboard"
+                            }
+                        ]
                     }
                 ]
             }]
         },
         "register": {
-            "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMARegister"
+            "url": "https://datumprikker.nl/account/aanmaken"
         },
         "passwordChange": {
             "url": null,
@@ -89,52 +88,54 @@
                 "type": "htmlPasswordChangeRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword",
-                        "assert": {
-                            "assertions": [{
+                        "url": "https://www.airbnb.com/users/security/183519205",
+                        "assert": [
+                            {
+                                "type":"url",
                                 "expression": null,
-                                "prefix": "https://www.mediamarkt.nl/webapp/wcs/stores/servlet/MultiChannelMAChangePassword"
-                            }]
-                        }
+                                "prefix": "https://www.airbnb.com/users/security/183519205"
+                            }
+                        ]
                     },
                     {
                         "type": "form",
                         "selector": {
-                            "value": "#change-password-form"
+                            "value": "#site-content > div > div > div.col-md-9 > form"
                         },
-                        "element": [{
+                        "element": [
+                            {
                                 "selector": {
-                                    "value": "#current-password"
+                                    "value": "#old_password"
                                 },
                                 "value": "{{password}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#new-password"
+                                    "value": "#new_password"
                                 },
                                 "value": "{{newPassword}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#new-password-confirm"
+                                    "value": "#user_password_confirmation"
                                 },
                                 "value": "{{newPassword}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
+                        "assert": [
+                            {
                                 "selector": "TODO",
                                 "minOccurs": 1,
                                 "maxOccurs": 1
-                            }]
-                        }
+                            }
+                        ]
                     }
                 ],
                 "login": "htmlLoginRoutine"
             }]
         },
         "passwordReset": {
-            "url": "https://www.coolblue.nl/wachtwoordvergeten",
+            "url": "https://datumprikker.nl/account/nieuwwachtwoordinstellen",
             "maxTries": null,
             "routines": null
         }
