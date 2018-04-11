@@ -150,7 +150,7 @@ class PasswordGenerationTests: XCTestCase {
         // Comma separated list of character positions the restriction is applied to. Each position can be a character position starting with 0. Negative character positions can be used to specify the position beginning from the end of the password. A value in the interval (0,1) can be used to specify a position by ratio. E.g. 0.5 refers to the center position of the password.
         positionRestrictions.append(PPDPositionRestriction(positions: "0", minOccurs: 1, maxOccurs: nil, characterSet: "UpperLetters")) // Password should start with a captial
         positionRestrictions.append(PPDPositionRestriction(positions: "-1,-2", minOccurs: 2, maxOccurs: 2, characterSet: "Numbers")) // Password should end with 2 numbers (?). Are occurences for the range or per position
-        positionRestrictions.append(PPDPositionRestriction(positions: "0.5", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")) // There should be lower letters on position 0.5
+        positionRestrictions.append(PPDPositionRestriction(positions: "-8", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")) // There should be lower letters on position 0.5
         positionRestrictions.append(PPDPositionRestriction(positions: "1,-3,2", maxOccurs: 2, characterSet: "Specials")) // There should be no more than 2 specials on positions 1, -3 and 2
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
         let validator = PasswordValidator(ppd: ppd)
@@ -175,7 +175,7 @@ class PasswordGenerationTests: XCTestCase {
         let rule1 = PPDRequirementRule(positions: "0", minOccurs: 1, maxOccurs: nil, characterSet: "UpperLetters")
         let rule2 = PPDRequirementRule(positions: "-1,-2", minOccurs: 2, maxOccurs: 2, characterSet: "Numbers")
 
-        let rule3 = PPDRequirementRule(positions: "0.5", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")
+        let rule3 = PPDRequirementRule(positions: "-8", minOccurs: 1, maxOccurs: 3, characterSet: "LowerLetters")
         let rule4 = PPDRequirementRule(positions: "1,2,-3", maxOccurs: 2, characterSet: "Specials")
         let rule5 = PPDRequirementRule(positions: nil, minOccurs: 1, maxOccurs: nil, characterSet: "Numbers")
         // ADD rules with no position restrictions

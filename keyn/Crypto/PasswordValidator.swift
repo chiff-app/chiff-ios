@@ -22,7 +22,10 @@ class PasswordValidator {
         self.ppd = ppd
         if let characterSets = ppd?.characterSets {
             for characterSet in characterSets {
-                characters += characterSet.characters ?? ""
+                if let characters = characterSet.characters {
+                    self.characters += String(characters.sorted())
+                    print(self.characters)
+                }
                 characterSetDictionary[characterSet.name] = characterSet.characters
             }
         } else { characters += PasswordValidator.OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
@@ -216,33 +219,28 @@ class PasswordValidator {
             if let position = Int(position) {
                 let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
                 if characterSet.contains(password[index]) { occurences += 1 }
-            } else if let position = Double(position) {
-                let index = position * Double(password.count) - 0.5
-                let upperIndex = Int(ceil(index))
-                let lowerIndex = Int(floor(index))
-                if upperIndex == lowerIndex {
-                    let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    if characterSet.contains(letter) { occurences += 1 }
-                } else {
-                    let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
-                    if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
-                }
             }
         }
         return occurences
     }
 
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-        let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
+       // let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
         // TODO: Crash app for now
+        //  TODO: Fix NSRegularExpression Error
+        var occurences = 0
+        for character in password {
+            if characterSet.contains(character) { occurences += 1 }
+        }
 //        do {
-            let regex = try! NSRegularExpression(pattern: "[\(escapedCharacters)]")
-            let range = NSMakeRange(0, password.count)
-            return regex.numberOfMatches(in: password, range: range)
+//            let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
+//            let range = NSMakeRange(0, password.count)
+//            return regex.numberOfMatches(in: password, range: range)
 //        } catch {
-//            print("There was an error creating the NSRegularExpression: \(error)")        
+//            print("There was an error creating the NSRegularExpression: \(error)")
 //        }
+//        return 0
+        return occurences
     }
 
 }
