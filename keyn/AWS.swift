@@ -24,7 +24,6 @@ class AWS {
     private let endpointIdentifier = "snsDeviceEndpointArn"
     private let PAIR_TIMEOUT = 1 // 60
     private let LOGIN_TIMEOUT = 1 // 180
-    let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
     private init() {}
@@ -136,15 +135,15 @@ class AWS {
             }
             if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
                 // TODO: Crash for now (with saving, not deleting)
-//                do {
+                do {
                     // Try to remove anything from Keychain to avoid conflicts
                     try? Keychain.sharedInstance.delete(id: self.endpointIdentifier, service: self.awsService)
                     try! Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
-//                } catch {
-//                    print(error)
-//                }
+                } catch {
+                    print(error)
+                }
             }
             return nil
         }).continueWith(block: { (task: AWSTask!) -> Any? in

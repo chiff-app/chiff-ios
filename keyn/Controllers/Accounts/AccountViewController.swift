@@ -17,16 +17,15 @@ class AccountViewController: UITableViewController {
         super.viewDidLoad()
 
         if let account = account {
-            websiteNameTextField.text = account.site.name
-            websiteURLTextField.text = account.site.urls[0]
-            userNameTextField.text = account.username
-            userPasswordTextField.text = try! account.password() // For now crash app
-//            do {
-//
-//            } catch {
-//                // TODO: Password could not be loaded, present error?
-//                print(error)
-//            }
+            do {
+                websiteNameTextField.text = account.site.name
+                websiteURLTextField.text = account.site.urls[0]
+                userNameTextField.text = account.username
+                userPasswordTextField.text = try! account.password()
+            } catch {
+                // TODO: Password could not be loaded, present error?
+                print(error)
+            }
             navigationItem.title = account.site.name
             navigationItem.largeTitleDisplayMode = .never
         }

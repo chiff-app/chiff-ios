@@ -2,6 +2,11 @@ import UIKit
 import AVFoundation
 import LocalAuthentication
 
+enum CameraError: Error {
+    case noCamera
+    case videoInputInitFailed
+}
+
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     // MARK: Properties
@@ -13,11 +18,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
     var devicesDelegate: canReceiveSession?
-    
-    enum CameraError: Error {
-        case noCamera
-        case videoInputInitFailed
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,9 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                             return
                         }
                         recentlyScannedUrls.append(url)
-                        pairPermission(pubKey: pubKey, sqs: sqs, browser: browser, os: os)
+                        DispatchQueue.main.async {
+                            self.pairPermission(pubKey: pubKey, sqs: sqs, browser: browser, os: os)
+                        }
                     } else {
                         displayError(message: "This QR-code could not be decoded.")
                         qrFound = false

@@ -79,11 +79,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBAction func finish(_ sender: UIBarButtonItem) {
 
         // TODO: Crash app for now.
-//        do {
+        do {
             try! Seed.setBackedUp()
-//        } catch {
-//            print("Keychain couldn't be updated: \(error)")
-//        }
+        } catch {
+            print("Keychain couldn't be updated: \(error)")
+        }
         if isInitialSetup {
             loadRootController()
         } else {
