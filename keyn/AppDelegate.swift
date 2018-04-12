@@ -259,7 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     private func launchRequestView(with notification: PushNotification) {
         // TODO: crash for now.
-        //do {
+        do {
             if let session = try! Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
@@ -273,9 +273,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             } else {
                 print("Received request for session that doesn't exist.")
             }
-//        } catch {
-//            print("Session could not be decoded: \(error)")
-//        }
+        } catch {
+            print("Session could not be decoded: \(error)")
+        }
     }
     
     private func launchInitialView() {

@@ -10,15 +10,15 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         super.viewDidLoad()
 
         // TODO: Crash for now
-//        do {
+        do {
             if let savedAccounts = try! Account.all() {
                 unfilteredAccounts.append(contentsOf: savedAccounts)
             } else if Properties.isDebug {
                 //try! loadSampleData()
             }
-//        } catch {
-//            print("Account could not be fetched from keychain: \(error)")
-//        }
+        } catch {
+            print("Account could not be fetched from keychain: \(error)")
+        }
 
         filteredAccounts = unfilteredAccounts
         searchController.searchResultsUpdater = self
@@ -124,14 +124,14 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }) {
                 let indexPath = IndexPath(row: index, section: 0)
                 // TODO: Crash for no
-//                do {
+                do {
                     try! account.delete()
                     unfilteredAccounts.remove(at: index)
                     filteredAccounts = unfilteredAccounts
                     tableView.deleteRows(at: [indexPath], with: .automatic)
-//                } catch {
-//                    print("Account could not be deleted: \(error)")
-//                }
+                } catch {
+                    print("Account could not be deleted: \(error)")
+                }
             }
         }
     }

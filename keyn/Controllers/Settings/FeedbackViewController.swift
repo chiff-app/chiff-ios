@@ -22,6 +22,11 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
 
         nameTextField.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        
+        if let name = UserDefaults.standard.object(forKey: "name") as? String, !name.isEmpty {
+            nameTextField.text = name
+            sendButton.isEnabled = true
+        }
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
@@ -55,6 +60,9 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         let base64LoginString = loginData.base64EncodedString()
 
         // Data
+        if let name = nameTextField.text {
+            UserDefaults.standard.set(name, forKey: "name")
+        }
         let debugLogUser = nameTextField.text ?? "Anonymous"
         let message = "userFeedback"
         guard let userFeedback = textView.text else {
@@ -83,10 +91,9 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
             if let httpStatus = response as? HTTPURLResponse {
                 if httpStatus.statusCode == 200 {
                     DispatchQueue.main.async {
-                        self.navigationItem.prompt = "Feedback verstuurd. Bedankt!"
                         self.nameTextField.text = ""
-                        self.textView.text = ""
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8, execute: {
+                        self.textView.text = "Feedback verstuurd. Bedankt!"
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
                             self.navigationController?.popViewController(animated: true)
                         })
                     }

@@ -225,21 +225,10 @@ class PasswordValidator {
     }
 
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-       // let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-        // TODO: Crash app for now
-        //  TODO: Fix NSRegularExpression Error
         var occurences = 0
         for character in password {
             if characterSet.contains(character) { occurences += 1 }
         }
-//        do {
-//            let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
-//            let range = NSMakeRange(0, password.count)
-//            return regex.numberOfMatches(in: password, range: range)
-//        } catch {
-//            print("There was an error creating the NSRegularExpression: \(error)")
-//        }
-//        return 0
         return occurences
     }
 

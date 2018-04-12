@@ -38,12 +38,12 @@ class InitialisationViewController: UIViewController {
 
     @IBAction func generateSeed(_ sender: UIButton) {
         // TODO: Crash app for now.
-//        do {
+        do {
             try! Seed.create()
-//        } catch {
-//            print("TODO: Present error when seed can't be created.")
-//            print(error)
-//        }
+        } catch {
+            print("TODO: Present error when seed can't be created.")
+            print(error)
+        }
     }
     
 }

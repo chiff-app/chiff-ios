@@ -32,6 +32,9 @@ class SettingsViewController: UITableViewController {
         if section == 1 {
             return "Resetting Keyn will delete the seed and all accounts."
         }
+        if section == 2 {
+            return "Use this form to provide feedback :)"
+        }
         return nil
     }
 

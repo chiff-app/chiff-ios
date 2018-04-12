@@ -13,7 +13,7 @@ class DevicesNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // TODO: Crash app for now
-//        do {
+        do {
             if try! Session.all() != nil {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
@@ -21,9 +21,9 @@ class DevicesNavigationController: UINavigationController {
                 let qrViewController = storyboard?.instantiateViewController(withIdentifier: "QR Controller") as! QRViewController
                 pushViewController(qrViewController, animated: false)
             }
-//        } catch {
-//            print(error)
-//        }
+        } catch {
+            print(error)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
