@@ -48,6 +48,7 @@ class SettingsViewController: UITableViewController {
             Account.deleteAll()
             try? Seed.delete()
             AWS.sharedInstance.deleteEndpointArn()
+            UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
