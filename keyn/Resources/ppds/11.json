@@ -16,8 +16,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|+=-",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -_+=",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -55,12 +60,13 @@
                     "instructions": [{
                             "type": "get",
                             "url": "https://www.coolblue.nl",
-                            "assert": {
-                                "assertions": [{
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
                                     "prefix": "https://www.coolblue.nl"
-                                }]
-                            }
+                                }
+                            ]
                         },
                         {
                             "type": "form",
@@ -80,13 +86,14 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": ".profile-button",
+                            "assert": [
+                                {
+                                    "type": "select",
+                                    "selector": "a[href$=uitloggen]",
                                     "minOccurs": 1,
                                     "maxOccurs": null
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -120,13 +127,14 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": ".profile-button",
+                            "assert": [
+                                {
+                                    "type": "select",
+                                    "selector": "a[href$=uitloggen]",
                                     "minOccurs": 1,
                                     "maxOccurs": null
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 }
@@ -174,13 +182,13 @@
                                 "value": "{{newPassword}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
-                                "selector": "TODO",
-                                "minOccurs": 1,
-                                "maxOccurs": 1
-                            }]
-                        }
+                        "assert": [
+                            {
+                                "type": "url",
+                                "expression": null,
+                                "prefix": "https://www.coolblue.nl/mijn-coolblue-account/gegevens"
+                            }
+                        ]
                     }
                 ],
                 "login": "htmlLoginRoutine"

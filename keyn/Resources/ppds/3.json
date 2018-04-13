@@ -11,8 +11,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-+=",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -_+=",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -55,12 +60,13 @@
                     "instructions": [{
                             "type": "get",
                             "url": "https://twitter.com/login",
-                            "assert": {
-                                "assertions": [{
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
                                     "prefix": "https://twitter.com/login"
-                                }]
-                            }
+                                }
+                            ]
                         },
                         {
                             "type": "form",
@@ -80,13 +86,14 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
+                            "assert": [
+                                {
+                                    "type": "select",
+                                    "selector": "#user-dropdown",
                                     "minOccurs": 1,
                                     "maxOccurs": 1
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -95,12 +102,13 @@
                     "instructions": [{
                             "type": "get",
                             "url": "https://twitter.com/",
-                            "assert": {
-                                "assertions": [{
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
                                     "prefix": "https://twitter.com/"
-                                }]
-                            }
+                                }
+                            ]
                         },
                         {
                             "type": "form",
@@ -120,13 +128,14 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
+                            "assert": [
+                                {
+                                    "type": "select",
+                                    "selector": "#user-dropdown",
                                     "minOccurs": 1,
                                     "maxOccurs": 1
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 }
@@ -143,12 +152,13 @@
                 "instructions": [{
                         "type": "get",
                         "url": "https://twitter.com/settings/password",
-                        "assert": {
-                            "assertions": [{
+                        "assert": [
+                            {
+                                "type": "url",
                                 "expression": null,
                                 "prefix": "https://twitter.com/settings/password"
-                            }]
-                        }
+                            }
+                        ]
                     },
                     {
                         "type": "form",
@@ -174,19 +184,20 @@
                                 "value": "{{newPassword}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
+                        "assert": [
+                            {
+                                "type": "url",
                                 "expression": null,
                                 "prefix": "https://twitter.com/settings/passwords/password_reset_confirmation"
-                            }]
-                        }
+                            }
+                        ]
                     }
                 ],
                 "login": "htmlLoginRoutine"
             }]
         },
         "passwordReset": {
-            "url": "https://www.facebook.com/login/identify",
+            "url": "https://twitter.com/account/begin_password_reset",
             "maxTries": null,
             "routines": null
         }

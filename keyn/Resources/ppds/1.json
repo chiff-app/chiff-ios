@@ -11,8 +11,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-+=",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -_+=",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -36,12 +41,13 @@
                     "instructions": [{
                             "type": "get",
                             "url": "https://www.facebook.com/",
-                            "assert": {
-                                "assertions": [{
+                            "assert": [
+                                {
+                                    "type": "url",
                                     "expression": null,
-                                    "prefix": "https://www.facebook.com"
-                                }]
-                            }
+                                    "prefix": "https://www.facebook.com/"
+                                }
+                            ]
                         },
                         {
                             "type": "form",
@@ -61,13 +67,14 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
+                            "assert": [
+                                {
+                                    "type": "select",
+                                    "selector": "#userNavigationLabel",
                                     "minOccurs": 1,
                                     "maxOccurs": 1
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 },
@@ -101,13 +108,13 @@
                                     "value": "{{password}}"
                                 }
                             ],
-                            "assert": {
-                                "assertions": [{
-                                    "selector": "#userMenu",
+                            "assert": [
+                                {
+                                    "selector": "#userNavigationLabel",
                                     "minOccurs": 1,
                                     "maxOccurs": 1
-                                }]
-                            }
+                                }
+                            ]
                         }
                     ]
                 }
@@ -124,12 +131,14 @@
                 "instructions": [{
                         "type": "get",
                         "url": "https://www.facebook.com/settings?tab=security&section=password&view",
-                        "assert": {
-                            "assertions": [{
-                                "expression": null,
-                                "prefix": "https://www.facebook.com/settings?tab=security&section=password&view"
-                            }]
-                        }
+                        "assert": [
+                            {
+                                "type": "select",
+                                "selector": "#password > div > div > form",
+                                "minOccurs": 1,
+                                "maxOccurs": 1
+                            }
+                        ]
                     },
                     {
                         "type": "form",
@@ -155,13 +164,14 @@
                                 "value": "{{newPassword}}"
                             }
                         ],
-                        "assert": {
-                            "assertions": [{
+                        "assert": [
+                            {
+                                "type": "select",
                                 "selector": "div.success",
                                 "minOccurs": 1,
                                 "maxOccurs": 1
-                            }]
-                        }
+                            }
+                        ]
                     },
                     {
                         "type": "javascript",
