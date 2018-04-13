@@ -58,7 +58,7 @@ class RequestViewController: UIViewController {
                 return
             }
             // TODO: Crash app for now.
-//            do {
+            do {
                 account = try! Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
                 if let account = self.account {
@@ -75,9 +75,9 @@ class RequestViewController: UIViewController {
                         }
                     })
                 }
-//            } catch {
-//                print("Error getting account: \(error)")
-//            }
+            } catch {
+                print("Error getting account: \(error)")
+            }
         }
     }
 
