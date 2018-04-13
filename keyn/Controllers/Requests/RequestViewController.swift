@@ -37,12 +37,13 @@ class RequestViewController: UIViewController {
                     self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                 }
             case .change:
+                let oldPassword: String? = try! account?.password()
                 try! account?.updatePassword(offset: nil)
                 if let account = self.account {
                     authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
-                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
+                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
                                 self!.dismiss(animated: true, completion: nil)
                             }
                         } else {
@@ -77,7 +78,9 @@ class RequestViewController: UIViewController {
             do {
                 account = try! Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
+                var oldPassword: String?
                 if notification.requestType == .change {
+                    oldPassword = try! account?.password()
                     try! account?.updatePassword(offset: nil)
                 }
                 if let account = self.account {
@@ -86,7 +89,7 @@ class RequestViewController: UIViewController {
                     authorizeRequest(site: site!, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
-                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
+                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
                                 self!.dismiss(animated: true, completion: nil)
                             }
                         } else {
