@@ -65,7 +65,7 @@ class AccountViewController: UITableViewController {
         let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
         showPasswordHUD.mode = .text
         showPasswordHUD.bezelView.color = .black
-        showPasswordHUD.label.text = userPasswordTextField.text
+        showPasswordHUD.label.text = try! account?.password() ?? "Error fetching password"
         showPasswordHUD.label.textColor = .white
         showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
         showPasswordHUD.margin = 10

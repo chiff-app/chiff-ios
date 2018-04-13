@@ -139,7 +139,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
                         do {
                             let newAccount = try! Account(username: username, site: site, password: newPassword ? nil : password)
                             self?.account = newAccount
-                            try! session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type, password: newPassword ? nil : password)
+                            try! session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type, password: newPassword ? password: nil)
 
                             // TODO: Make this better. Works but ugly
                             if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
