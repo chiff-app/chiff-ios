@@ -21,7 +21,23 @@ class RequestViewController: UIViewController {
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session {
             switch notification.requestType {
-            case .login, .change:
+            case .login:
+                if let account = self.account {
+                    authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                        if (succes) {
+                            DispatchQueue.main.async {
+                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
+                                self!.dismiss(animated: true, completion: nil)
+                            }
+                        } else {
+                            print("TODO: Handle touchID errors.")
+                        }
+                    })
+                } else {
+                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                }
+            case .change:
+                try! account?.updatePassword(offset: nil)
                 if let account = self.account {
                     authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
@@ -61,6 +77,9 @@ class RequestViewController: UIViewController {
             do {
                 account = try! Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
+                if notification.requestType == .change {
+                    try! account?.updatePassword(offset: nil)
+                }
                 if let account = self.account {
                     // Automatically present the touchID popup
                     //session: Session, account: Account, browserTab: Int, type: BrowserMessageType,

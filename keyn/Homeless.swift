@@ -165,8 +165,8 @@ struct BrowserMessage: Codable {
 }
 
 struct CredentialsResponse: Codable {
-    let u: String       // Username
-    let p: String      // Password
+    let u: String?       // Username
+    let p: String?      // Password
     let np: String?     // New password (for reset only! When registering p will be set)
     let b: Int
 }
@@ -187,6 +187,7 @@ enum BrowserMessageType: Int, Codable {
     case add
     case addAndChange
     case end
+    case confirm
 }
 
 enum KeyType: UInt64 {
