@@ -11,8 +11,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-+=",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -+=",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -37,12 +42,27 @@
                     "instructions": [
                         {
                             "type": "get",
-                            "url": "https://accounts.google.com/ServiceLogin/signinchooser",
+                            "url": "https://accounts.google.com",
                             "assert": [
                                 {
                                     "type": "url",
                                     "expression": null,
+                                    "prefix": "https://accounts.google.com/ServiceLogin/identifier"
+                                },
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                                },
+                                {
+                                    "type": "url",
+                                    "expression": null,
                                     "prefix": "https://accounts.google.com/ServiceLogin/signinchooser"
+                                },
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/signin/v2/identifier"
                                 }
                             ]
                         },
@@ -54,6 +74,16 @@
                                     "type": "url",
                                     "expression": null,
                                     "prefix": "https://accounts.google.com/ServiceLogin/identifier"
+                                },
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/signin/v2/identifier"
+                                },
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
                                 }
                             ]
 
@@ -77,9 +107,10 @@
                             "script": "document.querySelector(\"#identifierNext\").click()",
                             "assert": [
                                 {
-                                    "type": "url",
-                                    "expression": null,
-                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                                  "type": "select",
+                                  "selector": "input[name=password]",
+                                  "minOccurs": 1,
+                                  "maxOccurs": 1
                                 }
                             ]
                         },
@@ -111,9 +142,10 @@
                             "url": "https://accounts.google.com/signin/v2/sl/pwd",
                             "assert": [
                                 {
-                                    "type": "url",
-                                    "expression": null,
-                                    "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                                  "type": "select",
+                                  "selector": "input[name=password]",
+                                  "minOccurs": 1,
+                                  "maxOccurs": 1
                                 }
                             ]
                         },
@@ -152,9 +184,10 @@
                         "url": "https://myaccount.google.com/signinoptions/password",
                         "assert": [
                             {
-                                "type": "url",
-                                "expression": null,
-                                "prefix": "https://accounts.google.com/signin/v2/sl/pwd"
+                              "type": "select",
+                              "selector": "input[name=password]",
+                              "minOccurs": 1,
+                              "maxOccurs": 1
                             }
                         ]
                     },
@@ -205,7 +238,7 @@
                     },
                     {
                         "type": "javascript",
-                        "script": "var buttons=document.querySelectorAll(\"div[role=button]:only-child\");for (i=0;i<buttons.length;i++) { if(buttons[i].innerText === \"CHANGE PASSWORD\") {buttons[i].click()}}",
+                        "script": "var buttons=document.querySelectorAll(\"div[role=button]:only-child\");for (i=0;i<buttons.length;i++) { if(buttons[i].innerText.length > 2) {buttons[i].click()}}",
                         "assert": [
                             {
                                 "type": "url",

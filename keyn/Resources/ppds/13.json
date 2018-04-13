@@ -16,8 +16,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|+=",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -37,7 +42,7 @@
             "url": "https://datumprikker.nl/account/login",
             "maxTries": 3,
             "routines": [{
-                "type": "htmlLoginRoutine",
+                "type": "extendedJSLoginRoutine",
                 "instructions": [{
                         "type": "get",
                         "url": "https://datumprikker.nl/account/login",
@@ -66,14 +71,11 @@
                                 },
                                 "value": "{{password}}"
                             }
-                        ],
-                        "assert": [
-                            {
-                                "type": "url",
-                                "expression": null,
-                                "prefix": "https://www.airbnb.com/dashboard"
-                            }
                         ]
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "document.querySelector(\"#login_submit\").click()"
                     }
                 ]
             }]
@@ -85,53 +87,58 @@
             "url": null,
             "maxTries": null,
             "routines": [{
-                "type": "htmlPasswordChangeRoutine",
+                "type": "extendedJSPasswordChangeRoutine",
                 "instructions": [{
                         "type": "get",
-                        "url": "https://www.airbnb.com/users/security/183519205",
+                        "url": "https://datumprikker.nl/account",
                         "assert": [
                             {
                                 "type":"url",
                                 "expression": null,
-                                "prefix": "https://www.airbnb.com/users/security/183519205"
+                                "prefix": "https://datumprikker.nl/account"
                             }
                         ]
                     },
                     {
                         "type": "form",
                         "selector": {
-                            "value": "#site-content > div > div > div.col-md-9 > form"
+                            "value": "#loginform"
                         },
                         "element": [
                             {
                                 "selector": {
-                                    "value": "#old_password"
+                                    "value": "#oldpassword"
                                 },
                                 "value": "{{password}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#new_password"
+                                    "value": "#password"
                                 },
                                 "value": "{{newPassword}}"
                             },
                             {
                                 "selector": {
-                                    "value": "#user_password_confirmation"
+                                    "value": "#repeatPassword"
                                 },
                                 "value": "{{newPassword}}"
                             }
-                        ],
+                        ]
+                    },
+                    {
+                        "type": "javascript",
+                        "script": "document.querySelector(\"#save-password\").click()",
                         "assert": [
                             {
+                                "type": "select",
                                 "selector": "TODO",
                                 "minOccurs": 1,
-                                "maxOccurs": 1
+                                "maxOccurs": null
                             }
                         ]
                     }
                 ],
-                "login": "htmlLoginRoutine"
+                "login": "extendedJSLoginRoutine"
             }]
         },
         "passwordReset": {

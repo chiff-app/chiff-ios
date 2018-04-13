@@ -17,9 +17,15 @@
         "name": "Letters"
     }, {
         "base": [],
-        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|+=-",
+        "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -_+=",
         "name": "Specials"
-    }],
+    },
+    {
+        "base": [],
+        "characters": " ",
+        "name": "Spaces"
+    }
+],
     "properties": {
         "characterSettings": {
             "characterSetSettings": [{

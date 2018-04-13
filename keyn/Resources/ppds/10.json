@@ -17,8 +17,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-=+",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -=+",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -44,18 +49,24 @@
                         {
                             "type": "get",
                             "url": "https://login.live.com",
-                            "assert": {
-                                "assertions": [
-                                    {
-                                        "expression": null,
-                                        "prefix": "https://login.live.com"
-                                    }
-                                ]
-                            }
+                            "assert": [
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://login.live.com"
+                                }
+                            ]
                         },
                         {
                             "type": "javascript",
-                            "script": "var ev = new Event('input', { bubbles: true }); ev.simulated = true; document.querySelector('input[name=loginfmt]').value = '{{username}}'; document.querySelector('input[name=loginfmt]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); function fillPasswordWhenReady(tries) { if (tries <= 0) { console.log('Cannot fill in password.'); } else { if (document.querySelector('#displayName')) { document.querySelector('input[name=passwd]').value = '{{password}}';  document.querySelector('input[name=passwd]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); } else { setTimeout(function() { fillPasswordWhenReady(tries - 1); }, 200); } } } fillPasswordWhenReady(25);"
+                            "script": "var ev = new Event('input', { bubbles: true }); ev.simulated = true; document.querySelector('input[name=loginfmt]').value = '{{username}}'; document.querySelector('input[name=loginfmt]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); function fillPasswordWhenReady(tries) { if (tries <= 0) { console.log('Cannot fill in password.'); } else { if (document.querySelector('#displayName')) { document.querySelector('input[name=passwd]').value = '{{password}}';  document.querySelector('input[name=passwd]').dispatchEvent(ev); document.querySelector('input[type=submit]').click(); } else { setTimeout(function() { fillPasswordWhenReady(tries - 1); }, 200); } } } fillPasswordWhenReady(25);",
+                            "assert": [
+                                {
+                                    "type": "url",
+                                    "expression": null,
+                                    "prefix": "https://account.microsoft.com"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -64,7 +75,7 @@
         "register": {
             "url": "https://signup.live.com/signup"
         },
-        "passwordChange": "TODO"
+        "passwordChange": "TODO. url:https://account.live.com/password/change"
     },
     "passwordReset": {
         "url": "https://login.live.com/password",

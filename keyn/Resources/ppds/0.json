@@ -17,8 +17,13 @@
     },
     {
       "base": [],
-      "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|-+=",
+      "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~| -_+=",
       "name": "Specials"
+    },
+    {
+        "base": [],
+        "characters": " ",
+        "name": "Spaces"
     }
   ],
   "properties": {
@@ -61,14 +66,13 @@
             {
               "type": "get",
               "url": "https://www.linkedin.com/",
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
+                    "type": "url",
                     "expression": null,
                     "prefix": "https://www.linkedin.com/"
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "form",
@@ -89,15 +93,13 @@
                   "value": "{{password}}"
                 }
               ],
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
+                    "type": "url",
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/feed/"
                   }
-                ]
-              }
+              ]
             }
           ]
         },
@@ -107,14 +109,13 @@
             {
               "type": "get",
               "url": "https://www.linkedin.com/uas/login",
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
+                    "type": "url",
                     "expression": null,
                     "prefix": "https://www.linkedin.com/uas/login"
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "form",
@@ -135,15 +136,13 @@
                   "value": "{{password}}"
                 }
               ],
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
+                    "type": "url",
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/feed/"
                   }
-                ]
-              }
+              ]
             }
           ]
         },
@@ -153,14 +152,13 @@
             {
               "type": "get",
               "url": "https://www.linkedin.com/uas/login-submit",
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
+                    "type": "url",
                     "expression": null,
-                    "prefix": "https://www.linkedin.com/uas/login-submit"
+                    "prefix": "https://www.linkedin.com/feed/"
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "form",
@@ -181,15 +179,13 @@
                   "value": "{{password}}"
                 }
               ],
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
+                    "type": "url",
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/feed/"
                   }
-                ]
-              }
+              ]
             }
           ]
         },
@@ -199,15 +195,13 @@
             {
               "type": "get",
               "url": "https://www.linkedin.com//m/logout/",
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
-                    "type": "get",
+                    "type": "url",
                     "expression": null,
-                    "prefix": "https://www.linkedin.com//m/logout/"
+                    "prefix": "https://www.linkedin.com/m/logout/"
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "form",
@@ -228,15 +222,13 @@
                   "value": "{{password}}"
                 }
               ],
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
-                    "selector": "#userMenu",
-                    "minOccurs": 1,
-                    "maxOccurs": 1
+                    "type": "url",
+                    "expression": null,
+                    "prefix": "https://www.linkedin.com/feed/"
                   }
-                ]
-              }
+              ]
             }
           ]
         }
@@ -255,14 +247,13 @@
             {
               "type": "get",
               "url": "https://www.linkedin.com/psettings/change-password",
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
+                    "type": "url",
                     "expression": null,
                     "prefix": "https://www.linkedin.com/psettings/change-password"
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "form",
@@ -289,15 +280,14 @@
                   "value": "{{newPassword}}"
                 }
               ],
-              "assert": {
-                "assertions": [
+              "assert": [
                   {
+                    "type": "select",
                     "selector": "div.success",
                     "minOccurs": 1,
                     "maxOccurs": 1
                   }
-                ]
-              }
+              ]
             },
             {
               "type": "javascript",

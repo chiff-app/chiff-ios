@@ -16,8 +16,13 @@
         },
         {
             "base": [],
-            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|+=",
+            "characters": ")(*&^%$#@!{}[]:;\"'?/,.<>`~|",
             "name": "Specials"
+        },
+        {
+            "base": [],
+            "characters": " ",
+            "name": "Spaces"
         }
     ],
     "properties": {
@@ -48,7 +53,7 @@
     "name": "Airbnb",
     "service": {
         "login": {
-            "url": "https://www.airbnb.com",
+            "url": "https://www.airbnb.com/login",
             "maxTries": 3,
             "routines": [{
                 "type": "htmlLoginRoutine",
