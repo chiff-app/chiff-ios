@@ -81,20 +81,16 @@ class Session: Codable {
     // TODO, add request ID etc
     func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType, password: String? = nil) throws {
         var response: CredentialsResponse?
-        var account = account
         switch type {
-        case .addAndChange:
+        case .addAndChange, .change:
             response = CredentialsResponse(u: account.username, p: password! , np: try account.password(), b: browserTab)
         case .add, .login:
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
         case .register:
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
-        case .change:
-            // TODO: change password. We should probably implement some kind of feedback mechanism from browser if reset was succesful, otherwise password will be deleted. Also, how to handle offsets? Request should allow user to type custom password somehow
-            let oldPassword: String = try account.password()
-            try account.updatePassword(offset: nil)
-            response = CredentialsResponse(u: account.username, p: oldPassword , np: try account.password(), b: browserTab)
+        case .confirm:
+            response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab)
         default:
             // TODO: throw error
             return

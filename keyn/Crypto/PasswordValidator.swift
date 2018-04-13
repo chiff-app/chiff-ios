@@ -24,7 +24,6 @@ class PasswordValidator {
             for characterSet in characterSets {
                 if let characters = characterSet.characters {
                     self.characters += String(characters.sorted())
-                    print(self.characters)
                 }
                 characterSetDictionary[characterSet.name] = characterSet.characters
             }
