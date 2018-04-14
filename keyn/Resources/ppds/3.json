@@ -42,7 +42,7 @@
             "positionRestrictions": []
         },
         "maxConsecutive": null,
-        "minLength": 8,
+        "minLength": 6,
         "maxLength": null,
         "expires": null
     },

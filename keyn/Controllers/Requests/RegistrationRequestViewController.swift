@@ -7,7 +7,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     var notification: PushNotification?
     var session: Session?
     var passwordIsHidden = true
-    var newPassword = true
+    var newPassword = false
     var passwordValidator: PasswordValidator? = nil
     var site: Site?
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -22,6 +22,10 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
             websiteNameTextField.text = site.name
             websiteURLTextField.text = site.urls[0]
             passwordValidator = PasswordValidator(ppd: site.ppd)
+        }
+        
+        if let name = UserDefaults.standard.object(forKey: "username") as? String {
+            userNameTextField.text = name
         }
         
         requirementLabels.sort(by: { (first, second) -> Bool in
@@ -133,6 +137,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
+            UserDefaults.standard.set(username, forKey: "username")
             authorizeRequest(site: site, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
