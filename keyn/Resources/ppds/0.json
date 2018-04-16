@@ -46,7 +46,7 @@
       ]
     },
     "maxConsecutive": null,
-    "minLength": 8,
+    "minLength": 6,
     "maxLength": 32,
     "expires": null
   },

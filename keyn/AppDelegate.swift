@@ -10,6 +10,7 @@ import UIKit
 import AWSCore
 import UserNotifications
 import os.log
+import LocalAuthentication
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -31,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         pushNotification = nil
         fetchAWSIdentification()
         registerForPushNotifications()
+        
+        let _: LAError? = nil
         
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))

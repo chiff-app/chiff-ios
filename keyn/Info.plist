@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>8</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -61,6 +61,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Scanning QR codes.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Unlocking Keyn and authorizing requests.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Amiko-Regular.ttf</string>
