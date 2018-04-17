@@ -22,7 +22,7 @@
         <!--Request View Controller-->
         <scene sceneID="ILX-fP-8mk">
             <objects>
-                <viewController storyboardIdentifier="PasswordRequest" id="SIn-CL-JCH" customClass="RequestViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PasswordRequest" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SIn-CL-JCH" customClass="RequestViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DHB-O1-PVe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -97,7 +97,7 @@
         <!--New Account-->
         <scene sceneID="IRS-dc-3m2">
             <objects>
-                <tableViewController id="fb2-RP-6pW" customClass="RegistrationRequestViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="RegistrationRequest" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fb2-RP-6pW" customClass="RegistrationRequestViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="Q7d-xL-Wkg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -406,7 +406,7 @@
         <!--Navigation Controller-->
         <scene sceneID="rLY-ea-wRX">
             <objects>
-                <navigationController storyboardIdentifier="Registration Controller" automaticallyAdjustsScrollViewInsets="NO" id="Xfg-dB-8TE" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Registration Controller" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xfg-dB-8TE" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eKu-kL-F4k">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>

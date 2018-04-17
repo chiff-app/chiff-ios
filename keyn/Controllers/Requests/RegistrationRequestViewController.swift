@@ -145,7 +145,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
             UserDefaults.standard.set(username, forKey: "username")
-            authorizeRequest(site: site, type: type, completion: { [weak self] (succes, error) in
+            AuthenticationGuard.sharedInstance.authorizeRequest(site: site, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {
