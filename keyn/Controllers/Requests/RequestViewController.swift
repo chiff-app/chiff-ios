@@ -23,7 +23,7 @@ class RequestViewController: UIViewController {
             switch notification.requestType {
             case .login:
                 if let account = self.account {
-                    authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
@@ -40,7 +40,7 @@ class RequestViewController: UIViewController {
                 let oldPassword: String? = try! account?.password()
                 try! account?.updatePassword(offset: nil)
                 if let account = self.account {
-                    authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
@@ -86,7 +86,7 @@ class RequestViewController: UIViewController {
                 if let account = self.account {
                     // Automatically present the touchID popup
                     //session: Session, account: Account, browserTab: Int, type: BrowserMessageType,
-                    authorizeRequest(site: site!, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(site: site!, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
@@ -136,5 +136,6 @@ class RequestViewController: UIViewController {
         }
     }
 }
+
 
 

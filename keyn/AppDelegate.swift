@@ -33,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         fetchAWSIdentification()
         registerForPushNotifications()
         
+        AuthenticationGuard.sharedInstance
+        
         let _: LAError? = nil
         
         // Set purple line under NavigationBar
@@ -209,11 +211,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
         os_log("Application will enter foreground")
+        if let lockView = self.window?.viewWithTag(lockViewTag) {
+            lockView.removeFromSuperview()
+        }
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
         handlePendingEndSessionNotifications()
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
-        self.window?.rootViewController = viewController
+        
+//        let visibleViewController = UIApplication.shared.visibleViewController
+//        if visibleViewController is RequestViewController || visibleViewController is RegistrationRequestViewController {
+//            os_log("Request in progress")
+//        } else {
+//            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+//            self.window?.rootViewController = viewController
+//        }
 
         if  pushNotification != nil && !requestInProgress {
             requestInProgress = true
@@ -291,7 +302,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             viewController = rootController
         } else {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+            viewController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
         }
         
         self.window?.rootViewController = viewController

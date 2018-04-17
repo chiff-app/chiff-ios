@@ -40,7 +40,7 @@ class AuthenticationViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func touchID(_ sender: UIButton) {
-        authenticateUser()
+        AuthenticationGuard.sharedInstance.authenticateUser()
     }
 
     // MARK: Private methods

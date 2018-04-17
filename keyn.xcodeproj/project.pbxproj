@@ -32,6 +32,7 @@
 		4931305D207A390A00C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
 		4936049A2085EBCB009E3029 /* 15.json in Resources */ = {isa = PBXBuildFile; fileRef = 493604992085EBCB009E3029 /* 15.json */; };
 		4936049B2085ED05009E3029 /* 15.json in Resources */ = {isa = PBXBuildFile; fileRef = 493604992085EBCB009E3029 /* 15.json */; };
+		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -178,6 +179,7 @@
 		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
 		492B38F6207646B200DE470D /* 11.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 11.json; sourceTree = "<group>"; };
 		493604992085EBCB009E3029 /* 15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 15.json; sourceTree = "<group>"; };
+		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49A547951FC8559900CD4382 /* Homeless.swift */,
 				0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */,
+				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49E7D3401FC318CD0059D97E /* Models */,
 				49E7D3411FC318D50059D97E /* Crypto */,
@@ -904,6 +907,7 @@
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
+				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
