@@ -30,6 +30,8 @@
 		492B38F7207646B300DE470D /* 11.json in Resources */ = {isa = PBXBuildFile; fileRef = 492B38F6207646B200DE470D /* 11.json */; };
 		4931305C207A390900C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
 		4931305D207A390A00C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
+		4936049A2085EBCB009E3029 /* 15.json in Resources */ = {isa = PBXBuildFile; fileRef = 493604992085EBCB009E3029 /* 15.json */; };
+		4936049B2085ED05009E3029 /* 15.json in Resources */ = {isa = PBXBuildFile; fileRef = 493604992085EBCB009E3029 /* 15.json */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -175,6 +177,7 @@
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
 		492B38F6207646B200DE470D /* 11.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 11.json; sourceTree = "<group>"; };
+		493604992085EBCB009E3029 /* 15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 15.json; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -330,6 +333,7 @@
 				497D21B8205A8E320040E0C0 /* 0.json */,
 				497D21BF205A8E7E0040E0C0 /* 1.json */,
 				497D21BC205A8E7E0040E0C0 /* 2.json */,
+				493604992085EBCB009E3029 /* 15.json */,
 				4992CF3E206100DF00BF44B2 /* 5.json */,
 				49190F822076338E0072849D /* 9.json */,
 				497D21BE205A8E7E0040E0C0 /* 3.json */,
@@ -686,6 +690,7 @@
 				498BD6A42076630200910037 /* 11.json in Resources */,
 				497D21C7205A8E7E0040E0C0 /* 3.json in Resources */,
 				4931305D207A390A00C102B2 /* 10.json in Resources */,
+				4936049B2085ED05009E3029 /* 15.json in Resources */,
 				498BD6A2207662F600910037 /* 5.json in Resources */,
 				49B86429207D044300DE01C4 /* 13.json in Resources */,
 				497D21C9205A8E7E0040E0C0 /* 1.json in Resources */,
@@ -715,6 +720,7 @@
 				49190F832076338E0072849D /* 9.json in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
+				4936049A2085EBCB009E3029 /* 15.json in Resources */,
 				4931305C207A390900C102B2 /* 10.json in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				498BD6A020765B8000910037 /* 8.json in Resources */,
