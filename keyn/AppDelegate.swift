@@ -16,9 +16,6 @@ import LocalAuthentication
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-    var pushNotification: PushNotification?
-    var requestInProgress = false
-    let lockViewTag = 390847239047
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -29,12 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
 
         // Override point for customization after application launch.
-        pushNotification = nil
         fetchAWSIdentification()
         registerForPushNotifications()
         
-        AuthenticationGuard.sharedInstance
-        
+        let _ = AuthenticationGuard.sharedInstance
         let _: LAError? = nil
         
         // Set purple line under NavigationBar
@@ -92,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
 
             DispatchQueue.main.async {
-                self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
+                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
             }
             completionHandler([.sound])
         }
@@ -143,27 +138,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                 if response.actionIdentifier == "ACCEPT" {
                     // This should present request page --> Yes / NO. AUthentication after or before?
-                    pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
+                    AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
                 }
             }
 
             if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
                 // This should present request page --> Yes / NO. AUthentication after or before?
-                cancelAutoAuthentication()
-                pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
+                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
             }
 
         }
         completionHandler()
-    }
-
-
-    private func cancelAutoAuthentication() {
-        os_log("Cancel auto authentication called")
-        if let viewController = self.window?.rootViewController as? LoginViewController {
-            viewController.autoAuthentication = false
-            os_log("Auto authentication cancelled")
-        } 
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -184,68 +169,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        requestInProgress = false
-        if let frame = self.window?.frame {
-            let lockView = UIView(frame: frame)
-            let keynLogoView = UIImageView(image: UIImage(named: "logo"))
-            
-            keynLogoView.frame = CGRect(x: 0, y: 289, width: 375, height: 88)
-            keynLogoView.contentMode = .scaleAspectFit
-            lockView.addSubview(keynLogoView)
-            lockView.backgroundColor = UIColor(rgb: 0x46319B)
-            lockView.tag = lockViewTag
-            
-            self.window?.addSubview(lockView)
-            self.window?.bringSubview(toFront: lockView)
-            
-            // TODO: Make autolayout constrained
-//            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
-//            keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
-//            keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
-//            keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
-        }
     }
 
 
     // Called as part of the transition from the background to the active state;
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
-        os_log("Application will enter foreground")
-        if let lockView = self.window?.viewWithTag(lockViewTag) {
-            lockView.removeFromSuperview()
-        }
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
         handlePendingEndSessionNotifications()
-        
-//        let visibleViewController = UIApplication.shared.visibleViewController
-//        if visibleViewController is RequestViewController || visibleViewController is RegistrationRequestViewController {
-//            os_log("Request in progress")
-//        } else {
-//            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
-//            self.window?.rootViewController = viewController
-//        }
-
-        if  pushNotification != nil && !requestInProgress {
-            requestInProgress = true
-            launchRequestView(with: pushNotification!)
-            pushNotification = nil
-        }
     }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
-        os_log("Application did become active")
-        if let lockView = self.window?.viewWithTag(lockViewTag) {
-            lockView.removeFromSuperview()
-        }
-
-        if pushNotification != nil && !requestInProgress {
-            requestInProgress = true
-            launchRequestView(with: pushNotification!)
-            pushNotification = nil
-        }
+        AuthenticationGuard.sharedInstance.autoAuthenticateUser()
 
         // Clean up notifications
         let center = UNUserNotificationCenter.current()
@@ -268,27 +205,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
                 }
             }
-        }
-    }
-
-    private func launchRequestView(with notification: PushNotification) {
-        // TODO: crash for now.
-        do {
-            if let session = try! Session.getSession(id: notification.sessionID) {
-                let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
-                let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-
-                viewController.notification = notification
-                viewController.session = session
-
-                UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
-                    self.requestInProgress = false
-                })
-            } else {
-                print("Received request for session that doesn't exist.")
-            }
-        } catch {
-            print("Session could not be decoded: \(error)")
         }
     }
     
