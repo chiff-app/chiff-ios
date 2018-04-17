@@ -36,7 +36,14 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
 
     @IBAction override func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
+        
+        let wasFirstResponder = userPasswordTextField.isFirstResponder
+        if wasFirstResponder { userPasswordTextField.resignFirstResponder() }
+        
         userPasswordTextField.isSecureTextEntry = passwordIsHidden
+        
+        if wasFirstResponder { userPasswordTextField.becomeFirstResponder() }
+        
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
 
