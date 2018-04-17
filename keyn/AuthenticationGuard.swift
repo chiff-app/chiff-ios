@@ -37,8 +37,14 @@ class AuthenticationGuard {
     }
     
     func hideLockWindow() {
-        // TODO: Add animation
-        lockWindow.isHidden = true
+        UIView.animate(withDuration: 0.25, animations: {
+            self.lockWindow.alpha = 0.0
+        }) { if $0 {
+            self.lockWindow.isHidden = true
+            self.lockWindow.alpha = 1.0
+            self.authenticationInProgress = false
+            }
+        }
     }
     
     // MARK: UIApplication Notification Handlers
@@ -97,7 +103,6 @@ class AuthenticationGuard {
         authenticateUser { (succes, error) in
             DispatchQueue.main.async {
                 if succes {
-                    self.authenticationInProgress = false
                     self.hideLockWindow()
                 } else if let error = error {
                     print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
