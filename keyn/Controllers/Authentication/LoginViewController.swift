@@ -12,7 +12,6 @@ import os.log
 
 class LoginViewController: UIViewController {
 
-    var autoAuthentication = true
     @IBOutlet weak var touchIDButton: UIButton!
     
     override func viewDidLoad() {
@@ -25,11 +24,6 @@ class LoginViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if autoAuthentication {
-            os_log("Auto authenticate in viewDidAppear called", type: .debug)
-            AuthenticationGuard.sharedInstance.authenticateUser()
-            //self.authenticateUser()
-        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -39,7 +33,6 @@ class LoginViewController: UIViewController {
     // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
         os_log("Manual authenticate in viewDidAppear called", type: .debug)
-//        self.authenticateUser()
         AuthenticationGuard.sharedInstance.authenticateUser()
     }
 
