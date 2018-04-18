@@ -174,14 +174,10 @@ class AuthenticationGuard {
                 viewController.notification = notification
                 viewController.session = session
                 if lockWindow.isHidden {
-                    print("presented behind lockWindow")
                     UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
                 } else {
-                    print("presented on lockWindow")
-
-
+                    lockWindow.rootViewController?.present(viewController, animated: true, completion: nil)
                 }
-                
             } else {
                 print("Received request for session that doesn't exist.")
             }
