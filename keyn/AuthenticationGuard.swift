@@ -88,48 +88,24 @@ class AuthenticationGuard {
     
     // MARK: LocalAuthentication
     
-    func autoAuthenticateUser() {
-        guard !authenticationInProgress && !lockWindow.isHidden else {
-            return
-        }
-        if let visibleViewController = UIApplication.shared.visibleViewController {
-            guard !(visibleViewController is RequestViewController) && !(visibleViewController is RegistrationRequestViewController) else {
+    func authenticateUser(cancelChecks: Bool) {
+        if cancelChecks {
+            guard !authenticationInProgress && !lockWindow.isHidden else {
                 return
             }
+            if let visibleViewController = UIApplication.shared.visibleViewController {
+                guard !(visibleViewController is RequestViewController) && !(visibleViewController is RegistrationRequestViewController) else {
+                    return
+                }
+            }
+            
+            authenticationInProgress = true
         }
-
-        authenticationInProgress = true
         
-        authenticateUser { (succes, error) in
-            DispatchQueue.main.async {
-                if succes {
-                    self.hideLockWindow()
-                } else if let error = error {
-                    print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
-                    if error._code == LAError.userFallback.rawValue {
-                        print("Handle fallback")
-                    }
-                }
-            }
-        }
+        authenticateUser()
     }
     
-    func authenticateUser() {
-        authenticateUser { (succes, error) in
-            DispatchQueue.main.async {
-                if succes {
-                    self.hideLockWindow()
-                } else if let error = error {
-                    print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
-                    if error._code == LAError.userFallback.rawValue {
-                        print("Handle fallback")
-                    }
-                }
-            }
-        }
-    }
-    
-    private func authenticateUser(completion: @escaping (Bool, Error?) -> Void) {
+    private func authenticateUser() {
         let localAuthenticationContext = LAContext()
         localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
         
@@ -141,7 +117,19 @@ class AuthenticationGuard {
             print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code))
             return
         }
-        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString, reply: completion)
+        
+        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { (succes, error) in
+            DispatchQueue.main.async {
+                if succes {
+                    self.hideLockWindow()
+                } else if let error = error {
+                    print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
+                    if error._code == LAError.userFallback.rawValue {
+                        print("Handle fallback")
+                    }
+                }
+            }
+        }
     }
     
     func authorizeRequest(site: Site, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
