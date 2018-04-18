@@ -33,7 +33,7 @@ class LoginViewController: UIViewController {
     // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
         os_log("Manual authenticate in viewDidAppear called", type: .debug)
-        AuthenticationGuard.sharedInstance.authenticateUser()
+        AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: false)
     }
 
     @IBAction func unwindToLoginViewController(sender: UIStoryboardSegue) { }
