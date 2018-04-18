@@ -32,6 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let _ = AuthenticationGuard.sharedInstance
         let _: LAError? = nil
         
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: NSNotification.Name.UIPasteboardChanged, object: nil, queue: nil, using: handlePasteboardChangeNotification)
+        
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
         
@@ -191,6 +194,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    private func handlePasteboardChangeNotification(notification: Notification) {
+        let pasteboard = UIPasteboard.general
+        guard let text = pasteboard.string, text != "" else {
+            return
+        }
+        
+        let pasteboardVersion = pasteboard.changeCount
+        let clearPasteboardTimeout = 60.0 // TODO: hardcoded for now. This should be editable in settings I guess?
+        
+        var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = UIBackgroundTaskInvalid
+        }
+        
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + clearPasteboardTimeout) {
+            if pasteboardVersion == pasteboard.changeCount {
+                pasteboard.string = ""
+            }
+            
+            if backgroundTask != UIBackgroundTaskInvalid {
+                UIApplication.shared.endBackgroundTask(backgroundTask)
+            }
+        }
     }
 
     private func handlePendingEndSessionNotifications() {
