@@ -12,16 +12,12 @@ struct Site: Codable {
 
     // TODO:
     // Get Site object from some persistent storage or online database. This is sample data
-    static func get(id: Int) -> Site? {
-        guard let ppd = getSamplePPD(id: id) else {
-            print("Cannot get site")
-            return nil
+    static func get(id: Int, completion: @escaping (_ site: Site) -> Void) {
+        AWS.sharedInstance.getPPD(id: id) { (ppd) in
+            var urls = [String]()
+            urls.append(ppd.url)
+            completion(Site(name: ppd.name ?? "Unknown", id: id, urls: urls, ppd: ppd))
         }
-        let name = ppd.name ?? "Unknown"
-        var urls = [String]()
-        urls.append(ppd.url)
-
-        return Site(name: name, id: id, urls: urls, ppd: ppd)
     }
 
     private static func getSamplePPD(id: Int) -> PPD? {

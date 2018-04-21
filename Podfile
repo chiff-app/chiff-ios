@@ -10,6 +10,7 @@ def shared_pods
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
+  pod 'AWSLambda'
 end
 
 target 'keyn' do

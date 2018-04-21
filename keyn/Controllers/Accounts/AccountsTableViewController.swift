@@ -138,27 +138,27 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     // MARK: Temporary sample data
 
-    private func loadSampleData() throws {
-        let sampleUsername = "demo@keyn.io"
-        var sampleSites = [Site]()
-
-        sampleSites.append(Site.get(id: 1)!)
-        sampleSites.append(Site.get(id: 2)!)
-        sampleSites.append(Site.get(id: 4)!)
-        //sampleSites.append(Site.get(id: 5)!)
-        sampleSites.append(Site.get(id: 11)!)
-
-        for site in sampleSites {
-            let account = try Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
-            unfilteredAccounts.append(account)
-        }
-
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword1"))
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 3)!, password: "ExampleCustomPassword1"))
-        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 6)!, password: "ExampleCustomPassword1"))
-        //unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 11)!, password: "ExampleCustomPassword1"))
-        //unfilteredAccounts.append(try! Account(username: "apple@frankevers.nl", site: Site.get(id: 7)!, password: "REDACTED"))
-        //unfilteredAccounts.append(try! Account(username: "thomas.bastet@gmail.com", site: Site.get(id: 8)!, password: "REDACTED"))
-    }
+//    private func loadSampleData() throws {
+//        let sampleUsername = "demo@keyn.io"
+//        var sampleSites = [Site]()
+//
+//        sampleSites.append(Site.get(id: 1)!)
+//        sampleSites.append(Site.get(id: 2)!)
+//        sampleSites.append(Site.get(id: 4)!)
+//        //sampleSites.append(Site.get(id: 5)!)
+//        sampleSites.append(Site.get(id: 11)!)
+//
+//        for site in sampleSites {
+//            let account = try Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
+//            unfilteredAccounts.append(account)
+//        }
+//
+//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword1"))
+//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 3)!, password: "ExampleCustomPassword1"))
+//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 6)!, password: "ExampleCustomPassword1"))
+//        //unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 11)!, password: "ExampleCustomPassword1"))
+//        //unfilteredAccounts.append(try! Account(username: "apple@frankevers.nl", site: Site.get(id: 7)!, password: "REDACTED"))
+//        //unfilteredAccounts.append(try! Account(username: "thomas.bastet@gmail.com", site: Site.get(id: 8)!, password: "REDACTED"))
+//    }
 
 }

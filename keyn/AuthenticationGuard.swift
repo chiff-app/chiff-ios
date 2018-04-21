@@ -132,24 +132,24 @@ class AuthenticationGuard {
         }
     }
     
-    func authorizeRequest(site: Site, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
+    func authorizeRequest(siteName: String, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
         let authenticationContext = LAContext()
         var error: NSError?
         
         var localizedReason = ""
         switch type {
         case .add, .addAndChange:
-            localizedReason = "Add \(site.name)"
+            localizedReason = "Add \(siteName)"
         case .change:
-            localizedReason = "Change password for \(site.name)"
+            localizedReason = "Change password for \(siteName)"
         case .login:
-            localizedReason = "Login to \(site.name)"
+            localizedReason = "Login to \(siteName)"
         case .reset:
-            localizedReason = "Reset password for \(site.name)"
+            localizedReason = "Reset password for \(siteName)"
         case .register:
-            localizedReason = "Register for \(site.name)"
+            localizedReason = "Register for \(siteName)"
         default:
-            localizedReason = "\(site.name)"
+            localizedReason = "\(siteName)"
         }
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {

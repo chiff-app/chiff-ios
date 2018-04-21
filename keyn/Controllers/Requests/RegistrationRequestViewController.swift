@@ -18,11 +18,13 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let site = site {
-            websiteNameTextField.text = site.name
-            websiteURLTextField.text = site.urls[0]
-            passwordValidator = PasswordValidator(ppd: site.ppd)
+        guard let site = site else {
+            fatalError("Sit was nil when creating new account")
         }
+        
+        websiteNameTextField.text = site.name
+        websiteURLTextField.text = site.urls[0]
+        passwordValidator = PasswordValidator(ppd: site.ppd)
         
         if let name = UserDefaults.standard.object(forKey: "username") as? String {
             userNameTextField.text = name
@@ -145,7 +147,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
             UserDefaults.standard.set(username, forKey: "username")
-            AuthenticationGuard.sharedInstance.authorizeRequest(site: site, type: type, completion: { [weak self] (succes, error) in
+            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {

@@ -10,6 +10,7 @@ import Foundation
 import AWSCore
 import AWSSQS
 import AWSSNS
+import AWSLambda
 
 enum AWSError: Error {
     case queueUrl(error: String?)
@@ -20,6 +21,7 @@ class AWS {
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
+    private let lambda = AWSLambdaInvoker.default()
     private let awsService = "io.keyn.aws"
     private let endpointIdentifier = "snsDeviceEndpointArn"
     private let PAIR_TIMEOUT = 1 // 60
@@ -27,6 +29,26 @@ class AWS {
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
     private init() {}
+    
+    func getPPD(id: Int, completionHandler: @escaping (_ ppd: PPD) -> Void) {
+        let jsonObject: [String: Any] = ["id" : id]
+        lambda.invokeFunction("getPPD", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+                return nil
+            } else if let jsonDict = task.result as? NSDictionary {
+                do {
+                    let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let ppd = try! JSONDecoder().decode(PPD.self, from: jsonData)
+                    completionHandler(ppd)
+                } catch {
+                    print(error)
+                }
+
+            }
+            return nil
+        })
+    }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
