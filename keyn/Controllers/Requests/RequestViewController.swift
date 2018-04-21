@@ -23,7 +23,7 @@ class RequestViewController: UIViewController {
             switch notification.requestType {
             case .login:
                 if let account = self.account {
-                    AuthenticationGuard.sharedInstance.authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
@@ -40,7 +40,7 @@ class RequestViewController: UIViewController {
                 let oldPassword: String? = try! account?.password()
                 try! account?.updatePassword(offset: nil)
                 if let account = self.account {
-                    AuthenticationGuard.sharedInstance.authorizeRequest(site: account.site, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
@@ -69,11 +69,7 @@ class RequestViewController: UIViewController {
 
     private func analyseRequest() {
         if let notification = notification, let session = session {
-            site = Site.get(id: notification.siteID)
-            guard site != nil else {
-                siteLabel.text = "Unknown site"
-                return
-            }
+            siteLabel.text = notification.siteName
             // TODO: Crash app for now.
             do {
                 account = try! Account.get(siteID: notification.siteID)
@@ -85,8 +81,7 @@ class RequestViewController: UIViewController {
                 }
                 if let account = self.account {
                     // Automatically present the touchID popup
-                    //session: Session, account: Account, browserTab: Int, type: BrowserMessageType,
-                    AuthenticationGuard.sharedInstance.authorizeRequest(site: site!, type: notification.requestType, completion: { [weak self] (succes, error) in
+                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
                         if (succes) {
                             DispatchQueue.main.async {
                                 try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
@@ -95,6 +90,10 @@ class RequestViewController: UIViewController {
                         } else {
                             print("TODO: Handle touchID errors.")
                         }
+                    })
+                } else {
+                    Site.get(id: notification.siteID, completion: { (site) in
+                        self.site = site
                     })
                 }
             } catch {
@@ -106,13 +105,13 @@ class RequestViewController: UIViewController {
     private func setLabel(requestType: BrowserMessageType) {
         switch requestType {
         case .login:
-            siteLabel.text = self.account != nil ? "Login to \(site!.name)?" : "Add \(site!.name)?"
+            siteLabel.text = self.account != nil ? "Login to \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .change:
-            siteLabel.text = self.account != nil ? "Change password for \(site!.name)?" : "Add \(site!.name)?"
+            siteLabel.text = self.account != nil ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .reset:
-            siteLabel.text = "Reset password for \(site!.name)?"
+            siteLabel.text = "Reset password for \(notification!.siteName)?"
         case .register:
-            siteLabel.text = "Register for \(site!.name)?"
+            siteLabel.text = "Register for \(notification!.siteName)?"
         default:
             siteLabel.text = "Request error :("
         }

@@ -84,13 +84,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 completionHandler([])
                 return
             }
+            guard let siteName = notification.request.content.userInfo["siteName"] as? String else {
+                completionHandler([])
+                return
+            }
             guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
                 completionHandler([])
                 return
             }
 
             DispatchQueue.main.async {
-                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
+                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
             }
             completionHandler([.sound])
         }
@@ -119,6 +123,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 completionHandler()
                 return
             }
+            guard let siteName = response.notification.request.content.userInfo["siteName"] as? String else {
+                completionHandler()
+                return
+            }
             guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
                 completionHandler()
                 return
@@ -141,13 +149,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                 if response.actionIdentifier == "ACCEPT" {
                     // This should present request page --> Yes / NO. AUthentication after or before?
-                    AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
+                    AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
                 }
             }
 
             if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
                 // This should present request page --> Yes / NO. AUthentication after or before?
-                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
+                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
             }
 
         }

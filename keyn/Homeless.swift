@@ -162,6 +162,7 @@ struct BrowserMessage: Codable {
     let s: Int?          // SiteID
     let r: BrowserMessageType
     let b: Int?          // browserTab
+    let n: String?
 }
 
 struct CredentialsResponse: Codable {
@@ -174,6 +175,7 @@ struct CredentialsResponse: Codable {
 struct PushNotification {
     let sessionID : String
     let siteID: Int
+    let siteName: String
     let browserTab: Int
     let requestType: BrowserMessageType
 }

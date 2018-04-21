@@ -18,14 +18,15 @@ class NotificationPreprocessor {
                     if browserMessage.r == .end {
                         content.body = "Session ended by \(session.browser) on \(session.os)."
                     } else {
-                        let siteID = browserMessage.s
-
-                        guard let site = Site.get(id: siteID!) else {
-                            return content
+                        if let siteName = browserMessage.n {
+                            content.body = "Login request for \(siteName) from \(session.browser) on \(session.os)."
+                            content.userInfo["siteName"] = siteName
+                        } else {
+                            content.body = "Login request from \(session.browser) on \(session.os)."
+                            content.userInfo["siteName"] = "Unknown"
                         }
-
-                        content.body = "Login request for \(site.name) from \(session.browser) on \(session.os)."
-                        content.userInfo["siteID"] = siteID
+                        
+                        content.userInfo["siteID"] = browserMessage.s
                         content.userInfo["browserTab"] = browserMessage.b
                         content.userInfo["requestType"] = browserMessage.r.rawValue
                     }
