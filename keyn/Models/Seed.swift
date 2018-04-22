@@ -112,11 +112,11 @@ struct Seed {
         return true
     }
 
-    static func getPasswordKey() throws -> Data {
+    static func getPasswordSeed() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
     }
 
-    static func getBackupKey() throws -> Data {
+    static func getBackupSeed() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
     }
 

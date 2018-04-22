@@ -71,13 +71,19 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
         // TODO: Crash app for now
+        // TODO: Show some progress bar or something will data is being fetched remotely
         do {
-            if try! Seed.recover(mnemonic: mnemonic) {
-                if isInitialSetup {
-                    loadRootController()
-                } else {
-                    self.dismiss(animated: true, completion: nil)
-                }
+            if try! Seed.recover(mnemonic: mnemonic)  {
+                try! BackupManager.sharedInstance.getBackupData(completionHandler: {
+                    DispatchQueue.main.async {
+                        if self.isInitialSetup {
+                            self.loadRootController()
+                        } else {
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                })
+
             }
         } catch {
             print("Seed could not be recovered: \(error)")

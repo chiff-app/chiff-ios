@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
+        //BackupManager.sharedInstance.deleteAll()
+
 
         // Override point for customization after application launch.
         fetchAWSIdentification()

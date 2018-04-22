@@ -14,6 +14,7 @@ enum CryptoError: Error {
     case hashing
     case mnemonicConversion
     case mnemonicChecksum
+    case signing
 }
 
 
@@ -70,6 +71,13 @@ class Crypto {
 
         return keyPair
     }
+    
+    func createBackupKeyPair(seed: Data) throws -> Sign.KeyPair {
+        guard let keyPair = sodium.sign.keyPair(seed: seed) else {
+            throw CryptoError.keyGeneration
+        }
+        return keyPair
+    }
 
     func deterministicRandomBytes(seed: Data, length: Int) throws -> Data {
         guard let keyData = sodium.randomBytes.deterministic(length: length, seed: seed) else {
@@ -115,9 +123,35 @@ class Crypto {
 
         return b64String
     }
+    
+    // MARK: Signing functions
+    
+    func sign(message: Data, privKey: Sign.SecretKey) throws -> Data {
+        guard let signedMessage = sodium.sign.sign(message: message, secretKey: privKey) else {
+            throw CryptoError.signing
+        }
+        
+        return signedMessage
+    }
 
 
     // MARK: Encryption & decryption functions
+    
+    func encryptSymmetric(_ plaintext: Data, secretKey: Data) throws -> Data {
+        guard let ciphertext: Data = sodium.secretBox.seal(message: plaintext, secretKey: secretKey) else {
+            throw CryptoError.encryption
+        }
+        
+        return ciphertext
+    }
+    
+    func decryptSymmetric(_ ciphertext: Data, secretKey: Data) throws -> Data {
+        guard let plaintext: Data = sodium.secretBox.open(nonceAndAuthenticatedCipherText: ciphertext, secretKey: secretKey) else {
+            throw CryptoError.encryption
+        }
+        
+        return plaintext
+    }
 
     func encrypt(_ plaintext: Data, pubKey: Box.PublicKey, privKey: Box.SecretKey) throws -> Data {
         guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {

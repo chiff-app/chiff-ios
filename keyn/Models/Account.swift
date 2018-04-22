@@ -30,6 +30,14 @@ struct Account: Codable {
         
         try save(password: generatedPassword)
     }
+    
+    func intializePassword() throws {
+        let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
+        assert(index == passwordIndex, "Password wasn't properly generated. Different index")
+        
+        try save(password: generatedPassword)
+    }
+    
 
     private func save(password: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
@@ -39,6 +47,7 @@ struct Account: Codable {
         }
 
         try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
     }
 
     func password() throws -> String {
@@ -68,6 +77,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
 
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
     }
 
     func delete() throws {
