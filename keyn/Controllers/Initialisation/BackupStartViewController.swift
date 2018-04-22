@@ -56,6 +56,7 @@ class BackupStartViewController: UIViewController {
         if isInitialSetup {
             do {
                 try! Seed.create()
+                try! BackupManager.sharedInstance.initialize()
             } catch {
                 print("TODO: Present error when seed can't be created.")
                 print(error)

@@ -49,6 +49,55 @@ class AWS {
             return nil
         })
     }
+    
+    func createBackupData(pubKey: String, signedMessage: String) {
+        let jsonObject: [String: Any] = [
+            "pubKey" : pubKey,
+            "message": signedMessage
+        ]
+        lambda.invokeFunction("createBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+                return nil
+            } else if let jsonDict = task.result as? NSDictionary {
+                print(jsonDict)
+            }
+            return nil
+        })
+    }
+    
+    func backupAccount(pubKey: String, id: String, message: String) {
+        let jsonObject: [String: Any] = [
+            "pubKey" : pubKey,
+            "message": message,
+            "accountId": id
+        ]
+        lambda.invokeFunction("setBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+                return nil
+            } else if let jsonDict = task.result as? NSDictionary {
+                print(jsonDict)
+            }
+            return nil
+        })
+    }
+    
+    func getBackupData(pubKey: String, message: String, completionHandler: @escaping (_ accountData: Dictionary<String,Any>) -> Void) {
+        let jsonObject: [String: Any] = [
+            "pubKey" : pubKey,
+            "message": message
+        ]
+        lambda.invokeFunction("getBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+                return nil
+            } else if let jsonDict = task.result as? Dictionary<String,Any> {
+                completionHandler(jsonDict)
+            }
+            return nil
+        })
+    }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {

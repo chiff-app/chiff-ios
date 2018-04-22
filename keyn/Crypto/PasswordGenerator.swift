@@ -168,7 +168,7 @@ class PasswordGenerator {
         }
 
         // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)
-        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordKey(), context: siteData, index: siteID)
+        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: siteID)
         let key = try Crypto.sharedInstance.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
 
         return key

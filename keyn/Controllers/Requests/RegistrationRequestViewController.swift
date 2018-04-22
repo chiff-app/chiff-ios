@@ -19,7 +19,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         super.viewDidLoad()
 
         guard let site = site else {
-            fatalError("Sit was nil when creating new account")
+            fatalError("Site was nil when creating new account")
         }
         
         websiteNameTextField.text = site.name

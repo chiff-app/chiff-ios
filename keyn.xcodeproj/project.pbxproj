@@ -18,6 +18,8 @@
 		01839A771FACA99B00698B69 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A761FACA99B00698B69 /* AccountTests.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
 		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
+		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
+		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		49190F832076338E0072849D /* 9.json in Resources */ = {isa = PBXBuildFile; fileRef = 49190F822076338E0072849D /* 9.json */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
@@ -167,6 +169,7 @@
 		1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
+		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		49190F822076338E0072849D /* 9.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 9.json; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
 				49FA7F751FB9E08E00EDB367 /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
+				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -894,6 +898,7 @@
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
+				4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */,
 				613CFB07201360B300460CC6 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -921,6 +926,7 @@
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
+				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
 				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
 				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
