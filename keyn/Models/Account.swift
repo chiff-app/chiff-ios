@@ -69,6 +69,7 @@ struct Account: Codable {
 
         //TODO: Implement custom passwords here
         self.passwordIndex = newIndex
+        passwordOffset = offset
 
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding
