@@ -83,6 +83,7 @@ struct Account: Codable {
 
     func delete() throws {
         try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
+        try BackupManager.sharedInstance.deleteAccount(accountId: id)
     }
 
     static func get(siteID: Int) throws -> Account? {

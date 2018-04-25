@@ -89,6 +89,11 @@ struct BackupManager {
         return base64Message
     }
     
+    func deleteAccount(accountId: String) throws {
+        let message = try signMessage(message: accountId)
+        AWS.sharedInstance.deleteAccountBackupData(pubKey: try publicKey(), message: message)
+    }
+    
     func getBackupData(completionHandler: @escaping () -> Void) throws {
         var pubKey: String
         if !Keychain.sharedInstance.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {

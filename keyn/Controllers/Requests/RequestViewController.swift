@@ -21,40 +21,22 @@ class RequestViewController: UIViewController {
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session {
             switch notification.requestType {
-            case .login:
-                if let account = self.account {
-                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
-                        if (succes) {
-                            DispatchQueue.main.async {
-                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType)
-                                self!.dismiss(animated: true, completion: nil)
-                            }
-                        } else {
-                            print("TODO: Handle touchID errors.")
-                        }
+            case .add:
+                Site.get(id: notification.siteID, completion: { (site) in
+                    self.site = site
+                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                })
+            case .login, .change:
+                if account == nil {
+                    Site.get(id: notification.siteID, completion: { (site) in
+                        self.site = site
+                        self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                     })
                 } else {
-                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
-                }
-            case .change:
-                let oldPassword: String? = try! account?.password()
-                try! account?.updatePassword(offset: nil)
-                if let account = self.account {
-                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
-                        if (succes) {
-                            DispatchQueue.main.async {
-                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
-                                self!.dismiss(animated: true, completion: nil)
-                            }
-                        } else {
-                            print("TODO: Handle touchID errors.")
-                        }
-                    })
-                } else {
-                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                    authorize(notification: notification, session: session)
                 }
             case .register:
-                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                print("TODO: Fix register requests")
             default:
                 print("Unknown requestType")
             }
@@ -66,6 +48,26 @@ class RequestViewController: UIViewController {
     }
     
     // MARK: Private functions
+    
+    private func authorize(notification: PushNotification, session: Session) {
+        // TODO: Handle error throwing here
+        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
+            if (succes) {
+                DispatchQueue.main.async {
+                    var account = try! Account.get(siteID: notification.siteID)
+                    var oldPassword: String?
+                    if notification.requestType == .change {
+                        oldPassword = try! account!.password()
+                        try! account!.updatePassword(offset: nil)
+                    }
+                    try! session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
+                    self!.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                print("TODO: Handle touchID errors.")
+            }
+        })
+    }
 
     private func analyseRequest() {
         if let notification = notification, let session = session {
@@ -74,27 +76,9 @@ class RequestViewController: UIViewController {
             do {
                 account = try! Account.get(siteID: notification.siteID)
                 setLabel(requestType: notification.requestType)
-                var oldPassword: String?
-                if notification.requestType == .change {
-                    oldPassword = try! account?.password()
-                    try! account?.updatePassword(offset: nil)
-                }
-                if let account = self.account {
+                if account != nil && (notification.requestType == .login || notification.requestType == .change) {
                     // Automatically present the touchID popup
-                    AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
-                        if (succes) {
-                            DispatchQueue.main.async {
-                                try! session.sendCredentials(account: account, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
-                                self!.dismiss(animated: true, completion: nil)
-                            }
-                        } else {
-                            print("TODO: Handle touchID errors.")
-                        }
-                    })
-                } else {
-                    Site.get(id: notification.siteID, completion: { (site) in
-                        self.site = site
-                    })
+                    authorize(notification: notification, session: session)
                 }
             } catch {
                 print("Error getting account: \(error)")
@@ -112,6 +96,8 @@ class RequestViewController: UIViewController {
             siteLabel.text = "Reset password for \(notification!.siteName)?"
         case .register:
             siteLabel.text = "Register for \(notification!.siteName)?"
+        case .add:
+            siteLabel.text = "Add \(notification!.siteName)?"
         default:
             siteLabel.text = "Request error :("
         }

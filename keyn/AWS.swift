@@ -98,6 +98,22 @@ class AWS {
             return nil
         })
     }
+    
+    func deleteAccountBackupData(pubKey: String, message: String) {
+        let jsonObject: [String: Any] = [
+            "pubKey" : pubKey,
+            "message": message
+        ]
+        lambda.invokeFunction("deleteAccount", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+                return nil
+            } else if let jsonDict = task.result as? Dictionary<String,Any> {
+                print(jsonDict)
+            }
+            return nil
+        })
+    }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
         if let sendRequest = AWSSQSSendMessageRequest() {
