@@ -13,8 +13,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet var requirementLabels: [UILabel]!
     
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -106,7 +105,15 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         if (username.isEmpty || password.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
         } else {
-            saveButton.isEnabled = true
+            if let notification = notification, notification.requestType == .add, let account = try? Account.get(siteID: notification.siteID) {
+                if account?.username == username {
+                    saveButton.isEnabled = false
+                } else {
+                    saveButton.isEnabled = true
+                }
+            } else {
+                saveButton.isEnabled = true
+            }
         }
     }
     
@@ -136,7 +143,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         let newPassword = self.newPassword
         var type: BrowserMessageType
         switch notification!.requestType {
-        case .login:
+        case .login, .add:
             type = newPassword ? BrowserMessageType.addAndChange : BrowserMessageType.add
         case .change:
             type = newPassword ? BrowserMessageType.change : BrowserMessageType.confirm
