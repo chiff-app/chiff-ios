@@ -30,14 +30,6 @@ struct Account: Codable {
         
         try save(password: generatedPassword)
     }
-    
-    func intializePassword() throws {
-        let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
-        assert(index == passwordIndex, "Password wasn't properly generated. Different index")
-        
-        try save(password: generatedPassword)
-    }
-    
 
     private func save(password: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
@@ -97,6 +89,23 @@ struct Account: Codable {
             }
         }
         return nil
+    }
+    
+    static func save(accountData: Data, id: String) throws {
+        let decoder = PropertyListDecoder()
+        let account = try decoder.decode(Account.self, from: accountData)
+        
+        assert(account.id == id, "Account restoring went wrong. Different id")
+
+        let (password, index) = try PasswordGenerator.sharedInstance.generatePassword(username: account.username, passwordIndex: account.passwordIndex, siteID: account.site.id, ppd: account.site.ppd, offset: account.passwordOffset)
+        
+        assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
+        
+        guard let passwordData = password.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+        
+        try Keychain.sharedInstance.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: accountData)
     }
 
     static func all() throws -> [Account]? {

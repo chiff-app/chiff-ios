@@ -33,16 +33,32 @@ struct BackupManager {
             pubKey = try publicKey()
         }
         
-        let signedMessage = try signMessage(message: "Shouldthisbecomeatimestamp?")
-        AWS.sharedInstance.createBackupData(pubKey: pubKey, signedMessage: signedMessage)
+        let backupData = [
+            "type": "createBackupData",
+            "timestamp": "TODO",
+            "identityId": "TODO"
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
+        let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
+        
+        let base64EncodedMessage = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
+        AWS.sharedInstance.createBackupData(pubKey: pubKey, signedMessage: base64EncodedMessage)
     }
     
     func backup(id: String, accountData: Data) throws {
-        // TODO: Encrypt data
+        // TODO: Also sign account ID + add timestamp.
         let ciphertext = try Crypto.sharedInstance.encryptSymmetric(accountData, secretKey: try encryptionKey())
-        let signedMessage = try Crypto.sharedInstance.sign(message: ciphertext, privKey: try privateKey())
+        let backupData = [
+            "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext),
+            "type": "setBackupData",
+            "accountId": id,
+            "timestamp": "TODO",
+            "identityId": "TODO"
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
+        let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
         let base64EncodedMessage = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
-        AWS.sharedInstance.backupAccount(pubKey: try publicKey(), id: id, message: base64EncodedMessage)
+        AWS.sharedInstance.backupAccount(pubKey: try publicKey(), message: base64EncodedMessage)
     }
     
     private func createEncryptionKey() throws {
@@ -83,14 +99,28 @@ struct BackupManager {
             throw CryptoError.convertToData
         }
 
-        let signedMessage = try Crypto.sharedInstance.sign(message: messageData, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService))
+        let signedMessage = try Crypto.sharedInstance.sign(message: messageData, privKey: try privateKey())
+        
+        let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
+        return base64Message
+    }
+    
+    func signMessage(message: Data) throws -> String {
+        let signedMessage = try Crypto.sharedInstance.sign(message: message, privKey: try privateKey())
         
         let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
         return base64Message
     }
     
     func deleteAccount(accountId: String) throws {
-        let message = try signMessage(message: accountId)
+        let data = [
+            "accountId": accountId,
+            "type": "deleteAccount",
+            "timestamp": "TODO",
+            "identityId": "TODO"
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+        let message = try signMessage(message: jsonData)
         AWS.sharedInstance.deleteAccountBackupData(pubKey: try publicKey(), message: message)
     }
     
@@ -103,23 +133,27 @@ struct BackupManager {
             pubKey = try publicKey()
         }
         
-        let signedMessage = try signMessage(message: "TODO:Shouldthisbecomeatimestamp?")
-        let decoder = PropertyListDecoder()
+        let data = [
+            "type": "getBackupData",
+            "timestamp": "TODO",
+            "identityId": "TODO"
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+        let signedMessage = try signMessage(message: jsonData)
+
         AWS.sharedInstance.getBackupData(pubKey: pubKey, message: signedMessage) { (dict) in
             for (id, data) in dict {
                 if let base64Data = data as? String {
                     let ciphertext = try! Crypto.sharedInstance.convertFromBase64(from: base64Data)
                     let accountData = try! Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try! self.encryptionKey())
-                    let account = try! decoder.decode(Account.self, from: accountData)
-                    assert(account.id == id, "Account restoring went wrong. Different id")
-                    try! account.intializePassword()
+                    try! Account.save(accountData: accountData, id: id)
                 }
             }
             completionHandler()
         }
     }
     
-    func deleteAll() {
+    func deleteAllKeys() {
         Keychain.sharedInstance.deleteAll(service: keychainService)
     }
     
