@@ -47,7 +47,7 @@ class SettingsViewController: UITableViewController {
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
-            BackupManager.sharedInstance.deleteAll()
+            BackupManager.sharedInstance.deleteAllKeys()
             AWS.sharedInstance.deleteEndpointArn()
             UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)

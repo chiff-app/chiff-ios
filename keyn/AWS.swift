@@ -66,11 +66,10 @@ class AWS {
         })
     }
     
-    func backupAccount(pubKey: String, id: String, message: String) {
+    func backupAccount(pubKey: String, message: String) {
         let jsonObject: [String: Any] = [
             "pubKey" : pubKey,
-            "message": message,
-            "accountId": id
+            "message": message
         ]
         lambda.invokeFunction("setBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
             if let error = task.error {
