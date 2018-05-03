@@ -14,7 +14,7 @@ class AuthenticationGuard {
     static let sharedInstance = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
-    var autoAuthentication = true
+    var authorizationInProgress = false
     var authenticationInProgress = false
     
     private init() {
@@ -29,6 +29,7 @@ class AuthenticationGuard {
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidFinishLaunching, object: nil, queue: OperationQueue.main, using: didFinishLaunchingWithOptions)
         nc.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
+        nc.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
     }
     
     deinit {
@@ -55,11 +56,16 @@ class AuthenticationGuard {
         }
     }
     
+    private func applicationDidBecomeActive(notification: Notification) {
+        authenticateUser(cancelChecks: true)
+    }
+    
     private func applicationDidEnterBackground(notification: Notification) {
         if Seed.exists() {
             lockWindow.makeKeyAndVisible()
         }
         authenticationInProgress = false
+        authorizationInProgress = false
         
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))
@@ -90,7 +96,7 @@ class AuthenticationGuard {
     
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
-            guard !authenticationInProgress && !lockWindow.isHidden else {
+            guard !authenticationInProgress && !lockWindow.isHidden && !authorizationInProgress else {
                 return
             }
             if let visibleViewController = UIApplication.shared.visibleViewController {
@@ -99,9 +105,9 @@ class AuthenticationGuard {
                 }
             }
             
-            authenticationInProgress = true
         }
         
+        authenticationInProgress = true
         authenticateUser()
     }
     
@@ -114,6 +120,7 @@ class AuthenticationGuard {
         
         guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
             //TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled
+            authenticationInProgress = false
             print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code))
             return
         }
@@ -166,6 +173,7 @@ class AuthenticationGuard {
     
     func launchRequestView(with notification: PushNotification) {
         // TODO: crash for now.
+        authorizationInProgress = true
         do {
             if let session = try! Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
@@ -179,9 +187,11 @@ class AuthenticationGuard {
                     lockWindow.rootViewController?.present(viewController, animated: true, completion: nil)
                 }
             } else {
+                authorizationInProgress = false
                 print("Received request for session that doesn't exist.")
             }
         } catch {
+            authorizationInProgress = false
             print("Session could not be decoded: \(error)")
         }
     }
