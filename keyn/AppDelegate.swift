@@ -195,8 +195,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
-        AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: true)
-
+        
         // Clean up notifications
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()

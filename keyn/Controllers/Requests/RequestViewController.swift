@@ -45,6 +45,7 @@ class RequestViewController: UIViewController {
     
     @IBAction func reject(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+        AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }
     
     // MARK: Private functions
@@ -108,6 +109,7 @@ class RequestViewController: UIViewController {
 
     @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
         self.dismiss(animated: false, completion: nil)
+        AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
