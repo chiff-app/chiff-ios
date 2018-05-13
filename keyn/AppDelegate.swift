@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
         //BackupManager.sharedInstance.deleteAll()
 
-
         // Override point for customization after application launch.
         fetchAWSIdentification()
         registerForPushNotifications()
@@ -84,92 +83,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             completionHandler([.alert, .sound])
         } else {
-            guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
+            if handleNotification(userInfo: notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType) {
+                completionHandler([.sound])
+            } else {
                 completionHandler([])
-                return
             }
-            guard let siteName = notification.request.content.userInfo["siteName"] as? String else {
-                completionHandler([])
-                return
-            }
-            guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
-                completionHandler([])
-                return
-            }
-
-            DispatchQueue.main.async {
-                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
-            }
-            completionHandler([.sound])
         }
     }
 
-    // Called to let your app know which action was selected by the user for a given notification.
-    @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        os_log("Background notification called")
-        // TODO: Find out why we cannot pass RequestType in userInfo..
-        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
-            completionHandler()
-            return
-        }
-
-        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
-            completionHandler()
-            return
-        }
-
-        if browserMessageType == .end {
-            // TODO: If errors are thrown here, they should be logged. App now crashes.
-            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
-        } else {
-            guard let siteID = response.notification.request.content.userInfo["siteID"] as? Int else {
-                completionHandler()
-                return
-            }
-            guard let siteName = response.notification.request.content.userInfo["siteName"] as? String else {
-                completionHandler()
-                return
-            }
-            guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
-                completionHandler()
-                return
-            }
-
-            if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
-//                if response.actionIdentifier == "ACCEPT" {
-//                                    cancelAutoAuthentication()
-//                                    notificationUserInfo = [
-//                                        "sessionID": sessionID,
-//                                        "siteID": siteID,
-//                                        "accepted": "true"
-//                                    ]
+//    // Called to let your app know which action was selected by the user for a given notification.
+//    @available(iOS 10.0, *)
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        os_log("Background notification called")
+//        // TODO: Find out why we cannot pass RequestType in userInfo..
+//        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+//            completionHandler()
+//            return
+//        }
 //
-//                    // Directly send password? Is this a security risk? Should be tested
-//                    if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-//                        try! session.sendCredentials(account: account, browserTab: browserTab, type: browserMessageType)
-//                    }
-//                }
+//        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
+//            completionHandler()
+//            return
+//        }
+//
+//        if browserMessageType == .end {
+//            // TODO: If errors are thrown here, they should be logged. App now crashes.
+//            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
+//        } else {
+//            let _ = handleNotification(userInfo: response.notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+//        }
+//        completionHandler()
+//    }
 
-                if response.actionIdentifier == "ACCEPT" {
-                    // This should present request page --> Yes / NO. AUthentication after or before?
-                    AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
-                }
-            }
-
-            if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-                // This should present request page --> Yes / NO. AUthentication after or before?
-                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
-            }
-
-        }
-        completionHandler()
-    }
-
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        // App opened with url
-        return true
-    }
 
     // Sent when the application is about to move from active to inactive state.
     // This can occur for certain types of temporary interruptions (such as an incoming phone call
@@ -184,6 +129,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
+        // Clean up notifications
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
     }
 
 
@@ -191,16 +139,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
         // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
-        handlePendingEndSessionNotifications()
+        handlePendingNotifications()
     }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive.
     // If the application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
         
-        // Clean up notifications
-        let center = UNUserNotificationCenter.current()
-        center.removeAllDeliveredNotifications()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -232,17 +177,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
+    
+    
+    private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, browserMessageType: BrowserMessageType) -> Bool {
+        guard let siteID = userInfo["siteID"] as? Int else {
+            return false
+        }
+        guard let siteName = userInfo["siteName"] as? String else {
+            return false
+        }
+        guard let browserTab = userInfo["browserTab"] as? Int else {
+            return true
+        }
+        
+        DispatchQueue.main.async {
+            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+        }
+        return true
+    }
 
-    private func handlePendingEndSessionNotifications() {
+    private func handlePendingNotifications() {
         let center = UNUserNotificationCenter.current()
         center.getDeliveredNotifications { (notifications) in
             for notification in notifications {
                 if let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int,
                     let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
-                    let sessionID = notification.request.content.userInfo["sessionID"] as? String,
-                    browserMessageType == .end
+                    let sessionID = notification.request.content.userInfo["sessionID"] as? String
                 {
-                    try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                    print(notification.date.timeIntervalSinceNow)
+                    if browserMessageType == .end {
+                        // TODO: If errors are thrown here, they should be logged. App now crashes.
+                        try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                    } else if notification.date.timeIntervalSinceNow < -180.0  {
+                        let _ = self.handleNotification(userInfo: notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+                    }
                 }
             }
         }
@@ -268,6 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func fetchAWSIdentification() {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
                                                                 identityPoolId: "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe")
+        
 
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
@@ -277,13 +246,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func backupAllAccounts() {
         do {
             if !UserDefaults.standard.bool(forKey: "backedUp") {
+                UserDefaults.standard.set(true, forKey: "backedUp")
                 try BackupManager.sharedInstance.initialize()
                 if let accounts = try! Account.all() {
                     for account in accounts {
                         try? account.backup()
                     }
                 }
-                UserDefaults.standard.set(true, forKey: "backedUp")
             }
         } catch {
             print("Error getting accounts \(error)")
