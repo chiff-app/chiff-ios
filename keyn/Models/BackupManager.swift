@@ -36,7 +36,7 @@ struct BackupManager {
         let backupData = [
             "type": "createBackupData",
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": "TODO"
+            "identityId": AWS.sharedInstance.getIdentityId()
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
         let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
@@ -53,7 +53,7 @@ struct BackupManager {
             "type": "setBackupData",
             "accountId": id,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": "TODO"
+            "identityId": AWS.sharedInstance.getIdentityId()
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
         let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
@@ -117,7 +117,7 @@ struct BackupManager {
             "accountId": accountId,
             "type": "deleteAccount",
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": "TODO"
+            "identityId": AWS.sharedInstance.getIdentityId()
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
         let message = try signMessage(message: jsonData)
@@ -136,7 +136,7 @@ struct BackupManager {
         let data = [
             "type": "getBackupData",
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": "TODO"
+            "identityId": AWS.sharedInstance.getIdentityId()
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
         let signedMessage = try signMessage(message: jsonData)

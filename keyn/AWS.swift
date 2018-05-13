@@ -55,6 +55,13 @@ class AWS {
         }
     }
     
+    func getIdentityId() -> String {
+        if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
+            return credentialsProvider.identityId ?? "NoIdentityId"
+        }
+        return "NoIdentityId"
+    }
+    
     func createBackupData(pubKey: String, signedMessage: String) {
         guard let request = AWSLambdaInvokerInvocationRequest() else {
             return // TODO: Throw error or something?

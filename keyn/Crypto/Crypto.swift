@@ -158,9 +158,7 @@ class Crypto {
         guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {
             throw CryptoError.encryption
         }
-        
-        print("Nonce: \(ciphertext[..<Data.Index(sodium.box.NonceBytes)])")
-        
+    
         return ciphertext
     }
 
