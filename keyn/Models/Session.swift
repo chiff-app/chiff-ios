@@ -68,13 +68,13 @@ class Session: Codable {
 
     func decrypt(message: String) throws -> String {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return String(data: data, encoding: .utf8)!
     }
 
     func decrypt(message: String) throws -> BrowserMessage {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return try JSONDecoder().decode(BrowserMessage.self, from: data)
     }
     

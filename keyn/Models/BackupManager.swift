@@ -35,7 +35,7 @@ struct BackupManager {
         
         let backupData = [
             "type": "createBackupData",
-            "timestamp": "TODO",
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "identityId": "TODO"
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
@@ -52,7 +52,7 @@ struct BackupManager {
             "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext),
             "type": "setBackupData",
             "accountId": id,
-            "timestamp": "TODO",
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "identityId": "TODO"
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
@@ -116,7 +116,7 @@ struct BackupManager {
         let data = [
             "accountId": accountId,
             "type": "deleteAccount",
-            "timestamp": "TODO",
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "identityId": "TODO"
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
@@ -135,7 +135,7 @@ struct BackupManager {
         
         let data = [
             "type": "getBackupData",
-            "timestamp": "TODO",
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "identityId": "TODO"
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)

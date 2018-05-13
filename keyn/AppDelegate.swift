@@ -40,6 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
         
+        backupAllAccounts()
+        
         return true
     }
 
@@ -269,6 +271,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+    
+    // TEMP: Make backup of all sites to transition to new version. Should be deleted after anyone has installed this version.
+    private func backupAllAccounts() {
+        do {
+            if !UserDefaults.standard.bool(forKey: "backedUp") {
+                try BackupManager.sharedInstance.initialize()
+                if let accounts = try! Account.all() {
+                    for account in accounts {
+                        try? account.backup()
+                    }
+                }
+                UserDefaults.standard.set(true, forKey: "backedUp")
+            }
+        } catch {
+            print("Error getting accounts \(error)")
+        }
     }
 
     @available(iOS 10.0, *)
