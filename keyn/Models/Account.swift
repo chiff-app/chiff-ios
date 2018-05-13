@@ -41,6 +41,11 @@ struct Account: Codable {
         try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData)
         try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
     }
+    
+    func backup() throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+    }
 
     func password() throws -> String {
         let data = try Keychain.sharedInstance.get(id: id, service: Account.keychainService)

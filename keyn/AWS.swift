@@ -31,12 +31,13 @@ class AWS {
     private init() {}
     
     func getPPD(id: Int, completionHandler: @escaping (_ ppd: PPD) -> Void) {
-        let jsonObject: [String: Any] = ["id" : id]
-        lambda.invokeFunction("getPPD", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
-            if let error = task.error {
-                print("Error: \(error)")
-                return nil
-            } else if let jsonDict = task.result as? NSDictionary {
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "getPPD"
+        request.payload = ["id" : id]
+        lambda.invoke(request).continueOnSuccessWith(block: { (task) -> Any? in
+            if let jsonDict = task.result?.payload as? NSDictionary {
                 do {
                     let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
                     let ppd = try! JSONDecoder().decode(PPD.self, from: jsonData)
@@ -44,74 +45,85 @@ class AWS {
                 } catch {
                     print(error)
                 }
-
             }
             return nil
-        })
+        }).continueWith { (task) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+            }
+            return nil
+        }
     }
     
     func createBackupData(pubKey: String, signedMessage: String) {
-        let jsonObject: [String: Any] = [
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "createBackupData"
+        request.payload = [
             "pubKey" : pubKey,
             "message": signedMessage
         ]
-        lambda.invokeFunction("createBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+        lambda.invoke(request).continueWith { (task) -> Any? in
             if let error = task.error {
                 print("Error: \(error)")
-                return nil
-            } else if let jsonDict = task.result as? NSDictionary {
-                print(jsonDict)
             }
             return nil
-        })
+        }
     }
     
     func backupAccount(pubKey: String, message: String) {
-        let jsonObject: [String: Any] = [
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "setBackupData"
+        request.payload = [
             "pubKey" : pubKey,
             "message": message
         ]
-        lambda.invokeFunction("setBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+        lambda.invoke(request).continueWith { (task) -> Any? in
             if let error = task.error {
                 print("Error: \(error)")
-                return nil
-            } else if let jsonDict = task.result as? NSDictionary {
-                print(jsonDict)
             }
             return nil
-        })
+        }
     }
     
     func getBackupData(pubKey: String, message: String, completionHandler: @escaping (_ accountData: Dictionary<String,Any>) -> Void) {
-        let jsonObject: [String: Any] = [
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "getBackupData"
+        request.payload = [
             "pubKey" : pubKey,
             "message": message
         ]
-        lambda.invokeFunction("getBackupData", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
-            if let error = task.error {
-                print("Error: \(error)")
-                return nil
-            } else if let jsonDict = task.result as? Dictionary<String,Any> {
+        lambda.invoke(request).continueOnSuccessWith { (task) -> Any? in
+            if let jsonDict = task.result?.payload as? Dictionary<String,Any> {
                 completionHandler(jsonDict)
             }
             return nil
-        })
+        }.continueWith { (task) -> Any? in
+                print("Error: \(task.error)")
+                return nil
+        }
     }
     
     func deleteAccountBackupData(pubKey: String, message: String) {
-        let jsonObject: [String: Any] = [
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "deleteAccount"
+        request.payload = [
             "pubKey" : pubKey,
             "message": message
         ]
-        lambda.invokeFunction("deleteAccount", jsonObject: jsonObject).continueWith(block: {(task:AWSTask<AnyObject>) -> Any? in
+        lambda.invoke(request).continueWith { (task) -> Any? in
             if let error = task.error {
                 print("Error: \(error)")
-                return nil
-            } else if let jsonDict = task.result as? Dictionary<String,Any> {
-                print(jsonDict)
             }
             return nil
-        })
+        }
     }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {

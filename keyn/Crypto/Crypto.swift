@@ -1,5 +1,6 @@
 import Foundation
 import Sodium
+import os.log
 
 enum CryptoError: Error {
     case randomGeneration
@@ -157,6 +158,9 @@ class Crypto {
         guard let ciphertext: Data = sodium.box.seal(message: plaintext, recipientPublicKey: pubKey, senderSecretKey: privKey) else {
             throw CryptoError.encryption
         }
+        
+        print("Nonce: \(ciphertext[..<Data.Index(sodium.box.NonceBytes)])")
+        
         return ciphertext
     }
 
@@ -168,11 +172,13 @@ class Crypto {
     }
 
     // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key
-    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey: Box.PublicKey) throws -> Data {
+    func decrypt(_ ciphertext: Data, privKey: Box.SecretKey, pubKey: Box.PublicKey) throws -> (Data, Data) {
+        let nonce = ciphertext[..<Data.Index(sodium.box.NonceBytes)]
         guard let plaintext: Data = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext, senderPublicKey: pubKey, recipientSecretKey: privKey) else {
             throw CryptoError.decryption
         }
-        return plaintext
+        
+        return (plaintext, nonce)
     }
 
 

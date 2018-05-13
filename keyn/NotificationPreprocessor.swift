@@ -34,7 +34,7 @@ class NotificationPreprocessor {
                     return content
                 }
             } catch {
-                print("Session could not be decoded")
+                content.body = "Error: \(error)"
             }
         }
 
