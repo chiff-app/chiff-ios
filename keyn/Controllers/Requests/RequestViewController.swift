@@ -1,23 +1,51 @@
 import UIKit
 import LocalAuthentication
 
-class RequestViewController: UIViewController {
+class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var notification: PushNotification?
     var session: Session?
-    var account: Account?
+    var accounts = [Account]()
     var site: Site?
+    let PICKER_HEIGHT: CGFloat = 120.0
+    let SPACE_PICKER_STACK: CGFloat = 10.0
     @IBOutlet weak var siteLabel: UILabel!
-
+    @IBOutlet weak var accountPicker: UIPickerView!
+    @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         analyseRequest()
+        
+        accountPicker.dataSource = self
+        accountPicker.delegate = self
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-
+    
+    // MARK: UIPickerView functions
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return accounts.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return accounts[row].username
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        let username = NSAttributedString(string: accounts[row].username, attributes: [.foregroundColor : UIColor.white])
+        return username
+    }
+    
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session {
             switch notification.requestType {
@@ -27,13 +55,16 @@ class RequestViewController: UIViewController {
                     self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                 })
             case .login, .change:
-                if account == nil {
+                if accounts.count == 0 {
                     Site.get(id: notification.siteID, completion: { (site) in
                         self.site = site
                         self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                     })
+                } else if accounts.count == 1 {
+                    authorize(notification: notification, session: session, accountID: accounts.first!.id)
                 } else {
-                    authorize(notification: notification, session: session)
+                    let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
+                    authorize(notification: notification, session: session, accountID: accountID)
                 }
             case .register:
                 print("TODO: Fix register requests")
@@ -50,12 +81,12 @@ class RequestViewController: UIViewController {
     
     // MARK: Private functions
     
-    private func authorize(notification: PushNotification, session: Session) {
+    private func authorize(notification: PushNotification, session: Session, accountID: String) {
         // TODO: Handle error throwing here
-        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: notification.requestType, completion: { [weak self] (succes, error) in
+        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: notification.requestType, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
-                    var account = try! Account.get(siteID: notification.siteID)
+                    var account = try! Account.get(accountID: accountID)
                     var oldPassword: String?
                     if notification.requestType == .change {
                         oldPassword = try! account!.password()
@@ -72,15 +103,19 @@ class RequestViewController: UIViewController {
 
     private func analyseRequest() {
         if let notification = notification, let session = session {
-            siteLabel.text = notification.siteName
             // TODO: Crash app for now.
+            print(notification.requestType)
             do {
-                account = try! Account.get(siteID: notification.siteID)
-                setLabel(requestType: notification.requestType)
-                if account != nil && (notification.requestType == .login || notification.requestType == .change) {
-                    // Automatically present the touchID popup
-                    authorize(notification: notification, session: session)
+                accounts = try! Account.get(siteID: notification.siteID)
+                if accounts.count == 1 {
+                    if notification.requestType == .login || notification.requestType == .change {
+                        authorize(notification: notification, session: session, accountID: accounts.first!.id)
+                    }
+                } else {
+                    pickerHeightConstraint.constant = PICKER_HEIGHT
+                    spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 }
+                setLabel(requestType: notification.requestType)
             } catch {
                 print("Error getting account: \(error)")
             }
@@ -90,9 +125,9 @@ class RequestViewController: UIViewController {
     private func setLabel(requestType: BrowserMessageType) {
         switch requestType {
         case .login:
-            siteLabel.text = self.account != nil ? "Login to \(notification!.siteName)?" : "Add \(notification!.siteName)?"
+            siteLabel.text = !self.accounts.isEmpty ? "Login to \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .change:
-            siteLabel.text = self.account != nil ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
+            siteLabel.text = !self.accounts.isEmpty ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .reset:
             siteLabel.text = "Reset password for \(notification!.siteName)?"
         case .register:

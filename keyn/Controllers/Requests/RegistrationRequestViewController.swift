@@ -105,8 +105,11 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         if (username.isEmpty || password.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
         } else {
-            if let notification = notification, notification.requestType == .add, let account = try? Account.get(siteID: notification.siteID) {
-                if account?.username == username {
+            if let notification = notification, notification.requestType == .add, let accounts = try? Account.get(siteID: notification.siteID) {
+                let usernameExists = accounts.contains { (account) -> Bool in
+                    account.username == username
+                }
+                if usernameExists {
                     saveButton.isEnabled = false
                 } else {
                     saveButton.isEnabled = true
@@ -154,7 +157,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
             UserDefaults.standard.set(username, forKey: "username")
-            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, type: type, completion: { [weak self] (succes, error) in
+            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {

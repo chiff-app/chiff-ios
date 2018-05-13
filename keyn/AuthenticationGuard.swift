@@ -32,11 +32,6 @@ class AuthenticationGuard {
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
     }
     
-    deinit {
-        let nc = NotificationCenter.default
-        nc.removeObserver(self)
-    }
-    
     func hideLockWindow() {
         UIView.animate(withDuration: 0.25, animations: {
             self.lockWindow.alpha = 0.0
@@ -139,7 +134,7 @@ class AuthenticationGuard {
         }
     }
     
-    func authorizeRequest(siteName: String, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
+    func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
         let authenticationContext = LAContext()
         var error: NSError?
         
