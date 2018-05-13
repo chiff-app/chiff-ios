@@ -83,17 +83,25 @@ struct Account: Codable {
         try BackupManager.sharedInstance.deleteAccount(accountId: id)
     }
 
-    static func get(siteID: Int) throws -> Account? {
+    static func get(siteID: Int) throws -> [Account] {
         // TODO: optimize when we're bored
+        guard let accounts = try Account.all() else {
+            return [Account]()
+        }
+
+        return accounts.filter { (account) -> Bool in
+            account.site.id == siteID
+        }
+    }
+    
+    static func get(accountID: String) throws -> Account? {
         guard let accounts = try Account.all() else {
             return nil
         }
-        for account in accounts {
-            if account.site.id == siteID {
-                return account
-            }
+        
+        return accounts.first { (account) -> Bool in
+            account.id == accountID
         }
-        return nil
     }
     
     static func save(accountData: Data, id: String) throws {
