@@ -79,6 +79,22 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         return accounts.count
     }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+                let account = self.filteredAccounts![indexPath.row]
+                self.deleteAccount(account: account, filteredIndexPath: indexPath)
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
@@ -101,7 +117,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = unfilteredAccounts[indexPath.row]
+                 controller.account = filteredAccounts![indexPath.row]
             }
         }
     }
@@ -119,19 +135,27 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
-                return account.id == unfilteredAccount.id
+            if let index = filteredAccounts!.index(where: { (filteredAccount) -> Bool in
+                return account.id == filteredAccount.id
             }) {
                 let indexPath = IndexPath(row: index, section: 0)
-                // TODO: Crash for no
-                do {
-                    try! account.delete()
-                    unfilteredAccounts.remove(at: index)
-                    filteredAccounts = unfilteredAccounts
-                    tableView.deleteRows(at: [indexPath], with: .automatic)
-                } catch {
-                    print("Account could not be deleted: \(error)")
-                }
+                deleteAccount(account: account, filteredIndexPath: indexPath)
+            }
+        }
+    }
+    
+    private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
+        if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
+            return account.id == unfilteredAccount.id
+        }) {
+            // TODO: Crash for no
+            do {
+                try! account.delete()
+                unfilteredAccounts.remove(at: index)
+                filteredAccounts?.remove(at: filteredIndexPath.row)
+                tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+            } catch {
+                print("Account could not be deleted: \(error)")
             }
         }
     }
