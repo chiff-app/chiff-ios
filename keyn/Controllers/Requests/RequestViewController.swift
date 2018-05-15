@@ -52,13 +52,17 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             case .add:
                 Site.get(id: notification.siteID, completion: { (site) in
                     self.site = site
-                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                    }
                 })
             case .login, .change:
                 if accounts.count == 0 {
                     Site.get(id: notification.siteID, completion: { (site) in
                         self.site = site
-                        self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                        DispatchQueue.main.async {
+                            self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                        }
                     })
                 } else if accounts.count == 1 {
                     authorize(notification: notification, session: session, accountID: accounts.first!.id)
