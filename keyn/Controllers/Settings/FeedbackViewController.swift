@@ -70,6 +70,19 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         }
         var context = ""
         context += userFeedback
+        
+        // PPD Testing mode toggle
+        guard nameTextField.text != "Ppdtesting On" else {
+            UserDefaults.standard.set(true, forKey: "ppdTestingMode")
+            self.textView.text = "PPD Testing mode ON. Submit 'Ppdtesting Off' as name to revert to normal mode."
+            return
+        }
+        guard nameTextField.text != "Ppdtesting Off" else {
+            UserDefaults.standard.set(false, forKey: "ppdTestingMode")
+            self.textView.text = "PPD Testing mode OFF"
+            return
+        }
+        
         context += "Type=\(UIDevice.current.model)."
         context += "iOSVersion=\(UIDevice.current.systemVersion)."
         let postString = "user=\(debugLogUser)&message=\(message)&context=\(context)"
