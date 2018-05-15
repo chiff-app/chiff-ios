@@ -208,7 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     if browserMessageType == .end {
                         // TODO: If errors are thrown here, they should be logged. App now crashes.
                         try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
-                    } else if notification.date.timeIntervalSinceNow < -180.0  {
+                    } else if notification.date.timeIntervalSinceNow > -180.0  {
                         let _ = self.handleNotification(userInfo: notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
                     }
                 }
