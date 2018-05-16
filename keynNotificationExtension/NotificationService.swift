@@ -1,5 +1,11 @@
 import UserNotifications
 
+enum NotificationExtensionError: Error {
+    case StringCast(String)
+    case Decryption
+    case Session
+}
+
 class NotificationService: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
@@ -7,11 +13,47 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        content = (request.content.mutableCopy() as? UNMutableNotificationContent)
-
-        if let content = NotificationPreprocessor.enrich(notification: content) {
-            contentHandler(content)
+        
+        guard let content = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
+            return
         }
+        
+        do {
+            guard let ciphertext = content.userInfo["data"] as? String else {
+                throw NotificationExtensionError.StringCast("ciphertext")
+            }
+            
+            guard let id = content.userInfo["sessionID"] as? String else {
+                throw NotificationExtensionError.StringCast("sessionID")
+            }
+            
+            guard let session = try Session.getSession(id: id) else {
+                throw NotificationExtensionError.Session
+            }
+            
+            let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)
+            
+            content.userInfo["requestType"] = browserMessage.r.rawValue
+            if browserMessage.r == .end {
+                content.body = "Session ended by \(session.browser) on \(session.os)."
+            } else {
+                if let siteName = browserMessage.n {
+                    content.body = "Login request for \(siteName) from \(session.browser) on \(session.os)."
+                    content.userInfo["siteName"] = siteName
+                } else {
+                    content.body = "Login request from \(session.browser) on \(session.os)."
+                    content.userInfo["siteName"] = "Unknown"
+                }
+                
+                content.userInfo["siteID"] = browserMessage.s
+                content.userInfo["browserTab"] = browserMessage.b
+                content.userInfo["requestType"] = browserMessage.r.rawValue
+            }
+        } catch {
+            content.body = "Error: \(error)"
+        }
+        
+        contentHandler(content)
     }
 
     // Called just before the extension will be terminated by the system.

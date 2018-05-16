@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0155741D202A4AE500F97DA2 /* NotificationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */; };
 		0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
-		01557422202A57DA00F97DA2 /* NotificationPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */; };
 		01557424202AF75600F97DA2 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01557423202AF75600F97DA2 /* SessionTests.swift */; };
 		0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155742A202B173F00F97DA2 /* TestHelper.swift */; };
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
@@ -154,7 +152,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessor.swift; sourceTree = "<group>"; };
 		0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessorTests.swift; sourceTree = "<group>"; };
 		01557423202AF75600F97DA2 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		0155742A202B173F00F97DA2 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
@@ -424,7 +421,6 @@
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49A547951FC8559900CD4382 /* Homeless.swift */,
-				0155741B202A4AA000F97DA2 /* NotificationPreprocessor.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49E7D3401FC318CD0059D97E /* Models */,
@@ -894,7 +890,6 @@
 				49DCA69A2063E88E008F4DF2 /* Properties.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
-				0155741D202A4AE500F97DA2 /* NotificationPreprocessor.swift in Sources */,
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
@@ -933,7 +928,6 @@
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
-				01557422202A57DA00F97DA2 /* NotificationPreprocessor.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
