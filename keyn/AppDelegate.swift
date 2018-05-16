@@ -91,29 +91,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-//    // Called to let your app know which action was selected by the user for a given notification.
-//    @available(iOS 10.0, *)
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        os_log("Background notification called")
-//        // TODO: Find out why we cannot pass RequestType in userInfo..
-//        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
-//            completionHandler()
-//            return
-//        }
-//
-//        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
-//            completionHandler()
-//            return
-//        }
-//
-//        if browserMessageType == .end {
-//            // TODO: If errors are thrown here, they should be logged. App now crashes.
-//            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
-//        } else {
-//            let _ = handleNotification(userInfo: response.notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
-//        }
-//        completionHandler()
-//    }
+    // Called to let your app know which action was selected by the user for a given notification.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+            completionHandler()
+            return
+        }
+
+        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
+            completionHandler()
+            return
+        }
+
+        if browserMessageType == .end {
+            // TODO: If errors are thrown here, they should be logged. App now crashes.
+            try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
+        } else {
+            let _ = handleNotification(userInfo: response.notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+        }
+        completionHandler()
+    }
 
 
     // Sent when the application is about to move from active to inactive state.
@@ -138,15 +137,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // Called as part of the transition from the background to the active state;
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
         handlePendingNotifications()
     }
 
-    // Restart any tasks that were paused (or not yet started) while the application was inactive.
-    // If the application was previously in the background, optionally refresh the user interface.
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        
-    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -187,12 +180,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return false
         }
         guard let browserTab = userInfo["browserTab"] as? Int else {
-            return true
+            return false
         }
-        
-        DispatchQueue.main.async {
-            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
-        }
+
+        AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
         return true
     }
 
@@ -204,12 +195,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
                     let sessionID = notification.request.content.userInfo["sessionID"] as? String
                 {
-                    print(notification.date.timeIntervalSinceNow)
                     if browserMessageType == .end {
                         // TODO: If errors are thrown here, they should be logged. App now crashes.
                         try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
                     } else if notification.date.timeIntervalSinceNow > -180.0  {
-                        let _ = self.handleNotification(userInfo: notification.request.content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+                        guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
+                            return
+                        }
+                        guard let siteName = notification.request.content.userInfo["siteName"] as? String else {
+                            return
+                        }
+                        guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
+                            return
+                        }
+
+                        DispatchQueue.main.async {
+                            if !AuthenticationGuard.sharedInstance.authorizationInProgress {
+                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+                            }
+                        }
                     }
                 }
             }
