@@ -1,4 +1,5 @@
 import UserNotifications
+import os.log
 
 enum NotificationExtensionError: Error {
     case StringCast(String)
@@ -37,11 +38,12 @@ class NotificationService: UNNotificationServiceExtension {
             if browserMessage.r == .end {
                 content.body = "Session ended by \(session.browser) on \(session.os)."
             } else {
+                let type = (browserMessage.r == .add) ? "Add site request" : "Login request"
                 if let siteName = browserMessage.n {
-                    content.body = "Login request for \(siteName) from \(session.browser) on \(session.os)."
+                    content.body = "\(type) for \(siteName) from \(session.browser) on \(session.os)."
                     content.userInfo["siteName"] = siteName
                 } else {
-                    content.body = "Login request from \(session.browser) on \(session.os)."
+                    content.body = "\(type) from \(session.browser) on \(session.os)."
                     content.userInfo["siteName"] = "Unknown"
                 }
                 
@@ -50,7 +52,7 @@ class NotificationService: UNNotificationServiceExtension {
                 content.userInfo["requestType"] = browserMessage.r.rawValue
             }
         } catch {
-            content.body = "Error: \(error)"
+            os_log("NotificationError: %@", error.localizedDescription)
         }
         
         contentHandler(content)

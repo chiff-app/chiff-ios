@@ -59,6 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
+        if notification.request.content.body == "Wait for it..." {
+            // Weird iOS bug. Send message to queue to resend data.
+            print(notification.request.content.userInfo)
+        }
+        
         // TODO: Find out why we cannot pass RequestType in userInfo..
         guard let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             completionHandler([])
@@ -95,6 +100,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // TODO: Find out why we cannot pass RequestType in userInfo..
+        
+        if response.notification.request.content.body == "Wait for it..." {
+            // Weird iOS bug. Send message to queue to resend data.
+            print(response.notification.request.content.userInfo)
+        }
+        
         guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             completionHandler()
             return
@@ -199,6 +210,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         // TODO: If errors are thrown here, they should be logged. App now crashes.
                         try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
                     } else if notification.date.timeIntervalSinceNow > -180.0  {
+                        
+                        if notification.request.content.body == "Wait for it..." {
+                            // Weird iOS bug. Send message to queue to resend data.
+                            print(notification.request.content.userInfo)
+                        }
+                        
                         guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
                             return
                         }
