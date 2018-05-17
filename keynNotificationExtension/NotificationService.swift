@@ -35,22 +35,40 @@ class NotificationService: UNNotificationServiceExtension {
             let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)
             
             content.userInfo["requestType"] = browserMessage.r.rawValue
-            if browserMessage.r == .end {
-                content.body = "Session ended by \(session.browser) on \(session.os)."
-            } else {
-                let type = (browserMessage.r == .add) ? "Add site request" : "Login request"
-                if let siteName = browserMessage.n {
-                    content.body = "\(type) for \(siteName) from \(session.browser) on \(session.os)."
-                    content.userInfo["siteName"] = siteName
-                } else {
-                    content.body = "\(type) from \(session.browser) on \(session.os)."
-                    content.userInfo["siteName"] = "Unknown"
-                }
-                
+            
+            let siteName = browserMessage.n ?? "Unknown"
+            var addSiteInfo = false
+
+            switch browserMessage.r {
+            case .add:
+                content.title = "Add site request"
+                content.body = "\(siteName) on \(session.browser) on \(session.os)."
+                addSiteInfo = true
+            case.end:
+                content.title = "Session ended"
+                content.body = "\(session.browser) on \(session.os)."
+            case .change, .addAndChange:
+                content.title = "Change password request"
+                content.body = "\(siteName) on \(session.browser) on \(session.os)."
+                addSiteInfo = true
+            case .login:
+                content.title = "Login request"
+                content.body = "\(siteName) on \(session.browser) on \(session.os)."
+                addSiteInfo = true
+            case .pair:
+                content.title = "Pairing request"
+                content.body = "\(session.browser) on \(session.os)."
+            default:
+                content.body = "Unknown request received"
+            }
+            
+            if addSiteInfo {
+                content.userInfo["siteName"] = siteName
                 content.userInfo["siteID"] = browserMessage.s
                 content.userInfo["browserTab"] = browserMessage.b
                 content.userInfo["requestType"] = browserMessage.r.rawValue
             }
+            
         } catch {
             os_log("NotificationError: %@", error.localizedDescription)
         }
