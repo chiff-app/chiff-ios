@@ -300,7 +300,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwL-cz-Fnd">
-                                <rect key="frame" x="126" y="224" width="123" height="24.666666666666657"/>
+                                <rect key="frame" x="126" y="224" width="123" height="24.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
                                 <color key="textColor" red="1" green="0.71764705882352942" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -324,6 +324,23 @@
                                     <action selector="touchID:" destination="Pqc-6s-Pnr" eventType="touchUpInside" id="YLD-jc-rDY"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="BQL-0z-yPO">
+                                <rect key="frame" x="86.666666666666671" y="410.66666666666669" width="202.33333333333331" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Power mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7a-0M-pxu">
+                                        <rect key="frame" x="0.0" y="0.0" width="113.33333333333333" height="31"/>
+                                        <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Oav-sO-9CQ">
+                                        <rect key="frame" x="153.33333333333331" y="0.0" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="powerModeAction:" destination="Pqc-6s-Pnr" eventType="valueChanged" id="WYu-rS-C02"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -332,12 +349,15 @@
                             <constraint firstItem="xGc-jF-fzx" firstAttribute="top" secondItem="low-6y-hba" secondAttribute="top" constant="80" id="Xxt-Qp-pi5"/>
                             <constraint firstItem="low-6y-hba" firstAttribute="trailing" secondItem="xGc-jF-fzx" secondAttribute="trailing" constant="16" id="eqj-FC-64O"/>
                             <constraint firstItem="mwL-cz-Fnd" firstAttribute="centerX" secondItem="M7J-Ow-gEZ" secondAttribute="centerX" id="lun-7f-9Ft"/>
+                            <constraint firstItem="BQL-0z-yPO" firstAttribute="centerY" secondItem="M7J-Ow-gEZ" secondAttribute="centerY" constant="20" id="rwI-V2-d67"/>
                             <constraint firstItem="PF9-Mk-y1i" firstAttribute="centerX" secondItem="M7J-Ow-gEZ" secondAttribute="centerX" id="uHo-eZ-tUY"/>
                             <constraint firstItem="xGc-jF-fzx" firstAttribute="leading" secondItem="low-6y-hba" secondAttribute="leading" constant="16" id="xYX-iw-gig"/>
+                            <constraint firstItem="BQL-0z-yPO" firstAttribute="centerX" secondItem="M7J-Ow-gEZ" secondAttribute="centerX" id="zbR-hv-wZg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="low-6y-hba"/>
                     </view>
                     <connections>
+                        <outlet property="powerModeSwitch" destination="Oav-sO-9CQ" id="aiK-Fa-Mqm"/>
                         <outlet property="touchIDButton" destination="PF9-Mk-y1i" id="cZl-px-1he"/>
                     </connections>
                 </viewController>
