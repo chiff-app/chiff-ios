@@ -167,7 +167,8 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
             //       How to determine password requirements? > Maybe don't allow creation in app.
             print("TODO: Site info + id should be fetched from somewhere instead of generated here..")
 
-            let id = String(websiteName + websiteURL).hashValue
+            let url = URL(string: websiteURL)
+            let id = try! url!.absoluteString.hash() // TODO, fix
             let site = Site(name: websiteName, id: id, urls: [websiteURL], ppd: nil)
 
             do {

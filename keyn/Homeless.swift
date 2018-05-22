@@ -159,7 +159,7 @@ struct PairingResponse: Codable {
 
 
 struct BrowserMessage: Codable {
-    let s: Int?          // SiteID
+    let s: String?          // PPDHandle
     let r: BrowserMessageType
     let b: Int?          // browserTab
     let n: String?       // Site name
@@ -174,7 +174,7 @@ struct CredentialsResponse: Codable {
 
 struct PushNotification {
     let sessionID : String
-    let siteID: Int
+    let siteID: String
     let siteName: String
     let browserTab: Int
     let requestType: BrowserMessageType

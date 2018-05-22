@@ -83,7 +83,7 @@ struct Account: Codable {
         try BackupManager.sharedInstance.deleteAccount(accountId: id)
     }
 
-    static func get(siteID: Int) throws -> [Account] {
+    static func get(siteID: String) throws -> [Account] {
         // TODO: optimize when we're bored
         guard let accounts = try Account.all() else {
             return [Account]()

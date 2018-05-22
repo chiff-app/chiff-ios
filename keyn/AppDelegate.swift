@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
         
         backupAllAccounts()
-        
         return true
     }
 
@@ -184,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     
     private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, browserMessageType: BrowserMessageType) -> Bool {
-        guard let siteID = userInfo["siteID"] as? Int else {
+        guard let siteID = userInfo["siteID"] as? String else {
             return false
         }
         guard let siteName = userInfo["siteName"] as? String else {
@@ -216,7 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             print(notification.request.content.userInfo)
                         }
                         
-                        guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
+                        guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
                             return
                         }
                         guard let siteName = notification.request.content.userInfo["siteName"] as? String else {
