@@ -55,6 +55,31 @@ class AWS {
         }
     }
     
+    func getDevelopmentPPD(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
+        guard let request = AWSLambdaInvokerInvocationRequest() else {
+            return // TODO: Throw error or something?
+        }
+        request.functionName = "getDevelopmentPPD"
+        request.payload = ["id" : id]
+        lambda.invoke(request).continueOnSuccessWith(block: { (task) -> Any? in
+            if let jsonDict = task.result?.payload as? Dictionary<String, Any>, let ppd = jsonDict["ppd"] as? Array<NSDictionary> {
+                do {
+                    let jsonData = try! JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let ppd = try! JSONDecoder().decode(PPD.self, from: jsonData)
+                    completionHandler(ppd)
+                } catch {
+                    print(error)
+                }
+            }
+            return nil
+        }).continueWith { (task) -> Any? in
+            if let error = task.error {
+                print("Error: \(error)")
+            }
+            return nil
+        }
+    }
+    
     func getIdentityId() -> String {
         if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
             return credentialsProvider.identityId ?? "NoIdentityId"

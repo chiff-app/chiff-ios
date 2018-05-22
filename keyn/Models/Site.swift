@@ -6,35 +6,24 @@ import Foundation
 struct Site: Codable {
 
     var name: String
-    var id: Int
+    var id: String
     var urls: [String]
     var ppd: PPD?
 
-    // TODO:
-    // Get Site object from some persistent storage or online database. This is sample data
-    static func get(id: Int, completion: @escaping (_ site: Site) -> Void) {
-        AWS.sharedInstance.getPPD(id: id) { (ppd) in
-            var urls = [String]()
-            urls.append(ppd.url)
-            completion(Site(name: ppd.name ?? "Unknown", id: id, urls: urls, ppd: ppd))
+    static func get(id: String, completion: @escaping (_ site: Site) -> Void) {
+        if UserDefaults.standard.bool(forKey: "ppdTestingMode") {
+            AWS.sharedInstance.getDevelopmentPPD(id: id) { (ppd) in
+                var urls = [String]()
+                urls.append(ppd.url)
+                completion(Site(name: ppd.name ?? "Unknown", id: id, urls: urls, ppd: ppd))
+            }
+        } else {
+            AWS.sharedInstance.getPPD(id: 0) { (ppd) in
+                var urls = [String]()
+                urls.append(ppd.url)
+                completion(Site(name: ppd.name ?? "Unknown", id: id, urls: urls, ppd: ppd))
+            }
         }
     }
 
-    private static func getSamplePPD(id: Int) -> PPD? {
-        // This gets the sitID.json file and unmarshals to PPD object
-        if let filepath = Bundle.main.path(forResource: String(id), ofType: "json"){
-            do {
-                let contents = try String(contentsOfFile: filepath)
-                if let jsonData = contents.data(using: .utf8) {
-                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
-                    return ppd
-                }
-            } catch {
-                print("PPD could not be loaded: \(error)")
-            }
-        } else {
-            print("\(id).json not found!")
-        }
-        return nil
-    }
 }
