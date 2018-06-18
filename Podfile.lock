@@ -2,8 +2,6 @@ PODS:
   - AWSCognito (2.6.13):
     - AWSCore (= 2.6.13)
   - AWSCore (2.6.13)
-  - AWSDynamoDB (2.6.13):
-    - AWSCore (= 2.6.13)
   - AWSLambda (2.6.13):
     - AWSCore (= 2.6.13)
   - AWSSNS (2.6.13):
@@ -15,7 +13,6 @@ PODS:
 
 DEPENDENCIES:
   - AWSCognito
-  - AWSDynamoDB
   - AWSLambda
   - AWSSNS
   - AWSSQS
@@ -26,7 +23,6 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AWSCognito
     - AWSCore
-    - AWSDynamoDB
     - AWSLambda
     - AWSSNS
     - AWSSQS
@@ -36,13 +32,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
   AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
-  AWSDynamoDB: 36abff7ce93fcadad2c4dc6f729d8716c933adf2
   AWSLambda: 24e1a8803bd38810752dd975613e39d85577d3ae
   AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
   AWSSQS: 3b8372e089be1d7ba3a1b6ab6cb3cb42f03af8b5
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Sodium: bf524b0a3d5ad6870dcf343205cca7e659c15ad5
 
-PODFILE CHECKSUM: b7aa900ec53a28d9486cbfeeb59a5c8f04a7fa35
+PODFILE CHECKSUM: ef7fa5828b48016d7f8b4530162d53a4bf0e000e
 
 COCOAPODS: 1.5.0
