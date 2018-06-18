@@ -192,8 +192,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let browserTab = userInfo["browserTab"] as? Int else {
             return false
         }
-
-        AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+        
+        if browserMessageType == .confirm {
+            guard let shouldChangePassword = userInfo["changeValue"] as? Bool else {
+                return false
+            }
+            
+            if shouldChangePassword {
+                var account = try! Account.get(siteID: siteID)[0] // TODO: probably should send or save accountID somewhere instead of siteID
+                try! account.updatePassword(offset: nil)
+            }
+        } else {
+            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+        }
         return true
     }
 
@@ -208,9 +219,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     if browserMessageType == .end {
                         // TODO: If errors are thrown here, they should be logged. App now crashes.
                         try! Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                    } else if browserMessageType == .confirm {
+                        guard let siteID = notification.request.content.userInfo["siteID"] as? String else {
+                            return
+                        }
+                        
+                        guard let shouldChangePassword = notification.request.content.userInfo["changeValue"] as? Bool else {
+                            return
+                        }
+                        
+                        if shouldChangePassword {
+                            var account = try! Account.get(siteID: siteID)[0] // TODO: probably should send or save accountID somewhere instead of siteID
+                            try! account.updatePassword(offset: nil)
+                        }
                     } else if notification.date.timeIntervalSinceNow > -180.0  {
                         
-                        if notification.request.content.body == "Wait for it..." {
+                        if notification.request.content.title == "Error" {
                             // Weird iOS bug. Send message to queue to resend data.
                             print(notification.request.content.userInfo)
                         }
@@ -224,7 +248,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
                             return
                         }
-
+                        
                         DispatchQueue.main.async {
                             if !AuthenticationGuard.sharedInstance.authorizationInProgress {
                                 AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
@@ -296,9 +320,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                                                     actions: [],
                                                                     intentIdentifiers: [],
                                                                     options: UNNotificationCategoryOptions(rawValue: 0))
+        let changeConfirmationNotificationCategory = UNNotificationCategory(identifier: "CHANGE_CONFIRMATION",
+                                                                    actions: [],
+                                                                    intentIdentifiers: [],
+                                                                    options: UNNotificationCategoryOptions(rawValue: 0))
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory])
+        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.sync {

@@ -61,6 +61,11 @@ struct Account: Codable {
         return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
     }
 
+    func nextPassword(offset: [Int]?) throws -> String {
+        let (newPassword, _) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        return newPassword
+    }
+
     mutating func updatePassword(offset: [Int]?) throws {
         let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
 

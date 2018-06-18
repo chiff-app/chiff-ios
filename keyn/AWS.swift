@@ -62,7 +62,7 @@ class AWS {
         request.functionName = "getDevelopmentPPD"
         request.payload = ["id" : id]
         lambda.invoke(request).continueOnSuccessWith(block: { (task) -> Any? in
-            if let jsonDict = task.result?.payload as? Dictionary<String, Any>, let ppd = jsonDict["ppd"] as? Array<NSDictionary> {
+            if let jsonDict = task.result?.payload as? Dictionary<String, Any>, let ppdItem = jsonDict["ppd"] as? Dictionary<String,Array<NSDictionary>>, let ppd = ppdItem["ppd"] {
                 do {
                     let jsonData = try! JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
                     let ppd = try! JSONDecoder().decode(PPD.self, from: jsonData)
