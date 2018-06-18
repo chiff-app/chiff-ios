@@ -90,13 +90,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: notification.requestType, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
-                    var account = try! Account.get(accountID: accountID)
-                    var oldPassword: String?
-                    if notification.requestType == .change {
-                        oldPassword = try! account!.password()
-                        try! account!.updatePassword(offset: nil)
-                    }
-                    try! session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType, password: oldPassword)
+                    let account = try! Account.get(accountID: accountID)
+                    try! session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType)
                     self!.dismiss(animated: true, completion: nil)
                 }
             } else {

@@ -150,7 +150,7 @@ struct PasswordRestrictions: Codable {
     }
 }
 
-// Used by SessionManager
+// Used by Session
 struct PairingResponse: Codable {
     let sessionID: String
     let pubKey: String
@@ -163,7 +163,9 @@ struct BrowserMessage: Codable {
     let r: BrowserMessageType
     let b: Int?          // browserTab
     let n: String?       // Site name
+    let v: Bool?         // Value for change password confirmation
 }
+
 
 struct CredentialsResponse: Codable {
     let u: String?       // Username
