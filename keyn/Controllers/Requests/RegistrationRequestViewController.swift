@@ -26,7 +26,9 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         if let currentPassword = notification?.currentPassword {
             userPasswordTextField.text = currentPassword
         }
-        passwordValidator = PasswordValidator(ppd: site.ppd)
+        
+        // TODO: Think about what to do with validating passwords in the app. Current PPD implementation is not ideal for validating passwords.
+        //passwordValidator = PasswordValidator(ppd: site.ppd)
         
         if let name = UserDefaults.standard.object(forKey: "username") as? String {
             userNameTextField.text = name
