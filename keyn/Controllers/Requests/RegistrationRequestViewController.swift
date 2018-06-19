@@ -23,6 +23,9 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         
         websiteNameTextField.text = site.name
         websiteURLTextField.text = site.urls[0]
+        if let currentPassword = notification?.currentPassword {
+            userPasswordTextField.text = currentPassword
+        }
         passwordValidator = PasswordValidator(ppd: site.ppd)
         
         if let name = UserDefaults.standard.object(forKey: "username") as? String {

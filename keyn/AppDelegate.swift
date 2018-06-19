@@ -192,6 +192,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let browserTab = userInfo["browserTab"] as? Int else {
             return false
         }
+        guard let currentPassword = userInfo["password"] as? String? else {
+            return false
+        }
         
         if browserMessageType == .confirm {
             guard let shouldChangePassword = userInfo["changeValue"] as? Bool else {
@@ -202,8 +205,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 var account = try! Account.get(siteID: siteID)[0] // TODO: probably should send or save accountID somewhere instead of siteID
                 try! account.updatePassword(offset: nil)
             }
+            return false
         } else {
-            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType))
         }
         return true
     }
@@ -248,10 +252,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
                             return
                         }
+                        guard let currentPassword = notification.request.content.userInfo["password"] as? String? else {
+                            return
+                        }
                         
                         DispatchQueue.main.async {
                             if !AuthenticationGuard.sharedInstance.authorizationInProgress {
-                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, requestType: browserMessageType))
+                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType))
                             }
                         }
                     }

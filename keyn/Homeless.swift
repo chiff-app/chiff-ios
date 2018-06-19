@@ -164,6 +164,7 @@ struct BrowserMessage: Codable {
     let b: Int?          // browserTab
     let n: String?       // Site name
     let v: Bool?         // Value for change password confirmation
+    let p: String?       // Old password
 }
 
 
@@ -179,6 +180,7 @@ struct PushNotification {
     let siteID: String
     let siteName: String
     let browserTab: Int
+    let currentPassword: String?
     let requestType: BrowserMessageType
 }
 
