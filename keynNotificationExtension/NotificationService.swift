@@ -54,6 +54,9 @@ class NotificationService: UNNotificationServiceExtension {
             case .login:
                 content.title = "Login request"
                 content.body = "\(siteName) on \(session.browser) on \(session.os)."
+                if let password = browserMessage.p {
+                    content.userInfo["password"] = password
+                }
                 addSiteInfo = true
             case .pair:
                 content.title = "Pairing request"
