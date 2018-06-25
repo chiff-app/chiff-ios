@@ -169,7 +169,7 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
 
             let url = URL(string: websiteURL)
             let id = try! url!.absoluteString.hash() // TODO, fix
-            let site = Site(name: websiteName, id: id, urls: [websiteURL], ppd: nil)
+            let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
 
             do {
                 let newAccount = try Account(username: username, site: site, password: customPassword ? userPasswordTextField.text : nil)

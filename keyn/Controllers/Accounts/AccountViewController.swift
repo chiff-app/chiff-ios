@@ -19,7 +19,7 @@ class AccountViewController: UITableViewController {
         if let account = account {
             do {
                 websiteNameTextField.text = account.site.name
-                websiteURLTextField.text = account.site.urls[0]
+                websiteURLTextField.text = account.site.url
                 userNameTextField.text = account.username
                 userPasswordTextField.text = try! account.password()
             } catch {
