@@ -44,10 +44,11 @@ class PasswordGenerator {
     }
 
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
-        guard PasswordValidator(ppd: ppd).validate(password: password) else {
-            // This shouldn't happen if we properly check the custom password in the UI
-            throw PasswordGenerationError.invalidPassword
-        }
+        // TODO: Check if this is OK. Not validating custom passwords
+//        guard PasswordValidator(ppd: ppd).validate(password: password) else {
+//            // This shouldn't happen if we properly check the custom password in the UI
+//            throw PasswordGenerationError.invalidPassword
+//        }
 
         let (length, chars) = parse(ppd: ppd, customPassword: true)
 

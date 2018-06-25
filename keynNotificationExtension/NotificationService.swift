@@ -57,6 +57,9 @@ class NotificationService: UNNotificationServiceExtension {
                 if let password = browserMessage.p {
                     content.userInfo["password"] = password
                 }
+                if let username = browserMessage.u {
+                    content.userInfo["username"] = username
+                }
                 addSiteInfo = true
             case .pair:
                 content.title = "Pairing request"

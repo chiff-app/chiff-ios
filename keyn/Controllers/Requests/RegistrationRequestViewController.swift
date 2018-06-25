@@ -22,17 +22,18 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         }
         
         websiteNameTextField.text = site.name
-        websiteURLTextField.text = site.urls[0]
+        websiteURLTextField.text = site.url
         if let currentPassword = notification?.currentPassword {
             userPasswordTextField.text = currentPassword
+        }
+        if let username = notification?.username {
+            userNameTextField.text = username
+        } else if let name = UserDefaults.standard.object(forKey: "username") as? String {
+            userNameTextField.text = name
         }
         
         // TODO: Think about what to do with validating passwords in the app. Current PPD implementation is not ideal for validating passwords.
         //passwordValidator = PasswordValidator(ppd: site.ppd)
-        
-        if let name = UserDefaults.standard.object(forKey: "username") as? String {
-            userNameTextField.text = name
-        }
         
         requirementLabels.sort(by: { (first, second) -> Bool in
             return first.tag < second.tag
