@@ -136,7 +136,7 @@ class AWS {
             }
             return nil
         }.continueWith { (task) -> Any? in
-                print("Error: \(task.error)")
+            print("Error: \(String(describing: task.error))")
                 return nil
         }
     }

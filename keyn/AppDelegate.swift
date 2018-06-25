@@ -38,8 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-        
-        backupAllAccounts()
+
+        UserDefaults.standard.removeObject(forKey: "backedUp")
+
         return true
     }
 
@@ -195,6 +196,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard let currentPassword = userInfo["password"] as? String? else {
             return false
         }
+        guard let username = userInfo["username"] as? String? else {
+            return false
+        }
         
         if browserMessageType == .confirm {
             guard let shouldChangePassword = userInfo["changeValue"] as? Bool else {
@@ -207,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             return false
         } else {
-            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType))
+            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
         }
         return true
     }
@@ -255,10 +259,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         guard let currentPassword = notification.request.content.userInfo["password"] as? String? else {
                             return
                         }
+                        guard let username = notification.request.content.userInfo["username"] as? String? else {
+                            return
+                        }
                         
                         DispatchQueue.main.async {
                             if !AuthenticationGuard.sharedInstance.authorizationInProgress {
-                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType))
+                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
                             }
                         }
                     }
@@ -293,22 +300,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
     
-    // TEMP: Make backup of all sites to transition to new version. Should be deleted after anyone has installed this version.
-    private func backupAllAccounts() {
-        do {
-            if !UserDefaults.standard.bool(forKey: "backedUp") {
-                UserDefaults.standard.set(true, forKey: "backedUp")
-                try BackupManager.sharedInstance.initialize()
-                if let accounts = try! Account.all() {
-                    for account in accounts {
-                        try? account.backup()
-                    }
-                }
-            }
-        } catch {
-            print("Error getting accounts \(error)")
-        }
-    }
 
     @available(iOS 10.0, *)
     private func registerForPushNotifications() {
