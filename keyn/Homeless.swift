@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import Sodium
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
@@ -103,7 +103,16 @@ extension Data {
         let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
         return map { String(format: format, $0) }.joined()
     }
+    
+    var bytes: Bytes { return Bytes(self) }
 }
+
+extension Array where Element == UInt8 {
+    public var data: Data {
+        return Data(bytes: self)
+    }
+}
+
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {

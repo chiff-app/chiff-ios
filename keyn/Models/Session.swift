@@ -194,8 +194,8 @@ class Session: Codable {
 
         // Generate and save own keypair1
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
-        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
+        try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
+        try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
     }
 
 }
