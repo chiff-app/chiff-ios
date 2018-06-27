@@ -73,7 +73,7 @@ class Crypto {
         return keyPair
     }
     
-    func createBackupKeyPair(seed: Data) throws -> Box.KeyPair {
+    func createBackupKeyPair(seed: Data) throws -> Sign.KeyPair {
         guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
             throw CryptoError.keyGeneration
         }
