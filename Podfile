@@ -6,7 +6,7 @@ use_frameworks!
 
 def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
-  pod 'Sodium', :git => 'https://github.com/bas-d/swift-sodium.git'
+  pod 'Sodium', :git => 'https://github.com/jedisct1/swift-sodium.git'
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
