@@ -6,7 +6,7 @@ use_frameworks!
 
 def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
-  pod 'Sodium', '~> 0.5'
+  pod 'Sodium', '~> 0.6'
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
