@@ -17,7 +17,7 @@ DEPENDENCIES:
   - AWSSNS
   - AWSSQS
   - MBProgressHUD (~> 1.0.0)
-  - Sodium (from `https://github.com/bas-d/swift-sodium.git`)
+  - Sodium (from `https://github.com/jedisct1/swift-sodium.git`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -30,12 +30,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Sodium:
-    :git: https://github.com/bas-d/swift-sodium.git
+    :git: https://github.com/jedisct1/swift-sodium.git
 
 CHECKOUT OPTIONS:
   Sodium:
-    :commit: d77fdedb5dfcc75c6e4705d9844457c4c68a02e7
-    :git: https://github.com/bas-d/swift-sodium.git
+    :commit: d918fdbfe95879b1a7c78a9607bc1a03a45fcf22
+    :git: https://github.com/jedisct1/swift-sodium.git
 
 SPEC CHECKSUMS:
   AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
@@ -46,6 +46,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Sodium: 3cd000dc8d21be5d448fbb4366a7b1c9392b1ae6
 
-PODFILE CHECKSUM: 9b199c0ce8c094907e2bc08ae44ab471ea0237a6
+PODFILE CHECKSUM: f93f8d6669c568e45274a8522836682a40c9595d
 
 COCOAPODS: 1.5.3
