@@ -9,7 +9,8 @@ enum SessionError: Error {
 class Session: Codable {
 
     let id: String
-    let sqsQueueName: String
+    let sqsMessageQueue: String
+    let sqsControlQueue: String
     let creationDate: Date
     let browser: String
     let os: String
@@ -27,14 +28,15 @@ class Session: Codable {
         }
     }
 
-    init(sqs: String, browserPublicKey: String, browser: String, os: String) throws {
-        self.sqsQueueName = sqs
+    init(sqsMessageQueue: String, sqsControlQueue: String, browserPublicKey: String, browser: String, os: String) throws {
+        self.sqsMessageQueue = sqsMessageQueue
+        self.sqsControlQueue = sqsControlQueue
         self.creationDate = Date()
         self.browser = browser
         self.os = os
 
         do {
-            self.id = try "\(browserPublicKey)_\(sqs)".hash()
+            self.id = try "\(browserPublicKey)_\(sqsMessageQueue)".hash()
             try save(pubKey: browserPublicKey)
         } catch is KeychainError {
             throw SessionError.exists
@@ -48,7 +50,7 @@ class Session: Codable {
             try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
             try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-            if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsQueueName, sessionID: self.id, type: .end) }
+            if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
         } catch {
             throw error
         }
@@ -84,14 +86,16 @@ class Session: Codable {
         var response: CredentialsResponse?
         switch type {
         case .addAndChange, .change:
-            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab)
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
+            // Start listening for changePassword confirmation messages with long polling. Should also continue in background
+            pollQueue()
         case .add, .login:
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
             // TODO: create new account, set password etc.
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .confirm:
-            response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab)
+            response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
         default:
             // TODO: throw error
             return
@@ -102,7 +106,33 @@ class Session: Codable {
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 
-        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsQueueName, sessionID: self.id, type: type)
+        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: type)
+    }
+    
+    func pollQueue() {
+        // for now 1 poll
+        AWS.sharedInstance.getFromSqs(from: sqsControlQueue) { (messages) in
+            if messages.count > 0 {
+                for message in messages {
+                    let browserMessage: BrowserMessage = try! self.decrypt(message: message)
+                    guard let result = browserMessage.v else {
+                        return
+                    }
+                    guard let accountId = browserMessage.a else {
+                        return
+                    }
+                    guard browserMessage.r == .confirm else {
+                        return
+                    }
+                    if (result) {
+                        var account = try! Account.get(accountID: accountId)
+                        try! account?.updatePassword(offset: nil)
+                    }
+                }
+            } else {
+                print("TODO, make recursive")
+            }
+        }
     }
 
     // MARK: Static functions
@@ -160,12 +190,12 @@ class Session: Codable {
         Keychain.sharedInstance.deleteAll(service: appService)
     }
 
-    static func initiate(sqsQueueName: String, pubKey: String, browser: String, os: String) throws -> Session {
+    static func initiate(sqsMessageQueue: String, sqsControlQueue: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
-        let session = try Session(sqs: sqsQueueName, browserPublicKey: pubKey, browser: browser, os: os)
+        let session = try Session(sqsMessageQueue: sqsMessageQueue, sqsControlQueue: sqsControlQueue, browserPublicKey: pubKey, browser: browser, os: os)
         let pairingResponse = try self.createPairingResponse(session: session)
 
-        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsQueueName, sessionID: session.id, type: .pair)
+        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsMessageQueue, sessionID: session.id, type: .pair)
 
         return session
     }
