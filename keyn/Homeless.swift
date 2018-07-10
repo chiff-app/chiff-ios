@@ -175,6 +175,7 @@ struct BrowserMessage: Codable {
     let v: Bool?         // Value for change password confirmation
     let p: String?       // Old password
     let u: String?       // Possible username
+    let a: String?       // AccountID
 }
 
 
@@ -183,6 +184,7 @@ struct CredentialsResponse: Codable {
     let p: String?      // Password
     let np: String?     // New password (for reset only! When registering p will be set)
     let b: Int
+    let a: String?      // AccountID. Only used with changePasswordRequests
 }
 
 struct PushNotification {

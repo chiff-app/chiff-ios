@@ -174,6 +174,39 @@ class AWS {
             })
         }
     }
+    
+    func getFromSqs(from queueName: String, shortPolling: Bool = false, completionHandler: @escaping (_ messages: [String]) -> Void) {
+        if let receiveRequest = AWSSQSReceiveMessageRequest() {
+            let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+            receiveRequest.queueUrl = queueUrl
+            receiveRequest.waitTimeSeconds = shortPolling ? 0 : 20
+            receiveRequest.messageAttributeNames = ["All"]
+            sqs.receiveMessage(receiveRequest).continueOnSuccessWith { (task) -> Any? in
+                var returnMessages = [String]()
+                if let messages = task.result?.messages {
+                    for message in messages {
+                        guard let body = message.body else {
+                            return nil
+                        }
+                        guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
+                            return nil
+                        }
+                        if type == BrowserMessageType.confirm.rawValue {
+                            returnMessages.append(body)
+                            // TODO: delete message from queue
+                        }
+                    }
+                }
+                completionHandler(returnMessages)
+                return nil
+            }.continueWith { (task) -> Any? in
+                if let error = task.error {
+                    print("Error: \(error)")
+                }
+                return nil
+            }
+        }
+    }
 
     func snsRegistration(deviceToken: Data) {
         let token = deviceToken.hexEncodedString()

@@ -43,6 +43,12 @@ class NotificationService: UNNotificationServiceExtension {
             case .add:
                 content.title = "Add site request"
                 content.body = "\(siteName) on \(session.browser) on \(session.os)."
+                if let password = browserMessage.p {
+                    content.userInfo["password"] = password
+                }
+                if let username = browserMessage.u {
+                    content.userInfo["username"] = username
+                }
                 addSiteInfo = true
             case.end:
                 content.title = "Session ended"
