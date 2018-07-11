@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         let nc = NotificationCenter.default
         nc.addObserver(forName: NSNotification.Name.UIPasteboardChanged, object: nil, queue: nil, using: handlePasteboardChangeNotification)
+        nc.addObserver(forName: NSNotification.Name.passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
         
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
@@ -156,6 +157,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
+    // Called when app starts up. Short polling
+    private func checkPendingChangeConfirmations() {
+        DispatchQueue.global(qos: .default).async {
+            if let sessions = try! Session.all() {
+                for session in sessions {
+                    self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
+                }
+            }
+        }
+    }
+    
+    // Called from notification
+    func handlePasswordConfirmationNotification(notification: Notification) {
+        guard let session = notification.object as? Session else {
+            return
+        }
+        
+        var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+        backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = UIBackgroundTaskInvalid
+        })
+        
+        DispatchQueue.global(qos: .default).async {
+            self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
+                if backgroundTask != UIBackgroundTaskInvalid {
+                    UIApplication.shared.endBackgroundTask(backgroundTask)
+                }
+            })
+        }
+    }
+    
+    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
+        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages) in
+            if messages.count > 0 {
+                for message in messages {
+                    let browserMessage: BrowserMessage = try! session.decrypt(message: message)
+                    if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .confirm, result {
+                        var account = try! Account.get(accountID: accountId)
+                        try! account?.updatePassword(offset: nil)
+                    }
+                    if let handler = completionHandler {
+                        handler()
+                    }
+                }
+            } else {
+                if (attempts > 1) {
+                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+                } else if let handler = completionHandler {
+                    handler()
+                }
+            }
+        }
+    }
+    
+    
     private func handlePasteboardChangeNotification(notification: Notification) {
         let pasteboard = UIPasteboard.general
         guard let text = pasteboard.string, text != "" else {
@@ -217,6 +274,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     private func handlePendingNotifications() {
+        checkPendingChangeConfirmations()
         let center = UNUserNotificationCenter.current()
         center.getDeliveredNotifications { (notifications) in
             for notification in notifications {

@@ -175,7 +175,22 @@ class AWS {
         }
     }
     
-    func getFromSqs(from queueName: String, shortPolling: Bool = false, completionHandler: @escaping (_ messages: [String]) -> Void) {
+    func deleteFromSqs(receiptHandle: String, queueName: String) {
+        if let deleteRequest = AWSSQSDeleteMessageRequest() {
+            let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+            deleteRequest.queueUrl = queueUrl
+            deleteRequest.receiptHandle = receiptHandle
+            sqs.deleteMessage(deleteRequest).continueWith { (task) -> Any? in
+                if let error = task.error {
+                    print("Error: \(error)")
+                }
+                return nil
+            }
+            
+        }
+    }
+    
+    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [String]) -> Void) {
         if let receiveRequest = AWSSQSReceiveMessageRequest() {
             let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
             receiveRequest.queueUrl = queueUrl
@@ -188,12 +203,15 @@ class AWS {
                         guard let body = message.body else {
                             return nil
                         }
+                        guard let receiptHandle = message.receiptHandle else {
+                            return nil
+                        }
                         guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
                             return nil
                         }
                         if type == BrowserMessageType.confirm.rawValue {
                             returnMessages.append(body)
-                            // TODO: delete message from queue
+                            self.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
                         }
                     }
                 }

@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import UserNotifications
 
 enum SessionError: Error {
     case exists
@@ -87,8 +88,7 @@ class Session: Codable {
         switch type {
         case .addAndChange, .change:
             response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
-            // Start listening for changePassword confirmation messages with long polling. Should also continue in background
-            pollQueue()
+            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add, .login:
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
@@ -109,31 +109,6 @@ class Session: Codable {
         AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: type)
     }
     
-    func pollQueue() {
-        // for now 1 poll
-        AWS.sharedInstance.getFromSqs(from: sqsControlQueue) { (messages) in
-            if messages.count > 0 {
-                for message in messages {
-                    let browserMessage: BrowserMessage = try! self.decrypt(message: message)
-                    guard let result = browserMessage.v else {
-                        return
-                    }
-                    guard let accountId = browserMessage.a else {
-                        return
-                    }
-                    guard browserMessage.r == .confirm else {
-                        return
-                    }
-                    if (result) {
-                        var account = try! Account.get(accountID: accountId)
-                        try! account?.updatePassword(offset: nil)
-                    }
-                }
-            } else {
-                print("TODO, make recursive")
-            }
-        }
-    }
 
     // MARK: Static functions
 

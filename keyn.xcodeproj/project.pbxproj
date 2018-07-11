@@ -85,6 +85,7 @@
 		49B86426207D000800DE01C4 /* 12.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86424207D000200DE01C4 /* 12.json */; };
 		49B86428207D03E400DE01C4 /* 13.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86427207D03E400DE01C4 /* 13.json */; };
 		49B86429207D044300DE01C4 /* 13.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86427207D03E400DE01C4 /* 13.json */; };
+		49C3E7EB20F60AF90074DA1F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
@@ -100,7 +101,6 @@
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
-		613CFB0120135DD700460CC6 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
@@ -956,11 +956,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C3E7EB20F60AF90074DA1F /* Session.swift in Sources */,
 				613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */,
 				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
 				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
-				613CFB0120135DD700460CC6 /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49DCA69A2063E88E008F4DF2 /* Properties.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,

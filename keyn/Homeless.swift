@@ -56,6 +56,10 @@ extension String {
     }
 }
 
+extension Notification.Name {
+    static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
+}
+
 
 
 // Extension for URL that return parameters as dict
