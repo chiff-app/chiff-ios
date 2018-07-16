@@ -11,6 +11,7 @@ def shared_pods
   pod 'AWSSNS'
   pod 'AWSSQS'
   pod 'AWSLambda'
+  pod "JustLog"
 end
 
 target 'keyn' do

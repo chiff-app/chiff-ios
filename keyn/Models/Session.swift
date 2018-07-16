@@ -1,5 +1,6 @@
 import UIKit
 import UserNotifications
+import JustLog
 
 enum SessionError: Error {
     case exists
@@ -47,14 +48,11 @@ class Session: Codable {
     }
 
     func delete(includingQueue: Bool) throws {
-        do {
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-            if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
-        } catch {
-            throw error
-        }
+        Logger.shared.info("Session ended.", userInfo: ["code": AnalyticsMessage.sessionEnd.rawValue, "appInitiated": includingQueue])
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+        if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
     }
 
     func browserPublicKey() throws -> Data {
@@ -86,12 +84,22 @@ class Session: Codable {
     func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
         var response: CredentialsResponse?
         switch type {
-        case .addAndChange, .change:
+        case .addAndChange:
+            Logger.shared.info("Site added with new password.", userInfo: ["code": AnalyticsMessage.addAndChange.rawValue, "result": true, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
-        case .add, .login:
+        case .change:
+            Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.changeResponse.rawValue, "result": true, "siteName": account.site.name])
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
+            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+        case .add:
+            Logger.shared.info("Site added.", userInfo: ["code": AnalyticsMessage.addResponse.rawValue, "result": true, "siteName": account.site.name])
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
+        case .login:
+            Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "result": true, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
+            Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue, "result": true, "siteName": account.site.name])
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .confirm:
@@ -157,7 +165,7 @@ class Session: Codable {
                 }
             }
         } catch {
-            print(error)
+            Logger.shared.debug("Error deleting accounts.", error: error as NSError)
         }
 
         // To be sure
@@ -182,7 +190,7 @@ class Session: Codable {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
             throw SessionError.noEndpoint
         }
-        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint)
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)

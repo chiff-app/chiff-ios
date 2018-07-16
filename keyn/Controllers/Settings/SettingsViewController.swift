@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class SettingsViewController: UITableViewController {
 
@@ -49,6 +50,7 @@ class SettingsViewController: UITableViewController {
             try? Seed.delete()
             BackupManager.sharedInstance.deleteAllKeys()
             AWS.sharedInstance.deleteEndpointArn()
+            Logger.shared.info("Keyn reset.", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
             UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
@@ -60,14 +62,12 @@ class SettingsViewController: UITableViewController {
     // MARK: Private functions
 
     private func setFooterText() {
-        // TODO: Crash app for now.
-        securityFooterText = try! Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
-//        do {
-//
-//        } catch {
-//            print("TODO: Handle error")
-//        }
+        do {
+            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
+        } catch {
+            Logger.shared.warning("Could determine if seed is backed up.", error: error as NSError)
+        }
     }
 
 

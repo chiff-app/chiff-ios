@@ -1,5 +1,5 @@
 import UserNotifications
-import os.log
+import JustLog
 
 enum NotificationExtensionError: Error {
     case StringCast(String)
@@ -91,7 +91,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
         } catch {
-            os_log("NotificationError: %@", error.localizedDescription)
+            Logger.shared.error("Error in notification extension", error: error as NSError)
         }
         
         contentHandler(content)

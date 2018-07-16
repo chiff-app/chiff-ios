@@ -8,7 +8,7 @@
 
 import UIKit
 import LocalAuthentication
-import os.log
+import JustLog
 
 class AuthenticationGuard {
     
@@ -117,7 +117,7 @@ class AuthenticationGuard {
         guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
             //TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled
             authenticationInProgress = false
-            print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code))
+            Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
             return
         }
         
@@ -125,10 +125,10 @@ class AuthenticationGuard {
             DispatchQueue.main.async {
                 if succes {
                     self.hideLockWindow()
-                } else if let error = error {
-                    print(self.evaluateAuthenticationPolicyMessageForLA(errorCode: error._code))
+                } else if let error = error, let errorCode = authError?.code {
+                    Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode), error: error as NSError)
                     if error._code == LAError.userFallback.rawValue {
-                        print("Handle fallback")
+                        Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
                     }
                 }
             }
@@ -156,7 +156,7 @@ class AuthenticationGuard {
         }
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            print("Todo: handle fingerprint absence \(String(describing: error))")
+            Logger.shared.error("TODO: handle fingerprint absence", error: error)
             return
         }
         
@@ -168,10 +168,9 @@ class AuthenticationGuard {
     }
     
     func launchRequestView(with notification: PushNotification) {
-        // TODO: crash for now.
         authorizationInProgress = true
         do {
-            if let session = try! Session.getSession(id: notification.sessionID) {
+            if let session = try Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
                 
@@ -184,11 +183,11 @@ class AuthenticationGuard {
                 }
             } else {
                 authorizationInProgress = false
-                print("Received request for session that doesn't exist.")
+                Logger.shared.warning("Received request for session that doesn't exist.")
             }
         } catch {
             authorizationInProgress = false
-            print("Session could not be decoded: \(error)")
+            Logger.shared.error("Could not decode session.", error: error as NSError)
         }
     }
     

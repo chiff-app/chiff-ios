@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JustLog
 
 struct BackupManager {
     
@@ -81,7 +82,6 @@ struct BackupManager {
     
     private func privateKey() throws -> Data {
         let privKey = try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
-        
         return privKey
     }
     
@@ -144,11 +144,16 @@ struct BackupManager {
         AWS.sharedInstance.getBackupData(pubKey: pubKey, message: signedMessage) { (dict) in
             for (id, data) in dict {
                 if let base64Data = data as? String {
-                    let ciphertext = try! Crypto.sharedInstance.convertFromBase64(from: base64Data)
-                    let accountData = try! Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try! self.encryptionKey())
-                    try! Account.save(accountData: accountData, id: id)
+                    do {
+                        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: base64Data)
+                        let accountData = try Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
+                        try Account.save(accountData: accountData, id: id)
+                    } catch {
+                        Logger.shared.error("Could restore account.", error: error as NSError)
+                    }
                 }
             }
+
             completionHandler()
         }
     }

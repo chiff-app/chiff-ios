@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class BackupWizardViewController: UIViewController {
 
@@ -19,10 +20,14 @@ class BackupWizardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: Handle error and total destruction
-        mnemonic = try! Seed.mnemonic()
-        wordLabel.text = mnemonic![counter]
-        counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
+        do {
+            mnemonic = try Seed.mnemonic()
+            wordLabel.text = mnemonic![counter]
+            counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
+        } catch {
+            Logger.shared.error("Error getting mnemonic.", error: error as NSError)
+        }
+
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

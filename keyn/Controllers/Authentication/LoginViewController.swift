@@ -8,7 +8,7 @@
 
 import UIKit
 import LocalAuthentication
-import os.log
+import JustLog
 
 class LoginViewController: UIViewController {
 
@@ -32,7 +32,7 @@ class LoginViewController: UIViewController {
 
     // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
-        os_log("Manual authenticate in viewDidAppear called", type: .debug)
+        Logger.shared.debug("Manual authenticate in viewDidAppear called.")
         AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: false)
     }
 

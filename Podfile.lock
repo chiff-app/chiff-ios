@@ -8,14 +8,20 @@ PODS:
     - AWSCore (= 2.6.13)
   - AWSSQS (2.6.13):
     - AWSCore (= 2.6.13)
+  - CocoaAsyncSocket (7.6.3)
+  - JustLog (2.3.0):
+    - CocoaAsyncSocket (~> 7.6.3)
+    - SwiftyBeaver (~> 1.5.2)
   - MBProgressHUD (1.0.0)
   - Sodium (0.6)
+  - SwiftyBeaver (1.5.2)
 
 DEPENDENCIES:
   - AWSCognito
   - AWSLambda
   - AWSSNS
   - AWSSQS
+  - JustLog
   - MBProgressHUD (~> 1.0.0)
   - Sodium (from `https://github.com/jedisct1/swift-sodium.git`)
 
@@ -26,7 +32,10 @@ SPEC REPOS:
     - AWSLambda
     - AWSSNS
     - AWSSQS
+    - CocoaAsyncSocket
+    - JustLog
     - MBProgressHUD
+    - SwiftyBeaver
 
 EXTERNAL SOURCES:
   Sodium:
@@ -43,9 +52,12 @@ SPEC CHECKSUMS:
   AWSLambda: 24e1a8803bd38810752dd975613e39d85577d3ae
   AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
   AWSSQS: 3b8372e089be1d7ba3a1b6ab6cb3cb42f03af8b5
+  CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  JustLog: f45d7e84353e34742b177f0156fcfa1b65b7bd4e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Sodium: 3cd000dc8d21be5d448fbb4366a7b1c9392b1ae6
+  SwiftyBeaver: 85daaaa2b3ae6e31b7b55c99430e8b91dac088af
 
-PODFILE CHECKSUM: f93f8d6669c568e45274a8522836682a40c9595d
+PODFILE CHECKSUM: dbd9f1cfea8310c62039d19ba9a08b4cb981e0cf
 
 COCOAPODS: 1.5.3

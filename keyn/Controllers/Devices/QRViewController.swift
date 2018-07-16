@@ -1,6 +1,7 @@
 import UIKit
 import AVFoundation
 import LocalAuthentication
+import JustLog
 
 enum CameraError: Error {
     case noCamera
@@ -26,7 +27,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             try scanQR()
         } catch {
             displayError(message: "Camera not available.")
-            print("Camera could not be instantiated: \(error)")
+            Logger.shared.warning("Camera not available.", error: error as NSError)
         }
     }
     
@@ -42,11 +43,13 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     if let parameters = URL(string: url)?.queryParameters, let pubKey = parameters["p"], let messageSqs = parameters["mq"], let controlSqs = parameters["cq"], let browser = parameters["b"], let os = parameters["o"]{
                         do {
                             guard try !recentlyScannedUrls.contains(url) && !Session.exists(sqs: messageSqs, browserPublicKey: pubKey) else {
+                                Logger.shared.debug("Qr-code scanned twice.")
                                 displayError(message: "This QR-code was already scanned.")
                                 qrFound = false
                                 return
                             }
                         } catch {
+                            Logger.shared.warning("Invalid QR code scanned", error: error as NSError)
                             displayError(message: "This QR-code could not be decoded.")
                             qrFound = false
                             return
@@ -56,6 +59,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                             self.pairPermission(pubKey: pubKey, messageSqs: messageSqs, controlSqs: controlSqs, browser: browser, os: os)
                         }
                     } else {
+                        Logger.shared.warning("Invalid QR code scanned")
                         displayError(message: "This QR-code could not be decoded.")
                         qrFound = false
                     }
@@ -91,11 +95,11 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         } catch {
             switch error {
             case KeychainError.storeKey:
+                Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
                 displayError(message: "This QR code was already scanned.")
-                print("TODO: This shouldn't happen and be logged somewhere.")
                 qrFound = false
             default:
-                print("Unhandled error \(error)")
+                Logger.shared.error("Unhandled QR code error.", error: error as NSError)
                 qrFound = false
             }
         }
@@ -133,7 +137,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         var error: NSError?
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            print("Todo: handle fingerprint absence \(String(describing: error))")
+            Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }
         
@@ -141,6 +145,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             .deviceOwnerAuthenticationWithBiometrics,
             localizedReason: "Pair with \(browser) on \(os).",
             reply: { [weak self] (success, error) -> Void in
+                Logger.shared.info("Pairing response.", userInfo: ["code": AnalyticsMessage.pairResponse.rawValue, "result": success])
                 if (success) {
                     DispatchQueue.main.async {
                         self?.decodeSessionData(pubKey: pubKey, messageSqs: messageSqs, controlSqs: controlSqs, browser: browser, os: os)
