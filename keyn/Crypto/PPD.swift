@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JustLog
 
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
@@ -25,7 +26,7 @@ struct PPD: Codable {
                 print(jsonString)
             }
         } catch {
-            print("PPD could not be written: \(error)")
+            Logger.shared.warning("PPD could not be decoded", error: error as NSError)
         }
     }
 }

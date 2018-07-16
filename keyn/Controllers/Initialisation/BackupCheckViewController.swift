@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var firstWordLabel: UILabel!
@@ -77,12 +78,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func finish(_ sender: UIBarButtonItem) {
-
-        // TODO: Crash app for now.
+        Logger.shared.info("Backup completed.", userInfo: ["code": AnalyticsMessage.backupCompleted.rawValue])
         do {
-            try! Seed.setBackedUp()
+            try Seed.setBackedUp()
         } catch {
-            print("Keychain couldn't be updated: \(error)")
+            Logger.shared.warning("Could not set seed to backed up.", error: error as NSError)
         }
         if isInitialSetup {
             loadRootController()

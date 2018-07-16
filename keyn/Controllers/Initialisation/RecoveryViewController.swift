@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
@@ -70,11 +71,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
-        // TODO: Crash app for now
         // TODO: Show some progress bar or something will data is being fetched remotely
         do {
-            if try! Seed.recover(mnemonic: mnemonic)  {
-                try! BackupManager.sharedInstance.getBackupData(completionHandler: {
+            if try Seed.recover(mnemonic: mnemonic)  {
+                try BackupManager.sharedInstance.getBackupData(completionHandler: {
                     DispatchQueue.main.async {
                         if self.isInitialSetup {
                             self.loadRootController()
@@ -86,7 +86,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
             }
         } catch {
-            print("Seed could not be recovered: \(error)")
+            Logger.shared.error("Seed could not be recovered", error: error as NSError)
         }
     }
     

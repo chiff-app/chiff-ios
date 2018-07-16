@@ -1,4 +1,5 @@
 import UIKit
+import JustLog
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
 
@@ -9,15 +10,12 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // TODO: Crash for now
         do {
-            if let savedAccounts = try! Account.all() {
+            if let savedAccounts = try Account.all() {
                 unfilteredAccounts.append(contentsOf: savedAccounts)
-            } else if Properties.isDebug {
-                //try! loadSampleData()
             }
         } catch {
-            print("Account could not be fetched from keychain: \(error)")
+            Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
         }
 
         filteredAccounts = unfilteredAccounts
@@ -148,41 +146,17 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
             return account.id == unfilteredAccount.id
         }) {
-            // TODO: Crash for no
             do {
-                try! account.delete()
+                let site = account.site
+                try account.delete()
                 unfilteredAccounts.remove(at: index)
                 filteredAccounts?.remove(at: filteredIndexPath.row)
                 tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+                Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteId": site.id])
             } catch {
-                print("Account could not be deleted: \(error)")
+                Logger.shared.error("Could not delete account.", error: error as NSError)
             }
         }
     }
-
-    // MARK: Temporary sample data
-
-//    private func loadSampleData() throws {
-//        let sampleUsername = "demo@keyn.io"
-//        var sampleSites = [Site]()
-//
-//        sampleSites.append(Site.get(id: 1)!)
-//        sampleSites.append(Site.get(id: 2)!)
-//        sampleSites.append(Site.get(id: 4)!)
-//        //sampleSites.append(Site.get(id: 5)!)
-//        sampleSites.append(Site.get(id: 11)!)
-//
-//        for site in sampleSites {
-//            let account = try Account(username: sampleUsername, site: site, passwordIndex: 0, password: nil)
-//            unfilteredAccounts.append(account)
-//        }
-//
-//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 0)!, password: "ExampleCustomPassword1"))
-//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 3)!, password: "ExampleCustomPassword1"))
-//        unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 6)!, password: "ExampleCustomPassword1"))
-//        //unfilteredAccounts.append(try! Account(username: sampleUsername, site: Site.get(id: 11)!, password: "ExampleCustomPassword1"))
-//        //unfilteredAccounts.append(try! Account(username: "apple@frankevers.nl", site: Site.get(id: 7)!, password: "REDACTED"))
-//        //unfilteredAccounts.append(try! Account(username: "thomas.bastet@gmail.com", site: Site.get(id: 8)!, password: "REDACTED"))
-//    }
 
 }

@@ -1,5 +1,6 @@
 import UIKit
 import MBProgressHUD
+import JustLog
 
 class AccountViewController: UITableViewController {
 
@@ -21,10 +22,10 @@ class AccountViewController: UITableViewController {
                 websiteNameTextField.text = account.site.name
                 websiteURLTextField.text = account.site.url
                 userNameTextField.text = account.username
-                userPasswordTextField.text = try! account.password()
+                userPasswordTextField.text = try account.password()
             } catch {
-                // TODO: Password could not be loaded, present error?
-                print(error)
+                // TODO: Present error to user?
+                Logger.shared.error("Could not get password.", error: error as NSError)
             }
             navigationItem.title = account.site.name
             navigationItem.largeTitleDisplayMode = .never
@@ -62,20 +63,24 @@ class AccountViewController: UITableViewController {
     // MARK: Private methods
     
     private func showHiddenPasswordPopup() {
-        let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
-        showPasswordHUD.mode = .text
-        showPasswordHUD.bezelView.color = .black
-        showPasswordHUD.label.text = try! account?.password() ?? "Error fetching password"
-        showPasswordHUD.label.textColor = .white
-        showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
-        showPasswordHUD.margin = 10
-        showPasswordHUD.label.numberOfLines = 0
-        showPasswordHUD.removeFromSuperViewOnHide = true
-        showPasswordHUD.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: showPasswordHUD,
-                action: #selector(showPasswordHUD.hide(animated:)))
-        )
+        do {
+            let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
+            showPasswordHUD.mode = .text
+            showPasswordHUD.bezelView.color = .black
+            showPasswordHUD.label.text = try account?.password() ?? "Error fetching password"
+            showPasswordHUD.label.textColor = .white
+            showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
+            showPasswordHUD.margin = 10
+            showPasswordHUD.label.numberOfLines = 0
+            showPasswordHUD.removeFromSuperViewOnHide = true
+            showPasswordHUD.addGestureRecognizer(
+                UITapGestureRecognizer(
+                    target: showPasswordHUD,
+                    action: #selector(showPasswordHUD.hide(animated:)))
+            )
+        } catch {
+            Logger.shared.error("Could not get account", error: error as NSError)
+        }
     }
 
     private func copyPassword(_ indexPath: IndexPath) {
@@ -83,6 +88,8 @@ class AccountViewController: UITableViewController {
         guard let passwordCell = tableView.cellForRow(at: indexPath) else {
             return
         }
+        
+        Logger.shared.info("Password copied to pasteboard.", userInfo: ["code": AnalyticsMessage.passwordCopy.rawValue])
 
         let pasteBoard = UIPasteboard.general
         pasteBoard.string = userPasswordTextField.text

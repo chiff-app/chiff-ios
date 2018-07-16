@@ -7,14 +7,14 @@
 //
 
 import UIKit
+import JustLog
 
 class DevicesNavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: Crash app for now
         do {
-            if try! Session.all() != nil {
+            if try Session.all() != nil {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
             } else {
@@ -22,7 +22,7 @@ class DevicesNavigationController: UINavigationController {
                 pushViewController(qrViewController, animated: false)
             }
         } catch {
-            print(error)
+            Logger.shared.error("Could not get sessions.", error: error as NSError)
         }
     }
     

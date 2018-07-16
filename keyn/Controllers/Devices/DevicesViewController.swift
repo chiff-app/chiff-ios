@@ -1,4 +1,5 @@
 import UIKit
+import JustLog
 
 protocol canReceiveSession {
     func addSession(session: Session)
@@ -11,14 +12,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO: Crash app for now
         do {
-            if let storedSessions = try! Session.all() {
-                print("Loading sessions from keychain.")
+            if let storedSessions = try Session.all() {
                 sessions = storedSessions
             }
         } catch {
-            print("Sessions could not be loaded: \(error)")
+            Logger.shared.error("Could not get sessions.", error: error as NSError)
         }
     }
     
@@ -51,7 +50,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return "Open the Keyn browser extension to display QR-code."
         default:
             assert(false, "section \(section)")
-
             return nil
         }
     }
@@ -104,7 +102,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                         }
                     }
                 } catch {
-                    print("Session could not be deleted: \(error)")
+                    Logger.shared.error("Could not delete session.", error: error as NSError)
                 }
             }))
             self.present(alert, animated: true, completion: nil)

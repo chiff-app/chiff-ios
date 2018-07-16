@@ -1,5 +1,6 @@
 import UIKit
 import LocalAuthentication
+import JustLog
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
@@ -71,9 +72,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     authorize(notification: notification, session: session, accountID: accountID)
                 }
             case .register:
-                print("TODO: Fix register requests")
+                Logger.shared.debug("TODO: Fix register requests")
             default:
-                print("Unknown requestType")
+                Logger.shared.warning("Unknown request type received.")
             }
         }
     }
@@ -86,25 +87,28 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     // MARK: Private functions
     
     private func authorize(notification: PushNotification, session: Session, accountID: String) {
-        // TODO: Handle error throwing here
         AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: notification.requestType, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
-                    let account = try! Account.get(accountID: accountID)
-                    try! session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType)
-                    self!.dismiss(animated: true, completion: nil)
+                    do {
+                        let account = try Account.get(accountID: accountID)
+                        try session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType)
+                        self?.dismiss(animated: true, completion: nil)
+                    } catch {
+                        Logger.shared.error("Error authorizing request", error: error as NSError)
+                    }
                 }
             } else {
-                print("TODO: Handle touchID errors.")
+                Logger.shared.info("Request denied.", userInfo: ["code": AnalyticsMessage.requestDenied.rawValue, "result": false, "requestType": notification.requestType])
+                Logger.shared.debug("TODO: Handle touchID errors.")
             }
         })
     }
 
     private func analyseRequest() {
         if let notification = notification, let session = session {
-            // TODO: Crash app for now.
             do {
-                accounts = try! Account.get(siteID: notification.siteID)
+                accounts = try Account.get(siteID: notification.siteID)
                 if accounts.count > 1 {
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
@@ -115,7 +119,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
                 setLabel(requestType: notification.requestType)
             } catch {
-                print("Error getting account: \(error)")
+                Logger.shared.error("Could not get account.", error: error as NSError)
             }
         }
     }

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Sodium
+import JustLog
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
@@ -52,7 +53,13 @@ extension UIApplication {
 
 extension String {
     func hash() throws -> String {
-        return try! Crypto.sharedInstance.hash(self)
+        do {
+            let hash = try Crypto.sharedInstance.hash(self)
+            return hash
+        } catch {
+            Logger.shared.error("Could not create hash.", error: error as NSError)
+            fatalError("Could not create hash.")
+        }
     }
 }
 
@@ -150,6 +157,27 @@ public extension UIImage {
     }
 }
 
+
+enum AnalyticsMessage: String {
+    case install = "INSTALL"
+    case seedCreated = "SEED_CREATED"
+    case update = "UPDATE" // TODO
+    case iosUpdate = "IOS_UPDATE" // TODO
+    case pairResponse = "PAIR_RESPONSE"
+    case loginResponse = "LOGIN_RESPONSE"
+    case addAndChange = "ADDANDCHANGE"
+    case changeResponse = "CHANGE_RESPONSE"
+    case addResponse = "ADD_RESPONSE"
+    case registrationResponse = "REGISTRATION_RESPONSE"
+    case sessionEnd = "SESSION_END"
+    case deleteAccount = "DELETE_ACCOUNT"
+    case backupCompleted = "BACKUP_COMPLETED"
+    case keynReset = "KEYN_RESET"
+    case passwordCopy = "PASSWORD_COPY"
+    case requestDenied = "REQUEST_DENIED"
+    
+}
+
 // Used by Account and Site
 struct PasswordRestrictions: Codable {
     let length: Int
@@ -168,6 +196,7 @@ struct PairingResponse: Codable {
     let sessionID: String
     let pubKey: String
     let sns: String
+    let userID: String
 }
 
 

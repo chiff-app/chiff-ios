@@ -1,4 +1,5 @@
 import UIKit
+import JustLog
 
 class RegistrationRequestViewController: AccountViewController, UITextFieldDelegate {
 
@@ -18,7 +19,8 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         super.viewDidLoad()
 
         guard let site = site else {
-            fatalError("Site was nil when creating new account")
+            Logger.shared.error("Site was nil when creating new account.")
+            fatalError("Site was nil when creating new account.")
         }
         
         websiteNameTextField.text = site.name
@@ -167,9 +169,9 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
                 if (succes) {
                     DispatchQueue.main.async {
                         do {
-                            let newAccount = try! Account(username: username, site: site, password: password)
+                            let newAccount = try Account(username: username, site: site, password: password)
                             self?.account = newAccount
-                            try! session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
+                            try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
 
                             // TODO: Make this better. Works but ugly
                             if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
@@ -183,12 +185,12 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
                             }
                         } catch {
                             // TODO: Handle errors in UX
-                            print("Account could not be saved: \(error)")
+                            Logger.shared.error("Account could not be saved.", error: error as NSError)
                         }
                         self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                     }
                 } else {
-                    print("TODO: Handle touchID errors.")
+                    Logger.shared.debug("TODO: Handle touchID errors.")
                 }
             })
         }
