@@ -9,7 +9,6 @@
 import UIKit
 import AWSCore
 import UserNotifications
-import os.log
 import LocalAuthentication
 import JustLog
 import CocoaAsyncSocket
@@ -403,7 +402,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // default info
         logger.defaultUserInfo = ["device": "APP",
-                                  "userID": Properties.userID()]
+                                  "userID": Properties.userID(),
+                                  "debug": Properties.isDebug]
         logger.setup()
     }
     
