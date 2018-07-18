@@ -87,6 +87,13 @@
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		49DCA69A2063E88E008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
+		49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */; };
+		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
+		49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */; };
+		49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */; };
+		49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */; };
+		49E75CA920FF34AF00BC0D65 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA820FF34AF00BC0D65 /* Question.swift */; };
+		49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
@@ -216,6 +223,13 @@
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedback.storyboard; sourceTree = "<group>"; };
+		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
+		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
+		49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooleanQuestionViewController.swift; sourceTree = "<group>"; };
+		49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
+		49E75CA820FF34AF00BC0D65 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishQuestionnaireViewController.swift; sourceTree = "<group>"; };
 		49E766501F7E6F420022C042 /* keyn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49E7665A1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -375,6 +389,7 @@
 				497FDD8C1FFBDB5F00AAB0DA /* Settings */,
 				6105598D1FDC553C0030F871 /* Initialisation */,
 				4919DAF32012620A0048B060 /* Requests */,
+				49E75C9F20FF280E00BC0D65 /* Feedback */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -386,8 +401,21 @@
 				499BE4FA1FC0955D001038DF /* Request.storyboard */,
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
 				6105598B1FDC41C30030F871 /* Initialisation.storyboard */,
+				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
 			);
 			path = UX;
+			sourceTree = "<group>";
+		};
+		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */,
+				49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */,
+				49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */,
+				49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */,
+				49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		49E766471F7E6F420022C042 = {
@@ -467,6 +495,7 @@
 				49FA7F751FB9E08E00EDB367 /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
+				49E75CA820FF34AF00BC0D65 /* Question.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -732,6 +761,7 @@
 				492B38F7207646B300DE470D /* 11.json in Resources */,
 				49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
+				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				497D21C8205A8E7E0040E0C0 /* 1.json in Resources */,
 				497D21C2205A8E7E0040E0C0 /* 2.json in Resources */,
@@ -914,7 +944,9 @@
 			files = (
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
+				49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
+				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
@@ -924,12 +956,14 @@
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
+				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
+				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
 				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
@@ -938,9 +972,11 @@
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
+				49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */,
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
+				49E75CA920FF34AF00BC0D65 /* Question.swift in Sources */,
 				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
 				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
