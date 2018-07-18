@@ -11,6 +11,8 @@ import Foundation
 struct Properties {
 
     init() {}
+    
+    static let questionnaireQueueName = "blablabla"
 
     static let isDebug: Bool = {
         var debug = false
@@ -35,6 +37,17 @@ struct Properties {
             UserDefaults.standard.synchronize()
         }
         return isFirstLaunch
+    }
+    
+    static func installTimestamp() -> Date? {
+        let installTimestamp = "installTimestamp"
+        if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
+            return installDate
+        } else {
+            let date = Date()
+            UserDefaults.standard.set(date, forKey: installTimestamp)
+            return nil
+        }
     }
 
     static func userID() -> String {

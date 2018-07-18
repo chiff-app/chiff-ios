@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         let _ = AuthenticationGuard.sharedInstance
         let _: LAError? = nil
-        
+
         let nc = NotificationCenter.default
         nc.addObserver(forName: NSNotification.Name.UIPasteboardChanged, object: nil, queue: nil, using: handlePasteboardChangeNotification)
         nc.addObserver(forName: NSNotification.Name.passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
@@ -364,6 +364,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         if Properties.isFirstLaunch() {
             Logger.shared.info("App was installed", userInfo: ["code": AnalyticsMessage.install.rawValue])
+            _ = Properties.installTimestamp()
         }
         
         if !Seed.exists() {
@@ -398,7 +399,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         logger.logstashHost = "analytics.keyn.io"
         logger.logstashPort = 5000
         logger.logstashTimeout = 5
-        logger.logLogstashSocketActivity = true
+        logger.logLogstashSocketActivity = Properties.isDebug
         
         // default info
         logger.defaultUserInfo = ["device": "APP",
