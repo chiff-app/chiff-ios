@@ -189,12 +189,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
     
+
+    
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages) in
+        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
             if messages.count > 0 {
                 for message in messages {
+                    guard let body = message.body else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard let receiptHandle = message.receiptHandle else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard type == BrowserMessageType.confirm.rawValue else {
+                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
+                        return
+                    }
+                    AWS.sharedInstance.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
+
                     do {
-                        let browserMessage: BrowserMessage = try session.decrypt(message: message)
+                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
                         if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .confirm, result {
                             var account = try Account.get(accountID: accountId)
                             try account?.updatePassword(offset: nil)
@@ -365,6 +385,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if Properties.isFirstLaunch() {
             Logger.shared.info("App was installed", userInfo: ["code": AnalyticsMessage.install.rawValue])
             _ = Properties.installTimestamp()
+            UserDefaults.standard.addSuite(named: Questionnaire.suite)
         }
         
         if !Seed.exists() {

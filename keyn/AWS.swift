@@ -203,7 +203,7 @@ class AWS {
         }
     }
     
-    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [String]) -> Void) {
+    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [AWSSQSMessage], _ queueName : String) -> Void) {
         guard let receiveRequest = AWSSQSReceiveMessageRequest() else {
             Logger.shared.error("Could not create AWSSQSReceiveMessageRequest.")
             return
@@ -213,28 +213,10 @@ class AWS {
         receiveRequest.waitTimeSeconds = shortPolling ? 0 : 20
         receiveRequest.messageAttributeNames = ["All"]
         sqs.receiveMessage(receiveRequest).continueOnSuccessWith { (task) -> Any? in
-            var returnMessages = [String]()
             if let messages = task.result?.messages {
-                for message in messages {
-                    guard let body = message.body else {
-                        Logger.shared.error("Could not parsw SQS message body.")
-                        return nil
-                    }
-                    guard let receiptHandle = message.receiptHandle else {
-                        Logger.shared.error("Could not parsw SQS message body.")
-                        return nil
-                    }
-                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
-                        Logger.shared.error("Could not parsw SQS message body.")
-                        return nil
-                    }
-                    if type == BrowserMessageType.confirm.rawValue {
-                        returnMessages.append(body)
-                        self.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
-                    }
-                }
+                completionHandler(messages, queueName)
             }
-            completionHandler(returnMessages)
+            
             return nil
         }.continueWith { (task) -> Any? in
             if let error = task.error {
