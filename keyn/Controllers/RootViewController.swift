@@ -19,22 +19,6 @@ class RootViewController: UITabBarController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if Questionnaire.shouldAsk() {
-            var questionnaire = Questionnaire(id: "veryUniqueIdentifier")
-            questionnaire.add(question: Question(id: "LIKE", type: .likert, text: "How much do you like Keyn?"))
-            questionnaire.add(question: Question(id: "SAFE", type: .likert, text: "How safe do you feel logging in with Keyn?"))
-            questionnaire.add(question: Question(id: "RECOMMEND", type: .boolean, text: "Would you recommend Keyn to a friend?"))
-            questionnaire.add(question: Question(id: "FEE_4_OT", type: .boolean, text: "Would you pay a one-time fee of €4 for Keyn?"))
-            questionnaire.add(question: Question(id: "FEE_10_Y", type: .boolean, text: "Would you pay a subscription of €10/year for Keyn?"))
-            presentQuestionAlert(questionnaire: questionnaire)
-        }
-        Questionnaire.get { (questionnaires) in
-            for questionnaire in questionnaires {
-                DispatchQueue.main.async {
-                    self.presentQuestionAlert(questionnaire: questionnaire)
-                }
-            }
-        }
     }
     
     func presentQuestionAlert(questionnaire: Questionnaire) {
@@ -43,11 +27,14 @@ class RootViewController: UITabBarController {
             self.launchQuestionnaire(questionnaire: questionnaire)
         }))
         alert.addAction(UIAlertAction(title: "No, thanks", style: .cancel, handler: { _ in
-            Questionnaire.setTimestamp(date: Date(timeInterval: TimeInterval(3600*24*356*100), since: Date())) // Don't ask for the next 100 years
+            questionnaire.setFinished()
+            questionnaire.save()
             Logger.shared.info("Declined questionnaire.")
         }))
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
-            Questionnaire.setTimestamp(date: Date())
+            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(3600*24), since: Date()))
+            questionnaire.save()
+            Logger.shared.info("Postponed questionnaire.")
         }))
         self.present(alert, animated: true, completion: nil)
         

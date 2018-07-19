@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         enableLogging()
         fetchAWSIdentification()
         registerForPushNotifications()
-        
+
         let _ = AuthenticationGuard.sharedInstance
         let _: LAError? = nil
 
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
         UserDefaults.standard.removeObject(forKey: "backedUp")
-
+        Questionnaire.fetch()
         return true
     }
 
@@ -189,7 +189,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
     
-
     
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
         AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
@@ -386,6 +385,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             Logger.shared.info("App was installed", userInfo: ["code": AnalyticsMessage.install.rawValue])
             _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
+            Questionnaire.createQuestionnaireDirectory()
         }
         
         if !Seed.exists() {
@@ -394,7 +394,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             viewController = rootController
         } else {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            viewController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+                Logger.shared.error("Unexpected root view controller type")
+                fatalError("Unexpected root view controller type")
+            }
+            viewController = vc
+
         }
         
         self.window?.rootViewController = viewController

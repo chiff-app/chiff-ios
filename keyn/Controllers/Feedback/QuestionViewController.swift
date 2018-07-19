@@ -23,8 +23,9 @@ class QuestionViewController: UIViewController {
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        Questionnaire.setTimestamp(date: Date())
-        navigationController?.dismiss(animated: true, completion: nil)
+        if let navCon = self.navigationController as? QuestionnaireController {
+            navCon.cancel()
+        }
     }
     
 }
