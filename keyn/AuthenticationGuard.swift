@@ -125,6 +125,13 @@ class AuthenticationGuard {
             DispatchQueue.main.async {
                 if succes {
                     self.hideLockWindow()
+                    if let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? RootViewController {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            if let questionnaire = Questionnaire.all().first(where: { (questionnaire) -> Bool in
+                                return questionnaire.shouldAsk()
+                            }) { rootViewController.presentQuestionAlert(questionnaire: questionnaire) }
+                        }
+                    }
                 } else if let error = error, let errorCode = authError?.code {
                     Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode), error: error as NSError)
                     if error._code == LAError.userFallback.rawValue {

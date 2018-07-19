@@ -26,6 +26,12 @@ class QuestionnaireController: UINavigationController {
         }
     }
     
+    func cancel() {
+        questionnaire?.askAgainAt(date: Date(timeInterval: TimeInterval(3600*24), since: Date()))
+        questionnaire?.save()
+        dismiss(animated: true, completion: nil)
+    }
+    
     func nextQuestion() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
         if index < questionnaire!.questions.count {
@@ -64,6 +70,7 @@ class QuestionnaireController: UINavigationController {
             Logger.shared.info(question.text, userInfo: userInfo)
         }
         questionnaire!.setFinished()
+        questionnaire!.save()
         dismiss(animated: true, completion: nil)
     }
 
