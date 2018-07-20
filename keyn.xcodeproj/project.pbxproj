@@ -1214,7 +1214,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1237,7 +1236,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1260,7 +1258,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -1280,7 +1277,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
