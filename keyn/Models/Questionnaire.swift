@@ -21,6 +21,13 @@ struct Question: Codable {
     let text: String
     var response: String?
     
+    enum CodingKeys: CodingKey {
+        case id
+        case type
+        case text
+        case response
+    }
+    
     init(id: String, type: QuestionType, text: String, response: String? = nil) {
         self.id = id
         self.type = type
@@ -29,21 +36,55 @@ struct Question: Codable {
     }
 }
 
+
 class Questionnaire: Codable {
     static let queueName = "KeynQuestionnaireQueue"
     static let suite = "keynQuestionnaire"
     
     let id: String
-    var isFinished: Bool?
+    let delay: Int
+    var isFinished: Bool
     var askAgain: Date?
     var questions: [Question]
     
-    init(id: String, questions: [Question]? = nil, isFinished: Bool = false) {
+    enum CodingKeys: CodingKey {
+        case id
+        case delay
+        case questions
+        case isFinished
+        case askAgain
+    }
+
+    init(id: String, questions: [Question]? = nil, delay: Int? = nil, isFinished: Bool = false) {
         self.id = id
         self.questions = questions ?? [Question]()
         self.isFinished = isFinished
+        if let delay = delay {
+            self.delay = delay
+            self.askAgain = Calendar.current.date(byAdding: .day, value: delay, to: Date())
+        } else {
+            self.delay = 0
+        }
     }
     
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.isFinished = try values.decodeIfPresent(Bool.self, forKey: .isFinished) ?? false
+        if let askAgain = try values.decodeIfPresent(Date.self, forKey: .askAgain) {
+            // Decoded from PropertyList
+            self.askAgain = askAgain
+            self.delay = try values.decode(Int.self, forKey: .delay)
+        } else if let delay = try values.decodeIfPresent(Int.self, forKey: .delay) {
+            // Decoded from JSON
+            self.delay = delay
+            self.askAgain = Calendar.current.date(byAdding: .day, value: delay, to: Date())
+        } else {
+            self.delay = 0
+        }
+        self.questions = try values.decode([Question].self, forKey: .questions)
+    }
+
     func add(question: Question) {
         questions.append(question)
     }
@@ -57,15 +98,14 @@ class Questionnaire: Codable {
     }
     
     func shouldAsk() -> Bool {
-        if let isFinished = isFinished {
-            guard !isFinished else {
-                return false
-            }
+        guard !isFinished else {
+            return false
         }
-        guard let askAgain = askAgain else {
+        if let askAgain = askAgain {
+            return Date().timeIntervalSince1970 - askAgain.timeIntervalSince1970 > 0
+        } else {
             return true
         }
-        return Date().timeIntervalSince1970 - askAgain.timeIntervalSince1970 > 0
     }
     
     func save() {
@@ -78,6 +118,19 @@ class Questionnaire: Codable {
         } catch {
             Logger.shared.warning("Could not write questionnaire", error: error as NSError)
         }
+    }
+    
+    func submit() {
+        for question in questions {
+            let userInfo: [String: Any] = [
+                "type": question.type.rawValue,
+                "response": question.response ?? "null",
+                "questionnaire": id
+            ]
+            Logger.shared.info(question.text, userInfo: userInfo)
+        }
+        isFinished = true
+        save()
     }
     
     // MARK: Static functions
@@ -168,4 +221,19 @@ class Questionnaire: Codable {
             Logger.shared.error("Error creating questionnaire directory", error: error)
         }
     }
+    
+    // DEBUGGING
+    static func cleanFolder() {
+        let filemgr = FileManager.default
+        let questionnaireDirUrl = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0].appendingPathComponent("questionnaires")
+        do {
+            let filelist = try filemgr.contentsOfDirectory(atPath: questionnaireDirUrl.path)
+            for filename in filelist {
+                try filemgr.removeItem(atPath: questionnaireDirUrl.appendingPathComponent(filename).path)
+            }
+        } catch {
+            Logger.shared.warning("Could not delete questionnaires", error: error as NSError)
+        }
+    }
+    
 }

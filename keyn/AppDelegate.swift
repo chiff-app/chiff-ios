@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
         UserDefaults.standard.removeObject(forKey: "backedUp")
+
         Questionnaire.fetch()
         return true
     }
@@ -420,6 +421,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Disable file logging
         logger.enableFileLogging = false
+//        logger.enableLogstashLogging = !Properties.isDebug
         
         // logstash destination
         logger.logstashHost = "analytics.keyn.io"

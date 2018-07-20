@@ -50,6 +50,13 @@ class QuestionnaireController: UINavigationController {
                     viewController.isFirst = index == 0
                     pushViewController(viewController, animated: true)
                 }
+            case .text:
+                if let viewController = storyboard.instantiateViewController(withIdentifier: "TextQuestion") as? TextQuestionViewController {
+                    viewController.question = questionnaire!.questions[index]
+                    viewController.questionIndex = index
+                    viewController.isFirst = index == 0
+                    pushViewController(viewController, animated: true)
+                }
             default:
                 Logger.shared.warning("Unknown question type.", userInfo: ["questionType": questionnaire!.questions[index].type])
             }
@@ -62,15 +69,7 @@ class QuestionnaireController: UINavigationController {
     }
     
     func finish() {
-        for question in questionnaire!.questions {
-            let userInfo: [String: Any] = [
-                "type": question.type.rawValue,
-                "response": question.response ?? "null"
-            ]
-            Logger.shared.info(question.text, userInfo: userInfo)
-        }
-        questionnaire!.setFinished()
-        questionnaire!.save()
+        questionnaire!.submit()
         dismiss(animated: true, completion: nil)
     }
 
