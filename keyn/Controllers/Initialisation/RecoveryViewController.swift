@@ -63,11 +63,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             mnemonic[index] = textField.text ?? ""
         }
     }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
+
     // MARK: Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {

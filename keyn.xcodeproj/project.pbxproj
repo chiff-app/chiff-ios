@@ -94,6 +94,7 @@
 		49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */; };
 		49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */; };
 		49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */; };
+		49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
@@ -230,6 +231,7 @@
 		49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
 		49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questionnaire.swift; sourceTree = "<group>"; };
 		49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishQuestionnaireViewController.swift; sourceTree = "<group>"; };
+		49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextQuestionViewController.swift; sourceTree = "<group>"; };
 		49E766501F7E6F420022C042 /* keyn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49E7665A1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 				49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */,
 				49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */,
 				49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */,
+				49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -976,6 +979,7 @@
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
+				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
 				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,
