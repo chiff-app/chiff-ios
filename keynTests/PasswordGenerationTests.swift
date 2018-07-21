@@ -13,10 +13,12 @@ import XCTest
 class PasswordGenerationTests: XCTestCase {
 
     let commonCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|"
+    let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
 
     }
     
@@ -26,17 +28,18 @@ class PasswordGenerationTests: XCTestCase {
     }
     
     func testPasswordGeneration() {
-        let site = Site.get(id: 6)!
-        let randomIndex = Int(arc4random_uniform(100000000))
-        let randomUsername = "TestUsername"
-        do {
-            let (randomPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, offset: nil)
-            let offset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, password: randomPassword)
-            let (calculatedPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, offset: offset)
-            XCTAssertEqual(randomPassword, calculatedPassword)
-            XCTAssertEqual(index, newIndex)
-        } catch {
-
+        Site.get(id: linkedInPPDHandle) { (site) in
+            let randomIndex = Int(arc4random_uniform(100000000))
+            let randomUsername = "TestUsername"
+            do {
+                let (randomPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: randomIndex, siteID: site.id, ppd: site.ppd, offset: nil)
+                let offset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, password: randomPassword)
+                let (calculatedPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, offset: offset)
+                XCTAssertEqual(randomPassword, calculatedPassword)
+                XCTAssertEqual(index, newIndex)
+            } catch {
+                
+            }
         }
     }
 
@@ -46,14 +49,14 @@ class PasswordGenerationTests: XCTestCase {
 
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertFalse(validator.validate(password: longPassword))
-        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
         
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(validator.validate(password: shortPassword))
-        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
         
         let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
-        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: veryLongPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: veryLongPassword))
     }
     
     func testDefaultPasswordLength() {
@@ -62,15 +65,15 @@ class PasswordGenerationTests: XCTestCase {
         
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertTrue(validator.validate(password: longPassword))
-        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
         
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(validator.validate(password: shortPassword))
-        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: longPassword))
+        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
         
         let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
         XCTAssertFalse(validator.validate(password: veryLongPassword))
-        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: 0, ppd: ppd, password: veryLongPassword))
+        XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: veryLongPassword))
     }
     
 

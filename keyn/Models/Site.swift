@@ -16,7 +16,7 @@ struct Site: Codable {
                 completion(Site(name: ppd.name ?? "Unknown", id: id, url: ppd.url, ppd: ppd))
             }
         } else {
-            AWS.sharedInstance.getPPD(id: 0) { (ppd) in
+            AWS.sharedInstance.getPPD(id: id) { (ppd) in
                 completion(Site(name: ppd.name ?? "Unknown", id: id, url: ppd.url, ppd: ppd))
             }
         }

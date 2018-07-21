@@ -11,6 +11,7 @@ class TestHelper {
 
     static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "yQ3untNLy-DnV8WxCissyK4mfrlZ8QHiowG-QnWNCEI")
     static let browserPublicKeyBase64 = "tq08gf3SIKaBlmGiQY0p66gmI7utU3kLHyKEP2t343s"
+    static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
 
     static func deleteSessionKeys() {
@@ -39,8 +40,7 @@ class TestHelper {
 
     static func createSession() -> String? {
         do {
-            let session = try Session(sqs: "sqs", browserPublicKey: browserPublicKeyBase64,
-                                      browser: "browser", os: "OS")
+            let session = try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: browserPublicKeyBase64, browser: "browser", os: "OS")
             return session.id
         } catch {
             print("Cannot create session, tests will fail: \(error)")
@@ -63,9 +63,9 @@ class TestHelper {
 
         return nil
     }
-
-    static func examplePPD() -> PPD {
-        return Site.get(id: 0)!.ppd!
+    
+    static func examplePPD(completionHandler: @escaping (Site) -> Void) {
+        Site.get(id: linkedInPPDHandle, completion: completionHandler)
     }
 
     static func examplePPD(maxConsecutive: Int?, minLength: Int?, maxLength: Int?, characterSetSettings: [PPDCharacterSetSettings]?, positionRestrictions: [PPDPositionRestriction]?, requirementGroups: [PPDRequirementGroup]?) -> PPD {

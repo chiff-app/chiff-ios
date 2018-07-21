@@ -4,8 +4,8 @@ import XCTest
 
 class SiteTests: XCTestCase {
     
-    let ppd = TestHelper.examplePPD()
-
+    let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
+    
     override func setUp() {
         // TODO
         // Set up some example sites. Actually this is now still
@@ -17,19 +17,16 @@ class SiteTests: XCTestCase {
         super.tearDown()
     }
 
-    func testInitAssignsURL() {
-        let site = Site.get(id: 1)!
-        XCTAssertEqual(site.urls, ["google.com", "accounts.google.com"])
-    }
-
     func testGetReturnsSite() {
-        let site = Site.get(id: 0)
-        XCTAssertNotNil(site)
+        Site.get(id: linkedInPPDHandle) { (site) in
+            XCTAssertNotNil(site)
+        }
     }
 
     func testGetReturnsNilIfNoSiteForID() {
-        let site = Site.get(id: 1000)
-        XCTAssertNil(site)
+        Site.get(id: "seeyalater!") { (site) in
+            XCTAssertNil(site)
+        }
     }
 
 }

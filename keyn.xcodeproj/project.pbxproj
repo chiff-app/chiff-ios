@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
 		01557424202AF75600F97DA2 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01557423202AF75600F97DA2 /* SessionTests.swift */; };
 		0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155742A202B173F00F97DA2 /* TestHelper.swift */; };
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
@@ -27,6 +26,10 @@
 		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
 		491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C485A2024AB2F00397071 /* AuthenticationViewController.swift */; };
 		491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */; };
+		49214B75210325B400C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
+		49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */; };
+		49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
 		492B38F7207646B300DE470D /* 11.json in Resources */ = {isa = PBXBuildFile; fileRef = 492B38F6207646B200DE470D /* 11.json */; };
 		4931305C207A390900C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
 		4931305D207A390A00C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
@@ -81,7 +84,6 @@
 		49B86426207D000800DE01C4 /* 12.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86424207D000200DE01C4 /* 12.json */; };
 		49B86428207D03E400DE01C4 /* 13.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86427207D03E400DE01C4 /* 13.json */; };
 		49B86429207D044300DE01C4 /* 13.json in Resources */ = {isa = PBXBuildFile; fileRef = 49B86427207D03E400DE01C4 /* 13.json */; };
-		49C3E7EB20F60AF90074DA1F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
@@ -101,7 +103,6 @@
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
-		49FB40CA202C9B9A0060267C /* PasswordGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
@@ -186,6 +187,7 @@
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
+		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
 		492B38F6207646B200DE470D /* 11.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 11.json; sourceTree = "<group>"; };
 		493604992085EBCB009E3029 /* 15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 15.json; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			children = (
 				613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */,
 				4919DAE620123FE50048B060 /* NotificationService.swift */,
+				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				4919DAE820123FE50048B060 /* Info.plist */,
 			);
 			path = keynNotificationExtension;
@@ -924,11 +927,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49C3E7EB20F60AF90074DA1F /* Session.swift in Sources */,
 				613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */,
 				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
 				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
+				49214B75210325B400C793DE /* NotificationProcessor.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
+				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49DCA69A2063E88E008F4DF2 /* Properties.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
@@ -999,9 +1003,9 @@
 				01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */,
 				01839A751FACA98E00698B69 /* SiteTests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
+				49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
-				0155741F202A562A00F97DA2 /* NotificationPreprocessorTests.swift in Sources */,
-				49FB40CA202C9B9A0060267C /* PasswordGenerationTests.swift in Sources */,
+				49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

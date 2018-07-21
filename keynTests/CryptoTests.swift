@@ -4,7 +4,7 @@ import XCTest
 
 class CryptoTests: XCTestCase {
 
-    let ppd = TestHelper.examplePPD()
+    let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
     override func setUp() {
         super.setUp()
@@ -48,7 +48,13 @@ class CryptoTests: XCTestCase {
     }
 
     func testCalculatePasswordOffsetDoesntThrow() {
-        XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: 0, ppd: ppd, password: "pass123"))
+        Site.get(id: linkedInPPDHandle) { (site) in
+            do {
+               XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: self.linkedInPPDHandle, ppd: site.ppd, password: "pass123"))
+            } catch {
+                print("just to suppres compiler warning")
+            }
+        }
     }
 
     func testCalculatePasswordOffsetThrowsWhenGenerateKeyThrows() {
