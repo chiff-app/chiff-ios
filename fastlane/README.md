@@ -21,6 +21,26 @@ or alternatively using `brew cask install fastlane`
 fastlane ios tests
 ```
 Run all tests
+### ios build_keyn_beta
+```
+fastlane ios build_keyn_beta
+```
+Build app
+### ios release_minor_version
+```
+fastlane ios release_minor_version
+```
+Release minor version
+### ios release_patch_version
+```
+fastlane ios release_patch_version
+```
+Release patch version
+### ios release_major_version
+```
+fastlane ios release_major_version
+```
+Release major version
 
 ----
 
