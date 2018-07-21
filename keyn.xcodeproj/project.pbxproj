@@ -30,6 +30,8 @@
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */; };
 		49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
+		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
+		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		492B38F7207646B300DE470D /* 11.json in Resources */ = {isa = PBXBuildFile; fileRef = 492B38F6207646B200DE470D /* 11.json */; };
 		4931305C207A390900C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
 		4931305D207A390A00C102B2 /* 10.json in Resources */ = {isa = PBXBuildFile; fileRef = 019D3D9120779D090079F7EF /* 10.json */; };
@@ -107,7 +109,6 @@
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
-		613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		613CFB08201360C200460CC6 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
@@ -123,7 +124,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4919DAE920123FE50048B060 /* PBXContainerItemProxy */ = {
+		49214B862103327C00C793DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
 			proxyType = 1;
@@ -314,7 +315,6 @@
 			children = (
 				613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */,
 				4919DAE620123FE50048B060 /* NotificationService.swift */,
-				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				4919DAE820123FE50048B060 /* Info.plist */,
 			);
 			path = keynNotificationExtension;
@@ -453,6 +453,7 @@
 			children = (
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
+				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				49F448281FD1652C00643C4D /* AWS.swift */,
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
@@ -599,7 +600,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				4919DAEA20123FE50048B060 /* PBXTargetDependency */,
+				49214B872103327C00C793DE /* PBXTargetDependency */,
 			);
 			name = keyn;
 			productName = athena;
@@ -927,7 +928,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				613CFB0320135DFF00460CC6 /* Crypto.swift in Sources */,
 				613CFB08201360C200460CC6 /* Homeless.swift in Sources */,
 				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
 				49214B75210325B400C793DE /* NotificationProcessor.swift in Sources */,
@@ -940,6 +940,7 @@
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
+				49214B882103359B00C793DE /* Crypto.swift in Sources */,
 				4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */,
 				613CFB07201360B300460CC6 /* Keychain.swift in Sources */,
 			);
@@ -983,6 +984,7 @@
 				61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */,
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
+				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
@@ -1021,10 +1023,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		4919DAEA20123FE50048B060 /* PBXTargetDependency */ = {
+		49214B872103327C00C793DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4919DAE320123FE50048B060 /* keynNotificationExtension */;
-			targetProxy = 4919DAE920123FE50048B060 /* PBXContainerItemProxy */;
+			targetProxy = 49214B862103327C00C793DE /* PBXContainerItemProxy */;
 		};
 		49E766681F7E6F420022C042 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
