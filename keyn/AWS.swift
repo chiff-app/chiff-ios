@@ -31,31 +31,9 @@ class AWS {
 
     private init() {}
     
-    func getPPD(id: Int, completionHandler: @escaping (_ ppd: PPD) -> Void) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        
-        request.functionName = "getPPD"
-        request.payload = ["id" : id]
-        lambda.invoke(request).continueOnSuccessWith(block: { (task) -> Any? in
-            if let jsonDict = task.result?.payload as? NSDictionary {
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
-                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
-                    completionHandler(ppd)
-                } catch {
-                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
-                }
-            }
-            return nil
-        }).continueWith { (task) -> Any? in
-            if let error = task.error {
-                 Logger.shared.error("Error getting PPD.", error: error as NSError)
-            }
-            return nil
-        }
+    func getPPD(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
+        // TODO: This should become call to PPDS. For now redirect to development
+        getDevelopmentPPD(id: id, completionHandler: completionHandler)
     }
     
     func getDevelopmentPPD(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
