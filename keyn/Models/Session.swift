@@ -16,6 +16,7 @@ class Session: Codable {
     let creationDate: Date
     let browser: String
     let os: String
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     private static let browserService = "io.keyn.session.browser"
     private static let appService = "io.keyn.session.app"
