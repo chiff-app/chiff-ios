@@ -137,18 +137,38 @@
                                     <action selector="likertValue:" destination="17U-qN-7Gn" eventType="valueChanged" id="lH8-Qa-Z0d"/>
                                 </connections>
                             </segmentedControl>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="5HI-tR-jmW">
+                                <rect key="frame" x="35" y="557" width="305" height="50"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7uz-38-7Hl">
+                                        <rect key="frame" x="0.0" y="0.0" width="249" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.98431372549999996" green="0.70588235290000001" blue="0.18039215689999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VbX-AG-3iQ">
+                                        <rect key="frame" x="249" y="0.0" width="56" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.98431372549999996" green="0.70588235290000001" blue="0.18039215689999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QbB-2z-UH0" firstAttribute="top" secondItem="2bk-Jp-Pjw" secondAttribute="top" constant="31" id="F55-U3-Vsc"/>
                             <constraint firstItem="G9P-PK-BzV" firstAttribute="leading" secondItem="2bk-Jp-Pjw" secondAttribute="leading" constant="35" id="GSV-YR-uT4"/>
                             <constraint firstItem="2bk-Jp-Pjw" firstAttribute="trailing" secondItem="G9P-PK-BzV" secondAttribute="trailing" constant="35" id="M4G-jU-cj5"/>
+                            <constraint firstItem="5HI-tR-jmW" firstAttribute="leading" secondItem="2bk-Jp-Pjw" secondAttribute="leading" constant="35" id="PkW-8O-yDH"/>
                             <constraint firstItem="2bk-Jp-Pjw" firstAttribute="bottom" secondItem="G9P-PK-BzV" secondAttribute="bottom" constant="128" id="TQl-wM-8KF"/>
                             <constraint firstItem="yKy-5X-Oe6" firstAttribute="top" secondItem="QbB-2z-UH0" secondAttribute="bottom" constant="50" id="X1m-1F-UOI"/>
                             <constraint firstItem="2bk-Jp-Pjw" firstAttribute="trailing" secondItem="yKy-5X-Oe6" secondAttribute="trailing" constant="35" id="a1f-bv-wgv"/>
                             <constraint firstItem="QbB-2z-UH0" firstAttribute="trailing" secondItem="2bk-Jp-Pjw" secondAttribute="trailing" id="ajv-Al-PaH"/>
                             <constraint firstItem="QbB-2z-UH0" firstAttribute="leading" secondItem="2bk-Jp-Pjw" secondAttribute="leading" id="t5S-41-s4a"/>
+                            <constraint firstItem="5HI-tR-jmW" firstAttribute="top" secondItem="G9P-PK-BzV" secondAttribute="bottom" constant="18" id="ttb-UG-i7V"/>
                             <constraint firstItem="yKy-5X-Oe6" firstAttribute="leading" secondItem="2bk-Jp-Pjw" secondAttribute="leading" constant="35" id="u7H-uU-Ck2"/>
+                            <constraint firstItem="2bk-Jp-Pjw" firstAttribute="trailing" secondItem="5HI-tR-jmW" secondAttribute="trailing" constant="35" id="uKj-ny-cin"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2bk-Jp-Pjw"/>
                     </view>
@@ -162,6 +182,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="likertValue" destination="G9P-PK-BzV" id="ngp-eb-qPW"/>
+                        <outlet property="maxLabel" destination="VbX-AG-3iQ" id="FFv-gV-lCN"/>
+                        <outlet property="minLabel" destination="7uz-38-7Hl" id="YYS-EK-uig"/>
                         <outlet property="questionLabel" destination="yKy-5X-Oe6" id="iqV-do-CDp"/>
                     </connections>
                 </viewController>
