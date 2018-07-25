@@ -57,8 +57,13 @@ class QuestionnaireController: UINavigationController {
                     viewController.isFirst = index == 0
                     pushViewController(viewController, animated: true)
                 }
-            default:
-                Logger.shared.warning("Unknown question type.", userInfo: ["questionType": questionnaire!.questions[index].type])
+            case .mpc:
+                if let viewController = storyboard.instantiateViewController(withIdentifier: "MPCQuestion") as? MPCQuestionViewController {
+                    viewController.question = questionnaire!.questions[index]
+                    viewController.questionIndex = index
+                    viewController.isFirst = index == 0
+                    pushViewController(viewController, animated: true)
+                }
             }
             index += 1
         } else {

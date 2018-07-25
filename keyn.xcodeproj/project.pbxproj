@@ -76,6 +76,8 @@
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
+		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
+		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
 		49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */; };
 		49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */; };
 		49A4F2D120247E5F00CE904E /* Amiko-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */; };
@@ -217,6 +219,8 @@
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
+		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
+		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Regular.ttf"; sourceTree = "<group>"; };
 		49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-SemiBold.ttf"; sourceTree = "<group>"; };
 		49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Bold.ttf"; sourceTree = "<group>"; };
@@ -420,6 +424,8 @@
 				49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */,
 				49E75CA620FF32B300BC0D65 /* QuestionViewController.swift */,
 				49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */,
+				49A32574210885F80018677C /* MPCQuestionViewController.swift */,
+				49A3257621089AAC0018677C /* MPCTableViewCell.swift */,
 				49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */,
 				49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */,
 				49A3257221086EF30018677C /* ReportSiteViewController.swift */,
@@ -956,6 +962,7 @@
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */,
+				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
@@ -972,6 +979,7 @@
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
+				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,

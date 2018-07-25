@@ -13,6 +13,7 @@ enum QuestionType: String, Codable {
     case likert = "likert"
     case boolean = "boolean"
     case text = "text"
+    case mpc = "mpc"
 }
 
 struct Question: Codable {
@@ -22,6 +23,7 @@ struct Question: Codable {
     var response: String?
     let minLabel: String?
     let maxLabel: String?
+    let mpcOptions: [String]?
     
     enum CodingKeys: CodingKey {
         case id
@@ -30,15 +32,17 @@ struct Question: Codable {
         case response
         case minLabel
         case maxLabel
+        case mpcOptions
     }
     
-    init(id: String, type: QuestionType, text: String, response: String? = nil, minLabel: String? = nil, maxLabel: String? = nil) {
+    init(id: String, type: QuestionType, text: String, response: String? = nil, minLabel: String? = nil, maxLabel: String? = nil, mpcOptions: [String]? = nil) {
         self.id = id
         self.type = type
         self.text = text
         self.response = response
         self.minLabel = minLabel
         self.maxLabel = maxLabel
+        self.mpcOptions = mpcOptions
     }
 }
 
