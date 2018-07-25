@@ -270,6 +270,35 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection footerTitle="Let us know if something isn't working properly for this website." id="NaP-xu-eol">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
+                                        <rect key="frame" x="0.0" y="403.33333333333337" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KXD-8V-vma" id="99P-am-w3J">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LaZ-O8-9Mf">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                                    <state key="normal" title="Report">
+                                                        <color key="titleColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <segue destination="Wdf-g0-TQl" kind="presentation" identifier="reportSite" id="CJf-NI-3sF"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="LaZ-O8-9Mf" firstAttribute="leading" secondItem="99P-am-w3J" secondAttribute="leading" id="cMM-Ir-i0I"/>
+                                                <constraint firstAttribute="trailing" secondItem="LaZ-O8-9Mf" secondAttribute="trailing" id="f1i-pg-NfD"/>
+                                                <constraint firstAttribute="bottom" secondItem="LaZ-O8-9Mf" secondAttribute="bottom" id="rRb-ma-bgc"/>
+                                                <constraint firstItem="LaZ-O8-9Mf" firstAttribute="top" secondItem="99P-am-w3J" secondAttribute="top" id="vcy-WF-6K4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="UWD-YS-l0e" id="pIh-SE-UNx"/>
@@ -311,7 +340,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PF9-Mk-y1i">
-                                <rect key="frame" x="147.66666666666666" y="602" width="80" height="116"/>
+                                <rect key="frame" x="147.66666666666666" y="636" width="80" height="116"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="Y3c-UV-bHh"/>
                                 </constraints>
@@ -1162,7 +1191,7 @@ Reproduceer stappen:
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aCM-Zy-uPs">
-                                <rect key="frame" x="0.0" y="124" width="375" height="654"/>
+                                <rect key="frame" x="0.0" y="124" width="375" height="688"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -1419,6 +1448,14 @@ Reproduceer stappen:
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YrW-p7-wQc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2457" y="1622"/>
+        </scene>
+        <!--ReportSite-->
+        <scene sceneID="44V-ZF-Jcg">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Feedback" referencedIdentifier="ReportSite" id="Wdf-g0-TQl" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N7B-7a-jdI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2959" y="-863"/>
         </scene>
     </scenes>
     <resources>

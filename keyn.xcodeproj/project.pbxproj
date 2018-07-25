@@ -75,6 +75,7 @@
 		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
+		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A4F2CF20247E5F00CE904E /* Amiko-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */; };
 		49A4F2D020247E5F00CE904E /* Amiko-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */; };
 		49A4F2D120247E5F00CE904E /* Amiko-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */; };
@@ -215,6 +216,7 @@
 		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
+		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A4F2CC20247E5800CE904E /* Amiko-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Regular.ttf"; sourceTree = "<group>"; };
 		49A4F2CD20247E5B00CE904E /* Amiko-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-SemiBold.ttf"; sourceTree = "<group>"; };
 		49A4F2CE20247E5F00CE904E /* Amiko-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amiko-Bold.ttf"; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 				49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */,
 				49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */,
 				49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */,
+				49A3257221086EF30018677C /* ReportSiteViewController.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -985,6 +988,7 @@
 				61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */,
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
+				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				49B6B75620024AF300310BC3 /* PersonalDetailsTableViewController.swift in Sources */,
