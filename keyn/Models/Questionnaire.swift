@@ -20,19 +20,25 @@ struct Question: Codable {
     let type: QuestionType
     let text: String
     var response: String?
+    let minLabel: String?
+    let maxLabel: String?
     
     enum CodingKeys: CodingKey {
         case id
         case type
         case text
         case response
+        case minLabel
+        case maxLabel
     }
     
-    init(id: String, type: QuestionType, text: String, response: String? = nil) {
+    init(id: String, type: QuestionType, text: String, response: String? = nil, minLabel: String? = nil, maxLabel: String? = nil) {
         self.id = id
         self.type = type
         self.text = text
         self.response = response
+        self.minLabel = minLabel
+        self.maxLabel = maxLabel
     }
 }
 
@@ -123,6 +129,7 @@ class Questionnaire: Codable {
     func submit() {
         for question in questions {
             let userInfo: [String: Any] = [
+                "questionID": question.id,
                 "type": question.type.rawValue,
                 "response": question.response ?? "null",
                 "questionnaire": id

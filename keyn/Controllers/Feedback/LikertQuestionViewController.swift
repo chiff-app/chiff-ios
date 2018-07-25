@@ -3,6 +3,8 @@ import UIKit
 
 class LikertQuestionViewController: QuestionViewController {
     @IBOutlet weak var likertValue: UISegmentedControl!
+    @IBOutlet weak var minLabel: UILabel!
+    @IBOutlet weak var maxLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +17,12 @@ class LikertQuestionViewController: QuestionViewController {
         super.viewWillAppear(animated)
         if let responseString = question?.response, let response = Int(responseString) {
             likertValue.selectedSegmentIndex = response - 1
+        }
+        if let minText = question?.minLabel {
+            minLabel.text = minText
+        }
+        if let maxText = question?.maxLabel {
+            maxLabel.text = maxText
         }
     }
     
