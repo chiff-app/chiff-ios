@@ -59,7 +59,7 @@ class AccountViewController: UITableViewController {
         }
     }
 
-
+    
     // MARK: Private methods
     
     private func showHiddenPasswordPopup() {
@@ -106,6 +106,16 @@ class AccountViewController: UITableViewController {
         UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
             copiedLabel.alpha = 0.0
         }) { if $0 { copiedLabel.removeFromSuperview() } }
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "reportSite", let destination = segue.destination.contents as? ReportSiteViewController {
+            destination.navigationItem.title = account?.site.name
+            destination.account = account
+        }
     }
 
 }

@@ -175,6 +175,7 @@ enum AnalyticsMessage: String {
     case keynReset = "KEYN_RESET"
     case passwordCopy = "PASSWORD_COPY"
     case requestDenied = "REQUEST_DENIED"
+    case siteReported = "SITE_REPORTED"
     
 }
 
