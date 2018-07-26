@@ -197,6 +197,7 @@ enum AnalyticsMessage: String {
     case passwordCopy = "PASSWORD_COPY"
     case requestDenied = "REQUEST_DENIED"
     case siteReported = "SITE_REPORTED"
+    case siteAdded = "SITE_ADDED"
     
 }
 
