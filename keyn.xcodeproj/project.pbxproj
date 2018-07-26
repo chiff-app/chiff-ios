@@ -1100,6 +1100,7 @@
 			baseConfigurationReference = 21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
@@ -1242,7 +1243,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce84d0c2-0e68-4195-a201-26861f67d890";
+				PROVISIONING_PROFILE = "72e973e3-d95e-4e5f-9dc6-bd51825ac45d";
 				PROVISIONING_PROFILE_SPECIFIER = keyn;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1264,7 +1265,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "ce84d0c2-0e68-4195-a201-26861f67d890";
+				PROVISIONING_PROFILE = "72e973e3-d95e-4e5f-9dc6-bd51825ac45d";
 				PROVISIONING_PROFILE_SPECIFIER = keyn;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1277,6 +1278,7 @@
 			baseConfigurationReference = 8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;

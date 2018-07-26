@@ -1,4 +1,5 @@
 import Foundation
+import JustLog
 
 /*
  * An account belongs to the user and can have one Site.
@@ -27,6 +28,8 @@ struct Account: Codable {
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
+        
+        Logger.shared.info("Site added to Keyn.", userInfo: ["code": AnalyticsMessage.siteAdded.rawValue, "changed": password == nil, "siteID": site.id, "siteName": site.name])
         
         try save(password: generatedPassword)
     }
@@ -81,6 +84,7 @@ struct Account: Codable {
 
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
         try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+        Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.changeResponse.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
     func delete() throws {

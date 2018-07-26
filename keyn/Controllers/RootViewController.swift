@@ -26,18 +26,19 @@ class RootViewController: UITabBarController {
         alert.addAction(UIAlertAction(title: "Yes!", style: .default, handler: { _ in
             self.launchQuestionnaire(questionnaire: questionnaire)
         }))
-        alert.addAction(UIAlertAction(title: "No, thanks", style: .cancel, handler: { _ in
-            questionnaire.setFinished()
-            questionnaire.save()
-            Logger.shared.info("Declined questionnaire.")
-        }))
+        if !questionnaire.compulsory {
+            alert.addAction(UIAlertAction(title: "No, thanks", style: .cancel, handler: { _ in
+                questionnaire.setFinished()
+                questionnaire.save()
+                Logger.shared.info("Declined questionnaire.")
+            }))
+        }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
             questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(3600*24), since: Date()))
             questionnaire.save()
             Logger.shared.info("Postponed questionnaire.")
         }))
         self.present(alert, animated: true, completion: nil)
-        
     }    
     
     func launchQuestionnaire(questionnaire: Questionnaire) {

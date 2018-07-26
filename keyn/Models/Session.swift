@@ -86,21 +86,18 @@ class Session: Codable {
         var response: CredentialsResponse?
         switch type {
         case .addAndChange:
-            Logger.shared.info("Site added with new password.", userInfo: ["code": AnalyticsMessage.addAndChange.rawValue, "result": true, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
-            Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.changeResponse.rawValue, "result": true, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
-            Logger.shared.info("Site added.", userInfo: ["code": AnalyticsMessage.addResponse.rawValue, "result": true, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .login:
-            Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "result": true, "siteName": account.site.name])
+            Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
-            Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue, "result": true, "siteName": account.site.name])
+            Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue,     "siteName": account.site.name])
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .confirm:

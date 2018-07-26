@@ -56,6 +56,7 @@ class Questionnaire: Codable {
     var isFinished: Bool
     var askAgain: Date?
     var questions: [Question]
+    let compulsory: Bool
     
     enum CodingKeys: CodingKey {
         case id
@@ -63,9 +64,10 @@ class Questionnaire: Codable {
         case questions
         case isFinished
         case askAgain
+        case compulsory
     }
 
-    init(id: String, questions: [Question]? = nil, delay: Int? = nil, isFinished: Bool = false) {
+    init(id: String, questions: [Question]? = nil, delay: Int? = nil, isFinished: Bool = false, compulsory: Bool = false) {
         self.id = id
         self.questions = questions ?? [Question]()
         self.isFinished = isFinished
@@ -75,6 +77,7 @@ class Questionnaire: Codable {
         } else {
             self.delay = 0
         }
+        self.compulsory = compulsory
     }
     
     required init(from decoder: Decoder) throws {
@@ -93,6 +96,7 @@ class Questionnaire: Codable {
             self.delay = 0
         }
         self.questions = try values.decode([Question].self, forKey: .questions)
+        self.compulsory = try values.decode(Bool.self, forKey: .compulsory)
     }
 
     func add(question: Question) {
