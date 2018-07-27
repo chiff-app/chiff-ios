@@ -84,6 +84,7 @@ class Session: Codable {
     // TODO, add request ID etc
     func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
         var response: CredentialsResponse?
+        var account = account
         switch type {
         case .addAndChange:
             response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)

@@ -10,6 +10,7 @@ struct Account: Codable {
     let username: String
     let site: Site
     var passwordIndex: Int
+    var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
     static let keychainService = "io.keyn.account"
 
@@ -25,6 +26,7 @@ struct Account: Codable {
 
         let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
         self.passwordIndex = index
+        self.lastPasswordUpdateTryIndex = index
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
@@ -64,16 +66,20 @@ struct Account: Codable {
         return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
     }
 
-    func nextPassword(offset: [Int]?) throws -> String {
-        let (newPassword, _) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+    mutating func nextPassword(offset: [Int]?) throws -> String {
+        let (newPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        self.lastPasswordUpdateTryIndex = index
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: nil, objectData: accountData, label: nil)
         return newPassword
     }
 
     mutating func updatePassword(offset: [Int]?) throws {
-        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
         //TODO: Implement custom passwords here
         self.passwordIndex = newIndex
+        self.lastPasswordUpdateTryIndex = newIndex
         passwordOffset = offset
 
         guard let passwordData = newPassword.data(using: .utf8) else {
@@ -142,7 +148,8 @@ struct Account: Codable {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
                 throw KeychainError.unexpectedData
             }
-            accounts.append(try decoder.decode(Account.self, from: accountData))
+            let account = try decoder.decode(Account.self, from: accountData)
+            accounts.append(account)
         }
         return accounts
     }
