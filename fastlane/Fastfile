@@ -13,9 +13,9 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-require 'net/http'
-require 'uri'
-require 'json'
+fastlane_require 'net/http'
+fastlane_require 'uri'
+fastlane_require 'json'
 
 default_platform(:ios)
 
@@ -40,13 +40,9 @@ def invitation_sent(email_address)
 end
 
 platform :ios do
-    desc 'Run all tests'
-    lane :tests do
-        scan(workspace: 'keyn.xcworkspace', scheme: "keyn", devices: ["iPhone 6s"], build_for_testing: true)
-    end
-
     desc 'Build app'
     lane :build_keyn_beta do
+        scan
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
         sigh(app_identifier: 'io.keyn.keyn')
