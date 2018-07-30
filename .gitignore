@@ -6,6 +6,7 @@ Pods
 provisioning
 vendor
 fastlane/report.xml
+fastlane/test_output
 *.dSYM.zip
 *.ipa
 *.mobileprovision
