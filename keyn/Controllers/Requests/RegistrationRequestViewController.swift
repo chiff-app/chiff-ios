@@ -30,8 +30,6 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         }
         if let username = notification?.username {
             userNameTextField.text = username
-        } else if let name = UserDefaults.standard.object(forKey: "username") as? String {
-            userNameTextField.text = name
         }
         
         // TODO: Think about what to do with validating passwords in the app. Current PPD implementation is not ideal for validating passwords.
