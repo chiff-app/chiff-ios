@@ -147,12 +147,10 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             return account.id == unfilteredAccount.id
         }) {
             do {
-                let site = account.site
                 try account.delete()
                 unfilteredAccounts.remove(at: index)
                 filteredAccounts?.remove(at: filteredIndexPath.row)
                 tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
-                Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteId": site.id])
             } catch {
                 Logger.shared.error("Could not delete account.", error: error as NSError)
             }
