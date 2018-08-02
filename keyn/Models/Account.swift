@@ -96,6 +96,7 @@ struct Account: Codable {
     func delete() throws {
         try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
         try BackupManager.sharedInstance.deleteAccount(accountId: id)
+        Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
     static func get(siteID: String) throws -> [Account] {
