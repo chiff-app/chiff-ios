@@ -12,7 +12,7 @@ import JustLog
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
     let properties: PPDProperties? // Required. Represents the properties of the password.
-    //let service: PPDService // Holds information related to the service the password is used for. This should be added later
+    let service: PPDService? // Holds information related to the service the password is used for.
     let version: String? // The current version of the PPD.
     let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
@@ -102,29 +102,24 @@ struct PPDRequirementRule: Codable {
 
 }
 
-// TODO: Complete Service part. Perhaps first implement in JS?
+// TODO: Complete Service part.
 
-//struct PPDService: Codable {
-//    let login: PPDLogin
-//    let register: PPDRegister
-//    let passwordChange: PPDPasswordChange
-//    let passwordReset: PPDPasswordReset
-//}
-//
-//struct PPDLogin: Codable {
-//    let url: String // Can this be URL?
-//    let maxTries: Int
-//    let routines: [PPDBaseRoutine]
-//}
-//
+struct PPDService: Codable {
+    let login: PPDLogin
+    let passwordChange: PPDPasswordChange?
+}
+
+struct PPDLogin: Codable {
+    let url: String
+}
+
+
+struct PPDPasswordChange: Codable {
+    let url: String
+}
+
 //struct PPDRegister: Codable {
 //    let url: String
-//}
-//
-//struct PPDPasswordChange: Codable {
-//    let url: String
-//    let maxTries: Int
-//    let routines: [PPDBaseRoutine]
 //}
 //
 //struct PPDPasswordReset: Codable {
@@ -132,11 +127,3 @@ struct PPDRequirementRule: Codable {
 //    let maxTries: Int
 //    let routines: [PPDPasswordResetRoutines]
 //}
-
-
-
-
-
-
-
-
