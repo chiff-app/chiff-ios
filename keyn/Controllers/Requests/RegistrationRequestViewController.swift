@@ -11,8 +11,13 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     var newPassword = false
     var passwordValidator: PasswordValidator? = nil
     var site: Site?
+    var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
+    
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet var requirementLabels: [UILabel]!
+    @IBOutlet weak var changePasswordCell: UITableViewCell!
+    @IBOutlet weak var changePasswordLabel: UILabel!
+    @IBOutlet weak var changePasswordSwitch: UISwitch!
     
     
     override func viewDidLoad() {
@@ -22,6 +27,14 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
             Logger.shared.error("Site was nil when creating new account.")
             fatalError("Site was nil when creating new account.")
         }
+        if site.ppd?.service?.passwordChange == nil {
+            changePasswordFooterText = "It's not possible to change the password for this site."
+            changePasswordCell.isUserInteractionEnabled = false
+            changePasswordLabel.isEnabled = false
+            changePasswordSwitch.isEnabled = false
+            changePasswordSwitch.isOn = false
+        }
+        
         
         websiteNameTextField.text = site.name
         websiteURLTextField.text = site.url
@@ -64,6 +77,13 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Override copy functionality
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 1 {
+            return changePasswordFooterText
+        }
+        return nil
     }
 
     

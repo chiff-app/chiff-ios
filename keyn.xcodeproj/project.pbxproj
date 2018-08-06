@@ -506,6 +506,7 @@
 		49E7D3401FC318CD0059D97E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4908103520598AC700C770F1 /* PPD.swift */,
 				01839A701FACA93A00698B69 /* Account.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
 				49FA7F751FB9E08E00EDB367 /* Session.swift */,
@@ -522,7 +523,6 @@
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
-				4908103520598AC700C770F1 /* PPD.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 			);
 			path = Crypto;

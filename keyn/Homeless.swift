@@ -187,7 +187,7 @@ enum AnalyticsMessage: String {
     case pairResponse = "PAIR_RESPONSE"
     case loginResponse = "LOGIN_RESPONSE"
     case addAndChange = "ADDANDCHANGE"
-    case changeResponse = "CHANGE_RESPONSE"
+    case passwordChange = "PASSWORD_CHANGE"
     case addResponse = "ADD_RESPONSE"
     case registrationResponse = "REGISTRATION_RESPONSE"
     case sessionEnd = "SESSION_END"
@@ -198,6 +198,7 @@ enum AnalyticsMessage: String {
     case requestDenied = "REQUEST_DENIED"
     case siteReported = "SITE_REPORTED"
     case siteAdded = "SITE_ADDED"
+    case accountsRestored = "ACCOUNTS_RESTORED"
     
 }
 

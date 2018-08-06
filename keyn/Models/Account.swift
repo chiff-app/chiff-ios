@@ -90,7 +90,7 @@ struct Account: Codable {
 
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
         try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
-        Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.changeResponse.rawValue, "siteName": site.name, "siteID": site.id])
+        Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.passwordChange.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
     func delete() throws {
