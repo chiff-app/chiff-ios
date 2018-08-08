@@ -99,7 +99,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     }
                 }
             } else {
-                Logger.shared.info("Request denied.", userInfo: ["code": AnalyticsMessage.requestDenied.rawValue, "result": false, "requestType": notification.requestType])
+                Logger.shared.info("Request denied.", userInfo: ["code": AnalyticsMessage.requestDenied.rawValue, "result": false, "requestType": notification.requestType.rawValue])
                 Logger.shared.debug("TODO: Handle touchID errors.")
             }
         })

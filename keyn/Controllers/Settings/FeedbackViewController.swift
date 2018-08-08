@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class FeedbackViewController: UIViewController, UITextFieldDelegate {
 
@@ -51,25 +52,14 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
     // TODO: Change this?
     @IBAction func sendFeedback(_ sender: UIBarButtonItem) {
-
-        // Basic auth
-        let username = "wanttoseelogs"
-        let password = "ePcWXWA^lm;571;EmH_[wf8iB0s5,A"
-        let loginString = String(format: "%@:%@", username, password)
-        let loginData = loginString.data(using: .utf8)!
-        let base64LoginString = loginData.base64EncodedString()
-
         // Data
         if let name = nameTextField.text {
             UserDefaults.standard.set(name, forKey: "name")
         }
         let debugLogUser = nameTextField.text ?? "Anonymous"
-        let message = "userFeedback"
         guard let userFeedback = textView.text else {
             return
         }
-        var context = ""
-        context += userFeedback
         
         // PPD Testing mode toggle
         guard nameTextField.text != "Ppdtesting On" else {
@@ -83,40 +73,17 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        context += "Type=\(UIDevice.current.model)."
-        context += "iOSVersion=\(UIDevice.current.systemVersion)."
-        let postString = "user=\(debugLogUser)&message=\(message)&context=\(context)"
-
-        // Request
-        let url = URL(string: "https://log.keyn.io")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = postString.data(using: .utf8)
-        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil, data != nil else {
-                print("error=\(String(describing: error))")
-                return
-            }
-
-            if let httpStatus = response as? HTTPURLResponse {
-                if httpStatus.statusCode == 200 {
-                    DispatchQueue.main.async {
-                        self.nameTextField.text = ""
-                        self.textView.text = "Feedback verstuurd. Bedankt!"
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
-                            self.navigationController?.popViewController(animated: true)
-                        })
-                    }
-                } else {
-                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                    print("response = \(String(describing: response))")
-                }
-            }
-        }
-        task.resume()
+        Logger.shared.info(userFeedback, userInfo: [
+                "code": AnalyticsMessage.userFeedback.rawValue,
+                "name": debugLogUser
+            ])
+        
+        self.nameTextField.text = ""
+        self.textView.text = "Feedback verstuurd. Bedankt!"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
+            self.navigationController?.popViewController(animated: true)
+        })
+        
     }
 
 }

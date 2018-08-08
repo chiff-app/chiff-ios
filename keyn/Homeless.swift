@@ -199,7 +199,7 @@ enum AnalyticsMessage: String {
     case siteReported = "SITE_REPORTED"
     case siteAdded = "SITE_ADDED"
     case accountsRestored = "ACCOUNTS_RESTORED"
-    
+    case userFeedback = "USER_FEEDBACK"
 }
 
 // Used by Account and Site
