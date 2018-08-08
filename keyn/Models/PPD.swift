@@ -110,12 +110,12 @@ struct PPDService: Codable {
 }
 
 struct PPDLogin: Codable {
-    let url: String
+    let url: String?
 }
 
 
 struct PPDPasswordChange: Codable {
-    let url: String
+    let url: String?
 }
 
 //struct PPDRegister: Codable {
