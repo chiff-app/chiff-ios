@@ -8,7 +8,6 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
     var notification: PushNotification?
     var session: Session?
     var passwordIsHidden = true
-    var newPassword = false
     var passwordValidator: PasswordValidator? = nil
     var site: Site?
     var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
@@ -110,11 +109,6 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         view.endEditing(true)
     }
 
-    @IBAction func changePasswordSwitch(_ sender: UISwitch) {
-        newPassword = sender.isOn
-    }
-
-
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
         createAccount()
     }
@@ -169,7 +163,7 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
 
     private func createAccount() {
         
-        let newPassword = self.newPassword
+        let newPassword = changePasswordSwitch.isOn
         var type: BrowserMessageType
         switch notification!.requestType {
         case .login, .add:

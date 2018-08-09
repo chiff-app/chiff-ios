@@ -362,9 +362,6 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dUP-gY-YDE">
                                                     <rect key="frame" x="306" y="6.3333333333333321" width="51" height="30.999999999999996"/>
-                                                    <connections>
-                                                        <action selector="changePasswordSwitch:" destination="fb2-RP-6pW" eventType="valueChanged" id="Qcy-QM-QeS"/>
-                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
