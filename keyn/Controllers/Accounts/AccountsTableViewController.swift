@@ -18,7 +18,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
         }
 
-        filteredAccounts = unfilteredAccounts
+        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+            first.site.name < second.site.name
+        })
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = true
@@ -58,9 +60,13 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
+            }).sorted(by: { (first, second) -> Bool in
+                first.site.name < second.site.name
             })
         } else {
-            filteredAccounts = unfilteredAccounts
+            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+                first.site.name < second.site.name
+            })
         }
         tableView.reloadData()
     }
@@ -123,7 +129,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     func addAccount(account: Account) {
         let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
         unfilteredAccounts.append(account)
-        filteredAccounts = unfilteredAccounts
+        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+            first.site.name < second.site.name
+        })
         tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
 
