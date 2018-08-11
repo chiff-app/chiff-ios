@@ -1,7 +1,7 @@
 import UIKit
 
 // TODO: Unused..
-class NewAccountViewController: AccountViewController, UITextFieldDelegate {
+class NewAccountViewController: AccountViewController {
     
     // MARK: Properties
     
@@ -56,12 +56,12 @@ class NewAccountViewController: AccountViewController, UITextFieldDelegate {
     // MARK: UITextFieldDelegate
     
     // Hide the keyboard.
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    override func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    override func textFieldDidEndEditing(_ textField: UITextField) {
         updateSaveButtonState()
     }
     

@@ -125,6 +125,21 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }
         }
     }
+    
+    func updateAccount(account: Account) {
+        if let unfilteredIndex = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
+            return account.id == unfilteredAccount.id
+        }) {
+            unfilteredAccounts[unfilteredIndex] = account
+            if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
+                return account.id == filteredAccount.id
+            }) {
+                filteredAccounts?[filteredIndex] = account
+                let indexPath = IndexPath(row: filteredIndex, section: 0)
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
 
     func addAccount(account: Account) {
         let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
@@ -140,7 +155,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
-        } else if let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
+        } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
             if let index = filteredAccounts!.index(where: { (filteredAccount) -> Bool in
                 return account.id == filteredAccount.id
             }) {

@@ -7,8 +7,8 @@ import JustLog
 struct Account: Codable {
 
     let id: String
-    let username: String
-    let site: Site
+    var username: String
+    var site: Site
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
@@ -73,11 +73,35 @@ struct Account: Codable {
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: nil, objectData: accountData, label: nil)
         return newPassword
     }
+    
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?) throws {
+        if let newUsername = newUsername {
+            self.username = newUsername
+        }
+        if let siteName = siteName {
+            self.site.name = siteName
+        }
+        if let url = url {
+            self.site.url = url
+        }
+        
+        if let newPassword = newPassword {
+            let newIndex = passwordIndex + 1
+            self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
+            self.passwordIndex = newIndex
+            self.lastPasswordUpdateTryIndex = newIndex
+        } else if let newUsername = newUsername {
+           self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.password())
+        }
+        
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+    }
 
     mutating func updatePassword(offset: [Int]?) throws {
         let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
-        //TODO: Implement custom passwords here
         self.passwordIndex = newIndex
         self.lastPasswordUpdateTryIndex = newIndex
         passwordOffset = offset
