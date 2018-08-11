@@ -1,7 +1,7 @@
 import UIKit
 import JustLog
 
-class RegistrationRequestViewController: AccountViewController, UITextFieldDelegate {
+class RegistrationRequestViewController: BaseAccountViewController {
 
     // MARK: Properties
 
@@ -34,7 +34,6 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
             changePasswordSwitch.isOn = false
         }
         
-        
         websiteNameTextField.text = site.name
         websiteURLTextField.text = site.url
         if let currentPassword = notification?.currentPassword {
@@ -52,24 +51,21 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
         })
 
         for textField in [websiteNameTextField, websiteURLTextField, userNameTextField, userPasswordTextField] {
-            textField?.delegate = self
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
 
         updateSaveButtonState()
-
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
-    @IBAction override func showPassword(_ sender: UIButton) {
+    @IBAction func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
         
-        let wasFirstResponder = userPasswordTextField.isFirstResponder
-        if wasFirstResponder { userPasswordTextField.resignFirstResponder() }
+//        let wasFirstResponder = userPasswordTextField.isFirstResponder
+//        if wasFirstResponder { userPasswordTextField.resignFirstResponder() }
         
         userPasswordTextField.isSecureTextEntry = passwordIsHidden
         
-        if wasFirstResponder { userPasswordTextField.becomeFirstResponder() }
+//        if wasFirstResponder { userPasswordTextField.becomeFirstResponder() }
         
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
@@ -104,13 +100,58 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
 
     // MARK: Actions
 
-    func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status and drop into background
-        view.endEditing(true)
-    }
-
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
-        createAccount()
+        
+        let newPassword = changePasswordSwitch.isOn
+        var type: BrowserMessageType
+        switch notification!.requestType {
+        case .login, .add:
+            type = newPassword ? BrowserMessageType.addAndChange : BrowserMessageType.add
+        case .change:
+            type = newPassword ? BrowserMessageType.change : BrowserMessageType.confirm
+        default:
+            type = BrowserMessageType.confirm
+        }
+        
+        if let siteName = websiteNameTextField.text, site?.name != siteName {
+            site?.name = siteName
+        }
+        if let siteUrl = websiteURLTextField.text, site?.url != siteUrl {
+            site?.url = siteUrl
+        }
+        
+        let password = userPasswordTextField.text
+        if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
+            UserDefaults.standard.set(username, forKey: "username")
+            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
+                if (succes) {
+                    DispatchQueue.main.async {
+                        do {
+                            let newAccount = try Account(username: username, site: site, password: password)
+                            self?.account = newAccount
+                            try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
+                            
+                            // TODO: Make this better. Works but ugly
+                            if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
+                                for viewController in accountsNavigationController.viewControllers {
+                                    if let accountsTableViewController = viewController as? AccountsTableViewController {
+                                        if accountsTableViewController.isViewLoaded {
+                                            accountsTableViewController.addAccount(account: newAccount)
+                                        }
+                                    }
+                                }
+                            }
+                        } catch {
+                            // TODO: Handle errors in UX
+                            Logger.shared.error("Account could not be saved.", error: error as NSError)
+                        }
+                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+                    }
+                } else {
+                    Logger.shared.debug("TODO: Handle touchID errors.")
+                }
+            })
+        }
     }
 
     // MARK: Private Methods
@@ -158,53 +199,6 @@ class RegistrationRequestViewController: AccountViewController, UITextFieldDeleg
             requirementLabels[5].text = passwordValidator.validatePositionRestrictions(password: password) ? "" : "\u{26A0} The password needs to start with a mysterious character."
             requirementLabels[6].text = passwordValidator.validateRequirementGroups(password: password) ? "" : "\u{26A0} There are complicted rules for this site. Just try something."
             requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
-        }
-    }
-
-    private func createAccount() {
-        
-        let newPassword = changePasswordSwitch.isOn
-        var type: BrowserMessageType
-        switch notification!.requestType {
-        case .login, .add:
-            type = newPassword ? BrowserMessageType.addAndChange : BrowserMessageType.add
-        case .change:
-            type = newPassword ? BrowserMessageType.change : BrowserMessageType.confirm
-        default:
-            type = BrowserMessageType.confirm
-        }
-        
-        let password = userPasswordTextField.text
-        if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
-            UserDefaults.standard.set(username, forKey: "username")
-            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
-                if (succes) {
-                    DispatchQueue.main.async {
-                        do {
-                            let newAccount = try Account(username: username, site: site, password: password)
-                            self?.account = newAccount
-                            try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
-
-                            // TODO: Make this better. Works but ugly
-                            if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
-                                for viewController in accountsNavigationController.viewControllers {
-                                    if let accountsTableViewController = viewController as? AccountsTableViewController {
-                                        if accountsTableViewController.isViewLoaded {
-                                            accountsTableViewController.addAccount(account: newAccount)
-                                        }
-                                    }
-                                }
-                            }
-                        } catch {
-                            // TODO: Handle errors in UX
-                            Logger.shared.error("Account could not be saved.", error: error as NSError)
-                        }
-                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
-                    }
-                } else {
-                    Logger.shared.debug("TODO: Handle touchID errors.")
-                }
-            })
         }
     }
 

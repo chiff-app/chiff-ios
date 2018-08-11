@@ -1,8 +1,5 @@
 import Foundation
 
-/*
- * A site can have multiple URLs (e.g. live.com and hotmail.com).
- */
 struct Site: Codable {
 
     var name: String
