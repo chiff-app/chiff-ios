@@ -11,13 +11,14 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         
         guard let content = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
+            contentHandler(request.content)
             return
         }
         do {
             let processContent = try processor.process(content: content)
             contentHandler(processContent)
         } catch {
-            print(error)
+            content.userInfo["error"] = error.localizedDescription
         }
         contentHandler(content)
     }
@@ -27,7 +28,8 @@ class NotificationService: UNNotificationServiceExtension {
     // Use this as an opportunity to deliver your "best attempt" at modified content,
     // otherwise the original push payload will be used.
     override func serviceExtensionTimeWillExpire() {
-        if let contentHandler = contentHandler, let content = content {
+        if let contentHandler = contentHandler, let content = (content?.mutableCopy() as? UNMutableNotificationContent) {
+            content.userInfo["expried"] = true
             contentHandler(content)
         }
     }
