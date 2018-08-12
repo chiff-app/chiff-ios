@@ -38,8 +38,23 @@ class AccountViewController: BaseAccountViewController {
         }
     }
     
+    @IBAction func deleteAccount(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            self.performSegue(withIdentifier: "DeleteAccount", sender: self)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            copyPassword(indexPath)
+        }
+    }
+    
     @objc func edit() {
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(endEditing))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(cancel))
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(update))
         doneButton.style = .done
         
@@ -52,14 +67,17 @@ class AccountViewController: BaseAccountViewController {
         websiteURLTextField.isEnabled = true
     }
     
-    @objc func endEditing() {
-        userPasswordTextField.isSecureTextEntry = true
-        navigationItem.setLeftBarButton(nil, animated: true)
-        navigationItem.setRightBarButton(editButton, animated: true)
-        userNameTextField.isEnabled = false
-        userPasswordTextField.isEnabled = false
-        websiteNameTextField.isEnabled = false
-        websiteURLTextField.isEnabled = false
+    @objc func cancel() {
+        endEditing()
+        do {
+            userPasswordTextField.text = try account?.password()
+        } catch {
+            Logger.shared.warning("Could not get password", error: error as NSError)
+        }
+        navigationItem.title = account?.site.name
+        userNameTextField.text = account?.username
+        websiteNameTextField.text = account?.site.name
+        websiteURLTextField.text = account?.site.url
     }
     
     @objc func update() {
@@ -89,6 +107,16 @@ class AccountViewController: BaseAccountViewController {
     
     
     // MARK: Private methods
+    
+    private func endEditing() {
+        userPasswordTextField.isSecureTextEntry = true
+        navigationItem.setLeftBarButton(nil, animated: true)
+        navigationItem.setRightBarButton(editButton, animated: true)
+        userNameTextField.isEnabled = false
+        userPasswordTextField.isEnabled = false
+        websiteNameTextField.isEnabled = false
+        websiteURLTextField.isEnabled = false
+    }
     
     private func showHiddenPasswordPopup() {
         do {
@@ -135,23 +163,6 @@ class AccountViewController: BaseAccountViewController {
         }) { if $0 { copiedLabel.removeFromSuperview() } }
     }
     
-    
-    // MARK: Actions
-    
-    @IBAction func deleteAccount(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-            self.performSegue(withIdentifier: "DeleteAccount", sender: self)
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 1 {
-            copyPassword(indexPath)
-        }
-    }
     
     // MARK: - Navigation
     

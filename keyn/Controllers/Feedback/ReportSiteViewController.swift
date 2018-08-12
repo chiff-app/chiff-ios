@@ -44,7 +44,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        if keyboardHeight != nil {
+        guard keyboardHeight == nil else {
             return
         }
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
@@ -53,25 +53,20 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
             UIView.animate(withDuration: 0.3, animations: {
                 self.constraintContentHeight.constant += (self.keyboardHeight - 80)
             })
-            // move if keyboard hide input field
+            
             let distanceToBottom = self.scrollView.frame.size.height - (textView.frame.origin.y) - (textView.frame.size.height)
-            let collapseSpace = keyboardHeight - distanceToBottom
-            if collapseSpace < 0 {
-                // no collapse
-                return
-            }
+
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {
-                // scroll to the position above keyboard 10 points
-                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: collapseSpace + 10)
+                // scroll to the position above bottom 10 points
+                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + 10)
             })
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= self.keyboardHeight
-            
+            self.constraintContentHeight.constant -= (self.keyboardHeight - 80)
             self.scrollView.contentOffset = self.lastOffset
         }
         
