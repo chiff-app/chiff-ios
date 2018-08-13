@@ -80,6 +80,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func reject(_ sender: UIButton) {
+        if let notification = notification, let session = session {
+            do {
+                try session.acknowledge(browserTab: notification.browserTab)
+            } catch {
+                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+            }
+        }
         self.dismiss(animated: true, completion: nil)
         AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }

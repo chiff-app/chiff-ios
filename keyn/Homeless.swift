@@ -164,8 +164,8 @@ extension UIColor {
     }
 }
 
-public extension UIImage {
-    public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+extension UIImage {
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
         color.setFill()
@@ -202,19 +202,6 @@ enum AnalyticsMessage: String {
     case userFeedback = "USER_FEEDBACK"
 }
 
-// Used by Account and Site
-struct PasswordRestrictions: Codable {
-    let length: Int
-    let characters: [Characters]
-
-    enum Characters: String, Codable {
-        case lower
-        case upper
-        case numbers
-        case symbols
-    }
-}
-
 // Used by Session
 struct PairingResponse: Codable {
     let sessionID: String
@@ -222,7 +209,6 @@ struct PairingResponse: Codable {
     let sns: String
     let userID: String
 }
-
 
 struct BrowserMessage: Codable {
     let s: String?          // PPDHandle
@@ -234,7 +220,6 @@ struct BrowserMessage: Codable {
     let u: String?       // Possible username
     let a: String?       // AccountID
 }
-
 
 struct CredentialsResponse: Codable {
     let u: String?       // Username
@@ -263,7 +248,7 @@ enum BrowserMessageType: Int, Codable {
     case add
     case addAndChange
     case end
-    case confirm
+    case acknowledge
 }
 
 enum KeyType: UInt64 {

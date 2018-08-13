@@ -15,6 +15,8 @@ import JustLog
 
 enum AWSError: Error {
     case queueUrl(error: String?)
+    case decodingError
+    case createObjectError(error: String?)
 }
 
 class AWS {
@@ -24,7 +26,8 @@ class AWS {
     private let sns = AWSSNS.default()
     private let lambda = AWSLambdaInvoker.default()
     private let awsService = "io.keyn.aws"
-    private let endpointIdentifier = "snsDeviceEndpointArn"
+    private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
+    private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
     private let PAIR_TIMEOUT = 1 // 60
     private let LOGIN_TIMEOUT = 1 // 180
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
@@ -206,10 +209,10 @@ class AWS {
 
     func snsRegistration(deviceToken: Data) {
         let token = deviceToken.hexEncodedString()
-        if Keychain.sharedInstance.has(id: endpointIdentifier, service: awsService) {
+        if Keychain.sharedInstance.has(id: endpointKeychainIdentifier, service: awsService) {
             // Get endpoint from Keychain
             do  {
-                let endpointData = try Keychain.sharedInstance.get(id: endpointIdentifier, service: awsService)
+                let endpointData = try Keychain.sharedInstance.get(id: endpointKeychainIdentifier, service: awsService)
                 snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
                 checkIfUpdateIsNeeded(token: token)
             } catch {
@@ -225,6 +228,72 @@ class AWS {
 
     func deleteEndpointArn() {
         Keychain.sharedInstance.deleteAll(service: awsService)
+    }
+    
+    func subscribe() {
+        guard let subscribeRequest = AWSSNSSubscribeInput() else {
+            Logger.shared.error("Could not create subscribeRequest.")
+            return
+        }
+        guard let endpoint = snsDeviceEndpointArn else {
+            Logger.shared.error("Could not subscribe. No endpoint.")
+            return
+        }
+        subscribeRequest.protocols = "application"
+        subscribeRequest.endpoint = endpoint
+        subscribeRequest.topicArn = Properties.isDebug ? Properties.AWSSNSNotificationArn.sandbox : Properties.AWSSNSNotificationArn.production
+        sns.subscribe(subscribeRequest).continueOnSuccessWith { (task) -> Any? in
+            if let result = task.result {
+                if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
+                    do {
+                        try Keychain.sharedInstance.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                    } catch {
+                        Logger.shared.error("Error saving Keyn subscription identifier.", error: error as NSError)
+                        try? Keychain.sharedInstance.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
+                    }
+                } else {
+                    Logger.shared.error("Error subscribing to Keyn notifications.")
+                }
+            }
+            return nil
+        }.continueWith { (task) -> Any? in
+            if let error = task.error {
+                Logger.shared.error("Error subscribing to Keyn notifications.", error: error as NSError)
+            }
+            return nil
+        }
+    }
+    
+    func unsubscribe() {
+        do {
+            guard let unsubscribeRequest = AWSSNSUnsubscribeInput() else {
+                throw AWSError.createObjectError(error: "Could not create unsubscribeRequest.")
+            }
+            let subscriptionEndpointData = try Keychain.sharedInstance.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+            guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
+                throw AWSError.decodingError
+            }
+            unsubscribeRequest.subscriptionArn = subscriptionEndpoint
+            sns.unsubscribe(unsubscribeRequest).continueOnSuccessWith { (task) -> Any? in
+                do {
+                   try Keychain.sharedInstance.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                } catch {
+                    Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error as NSError)
+                }
+                return nil
+            }.continueWith { (task) -> Any? in
+                if let error = task.error {
+                    Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error as NSError)
+                }
+                return nil
+            }
+        } catch {
+            Logger.shared.error("Error getting subcription endoint from Keychain", error: error as NSError)
+        }
+    }
+    
+    func isSubscribed() -> Bool {
+        return Keychain.sharedInstance.has(id: self.subscriptionKeychainIdentifier, service: self.awsService)
     }
 
     // MARK: Private functions
@@ -296,8 +365,8 @@ class AWS {
             if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
-                    try? Keychain.sharedInstance.delete(id: self.endpointIdentifier, service: self.awsService)
-                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
+                    try? Keychain.sharedInstance.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
+                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
                 } catch {

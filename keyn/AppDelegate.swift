@@ -64,6 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // TODO: Find out why we cannot pass RequestType in userInfo..
+        guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+            Logger.shared.debug("TODO: Make alert banner")
+            completionHandler([.alert])
+            return
+        }
         
         // DEBUG: Push notifications
         var originalBody: String?
@@ -157,6 +162,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // TODO: Find out why we cannot pass RequestType in userInfo..
+
+        guard response.notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+            Logger.shared.debug("TODO: Make alert banner")
+            completionHandler()
+            return
+        }
         
         // DEBUG: Push notifications
         var originalBody: String?
@@ -295,7 +306,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         Logger.shared.error("Could not parse SQS message body.")
                         return
                     }
-                    guard type == BrowserMessageType.confirm.rawValue else {
+                    guard type == BrowserMessageType.acknowledge.rawValue else {
                         Logger.shared.error("Wrong message type.", userInfo: ["type": type])
                         return
                     }
@@ -303,7 +314,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                     do {
                         let browserMessage: BrowserMessage = try session.decrypt(message: body)
-                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .confirm, result {
+                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
                             var account = try Account.get(accountID: accountId)
                             try account?.updatePassword(offset: nil)
                         }
@@ -374,7 +385,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         // TODO: Should probably be removed since password confirmations are now managed by SQS queue.
-        if browserMessageType == .confirm {
+        if browserMessageType == .acknowledge {
             guard let shouldChangePassword = userInfo["changeValue"] as? Bool else {
                 Logger.shared.warning("Wrong shouldChangePassword type.")
                 return false
@@ -411,6 +422,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.getDeliveredNotifications { (notifications) in
             for notification in notifications {
                 
+                guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+                    Logger.shared.debug("TODO: Make alert banner")
+                    return
+                }
+                
                 // DEBUG: Push notifications
                 var originalBody: String?
                 var content: UNNotificationContent
@@ -445,26 +461,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             Logger.shared.error("Could not end session.", error: error as NSError)
                         }
                         
-                    } else if browserMessageType == .confirm { // TODO: Should probably be removed.
-                        guard let siteID = content.userInfo["siteID"] as? String else {
-                            Logger.shared.warning("Could not parse siteID.")
-                            return
-                        }
-                        
-                        guard let shouldChangePassword = content.userInfo["changeValue"] as? Bool else {
-                            Logger.shared.warning("Could not parse shouldChangePassword.")
-                            return
-                        }
-                        
-                        if shouldChangePassword {
-                            do {
-                                var account = try Account.get(siteID: siteID)[0] // TODO: probably should send or save accountID somewhere instead of siteID
-                                try account.updatePassword(offset: nil)
-                            } catch {
-                                Logger.shared.error("Could not update password.", error: error as NSError)
-                            }
-
-                        }
                     } else if notification.date.timeIntervalSinceNow > -180.0  {
                         
                         if content.title == "Error" {
@@ -547,7 +543,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Disable file logging
         logger.enableFileLogging = false
-//        logger.enableLogstashLogging = !Properties.isDebug
         
         // logstash destination
         logger.logstashHost = "analytics.keyn.io"
@@ -575,6 +570,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                                                          actions: [],
                                                                          intentIdentifiers: [],
                                                                          options: .customDismissAction)
+        let keynNotificationCategory = UNNotificationCategory(identifier: "KEYN_NOTIFICATION",
+                                                                         actions: [],
+                                                                         intentIdentifiers: [],
+                                                                         options: .customDismissAction)
         let endSessionNotificationCategory = UNNotificationCategory(identifier: "END_SESSION",
                                                                     actions: [],
                                                                     intentIdentifiers: [],
@@ -585,7 +584,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                                                     options: UNNotificationCategoryOptions(rawValue: 0))
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory])
+        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory, keynNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.sync {

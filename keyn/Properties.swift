@@ -12,8 +12,6 @@ struct Properties {
 
     init() {}
     
-    static let questionnaireQueueName = "blablabla"
-
     static let isDebug: Bool = {
         var debug = false
         #if DEBUG
@@ -22,12 +20,17 @@ struct Properties {
         return debug
     }()
 
-    static var AWSPlaformApplicationArn = (
+    static let AWSPlaformApplicationArn = (
         sandbox: "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn",
         production: "arn:aws:sns:eu-central-1:589716660077:app/APNS/Keyn"
     )
 
     static let AWSSQSBaseUrl = "https://sqs.eu-central-1.amazonaws.com/589716660077/"
+    
+    static let AWSSNSNotificationArn = (
+        production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
+        sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
+    )
     
     static func isFirstLaunch() -> Bool {
         let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"

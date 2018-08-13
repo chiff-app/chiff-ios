@@ -68,15 +68,6 @@ class NotificationProcessor {
         case .pair:
             content.title = "Pairing request"
             content.body = "\(session.browser) on \(session.os)."
-        case .confirm:
-            content.title = "Password change confirmation"
-            if browserMessage.v! {
-                content.body = "Password for \(siteName) on \(session.browser) on \(session.os) succesfully changed."
-            } else {
-                content.body = "Password change for \(siteName) on \(session.browser) on \(session.os) failed."
-            }
-            addSiteInfo = true
-            content.userInfo["changeValue"] = browserMessage.v!
         default:
             content.body = "Unknown request received"
         }

@@ -381,6 +381,7 @@
                     <navigationItem key="navigationItem" title="New Account" id="kPd-m1-WlS">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tCE-P0-Ylx">
                             <connections>
+                                <action selector="cancel:" destination="fb2-RP-6pW" id="fpr-Qn-gWf"/>
                                 <segue destination="nIh-Le-LUQ" kind="unwind" identifier="UnwindToRequestViewController" unwindAction="unwindToRequestViewControllerWithSender:" id="oHB-pO-zPs"/>
                             </connections>
                         </barButtonItem>
