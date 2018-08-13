@@ -13,10 +13,12 @@ class SettingsViewController: UITableViewController {
 
     var securityFooterText = "\u{26A0} Paper backup not finished."
     var justLoaded = true
-
+    @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setFooterText()
+        newSiteNotficationSwitch.isOn = AWS.sharedInstance.isSubscribed()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -30,17 +32,24 @@ class SettingsViewController: UITableViewController {
         if section == 0 {
             return securityFooterText
         }
-        if section == 1 {
+        if section == 2 {
             return "Resetting Keyn will delete the seed and all accounts."
         }
-        if section == 2 {
+        if section == 1 {
             return "Use this form to provide feedback :)"
         }
         return nil
     }
 
     // MARK: Actions
-
+    @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {
+        if sender.isOn {
+            AWS.sharedInstance.subscribe()
+        } else {
+            AWS.sharedInstance.unsubscribe()
+        }
+    }
+    
     @IBAction func resetKeyn(_ sender: UIButton) {
         let alert = UIAlertController(title: "Reset Keyn?", message: "This will delete the seed and all passwords.", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

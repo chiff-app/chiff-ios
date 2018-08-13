@@ -81,6 +81,14 @@ class Session: Codable {
         return browserMessage
     }
     
+    func acknowledge(browserTab: Int) throws {
+        let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
+        let jsonMessage = try JSONEncoder().encode(response)
+        let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
+        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: BrowserMessageType.acknowledge)
+    }
+    
     // TODO, add request ID etc
     func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
         var response: CredentialsResponse?
@@ -101,7 +109,7 @@ class Session: Codable {
             Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue,     "siteName": account.site.name])
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
-        case .confirm:
+        case .acknowledge:
             response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
         default:
             // TODO: throw error

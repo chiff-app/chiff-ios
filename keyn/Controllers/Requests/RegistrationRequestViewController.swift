@@ -59,14 +59,7 @@ class RegistrationRequestViewController: BaseAccountViewController {
 
     @IBAction func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
-        
-//        let wasFirstResponder = userPasswordTextField.isFirstResponder
-//        if wasFirstResponder { userPasswordTextField.resignFirstResponder() }
-        
         userPasswordTextField.isSecureTextEntry = passwordIsHidden
-        
-//        if wasFirstResponder { userPasswordTextField.becomeFirstResponder() }
-        
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
 
@@ -99,7 +92,16 @@ class RegistrationRequestViewController: BaseAccountViewController {
     }
 
     // MARK: Actions
-
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        if let notification = notification, let session = session {
+            do {
+                try session.acknowledge(browserTab: notification.browserTab)
+            } catch {
+                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+            }
+        }
+    }
+    
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
         
         let newPassword = changePasswordSwitch.isOn
@@ -108,9 +110,9 @@ class RegistrationRequestViewController: BaseAccountViewController {
         case .login, .add:
             type = newPassword ? BrowserMessageType.addAndChange : BrowserMessageType.add
         case .change:
-            type = newPassword ? BrowserMessageType.change : BrowserMessageType.confirm
+            type = newPassword ? BrowserMessageType.change : BrowserMessageType.acknowledge
         default:
-            type = BrowserMessageType.confirm
+            type = BrowserMessageType.acknowledge
         }
         
         if let siteName = websiteNameTextField.text, site?.name != siteName {
@@ -122,7 +124,6 @@ class RegistrationRequestViewController: BaseAccountViewController {
         
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
-            UserDefaults.standard.set(username, forKey: "username")
             AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
@@ -148,7 +149,7 @@ class RegistrationRequestViewController: BaseAccountViewController {
                         self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                     }
                 } else {
-                    Logger.shared.debug("TODO: Handle touchID errors.")
+                    Logger.shared.debug("TODO: Fix touchID errors.")
                 }
             })
         }
