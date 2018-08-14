@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Sodium
 import JustLog
+import CommonCrypto
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
@@ -61,6 +62,38 @@ extension String {
             fatalError("Could not create hash.")
         }
     }
+    
+    func sha1() -> String {
+        let data = self.data(using: String.Encoding.utf8)!
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA1($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
+    }
+    
+    func components(withLength length: Int) -> [String] {
+        return stride(from: 0, to: self.count, by: length).map {
+            let start = self.index(self.startIndex, offsetBy: $0)
+            let end = self.index(start, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+            return String(self[start..<end])
+        }
+    }
+    
+    func pad(toSize: Int) -> String {
+        var padded = self
+        for _ in 0..<(toSize - self.count) {
+            padded = "0" + padded
+        }
+        return padded
+    }
+    
+    var lines: [String] {
+        var result: [String] = []
+        enumerateLines { line, _ in result.append(line) }
+        return result
+    }
 }
 
 extension Notification.Name {
@@ -106,24 +139,6 @@ extension CALayer {
     }
 }
 
-extension String {
-    func components(withLength length: Int) -> [String] {
-        return stride(from: 0, to: self.count, by: length).map {
-            let start = self.index(self.startIndex, offsetBy: $0)
-            let end = self.index(start, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
-            return String(self[start..<end])
-        }
-    }
-
-    func pad(toSize: Int) -> String {
-        var padded = self
-        for _ in 0..<(toSize - self.count) {
-            padded = "0" + padded
-        }
-        return padded
-    }
-    
-}
 
 extension Data {
     struct HexEncodingOptions: OptionSet {

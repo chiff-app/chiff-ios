@@ -10,10 +10,11 @@ class RegistrationRequestViewController: BaseAccountViewController {
     var passwordIsHidden = true
     var passwordValidator: PasswordValidator? = nil
     var site: Site?
+    var breachCount: Int?
     var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
-    @IBOutlet var requirementLabels: [UILabel]!
+//    @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var changePasswordCell: UITableViewCell!
     @IBOutlet weak var changePasswordLabel: UILabel!
     @IBOutlet weak var changePasswordSwitch: UISwitch!
@@ -38,17 +39,16 @@ class RegistrationRequestViewController: BaseAccountViewController {
         websiteURLTextField.text = site.url
         if let currentPassword = notification?.currentPassword {
             userPasswordTextField.text = currentPassword
+            PasswordValidator(ppd: site.ppd).validateBreaches(password: currentPassword) { [weak self] (breachCount) in
+                DispatchQueue.main.async {
+                    self?.breachCount = breachCount
+                    self?.tableView.reloadSections([0], with: .none)
+                }
+            }
         }
         if let username = notification?.username {
             userNameTextField.text = username
         }
-        
-        // TODO: Think about what to do with validating passwords in the app. Current PPD implementation is not ideal for validating passwords.
-        //passwordValidator = PasswordValidator(ppd: site.ppd)
-        
-        requirementLabels.sort(by: { (first, second) -> Bool in
-            return first.tag < second.tag
-        })
 
         for textField in [websiteNameTextField, websiteURLTextField, userNameTextField, userPasswordTextField] {
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
@@ -68,6 +68,9 @@ class RegistrationRequestViewController: BaseAccountViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            return breachCount != nil ? "\u{26A0} This password has been found in \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
+        }
         if section == 1 {
             return changePasswordFooterText
         }
@@ -91,16 +94,7 @@ class RegistrationRequestViewController: BaseAccountViewController {
         updateSaveButtonState()
     }
 
-    // MARK: Actions
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        if let notification = notification, let session = session {
-            do {
-                try session.acknowledge(browserTab: notification.browserTab)
-            } catch {
-                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
-            }
-        }
-    }
+
     
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
         
@@ -162,7 +156,7 @@ class RegistrationRequestViewController: BaseAccountViewController {
         let username = userNameTextField.text ?? ""
         let password = userPasswordTextField.text ?? ""
         
-        updatePasswordRequirements(password: password)
+//        updatePasswordRequirements(password: password)
 
         if (username.isEmpty || password.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
@@ -190,17 +184,17 @@ class RegistrationRequestViewController: BaseAccountViewController {
         return true
     }
     
-    private func updatePasswordRequirements(password: String) {
-        if let passwordValidator = passwordValidator {
-            requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(site?.ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND) characters."
-            requirementLabels[1].text = passwordValidator.validateMaxLength(password: password) ? "" : "\u{26A0} The password can have no more than \(site?.ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) characters."
-            requirementLabels[2].text = passwordValidator.validateCharacters(password: password) ? "" : "\u{26A0} The password has invalid characters."
-            requirementLabels[3].text = passwordValidator.validateCharacterSet(password: password) ? "" : "\u{26A0} There are specific constraints for this site."
-            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password) ? "" : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
-            requirementLabels[5].text = passwordValidator.validatePositionRestrictions(password: password) ? "" : "\u{26A0} The password needs to start with a mysterious character."
-            requirementLabels[6].text = passwordValidator.validateRequirementGroups(password: password) ? "" : "\u{26A0} There are complicted rules for this site. Just try something."
-            requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
-        }
-    }
+//    private func updatePasswordRequirements(password: String) {
+//        if let passwordValidator = passwordValidator {
+//            requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(site?.ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND) characters."
+//            requirementLabels[1].text = passwordValidator.validateMaxLength(password: password) ? "" : "\u{26A0} The password can have no more than \(site?.ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) characters."
+//            requirementLabels[2].text = passwordValidator.validateCharacters(password: password) ? "" : "\u{26A0} The password has invalid characters."
+//            requirementLabels[3].text = passwordValidator.validateCharacterSet(password: password) ? "" : "\u{26A0} There are specific constraints for this site."
+//            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password) ? "" : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
+//            requirementLabels[5].text = passwordValidator.validatePositionRestrictions(password: password) ? "" : "\u{26A0} The password needs to start with a mysterious character."
+//            requirementLabels[6].text = passwordValidator.validateRequirementGroups(password: password) ? "" : "\u{26A0} There are complicted rules for this site. Just try something."
+//            requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
+//        }
+//    }
 
 }

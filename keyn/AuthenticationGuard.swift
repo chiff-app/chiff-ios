@@ -180,7 +180,7 @@ class AuthenticationGuard {
             if let session = try Session.getSession(id: notification.sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-                
+                viewController.type = notification.requestType
                 viewController.notification = notification
                 viewController.session = session
                 if lockWindow.isHidden {
