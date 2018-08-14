@@ -131,6 +131,40 @@ class PasswordValidator {
         }
         return true
     }
+    
+    func validateBreaches(password: String, completionHandler: @escaping (Int?) -> Void) {
+        let hash = password.sha1().uppercased()
+        let index = hash.index(hash.startIndex, offsetBy: 5)
+        let prefix = hash.prefix(upTo: index).uppercased()
+        let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                Logger.shared.warning("Error querying HIBP", error: error! as NSError)
+                completionHandler(nil)
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse {
+                if httpStatus.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
+                    var breachCount: Int? = nil
+                    for line in responseString.lines {
+                        let result = line.split(separator: ":")
+                        if hash == prefix + result[0] {
+                            breachCount = Int(result[1])
+                        }
+                    }
+                    completionHandler(breachCount ?? 0)
+                } else if let error = error {
+                    Logger.shared.warning("Error querying HIBP", error: error as NSError, userInfo: [
+                        "statusCode": httpStatus.statusCode
+                        ])
+                }
+            }
+        }
+        task.resume()
+    }
 
     // MARK: Private functions
 

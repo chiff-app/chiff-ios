@@ -4,8 +4,9 @@ import JustLog
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
-    var notification: PushNotification?
-    var session: Session?
+    var notification: PushNotification!
+    var type: BrowserMessageType!
+    var session: Session!
     var accounts = [Account]()
     var site: Site?
     let PICKER_HEIGHT: CGFloat = 120.0
@@ -48,8 +49,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func accept(_ sender: UIButton) {
-        if let notification = notification, let session = session {
-            switch notification.requestType {
+        if let notification = notification, let session = session, let type = type {
+            switch type {
             case .add:
                 Site.get(id: notification.siteID, completion: { (site) in
                     self.site = site
@@ -66,10 +67,10 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         }
                     })
                 } else if accounts.count == 1 {
-                    authorize(notification: notification, session: session, accountID: accounts.first!.id)
+                    authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                 } else {
                     let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
-                    authorize(notification: notification, session: session, accountID: accountID)
+                    authorize(notification: notification, session: session, accountID: accountID, type: type)
                 }
             case .register:
                 Logger.shared.debug("TODO: Fix register requests")
@@ -93,20 +94,20 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // MARK: Private functions
     
-    private func authorize(notification: PushNotification, session: Session, accountID: String) {
-        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: notification.requestType, completion: { [weak self] (succes, error) in
+    private func authorize(notification: PushNotification, session: Session, accountID: String, type: BrowserMessageType) {
+        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
                     do {
                         let account = try Account.get(accountID: accountID)
-                        try session.sendCredentials(account: account!, browserTab: notification.browserTab, type: notification.requestType)
+                        try session.sendCredentials(account: account!, browserTab: notification.browserTab, type: type)
                         self?.dismiss(animated: true, completion: nil)
                     } catch {
                         Logger.shared.error("Error authorizing request", error: error as NSError)
                     }
                 }
             } else {
-                Logger.shared.info("Request denied.", userInfo: ["code": AnalyticsMessage.requestDenied.rawValue, "result": false, "requestType": notification.requestType.rawValue])
+                Logger.shared.info("Request denied.", userInfo: ["code": AnalyticsMessage.requestDenied.rawValue, "result": false, "requestType": type.rawValue])
                 Logger.shared.debug("TODO: Handle touchID errors.")
             }
         })
@@ -116,27 +117,42 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if let notification = notification, let session = session {
             do {
                 accounts = try Account.get(siteID: notification.siteID)
+                if !accountExists() {
+                    type = .add
+                }
                 if accounts.count > 1 {
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
-                    if notification.requestType == .login || notification.requestType == .change {
-                        authorize(notification: notification, session: session, accountID: accounts.first!.id)
+                    if type == .login || type == .change {
+                        authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
-                setLabel(requestType: notification.requestType)
+                setLabel(requestType: type)
             } catch {
                 Logger.shared.error("Could not get account.", error: error as NSError)
+                self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    
+    private func accountExists() -> Bool {
+        if self.accounts.isEmpty {
+            return false
+        } else if let username = notification?.username {
+            return accounts.contains { (account) -> Bool in
+                account.username == username
+            }
+        }
+        return true
     }
 
     private func setLabel(requestType: BrowserMessageType) {
         switch requestType {
         case .login:
-            siteLabel.text = !self.accounts.isEmpty ? "Login to \(notification!.siteName)?" : "Add \(notification!.siteName)?"
+            siteLabel.text = "Login to \(notification!.siteName)?"
         case .change:
-            siteLabel.text = !self.accounts.isEmpty ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
+            siteLabel.text = accountExists() ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .reset:
             siteLabel.text = "Reset password for \(notification!.siteName)?"
         case .register:
@@ -152,6 +168,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     // MARK: - Navigation
 
     @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
+        if let notification = notification, let session = session {
+            do {
+                try session.acknowledge(browserTab: notification.browserTab)
+            } catch {
+                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+            }
+        }
         self.dismiss(animated: false, completion: nil)
         AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }

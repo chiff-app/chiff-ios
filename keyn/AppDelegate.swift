@@ -384,21 +384,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return false
         }
         
-        // TODO: Should probably be removed since password confirmations are now managed by SQS queue.
-        if browserMessageType == .acknowledge {
-            guard let shouldChangePassword = userInfo["changeValue"] as? Bool else {
-                Logger.shared.warning("Wrong shouldChangePassword type.")
-                return false
-            }
-            
-            if shouldChangePassword {
-                var account = try! Account.get(siteID: siteID)[0] // TODO: probably should send or save accountID somewhere instead of siteID
-                try! account.updatePassword(offset: nil)
-            }
-            return false
-        } else {
-            AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
-        }
+        AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+        
         return true
     }
     
