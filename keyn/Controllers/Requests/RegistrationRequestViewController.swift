@@ -69,7 +69,7 @@ class RegistrationRequestViewController: BaseAccountViewController {
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
-            return breachCount != nil ? "\u{26A0} This password has been found in \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
+            return (breachCount != nil && breachCount != 0) ? "\u{26A0} This password has been found in \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
         }
         if section == 1 {
             return changePasswordFooterText

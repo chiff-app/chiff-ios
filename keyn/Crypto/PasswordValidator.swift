@@ -132,7 +132,7 @@ class PasswordValidator {
         return true
     }
     
-    func validateBreaches(password: String, completionHandler: @escaping (Int?) -> Void) {
+    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
         let hash = password.sha1().uppercased()
         let index = hash.index(hash.startIndex, offsetBy: 5)
         let prefix = hash.prefix(upTo: index).uppercased()
@@ -142,7 +142,7 @@ class PasswordValidator {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying HIBP", error: error! as NSError)
-                completionHandler(nil)
+                completionHandler(0)
                 return
             }
             
