@@ -7,6 +7,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     //MARK: Properties
     var editButton: UIBarButtonItem!
     var account: Account?
+    var tap: UITapGestureRecognizer!
     
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -37,7 +38,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             navigationItem.largeTitleDisplayMode = .never
         }
         
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
     
     // MARK: UITextFieldDelegate
@@ -48,10 +49,15 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        view.addGestureRecognizer(tap)
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == websiteNameTextField {
              navigationItem.title = textField.text
         }
+        view.removeGestureRecognizer(tap)
     }
 
 
