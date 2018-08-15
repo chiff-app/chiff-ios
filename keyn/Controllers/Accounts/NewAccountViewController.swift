@@ -31,7 +31,6 @@ class NewAccountViewController: AccountViewController {
         
         updateSaveButtonState()
 
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
 
@@ -55,11 +54,6 @@ class NewAccountViewController: AccountViewController {
     
     // MARK: UITextFieldDelegate
     
-    // Hide the keyboard.
-    override func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
     
     override func textFieldDidEndEditing(_ textField: UITextField) {
         updateSaveButtonState()
@@ -70,11 +64,6 @@ class NewAccountViewController: AccountViewController {
     }
     
     // MARK: Actions
-    
-    func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status and drop into background
-        view.endEditing(true)
-    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0 && indexPath.row == 3) {
