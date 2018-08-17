@@ -262,29 +262,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // Called from notification
     func handlePasswordConfirmationNotification(notification: Notification) {
-        Logger.shared.debug("Started polling")
         guard let session = notification.object as? Session else {
-            Logger.shared.warning("Could not parse Session object.")
             return
         }
         
         guard session.backgroundTask == UIBackgroundTaskInvalid else {
-            Logger.shared.debug("Already polling")
             return
         }
         
         session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            Logger.shared.debug("Background task expired")
             UIApplication.shared.endBackgroundTask(session.backgroundTask)
             session.backgroundTask = UIBackgroundTaskInvalid
         })
         
         self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
             if session.backgroundTask != UIBackgroundTaskInvalid {
-                Logger.shared.debug("Background task ended because polling ended")
                 UIApplication.shared.endBackgroundTask(session.backgroundTask)
-            } else {
-                Logger.shared.debug("Background task was invalid when polling ended")
             }
         })
     }
