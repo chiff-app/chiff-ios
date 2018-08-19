@@ -10,7 +10,6 @@ import Foundation
 import AWSCore
 import AWSSQS
 import AWSSNS
-import AWSLambda
 import JustLog
 
 enum AWSError: Error {
@@ -24,7 +23,6 @@ class AWS {
     static let sharedInstance = AWS()
     private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
-    private let lambda = AWSLambdaInvoker.default()
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
     private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
@@ -32,121 +30,13 @@ class AWS {
     private let LOGIN_TIMEOUT = 1 // 180
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
-    private init() {}
-    
-    func getPPD(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
-        // TODO: This should become call to PPDS. For now redirect to development
-        getDevelopmentPPD(id: id, completionHandler: completionHandler)
-    }
-    
-    func getDevelopmentPPD(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        request.functionName = "getDevelopmentPPD"
-        request.payload = ["id" : id]
-        lambda.invoke(request).continueOnSuccessWith(block: { (task) -> Any? in
-            if let jsonDict = task.result?.payload as? Dictionary<String, Any>, let ppdItem = jsonDict["ppd"] as? Dictionary<String,Array<NSDictionary>>, let ppd = ppdItem["ppd"] {
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
-                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
-                    completionHandler(ppd)
-                } catch {
-                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
-                }
-            }
-            return nil
-        }).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Error getting development PPD.", error: error as NSError)
-            }
-            return nil
-        }
-    }
+    private init() {}    
     
     func getIdentityId() -> String {
         if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
             return credentialsProvider.identityId ?? "NoIdentityId"
         }
         return "NoIdentityId"
-    }
-    
-    func createBackupData(pubKey: String, signedMessage: String) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        request.functionName = "createBackupData"
-        request.payload = [
-            "pubKey" : pubKey,
-            "message": signedMessage
-        ]
-        lambda.invoke(request).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not create backup data.", error: error as NSError)
-            }
-            return nil
-        }
-    }
-    
-    func backupAccount(pubKey: String, message: String) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        request.functionName = "setBackupData"
-        request.payload = [
-            "pubKey" : pubKey,
-            "message": message
-        ]
-        lambda.invoke(request).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not backup account.", error: error as NSError)
-            }
-            return nil
-        }
-    }
-    
-    func getBackupData(pubKey: String, message: String, completionHandler: @escaping (_ accountData: Dictionary<String,Any>) -> Void) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        request.functionName = "getBackupData"
-        request.payload = [
-            "pubKey" : pubKey,
-            "message": message
-        ]
-        lambda.invoke(request).continueOnSuccessWith { (task) -> Any? in
-            if let jsonDict = task.result?.payload as? Dictionary<String,Any> {
-                completionHandler(jsonDict)
-            }
-            return nil
-        }.continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not get backup data.", error: error as NSError)
-            }
-            return nil
-        }
-    }
-    
-    func deleteAccountBackupData(pubKey: String, message: String) {
-        guard let request = AWSLambdaInvokerInvocationRequest() else {
-            Logger.shared.error("Could not create AWSLambdaInvokerInvocationRequest.")
-            return
-        }
-        request.functionName = "deleteAccount"
-        request.payload = [
-            "pubKey" : pubKey,
-            "message": message
-        ]
-        lambda.invoke(request).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not delete backup data.", error: error as NSError)
-            }
-            return nil
-        }
     }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {

@@ -12,6 +12,7 @@ import JustLog
 struct BackupManager {
     
     private let keychainService = "io.keyn.backup"
+    private let endpoint = "backup"
     static let sharedInstance = BackupManager()
     private enum KeyIdentifier: String, Codable {
         case priv = "priv"
@@ -33,33 +34,100 @@ struct BackupManager {
         } else {
             pubKey = try publicKey()
         }
-        
-        let backupData = [
-            "type": "createBackupData",
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": AWS.sharedInstance.getIdentityId()
+        let message = [
+            "type": APIRequestType.put.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970))
         ]
-        let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
-        let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
-        
-        let base64EncodedMessage = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
-        AWS.sharedInstance.createBackupData(pubKey: pubKey, signedMessage: base64EncodedMessage)
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let parameters = [
+            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "s": try signMessage(message: jsonData)
+        ]
+        API.sharedInstance.put(type: .backup, path: pubKey, parameters: parameters)
     }
     
     func backup(id: String, accountData: Data) throws {
-        // TODO: Also sign account ID + add timestamp.
         let ciphertext = try Crypto.sharedInstance.encryptSymmetric(accountData, secretKey: try encryptionKey())
-        let backupData = [
-            "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext),
-            "type": "setBackupData",
-            "accountId": id,
+        let message = [
+            "type": APIRequestType.post.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": AWS.sharedInstance.getIdentityId()
+            "id": id,
+            "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext)
         ]
-        let jsonData = try JSONSerialization.data(withJSONObject: backupData, options: .prettyPrinted)
-        let signedMessage = try Crypto.sharedInstance.sign(message: jsonData, privKey: try privateKey())
-        let base64EncodedMessage = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
-        AWS.sharedInstance.backupAccount(pubKey: try publicKey(), message: base64EncodedMessage)
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let parameters = [
+            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "s": try signMessage(message: jsonData)
+        ]
+        try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
+    }
+    
+    func deleteAccount(accountId: String) throws {
+        let message = [
+            "type": APIRequestType.delete.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
+            "id": accountId
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let parameters = [
+            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "s": try signMessage(message: jsonData)
+        ]
+        try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
+    }
+    
+    func getBackupData(completionHandler: @escaping () -> Void) throws {
+        var pubKey: String
+        if !Keychain.sharedInstance.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
+            try createEncryptionKey()
+            pubKey = try createSigningKeypair()
+        } else {
+            pubKey = try publicKey()
+        }
+        
+        let message = [
+            "type": APIRequestType.get.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970))
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let parameters = [
+            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "s": try signMessage(message: jsonData)
+        ]
+        API.sharedInstance.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
+            for (id, data) in dict {
+                if let base64Data = data as? String {
+                    do {
+                        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: base64Data)
+                        let accountData = try Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
+                        try Account.save(accountData: accountData, id: id)
+                    } catch {
+                        Logger.shared.error("Could not restore account.", error: error as NSError)
+                    }
+                }
+            }
+            Logger.shared.info("Accunts restored", userInfo: ["code": AnalyticsMessage.accountsRestored.rawValue, "accounts": dict.count])
+            completionHandler()
+        })
+    }
+    
+    func signMessage(message: String) throws -> String {
+        guard let messageData = message.data(using: .utf8) else {
+            throw CryptoError.convertToData
+        }
+        let signedMessage = try Crypto.sharedInstance.sign(message: messageData, privKey: try privateKey())
+        let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
+        return base64Message
+    }
+    
+    func signMessage(message: Data) throws -> String {
+        let signature = try Crypto.sharedInstance.sign(message: message, privKey: try privateKey())
+        let base64Signature = try Crypto.sharedInstance.convertToBase64(from: signature)
+        return base64Signature
+    }
+    
+    func deleteAllKeys() {
+        Keychain.sharedInstance.deleteAll(service: keychainService)
     }
     
     private func createEncryptionKey() throws {
@@ -92,74 +160,6 @@ struct BackupManager {
         
         let base64PubKey = try Crypto.sharedInstance.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey
-    }
-    
-    func signMessage(message: String) throws -> String {
-        guard let messageData = message.data(using: .utf8) else {
-            throw CryptoError.convertToData
-        }
-
-        let signedMessage = try Crypto.sharedInstance.sign(message: messageData, privKey: try privateKey())
-        
-        let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
-        return base64Message
-    }
-    
-    func signMessage(message: Data) throws -> String {
-        let signedMessage = try Crypto.sharedInstance.sign(message: message, privKey: try privateKey())
-        
-        let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
-        return base64Message
-    }
-    
-    func deleteAccount(accountId: String) throws {
-        let data = [
-            "accountId": accountId,
-            "type": "deleteAccount",
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": AWS.sharedInstance.getIdentityId()
-        ]
-        let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-        let message = try signMessage(message: jsonData)
-        AWS.sharedInstance.deleteAccountBackupData(pubKey: try publicKey(), message: message)
-    }
-    
-    func getBackupData(completionHandler: @escaping () -> Void) throws {
-        var pubKey: String
-        if !Keychain.sharedInstance.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
-            try createEncryptionKey()
-            pubKey = try createSigningKeypair()
-        } else {
-            pubKey = try publicKey()
-        }
-        
-        let data = [
-            "type": "getBackupData",
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "identityId": AWS.sharedInstance.getIdentityId()
-        ]
-        let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-        let signedMessage = try signMessage(message: jsonData)
-
-        AWS.sharedInstance.getBackupData(pubKey: pubKey, message: signedMessage) { (dict) in
-            for (id, data) in dict {
-                if let base64Data = data as? String {
-                    do {
-                        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: base64Data)
-                        let accountData = try Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
-                        try Account.save(accountData: accountData, id: id)
-                    } catch {
-                        Logger.shared.error("Could not restore account.", error: error as NSError)
-                    }
-                }
-            }
-            Logger.shared.info("Accunts restored", userInfo: ["code": AnalyticsMessage.accountsRestored.rawValue, "accounts": dict.count])
-            completionHandler()
-        }
-    }
-    
-    func deleteAllKeys() {
-        Keychain.sharedInstance.deleteAll(service: keychainService)
     }
     
 }
