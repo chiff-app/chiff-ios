@@ -10,11 +10,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Amiko-Regular.ttf">
-            <string>Amiko-Regular</string>
+        <array key="IBMPlexMono-Medium.ttf">
+            <string>IBMPlexMono-Medium</string>
         </array>
-        <array key="Amiko-SemiBold.ttf">
-            <string>Amiko-SemiBold</string>
+        <array key="IBMPlexMono-Regular.ttf">
+            <string>IBMPlexMono</string>
         </array>
     </customFonts>
     <scenes>
@@ -27,8 +27,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to site?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5b5-e1-HGE">
-                                <rect key="frame" x="20" y="379" width="335" height="27"/>
-                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="20"/>
+                                <rect key="frame" x="20" y="380" width="335" height="26"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="20"/>
                                 <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -41,7 +41,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="4QI-Wg-Aye" secondAttribute="height" multiplier="13:6" id="5io-qm-D6y"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="19"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <state key="normal" title="Accept">
                                             <color key="titleColor" red="0.22708415985107422" green="0.15862122178077698" blue="0.50603783130645752" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -52,7 +52,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdB-Zh-duc">
                                         <rect key="frame" x="175" y="0.0" width="130" height="60"/>
                                         <color key="backgroundColor" red="0.9828969836" green="0.7058123946" blue="0.18042173980000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="19"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <state key="normal" title="Reject">
                                             <color key="titleColor" red="0.2270841599" green="0.15862122179999999" blue="0.50603783130000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>

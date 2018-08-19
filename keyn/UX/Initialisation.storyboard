@@ -10,11 +10,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Amiko-Regular.ttf">
-            <string>Amiko-Regular</string>
+        <array key="IBMPlexMono-Medium.ttf">
+            <string>IBMPlexMono-Medium</string>
         </array>
-        <array key="Amiko-SemiBold.ttf">
-            <string>Amiko-SemiBold</string>
+        <array key="IBMPlexMono-Regular.ttf">
+            <string>IBMPlexMono</string>
         </array>
     </customFonts>
     <scenes>
@@ -27,14 +27,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="1000" text="To recover your credentials if you're phone gets lost or broken, you can use a paper backup." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5q-V0-CZv">
-                                <rect key="frame" x="35" y="210" width="344" height="72.333333333333314"/>
-                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                <rect key="frame" x="35" y="199.33333333333331" width="344" height="93.666666666666686"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="1000" text="Keyn will show you 12 words. Write them down and store them in a safe place." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXi-Nf-TWa">
-                                <rect key="frame" x="35" y="317.33333333333331" width="344" height="72.333333333333314"/>
-                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                <rect key="frame" x="35" y="328" width="344" height="70.333333333333314"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="width" secondItem="wfa-lF-Qh9" secondAttribute="height" multiplier="13:6" id="i7a-qd-LQr"/>
                                     <constraint firstAttribute="height" constant="60" id="jH1-Mv-1OH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                 <color key="tintColor" red="0.27450980390000002" green="0.19215686269999999" blue="0.60784313729999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Start">
                                     <color key="titleColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -89,17 +89,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1H9-Y9-g8k" userLabel="Word stack">
-                                <rect key="frame" x="163.33333333333334" y="262.33333333333331" width="87.666666666666657" height="67.666666666666686"/>
+                                <rect key="frame" x="141" y="256.66666666666669" width="132" height="79"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDt-2b-hOE">
-                                        <rect key="frame" x="0.0" y="0.0" width="87.666666666666671" height="36"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="132" height="43"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="33"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word i of n" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-t5-gEY">
-                                        <rect key="frame" x="0.0" y="46" width="87.666666666666671" height="21.666666666666671"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <rect key="frame" x="0.0" y="53" width="132" height="26"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="20"/>
                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -111,7 +111,7 @@
                                     <button opaque="NO" alpha="0.5" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="20u-Gy-8v9">
                                         <rect key="frame" x="0.0" y="0.0" width="149.66666666666666" height="69"/>
                                         <color key="backgroundColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Previous">
                                             <color key="titleColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -126,7 +126,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="2dZ-0y-Zxk" secondAttribute="height" multiplier="13:6" id="Q7l-Qr-YM0"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <state key="normal" title="Next">
                                             <color key="titleColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -186,24 +186,24 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="egr-xw-D2c"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="17"/>
+                                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="cKi-gS-Qsd">
-                                                <rect key="frame" x="30" y="165" width="354" height="166.33333333333337"/>
+                                                <rect key="frame" x="30" y="165" width="354" height="165"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7Y1-qQ-Pa5">
-                                                        <rect key="frame" x="0.0" y="0.0" width="354" height="65.666666666666671"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="354" height="65"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word x" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vG9-Jz-rXQ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="354" height="25.666666666666668"/>
-                                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="354" height="25"/>
+                                                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="19"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gMA-8X-iAl">
-                                                                <rect key="frame" x="0.0" y="30.666666666666686" width="354" height="35"/>
+                                                                <rect key="frame" x="0.0" y="30" width="354" height="35"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -217,16 +217,16 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="14q-ML-fAu">
-                                                        <rect key="frame" x="0.0" y="100.66666666666669" width="354" height="65.666666666666686"/>
+                                                        <rect key="frame" x="0.0" y="100" width="354" height="65"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word y" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPx-CR-2lP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="354" height="25.666666666666668"/>
-                                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="354" height="25"/>
+                                                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="19"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sCZ-Hi-d7d">
-                                                                <rect key="frame" x="0.0" y="30.666666666666629" width="354" height="35"/>
+                                                                <rect key="frame" x="0.0" y="30" width="354" height="35"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="35" id="q7I-a1-IlH"/>
@@ -314,11 +314,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="Welcome to Keyn!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ntz-37-jcc">
-                                <rect key="frame" x="0.0" y="106" width="414" height="32.333333333333343"/>
+                                <rect key="frame" x="0.0" y="106" width="414" height="31.333333333333343"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" priority="250" constant="38" id="2oc-r7-cqC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="24"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="24"/>
                                 <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -329,17 +329,17 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="hHh-b8-TKU" userLabel="Text Stack">
-                                <rect key="frame" x="35" y="258.33333333333331" width="344" height="155.66666666666669"/>
+                                <rect key="frame" x="35" y="260" width="344" height="152.33333333333337"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If this is the first time you use Keyn, choose 'New'. " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82O-lq-N8B">
-                                        <rect key="frame" x="0.0" y="0.0" width="344" height="48.333333333333336"/>
-                                        <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="344" height="47"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you want to recover your passwords from a paper backup, choose 'Recover'." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9Q-qK-Ttg">
-                                        <rect key="frame" x="0.0" y="83.333333333333371" width="344" height="72.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                        <rect key="frame" x="0.0" y="82" width="344" height="70.333333333333314"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -354,7 +354,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="A14-tO-Mc1" secondAttribute="height" multiplier="13:6" id="FPk-OB-4XC"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <state key="normal" title="Recover">
                                             <color key="titleColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -365,7 +365,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Xf-HS-Q0f">
                                         <rect key="frame" x="194.66666666666663" y="0.0" width="149.33333333333337" height="69"/>
                                         <color key="backgroundColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" name="Amiko-SemiBold" family="Amiko" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="18"/>
                                         <state key="normal" title="New">
                                             <color key="titleColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -583,7 +583,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="jDk-N3-t8V"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Amiko-Regular" family="Amiko" pointSize="18"/>
+                                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
