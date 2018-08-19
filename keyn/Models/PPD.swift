@@ -40,6 +40,8 @@ struct PPD: Codable {
                 } catch {
                     Logger.shared.error("Failed to deocde PPD", error: error as NSError)
                 }
+            } else {
+                Logger.shared.error("Failed to decode PPD")
             }
         }
     }
