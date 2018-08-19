@@ -29,6 +29,22 @@ struct PPD: Codable {
             Logger.shared.warning("PPD could not be decoded", error: error as NSError)
         }
     }
+    
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
+        API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+            if let ppd = dict["ppd"] as? [Any] {
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
+                    completionHandler(ppd)
+                } catch {
+                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
+                }
+            } else {
+                Logger.shared.error("Failed to decode PPD")
+            }
+        }
+    }
 }
 
 struct PPDCharacterSet: Codable {
