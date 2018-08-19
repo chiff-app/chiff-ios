@@ -13,7 +13,7 @@ def shared_pods
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
-  pod 'AWSLambda'
+  pod 'AWSAPIGateway'
   pod "JustLog"
 end
 
