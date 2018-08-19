@@ -27,6 +27,8 @@ struct Properties {
 
     static let AWSSQSBaseUrl = "https://sqs.eu-central-1.amazonaws.com/589716660077/"
     
+    static let keynApi = "ahqgqcn6le.execute-api.eu-central-1.amazonaws.com/test/"
+    
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
