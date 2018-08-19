@@ -11,6 +11,9 @@ import JustLog
 
 enum APIError: Error {
     case url
+    case jsonSerialization(error: String)
+    case request(error: Error)
+    case statusCode(error: String)
 }
 
 enum APIEndpoint: String {
@@ -73,15 +76,27 @@ class API {
                 return
             }
             if let httpStatus = response as? HTTPURLResponse {
-                if httpStatus.statusCode != 200 {
-                    if let jsonData = try? JSONSerialization.jsonObject(with: data, options: []), let json = jsonData as? [String: Any], let completionHandler = completionHandler {
-                        completionHandler(json)
+                do {
+                    if httpStatus.statusCode == 200 {
+                        let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
+                        guard let json = jsonData as? [String: Any] else {
+                            throw APIError.jsonSerialization(error: "Could not convert json to dict")
+                        }
+                        if let completionHandler = completionHandler {
+                            completionHandler(json)
+                        }
+                    } else if let error = error {
+                        throw APIError.request(error: error)
+                    } else {
+                        throw APIError.statusCode(error: "Not 200 but no error")
                     }
-                } else if let error = error {
-                    Logger.shared.error("Error getting backup data", error: error as NSError, userInfo: [
+                } catch {
+                    Logger.shared.error("API error", error: error as NSError, userInfo: [
                         "statusCode": httpStatus.statusCode
-                    ])
+                        ])
                 }
+            } else {
+                Logger.shared.error("API error. Wrong Response type")
             }
         }
         task.resume()
@@ -91,13 +106,14 @@ class API {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = path
+        components.path = "/\(Properties.keynApiVersion)/\(type.rawValue)/\(path)"
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {
                 let item = URLQueryItem(name: key, value: value)
                 queryItems.append(item)
             }
+            components.queryItems = queryItems
         }
         return components.url
     }

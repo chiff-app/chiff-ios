@@ -50,26 +50,22 @@ struct BackupManager {
         let ciphertext = try Crypto.sharedInstance.encryptSymmetric(accountData, secretKey: try encryptionKey())
         let message = [
             "type": APIRequestType.post.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970))
-        ]
-        let body = [
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "id": id,
-            "message": try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+            "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext)
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters, body: body)
+        try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
     }
     
     func deleteAccount(accountId: String) throws {
         let message = [
             "type": APIRequestType.delete.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970))
-        ]
-        let body = [
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "id": accountId
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -77,7 +73,7 @@ struct BackupManager {
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters, body: body)
+        try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
     }
     
     func getBackupData(completionHandler: @escaping () -> Void) throws {
@@ -90,7 +86,7 @@ struct BackupManager {
         }
         
         let message = [
-            "type": APIRequestType.delete.rawValue,
+            "type": APIRequestType.get.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970))
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
