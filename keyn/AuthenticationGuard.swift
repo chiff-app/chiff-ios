@@ -53,6 +53,9 @@ class AuthenticationGuard {
     }
     
     private func applicationDidBecomeActive(notification: Notification) {
+        if let lockView = lockWindow.viewWithTag(lockViewTag) {
+            lockView.removeFromSuperview()
+        }
         authenticateUser(cancelChecks: true)
     }
     
