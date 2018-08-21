@@ -84,12 +84,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             error = content.userInfo["error"] as? String
             reprocessed = true
         }
-        Logger.shared.debug("PushNotificationDebug", userInfo: [
+        var userInfo: [String: Any] = [
             "body": content.body,
-            "reprocessed": reprocessed,
-            "error": error,
-            "originalBody": originalBody
-        ])
+            "reprocessed": reprocessed
+        ]
+        if let error = error {
+            userInfo["error"] = error
+        }
+        if let originalBody = originalBody {
+            userInfo["originalBody"] = originalBody
+        }
+        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
         
         guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             Logger.shared.warning("Could not parse browsermessage.")
@@ -183,14 +188,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             error = content.userInfo["error"] as? String
             reprocessed = true
         }
-        Logger.shared.debug("PushNotificationDebug", userInfo: [
+        var userInfo: [String: Any] = [
             "body": content.body,
-            "reprocessed": reprocessed,
-            "error": error,
-            "originalBody": originalBody
-        ])
-        
-        
+            "reprocessed": reprocessed
+        ]
+        if let error = error {
+            userInfo["error"] = error
+        }
+        if let originalBody = originalBody {
+            userInfo["originalBody"] = originalBody
+        }
+        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
         
         guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             Logger.shared.warning("Could not parse browsermessage.")
@@ -421,14 +429,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     error = content.userInfo["error"] as? String
                     reprocessed = true
                 }
-                Logger.shared.debug("PushNotificationDebug", userInfo: [
+                var userInfo: [String: Any] = [
                     "body": content.body,
-                    "reprocessed": reprocessed,
-                    "error": error,
-                    "originalBody": originalBody
-                ])
-                
-                
+                    "reprocessed": reprocessed
+                ]
+                if let error = error {
+                    userInfo["error"] = error
+                }
+                if let originalBody = originalBody {
+                    userInfo["originalBody"] = originalBody
+                }
+                Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
                 
                 if let browserMessageTypeValue = content.userInfo["requestType"] as? Int,
                     let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
