@@ -17,23 +17,23 @@ class SessionTests: XCTestCase {
 
     func testInitValidSessionDoesntThrow() {
         XCTAssertNoThrow(
-            try Session(sqs: "sqs", browserPublicKey: "YQ", browser: "browser", os: "OS")
+            try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: "YQ", browser: "browser", os: "OS")
         )
     }
 
     func testInitWithInvalidBrowserPublicKeyThrows() {
         XCTAssertThrowsError(
-            try Session(sqs: "sqs", browserPublicKey: "YQ==", browser: "browser", os: "OS")) { error in
+            try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: "YQ==", browser: "browser", os: "OS")) { error in
                 XCTAssertEqual(error as? SessionError, SessionError.invalid)
         }
     }
 
     func testInitShouldThrowWhenSessionAlreadyPresent() {
         XCTAssertNoThrow(
-            try Session(sqs: "sqs", browserPublicKey: "YQ", browser: "browser", os: "OS")
+            try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: "YQ", browser: "browser", os: "OS")
         )
         XCTAssertThrowsError(
-            try Session(sqs: "sqs", browserPublicKey: "YQ", browser: "browser", os: "OS")) { error in
+            try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: "YQ", browser: "browser", os: "OS")) { error in
                 XCTAssertEqual(error as? SessionError, SessionError.exists)
         }
     }

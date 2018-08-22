@@ -7,16 +7,44 @@
 //
 
 import Foundation
+import JustLog
 
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
     let properties: PPDProperties? // Required. Represents the properties of the password.
-    //let service: PPDService // Holds information related to the service the password is used for. This should be added later
+    let service: PPDService? // Holds information related to the service the password is used for.
     let version: String? // The current version of the PPD.
     let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String?
+
+    func export() {
+        do {
+            let jsonData = try JSONEncoder().encode(self)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print(jsonString)
+            }
+        } catch {
+            Logger.shared.warning("PPD could not be decoded", error: error as NSError)
+        }
+    }
+    
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
+        API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+            if let ppd = dict["ppds"] as? [Any] {
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
+                    completionHandler(ppd)
+                } catch {
+                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
+                }
+            } else {
+                Logger.shared.error("Failed to decode PPD")
+            }
+        }
+    }
 }
 
 struct PPDCharacterSet: Codable {
@@ -90,29 +118,24 @@ struct PPDRequirementRule: Codable {
 
 }
 
-// TODO: Complete Service part. Perhaps first implement in JS?
+// TODO: Complete Service part.
 
-//struct PPDService: Codable {
-//    let login: PPDLogin
-//    let register: PPDRegister
-//    let passwordChange: PPDPasswordChange
-//    let passwordReset: PPDPasswordReset
-//}
-//
-//struct PPDLogin: Codable {
-//    let url: String // Can this be URL?
-//    let maxTries: Int
-//    let routines: [PPDBaseRoutine]
-//}
-//
+struct PPDService: Codable {
+    let login: PPDLogin
+    let passwordChange: PPDPasswordChange?
+}
+
+struct PPDLogin: Codable {
+    let url: String?
+}
+
+
+struct PPDPasswordChange: Codable {
+    let url: String?
+}
+
 //struct PPDRegister: Codable {
 //    let url: String
-//}
-//
-//struct PPDPasswordChange: Codable {
-//    let url: String
-//    let maxTries: Int
-//    let routines: [PPDBaseRoutine]
 //}
 //
 //struct PPDPasswordReset: Codable {
@@ -120,11 +143,3 @@ struct PPDRequirementRule: Codable {
 //    let maxTries: Int
 //    let routines: [PPDPasswordResetRoutines]
 //}
-
-
-
-
-
-
-
-

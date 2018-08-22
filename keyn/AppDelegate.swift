@@ -9,14 +9,14 @@
 import UIKit
 import AWSCore
 import UserNotifications
+import LocalAuthentication
+import JustLog
+import CocoaAsyncSocket
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
-    var pushNotification: PushNotification?
-    var requestInProgress = false
-    let lockViewTag = 390847239047
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -25,145 +25,205 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
+        //BackupManager.sharedInstance.deleteAll()
+        //Questionnaire.cleanFolder()
 
         // Override point for customization after application launch.
-        pushNotification = nil
+        enableLogging()
         fetchAWSIdentification()
-        launchInitialView()
         registerForPushNotifications()
+
+        let _ = AuthenticationGuard.sharedInstance
+        let _: LAError? = nil
+
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: NSNotification.Name.UIPasteboardChanged, object: nil, queue: nil, using: handlePasteboardChangeNotification)
+        nc.addObserver(forName: NSNotification.Name.passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
         
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-        
+
+        UserDefaults.standard.removeObject(forKey: "backedUp")
+
+        Questionnaire.fetch()
+        handlePendingNotifications()
         return true
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("TODO: Enable stuff")
         AWS.sharedInstance.snsRegistration(deviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
-        print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
-        print("TODO: Disable stuff")
+        Logger.shared.error("Failed to register for remote notifications.", error: error as NSError, userInfo: nil)
+        // TODO: disable stuff. App shouldn't work without remote notifications.
     }
-
+    
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
         // TODO: Find out why we cannot pass RequestType in userInfo..
-        guard let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+        guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+            Logger.shared.debug("TODO: Make alert banner")
+            completionHandler([.alert])
+            return
+        }
+        
+        // DEBUG: Push notifications
+        var originalBody: String?
+        var content: UNNotificationContent
+        var reprocessed = false
+        var error: String?
+        if notification.request.content.userInfo["requestType"] != nil {
+            content = notification.request.content
+            error = content.userInfo["error"] as? String
+        } else {
+            originalBody = notification.request.content.body
+            content = reprocess(content: notification.request.content)
+            error = content.userInfo["error"] as? String
+            reprocessed = true
+        }
+        var userInfo: [String: Any] = [
+            "body": content.body,
+            "reprocessed": reprocessed
+        ]
+        if let error = error {
+            userInfo["error"] = error
+        }
+        if let originalBody = originalBody {
+            userInfo["originalBody"] = originalBody
+        }
+        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
+        
+        guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+            Logger.shared.warning("Could not parse browsermessage.")
             completionHandler([])
             return
         }
 
-        guard let sessionID = notification.request.content.userInfo["sessionID"] as? String else {
+        guard let sessionID = content.userInfo["sessionID"] as? String else {
+            Logger.shared.warning("Could not parse sessionID.")
             completionHandler([])
             return
         }
-
         if browserMessageType == .end {
-            // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
-            if let rootViewController = window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
-                for viewController in devicesNavigationController.viewControllers {
-                    if let devicesViewController = viewController as? DevicesViewController {
-                        if devicesViewController.isViewLoaded {
-                            devicesViewController.removeSessionFromTableView(sessionID: sessionID)
+            do {
+                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                if let rootViewController = window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
+                    for viewController in devicesNavigationController.viewControllers {
+                        if let devicesViewController = viewController as? DevicesViewController {
+                            if devicesViewController.isViewLoaded {
+                                devicesViewController.removeSessionFromTableView(sessionID: sessionID)
+                            }
                         }
                     }
                 }
+            } catch {
+                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
             }
             completionHandler([.alert, .sound])
         } else {
-            guard let siteID = notification.request.content.userInfo["siteID"] as? Int else {
+            if handleNotification(userInfo: content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType) {
+                completionHandler([.sound])
+            } else {
                 completionHandler([])
-                return
             }
-            guard let browserTab = notification.request.content.userInfo["browserTab"] as? Int else {
-                completionHandler([])
-                return
-            }
-
-            DispatchQueue.main.async {
-                self.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType))
-            }
-            completionHandler([.sound])
         }
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo["requestType"] ?? "nada"])
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo["requestType"] ?? "nada"])
+
+        guard let browserMessageTypeValue = userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+            Logger.shared.warning("Could not parse browsermessage.")
+            completionHandler(UIBackgroundFetchResult.noData)
+            return
+        }
+        
+        guard let sessionID = userInfo["sessionID"] as? String else {
+            Logger.shared.warning("Could not parse sessionID.")
+            completionHandler(UIBackgroundFetchResult.noData)
+            return
+        }
+        
+        if browserMessageType == .end {
+            do {
+                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+            } catch {
+                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
+            }
+        } else {
+            let _ = handleNotification(userInfo: userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+        }
+        completionHandler(UIBackgroundFetchResult.noData)
     }
 
     // Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
         // TODO: Find out why we cannot pass RequestType in userInfo..
-        guard let browserMessageTypeValue = response.notification.request.content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+
+        guard response.notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+            Logger.shared.debug("TODO: Make alert banner")
+            completionHandler()
+            return
+        }
+        
+        // DEBUG: Push notifications
+        var originalBody: String?
+        var content: UNNotificationContent
+        var reprocessed = false
+        var error: String?
+        if response.notification.request.content.userInfo["requestType"] != nil {
+            content = response.notification.request.content
+            error = content.userInfo["error"] as? String
+        } else {
+            originalBody = response.notification.request.content.body
+            content = reprocess(content: response.notification.request.content)
+            error = content.userInfo["error"] as? String
+            reprocessed = true
+        }
+        var userInfo: [String: Any] = [
+            "body": content.body,
+            "reprocessed": reprocessed
+        ]
+        if let error = error {
+            userInfo["error"] = error
+        }
+        if let originalBody = originalBody {
+            userInfo["originalBody"] = originalBody
+        }
+        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
+        
+        guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+            Logger.shared.warning("Could not parse browsermessage.")
             completionHandler()
             return
         }
 
-        guard let sessionID = response.notification.request.content.userInfo["sessionID"] as? String else {
+        guard let sessionID = content.userInfo["sessionID"] as? String else {
+            Logger.shared.warning("Could not parse sessionID.")
             completionHandler()
             return
         }
 
         if browserMessageType == .end {
-            // TODO: If errors are thrown here, they should be logged.
-            try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+            do {
+                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+            } catch {
+                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
+            }
         } else {
-            guard let siteID = response.notification.request.content.userInfo["siteID"] as? Int else {
-                completionHandler()
-                return
-            }
-            guard let browserTab = response.notification.request.content.userInfo["browserTab"] as? Int else {
-                completionHandler()
-                return
-            }
-
-            if response.notification.request.content.categoryIdentifier == "PASSWORD_REQUEST" {
-//                if response.actionIdentifier == "ACCEPT" {
-//                                    cancelAutoAuthentication()
-//                                    notificationUserInfo = [
-//                                        "sessionID": sessionID,
-//                                        "siteID": siteID,
-//                                        "accepted": "true"
-//                                    ]
-//
-//                    // Directly send password? Is this a security risk? Should be tested
-//                    if let account = try! Account.get(siteID: siteID), let session = try! Session.getSession(id: sessionID) {
-//                        try! session.sendCredentials(account: account, browserTab: browserTab, type: browserMessageType)
-//                    }
-//                }
-
-                if response.actionIdentifier == "ACCEPT" {
-                    // This should present request page --> Yes / NO. AUthentication after or before?
-                    pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
-                }
-            }
-
-            if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-                // This should present request page --> Yes / NO. AUthentication after or before?
-                cancelAutoAuthentication()
-                pushNotification = PushNotification(sessionID: sessionID, siteID: siteID, browserTab: browserTab, requestType: browserMessageType)
-            }
-
+            let _ = handleNotification(userInfo: content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
         }
         completionHandler()
     }
 
-
-    private func cancelAutoAuthentication() {
-        if let viewController = self.window?.rootViewController as? LoginViewController {
-            viewController.autoAuthentication = false
-        } 
-    }
-
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        // App opened with url
-        return true
-    }
 
     // Sent when the application is about to move from active to inactive state.
     // This can occur for certain types of temporary interruptions (such as an incoming phone call
@@ -178,91 +238,255 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        requestInProgress = false
-        if let frame = self.window?.frame {
-            let lockView = UIView(frame: frame)
-            let keynLogoView = UIImageView(image: UIImage(named: "logo"))
-            keynLogoView.frame = CGRect(x: 138, y: 289, width: 99, height: 88) // TODO: Make autolayout constrained
-            keynLogoView.contentMode = .scaleAspectFit
-            lockView.addSubview(keynLogoView)
-            lockView.backgroundColor = UIColor(rgb: 0x46319B)
-            lockView.tag = lockViewTag
-            self.window?.addSubview(lockView)
-            self.window?.bringSubview(toFront: lockView)
-        }
+        // Clean up notifications
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
     }
 
 
     // Called as part of the transition from the background to the active state;
     // here you can undo notificationUserInfo = nil
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // TODO: Can we discover here if an app was launched with a remote notification and present the request view controller instead of login?
-        handlePendingEndSessionNotifications()
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
-        self.window?.rootViewController = viewController
-
-        if  pushNotification != nil && !requestInProgress {
-            requestInProgress = true
-            launchRequestView(with: pushNotification!)
-            pushNotification = nil
-        }
+        handlePendingNotifications()
     }
 
-    // Restart any tasks that were paused (or not yet started) while the application was inactive.
-    // If the application was previously in the background, optionally refresh the user interface.
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        if let lockView = self.window?.viewWithTag(lockViewTag) {
-            lockView.removeFromSuperview()
-        }
-
-        if pushNotification != nil && !requestInProgress {
-            requestInProgress = true
-            launchRequestView(with: pushNotification!)
-            pushNotification = nil
-        }
-
-        // Clean up notifications
-        let center = UNUserNotificationCenter.current()
-        center.removeAllDeliveredNotifications()
-    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    // Called when app starts up. Short polling
+    private func checkPendingChangeConfirmations() {
+        do {
+            if let sessions = try Session.all() {
+                for session in sessions {
+                    self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
+                }
+            }
+        } catch {
+            Logger.shared.error("Could not get sessions.", error: error as NSError)
+        }
+    }
+    
+    // Called from notification
+    func handlePasswordConfirmationNotification(notification: Notification) {
+        guard let session = notification.object as? Session else {
+            return
+        }
+        
+        guard session.backgroundTask == UIBackgroundTaskInvalid else {
+            return
+        }
+        
+        session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            UIApplication.shared.endBackgroundTask(session.backgroundTask)
+            session.backgroundTask = UIBackgroundTaskInvalid
+        })
+        
+        self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
+            if session.backgroundTask != UIBackgroundTaskInvalid {
+                UIApplication.shared.endBackgroundTask(session.backgroundTask)
+            }
+        })
+    }
+    
+    
+    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
+        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
+            if messages.count > 0 {
+                for message in messages {
+                    guard let body = message.body else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard let receiptHandle = message.receiptHandle else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
+                        Logger.shared.error("Could not parse SQS message body.")
+                        return
+                    }
+                    guard type == BrowserMessageType.acknowledge.rawValue else {
+                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
+                        return
+                    }
+                    AWS.sharedInstance.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
 
-    private func handlePendingEndSessionNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.getDeliveredNotifications { (notifications) in
-            for notification in notifications {
-                if let browserMessageTypeValue = notification.request.content.userInfo["requestType"] as? Int,
-                    let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
-                    let sessionID = notification.request.content.userInfo["sessionID"] as? String,
-                    browserMessageType == .end
-                {
-                    try? Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                    do {
+                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
+                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
+                            var account = try Account.get(accountID: accountId)
+                            try account?.updatePassword(offset: nil)
+                        }
+                    } catch {
+                        Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
+                    }
+                    if let handler = completionHandler {
+                        handler()
+                    }
+                }
+            } else {
+                if (attempts > 1) {
+                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+                } else if let handler = completionHandler {
+                    handler()
                 }
             }
         }
     }
-
-    private func launchRequestView(with notification: PushNotification) {
-        do {
-            if let session = try Session.getSession(id: notification.sessionID) {
-                let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
-                let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-
-                viewController.notification = notification
-                viewController.session = session
-
-                UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: {
-                    self.requestInProgress = false
-                })
-            } else {
-                print("Received request for session that doesn't exist.")
+    
+    
+    private func handlePasteboardChangeNotification(notification: Notification) {
+        let pasteboard = UIPasteboard.general
+        guard let text = pasteboard.string, text != "" else {
+            return
+        }
+        
+        let pasteboardVersion = pasteboard.changeCount
+        let clearPasteboardTimeout = 60.0 // TODO: hardcoded for now. This should be editable in settings I guess?
+        
+        var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+        backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = UIBackgroundTaskInvalid
+        })
+        
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + clearPasteboardTimeout) {
+            if pasteboardVersion == pasteboard.changeCount {
+                pasteboard.string = ""
             }
+            
+            if backgroundTask != UIBackgroundTaskInvalid {
+                UIApplication.shared.endBackgroundTask(backgroundTask)
+            }
+        }
+    }
+    
+    private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, browserMessageType: BrowserMessageType) -> Bool {
+        guard let siteID = userInfo["siteID"] as? String else {
+            Logger.shared.warning("Wrong siteID type.")
+            return false
+        }
+        guard let siteName = userInfo["siteName"] as? String else {
+            Logger.shared.warning("Wrong siteName type.")
+            return false
+        }
+        guard let browserTab = userInfo["browserTab"] as? Int else {
+            Logger.shared.warning("Wrong browserTab type.")
+            return false
+        }
+        guard let currentPassword = userInfo["password"] as? String? else {
+            Logger.shared.warning("Wrong currentPassword type.")
+            return false
+        }
+        guard let username = userInfo["username"] as? String? else {
+            Logger.shared.warning("Wrong username type.")
+            return false
+        }
+        
+        AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+        
+        return true
+    }
+    
+    // DEBUG
+    private func reprocess(content: UNNotificationContent) -> UNNotificationContent {
+        guard let mutableContent = (content.mutableCopy() as? UNMutableNotificationContent) else {
+            return content
+        }
+        do {
+            let processor = NotificationProcessor()
+            return try processor.process(content: mutableContent)
         } catch {
-            print("Session could not be decoded: \(error)")
+            Logger.shared.debug("Reprocessing error", error: error as NSError)
+        }
+        return content
+    }
+
+    private func handlePendingNotifications() {
+        checkPendingChangeConfirmations()
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                
+                guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+                    Logger.shared.debug("TODO: Make alert banner")
+                    return
+                }
+                
+                // DEBUG: Push notifications
+                var originalBody: String?
+                var content: UNNotificationContent
+                var reprocessed = false
+                var error: String?
+                if notification.request.content.userInfo["requestType"] != nil {
+                    content = notification.request.content
+                    error = content.userInfo["error"] as? String
+                } else {
+                    originalBody = notification.request.content.body
+                    content = self.reprocess(content: notification.request.content)
+                    error = content.userInfo["error"] as? String
+                    reprocessed = true
+                }
+                var userInfo: [String: Any] = [
+                    "body": content.body,
+                    "reprocessed": reprocessed
+                ]
+                if let error = error {
+                    userInfo["error"] = error
+                }
+                if let originalBody = originalBody {
+                    userInfo["originalBody"] = originalBody
+                }
+                Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
+                
+                if let browserMessageTypeValue = content.userInfo["requestType"] as? Int,
+                    let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
+                    let sessionID = content.userInfo["sessionID"] as? String
+                {
+                    if browserMessageType == .end {
+                        do {
+                            try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                        } catch {
+                            Logger.shared.error("Could not end session.", error: error as NSError)
+                        }
+                        
+                    } else if notification.date.timeIntervalSinceNow > -180.0  {
+                        
+                        if content.title == "Error" {
+                            Logger.shared.warning("iOS notification content parsing failed")
+                        }
+                        
+                        guard let siteID = content.userInfo["siteID"] as? String else {
+                            Logger.shared.warning("Wrong siteID type.")
+                            return
+                        }
+                        guard let siteName = content.userInfo["siteName"] as? String else {
+                            Logger.shared.warning("Wrong siteName type.")
+                            return
+                        }
+                        guard let browserTab = content.userInfo["browserTab"] as? Int else {
+                            Logger.shared.warning("Wrong browserTab type.")
+                            return
+                        }
+                        guard let currentPassword = content.userInfo["password"] as? String? else {
+                            Logger.shared.warning("Wrong currentPassword type.")
+                            return
+                        }
+                        guard let username = content.userInfo["username"] as? String? else {
+                            Logger.shared.warning("Wrong username type.")
+                            return
+                        }
+                        
+                        DispatchQueue.main.async {
+                            if !AuthenticationGuard.sharedInstance.authorizationInProgress {
+                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -270,13 +494,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let viewController: UIViewController?
+        
+        if Properties.isFirstLaunch() {
+            Logger.shared.info("App was installed", userInfo: ["code": AnalyticsMessage.install.rawValue])
+            _ = Properties.installTimestamp()
+            UserDefaults.standard.addSuite(named: Questionnaire.suite)
+            Questionnaire.createQuestionnaireDirectory()
+            AWS.sharedInstance.subscribe()
+        }
+        
         if !Seed.exists() {
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
             let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
             viewController = rootController
         } else {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            viewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+            guard let vc = storyboard.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+                Logger.shared.error("Unexpected root view controller type")
+                fatalError("Unexpected root view controller type")
+            }
+            viewController = vc
+
         }
         
         self.window?.rootViewController = viewController
@@ -286,21 +524,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func fetchAWSIdentification() {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
                                                                 identityPoolId: "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe")
+        
 
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
-
+    
+    private func enableLogging() {
+        let logger = Logger.shared
+        
+        // Disable file logging
+        logger.enableFileLogging = false
+        
+        // logstash destination
+        logger.logstashHost = "analytics.keyn.io"
+        logger.logstashPort = 5000
+        logger.logstashTimeout = 5
+        logger.logLogstashSocketActivity = Properties.isDebug
+        
+        // default info
+        logger.defaultUserInfo = ["device": "APP",
+                                  "userID": Properties.userID(),
+                                  "debug": Properties.isDebug]
+        logger.setup()
+    }
+    
     @available(iOS 10.0, *)
     private func registerForPushNotifications() {
-        // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
-//        let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
-//                                                       title: "Accept",
-//                                                       options: UNNotificationActionOptions(rawValue: 0))
-//        let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
-//                                                       title: "Reject",
-//                                                       options: .destructive)
         let passwordRequestNotificationCategory = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
+                                                                         actions: [],
+                                                                         intentIdentifiers: [],
+                                                                         options: .customDismissAction)
+        let keynNotificationCategory = UNNotificationCategory(identifier: "KEYN_NOTIFICATION",
                                                                          actions: [],
                                                                          intentIdentifiers: [],
                                                                          options: .customDismissAction)
@@ -308,16 +563,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                                                     actions: [],
                                                                     intentIdentifiers: [],
                                                                     options: UNNotificationCategoryOptions(rawValue: 0))
+        let changeConfirmationNotificationCategory = UNNotificationCategory(identifier: "CHANGE_CONFIRMATION",
+                                                                    actions: [],
+                                                                    intentIdentifiers: [],
+                                                                    options: UNNotificationCategoryOptions(rawValue: 0))
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory])
+        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory, keynNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.sync {
                     UIApplication.shared.registerForRemoteNotifications()
+                    self.launchInitialView()
                 }
             } else {
-                // TODO: Do stuff if unsuccessful… Inform user that app can't be used without push notifications
+                Logger.shared.warning("User denied remote notifications.")
             }
         }
 

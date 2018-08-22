@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JustLog
 
 class PasswordValidator {
     static let FALLBACK_PASSWORD_LENGTH = 22
@@ -22,7 +23,9 @@ class PasswordValidator {
         self.ppd = ppd
         if let characterSets = ppd?.characterSets {
             for characterSet in characterSets {
-                characters += characterSet.characters ?? ""
+                if let characters = characterSet.characters {
+                    self.characters += String(characters.sorted())
+                }
                 characterSetDictionary[characterSet.name] = characterSet.characters
             }
         } else { characters += PasswordValidator.OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
@@ -128,6 +131,40 @@ class PasswordValidator {
         }
         return true
     }
+    
+    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
+        let hash = password.sha1().uppercased()
+        let index = hash.index(hash.startIndex, offsetBy: 5)
+        let prefix = hash.prefix(upTo: index).uppercased()
+        let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                Logger.shared.warning("Error querying HIBP", error: error! as NSError)
+                completionHandler(0)
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse {
+                if httpStatus.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
+                    var breachCount: Int? = nil
+                    for line in responseString.lines {
+                        let result = line.split(separator: ":")
+                        if hash == prefix + result[0] {
+                            breachCount = Int(result[1])
+                        }
+                    }
+                    completionHandler(breachCount ?? 0)
+                } else if let error = error {
+                    Logger.shared.warning("Error querying HIBP", error: error as NSError, userInfo: [
+                        "statusCode": httpStatus.statusCode
+                        ])
+                }
+            }
+        }
+        task.resume()
+    }
 
     // MARK: Private functions
 
@@ -175,7 +212,7 @@ class PasswordValidator {
                     guard occurences <= maxOccurs else { return false }
                 }
             } else {
-                print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                Logger.shared.debug("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
             }
         }
         return true
@@ -200,7 +237,7 @@ class PasswordValidator {
                         if occurences >= requirementRule.minOccurs { validRules += 1 }
                     }
                 } else {
-                    print("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                     Logger.shared.debug("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
                 }
             }
             guard validRules >= requirementGroup.minRules else  {
@@ -216,55 +253,17 @@ class PasswordValidator {
             if let position = Int(position) {
                 let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
                 if characterSet.contains(password[index]) { occurences += 1 }
-            } else if let position = Double(position) {
-                let index = position * Double(password.count) - 0.5
-                let upperIndex = Int(ceil(index))
-                let lowerIndex = Int(floor(index))
-                if upperIndex == lowerIndex {
-                    let letter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    if characterSet.contains(letter) { occurences += 1 }
-                } else {
-                    let firstLetter = password[password.index(password.startIndex, offsetBy: upperIndex)]
-                    let secondLetter = password[password.index(password.startIndex, offsetBy: lowerIndex)]
-                    if characterSet.contains(firstLetter) && characterSet.contains(secondLetter) { occurences += 1 } // Should this be AND or OR? i.e. do the letter right and left of index need to be correct or just one?
-                }
             }
         }
         return occurences
     }
 
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-        let escapedCharacters = NSRegularExpression.escapedPattern(for: characterSet).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
-        do {
-            let regex = try NSRegularExpression(pattern: "[\(escapedCharacters)]")
-            let range = NSMakeRange(0, password.count)
-            return regex.numberOfMatches(in: password, range: range)
-        } catch {
-            print("There was an error creating the NSRegularExpression: \(error)")
+        var occurences = 0
+        for character in password {
+            if characterSet.contains(character) { occurences += 1 }
         }
-        return 0
+        return occurences
     }
 
-    // MARK: Class functions
-
-    class func parse(ppd: PPD?) -> (Int, [Character]) {
-        var length = FALLBACK_PASSWORD_LENGTH
-        var chars = [Character]()
-
-        if let characterSets = ppd?.characterSets {
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    chars.append(contentsOf: [Character](characters))
-                }
-            }
-        } else {
-            chars.append(contentsOf: [Character](OPTIMAL_CHARACTER_SET)) // Optimal character set
-        }
-
-        if let maxLength = ppd?.properties?.maxLength {
-            length = maxLength < MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
-        }
-
-        return (length, chars)
-    }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class BackupStartViewController: UIViewController {
 
@@ -40,15 +41,17 @@ class BackupStartViewController: UIViewController {
             self.present(viewController, animated: true, completion: nil)
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func generateSeed(_ sender: UIButton) {
+        if isInitialSetup {
+            do {
+                try Seed.create()
+                try BackupManager.sharedInstance.initialize()
+                Logger.shared.info("Seed created", userInfo: ["code": AnalyticsMessage.seedCreated.rawValue])
+            } catch {
+                Logger.shared.error("Error generating seed.", error: error as NSError)
+            }
+        }
     }
-    */
 
 }

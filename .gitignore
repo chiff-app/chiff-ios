@@ -4,3 +4,10 @@ keyn.xcodeproj/xcuserdata/*.xcuserdatad
 keyn.xcodeproj/project.xcworkspace/xcuserdata/*
 Pods
 provisioning
+vendor
+fastlane/report.xml
+fastlane/test_output
+*.dSYM.zip
+*.ipa
+*.mobileprovision
+*.cer

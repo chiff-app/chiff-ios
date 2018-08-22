@@ -1,17 +1,22 @@
-import Foundation
+import UIKit
+import UserNotifications
+import JustLog
 
 enum SessionError: Error {
     case exists
     case invalid
+    case noEndpoint
 }
 
 class Session: Codable {
 
     let id: String
-    let sqsQueueName: String
+    let sqsMessageQueue: String
+    let sqsControlQueue: String
     let creationDate: Date
     let browser: String
     let os: String
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     private static let browserService = "io.keyn.session.browser"
     private static let appService = "io.keyn.session.app"
@@ -26,14 +31,15 @@ class Session: Codable {
         }
     }
 
-    init(sqs: String, browserPublicKey: String, browser: String, os: String) throws {
-        self.sqsQueueName = sqs
+    init(sqsMessageQueue: String, sqsControlQueue: String, browserPublicKey: String, browser: String, os: String) throws {
+        self.sqsMessageQueue = sqsMessageQueue
+        self.sqsControlQueue = sqsControlQueue
         self.creationDate = Date()
         self.browser = browser
         self.os = os
 
         do {
-            self.id = try "\(browserPublicKey)_\(sqs)".hash()
+            self.id = try "\(browserPublicKey)_\(sqsMessageQueue)".hash()
             try save(pubKey: browserPublicKey)
         } catch is KeychainError {
             throw SessionError.exists
@@ -43,14 +49,11 @@ class Session: Codable {
     }
 
     func delete(includingQueue: Bool) throws {
-        do {
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
-            try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-            if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsQueueName, sessionID: self.id, type: .end) }
-        } catch {
-            throw error
-        }
+        Logger.shared.info("Session ended.", userInfo: ["code": AnalyticsMessage.sessionEnd.rawValue, "appInitiated": includingQueue])
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
+        if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
     }
 
     func browserPublicKey() throws -> Data {
@@ -67,14 +70,23 @@ class Session: Codable {
 
     func decrypt(message: String) throws -> String {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return String(data: data, encoding: .utf8)!
     }
 
     func decrypt(message: String) throws -> BrowserMessage {
         let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let data = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
-        return try JSONDecoder().decode(BrowserMessage.self, from: data)
+        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let browserMessage = try JSONDecoder().decode(BrowserMessage.self, from: data)
+        return browserMessage
+    }
+    
+    func acknowledge(browserTab: Int) throws {
+        let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
+        let jsonMessage = try JSONEncoder().encode(response)
+        let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
+        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: BrowserMessageType.acknowledge)
     }
     
     // TODO, add request ID etc
@@ -82,16 +94,23 @@ class Session: Codable {
         var response: CredentialsResponse?
         var account = account
         switch type {
+        case .addAndChange:
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
+            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+        case .change:
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id)
+            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+        case .add:
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .login:
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
+            Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "siteName": account.site.name])
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
+            Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue,     "siteName": account.site.name])
             // TODO: create new account, set password etc.
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab)
-        case .reset:
-            // TODO: change password. We should probably implement some kind of feedback mechanism from browser if reset was succesful, otherwise password will be deleted. Also, how to handle offsets? Request should allow user to type custom password somehow
-            let oldPassword: String = try account.password()
-            try account.updatePassword(offset: nil)
-            response = CredentialsResponse(u: account.username, p: oldPassword , np: try account.password(), b: browserTab)
+            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
+        case .acknowledge:
+            response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
         default:
             // TODO: throw error
             return
@@ -102,8 +121,9 @@ class Session: Codable {
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
 
-        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsQueueName, sessionID: self.id, type: type)
+        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: type)
     }
+    
 
     // MARK: Static functions
 
@@ -152,7 +172,7 @@ class Session: Codable {
                 }
             }
         } catch {
-            print(error)
+            Logger.shared.debug("Error deleting accounts.", error: error as NSError)
         }
 
         // To be sure
@@ -160,12 +180,12 @@ class Session: Codable {
         Keychain.sharedInstance.deleteAll(service: appService)
     }
 
-    static func initiate(sqsQueueName: String, pubKey: String, browser: String, os: String) throws -> Session {
+    static func initiate(sqsMessageQueue: String, sqsControlQueue: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
-        let session = try Session(sqs: sqsQueueName, browserPublicKey: pubKey, browser: browser, os: os)
+        let session = try Session(sqsMessageQueue: sqsMessageQueue, sqsControlQueue: sqsControlQueue, browserPublicKey: pubKey, browser: browser, os: os)
         let pairingResponse = try self.createPairingResponse(session: session)
 
-        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsQueueName, sessionID: session.id, type: .pair)
+        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsMessageQueue, sessionID: session.id, type: .pair)
 
         return session
     }
@@ -175,9 +195,9 @@ class Session: Codable {
 
     static private func createPairingResponse(session: Session) throws -> String {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
-            return "" // TODO Throw error
+            throw SessionError.noEndpoint
         }
-        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint)
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
         let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
@@ -194,8 +214,8 @@ class Session: Codable {
 
         // Generate and save own keypair1
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
-        try Keychain.sharedInstance.save(secretData: keyPair.publicKey, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
-        try Keychain.sharedInstance.save(secretData: keyPair.secretKey, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
+        try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
+        try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
     }
 
 }

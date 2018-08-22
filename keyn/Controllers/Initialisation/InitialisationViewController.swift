@@ -35,14 +35,5 @@ class InitialisationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-    @IBAction func generateSeed(_ sender: UIButton) {
-        do {
-            try Seed.create()
-        } catch {
-            print("TODO: Present error when seed can't be created.")
-            print(error)
-        }
-    }
     
 }
