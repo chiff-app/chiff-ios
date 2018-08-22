@@ -19,7 +19,6 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         textView.clipsToBounds = true
-        textView.layer.cornerRadius = 5.0
 
         nameTextField.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)

@@ -15,5 +15,11 @@ class FinishQuestionnaireViewController: UIViewController {
             navCon.finish()
         }
     }
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        if let navCon = self.navigationController as? QuestionnaireController {
+            navCon.cancel()
+        }
+    }
 
 }

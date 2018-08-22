@@ -14,8 +14,15 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var secondWordLabel: UILabel!
     @IBOutlet weak var firstWordTextField: UITextField!
     @IBOutlet weak var secondWordTextField: UITextField!
+    @IBOutlet weak var wordFieldStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
-
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
+    
+    var textFieldOffset: CGPoint!
+    var textFieldHeight: CGFloat!
+    var keyboardHeight: CGFloat!
 
     var mnemonic: [String]?
     var firstWordIndex = 0
@@ -36,6 +43,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         secondWordTextField.delegate = self
         firstWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         secondWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        
+        // Observe keyboard change
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
@@ -46,6 +57,16 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
 
     //MARK: UITextFieldDelegate
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
+        textFieldHeight = textField.frame.size.height
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
@@ -60,9 +81,36 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @objc func textFieldDidChange(textField: UITextField){
         checkWords()
     }
-
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard keyboardHeight == nil else {
+            return
+        }
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            let lowerBoundary = (wordFieldStack.frame.origin.y + wordFieldStack.frame.size.height) - (self.scrollView.frame.size.height - keyboardSize.height) + 15
+            if lowerBoundary > 0 {
+                keyboardHeight = keyboardSize.height
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.constraintContentHeight.constant += (self.keyboardHeight - 40)
+                })
+                
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: lowerBoundary)
+                })
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        guard keyboardHeight != nil else {
+            return
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.constraintContentHeight.constant -= (self.keyboardHeight - 40)
+            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        }
+        
+        keyboardHeight = nil
     }
 
 
