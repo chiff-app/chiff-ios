@@ -23,8 +23,8 @@ class PasswordGenerator {
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
-    func generatePassword(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
-        let (length, chars) = PasswordValidator.parse(ppd: ppd)
+    func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
+        let (length, chars) = parse(ppd: ppd, customPassword: offset != nil)
 
         guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
             throw PasswordGenerationError.tooShort
@@ -39,17 +39,18 @@ class PasswordGenerator {
                 password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
             }
         }
-
+        
         return (password, index)
     }
 
-    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: Int, ppd: PPD?, password: String) throws -> [Int] {
-        guard PasswordValidator(ppd: ppd).validate(password: password) else {
-            // This shouldn't happen if we properly check the custom password in the UI
+    func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
+        // TODO: Check if this is OK. Not validating custom passwords
+        guard PasswordValidator(ppd: ppd).validateMaxLength(password: password) else {
             throw PasswordGenerationError.invalidPassword
         }
 
-        let (length, chars) = PasswordValidator.parse(ppd: ppd)
+
+        let (length, chars) = parse(ppd: ppd, customPassword: true)
 
         var characterIndices = [Int](repeatElement(chars.count, count: length))
         var index = 0
@@ -95,8 +96,29 @@ class PasswordGenerator {
 
 
     // MARK: Private functions
+    
+    private func parse(ppd: PPD?, customPassword: Bool) -> (Int, [Character]) {
+        var length = customPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
+        var chars = [Character]()
+        
+        if let characterSets = ppd?.characterSets {
+            for characterSet in characterSets {
+                if let characters = characterSet.characters {
+                    chars.append(contentsOf: characters.sorted())
+                }
+            }
+        } else {
+            chars.append(contentsOf: PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()) // Optimal character set
+        }
+        
+        if let maxLength = ppd?.properties?.maxLength {
+            length = maxLength < PasswordValidator.MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
+        }
+        
+        return (length, chars)
+    }
 
-    private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: Int, length: Int, chars: [Character], offset: [Int]?) throws -> String {
+    private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: String, length: Int, chars: [Character], offset: [Int]?) throws -> String {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
 
         // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
@@ -140,14 +162,14 @@ class PasswordGenerator {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
 
-    private func generateKey(username: String, passwordIndex: Int, siteID: Int) throws -> Data {
+    private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
-            let siteData = "sitedata".data(using: .utf8) else {
+            let siteData = siteID.prefix(8).data(using: .utf8) else {
                 throw PasswordGenerationError.dataConversion
         }
-
+        
         // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)
-        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordKey(), context: siteData, index: siteID)
+        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: 0)
         let key = try Crypto.sharedInstance.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
 
         return key

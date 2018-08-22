@@ -1,4 +1,5 @@
 import Foundation
+import JustLog
 
 /*
  * An account belongs to the user and can have one Site.
@@ -6,9 +7,10 @@ import Foundation
 struct Account: Codable {
 
     let id: String
-    let username: String
-    let site: Site
+    var username: String
+    var site: Site
     var passwordIndex: Int
+    var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
     static let keychainService = "io.keyn.account"
 
@@ -24,9 +26,12 @@ struct Account: Codable {
 
         let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
         self.passwordIndex = index
+        self.lastPasswordUpdateTryIndex = index
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
+        
+        Logger.shared.info("Site added to Keyn.", userInfo: ["code": AnalyticsMessage.siteAdded.rawValue, "changed": password == nil, "siteID": site.id, "siteName": site.name])
         
         try save(password: generatedPassword)
     }
@@ -39,6 +44,12 @@ struct Account: Codable {
         }
 
         try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+    }
+    
+    func backup() throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
     }
 
     func password() throws -> String {
@@ -55,11 +66,45 @@ struct Account: Codable {
         return try Keychain.sharedInstance.get(id: id, service: Account.keychainService)
     }
 
-    mutating func updatePassword(offset: [Int]?) throws {
-        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+    mutating func nextPassword(offset: [Int]?) throws -> String {
+        let (newPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        self.lastPasswordUpdateTryIndex = index
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: nil, objectData: accountData, label: nil)
+        return newPassword
+    }
+    
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?) throws {
+        if let newUsername = newUsername {
+            self.username = newUsername
+        }
+        if let siteName = siteName {
+            self.site.name = siteName
+        }
+        if let url = url {
+            self.site.url = url
+        }
+        
+        if let newPassword = newPassword {
+            let newIndex = passwordIndex + 1
+            self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
+            self.passwordIndex = newIndex
+            self.lastPasswordUpdateTryIndex = newIndex
+        } else if let newUsername = newUsername {
+           self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.password())
+        }
+        
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+    }
 
-        //TODO: Implement custom passwords here
+    mutating func updatePassword(offset: [Int]?) throws {
+        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+
         self.passwordIndex = newIndex
+        self.lastPasswordUpdateTryIndex = newIndex
+        passwordOffset = offset
 
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw KeychainError.stringEncoding
@@ -68,23 +113,52 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
 
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
+        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+        Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.passwordChange.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
     func delete() throws {
         try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
+        try BackupManager.sharedInstance.deleteAccount(accountId: id)
+        Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
-    static func get(siteID: Int) throws -> Account? {
+    static func get(siteID: String) throws -> [Account] {
         // TODO: optimize when we're bored
+        guard let accounts = try Account.all() else {
+            return [Account]()
+        }
+
+        return accounts.filter { (account) -> Bool in
+            account.site.id == siteID
+        }
+    }
+    
+    static func get(accountID: String) throws -> Account? {
         guard let accounts = try Account.all() else {
             return nil
         }
-        for account in accounts {
-            if account.site.id == siteID {
-                return account
-            }
+        
+        return accounts.first { (account) -> Bool in
+            account.id == accountID
         }
-        return nil
+    }
+    
+    static func save(accountData: Data, id: String) throws {
+        let decoder = PropertyListDecoder()
+        let account = try decoder.decode(Account.self, from: accountData)
+        
+        assert(account.id == id, "Account restoring went wrong. Different id")
+
+        let (password, index) = try PasswordGenerator.sharedInstance.generatePassword(username: account.username, passwordIndex: account.passwordIndex, siteID: account.site.id, ppd: account.site.ppd, offset: account.passwordOffset)
+        
+        assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
+        
+        guard let passwordData = password.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+        
+        try Keychain.sharedInstance.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: accountData)
     }
 
     static func all() throws -> [Account]? {
@@ -99,7 +173,8 @@ struct Account: Codable {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
                 throw KeychainError.unexpectedData
             }
-            accounts.append(try decoder.decode(Account.self, from: accountData))
+            let account = try decoder.decode(Account.self, from: accountData)
+            accounts.append(account)
         }
         return accounts
     }

@@ -10,9 +10,12 @@ import Foundation
 import AWSCore
 import AWSSQS
 import AWSSNS
+import JustLog
 
 enum AWSError: Error {
     case queueUrl(error: String?)
+    case decodingError
+    case createObjectError(error: String?)
 }
 
 class AWS {
@@ -21,103 +24,89 @@ class AWS {
     private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
-    private let endpointIdentifier = "snsDeviceEndpointArn"
+    private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
+    private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
     private let PAIR_TIMEOUT = 1 // 60
     private let LOGIN_TIMEOUT = 1 // 180
-    let snsPlatformApplicationArn = "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn"
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
 
-    private init() {}
-
-
-    // TODO: Unused --> This was replaced by getting the static URL from Properties. Delete if everything seems to work.
-    func getQueueUrl(queueName: String, completionHandler: @escaping (String) -> Void) throws {
-        guard let queueUrlRequest = AWSSQSGetQueueUrlRequest() else {
-            throw AWSError.queueUrl(error: nil)
+    private init() {}    
+    
+    func getIdentityId() -> String {
+        if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
+            return credentialsProvider.identityId ?? "NoIdentityId"
         }
-        queueUrlRequest.queueName = queueName
-
-        // TODO: This getQueueUrl does not call the handler when request is accepted from Home screen (ACCEPT)?
-        sqs.getQueueUrl(queueUrlRequest).continueOnSuccessWith { (task: AWSTask!) -> Any? in
-            guard let response = task.result else {
-                print("TODO: handle error")
-                return nil
-            }
-            if let queueUrl = response.queueUrl {
-                completionHandler(queueUrl)
-            }
-            return nil
-        }.continueWith { (task: AWSTask!) -> Any? in
-            if task.error != nil {
-                print("GetQueueError: \(String(describing: task.error))")
-                // TODO: if this is a AWS.SimpleQueueService.NonExistentQueue error, should we delete the session (if any, and there shouldn't be) or do nothing?
-            }
-            return nil
-        }
+        return "NoIdentityId"
     }
 
     func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
-        if let sendRequest = AWSSQSSendMessageRequest() {
-            let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-            sendRequest.queueUrl = queueUrl
-            sendRequest.messageBody = message
-            let typeAttributeValue = AWSSQSMessageAttributeValue()
-            typeAttributeValue?.stringValue = String(type.rawValue)
-            typeAttributeValue?.dataType = "Number"
-            sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
-            sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
-                if let error = error {
-                    print("Error sending message to SQS queue: \(String(describing: error))")
-                } else if let messageId = result?.messageId {
-                    // TODO: Message retention, zie trello
-//                    switch type {
-//                    case .login, .register, .reset:
-//                        AWS.sharedInstance.deleteFromQueue(delay: self.LOGIN_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
-//                    case .pair:
-//                        AWS.sharedInstance.deleteFromQueue(delay: self.PAIR_TIMEOUT, queueUrl: queueUrl, messageId: messageId)
-//                    default:
-//                        // Is the sqs queue message retention period (2 weeks)
-//                        print("End-session message sent.")
-//                    }
-                }
-            })
+        guard let sendRequest = AWSSQSSendMessageRequest() else {
+            Logger.shared.error("Could not create AWSSQSSendMessageRequest.")
+            return
+        }
+        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+        sendRequest.queueUrl = queueUrl
+        sendRequest.messageBody = message
+        let typeAttributeValue = AWSSQSMessageAttributeValue()
+        typeAttributeValue?.stringValue = String(type.rawValue)
+        typeAttributeValue?.dataType = "Number"
+        sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
+        sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
+            if let error = error {
+                Logger.shared.error("Could not send message to SQS queue.", error: error as NSError)
+            }
+        })
+    }
+    
+    func deleteFromSqs(receiptHandle: String, queueName: String) {
+        guard let deleteRequest = AWSSQSDeleteMessageRequest() else {
+            Logger.shared.error("Could not create AWSSQSDeleteMessageRequest.")
+            return
+        }
+        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+        deleteRequest.queueUrl = queueUrl
+        deleteRequest.receiptHandle = receiptHandle
+        sqs.deleteMessage(deleteRequest).continueWith { (task) -> Any? in
+            if let error = task.error {
+                Logger.shared.error("Could not delete message to SQS queue.", error: error as NSError)
+            }
+            return nil
         }
     }
-
-    // Unused --> message retention
-    func deleteFromQueue(delay: Int, queueUrl: String, messageId: String) {
-        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.seconds(delay)) {
-            if let deleteMessageRequest = AWSSQSDeleteMessageRequest() {
-                deleteMessageRequest.queueUrl = queueUrl
-                deleteMessageRequest.receiptHandle = messageId
-                self.sqs.deleteMessage(deleteMessageRequest).continueWith(block: { (task: AWSTask!) -> Any? in
-                    if task.error != nil {
-                        if let error = task.error as NSError? {
-                            print("Error: \(error)")
-                        }
-                    } else {
-                        guard let response = task.result else {
-                            print("TODO: handle error")
-                            return nil
-                        }
-                        print(response)
-                    }
-                    return nil
-                })
+    
+    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [AWSSQSMessage], _ queueName : String) -> Void) {
+        guard let receiveRequest = AWSSQSReceiveMessageRequest() else {
+            Logger.shared.error("Could not create AWSSQSReceiveMessageRequest.")
+            return
+        }
+        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
+        receiveRequest.queueUrl = queueUrl
+        receiveRequest.waitTimeSeconds = shortPolling ? 0 : 20
+        receiveRequest.messageAttributeNames = ["All"]
+        sqs.receiveMessage(receiveRequest).continueOnSuccessWith { (task) -> Any? in
+            if let messages = task.result?.messages {
+                completionHandler(messages, queueName)
             }
+            
+            return nil
+        }.continueWith { (task) -> Any? in
+            if let error = task.error {
+                Logger.shared.error("Could not get message from SQS queue.", error: error as NSError)
+            }
+            return nil
         }
     }
 
     func snsRegistration(deviceToken: Data) {
         let token = deviceToken.hexEncodedString()
-        if Keychain.sharedInstance.has(id: endpointIdentifier, service: awsService) {
+        if Keychain.sharedInstance.has(id: endpointKeychainIdentifier, service: awsService) {
             // Get endpoint from Keychain
             do  {
-                let endpointData = try Keychain.sharedInstance.get(id: endpointIdentifier, service: awsService)
+                let endpointData = try Keychain.sharedInstance.get(id: endpointKeychainIdentifier, service: awsService)
                 snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
                 checkIfUpdateIsNeeded(token: token)
             } catch {
-                print("Error getting endpoint from Keychain: \(error). Create new endpoint?")
+                Logger.shared.warning("Error getting endpoint from Keychain. Creating new endpoint", error: error as NSError)
                 // Delete from Keychain
                 createPlatformEndpoint(token: token)
             }
@@ -130,17 +119,83 @@ class AWS {
     func deleteEndpointArn() {
         Keychain.sharedInstance.deleteAll(service: awsService)
     }
+    
+    func subscribe() {
+        guard let subscribeRequest = AWSSNSSubscribeInput() else {
+            Logger.shared.error("Could not create subscribeRequest.")
+            return
+        }
+        guard let endpoint = snsDeviceEndpointArn else {
+            Logger.shared.error("Could not subscribe. No endpoint.")
+            return
+        }
+        subscribeRequest.protocols = "application"
+        subscribeRequest.endpoint = endpoint
+        subscribeRequest.topicArn = Properties.isDebug ? Properties.AWSSNSNotificationArn.sandbox : Properties.AWSSNSNotificationArn.production
+        sns.subscribe(subscribeRequest).continueOnSuccessWith { (task) -> Any? in
+            if let result = task.result {
+                if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
+                    do {
+                        try Keychain.sharedInstance.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                    } catch {
+                        Logger.shared.error("Error saving Keyn subscription identifier.", error: error as NSError)
+                        try? Keychain.sharedInstance.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
+                    }
+                } else {
+                    Logger.shared.error("Error subscribing to Keyn notifications.")
+                }
+            }
+            return nil
+        }.continueWith { (task) -> Any? in
+            if let error = task.error {
+                Logger.shared.error("Error subscribing to Keyn notifications.", error: error as NSError)
+            }
+            return nil
+        }
+    }
+    
+    func unsubscribe() {
+        do {
+            guard let unsubscribeRequest = AWSSNSUnsubscribeInput() else {
+                throw AWSError.createObjectError(error: "Could not create unsubscribeRequest.")
+            }
+            let subscriptionEndpointData = try Keychain.sharedInstance.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+            guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
+                throw AWSError.decodingError
+            }
+            unsubscribeRequest.subscriptionArn = subscriptionEndpoint
+            sns.unsubscribe(unsubscribeRequest).continueOnSuccessWith { (task) -> Any? in
+                do {
+                   try Keychain.sharedInstance.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                } catch {
+                    Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error as NSError)
+                }
+                return nil
+            }.continueWith { (task) -> Any? in
+                if let error = task.error {
+                    Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error as NSError)
+                }
+                return nil
+            }
+        } catch {
+            Logger.shared.error("Error getting subcription endoint from Keychain", error: error as NSError)
+        }
+    }
+    
+    func isSubscribed() -> Bool {
+        return Keychain.sharedInstance.has(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+    }
 
     // MARK: Private functions
 
     private func checkIfUpdateIsNeeded(token: String) {
         guard let endpoint = snsDeviceEndpointArn else {
-            // No endpoint found. Should not happen, but recreate?
+            Logger.shared.warning("No endpoint found. Creating new endpoint")
             createPlatformEndpoint(token: token)
             return
         }
         guard let attributesRequest = AWSSNSGetEndpointAttributesInput() else {
-            print("Attributes request could not be created: handle error")
+            Logger.shared.error("Could not create AWSSNSGetEndpointAttributesInput.")
             return
         }
         attributesRequest.endpointArn = endpoint
@@ -148,14 +203,15 @@ class AWS {
             if task.error != nil {
                 if let error = task.error as NSError? {
                     if error.code == 6 {
+                        Logger.shared.warning("No endpoint found. Creating new endpoint", error: error)
                         self.createPlatformEndpoint(token: token)
                     } else {
-                        print("Error: \(error)")
+                        Logger.shared.error("Could not get endpoint attributes", error: error)
                     }
                 }
             } else {
                 guard let response = task.result else {
-                    print("TODO: handle error")
+                    Logger.shared.error("Result was empty.")
                     return nil
                 }
                 if response.attributes!["Token"]! != token || response.attributes!["Enabled"]! != "true" {
@@ -168,7 +224,7 @@ class AWS {
 
     private func updatePlatformEndpoint(token: String) {
         guard let attributesRequest = AWSSNSSetEndpointAttributesInput() else {
-            print("Attributes set request could not be created: handle error")
+            Logger.shared.error("Could not create AWSSNSSetEndpointAttributesInput.")
             return
         }
         attributesRequest.attributes = [
@@ -177,8 +233,8 @@ class AWS {
         ]
         attributesRequest.endpointArn = snsDeviceEndpointArn!
         sns.setEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
-            if task.error != nil {
-                print("Error: \(String(describing: task.error))")
+            if let error = task.error {
+                Logger.shared.error("Could not update AWS Platform Endpoint.", error: error as NSError)
             }
             return nil
         })
@@ -186,31 +242,31 @@ class AWS {
 
     private func createPlatformEndpoint(token: String) {
         guard let request = AWSSNSCreatePlatformEndpointInput() else {
-            print("Endpoint could not be created: handle error")
+            Logger.shared.error("Could not create AWSSNSCreatePlatformEndpointInput.")
             return
         }
         request.token = token
         request.platformApplicationArn = Properties.isDebug ? Properties.AWSPlaformApplicationArn.sandbox : Properties.AWSPlaformApplicationArn.production
         sns.createPlatformEndpoint(request).continueOnSuccessWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
             guard let response = task.result else {
-                print("TODO: handle error")
+                Logger.shared.error("Result was empty.")
                 return nil
             }
             if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
-                    try? Keychain.sharedInstance.delete(id: self.endpointIdentifier, service: self.awsService)
-                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointIdentifier, service: self.awsService)
+                    try? Keychain.sharedInstance.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
+                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
                 } catch {
-                    print(error)
+                    Logger.shared.error("Could not save endpoint to keychain", error: error as NSError)
                 }
             }
             return nil
         }).continueWith(block: { (task: AWSTask!) -> Any? in
-            if task.error != nil {
-                print("Error: \(String(describing: task.error))")
+            if let error = task.error {
+                Logger.shared.error("Could not create platform endpoint.", error: error as NSError)
             }
             return nil
         })

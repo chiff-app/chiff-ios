@@ -2,14 +2,19 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '11.0'
 
+# ignore all warnings from all pods
+inhibit_all_warnings!
+
 use_frameworks!
 
 def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
-  pod 'Sodium', '~> 0.5'
+  pod 'Sodium', :git => 'https://github.com/jedisct1/swift-sodium.git'
   pod 'AWSCognito'
   pod 'AWSSNS'
   pod 'AWSSQS'
+#  pod 'AWSAPIGateway'
+  pod "JustLog"
 end
 
 target 'keyn' do

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JustLog
 
 class BackupWizardViewController: UIViewController {
 
@@ -24,8 +25,9 @@ class BackupWizardViewController: UIViewController {
             wordLabel.text = mnemonic![counter]
             counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
         } catch {
-            // Handle error and total destruction
+            Logger.shared.error("Error getting mnemonic.", error: error as NSError)
         }
+
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -69,6 +71,7 @@ class BackupWizardViewController: UIViewController {
             if self.isInitialSetup {
                 let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+                rootController.selectedIndex = 1
                 UIApplication.shared.keyWindow?.rootViewController = rootController
             } else {
                 self.dismiss(animated: true, completion: nil)
