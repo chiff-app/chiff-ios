@@ -551,13 +551,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     @available(iOS 10.0, *)
     private func registerForPushNotifications() {
-        // TODO: Add if #available(iOS 10.0, *), see https://medium.com/@thabodavidnyakalloklass/ios-push-with-amazons-aws-simple-notifications-service-sns-and-swift-made-easy-51d6c79bc206
-//        let acceptRequestAction = UNNotificationAction(identifier: "ACCEPT",
-//                                                       title: "Accept",
-//                                                       options: UNNotificationActionOptions(rawValue: 0))
-//        let rejectRequestAction = UNNotificationAction(identifier: "REJECT",
-//                                                       title: "Reject",
-//                                                       options: .destructive)
         let passwordRequestNotificationCategory = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
                                                                          actions: [],
                                                                          intentIdentifiers: [],

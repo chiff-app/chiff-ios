@@ -1,6 +1,4 @@
 PODS:
-  - AWSAPIGateway (2.6.13):
-    - AWSCore (= 2.6.13)
   - AWSCognito (2.6.13):
     - AWSCore (= 2.6.13)
   - AWSCore (2.6.13)
@@ -17,7 +15,6 @@ PODS:
   - SwiftyBeaver (1.5.2)
 
 DEPENDENCIES:
-  - AWSAPIGateway
   - AWSCognito
   - AWSSNS
   - AWSSQS
@@ -27,7 +24,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AWSAPIGateway
     - AWSCognito
     - AWSCore
     - AWSSNS
@@ -47,7 +43,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/jedisct1/swift-sodium.git
 
 SPEC CHECKSUMS:
-  AWSAPIGateway: ae494773514af2129d0d5da55c5e5782df13bc27
   AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
   AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
   AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
@@ -58,6 +53,6 @@ SPEC CHECKSUMS:
   Sodium: 3cd000dc8d21be5d448fbb4366a7b1c9392b1ae6
   SwiftyBeaver: 85daaaa2b3ae6e31b7b55c99430e8b91dac088af
 
-PODFILE CHECKSUM: 9c27278be33598df2dfb5240b217b46d2092820d
+PODFILE CHECKSUM: 62c17a5afc6014f2ae7d8b827e6d5802460ce103
 
 COCOAPODS: 1.5.3
