@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Sodium
 import JustLog
-import CommonCrypto
+//import CommonCrypto
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {

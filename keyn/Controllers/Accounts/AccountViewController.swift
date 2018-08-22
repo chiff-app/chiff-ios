@@ -65,7 +65,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     
     @IBAction func showPassword(_ sender: UIButton) {
         if userPasswordTextField.isEnabled {
-            userPasswordTextField.isSecureTextEntry.toggle()
+            userPasswordTextField.isSecureTextEntry = !userPasswordTextField.isSecureTextEntry
         } else {
             showHiddenPasswordPopup()
         }
