@@ -38,7 +38,7 @@ class MPCQuestionViewController: QuestionViewController, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let mpcOptions = question?.mpcOptions {
-            if let response = question?.response, let index = mpcOptions.firstIndex(of: response) {
+            if let response = question?.response, let index = mpcOptions.index(of: response) {
                 if index == indexPath.row {
                     tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 }

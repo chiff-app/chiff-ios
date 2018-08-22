@@ -37,15 +37,15 @@ class CryptoTests: XCTestCase {
         )
     }
 
-    func testDeriveKeyFromSeedThrowsCryptoErrorHashingWhenSodiumHashFails() {
-//        CryptoError.hashing
-        XCTAssertTrue(false)
-    }
+//    func testDeriveKeyFromSeedThrowsCryptoErrorHashingWhenSodiumHashFails() {
+////        CryptoError.hashing
+//        XCTAssertTrue(false)
+//    }
 
-    func testDeriveKeyFromSeedThrowsCryptoErrorKeyDerivationWhenSodiumDeriveFails() {
-//        CryptoError.keyDerivation
-        XCTAssertTrue(false)
-    }
+//    func testDeriveKeyFromSeedThrowsCryptoErrorKeyDerivationWhenSodiumDeriveFails() {
+////        CryptoError.keyDerivation
+//        XCTAssertTrue(false)
+//    }
 
     func testCalculatePasswordOffsetDoesntThrow() {
         Site.get(id: linkedInPPDHandle) { (site) in
