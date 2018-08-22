@@ -26,8 +26,6 @@ class NewAccountViewController: AccountViewController {
         requirementLabels.sort(by: { (first, second) -> Bool in
             return first.tag < second.tag
         })
-
-        // TODO: get PPD?
         
         updateSaveButtonState()
 
