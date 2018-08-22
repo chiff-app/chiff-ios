@@ -2,7 +2,7 @@
 import UIKit
 
 class LikertQuestionViewController: QuestionViewController {
-    @IBOutlet weak var likertValue: UISegmentedControl!
+    @IBOutlet weak var likertValue: ExtendedUISegmentedControl!
     @IBOutlet weak var minLabel: UILabel!
     @IBOutlet weak var maxLabel: UILabel!
     
@@ -26,13 +26,18 @@ class LikertQuestionViewController: QuestionViewController {
         }
     }
     
-
-    @IBAction func likertValue(_ sender: UISegmentedControl) {
+    @IBAction func likertValue(_ sender: ExtendedUISegmentedControl) {
         question?.response = String(sender.selectedSegmentIndex+1)
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.submitQuestion(index: questionIndex, question: question)
             navCon.nextQuestion()
         }
     }
+}
 
+class ExtendedUISegmentedControl: UISegmentedControl {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        self.selectedSegmentIndex = UISegmentedControlNoSegment
+    }
 }
