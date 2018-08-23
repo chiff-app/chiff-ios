@@ -41,7 +41,7 @@ end
 
 platform :ios do
     desc 'Build app'
-    lane :build_keyn_beta do
+    lane :build_keyn do
         scan
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
@@ -53,7 +53,7 @@ platform :ios do
     desc 'Release minor version'
     lane :release_minor_version do
         increment_version_number(bump_type: 'minor')
-        build_keyn_beta
+        build_keyn
         upload_to_testflight
         slack(message: "New version of Keyn released! #{version}")
     end
@@ -61,16 +61,15 @@ platform :ios do
     desc 'Release patch version'
     lane :release_patch_version do
         version = increment_version_number(bump_type: 'patch')
-        build_keyn_beta
+        build_keyn
         slack(message: "New version of Keyn released! #{version}")
         upload_to_testflight
     end
 
     desc 'Release major version'
     lane :release_major_version do
-        # increment_version_number(bump_type: 'major')
-        version = increment_version_number(version_number: '1.0.0')
-        build_keyn_beta
+        version = increment_version_number(bump_type: 'major')
+        build_keyn
         upload_to_testflight
         slack(message: "New version of Keyn released! #{version}")
     end
