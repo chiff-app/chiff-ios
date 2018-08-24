@@ -106,7 +106,7 @@ class API {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.keynApiVersion)/\(type.rawValue)/\(path)"
+        components.path = "/\(Properties.ppdTestingMode ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)/\(path)"
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {
