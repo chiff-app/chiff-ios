@@ -19,6 +19,10 @@ struct Properties {
         #endif
         return debug
     }()
+    
+    static let ppdTestingMode: Bool = {
+        return UserDefaults.standard.bool(forKey: "ppdTestingMode")
+    }()
 
     static let AWSPlaformApplicationArn = (
         sandbox: "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn",
@@ -28,7 +32,11 @@ struct Properties {
     static let AWSSQSBaseUrl = "https://sqs.eu-central-1.amazonaws.com/589716660077/"
     
     static let keynApi = "api.keyn.io"
-    static let keynApiVersion = "v1"
+    static let keynApiVersion = (
+        production: "v1",
+        development: "dev"
+    )
+    
     
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
