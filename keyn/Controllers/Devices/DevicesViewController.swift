@@ -132,7 +132,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let session = sessions[indexPath.row]
                 cell.titleLabel.text = "\(session.browser) on \(session.os)"
                 cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-                cell.deviceLogo.image = UIImage(named: "Chrome")
+                cell.deviceLogo.image = UIImage(named: session.browser)
                 cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
             }
             return cell
