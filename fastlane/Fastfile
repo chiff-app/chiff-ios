@@ -46,7 +46,9 @@ platform :ios do
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
         sigh(app_identifier: 'io.keyn.keyn')
-        increment_build_number
+        increment_build_number({
+          build_number: latest_testflight_build_number + 1
+        })
         gym
     end
 
@@ -62,8 +64,8 @@ platform :ios do
     lane :release_patch_version do
         version = increment_version_number(bump_type: 'patch')
         build_keyn
-        slack(message: "New version of Keyn released! #{version}")
         upload_to_testflight
+        slack(message: "New version of Keyn released! #{version}")
     end
 
     desc 'Release major version'
