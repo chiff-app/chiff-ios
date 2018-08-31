@@ -29,6 +29,7 @@ class AWS {
     private let PAIR_TIMEOUT = 1 // 60
     private let LOGIN_TIMEOUT = 1 // 180
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
+    var isFirstLaunch = false
 
     private init() {}    
     
@@ -259,6 +260,9 @@ class AWS {
                     try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
+                    if self.isFirstLaunch {
+                        self.subscribe()
+                    }
                 } catch {
                     Logger.shared.error("Could not save endpoint to keychain", error: error as NSError)
                 }

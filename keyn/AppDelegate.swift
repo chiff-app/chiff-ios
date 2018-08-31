@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
         //BackupManager.sharedInstance.deleteAll()
         //Questionnaire.cleanFolder()
+        //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
 
         // Override point for customization after application launch.
         enableLogging()
@@ -42,8 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-
-        UserDefaults.standard.removeObject(forKey: "backedUp")
 
         Questionnaire.fetch()
         handlePendingNotifications()
@@ -500,7 +499,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
-            AWS.sharedInstance.subscribe()
+            AWS.sharedInstance.isFirstLaunch = true
         }
         
         if !Seed.exists() {
