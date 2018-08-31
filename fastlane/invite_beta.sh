@@ -9,6 +9,4 @@ sendEmail -f "Keyn <beta@keyn.io>" -u Keyn Beta -t $EMAIL -s mail.keyn.io:587 -x
 bundle exec fastlane pilot add $EMAIL -g "Beta A"
 done
 
-echo $@
-
 echo Done!
