@@ -142,12 +142,18 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     func addAccount(account: Account) {
-        let newIndexPath = IndexPath(row: unfilteredAccounts.count, section: 0)
         unfilteredAccounts.append(account)
-        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-            first.site.name < second.site.name
+        filteredAccounts?.append(account)
+        filteredAccounts?.sort(by: { (first, second) -> Bool in
+            return first.site.name < second.site.name
         })
-        tableView.insertRows(at: [newIndexPath], with: .automatic)
+        if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
+            return account.id == filteredAccount.id
+        }) {
+            let newIndexPath = IndexPath(row: filteredIndex, section: 0)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+        updateSearchResults(for: searchController)
     }
 
     //MARK: Actions
