@@ -109,6 +109,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         }
         try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
             if let session = session {
+                print(session)
                 DispatchQueue.main.async {
                     self?.add(session: session)
                 }
