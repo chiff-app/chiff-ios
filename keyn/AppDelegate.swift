@@ -48,6 +48,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         handlePendingNotifications()
         return true
     }
+    
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        do {
+            try AuthenticationGuard.sharedInstance.authorizePairing(url: url) { (session, error) in
+                DispatchQueue.main.async {
+                    if let session = session, let rootViewController = self.window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
+                        for viewController in devicesNavigationController.viewControllers {
+                            if let devicesViewController = viewController as? DevicesViewController {
+                                if devicesViewController.isViewLoaded {
+                                    devicesViewController.addSession(session: session)
+                                }
+                            } else if let qrViewController = viewController as? QRViewController {
+                                if qrViewController.isViewLoaded {
+                                    qrViewController.add(session: session)
+                                }
+                            }
+                        }
+                    } else if let error = error {
+                        Logger.shared.warning("Error creating session", error: error as NSError)
+                    }
+                }
+            }
+        } catch {
+            Logger.shared.error("Error creating session", error: error as NSError)
+        }
+
+        return true
+    }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         AWS.sharedInstance.snsRegistration(deviceToken: deviceToken)
