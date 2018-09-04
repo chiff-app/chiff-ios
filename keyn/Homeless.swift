@@ -53,7 +53,7 @@ extension UIApplication {
 }
 
 extension String {
-    func hash() throws -> String {
+    func hash() -> String {
         do {
             let hash = try Crypto.sharedInstance.hash(self)
             return hash

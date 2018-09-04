@@ -319,48 +319,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
-            if messages.count > 0 {
-                for message in messages {
-                    guard let body = message.body else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard let receiptHandle = message.receiptHandle else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard type == BrowserMessageType.acknowledge.rawValue else {
-                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
-                        return
-                    }
-                    AWS.sharedInstance.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
-
-                    do {
-                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
-                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
-                            var account = try Account.get(accountID: accountId)
-                            try account?.updatePassword(offset: nil)
-                        }
-                    } catch {
-                        Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
-                    }
-                    if let handler = completionHandler {
-                        handler()
-                    }
-                }
-            } else {
-                if (attempts > 1) {
-                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
-                } else if let handler = completionHandler {
-                    handler()
-                }
-            }
-        }
+//        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
+//            if messages.count > 0 {
+//                for message in messages {
+//                    guard let body = message.body else {
+//                        Logger.shared.error("Could not parse SQS message body.")
+//                        return
+//                    }
+//                    guard let receiptHandle = message.receiptHandle else {
+//                        Logger.shared.error("Could not parse SQS message body.")
+//                        return
+//                    }
+//                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
+//                        Logger.shared.error("Could not parse SQS message body.")
+//                        return
+//                    }
+//                    guard type == BrowserMessageType.acknowledge.rawValue else {
+//                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
+//                        return
+//                    }
+//                    AWS.sharedInstance.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
+//
+//                    do {
+//                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
+//                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
+//                            var account = try Account.get(accountID: accountId)
+//                            try account?.updatePassword(offset: nil)
+//                        }
+//                    } catch {
+//                        Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
+//                    }
+//                    if let handler = completionHandler {
+//                        handler()
+//                    }
+//                }
+//            } else {
+//                if (attempts > 1) {
+//                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+//                } else if let handler = completionHandler {
+//                    handler()
+//                }
+//            }
+//        }
     }
     
     
