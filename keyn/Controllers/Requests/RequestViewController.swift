@@ -123,7 +123,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
-                    if type == .login || type == .change || type == .fill {
+                    if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.sharedInstance.hasFaceID() {
                         authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
