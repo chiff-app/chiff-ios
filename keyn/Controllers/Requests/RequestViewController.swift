@@ -119,8 +119,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 accounts = try Account.get(siteID: notification.siteID)
                 if !accountExists() {
                     type = .add
-                }
-                if accounts.count > 1 {
+                } else if accounts.count > 1 {
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
