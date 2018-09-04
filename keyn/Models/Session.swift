@@ -105,6 +105,9 @@ class Session: Codable {
         case .login:
             Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil)
+        case .fill:
+            Logger.shared.info("Fill password response sent.", userInfo: ["code": AnalyticsMessage.fillResponse.rawValue, "siteName": account.site.name])
+            response = CredentialsResponse(u: nil, p: try account.password(), np: nil, b: browserTab, a: nil)
         case .register:
             Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue,     "siteName": account.site.name])
             // TODO: create new account, set password etc.

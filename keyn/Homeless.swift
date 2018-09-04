@@ -216,6 +216,7 @@ enum AnalyticsMessage: String {
     case iosUpdate = "IOS_UPDATE" // TODO
     case pairResponse = "PAIR_RESPONSE"
     case loginResponse = "LOGIN_RESPONSE"
+    case fillResponse = "FILL_PASSWORD_RESPONSE"
     case addAndChange = "ADDANDCHANGE"
     case passwordChange = "PASSWORD_CHANGE"
     case addResponse = "ADD_RESPONSE"
@@ -279,6 +280,7 @@ enum BrowserMessageType: Int, Codable {
     case addAndChange
     case end
     case acknowledge
+    case fill
 }
 
 enum KeyType: UInt64 {

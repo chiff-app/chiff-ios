@@ -65,6 +65,10 @@ class NotificationProcessor {
                 content.userInfo["username"] = username
             }
             addSiteInfo = true
+        case .fill:
+            content.title = "Fill password request"
+            content.body = "\(siteName) on \(session.browser) on \(session.os)."
+            addSiteInfo = true
         case .pair:
             content.title = "Pairing request"
             content.body = "\(session.browser) on \(session.os)."
