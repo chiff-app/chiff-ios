@@ -11,53 +11,50 @@ enum SessionError: Error {
 class Session: Codable {
 
     let id: String
-    let sqsMessageQueue: String
-    let sqsControlQueue: String
+    let messagePubKey: String
+    let controlPubKey: String
+    let encryptionPubKey: String
     let creationDate: Date
     let browser: String
     let os: String
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
-    private static let browserService = "io.keyn.session.browser"
+    private static let messageQueueService = "io.keyn.session.message"
+    private static let controlQueueService = "io.keyn.session.control"
     private static let appService = "io.keyn.session.app"
 
     private enum KeyIdentifier: String, Codable {
         case pub = "public"
         case priv = "private"
-        case browser = "browser"
-
+        case control = "control"
+        case message = "message"
+        
         func identifier(for id:String) -> String {
             return "\(id)-\(self.rawValue)"
         }
     }
 
-    init(sqsMessageQueue: String, sqsControlQueue: String, browserPublicKey: String, browser: String, os: String) throws {
-        self.sqsMessageQueue = sqsMessageQueue
-        self.sqsControlQueue = sqsControlQueue
+    init(encryptionPubKey: String, messagePubKey: String, controlPubKey: String, browser: String, os: String) {
+        self.encryptionPubKey = encryptionPubKey
+        self.messagePubKey = messagePubKey
+        self.controlPubKey = controlPubKey
         self.creationDate = Date()
         self.browser = browser
         self.os = os
-
-        do {
-            self.id = try "\(browserPublicKey)_\(sqsMessageQueue)".hash()
-            try save(pubKey: browserPublicKey)
-        } catch is KeychainError {
-            throw SessionError.exists
-        } catch is CryptoError {
-            throw SessionError.invalid
-        }
+        self.id = "\(encryptionPubKey)_\(messagePubKey)".hash()
     }
 
     func delete(includingQueue: Bool) throws {
         Logger.shared.info("Session ended.", userInfo: ["code": AnalyticsMessage.sessionEnd.rawValue, "appInitiated": includingQueue])
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+        if includingQueue { try sendToControlQueue(message: "Ynll") }
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService)
+        try Keychain.sharedInstance.delete(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-        if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
     }
-
+    
     func browserPublicKey() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+        return try Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey)
     }
 
     func appPrivateKey() throws -> Data {
@@ -85,8 +82,7 @@ class Session: Codable {
         let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil)
         let jsonMessage = try JSONEncoder().encode(response)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
-        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: BrowserMessageType.acknowledge)
+        try sendToMessageQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge)
     }
     
     // TODO, add request ID etc
@@ -119,19 +115,16 @@ class Session: Codable {
             return
         }
 
-        let jsonMessage = try JSONEncoder().encode(response!)
-
-        let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
-        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-
-        AWS.sharedInstance.sendToSqs(message: b64ciphertext, to: sqsMessageQueue, sessionID: self.id, type: type)
+        let message = try JSONEncoder().encode(response!)
+        let ciphertext = try Crypto.sharedInstance.encrypt(message, pubKey: Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey), privKey: appPrivateKey())
+        try sendToMessageQueue(ciphertext: ciphertext, type: type)
     }
     
 
     // MARK: Static functions
 
     static func all() throws -> [Session]? {
-        guard let dataArray = try Keychain.sharedInstance.all(service: browserService) else {
+        guard let dataArray = try Keychain.sharedInstance.all(service: messageQueueService) else {
             return nil
         }
 
@@ -147,17 +140,20 @@ class Session: Codable {
         return sessions
     }
 
-    static func exists(sqs: String, browserPublicKey: String) throws -> Bool {
-        let id = try "\(browserPublicKey)_\(sqs)".hash()
-        return Keychain.sharedInstance.has(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+    static func exists(encryptionPubKey: String, queueSeed: String) throws -> Bool {
+        let seed = try Crypto.sharedInstance.deriveKey(key: queueSeed, context: "message", index: 1)
+        let messageKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: seed)
+        let messagePubKey = try Crypto.sharedInstance.convertToBase64(from: messageKeyPair.publicKey.data)
+        let id = "\(encryptionPubKey)_\(messagePubKey)".hash()
+        return Keychain.sharedInstance.has(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
     }
 
     static func exists(id: String) throws -> Bool {
-        return Keychain.sharedInstance.has(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService)
+        return Keychain.sharedInstance.has(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
     }
 
     static func getSession(id: String) throws -> Session? {
-        guard let sessionDict = try Keychain.sharedInstance.attributes(id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService) else {
+        guard let sessionDict = try Keychain.sharedInstance.attributes(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService) else {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
@@ -179,16 +175,29 @@ class Session: Codable {
         }
 
         // To be sure
-        Keychain.sharedInstance.deleteAll(service: browserService)
+        Keychain.sharedInstance.deleteAll(service: messageQueueService)
+        Keychain.sharedInstance.deleteAll(service: controlQueueService)
         Keychain.sharedInstance.deleteAll(service: appService)
     }
 
-    static func initiate(sqsMessageQueue: String, sqsControlQueue: String, pubKey: String, browser: String, os: String) throws -> Session {
+    static func initiate(queueSeed: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
-        let session = try Session(sqsMessageQueue: sqsMessageQueue, sqsControlQueue: sqsControlQueue, browserPublicKey: pubKey, browser: browser, os: os)
+        let messageKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "message", index: 1))
+        let controlKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "control", index: 2))
+        let messagePubKey = try Crypto.sharedInstance.convertToBase64(from: messageKeyPair.publicKey.data)
+        let controlPubKey = try Crypto.sharedInstance.convertToBase64(from: controlKeyPair.publicKey.data)
+        let session = Session(encryptionPubKey: pubKey, messagePubKey: messagePubKey, controlPubKey: controlPubKey, browser: browser, os: os)
+        
+        do {
+            try session.save(messagePrivKey: messageKeyPair.secretKey.data, controlPrivKey: controlKeyPair.secretKey.data)
+        } catch is KeychainError {
+            throw SessionError.exists
+        } catch is CryptoError {
+            throw SessionError.invalid
+        }
+        
         let pairingResponse = try self.createPairingResponse(session: session)
-
-        AWS.sharedInstance.sendToSqs(message: pairingResponse, to: sqsMessageQueue, sessionID: session.id, type: .pair)
+        try session.sendToMessageQueue(ciphertext: pairingResponse, type: BrowserMessageType.pair)
 
         return session
     }
@@ -196,29 +205,54 @@ class Session: Codable {
 
     // MARK: Private functions
 
-    static private func createPairingResponse(session: Session) throws -> String {
+    static private func createPairingResponse(session: Session) throws -> Data {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
             throw SessionError.noEndpoint
         }
         let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
-        let ciphertext = try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
-        let b64ciphertext = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-
-        return b64ciphertext
+        return try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
     }
 
-    private func save(pubKey: String) throws {
+    private func save(messagePrivKey: Data, controlPrivKey: Data) throws {
         // Save browser public key
-        let publicKey = try Crypto.sharedInstance.convertFromBase64(from: pubKey)
 
-        let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.sharedInstance.save(secretData: publicKey, id: KeyIdentifier.browser.identifier(for: id), service: Session.browserService, objectData: sessionData, restricted: false)
+        let sessionData = try PropertyListEncoder().encode(self) // Now contains public keys
+        try Keychain.sharedInstance.save(secretData: messagePrivKey, id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService, objectData: sessionData, restricted: false)
+        try Keychain.sharedInstance.save(secretData: controlPrivKey, id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService, restricted: false)
 
         // Generate and save own keypair1
         let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
         try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, restricted: true)
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
+    }
+    
+    func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
+        let message = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        try sendToQueue(data: message, queue: messagePubKey, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
+    }
+    
+    func sendToControlQueue(message: String) throws {
+        try sendToQueue(data: message, queue: controlPubKey, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: BrowserMessageType.end)
+    }
+    
+    private func sendToQueue(data: String, queue: String, privKey: Data, type: BrowserMessageType) throws {
+        let message = [
+            "type": APIRequestType.post.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
+            "data": data
+        ]
+        
+        let data = try JSONSerialization.data(withJSONObject: message, options: [])
+        let signature = try Crypto.sharedInstance.sign(message: data, privKey: privKey)
+
+        let parameters = [
+            "m": try Crypto.sharedInstance.convertToBase64(from: data),
+            "s": try Crypto.sharedInstance.convertToBase64(from: signature),
+            "t": String(type.rawValue)
+        ]
+        
+        try API.sharedInstance.post(type: .message, path: queue, parameters: parameters, body: nil)
     }
 
 }

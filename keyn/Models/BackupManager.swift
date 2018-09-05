@@ -154,7 +154,7 @@ struct BackupManager {
     }
     
     private func createSigningKeypair() throws -> String {
-        let keyPair = try Crypto.sharedInstance.createBackupKeyPair(seed: try Seed.getBackupSeed())
+        let keyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: try Seed.getBackupSeed())
         try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, restricted: false)
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, restricted: true)
         

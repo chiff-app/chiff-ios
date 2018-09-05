@@ -1,6 +1,5 @@
 import Foundation
 import Sodium
-import os.log
 
 enum CryptoError: Error {
     case randomGeneration
@@ -73,7 +72,7 @@ class Crypto {
         return keyPair
     }
     
-    func createBackupKeyPair(seed: Data) throws -> Sign.KeyPair {
+    func createSigningKeyPair(seed: Data) throws -> Sign.KeyPair {
         guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
             throw CryptoError.keyGeneration
         }
@@ -100,6 +99,18 @@ class Crypto {
             throw CryptoError.keyDerivation
         }
 
+        return key.data
+    }
+    
+    
+    func deriveKey(key: String, context: String, index: Int = 0) throws ->  Data {
+        guard let keyData = sodium.utils.base642bin(key, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
+            throw CryptoError.base64Decoding
+        }
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(index), length: sodium.sign.SeedBytes, context: context) else {
+            throw CryptoError.keyDerivation
+        }
+        
         return key.data
     }
 

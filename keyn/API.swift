@@ -20,6 +20,8 @@ enum APIEndpoint: String {
     case backup = "backup"
     case ppd = "ppd"
     case analytics = "analytics"
+    case queue = "queue"
+    case message = "message"
 }
 
 enum APIRequestType: String {
