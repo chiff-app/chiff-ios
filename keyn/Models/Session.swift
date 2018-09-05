@@ -46,12 +46,11 @@ class Session: Codable {
 
     func delete(includingQueue: Bool) throws {
         Logger.shared.info("Session ended.", userInfo: ["code": AnalyticsMessage.sessionEnd.rawValue, "appInitiated": includingQueue])
+        if includingQueue { try sendToControlQueue(message: "Ynll") }
         try Keychain.sharedInstance.delete(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
-//        if includingQueue { AWS.sharedInstance.sendToSqs(message: "bye", to: sqsControlQueue, sessionID: self.id, type: .end) }
-        // TODO: replace message attribute for content to end session?
     }
     
     func browserPublicKey() throws -> Data {
@@ -178,7 +177,6 @@ class Session: Codable {
         // To be sure
         Keychain.sharedInstance.deleteAll(service: messageQueueService)
         Keychain.sharedInstance.deleteAll(service: controlQueueService)
-        Keychain.sharedInstance.deleteAll(service: "io.keyn.session.browser")
         Keychain.sharedInstance.deleteAll(service: appService)
     }
 
@@ -188,8 +186,6 @@ class Session: Codable {
         let controlKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "control", index: 2))
         let messagePubKey = try Crypto.sharedInstance.convertToBase64(from: messageKeyPair.publicKey.data)
         let controlPubKey = try Crypto.sharedInstance.convertToBase64(from: controlKeyPair.publicKey.data)
-        print(messagePubKey)
-        print(controlPubKey)
         let session = Session(encryptionPubKey: pubKey, messagePubKey: messagePubKey, controlPubKey: controlPubKey, browser: browser, os: os)
         
         do {
@@ -237,7 +233,6 @@ class Session: Codable {
     }
     
     func sendToControlQueue(message: String) throws {
-        // TODO: This won't work, because authorizes checks if valid base64
         try sendToQueue(data: message, queue: controlPubKey, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: BrowserMessageType.end)
     }
     

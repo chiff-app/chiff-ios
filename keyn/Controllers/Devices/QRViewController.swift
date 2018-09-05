@@ -108,25 +108,24 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             throw SessionError.invalid
         }
         try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
-            if let session = session {
-                print(session)
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let session = session {
                     self?.add(session: session)
+                } else if let error = error {
+                    switch error {
+                    case KeychainError.storeKey:
+                        Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
+                        self?.displayError(message: "This QR code was already scanned.")
+                    default:
+                        Logger.shared.error("Unhandled QR code error.", error: error as NSError)
+                        self?.displayError(message: "An error occured.")
+                    }
+                    self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
+                    self?.qrFound = false
+                } else {
+                    self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
+                    self?.qrFound = false
                 }
-            } else if let error = error {
-                switch error {
-                case KeychainError.storeKey:
-                    Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
-                    self?.displayError(message: "This QR code was already scanned.")
-                default:
-                    Logger.shared.error("Unhandled QR code error.", error: error as NSError)
-                    self?.displayError(message: "An error occured.")
-                }
-                self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                self?.qrFound = false
-            } else {
-                self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                self?.qrFound = false
             }
         })
     }
