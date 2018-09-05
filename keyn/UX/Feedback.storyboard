@@ -617,7 +617,7 @@ Thank you!</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tnx-62-9hU">
-                                                    <rect key="frame" x="16" y="0.0" width="326" height="44"/>
+                                                    <rect key="frame" x="16" y="0.0" width="328" height="44"/>
                                                     <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="17"/>
                                                     <color key="textColor" red="0.98431372549999996" green="0.70588235290000001" blue="0.18039215689999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -627,7 +627,7 @@ Thank you!</string>
                                                 <constraint firstAttribute="bottom" secondItem="Tnx-62-9hU" secondAttribute="bottom" id="Kyk-Vg-2Mn"/>
                                                 <constraint firstItem="Tnx-62-9hU" firstAttribute="leading" secondItem="znG-hV-fSV" secondAttribute="leading" constant="16" id="ae3-jU-Tss"/>
                                                 <constraint firstItem="Tnx-62-9hU" firstAttribute="top" secondItem="znG-hV-fSV" secondAttribute="top" id="dfb-sV-Kfm"/>
-                                                <constraint firstAttribute="trailing" secondItem="Tnx-62-9hU" secondAttribute="trailing" constant="2" id="xb7-ah-keR"/>
+                                                <constraint firstAttribute="trailing" secondItem="Tnx-62-9hU" secondAttribute="trailing" id="xb7-ah-keR"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
