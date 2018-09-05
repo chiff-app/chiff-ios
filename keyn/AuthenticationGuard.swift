@@ -138,9 +138,9 @@ class AuthenticationGuard {
     
     func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
         authorizationInProgress = true
-        if let parameters = url.queryParameters, let pubKey = parameters["p"], let messageSqs = parameters["mq"], let controlSqs = parameters["cq"], let browser = parameters["b"], let os = parameters["o"] {
+        if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
-                guard try !Session.exists(sqs: messageSqs, browserPublicKey: pubKey) else {
+                guard try !Session.exists(encryptionPubKey: pubKey, queueSeed: queueSeed) else {
                     authorizationInProgress = false
                     throw SessionError.exists
                 }
@@ -151,7 +151,7 @@ class AuthenticationGuard {
             authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
                 if success {
                     do  {
-                        let session = try Session.initiate(sqsMessageQueue: messageSqs, sqsControlQueue: controlSqs, pubKey: pubKey, browser: browser, os: os)
+                        let session = try Session.initiate(queueSeed: queueSeed, pubKey: pubKey, browser: browser, os: os)
                         self?.authorizationInProgress = false
                         completion(session, nil)
                     } catch {
