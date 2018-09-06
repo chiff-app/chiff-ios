@@ -39,41 +39,6 @@ class AWS {
         }
         return "NoIdentityId"
     }
-
-    func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
-        guard let sendRequest = AWSSQSSendMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSSendMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        sendRequest.queueUrl = queueUrl
-        sendRequest.messageBody = message
-        let typeAttributeValue = AWSSQSMessageAttributeValue()
-        typeAttributeValue?.stringValue = String(type.rawValue)
-        typeAttributeValue?.dataType = "Number"
-        sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
-        sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
-            if let error = error {
-                Logger.shared.error("Could not send message to SQS queue.", error: error as NSError)
-            }
-        })
-    }
-    
-    func deleteFromSqs(receiptHandle: String, queueName: String) {
-        guard let deleteRequest = AWSSQSDeleteMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSDeleteMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        deleteRequest.queueUrl = queueUrl
-        deleteRequest.receiptHandle = receiptHandle
-        sqs.deleteMessage(deleteRequest).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not delete message to SQS queue.", error: error as NSError)
-            }
-            return nil
-        }
-    }
     
     func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [AWSSQSMessage], _ queueName : String) -> Void) {
         guard let receiveRequest = AWSSQSReceiveMessageRequest() else {

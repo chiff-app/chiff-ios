@@ -44,7 +44,7 @@ class API {
         send(request)
     }
     
-    func get(type: APIEndpoint, path: String, parameters: [String: String]?, completionHandler: @escaping (_ accountData: [String: Any]) -> Void) {
+    func get(type: APIEndpoint, path: String, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]) -> Void) {
         let url = createUrl(type: type, path: path, parameters: parameters)!
         var request = URLRequest(url: url)
         request.httpMethod = APIRequestType.get.rawValue
