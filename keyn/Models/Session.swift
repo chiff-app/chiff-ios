@@ -120,6 +120,31 @@ class Session: Codable {
         try sendToMessageQueue(ciphertext: ciphertext, type: type)
     }
     
+    func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
+        let message = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        let parameters = try sign(data: message, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
+        try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters, body: nil)
+    }
+    
+    func sendToControlQueue(message: String) throws {
+        let parameters = try sign(data: message, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
+        try API.sharedInstance.post(type: .message, path: controlPubKey, parameters: parameters, body: nil)
+    }
+    
+    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]) -> Void) throws {
+        let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
+        API.sharedInstance.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
+    }
+    
+    func deleteChangeConfirmation(receiptHandle: String) {
+        do {
+            let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle)
+            try API.sharedInstance.delete(type: .message, path: controlPubKey, parameters: parameters, body: nil)
+        } catch {
+            Logger.shared.warning("Failed to delete change confirmation from queue.")
+        }
+    }
+    
 
     // MARK: Static functions
 
@@ -227,32 +252,32 @@ class Session: Codable {
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, restricted: false)
     }
     
-    func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
-        let message = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-        try sendToQueue(data: message, queue: messagePubKey, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
-    }
-    
-    func sendToControlQueue(message: String) throws {
-        try sendToQueue(data: message, queue: controlPubKey, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: BrowserMessageType.end)
-    }
-    
-    private func sendToQueue(data: String, queue: String, privKey: Data, type: BrowserMessageType) throws {
-        let message = [
-            "type": APIRequestType.post.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "data": data
+    private func sign(data: String?, requestType: APIRequestType, privKey: Data, type: BrowserMessageType?, waitTime: String? = nil, receiptHandle: String? = nil) throws -> [String:String] {
+        var message = [
+            "type": requestType.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970))
         ]
+        if let data = data {
+            message["data"] = data
+        }
+        if let waitTime = waitTime {
+            message["waitTime"] = waitTime
+        }
+        if let receiptHandle = receiptHandle {
+            message["receiptHandle"] = receiptHandle
+        }
         
         let data = try JSONSerialization.data(withJSONObject: message, options: [])
         let signature = try Crypto.sharedInstance.sign(message: data, privKey: privKey)
 
-        let parameters = [
+        var parameters = [
             "m": try Crypto.sharedInstance.convertToBase64(from: data),
-            "s": try Crypto.sharedInstance.convertToBase64(from: signature),
-            "t": String(type.rawValue)
+            "s": try Crypto.sharedInstance.convertToBase64(from: signature)
         ]
-        
-        try API.sharedInstance.post(type: .message, path: queue, parameters: parameters, body: nil)
+        if let type = type {
+            parameters["t"] = String(type.rawValue)
+        }
+        return parameters
     }
 
 }
