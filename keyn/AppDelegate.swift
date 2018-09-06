@@ -17,6 +17,7 @@ import CocoaAsyncSocket
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
+    var deniedPushNotifications = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -84,13 +85,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
         Logger.shared.error("Failed to register for remote notifications.", error: error as NSError, userInfo: nil)
-        // TODO: disable stuff. App shouldn't work without remote notifications.
     }
     
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // TODO: Find out why we cannot pass RequestType in userInfo..
         guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
             Logger.shared.debug("TODO: Make alert banner")
             completionHandler([.alert])
@@ -252,22 +251,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
 
-    // Sent when the application is about to move from active to inactive state.
-    // This can occur for certain types of temporary interruptions (such as an incoming phone call
-    // or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks.
-    // Games should use this method to pause the game.
-    func applicationWillResignActive(_ application: UIApplication) {
-    }
-
     // Use this method to release shared resources, save user data, invalidate timers,
     // and store enough application state information to restore your application to its
     // current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Clean up notifications
-        let center = UNUserNotificationCenter.current()
-        center.removeAllDeliveredNotifications()
+        // Clean up notifications or exit if user denied push notifications.
+        if deniedPushNotifications {
+            exit(0)
+        } else {
+            let center = UNUserNotificationCenter.current()
+            center.removeAllDeliveredNotifications()
+        }
     }
 
 
@@ -277,11 +272,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         handlePendingNotifications()
     }
 
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-    
     // Called when app starts up. Short polling
     private func checkPendingChangeConfirmations() {
         do {
@@ -599,12 +589,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory, keynNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                     self.launchInitialView()
                 }
             } else {
                 Logger.shared.warning("User denied remote notifications.")
+                self.deniedPushNotifications = true
+                DispatchQueue.main.async {
+                    self.window = UIWindow(frame: UIScreen.main.bounds)
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ErrorViewController")
+                    self.window?.makeKeyAndVisible()
+                }
             }
         }
 
