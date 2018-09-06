@@ -380,6 +380,46 @@
             </objects>
             <point key="canvasLocation" x="-1818" y="0.0"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="807-pr-mGw">
+            <objects>
+                <viewController storyboardIdentifier="ErrorViewController" id="33Q-gN-1q8" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lxx-r9-eDF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="vag-ph-8Fe">
+                                <rect key="frame" x="16" y="100" width="382" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="mpA-3n-Ms5"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
+                                <rect key="frame" x="16" y="300" width="382" height="140.66666666666663"/>
+                                <string key="text">Unfortunately, Keyn doesn't work without push notifications :(. 
+
+Please turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
+                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.28582200410000003" green="0.19759389760000001" blue="0.63343566659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="vag-ph-8Fe" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="Gx2-Dd-twn"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="vag-ph-8Fe" secondAttribute="trailing" constant="16" id="OqB-YO-ty8"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="iNK-us-ipI" secondAttribute="trailing" constant="16" id="aZi-wu-IHv"/>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="top" secondItem="vag-ph-8Fe" secondAttribute="bottom" constant="120" id="hA7-fS-rwH"/>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="vhn-2G-W22"/>
+                            <constraint firstItem="vag-ph-8Fe" firstAttribute="top" secondItem="WLr-35-Emx" secondAttribute="top" constant="80" id="zbW-Gq-lB5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WLr-35-Emx"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bXc-Mo-HZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1827.5362318840582" y="874.72826086956525"/>
+        </scene>
         <!--Root View Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
