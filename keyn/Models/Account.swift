@@ -15,7 +15,7 @@ struct Account: Codable {
     static let keychainService = "io.keyn.account"
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
-        id = try "\(site.id)_\(username)".hash()
+        id = "\(site.id)_\(username)".hash()
 
         self.username = username
         self.site = site

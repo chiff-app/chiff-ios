@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Override point for customization after application launch.
         enableLogging()
+        detectOldAccounts()
         fetchAWSIdentification()
         registerForPushNotifications()
 
@@ -48,6 +49,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Questionnaire.fetch()
         handlePendingNotifications()
         return true
+    }
+    
+    // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found.
+    func detectOldAccounts() {
+        UserDefaults.standard.removeObject(forKey: "hasCheckedAlphaAccounts")
+        do {
+            _ = try Account.all()
+        } catch {
+            if let error = error as? DecodingError, !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
+                Account.deleteAll()
+                Session.deleteAll()
+                try? Seed.delete()
+                UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
+                Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
+            }
+        }
     }
     
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
