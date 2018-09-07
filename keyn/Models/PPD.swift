@@ -17,7 +17,7 @@ struct PPD: Codable {
     let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
-    let name: String?
+    let name: String
 
     func export() {
         do {
