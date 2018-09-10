@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nSp-3W-zjl">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="IBMPlexMono-Regular.ttf">
+            <string>IBMPlexMono</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="I8j-io-HUr">
+            <objects>
+                <viewController storyboardIdentifier="LoginController" id="Fg4-Ge-ecY" customClass="LoginViewController" customModule="keynCredentialProvider" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="omO-Q9-gln">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5aG-v8-Ova">
+                                <rect key="frame" x="117" y="200" width="141" height="23.5"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
+                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="jjP-cl-vBl">
+                                <rect key="frame" x="16" y="100" width="343" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="qGA-4t-77z"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3b6-vv-wxt">
+                                <rect key="frame" x="147.5" y="491" width="80" height="116"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="qza-YU-nzW"/>
+                                </constraints>
+                                <state key="normal" image="fingerprint">
+                                    <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="touchID:" destination="Fg4-Ge-ecY" eventType="touchUpInside" id="9fS-6Q-lJl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="QpV-5r-ERS" firstAttribute="bottom" secondItem="3b6-vv-wxt" secondAttribute="bottom" constant="60" id="4Vb-g3-QhB"/>
+                            <constraint firstItem="QpV-5r-ERS" firstAttribute="trailing" secondItem="jjP-cl-vBl" secondAttribute="trailing" constant="16" id="CmQ-Dd-oEb"/>
+                            <constraint firstItem="jjP-cl-vBl" firstAttribute="leading" secondItem="QpV-5r-ERS" secondAttribute="leading" constant="16" id="Pji-Jp-ggD"/>
+                            <constraint firstItem="5aG-v8-Ova" firstAttribute="top" secondItem="jjP-cl-vBl" secondAttribute="bottom" constant="20" id="Vb4-Fa-iin"/>
+                            <constraint firstItem="3b6-vv-wxt" firstAttribute="centerX" secondItem="omO-Q9-gln" secondAttribute="centerX" id="diD-bD-MM9"/>
+                            <constraint firstItem="5aG-v8-Ova" firstAttribute="centerX" secondItem="omO-Q9-gln" secondAttribute="centerX" id="eZ5-Jx-aW6"/>
+                            <constraint firstItem="jjP-cl-vBl" firstAttribute="top" secondItem="QpV-5r-ERS" secondAttribute="top" constant="80" id="fYc-bm-baT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QpV-5r-ERS"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hpd-oX-3Ud"/>
+                    <connections>
+                        <outlet property="touchIDButton" destination="3b6-vv-wxt" id="nKw-9Y-t0I"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NCu-AE-Ouz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="980" y="8"/>
+        </scene>
+        <!--Credential Provider View Controller-->
+        <scene sceneID="QVE-sb-UDx">
+            <objects>
+                <viewController id="nSp-3W-zjl" customClass="CredentialProviderViewController" customModule="keynCredentialProvider" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DDT-7P-jMB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w2V-lb-SeB">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem id="Rdx-aw-W0I">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="XCy-kH-b2C"/>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MxM-Ei-Q2K">
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AccountCell" textLabel="6z0-mK-St7" detailTextLabel="3g3-iT-osK" style="IBUITableViewCellStyleSubtitle" id="wDE-Ll-DtU">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wDE-Ll-DtU" id="FqB-PY-YGy">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6z0-mK-St7">
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3g3-iT-osK">
+                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="CPQ-eb-8gs"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sQw-Id-kpj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="182" y="8"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="fingerprint" width="104" height="116"/>
+        <image name="logo" width="384" height="428"/>
+    </resources>
+</document>
