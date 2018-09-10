@@ -25,6 +25,11 @@ target 'keynNotificationExtension' do
   shared_pods
 end
 
+target 'keynCredentialProvider' do
+  shared_pods
+end
+
+
 target 'keynTests' do
   shared_pods
 end

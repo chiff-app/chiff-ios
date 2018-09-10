@@ -35,12 +35,12 @@ class Keychain {
 
         if restricted {
             // Only accesible by Keyn app and when device unlocked (for passwords and seed)
-            query[kSecAttrAccessible as  String] = kSecAttrAccessibleWhenUnlocked
-            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keyn"
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlocked
+            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keynRestricted"
         } else {
             // Also accesible from Extensions and also when device is unlocked (for app private session keys and browser public keys)
             query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keynGroup"
-            query[kSecAttrAccessible as  String] = kSecAttrAccessibleAlwaysThisDeviceOnly
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleAlwaysThisDeviceOnly
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
