@@ -34,7 +34,7 @@ struct PPD: Codable {
         API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
             if let ppd = dict["ppds"] as? [Any] {
                 do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
                     let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
                     completionHandler(ppd)
                 } catch {

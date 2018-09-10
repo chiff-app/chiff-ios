@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Questionnaire.fetch()
         handlePendingNotifications()
+        
         return true
     }
     
@@ -56,14 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UserDefaults.standard.removeObject(forKey: "hasCheckedAlphaAccounts")
         do {
             _ = try Account.all()
-        } catch {
-            if let error = error as? DecodingError, !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
+        } catch _ as DecodingError {
+            if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
                 Account.deleteAll()
                 Session.deleteAll()
                 try? Seed.delete()
                 UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
                 Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
             }
+        } catch {
+            Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError)
         }
     }
     
@@ -436,9 +439,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         do {
             let processor = NotificationProcessor()
             return try processor.process(content: mutableContent)
+        } catch NotificationExtensionError.Decryption {
+            Logger.shared.debug("Decryption error")
+        } catch NotificationExtensionError.Session {
+            Logger.shared.debug("Session error")
+        } catch NotificationExtensionError.StringCast(let type) {
+            Logger.shared.debug("Stringcast error: \(type)")
         } catch {
-            Logger.shared.debug("Reprocessing error", error: error as NSError)
+            Logger.shared.debug("Other error", error: error as NSError)
         }
+
         return content
     }
 
