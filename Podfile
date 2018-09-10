@@ -12,7 +12,6 @@ def shared_pods
   pod 'Sodium', :git => 'https://github.com/jedisct1/swift-sodium.git'
   pod 'AWSCognito'
   pod 'AWSSNS'
-  pod 'AWSSQS'
 #  pod 'AWSAPIGateway'
   pod "JustLog"
 end

@@ -8,7 +8,6 @@
 
 import Foundation
 import AWSCore
-import AWSSQS
 import AWSSNS
 import JustLog
 
@@ -21,7 +20,6 @@ enum AWSError: Error {
 class AWS {
 
     static let sharedInstance = AWS()
-    private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
@@ -38,29 +36,6 @@ class AWS {
             return credentialsProvider.identityId ?? "NoIdentityId"
         }
         return "NoIdentityId"
-    }
-    
-    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [AWSSQSMessage], _ queueName : String) -> Void) {
-        guard let receiveRequest = AWSSQSReceiveMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSReceiveMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        receiveRequest.queueUrl = queueUrl
-        receiveRequest.waitTimeSeconds = shortPolling ? 0 : 20
-        receiveRequest.messageAttributeNames = ["All"]
-        sqs.receiveMessage(receiveRequest).continueOnSuccessWith { (task) -> Any? in
-            if let messages = task.result?.messages {
-                completionHandler(messages, queueName)
-            }
-            
-            return nil
-        }.continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not get message from SQS queue.", error: error as NSError)
-            }
-            return nil
-        }
     }
 
     func snsRegistration(deviceToken: Data) {
