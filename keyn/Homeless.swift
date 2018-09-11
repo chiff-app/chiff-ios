@@ -241,6 +241,7 @@ enum AnalyticsMessage: String {
     case siteAdded = "SITE_ADDED"
     case accountsRestored = "ACCOUNTS_RESTORED"
     case userFeedback = "USER_FEEDBACK"
+    case accountMigration = "ACCOUNT_MIGRATION"
 }
 
 // Used by Session
