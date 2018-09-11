@@ -43,7 +43,7 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData)
+        try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
         try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
     }
     
@@ -158,7 +158,7 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
         
-        try Keychain.sharedInstance.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: accountData)
+        try Keychain.sharedInstance.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: accountData, classification: .confidential)
     }
 
     static func all() throws -> [Account]? {
@@ -181,6 +181,14 @@ struct Account: Codable {
 
     static func deleteAll() {
         Keychain.sharedInstance.deleteAll(service: keychainService)
+    }
+    
+    // TEMPORARY, for migration to next version. Can be removed after versions 1.0.0 have disappeared.
+    func updateKeychainClassification() throws {
+        let passwordData: Data = try password()
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
+        try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
     }
 
 }
