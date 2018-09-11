@@ -52,25 +52,30 @@ platform :ios do
         gym
     end
 
-    desc 'Release minor version'
-    lane :release_minor_version do
-        increment_version_number(bump_type: 'minor')
-        build_keyn
-        upload_to_testflight
-        slack(message: "New version of Keyn released! #{version}")
+    desc 'Start minor release'
+    lane :start_minor_release do
+        version = increment_version_number(bump_type: 'minor')
+        `git stash;git flow release start #{version};git stash pop`
+        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
     end
 
-    desc 'Release patch version'
-    lane :release_patch_version do
+    desc 'Start patch version'
+    lane :start_patch_release do
         version = increment_version_number(bump_type: 'patch')
-        build_keyn
-        upload_to_testflight
-        slack(message: "New version of Keyn released! #{version}")
+        `git stash;git flow release start #{version};git stash pop`
+        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
     end
 
-    desc 'Release major version'
-    lane :release_major_version do
+    desc 'Start major version'
+    lane :start_major_release do
         version = increment_version_number(bump_type: 'major')
+        `git stash;git flow release start #{version};git stash pop`
+        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
+    end
+
+    desc 'Beta release'
+    lane :beta_release do
+        version = get_version_number()
         build_keyn
         upload_to_testflight
         slack(message: "New version of Keyn released! #{version}")
