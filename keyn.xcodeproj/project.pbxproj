@@ -84,7 +84,7 @@
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
 		611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611F4B4A2146B47300B35A89 /* MainInterface.storyboard */; };
 		611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
+		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		611F4B562146B52600B35A89 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
@@ -113,7 +113,7 @@
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; };
+		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */; };
 /* End PBXBuildFile section */
 
