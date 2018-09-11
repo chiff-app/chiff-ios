@@ -6,7 +6,8 @@
 	<string>development</string>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)io.keyn.keynGroup</string>
+		<string>$(AppIdentifierPrefix)io.keyn.restricted</string>
+		<string>$(AppIdentifierPrefix)io.keyn.confidential</string>
 	</array>
 </dict>
 </plist>
