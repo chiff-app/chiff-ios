@@ -10,138 +10,126 @@ import AuthenticationServices
 import LocalAuthentication
 import JustLog
 
-class CredentialProviderViewController: ASCredentialProviderViewController {
-    /*
-     Prepare your UI to list available credentials for the user to choose from. The items in
-     'serviceIdentifiers' describe the service the user is logging in to, so your extension can
-     prioritize the most relevant credentials in the
-     */
-    override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
-        for identifier in serviceIdentifiers {
-            do {
-                guard let url = URL(string: identifier.identifier), let scheme = url.scheme, let host = url.host else {
-                    print("Could not parse URL")
-                    return
-                }
-                var identities = [ASPasswordCredentialIdentity]()
-                for account in try Account.get(siteID: "\(scheme)://\(host)".sha256()) {
-                    identities.append(ASPasswordCredentialIdentity(serviceIdentifier: identifier, user: account.username, recordIdentifier: account.id))
-                }
-                ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
-            } catch {
-                print(error)
-            }
-        }
-    }
+class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
     
-    /*
-     Implement this method if your extension supports showing credentials in the QuickType bar.
-     When the user selects a credential from your app, this method will be called with the
-     ASPasswordCredentialIdentity your app has previously saved to the ASCredentialIdentityStore.
-     Provide the password by completing the extension request with the associated ASPasswordCredential.
-     If using the credential would require showing custom UI for authenticating the user, cancel
-     the request with error code ASExtensionError.userInteractionRequired.
-     */
-    override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
+    @IBOutlet weak var tableView: UITableView!
+    var unfilteredAccounts = [Account]()
+    var filteredAccounts: [Account]!
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
         do {
-            if let account = try Account.get(accountID: credentialIdentity.recordIdentifier!) {
-                let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password())
-                extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-            } else {
-                extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
+            if let savedAccounts = try Account.all() {
+                unfilteredAccounts.append(contentsOf: savedAccounts)
             }
         } catch {
-            Logger.shared.warning("Error getting account.", error: error as NSError)
-            extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+            Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
+        }
+        
+        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+            first.site.name < second.site.name
+        })
+        tableView.delegate = self
+        tableView.dataSource = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.dimsBackgroundDuringPresentation = false
+        self.extendedLayoutIncludesOpaqueBars = false
+        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let navigationView = navigationController?.view {
+            fixShadowImage(inView: navigationView)
         }
     }
     
-    
-    /*
-     Implement this method if provideCredentialWithoutUserInteraction(for:) can fail with
-     ASExtensionError.userInteractionRequired. In this case, the system may present your extension's
-     UI and call this method. Show appropriate UI for authenticating the user then provide the password
-     by completing the extension request with the associated ASPasswordCredential.
-     */
-//    override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
-//        authenticateUser()
-//    }
-    
-    
-    @IBAction func cancel(_ sender: AnyObject?) {
-        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
+    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
+    func fixShadowImage(inView view: UIView) {
+        if let imageView = view as? UIImageView {
+            let size = imageView.bounds.size.height
+            if size <= 1 && size > 0 &&
+                imageView.subviews.count == 0,
+                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
+            {
+                let line = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 2))
+                line.backgroundColor = UIColor(rgb: 0x4932A2)
+                imageView.addSubview(line)
+                line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            }
+        }
+        for subview in view.subviews {
+            fixShadowImage(inView: subview)
+        }
     }
     
-//
-//    private func authenticateUser() {
-//        let localAuthenticationContext = LAContext()
-//        localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
-//
-//        var authError: NSError?
-//        let reasonString = "Unlock Keyn"
-//
-//        guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
-//            Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
-//            return
-//        }
-//
-//        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
-//            if succes {
-//                self?.hideLockWindow()
-//            } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
-//                Logger.shared.error(errorMessage, error: error as NSError)
-//                if error._code == LAError.userFallback.rawValue {
-//                    Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
-//                }
-//            }
-//        }
-//    }
-//
-//    func evaluatePolicyFailErrorMessageForLA(errorCode: Int) -> String {
-//        var message = ""
-//        if #available(iOS 11.0, *) {
-//            switch errorCode {
-//            case LAError.biometryNotAvailable.rawValue:
-//                message = "Authentication could not start because the device does not support biometric authentication."
-//            case LAError.biometryLockout.rawValue:
-//                message = "Authentication could not continue because the user has been locked out of biometric authentication, due to failing authentication too many times."
-//            case LAError.biometryNotEnrolled.rawValue:
-//                message = "Authentication could not start because the user has not enrolled in biometric authentication."
-//            default:
-//                message = "Did not find error code on LAError object"
-//            }
-//        }
-//
-//        return message
-//    }
-//
-//
-//    func evaluateAuthenticationPolicyMessageForLA(errorCode: Int) -> String {
-//
-//        var message = ""
-//
-//        switch errorCode {
-//        case LAError.authenticationFailed.rawValue:
-//            message = "The user failed to provide valid credentials"
-//        case LAError.appCancel.rawValue:
-//            message = "Authentication was cancelled by application"
-//        case LAError.invalidContext.rawValue:
-//            message = "The context is invalid"
-//        case LAError.notInteractive.rawValue:
-//            message = "Not interactive"
-//        case LAError.passcodeNotSet.rawValue:
-//            message = "Passcode is not set on the device"
-//        case LAError.systemCancel.rawValue:
-//            message = "Authentication was cancelled by the system"
-//        case LAError.userCancel.rawValue:
-//            message = "The user did cancel"
-//        case LAError.userFallback.rawValue:
-//            message = "The user chose to use the fallback"
-//        default:
-//            message = evaluatePolicyFailErrorMessageForLA(errorCode: errorCode)
-//        }
-//
-//        return message
-//    }
-//
+    // MARK: Actions
+    
+    @IBAction func cancel(_ sender: AnyObject?) {
+        if let navCon = navigationController as? CredentialProviderNavigationController {
+            navCon.passedExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
+        }
+    }
+
+    
+    // MARK: SearchController
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
+            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
+                return account.site.name.lowercased().contains(searchText.lowercased())
+            }).sorted(by: { (first, second) -> Bool in
+                first.site.name < second.site.name
+            })
+        } else {
+            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+                first.site.name < second.site.name
+            })
+        }
+        tableView.reloadData()
+    }
+    
+    // MARK: Table view data source
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let accounts = filteredAccounts else {
+            return 0
+        }
+        return accounts.count
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
+        
+        if let accounts = filteredAccounts {
+            let account = accounts[indexPath.row]
+            cell.textLabel?.text = account.site.name
+            cell.detailTextLabel?.text = account.username
+        }
+        return cell
+    }
+    
+    // MARK: Table view delegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let account = filteredAccounts?[indexPath.row] {
+            do {
+                let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password())
+                if let navCon = navigationController as? CredentialProviderNavigationController {
+                    navCon.passedExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+                }
+
+            } catch {
+                Logger.shared.warning("Error getting password", error: error as NSError)
+            }
+        }
+    }
+    
+
 }
