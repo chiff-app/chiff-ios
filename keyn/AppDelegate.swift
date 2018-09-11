@@ -52,21 +52,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
-    // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found.
+    // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found, migrates to new Keychain otherwise.
     func detectOldAccounts() {
-        UserDefaults.standard.removeObject(forKey: "hasCheckedAlphaAccounts")
-        do {
-            _ = try Account.all()
-        } catch _ as DecodingError {
-            if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
+        if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
+            do {
+                if let accounts = try Account.all() {
+                    for account in accounts {
+                        try account.updateKeychainClassification()
+                    }
+                    Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+                }
+            } catch _ as DecodingError {
                 Account.deleteAll()
                 Session.deleteAll()
                 try? Seed.delete()
-                UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
-                Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
+                Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+            } catch {
+                Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError, userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             }
-        } catch {
-            Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError)
+            UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
         }
     }
     
