@@ -48,11 +48,11 @@ struct Question: Codable {
 
 
 class Questionnaire: Codable {
-    static let queueName = "KeynQuestionnaireQueue"
     static let suite = "keynQuestionnaire"
     
     let id: String
     let delay: Int
+    let introduction: String
     var isFinished: Bool
     var askAgain: Date?
     var questions: [Question]
@@ -61,14 +61,16 @@ class Questionnaire: Codable {
     enum CodingKeys: CodingKey {
         case id
         case delay
+        case introduction
         case questions
         case isFinished
         case askAgain
         case compulsory
     }
 
-    init(id: String, questions: [Question]? = nil, delay: Int? = nil, isFinished: Bool = false, compulsory: Bool = false) {
+    init(id: String, introduction: String, questions: [Question]? = nil, delay: Int? = nil, isFinished: Bool = false, compulsory: Bool = false) {
         self.id = id
+        self.introduction = introduction
         self.questions = questions ?? [Question]()
         self.isFinished = isFinished
         if let delay = delay {
@@ -83,6 +85,7 @@ class Questionnaire: Codable {
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
+        self.introduction = try values.decode(String.self, forKey: .introduction)
         self.isFinished = try values.decodeIfPresent(Bool.self, forKey: .isFinished) ?? false
         if let askAgain = try values.decodeIfPresent(Date.self, forKey: .askAgain) {
             // Decoded from PropertyList
@@ -182,19 +185,19 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        AWS.sharedInstance.getFromSqs(from: queueName, shortPolling: true) { (messages, _) in
-            for message in messages {
-                guard let body = message.body, let jsonData = body.data(using: .utf8) else {
-                    Logger.shared.error("Could not parse SQS message body.")
-                    return
-                }
-                do {
-                    let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
-                    if !exists(id: questionnaire.id) {
-                        questionnaire.save()
+        API.sharedInstance.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
+            if let questionnaires = dict["questionnaires"] as? [Any] {
+                for object in questionnaires {
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
+                        let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
+                        if !exists(id: questionnaire.id) {
+                            questionnaire.save()
+                        }
+                    } catch {
+                        Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
                     }
-                } catch {
-                    Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
+
                 }
             }
         }

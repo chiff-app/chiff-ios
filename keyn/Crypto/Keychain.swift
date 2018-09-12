@@ -11,6 +11,12 @@ enum KeychainError: Error {
     case noData
 }
 
+enum Classification {
+    case restricted
+    case confidential
+    case secret
+}
+
 
 class Keychain {
     
@@ -20,7 +26,7 @@ class Keychain {
 
     // MARK:  CRUD methods
 
-    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, restricted: Bool = true) throws {
+    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, classification: Classification) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -32,15 +38,17 @@ class Keychain {
         if label != nil {
             query[kSecAttrLabel as String] = label
         }
-
-        if restricted {
-            // Only accesible by Keyn app and when device unlocked (for passwords and seed)
-            query[kSecAttrAccessible as  String] = kSecAttrAccessibleWhenUnlocked
+        
+        switch classification {
+        case .restricted:
+            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.restricted"
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleAlwaysThisDeviceOnly
+        case .confidential:
+            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.confidential"
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+        case .secret:
             query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keyn"
-        } else {
-            // Also accesible from Extensions and also when device is unlocked (for app private session keys and browser public keys)
-            query[kSecAttrAccessGroup as String] = "35MFYY2JY5.io.keyn.keynGroup"
-            query[kSecAttrAccessible as  String] = kSecAttrAccessibleAlwaysThisDeviceOnly
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)

@@ -17,6 +17,7 @@ import CocoaAsyncSocket
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
+    var deniedPushNotifications = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
@@ -27,9 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //try? Keychain.sharedInstance.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
         //BackupManager.sharedInstance.deleteAll()
         //Questionnaire.cleanFolder()
+        //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
 
         // Override point for customization after application launch.
         enableLogging()
+        detectOldAccounts()
         fetchAWSIdentification()
         registerForPushNotifications()
 
@@ -43,10 +46,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set purple line under NavigationBar
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
-        UserDefaults.standard.removeObject(forKey: "backedUp")
-
         Questionnaire.fetch()
         handlePendingNotifications()
+        
+        return true
+    }
+    
+    // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found, migrates to new Keychain otherwise.
+    func detectOldAccounts() {
+        if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
+            Keychain.sharedInstance.deleteAll(service: "io.keyn.session.browser")
+            Keychain.sharedInstance.deleteAll(service: "io.keyn.session.app")
+            Logger.shared.info("Removed old sessions", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+            do {
+                if let accounts = try Account.all() {
+                    for account in accounts {
+                        try account.updateKeychainClassification()
+                    }
+                    Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+
+                }
+            } catch _ as DecodingError {
+                Account.deleteAll()
+                try? Seed.delete()
+                Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+            } catch {
+                Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError, userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+            }
+            UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
+        }
+    }
+    
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        do {
+            try AuthenticationGuard.sharedInstance.authorizePairing(url: url) { (session, error) in
+                DispatchQueue.main.async {
+                    if let session = session, let rootViewController = self.window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
+                        for viewController in devicesNavigationController.viewControllers {
+                            if let devicesViewController = viewController as? DevicesViewController {
+                                if devicesViewController.isViewLoaded {
+                                    devicesViewController.addSession(session: session)
+                                }
+                            } else if let qrViewController = viewController as? QRViewController {
+                                if qrViewController.isViewLoaded {
+                                    qrViewController.add(session: session)
+                                }
+                            }
+                        }
+                    } else if let error = error {
+                        Logger.shared.warning("Error creating session", error: error as NSError)
+                    }
+                }
+            }
+        } catch {
+            Logger.shared.error("Error creating session", error: error as NSError)
+        }
+
         return true
     }
 
@@ -57,13 +112,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
         Logger.shared.error("Failed to register for remote notifications.", error: error as NSError, userInfo: nil)
-        // TODO: disable stuff. App shouldn't work without remote notifications.
     }
     
     // Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // TODO: Find out why we cannot pass RequestType in userInfo..
         guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
             Logger.shared.debug("TODO: Make alert banner")
             completionHandler([.alert])
@@ -225,22 +278,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
 
-    // Sent when the application is about to move from active to inactive state.
-    // This can occur for certain types of temporary interruptions (such as an incoming phone call
-    // or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks.
-    // Games should use this method to pause the game.
-    func applicationWillResignActive(_ application: UIApplication) {
-    }
-
     // Use this method to release shared resources, save user data, invalidate timers,
     // and store enough application state information to restore your application to its
     // current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Clean up notifications
-        let center = UNUserNotificationCenter.current()
-        center.removeAllDeliveredNotifications()
+        // Clean up notifications or exit if user denied push notifications.
+        if deniedPushNotifications {
+            exit(0)
+        } else {
+            let center = UNUserNotificationCenter.current()
+            center.removeAllDeliveredNotifications()
+        }
     }
 
 
@@ -250,11 +299,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         handlePendingNotifications()
     }
 
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-    
     // Called when app starts up. Short polling
     private func checkPendingChangeConfirmations() {
         do {
@@ -292,47 +336,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-        AWS.sharedInstance.getFromSqs(from: session.sqsControlQueue, shortPolling: shortPolling) { (messages, queueName) in
-            if messages.count > 0 {
-                for message in messages {
-                    guard let body = message.body else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard let receiptHandle = message.receiptHandle else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard let typeString = message.messageAttributes?["type"]?.stringValue, let type = Int(typeString) else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard type == BrowserMessageType.acknowledge.rawValue else {
-                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
-                        return
-                    }
-                    AWS.sharedInstance.deleteFromSqs(receiptHandle: receiptHandle, queueName: queueName)
-
-                    do {
-                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
-                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
-                            var account = try Account.get(accountID: accountId)
-                            try account?.updatePassword(offset: nil)
+        do {
+            try session.getChangeConfirmations(shortPolling: shortPolling) { (data) in
+                if let messages = data["messages"] as? [[String:String]], messages.count > 0 {
+                    for message in messages {
+                        guard let body = message["body"] else {
+                            Logger.shared.error("Could not parse SQS message body.")
+                            return
                         }
-                    } catch {
-                        Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
+                        guard let receiptHandle = message["receiptHandle"] else {
+                            Logger.shared.error("Could not parse SQS message body.")
+                            return
+                        }
+                        guard let typeString = message["type"], let type = Int(typeString) else {
+                            Logger.shared.error("Could not parse SQS message body.")
+                            return
+                        }
+                        guard type == BrowserMessageType.acknowledge.rawValue else {
+                            Logger.shared.error("Wrong message type.", userInfo: ["type": type])
+                            return
+                        }
+                        session.deleteChangeConfirmation(receiptHandle: receiptHandle)
+                        
+                        do {
+                            let browserMessage: BrowserMessage = try session.decrypt(message: body)
+                            if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
+                                var account = try Account.get(accountID: accountId)
+                                try account?.updatePassword(offset: nil)
+                            }
+                        } catch {
+                            Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
+                        }
+                        if let handler = completionHandler {
+                            handler()
+                        }
                     }
-                    if let handler = completionHandler {
+                } else {
+                    if (attempts > 1) {
+                        self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+                    } else if let handler = completionHandler {
                         handler()
                     }
                 }
-            } else {
-                if (attempts > 1) {
-                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
-                } else if let handler = completionHandler {
-                    handler()
-                }
             }
+        } catch {
+            Logger.shared.error("Error getting change confirmations")
         }
     }
     
@@ -398,9 +446,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         do {
             let processor = NotificationProcessor()
             return try processor.process(content: mutableContent)
+        } catch NotificationExtensionError.Decryption {
+            Logger.shared.debug("Decryption error")
+        } catch NotificationExtensionError.Session {
+            Logger.shared.debug("Session error")
+        } catch NotificationExtensionError.StringCast(let type) {
+            Logger.shared.debug("Stringcast error: \(type)")
         } catch {
-            Logger.shared.debug("Reprocessing error", error: error as NSError)
+            Logger.shared.debug("Other error", error: error as NSError)
         }
+
         return content
     }
 
@@ -500,7 +555,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
-            AWS.sharedInstance.subscribe()
+            AWS.sharedInstance.isFirstLaunch = true
         }
         
         if !Seed.exists() {
@@ -572,12 +627,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory, keynNotificationCategory])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                     self.launchInitialView()
                 }
             } else {
                 Logger.shared.warning("User denied remote notifications.")
+                self.deniedPushNotifications = true
+                DispatchQueue.main.async {
+                    self.window = UIWindow(frame: UIScreen.main.bounds)
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ErrorViewController")
+                    self.window?.makeKeyAndVisible()
+                }
             }
         }
 

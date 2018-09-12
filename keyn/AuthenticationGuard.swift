@@ -124,31 +124,82 @@ class AuthenticationGuard {
             return
         }
         
-        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { (succes, error) in
-            DispatchQueue.main.async {
-                if succes {
-                    self.hideLockWindow()
-                    if let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? RootViewController {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            if let questionnaire = Questionnaire.all().first(where: { (questionnaire) -> Bool in
-                                return questionnaire.shouldAsk()
-                            }) { rootViewController.presentQuestionAlert(questionnaire: questionnaire) }
-                        }
-                    }
-                } else if let error = error, let errorCode = authError?.code {
-                    Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode), error: error as NSError)
-                    if error._code == LAError.userFallback.rawValue {
-                        Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
-                    }
+        localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
+            if succes {
+                self?.unlock()
+            } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
+                Logger.shared.error(errorMessage, error: error as NSError)
+                if error._code == LAError.userFallback.rawValue {
+                    Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
                 }
             }
         }
     }
     
-    func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
+    func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
+        authorizationInProgress = true
+        if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
+            do {
+                guard try !Session.exists(encryptionPubKey: pubKey, queueSeed: queueSeed) else {
+                    authorizationInProgress = false
+                    throw SessionError.exists
+                }
+            } catch {
+                authorizationInProgress = false
+                throw SessionError.invalid
+            }
+            authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
+                if success {
+                    do  {
+                        let session = try Session.initiate(queueSeed: queueSeed, pubKey: pubKey, browser: browser, os: os)
+                        self?.authorizationInProgress = false
+                        completion(session, nil)
+                    } catch {
+                        self?.authorizationInProgress = false
+                        completion(nil, error)
+                    }
+                    self?.unlock()
+                } else if let error = error {
+                    self?.authorizationInProgress = false
+                    completion(nil, error)
+                }
+            }
+        } else {
+            authorizationInProgress = false
+            throw SessionError.invalid
+        }
+    }
+    
+    private func unlock() {
+        DispatchQueue.main.async {
+            self.hideLockWindow()
+            if let rootViewController = UIApplication.shared.keyWindow?.rootViewController as? RootViewController {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    if let questionnaire = Questionnaire.all().first(where: { (questionnaire) -> Bool in
+                        return questionnaire.shouldAsk()
+                    }) { rootViewController.presentQuestionAlert(questionnaire: questionnaire) }
+                }
+            }
+        }
+    }
+
+    private func authorize(reason: String, completion: @escaping (_: Bool, _: Error?)->()) {
         let authenticationContext = LAContext()
         var error: NSError?
         
+        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
+            return
+        }
+        
+        authenticationContext.evaluatePolicy(
+            .deviceOwnerAuthenticationWithBiometrics,
+            localizedReason: reason,
+            reply: completion
+        )
+    }
+    
+    func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
         var localizedReason = ""
         switch type {
         case .add, .addAndChange:
@@ -165,16 +216,7 @@ class AuthenticationGuard {
             localizedReason = "\(siteName)"
         }
         
-        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            Logger.shared.error("TODO: handle fingerprint absence", error: error)
-            return
-        }
-        
-        authenticationContext.evaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: localizedReason,
-            reply: completion
-        )
+        authorize(reason: localizedReason, completion: completion)
     }
     
     func launchRequestView(with notification: PushNotification) {
@@ -248,5 +290,16 @@ class AuthenticationGuard {
         return message
     }
     
+    func hasFaceID() -> Bool {
+        if #available(iOS 11.0, *) {
+            let context = LAContext.init()
+            var error: NSError?
+            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+                return context.biometryType == LABiometryType.faceID
+            }
+        }
+        
+        return false
+    }
     
 }

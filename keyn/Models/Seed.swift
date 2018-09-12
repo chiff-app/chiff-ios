@@ -25,9 +25,9 @@ struct Seed {
         let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
     }
 
 
@@ -105,9 +105,9 @@ struct Seed {
         let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true", classification: .secret)
+        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
         
         return true
     }

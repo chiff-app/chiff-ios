@@ -58,7 +58,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                     }
                 })
-            case .login, .change:
+            case .login, .change, .fill:
                 if accounts.count == 0 {
                     Site.get(id: notification.siteID, completion: { (site) in
                         self.site = site
@@ -119,12 +119,11 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 accounts = try Account.get(siteID: notification.siteID)
                 if !accountExists() {
                     type = .add
-                }
-                if accounts.count > 1 {
+                } else if accounts.count > 1 {
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
-                    if type == .login || type == .change {
+                    if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.sharedInstance.hasFaceID() {
                         authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
@@ -151,6 +150,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         switch requestType {
         case .login:
             siteLabel.text = "Login to \(notification!.siteName)?"
+        case .fill:
+            siteLabel.text = "Fill password for \(notification!.siteName)?"
         case .change:
             siteLabel.text = accountExists() ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
         case .reset:
