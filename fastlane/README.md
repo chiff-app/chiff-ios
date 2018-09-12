@@ -16,26 +16,31 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## iOS
-### ios build_keyn_beta
+### ios build_keyn
 ```
-fastlane ios build_keyn_beta
+fastlane ios build_keyn
 ```
 Build app
-### ios release_minor_version
+### ios start_minor_release
 ```
-fastlane ios release_minor_version
+fastlane ios start_minor_release
 ```
-Release minor version
-### ios release_patch_version
+Start minor release
+### ios start_patch_release
 ```
-fastlane ios release_patch_version
+fastlane ios start_patch_release
 ```
-Release patch version
-### ios release_major_version
+Start patch version
+### ios start_major_release
 ```
-fastlane ios release_major_version
+fastlane ios start_major_release
 ```
-Release major version
+Start major version
+### ios beta_release
+```
+fastlane ios beta_release
+```
+Beta release
 
 ----
 
