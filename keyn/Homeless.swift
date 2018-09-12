@@ -53,7 +53,7 @@ extension UIApplication {
 }
 
 extension String {
-    func hash() throws -> String {
+    func hash() -> String {
         do {
             let hash = try Crypto.sharedInstance.hash(self)
             return hash
@@ -216,6 +216,7 @@ enum AnalyticsMessage: String {
     case iosUpdate = "IOS_UPDATE" // TODO
     case pairResponse = "PAIR_RESPONSE"
     case loginResponse = "LOGIN_RESPONSE"
+    case fillResponse = "FILL_PASSWORD_RESPONSE"
     case addAndChange = "ADDANDCHANGE"
     case passwordChange = "PASSWORD_CHANGE"
     case addResponse = "ADD_RESPONSE"
@@ -230,6 +231,7 @@ enum AnalyticsMessage: String {
     case siteAdded = "SITE_ADDED"
     case accountsRestored = "ACCOUNTS_RESTORED"
     case userFeedback = "USER_FEEDBACK"
+    case accountMigration = "ACCOUNT_MIGRATION"
 }
 
 // Used by Session
@@ -279,6 +281,7 @@ enum BrowserMessageType: Int, Codable {
     case addAndChange
     case end
     case acknowledge
+    case fill
 }
 
 enum KeyType: UInt64 {

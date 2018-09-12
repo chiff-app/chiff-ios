@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.14" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -379,6 +379,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaW-Ua-YRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1818" y="0.0"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="807-pr-mGw">
+            <objects>
+                <viewController storyboardIdentifier="ErrorViewController" id="33Q-gN-1q8" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lxx-r9-eDF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="vag-ph-8Fe">
+                                <rect key="frame" x="16" y="100" width="382" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="mpA-3n-Ms5"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
+                                <rect key="frame" x="16" y="300" width="382" height="140.66666666666663"/>
+                                <string key="text">Unfortunately, Keyn doesn't work without push notifications :(. 
+
+Please turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
+                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.28582200410000003" green="0.19759389760000001" blue="0.63343566659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="vag-ph-8Fe" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="Gx2-Dd-twn"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="vag-ph-8Fe" secondAttribute="trailing" constant="16" id="OqB-YO-ty8"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="iNK-us-ipI" secondAttribute="trailing" constant="16" id="aZi-wu-IHv"/>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="top" secondItem="vag-ph-8Fe" secondAttribute="bottom" constant="120" id="hA7-fS-rwH"/>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="vhn-2G-W22"/>
+                            <constraint firstItem="vag-ph-8Fe" firstAttribute="top" secondItem="WLr-35-Emx" secondAttribute="top" constant="80" id="zbW-Gq-lB5"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WLr-35-Emx"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bXc-Mo-HZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1827.5362318840582" y="874.72826086956525"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -794,7 +834,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="P4t-ox-JgR">
-                                                    <rect key="frame" x="72" y="24.666666666666668" width="278" height="40.333333333333329"/>
+                                                    <rect key="frame" x="64" y="24.666666666666668" width="286" height="40.333333333333329"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w47-dm-ku8">
                                                             <rect key="frame" x="0.0" y="0.0" width="33.333333333333336" height="20.333333333333332"/>
@@ -811,11 +851,10 @@
                                                     </subviews>
                                                 </stackView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QDO-NS-MHk">
-                                                    <rect key="frame" x="20" y="23" width="44" height="44"/>
+                                                    <rect key="frame" x="20" y="27" width="36" height="36"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="9qs-M4-Cyd"/>
+                                                        <constraint firstAttribute="width" constant="36" id="9qs-M4-Cyd"/>
                                                         <constraint firstAttribute="width" secondItem="QDO-NS-MHk" secondAttribute="height" multiplier="1:1" id="aZl-Ne-QT1"/>
-                                                        <constraint firstAttribute="height" constant="44" id="wGX-cZ-gqW"/>
                                                     </constraints>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pwd-9b-Z8p">

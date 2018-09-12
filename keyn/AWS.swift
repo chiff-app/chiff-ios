@@ -8,7 +8,6 @@
 
 import Foundation
 import AWSCore
-import AWSSQS
 import AWSSNS
 import JustLog
 
@@ -21,7 +20,6 @@ enum AWSError: Error {
 class AWS {
 
     static let sharedInstance = AWS()
-    private let sqs = AWSSQS.default()
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
@@ -29,6 +27,7 @@ class AWS {
     private let PAIR_TIMEOUT = 1 // 60
     private let LOGIN_TIMEOUT = 1 // 180
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
+    var isFirstLaunch = false
 
     private init() {}    
     
@@ -37,64 +36,6 @@ class AWS {
             return credentialsProvider.identityId ?? "NoIdentityId"
         }
         return "NoIdentityId"
-    }
-
-    func sendToSqs(message: String, to queueName: String, sessionID: String, type: BrowserMessageType) {
-        guard let sendRequest = AWSSQSSendMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSSendMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        sendRequest.queueUrl = queueUrl
-        sendRequest.messageBody = message
-        let typeAttributeValue = AWSSQSMessageAttributeValue()
-        typeAttributeValue?.stringValue = String(type.rawValue)
-        typeAttributeValue?.dataType = "Number"
-        sendRequest.messageAttributes = [ "type": typeAttributeValue! ]
-        sqs.sendMessage(sendRequest, completionHandler: { (result, error) in
-            if let error = error {
-                Logger.shared.error("Could not send message to SQS queue.", error: error as NSError)
-            }
-        })
-    }
-    
-    func deleteFromSqs(receiptHandle: String, queueName: String) {
-        guard let deleteRequest = AWSSQSDeleteMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSDeleteMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        deleteRequest.queueUrl = queueUrl
-        deleteRequest.receiptHandle = receiptHandle
-        sqs.deleteMessage(deleteRequest).continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not delete message to SQS queue.", error: error as NSError)
-            }
-            return nil
-        }
-    }
-    
-    func getFromSqs(from queueName: String, shortPolling: Bool, completionHandler: @escaping (_ messages: [AWSSQSMessage], _ queueName : String) -> Void) {
-        guard let receiveRequest = AWSSQSReceiveMessageRequest() else {
-            Logger.shared.error("Could not create AWSSQSReceiveMessageRequest.")
-            return
-        }
-        let queueUrl = "\(Properties.AWSSQSBaseUrl)\(queueName)"
-        receiveRequest.queueUrl = queueUrl
-        receiveRequest.waitTimeSeconds = shortPolling ? 0 : 20
-        receiveRequest.messageAttributeNames = ["All"]
-        sqs.receiveMessage(receiveRequest).continueOnSuccessWith { (task) -> Any? in
-            if let messages = task.result?.messages {
-                completionHandler(messages, queueName)
-            }
-            
-            return nil
-        }.continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Could not get message from SQS queue.", error: error as NSError)
-            }
-            return nil
-        }
     }
 
     func snsRegistration(deviceToken: Data) {
@@ -136,7 +77,7 @@ class AWS {
             if let result = task.result {
                 if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
                     do {
-                        try Keychain.sharedInstance.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                        try Keychain.sharedInstance.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService, classification: .secret)
                     } catch {
                         Logger.shared.error("Error saving Keyn subscription identifier.", error: error as NSError)
                         try? Keychain.sharedInstance.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
@@ -256,9 +197,12 @@ class AWS {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
                     try? Keychain.sharedInstance.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
-                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService)
+                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService, classification: .secret)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
+                    if self.isFirstLaunch {
+                        self.subscribe()
+                    }
                 } catch {
                     Logger.shared.error("Could not save endpoint to keychain", error: error as NSError)
                 }

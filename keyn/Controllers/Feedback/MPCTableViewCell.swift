@@ -15,7 +15,7 @@ class MPCTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         layer.addBorder(edge: .left, color: UIColor(rgb: 0xFFB72F), thickness: 1)
-        layer.addBorder(edge: .right, color: UIColor(rgb: 0xFFB72F), thickness: 1)
+        layer.addBorder(edge: .right, color: UIColor(rgb: 0xFFB72F), thickness: 40) // TODO: Fix this for real.
         layer.addBorder(edge: .bottom, color: UIColor(rgb: 0xFFB72F), thickness: 1)
     }
 

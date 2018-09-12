@@ -20,6 +20,9 @@ enum APIEndpoint: String {
     case backup = "backup"
     case ppd = "ppd"
     case analytics = "analytics"
+    case queue = "queue"
+    case message = "message"
+    case questionnaire = "questionnaire"
 }
 
 enum APIRequestType: String {
@@ -42,7 +45,7 @@ class API {
         send(request)
     }
     
-    func get(type: APIEndpoint, path: String, parameters: [String: String]?, completionHandler: @escaping (_ accountData: [String: Any]) -> Void) {
+    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]) -> Void) {
         let url = createUrl(type: type, path: path, parameters: parameters)!
         var request = URLRequest(url: url)
         request.httpMethod = APIRequestType.get.rawValue
@@ -91,6 +94,7 @@ class API {
                         throw APIError.statusCode(error: "Not 200 but no error")
                     }
                 } catch {
+                    print(error)
                     Logger.shared.error("API error", error: error as NSError, userInfo: [
                         "statusCode": httpStatus.statusCode
                         ])
@@ -102,11 +106,14 @@ class API {
         task.resume()
     }
     
-    private func createUrl(type: APIEndpoint, path: String, parameters: [String: String]?) -> URL? {
+    private func createUrl(type: APIEndpoint, path: String?, parameters: [String: String]?) -> URL? {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.keynApiVersion)/\(type.rawValue)/\(path)"
+        components.path = "/\(Properties.ppdTestingMode ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)"
+        if let path = path {
+            components.path += "/\(path)"
+        }
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {

@@ -142,7 +142,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     private func loadRootController() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-        rootController.selectedIndex = 1
+        rootController.selectedIndex = 0
         UIApplication.shared.keyWindow?.rootViewController = rootController
     }
 

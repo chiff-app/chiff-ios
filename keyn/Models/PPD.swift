@@ -17,7 +17,7 @@ struct PPD: Codable {
     let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
-    let name: String?
+    let name: String
 
     func export() {
         do {
@@ -34,7 +34,7 @@ struct PPD: Codable {
         API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
             if let ppd = dict["ppds"] as? [Any] {
                 do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: JSONSerialization.WritingOptions.prettyPrinted)
+                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
                     let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
                     completionHandler(ppd)
                 } catch {
