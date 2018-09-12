@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             } catch _ as DecodingError {
                 Account.deleteAll()
-                Session.deleteAll()
                 try? Seed.delete()
                 Logger.shared.info("Removed alpha accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             } catch {
