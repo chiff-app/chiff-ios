@@ -43,7 +43,7 @@ struct BackupManager {
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        API.sharedInstance.put(type: .backup, path: pubKey, parameters: parameters)
+        try API.sharedInstance.put(type: .backup, path: pubKey, parameters: parameters)
     }
     
     func backup(id: String, accountData: Data) throws {
@@ -59,7 +59,7 @@ struct BackupManager {
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
+        try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters)
     }
     
     func deleteAccount(accountId: String) throws {
@@ -73,7 +73,7 @@ struct BackupManager {
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters, body: nil)
+        try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters)
     }
     
     func getBackupData(completionHandler: @escaping () -> Void) throws {
@@ -94,7 +94,7 @@ struct BackupManager {
             "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        API.sharedInstance.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
+        try API.sharedInstance.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
             for (id, data) in dict {
                 if let base64Data = data as? String {
                     do {

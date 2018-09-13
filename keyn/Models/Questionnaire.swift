@@ -185,21 +185,25 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        API.sharedInstance.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
-            if let questionnaires = dict["questionnaires"] as? [Any] {
-                for object in questionnaires {
-                    do {
-                        let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
-                        let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
-                        if !exists(id: questionnaire.id) {
-                            questionnaire.save()
+        do {
+            try API.sharedInstance.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
+                if let questionnaires = dict["questionnaires"] as? [Any] {
+                    for object in questionnaires {
+                        do {
+                            let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
+                            let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
+                            if !exists(id: questionnaire.id) {
+                                questionnaire.save()
+                            }
+                        } catch {
+                            Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
                         }
-                    } catch {
-                        Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
+                        
                     }
-
                 }
             }
+        } catch {
+            Logger.shared.warning("Could not get questionnaires", error: error as NSError)
         }
     }
     

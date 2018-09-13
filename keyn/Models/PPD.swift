@@ -30,8 +30,8 @@ struct PPD: Codable {
         }
     }
     
-    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) {
-        API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) throws {
+        try API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
             if let ppd = dict["ppds"] as? [Any] {
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
