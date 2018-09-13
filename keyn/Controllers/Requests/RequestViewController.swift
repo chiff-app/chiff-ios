@@ -50,32 +50,36 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session, let type = type {
-            switch type {
-            case .add:
-                Site.get(id: notification.siteID, completion: { (site) in
-                    self.site = site
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
-                    }
-                })
-            case .login, .change, .fill:
-                if accounts.count == 0 {
-                    Site.get(id: notification.siteID, completion: { (site) in
+            do {
+                switch type {
+                case .add:
+                    try Site.get(id: notification.siteID, completion: { (site) in
                         self.site = site
                         DispatchQueue.main.async {
                             self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                         }
                     })
-                } else if accounts.count == 1 {
-                    authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
-                } else {
-                    let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
-                    authorize(notification: notification, session: session, accountID: accountID, type: type)
+                case .login, .change, .fill:
+                    if accounts.count == 0 {
+                        try Site.get(id: notification.siteID, completion: { (site) in
+                            self.site = site
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                            }
+                        })
+                    } else if accounts.count == 1 {
+                        authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
+                    } else {
+                        let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
+                        authorize(notification: notification, session: session, accountID: accountID, type: type)
+                    }
+                case .register:
+                    Logger.shared.debug("TODO: Fix register requests")
+                default:
+                    Logger.shared.warning("Unknown request type received.")
                 }
-            case .register:
-                Logger.shared.debug("TODO: Fix register requests")
-            default:
-                Logger.shared.warning("Unknown request type received.")
+            } catch {
+                Logger.shared.error("Could nog get PPD.", error: error as NSError)
             }
         }
     }
