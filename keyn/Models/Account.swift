@@ -1,5 +1,6 @@
 import Foundation
 import JustLog
+import OneTimePassword
 
 /*
  * An account belongs to the user and can have one Site.
@@ -12,13 +13,16 @@ struct Account: Codable {
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
+    var hasOtp: Bool?
     static let keychainService = "io.keyn.account"
+    static let otpKeychainService = "io.keyn.otp"
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
         id = "\(site.id)_\(username)".hash()
 
         self.username = username
         self.site = site
+        self.hasOtp = false
 
         if let password = password {
             passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
@@ -74,7 +78,47 @@ struct Account: Codable {
         return newPassword
     }
     
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?) throws {
+    // OTP
+    
+    func oneTimePasswordToken() throws -> Token? {
+        if let hasOtp = hasOtp, hasOtp {
+            let secret = try Keychain.sharedInstance.get(id: id, service: Account.otpKeychainService)
+            guard let urlDataDict = try Keychain.sharedInstance.attributes(id: id, service: Account.otpKeychainService) else {
+                return nil
+            }
+            guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
+                let url = URL(string: urlString) else {
+                    throw KeychainError.unexpectedData
+            }
+            
+            return Token(url: url, secret: secret)
+        }
+        return nil
+    }
+    
+    mutating func addOtp(token: Token) throws {
+        let secret = token.generator.secret
+        guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+        try Keychain.sharedInstance.save(secretData: secret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
+        hasOtp = true
+        try update(username: nil, password: nil, siteName: nil, url: nil, hasOtp: true)
+    }
+    
+    func updateOtp(token: Token) throws {
+        let secret = token.generator.secret
+        guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+        try Keychain.sharedInstance.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
+    }
+    
+    func deleteOtp() throws {
+        try Keychain.sharedInstance.delete(id: id, service: Account.otpKeychainService)
+    }
+    
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, hasOtp: Bool?) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -83,6 +127,9 @@ struct Account: Codable {
         }
         if let url = url {
             self.site.url = url
+        }
+        if let hasOtp = hasOtp {
+            self.hasOtp = hasOtp
         }
         
         if let newPassword = newPassword {
@@ -125,9 +172,7 @@ struct Account: Codable {
 
     static func get(siteID: String) throws -> [Account] {
         // TODO: optimize when we're bored
-        guard let accounts = try Account.all() else {
-            return [Account]()
-        }
+        let accounts = try Account.all()
 
         return accounts.filter { (account) -> Bool in
             account.site.id == siteID
@@ -135,7 +180,8 @@ struct Account: Codable {
     }
     
     static func get(accountID: String) throws -> Account? {
-        guard let accounts = try Account.all() else {
+        let accounts = try Account.all()
+        guard !accounts.isEmpty else {
             return nil
         }
         
@@ -161,9 +207,9 @@ struct Account: Codable {
         try Keychain.sharedInstance.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: accountData, classification: .confidential)
     }
 
-    static func all() throws -> [Account]? {
+    static func all() throws -> [Account] {
         guard let dataArray = try Keychain.sharedInstance.all(service: keychainService) else {
-            return nil
+            return []
         }
 
         var accounts = [Account]()
@@ -183,6 +229,13 @@ struct Account: Codable {
         Keychain.sharedInstance.deleteAll(service: keychainService)
     }
     
+    static func find(sitename: String, username: String) throws {
+        let accounts = try all()
+        for account in accounts {
+            // TODO
+        }
+    }
+    
     // TEMPORARY, for migration to next version. Can be removed after versions 1.0.0 have disappeared.
     func updateKeychainClassification() throws {
         let passwordData: Data = try password()
@@ -192,3 +245,4 @@ struct Account: Codable {
     }
 
 }
+
