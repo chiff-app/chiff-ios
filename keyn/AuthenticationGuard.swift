@@ -137,22 +137,21 @@ class AuthenticationGuard {
         }
     }
     
-    func addOTP(token: Token, completion: @escaping (_: Account?, _: Error?)->()) throws {
+    func addOTP(token: Token, account: Account, completion: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
-        let account = try Account.get(siteID: "89a8000a68d759c68bfaeab5056d67342e97643511923e63702da58a9aac8f38")[0]
-        authorize(reason: account.hasOtp ?? false ? "Add OTP to \(token.issuer)" : "Update OTP for \(token.issuer)") { [weak self] (success, error) in
+        authorize(reason: account.hasOtp ?? false ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { [weak self] (success, error) in
             if success {
                 do  {
                     self?.authorizationInProgress = false
-                    completion(account, nil)
+                    completion(nil)
                 } catch {
                     self?.authorizationInProgress = false
-                    completion(nil, error)
+                    completion(error)
                 }
 
             } else if let error = error {
                 self?.authorizationInProgress = false
-                completion(nil, error)
+                completion(error)
             }
         }
         

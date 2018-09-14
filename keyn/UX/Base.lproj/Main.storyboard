@@ -361,6 +361,7 @@
                     <navigationItem key="navigationItem" title="Account Details" id="E1r-7c-sEs"/>
                     <connections>
                         <outlet property="totpLoader" destination="Lql-km-Qfu" id="0GC-dm-QMU"/>
+                        <outlet property="totpLoaderWidthConstraint" destination="bJ1-yd-KjI" id="Z11-RW-sRy"/>
                         <outlet property="userCodeCell" destination="wil-ge-7VV" id="Xfq-mB-Hkm"/>
                         <outlet property="userCodeTextField" destination="gRZ-KH-74z" id="5Jj-E8-vJO"/>
                         <outlet property="userNameTextField" destination="n3L-Py-LkS" id="dsU-Vq-a5u"/>
@@ -368,6 +369,7 @@
                         <outlet property="websiteNameTextField" destination="xRz-I8-dK4" id="XH6-ya-cM0"/>
                         <outlet property="websiteURLTextField" destination="Pvp-cj-ASL" id="w3m-fi-lzJ"/>
                         <segue destination="ibN-3J-G1l" kind="unwind" identifier="DeleteAccount" unwindAction="unwindToAccountOverviewWithSender:" id="b7Y-kV-lyj"/>
+                        <segue destination="kL3-Yo-Ehz" kind="show" identifier="showQR" id="xrO-JS-RqG"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAD-fx-Eo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1204,7 +1206,7 @@ Reproduction steps:
         <!--Pair-->
         <scene sceneID="mhC-e7-9cD">
             <objects>
-                <viewController storyboardIdentifier="QR Controller" id="Zdy-j7-Tbj" customClass="QRViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Pair Controller" id="Zdy-j7-Tbj" customClass="PairViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0KW-T6-djj">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1252,7 +1254,7 @@ Reproduction steps:
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1gr-cn-MkD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2371.875" y="-1.056338028169014"/>
+            <point key="canvasLocation" x="2417" y="0.0"/>
         </scene>
         <!--Settings-->
         <scene sceneID="zrt-ki-pMI">
@@ -1497,6 +1499,59 @@ Reproduction steps:
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7B-7a-jdI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2962" y="-863"/>
+        </scene>
+        <!--2-factor code-->
+        <scene sceneID="3wm-x5-OvS">
+            <objects>
+                <viewController storyboardIdentifier="OTP Controller" id="kL3-Yo-Ehz" customClass="OTPViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1rc-Xm-7Jy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5kA-4z-Z0m">
+                                <rect key="frame" x="0.0" y="116" width="414" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan a 2FA QR-code for this site." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zyk-fh-eZ3">
+                                        <rect key="frame" x="8" y="8" width="398" height="64"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Zyk-fh-eZ3" secondAttribute="trailing" constant="8" id="BPv-pP-SCt"/>
+                                    <constraint firstItem="Zyk-fh-eZ3" firstAttribute="leading" secondItem="5kA-4z-Z0m" secondAttribute="leading" constant="8" id="Irg-Db-aoV"/>
+                                    <constraint firstAttribute="height" constant="80" id="lJy-A1-xen"/>
+                                    <constraint firstAttribute="bottom" secondItem="Zyk-fh-eZ3" secondAttribute="bottom" constant="8" id="nqi-jR-1ee"/>
+                                    <constraint firstItem="Zyk-fh-eZ3" firstAttribute="top" secondItem="5kA-4z-Z0m" secondAttribute="top" constant="8" id="wK3-0n-yRd"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXJ-Si-lcK">
+                                <rect key="frame" x="0.0" y="196" width="414" height="491"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hXJ-Si-lcK" firstAttribute="top" secondItem="5kA-4z-Z0m" secondAttribute="bottom" id="QCu-bf-l9X"/>
+                            <constraint firstItem="hXJ-Si-lcK" firstAttribute="trailing" secondItem="HvE-Ku-vhY" secondAttribute="trailing" id="fg8-dq-z3i"/>
+                            <constraint firstItem="HvE-Ku-vhY" firstAttribute="bottom" secondItem="hXJ-Si-lcK" secondAttribute="bottom" id="jSL-0T-YEa"/>
+                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="top" secondItem="HvE-Ku-vhY" secondAttribute="top" id="kfM-UW-Nzk"/>
+                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" id="oSh-Lv-9d0"/>
+                            <constraint firstItem="hXJ-Si-lcK" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" id="qwJ-dY-ro7"/>
+                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="trailing" secondItem="HvE-Ku-vhY" secondAttribute="trailing" id="tZK-lU-uFr"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="HvE-Ku-vhY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="2-factor code" id="htf-PP-A56"/>
+                    <connections>
+                        <outlet property="videoView" destination="hXJ-Si-lcK" id="AYc-lY-evK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zRI-xO-cE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3639" y="-863"/>
         </scene>
     </scenes>
     <resources>
