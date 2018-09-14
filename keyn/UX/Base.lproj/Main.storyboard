@@ -246,12 +246,58 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="wil-ge-7VV">
+                                        <rect key="frame" x="0.0" y="287.33333333333337" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wil-ge-7VV" id="5TX-6f-AVg">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="jxc-ac-6M5">
+                                                    <rect key="frame" x="20" y="0.0" width="350" height="43.666666666666664"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Code" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-fa-pXv">
+                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="43.666666666666664"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="i1M-yX-Yt9"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gRZ-KH-74z">
+                                                            <rect key="frame" x="89" y="0.0" width="261" height="43.666666666666664"/>
+                                                            <nil key="textColor"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" textContentType="password"/>
+                                                        </textField>
+                                                    </subviews>
+                                                </stackView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lql-km-Qfu">
+                                                    <rect key="frame" x="370" y="0.0" width="44" height="43.666666666666664"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="44" id="bJ1-yd-KjI"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="jxc-ac-6M5" firstAttribute="leading" secondItem="5TX-6f-AVg" secondAttribute="leadingMargin" id="GOj-9s-UTV"/>
+                                                <constraint firstAttribute="bottom" secondItem="jxc-ac-6M5" secondAttribute="bottom" id="GOu-xQ-tdr"/>
+                                                <constraint firstItem="jxc-ac-6M5" firstAttribute="top" secondItem="5TX-6f-AVg" secondAttribute="top" id="Id1-mx-ZBE"/>
+                                                <constraint firstAttribute="bottom" secondItem="Lql-km-Qfu" secondAttribute="bottom" id="cML-DI-xoV"/>
+                                                <constraint firstItem="Lql-km-Qfu" firstAttribute="leading" secondItem="jxc-ac-6M5" secondAttribute="trailing" id="gaU-pS-cqO"/>
+                                                <constraint firstItem="Lql-km-Qfu" firstAttribute="top" secondItem="5TX-6f-AVg" secondAttribute="top" id="kuE-1U-4hN"/>
+                                                <constraint firstAttribute="trailing" secondItem="Lql-km-Qfu" secondAttribute="trailing" id="mxD-dB-u2m"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="Xtc-o6-09S">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="zon-vV-iH2">
-                                        <rect key="frame" x="0.0" y="323.33333333333337" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="367.33333333333337" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -280,7 +326,7 @@
                             <tableViewSection footerTitle="Let us know if something isn't working properly for this website." id="NaP-xu-eol">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
-                                        <rect key="frame" x="0.0" y="403.33333333333337" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="447.33333333333337" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KXD-8V-vma" id="99P-am-w3J">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
@@ -314,6 +360,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Account Details" id="E1r-7c-sEs"/>
                     <connections>
+                        <outlet property="totpLoader" destination="Lql-km-Qfu" id="0GC-dm-QMU"/>
+                        <outlet property="userCodeCell" destination="wil-ge-7VV" id="Xfq-mB-Hkm"/>
+                        <outlet property="userCodeTextField" destination="gRZ-KH-74z" id="5Jj-E8-vJO"/>
                         <outlet property="userNameTextField" destination="n3L-Py-LkS" id="dsU-Vq-a5u"/>
                         <outlet property="userPasswordTextField" destination="Elj-VJ-Plw" id="CLY-7V-LzK"/>
                         <outlet property="websiteNameTextField" destination="xRz-I8-dK4" id="XH6-ya-cM0"/>

@@ -1,6 +1,8 @@
 import UIKit
 import MBProgressHUD
 import JustLog
+import OneTimePassword
+
 
 class AccountViewController: UITableViewController, UITextFieldDelegate {
 
@@ -13,7 +15,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var websiteURLTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
+    @IBOutlet weak var userCodeTextField: UITextField!
     @IBOutlet weak var showPasswordButton: UIButton!
+    @IBOutlet weak var userCodeCell: UITableViewCell!
+    @IBOutlet weak var totpLoader: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +31,23 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
                 websiteURLTextField.text = account.site.url
                 userNameTextField.text = account.username
                 userPasswordTextField.text = try account.password()
+                if let hasOtp = account.hasOtp, hasOtp, let token = try account.oneTimePasswordToken() {
+                    userCodeTextField.text = token.currentPassword
+                    switch token.generator.factor {
+                    case .counter(let counter):
+                        print("Counter")
+                    case .timer(let period):
+                        let now = Date().timeIntervalSince1970
+                        let start = now.truncatingRemainder(dividingBy: period)
+                        let loadingCircle = LoadingCircle()
+                        totpLoader.addSubview(loadingCircle)
+                        func completion() {
+                            userCodeTextField.text = token.currentPassword
+                            loadingCircle.animateCircle(duration: period, start: 0.0, completion: completion)
+                        }
+                        loadingCircle.animateCircle(duration: period, start: start, completion: completion)
+                    }
+                }
                 websiteNameTextField.delegate = self
                 websiteURLTextField.delegate = self
                 userNameTextField.delegate = self
@@ -40,6 +62,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
+    
     
     // MARK: UITextFieldDelegate
     
@@ -58,6 +81,13 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
              navigationItem.title = textField.text
         }
         view.removeGestureRecognizer(tap)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 2, let account = account {
+            return account.hasOtp ?? false ? 44 : 0
+        }
+        return 44
     }
 
 
@@ -126,7 +156,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl)
+            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, hasOtp: nil)
             if let accountsTableViewController = navigationController?.viewControllers[0] as? AccountsTableViewController {
                 accountsTableViewController.updateAccount(account: account!)
             }
@@ -207,4 +237,54 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
+}
+
+class LoadingCircle: UIView {
+    var backgroundLayer: CAShapeLayer!
+    var circleLayer: CAShapeLayer!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let radius = 13
+        let backgroundPath = UIBezierPath(arcCenter: CGPoint(x: 22, y: 22), radius: CGFloat(radius - 1), startAngle: CGFloat(0), endAngle:CGFloat(Double.pi * 2), clockwise: true)
+        backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = backgroundPath.cgPath
+        backgroundLayer.fillColor = UIColor.clear.cgColor
+        backgroundLayer.lineWidth = 2.0
+        backgroundLayer.strokeColor = UIColor.lightGray.cgColor
+        
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: 22, y: 22), radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle:CGFloat(3 * Double.pi / 2), clockwise: true)
+        circleLayer = CAShapeLayer()
+        circleLayer.path = circlePath.cgPath
+        circleLayer.fillColor = UIColor.clear.cgColor
+        circleLayer.strokeColor = UIColor.lightGray.cgColor
+        circleLayer.strokeStart = 0.0
+        circleLayer.strokeEnd = 1.0
+        circleLayer.lineWidth = CGFloat(radius)
+
+        layer.addSublayer(backgroundLayer)
+        layer.addSublayer(circleLayer)
+    }
+    
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func animateCircle(duration: TimeInterval, start: TimeInterval, completion: @escaping () -> Void) {
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(duration - start)
+        CATransaction.setCompletionBlock(completion)
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.duration = duration - start
+        circleLayer.strokeStart = 0
+        circleLayer.strokeEnd = CGFloat(start / duration)
+        animation.fromValue = CGFloat(start / duration)
+        animation.toValue = 1
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+//        circleLayer.strokeEnd = 1.0
+        circleLayer.add(animation, forKey: "animateCircle")
+        CATransaction.commit()
+    }
+    
 }

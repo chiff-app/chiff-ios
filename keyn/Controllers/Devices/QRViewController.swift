@@ -2,6 +2,7 @@ import UIKit
 import AVFoundation
 import LocalAuthentication
 import JustLog
+import OneTimePassword
 
 enum CameraError: Error {
     case noCamera
@@ -38,10 +39,22 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 // TODO: Check if this can be exploited with specially crafted QR codes?
-                if let url = machineReadableCode.stringValue, !qrFound {
+                if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true
                     do {
-                        try pairPermission(url: url)
+                        guard !recentlyScannedUrls.contains(urlString) else {
+                            throw SessionError.exists
+                        }
+                        guard let url = URL(string: urlString) else {
+                            throw SessionError.invalid
+                        }
+                        if let scheme = url.scheme {
+                            if scheme == "keyn" {
+                                try pairPermission(url: url)
+                            } else if scheme == "otpauth" {
+                                try addOTP(url: url)
+                            }
+                        }
                     } catch {
                         switch error {
                         case SessionError.exists:
@@ -100,13 +113,44 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         captureSession.startRunning()
     }
     
-    private func pairPermission(url: String) throws {
-        guard !recentlyScannedUrls.contains(url) else {
-            throw SessionError.exists
+    private func addOTP(url: URL) throws {
+        if let token = Token(url: url) {
+            try AuthenticationGuard.sharedInstance.addOTP(token: token, completion: { [weak self] (account, error) in
+                DispatchQueue.main.async {
+                    if account != nil {
+                        do {
+                            var account = account
+                            if account?.hasOtp ?? false {
+                                try account!.updateOtp(token: token)
+                            } else {
+                                try account!.addOtp(token: token)
+                            }
+                        } catch {
+                            Logger.shared.error("Error adding OTP", error: error as NSError)
+                        }
+                    } else if let error = error {
+                        switch error {
+                        case KeychainError.storeKey:
+                            Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
+                            self?.displayError(message: "This QR code was already scanned.")
+                        default:
+                            Logger.shared.error("Unhandled QR code error.", error: error as NSError)
+                            self?.displayError(message: "An error occured.")
+                        }
+                        self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
+                        self?.qrFound = false
+                    } else {
+                        self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
+                        self?.qrFound = false
+                    }
+                }
+            })
+        } else {
+            print("Invalid token URL")
         }
-        guard let url = URL(string: url) else {
-            throw SessionError.invalid
-        }
+    }
+    
+    private func pairPermission(url: URL) throws {
         try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
