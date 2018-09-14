@@ -18,8 +18,8 @@ class DevicesNavigationController: UINavigationController {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
             } else {
-                let qrViewController = storyboard?.instantiateViewController(withIdentifier: "QR Controller") as! QRViewController
-                pushViewController(qrViewController, animated: false)
+                let pairViewController = storyboard?.instantiateViewController(withIdentifier: "Pair Controller") as! PairViewController
+                pushViewController(pairViewController, animated: false)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error as NSError)

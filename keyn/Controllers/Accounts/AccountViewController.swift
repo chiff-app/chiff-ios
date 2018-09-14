@@ -10,6 +10,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     var editButton: UIBarButtonItem!
     var account: Account?
     var tap: UITapGestureRecognizer!
+    var qrEnabled: Bool = true
     
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -19,6 +20,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var showPasswordButton: UIButton!
     @IBOutlet weak var userCodeCell: UITableViewCell!
     @IBOutlet weak var totpLoader: UIView!
+    @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,23 +33,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
                 websiteURLTextField.text = account.site.url
                 userNameTextField.text = account.username
                 userPasswordTextField.text = try account.password()
-                if let hasOtp = account.hasOtp, hasOtp, let token = try account.oneTimePasswordToken() {
-                    userCodeTextField.text = token.currentPassword
-                    switch token.generator.factor {
-                    case .counter(let counter):
-                        print("Counter")
-                    case .timer(let period):
-                        let now = Date().timeIntervalSince1970
-                        let start = now.truncatingRemainder(dividingBy: period)
-                        let loadingCircle = LoadingCircle()
-                        totpLoader.addSubview(loadingCircle)
-                        func completion() {
-                            userCodeTextField.text = token.currentPassword
-                            loadingCircle.animateCircle(duration: period, start: 0.0, completion: completion)
-                        }
-                        loadingCircle.animateCircle(duration: period, start: start, completion: completion)
-                    }
-                }
+                try toggleOTPUI(account: account)
                 websiteNameTextField.delegate = self
                 websiteURLTextField.delegate = self
                 userNameTextField.delegate = self
@@ -61,6 +47,34 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         }
         
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+    }
+    
+    private func toggleOTPUI(account: Account) throws {
+        if let hasOtp = account.hasOtp, hasOtp, let token = try account.oneTimePasswordToken() {
+            qrEnabled = false
+            totpLoaderWidthConstraint.constant = 44
+            userCodeCell.accessoryType = .none
+            userCodeTextField.text = token.currentPassword
+            switch token.generator.factor {
+            case .counter(let counter):
+                print("Counter")
+            case .timer(let period):
+                let now = Date().timeIntervalSince1970
+                let start = now.truncatingRemainder(dividingBy: period)
+                let loadingCircle = LoadingCircle()
+                totpLoader.addSubview(loadingCircle)
+                func completion() {
+                    userCodeTextField.text = token.currentPassword
+                    loadingCircle.animateCircle(duration: period, start: 0.0, completion: completion)
+                }
+                loadingCircle.animateCircle(duration: period, start: start, completion: completion)
+            }
+        } else {
+            qrEnabled = true
+            totpLoaderWidthConstraint.constant = 0
+            userCodeCell.accessoryType = .disclosureIndicator
+            userCodeTextField.placeholder = "Scan QR code"
+        }
     }
     
     
@@ -83,12 +97,13 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         view.removeGestureRecognizer(tap)
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 && indexPath.row == 2, let account = account {
-            return account.hasOtp ?? false ? 44 : 0
-        }
-        return 44
-    }
+    // TODO: Perhaps hide cell if TOTP is not possible for site. But should be registered somewhere
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if indexPath.section == 1 && indexPath.row == 2, let account = account {
+//            return account.hasOtp ?? false ? 44 : 0
+//        }
+//        return 44
+//    }
 
 
     // MARK: Actions
@@ -111,8 +126,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 1 {
+        guard indexPath.section == 1 else { return }
+        if indexPath.row == 1 {
             copyPassword(indexPath)
+        } else if indexPath.row == 2 && qrEnabled {
+            performSegue(withIdentifier: "showQR", sender: self)
         }
     }
     
@@ -232,6 +250,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "reportSite", let destination = segue.destination.contents as? ReportSiteViewController {
+            destination.navigationItem.title = account?.site.name
+            destination.account = account
+        } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             destination.navigationItem.title = account?.site.name
             destination.account = account
         }
