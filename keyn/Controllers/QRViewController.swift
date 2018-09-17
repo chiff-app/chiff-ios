@@ -9,6 +9,7 @@ enum CameraError: Error {
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+    
     // MARK: Properties
     
     var captureSession: AVCaptureSession?

@@ -1551,7 +1551,7 @@ Reproduction steps:
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRI-xO-cE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3639" y="-863"/>
+            <point key="canvasLocation" x="3339" y="-863"/>
         </scene>
     </scenes>
     <resources>
