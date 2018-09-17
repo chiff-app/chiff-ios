@@ -13,7 +13,6 @@ struct Account: Codable {
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
-    var hasOtp: Bool?
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
 
@@ -22,7 +21,6 @@ struct Account: Codable {
 
         self.username = username
         self.site = site
-        self.hasOtp = false
 
         if let password = password {
             passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
@@ -81,19 +79,20 @@ struct Account: Codable {
     // OTP
     
     func oneTimePasswordToken() throws -> Token? {
-        if let hasOtp = hasOtp, hasOtp {
-            let secret = try Keychain.sharedInstance.get(id: id, service: Account.otpKeychainService)
-            guard let urlDataDict = try Keychain.sharedInstance.attributes(id: id, service: Account.otpKeychainService) else {
-                return nil
-            }
-            guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
-                let url = URL(string: urlString) else {
-                    throw KeychainError.unexpectedData
-            }
-            
-            return Token(url: url, secret: secret)
+        guard let urlDataDict = try Keychain.sharedInstance.attributes(id: id, service: Account.otpKeychainService) else {
+            return nil
         }
-        return nil
+        let secret = try Keychain.sharedInstance.get(id: id, service: Account.otpKeychainService)
+        guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
+            let url = URL(string: urlString) else {
+                throw KeychainError.unexpectedData
+        }
+        
+        return Token(url: url, secret: secret)
+    }
+    
+    func hasOtp() -> Bool {
+        return Keychain.sharedInstance.has(id: id, service: Account.otpKeychainService)
     }
     
     mutating func addOtp(token: Token) throws {
@@ -102,8 +101,6 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
         try Keychain.sharedInstance.save(secretData: secret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
-        hasOtp = true
-        try update(username: nil, password: nil, siteName: nil, url: nil, hasOtp: true)
     }
     
     func updateOtp(token: Token) throws {
@@ -118,7 +115,7 @@ struct Account: Codable {
         try Keychain.sharedInstance.delete(id: id, service: Account.otpKeychainService)
     }
     
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, hasOtp: Bool?) throws {
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -127,9 +124,6 @@ struct Account: Codable {
         }
         if let url = url {
             self.site.url = url
-        }
-        if let hasOtp = hasOtp {
-            self.hasOtp = hasOtp
         }
         
         if let newPassword = newPassword {

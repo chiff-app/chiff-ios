@@ -2,15 +2,22 @@ import UIKit
 import MBProgressHUD
 import JustLog
 import OneTimePassword
+import QuartzCore
 
+protocol canAddOTPCode {
+    func addOTPCode(token: Token)
+}
 
-class AccountViewController: UITableViewController, UITextFieldDelegate {
+class AccountViewController: UITableViewController, UITextFieldDelegate, canAddOTPCode {
 
     //MARK: Properties
     var editButton: UIBarButtonItem!
-    var account: Account?
+    var account: Account!
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
+    var editingMode: Bool = false
+    var otpCodeTimer: Timer!
+    var token: Token?
     
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -21,62 +28,46 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var userCodeCell: UITableViewCell!
     @IBOutlet weak var totpLoader: UIView!
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
+    var loadingCircle: LoadingCircle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(edit))
         navigationItem.rightBarButtonItem = editButton
         
-        if let account = account {
-            do {
-                websiteNameTextField.text = account.site.name
-                websiteURLTextField.text = account.site.url
-                userNameTextField.text = account.username
-                userPasswordTextField.text = try account.password()
-                try toggleOTPUI(account: account)
-                websiteNameTextField.delegate = self
-                websiteURLTextField.delegate = self
-                userNameTextField.delegate = self
-                userPasswordTextField.delegate = self
-            } catch {
-                // TODO: Present error to user?
-                Logger.shared.error("Could not get password.", error: error as NSError)
-            }
-            navigationItem.title = account.site.name
-            navigationItem.largeTitleDisplayMode = .never
+        do {
+            websiteNameTextField.text = account.site.name
+            websiteURLTextField.text = account.site.url
+            userNameTextField.text = account.username
+            userPasswordTextField.text = try account.password()
+            token = try account.oneTimePasswordToken()
+            updateOTPUI()
+            websiteNameTextField.delegate = self
+            websiteURLTextField.delegate = self
+            userNameTextField.delegate = self
+            userPasswordTextField.delegate = self
+        } catch {
+            // TODO: Present error to user?
+            Logger.shared.error("Could not get password.", error: error as NSError)
         }
+        navigationItem.title = account.site.name
+        navigationItem.largeTitleDisplayMode = .never
         
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
     
-    private func toggleOTPUI(account: Account) throws {
-        if let hasOtp = account.hasOtp, hasOtp, let token = try account.oneTimePasswordToken() {
-            qrEnabled = false
-            totpLoaderWidthConstraint.constant = 44
-            userCodeCell.accessoryType = .none
-            userCodeTextField.text = token.currentPassword
-            switch token.generator.factor {
-            case .counter(let counter):
-                print("Counter")
-            case .timer(let period):
-                let now = Date().timeIntervalSince1970
-                let start = now.truncatingRemainder(dividingBy: period)
-                let loadingCircle = LoadingCircle()
-                totpLoader.addSubview(loadingCircle)
-                func completion() {
-                    userCodeTextField.text = token.currentPassword
-                    loadingCircle.animateCircle(duration: period, start: 0.0, completion: completion)
-                }
-                loadingCircle.animateCircle(duration: period, start: start, completion: completion)
-            }
-        } else {
-            qrEnabled = true
-            totpLoaderWidthConstraint.constant = 0
-            userCodeCell.accessoryType = .disclosureIndicator
-            userCodeTextField.placeholder = "Scan QR code"
-        }
+    // MARK: UITableView
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        try? self.account.deleteOtp()
+        self.token = nil
+        self.updateOTPUI()
+        tableView.cellForRow(at: indexPath)?.setEditing(false, animated: true)
+    }
     
     // MARK: UITextFieldDelegate
     
@@ -104,6 +95,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
 //        }
 //        return 44
 //    }
+    
 
 
     // MARK: Actions
@@ -135,6 +127,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func edit() {
+        tableView.setEditing(true, animated: true)
         let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(cancel))
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(update))
         doneButton.style = .done
@@ -146,6 +139,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         userPasswordTextField.isEnabled = true
         websiteNameTextField.isEnabled = true
         websiteURLTextField.isEnabled = true
+        loadingCircle?.isHidden = true
+
+        editingMode = true
     }
     
     @objc func cancel() {
@@ -153,7 +149,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         do {
             userPasswordTextField.text = try account?.password()
         } catch {
-            Logger.shared.warning("Could not get password", error: error as NSError)
+            Logger.shared.warning("Could not get password.", error: error as NSError)
         }
         navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
@@ -174,7 +170,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, hasOtp: nil)
+            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl)
             if let accountsTableViewController = navigationController?.viewControllers[0] as? AccountsTableViewController {
                 accountsTableViewController.updateAccount(account: account!)
             }
@@ -190,6 +186,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     // MARK: Private methods
     
     private func endEditing() {
+        tableView.setEditing(false, animated: true)
         userPasswordTextField.isSecureTextEntry = true
         navigationItem.setLeftBarButton(nil, animated: true)
         navigationItem.setRightBarButton(editButton, animated: true)
@@ -197,6 +194,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         userPasswordTextField.isEnabled = false
         websiteNameTextField.isEnabled = false
         websiteURLTextField.isEnabled = false
+        loadingCircle?.isHidden = false
+        
+        editingMode = false
     }
     
     private func showHiddenPasswordPopup() {
@@ -244,6 +244,48 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         }) { if $0 { copiedLabel.removeFromSuperview() } }
     }
     
+    // MARK: OTP methods
+    
+    private func updateOTPUI() {
+        if let token = token {
+            qrEnabled = false
+            totpLoaderWidthConstraint.constant = 44
+            userCodeCell.updateConstraints()
+            userCodeCell.accessoryType = .none
+            userCodeTextField.text = token.currentPassword
+            switch token.generator.factor {
+            case .counter(let counter):
+                print("Counter: \(counter)")
+            case .timer(let period):
+                let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
+                if let loadingCircle = loadingCircle {
+                    loadingCircle.removeAnimations()
+                } else {
+                    self.loadingCircle = LoadingCircle()
+                    totpLoader.addSubview(self.loadingCircle!)
+                }
+                
+                loadingCircle!.animateCircle(duration: period, start: start) {
+                    self.userCodeTextField.text = token.currentPassword
+                    self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateOTPCode), userInfo: nil, repeats: true)
+                }
+            }
+        } else {
+            qrEnabled = true
+            loadingCircle?.removeAnimations()
+            userCodeTextField.text = ""
+            totpLoader.subviews.forEach { $0.removeFromSuperview() }
+            totpLoaderWidthConstraint.constant = 0
+            userCodeCell.updateConstraints()
+            userCodeCell.accessoryType = .disclosureIndicator
+            userCodeTextField.placeholder = "Scan QR code"
+        }
+    }
+    
+    @objc func updateOTPCode() {
+        userCodeTextField.text = token?.currentPassword
+    }
+    
     
     // MARK: - Navigation
     
@@ -253,12 +295,23 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             destination.navigationItem.title = account?.site.name
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
+            self.loadingCircle?.removeAnimations()
             destination.navigationItem.title = account?.site.name
+            destination.accountViewDelegate = self
             destination.account = account
         }
     }
+    
+    func addOTPCode(token: Token) {
+        if editingMode {
+            endEditing()
+        }
+        self.token = token
+        updateOTPUI()
+    }
 
 }
+
 
 class LoadingCircle: UIView {
     var backgroundLayer: CAShapeLayer!
@@ -287,15 +340,26 @@ class LoadingCircle: UIView {
         layer.addSublayer(circleLayer)
     }
     
-    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func removeAnimations() {
+        circleLayer.removeAllAnimations()
+    }
+    
     func animateCircle(duration: TimeInterval, start: TimeInterval, completion: @escaping () -> Void) {
         CATransaction.begin()
-        CATransaction.setAnimationDuration(duration - start)
-        CATransaction.setCompletionBlock(completion)
+//        CATransaction.setAnimationDuration(duration - start)
+        CATransaction.setCompletionBlock {
+            completion()
+            self.animate(duration: duration, start: 0.0, infinite: true)
+        }
+        self.animate(duration: duration, start: start, infinite: false)
+        CATransaction.commit()
+    }
+    
+    private func animate(duration: TimeInterval, start: TimeInterval, infinite: Bool) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = duration - start
         circleLayer.strokeStart = 0
@@ -303,9 +367,10 @@ class LoadingCircle: UIView {
         animation.fromValue = CGFloat(start / duration)
         animation.toValue = 1
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-//        circleLayer.strokeEnd = 1.0
+        if infinite {
+            animation.repeatCount = .infinity
+        }
         circleLayer.add(animation, forKey: "animateCircle")
-        CATransaction.commit()
     }
     
 }
