@@ -16,7 +16,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
     var editingMode: Bool = false
-    var otpCodeTimer: Timer!
+    var otpCodeTimer: Timer?
     var token: Token?
     
     @IBOutlet weak var websiteNameTextField: UITextField!
@@ -65,8 +65,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         try? self.account.deleteOtp()
         self.token = nil
-        self.updateOTPUI()
+        DispatchQueue.main.async {
+            self.updateOTPUI()
+        }
         tableView.cellForRow(at: indexPath)?.setEditing(false, animated: true)
+
     }
     
     // MARK: UITextFieldDelegate
@@ -139,7 +142,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         userPasswordTextField.isEnabled = true
         websiteNameTextField.isEnabled = true
         websiteURLTextField.isEnabled = true
-        loadingCircle?.isHidden = true
+        totpLoader?.isHidden = true
 
         editingMode = true
     }
@@ -194,7 +197,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         userPasswordTextField.isEnabled = false
         websiteNameTextField.isEnabled = false
         websiteURLTextField.isEnabled = false
-        loadingCircle?.isHidden = false
+        totpLoader?.isHidden = false
         
         editingMode = false
     }
@@ -254,26 +257,28 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             userCodeCell.accessoryType = .none
             userCodeTextField.text = token.currentPassword
             switch token.generator.factor {
-            case .counter(let counter):
-                print("Counter: \(counter)")
+            case .counter(_):
+                let button = UIButton(frame: CGRect(x: 10, y: 10, width: 24, height: 24))
+                button.setImage(UIImage(named: "refresh"), for: .normal)
+                button.imageView?.contentMode = .scaleAspectFit
+                button.addTarget(self, action: #selector(self.updateHOTP), for: .touchUpInside)
+                totpLoader.addSubview(button)
             case .timer(let period):
                 let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-                if let loadingCircle = loadingCircle {
-                    loadingCircle.removeAnimations()
-                } else {
-                    self.loadingCircle = LoadingCircle()
-                    totpLoader.addSubview(self.loadingCircle!)
-                }
-                
-                loadingCircle!.animateCircle(duration: period, start: start) {
+                self.loadingCircle = LoadingCircle()
+                totpLoader.subviews.forEach { $0.removeFromSuperview() }
+                totpLoader.addSubview(self.loadingCircle!)
+                self.otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
                     self.userCodeTextField.text = token.currentPassword
-                    self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateOTPCode), userInfo: nil, repeats: true)
-                }
+                    self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
+                })
+                loadingCircle!.animateCircle(duration: period, start: start)
             }
         } else {
+            userCodeTextField.text = ""
+            otpCodeTimer?.invalidate()
             qrEnabled = true
             loadingCircle?.removeAnimations()
-            userCodeTextField.text = ""
             totpLoader.subviews.forEach { $0.removeFromSuperview() }
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
@@ -282,8 +287,16 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         }
     }
     
-    @objc func updateOTPCode() {
-        userCodeTextField.text = token?.currentPassword
+    @objc func updateHOTP() {
+        if let token = token?.updatedToken() {
+            self.token = token
+            try? account.updateOtp(token: token)
+            userCodeTextField.text = token.currentPassword
+        }
+    }
+    
+    @objc func updateTOTP() {
+        userCodeTextField.text = token?.currentPassword ?? ""
     }
     
     
@@ -348,11 +361,10 @@ class LoadingCircle: UIView {
         circleLayer.removeAllAnimations()
     }
     
-    func animateCircle(duration: TimeInterval, start: TimeInterval, completion: @escaping () -> Void) {
+    func animateCircle(duration: TimeInterval, start: TimeInterval) {
         CATransaction.begin()
 //        CATransaction.setAnimationDuration(duration - start)
         CATransaction.setCompletionBlock {
-            completion()
             self.animate(duration: duration, start: 0.0, infinite: true)
         }
         self.animate(duration: duration, start: start, infinite: false)
