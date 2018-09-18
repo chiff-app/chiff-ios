@@ -109,9 +109,11 @@
 		613CFB0A201360D800460CC6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		613CFB0B201360DB00460CC6 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
+		61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CD214C21E5004C93FE /* QRViewController.swift */; };
+		61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CF214C253F004C93FE /* OTPViewController.swift */; };
 		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
-		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
+		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
 		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */; };
@@ -212,7 +214,6 @@
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
-		49CBF169212DF66200FFAD1F /* KeynBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeynBridgingHeader.h; sourceTree = "<group>"; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -252,9 +253,11 @@
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
 		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
+		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61B5D4CF214C253F004C93FE /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
-		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
 		64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynCredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
@@ -371,6 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
 				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
@@ -440,7 +444,6 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
-				49CBF169212DF66200FFAD1F /* KeynBridgingHeader.h */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49721F9B2128E5830090AF48 /* API.swift */,
@@ -528,6 +531,7 @@
 				495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */,
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */,
+				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -551,7 +555,7 @@
 				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
 				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
 				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
-				61F938C31FF4161300AF0880 /* QRViewController.swift */,
+				61F938C31FF4161300AF0880 /* PairViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -821,9 +825,11 @@
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
+				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -832,9 +838,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
@@ -889,9 +897,11 @@
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
+				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -900,9 +910,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
@@ -987,6 +999,8 @@
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
+				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
+				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
@@ -1004,7 +1018,7 @@
 				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
-				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
+				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
 				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
@@ -1142,6 +1156,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1164,7 +1179,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = keyn/KeynBridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1302,6 +1317,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1327,6 +1343,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1348,6 +1365,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
@@ -1367,6 +1385,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
@@ -1385,6 +1404,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
@@ -1403,6 +1423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
@@ -1427,6 +1448,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1449,6 +1471,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

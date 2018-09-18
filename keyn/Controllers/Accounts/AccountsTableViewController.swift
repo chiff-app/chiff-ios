@@ -11,9 +11,8 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         super.viewDidLoad()
 
         do {
-            if let savedAccounts = try Account.all() {
-                unfilteredAccounts.append(contentsOf: savedAccounts)
-            }
+            let savedAccounts = try Account.all()
+            unfilteredAccounts.append(contentsOf: savedAccounts)
         } catch {
             Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
         }

@@ -56,12 +56,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func detectOldAccounts() {
         if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
             do {
-                if let accounts = try Account.all() {
-                    for account in accounts {
-                        try account.updateKeychainClassification()
-                    }
-                    Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
+                let accounts = try Account.all()
+                for account in accounts {
+                    try account.updateKeychainClassification()
                 }
+                Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             } catch _ as DecodingError {
                 Account.deleteAll()
                 try? Seed.delete()
@@ -83,9 +82,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                 if devicesViewController.isViewLoaded {
                                     devicesViewController.addSession(session: session)
                                 }
-                            } else if let qrViewController = viewController as? QRViewController {
-                                if qrViewController.isViewLoaded {
-                                    qrViewController.add(session: session)
+                            } else if let pairViewController = viewController as? PairViewController {
+                                if pairViewController.isViewLoaded {
+                                    pairViewController.add(session: session)
                                 }
                             }
                         }
