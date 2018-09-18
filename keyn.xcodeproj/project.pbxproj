@@ -108,6 +108,7 @@
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		613CFB0A201360D800460CC6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		613CFB0B201360DB00460CC6 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
+		6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CD214C21E5004C93FE /* QRViewController.swift */; };
 		61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CF214C253F004C93FE /* OTPViewController.swift */; };
@@ -252,6 +253,7 @@
 		611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderNavigationController.swift; sourceTree = "<group>"; };
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
 		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
+		6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOTPViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		61B5D4CF214C253F004C93FE /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
+				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1033,6 +1036,7 @@
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
+				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
