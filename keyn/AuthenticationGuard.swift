@@ -9,6 +9,7 @@
 import UIKit
 import LocalAuthentication
 import JustLog
+import OneTimePassword
 
 class AuthenticationGuard {
     
@@ -136,6 +137,20 @@ class AuthenticationGuard {
         }
     }
     
+    func addOTP(token: Token, account: Account, completion: @escaping (_: Error?)->()) throws {
+        authorizationInProgress = true
+        authorize(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { [weak self] (success, error) in
+            if success {
+                self?.authorizationInProgress = false
+                completion(nil)
+            } else if let error = error {
+                self?.authorizationInProgress = false
+                completion(error)
+            }
+        }
+        
+    }
+    
     func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
         authorizationInProgress = true
         if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
@@ -158,7 +173,7 @@ class AuthenticationGuard {
                         self?.authorizationInProgress = false
                         completion(nil, error)
                     }
-                    self?.unlock()
+                    self?.unlock() // Why is here?
                 } else if let error = error {
                     self?.authorizationInProgress = false
                     completion(nil, error)

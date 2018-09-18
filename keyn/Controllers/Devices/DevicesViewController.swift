@@ -97,8 +97,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.tableView.deleteRows(at: [indexPath], with: .automatic)
                     if self.sessions.isEmpty {
                         DispatchQueue.main.async {
-                            let qrViewController = self.storyboard?.instantiateViewController(withIdentifier: "QR Controller")
-                            self.navigationController?.setViewControllers([qrViewController!], animated: false)
+                            let pairViewController = self.storyboard?.instantiateViewController(withIdentifier: "Pair Controller")
+                            self.navigationController?.setViewControllers([pairViewController!], animated: false)
                         }
                     }
                 } catch {
@@ -117,8 +117,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
             if self.sessions.isEmpty {
                 DispatchQueue.main.async {
-                    let qrViewController = self.storyboard?.instantiateViewController(withIdentifier: "QR Controller")
-                    self.navigationController?.setViewControllers([qrViewController!], animated: false)
+                    let pairViewController = self.storyboard?.instantiateViewController(withIdentifier: "Pair Controller")
+                    self.navigationController?.setViewControllers([pairViewController!], animated: false)
                 }
             }
         }
@@ -152,7 +152,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Add Session" {
-            if let destination = (segue.destination.contents) as? QRViewController {
+            if let destination = (segue.destination.contents) as? PairViewController {
                 destination.devicesDelegate = self
             }
         }

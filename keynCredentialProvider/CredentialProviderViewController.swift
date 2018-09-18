@@ -21,9 +21,8 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         super.viewDidLoad()
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
         do {
-            if let savedAccounts = try Account.all() {
-                unfilteredAccounts.append(contentsOf: savedAccounts)
-            }
+            let savedAccounts = try Account.all()
+            unfilteredAccounts.append(contentsOf: savedAccounts)
         } catch {
             Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
         }
