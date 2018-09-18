@@ -122,8 +122,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 1 else { return }
-        if indexPath.row == 1 {
-            copyPassword(indexPath)
+        if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
+            copyToPasteboard(indexPath)
         } else if indexPath.row == 2 && qrEnabled {
             performSegue(withIdentifier: "showQR", sender: self)
         }
@@ -223,24 +223,24 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         }
     }
     
-    private func copyPassword(_ indexPath: IndexPath) {
-        guard let passwordCell = tableView.cellForRow(at: indexPath) else {
+    private func copyToPasteboard(_ indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
         
-        Logger.shared.info("Password copied to pasteboard.", userInfo: ["code": AnalyticsMessage.passwordCopy.rawValue])
+        Logger.shared.info("\(indexPath.row == 1 ? "Password" : "OTP-code") copied to pasteboard.", userInfo: ["code": AnalyticsMessage.passwordCopy.rawValue])
         
         let pasteBoard = UIPasteboard.general
-        pasteBoard.string = userPasswordTextField.text
+        pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text
         
-        let copiedLabel = UILabel(frame: passwordCell.bounds)
+        let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "Copied"
         copiedLabel.font = copiedLabel.font.withSize(18)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
         copiedLabel.backgroundColor = UIColor(displayP3Red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
         
-        passwordCell.addSubview(copiedLabel)
+        cell.addSubview(copiedLabel)
         
         UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
             copiedLabel.alpha = 0.0
@@ -265,8 +265,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
                 totpLoader.addSubview(button)
             case .timer(let period):
                 let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-                self.loadingCircle = LoadingCircle()
+                loadingCircle?.removeAnimations()
                 totpLoader.subviews.forEach { $0.removeFromSuperview() }
+                self.loadingCircle = LoadingCircle()
                 totpLoader.addSubview(self.loadingCircle!)
                 self.otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
                     self.userCodeTextField.text = token.currentPassword
@@ -283,7 +284,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
             userCodeCell.accessoryType = .disclosureIndicator
-            userCodeTextField.placeholder = "Scan QR code"
+            userCodeTextField.placeholder = "Add code"
         }
     }
     
@@ -363,7 +364,6 @@ class LoadingCircle: UIView {
     
     func animateCircle(duration: TimeInterval, start: TimeInterval) {
         CATransaction.begin()
-//        CATransaction.setAnimationDuration(duration - start)
         CATransaction.setCompletionBlock {
             self.animate(duration: duration, start: 0.0, infinite: true)
         }
@@ -382,6 +382,7 @@ class LoadingCircle: UIView {
         if infinite {
             animation.repeatCount = .infinity
         }
+        animation.isRemovedOnCompletion = false
         circleLayer.add(animation, forKey: "animateCircle")
     }
     
