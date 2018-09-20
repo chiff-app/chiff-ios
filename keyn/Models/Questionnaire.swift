@@ -228,6 +228,7 @@ class Questionnaire: Codable {
             return try PropertyListDecoder().decode(Questionnaire.self, from: data)
         } catch {
             Logger.shared.warning("Questionnaire not found.", error: error as NSError)
+            try? filemgr.removeItem(atPath: path) // Remove legacy questionnaire
         }
         return nil
     }

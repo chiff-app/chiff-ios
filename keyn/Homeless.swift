@@ -269,6 +269,7 @@ struct CredentialsResponse: Codable {
     let np: String?     // New password (for reset only! When registering p will be set)
     let b: Int
     let a: String?      // AccountID. Only used with changePasswordRequests
+    let o: String?      // OTP code
 }
 
 struct PushNotification {
