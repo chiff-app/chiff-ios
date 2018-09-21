@@ -173,13 +173,6 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     // MARK: - Navigation
 
     @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
-        if let notification = notification, let session = session {
-            do {
-                try session.acknowledge(browserTab: notification.browserTab)
-            } catch {
-                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
-            }
-        }
         self.dismiss(animated: false, completion: nil)
         AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }
