@@ -439,8 +439,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return content
         }
         do {
-            let processor = NotificationProcessor()
-            return try processor.process(content: mutableContent)
+            return try NotificationProcessor.process(content: mutableContent)
         } catch NotificationExtensionError.Decryption {
             Logger.shared.debug("Decryption error")
         } catch NotificationExtensionError.Session {

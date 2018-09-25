@@ -9,44 +9,42 @@ import XCTest
 
 class TestHelper {
 
-    static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "yQ3untNLy-DnV8WxCissyK4mfrlZ8QHiowG-QnWNCEI")
-    static let browserPublicKeyBase64 = "tq08gf3SIKaBlmGiQY0p66gmI7utU3kLHyKEP2t343s"
+    static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble" // Use this seed for testing.
+    static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
+    static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
+    static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
+    static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
 
-    static func deleteSessionKeys() {
-        // Remove passwords
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrService as String: "io.keyn.session.browser"]
-
-        // Try to delete the seed if it exists.
-        let status = SecItemDelete(query as CFDictionary)
-
-        if status == errSecItemNotFound { print("No browser sessions found") } else {
-            print(status)
+    static func createSeed() {
+        resetKeyn()
+        var mnemonicArray = [String]()
+        for word in mnemonic.split(separator: " ") {
+            mnemonicArray.append(String(word))
         }
-
-        // Remove passwords
-        let query2: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                     kSecAttrService as String: "io.keyn.session.app"]
-
-        // Try to delete the seed if it exists.
-        let status2 = SecItemDelete(query2 as CFDictionary)
-
-        if status2 == errSecItemNotFound { print("No own sessions keys found") } else {
-            print(status2)
-        }
+        try! Seed.recover(mnemonic: mnemonicArray)
+        try! BackupManager.sharedInstance.initialize()
+    }
+    
+    static func resetKeyn() {
+        Session.deleteAll()
+        Account.deleteAll()
+        try? Seed.delete()
+        BackupManager.sharedInstance.deleteAllKeys()
     }
 
-    static func createSession() -> String? {
+    static func createSession() {
         do {
-            let session = try Session(sqsMessageQueue: "sqs", sqsControlQueue: "sqs2", browserPublicKey: browserPublicKeyBase64, browser: "browser", os: "OS")
-            return session.id
+            let _ = try Session.initiate(queueSeed: browserQueueSeed, pubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
         } catch {
-            print("Cannot create session, tests will fail: \(error)")
+            switch error {
+            case SessionError.noEndpoint:
+                print("No endpoint because testing on simulator.")
+            default:
+                fatalError("Error creating session")
+            }
         }
-
-        return nil
     }
 
     static func encryptAsBrowser(_ message: String, _ sessionID: String) -> String? {
@@ -64,9 +62,10 @@ class TestHelper {
         return nil
     }
     
-    static func examplePPD(completionHandler: @escaping (Site) -> Void) {
-        Site.get(id: linkedInPPDHandle, completion: completionHandler)
+    static func exampleSite(completionHandler: @escaping (Site) -> Void) {
+        try! Site.get(id: linkedInPPDHandle, completion: completionHandler)
     }
+
 
     static func examplePPD(maxConsecutive: Int?, minLength: Int?, maxLength: Int?, characterSetSettings: [PPDCharacterSetSettings]?, positionRestrictions: [PPDPositionRestriction]?, requirementGroups: [PPDRequirementGroup]?) -> PPD {
         var characterSets = [PPDCharacterSet]()

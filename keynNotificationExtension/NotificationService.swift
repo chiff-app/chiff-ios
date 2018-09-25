@@ -5,7 +5,6 @@ class NotificationService: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
     var content: UNMutableNotificationContent?
-    let processor = NotificationProcessor()
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
@@ -15,7 +14,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         do {
-            let processContent = try processor.process(content: content)
+            let processContent = try NotificationProcessor.process(content: content)
             contentHandler(processContent)
         } catch {
             content.userInfo["error"] = error.localizedDescription
