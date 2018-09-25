@@ -48,11 +48,11 @@ class CryptoTests: XCTestCase {
 //    }
 
     func testCalculatePasswordOffsetDoesntThrow() {
-        Site.get(id: linkedInPPDHandle) { (site) in
+        TestHelper.exampleSite { (site) in
             do {
-               XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: self.linkedInPPDHandle, ppd: site.ppd, password: "pass123"))
+                 XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "user@example.com", passwordIndex: 0, siteID: self.linkedInPPDHandle, ppd: site.ppd, password: "pass123"))
             } catch {
-                print("just to suppres compiler warning")
+                XCTFail("Failed with error: \(error)")
             }
         }
     }

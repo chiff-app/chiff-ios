@@ -112,6 +112,7 @@
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CD214C21E5004C93FE /* QRViewController.swift */; };
 		61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CF214C253F004C93FE /* OTPViewController.swift */; };
+		61C8F56021569F4500862351 /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8F55F21569F4500862351 /* BackupTests.swift */; };
 		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
@@ -257,6 +258,7 @@
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		61B5D4CF214C253F004C93FE /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
+		61C8F55F21569F4500862351 /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 		49E766691F7E6F420022C042 /* keynTests */ = {
 			isa = PBXGroup;
 			children = (
+				61C8F55F21569F4500862351 /* BackupTests.swift */,
 				49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */,
 				0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */,
 				01839A761FACA99B00698B69 /* AccountTests.swift */,
@@ -1055,6 +1058,7 @@
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
+				61C8F56021569F4500862351 /* BackupTests.swift in Sources */,
 				49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);
