@@ -3,19 +3,19 @@ import UserNotifications
 
 @testable import keyn
 
-class NotificationPreprocessorTests: XCTestCase {
+class NotificationProcessorTests: XCTestCase {
 
+    var sessionID: String!
+    
     override func setUp() {
-        TestHelper.deleteSessionKeys()
-        // TODO
-        // Set up example site. Actually this is now still
-        // already done because we already use sample data.
         super.setUp()
+        TestHelper.createSeed()
+        TestHelper.createSession()
     }
 
     override func tearDown() {
         super.tearDown()
-        TestHelper.deleteSessionKeys()
+        TestHelper.resetKeyn()
     }
 
     func testEnrichReturnsNilIfContentIsNil() {
@@ -25,85 +25,78 @@ class NotificationPreprocessorTests: XCTestCase {
 //
 //        XCTAssertNil(enriched)
     }
-//
-//    func testEnrichReturnsNotNil() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
-//
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertNotNil(enriched)
-//    }
-//
-//    func testEnrichReturnsContentWithSiteID() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
-//
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        let siteID = enriched?.userInfo["siteID"] as! Int
-//        XCTAssertEqual(siteID, 0)
-//    }
-//
-//    func testEnrichReturnsContentWithBrowserTab() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
-//
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        let browserTab = enriched?.userInfo["browserTab"] as! Int
-//        XCTAssertEqual(browserTab, 54)
-//    }
-//
-//    func testEnrichReturnsContentWithRequestType() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
-//
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        let requestType = enriched?.userInfo["requestType"] as! Int
-//        XCTAssertEqual(requestType, 1)
-//    }
-//
-//    func testEnrichReturnsContentWithBody() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":0,\"r\":1,\"b\":54}", sessionID)!
-//
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(enriched?.body, "Login request for LinkedIn from browser on OS.")
-//    }
-//
+
+    func testProcessDoesNotThrow() {
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":\"\(TestHelper.linkedInPPDHandle)\",\"r\":1,\"b\":54}", TestHelper.sessionID)!
+
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
+        
+        XCTAssertNoThrow(try NotificationProcessor.process(content: content))
+    }
+
+    func testEnrichReturnsContentWithSiteID() {
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":\"\(TestHelper.linkedInPPDHandle)\",\"r\":1,\"b\":54}", TestHelper.sessionID)!
+
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
+
+        do {
+            guard let siteID = try NotificationProcessor.process(content: content).userInfo["siteID"] as? String else {
+                XCTFail("Error parsing browserTab as Int")
+                return
+            }
+            XCTAssertEqual(siteID, TestHelper.linkedInPPDHandle)
+        } catch {
+            XCTFail("Error during processing: \(error)")
+        }
+    }
+
+    func testEnrichReturnsContentWithBrowserTab() {
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":\"\(TestHelper.linkedInPPDHandle)\",\"r\":1,\"b\":54}", TestHelper.sessionID)!
+
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
+        do {
+            guard let browserTab = try NotificationProcessor.process(content: content).userInfo["browserTab"] as? Int else {
+                XCTFail("Error parsing browserTab as Int")
+                return
+            }
+            XCTAssertEqual(browserTab, 54)
+        } catch {
+            XCTFail("Error during processing: \(error)")
+        }
+    }
+
+    func testEnrichReturnsContentWithRequestType() {
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":\"\(TestHelper.linkedInPPDHandle)\",\"r\":1,\"b\":54}", TestHelper.sessionID)!
+
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
+        do {
+            guard let requestType = try NotificationProcessor.process(content: content).userInfo["requestType"] as? Int else {
+                XCTFail("Error parsing browserTab as Int")
+                return
+            }
+            XCTAssertEqual(requestType, 1)
+        } catch {
+            XCTFail("Error during processing: \(error)")
+        }
+    }
+
+    func testEnrichReturnsContentWithBody() {
+        let encryptedMessage = TestHelper.encryptAsBrowser("{\"s\":\"\(TestHelper.linkedInPPDHandle)\",\"r\":1,\"b\":54}", TestHelper.sessionID)!
+
+        let content: UNMutableNotificationContent = UNMutableNotificationContent()
+        content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
+        do {
+            let processed = try NotificationProcessor.process(content: content)
+            XCTAssertEqual(processed.body, "Unknown on Chrome on MacOS.")
+        } catch {
+            XCTFail("Error during processing: \(error)")
+        }
+    }
+
 //    func testEnrichReturnsUnchangedIfuserInfoIsNil() {
 //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
 //        let enriched = NotificationPreprocessor.enrich(notification: content)
