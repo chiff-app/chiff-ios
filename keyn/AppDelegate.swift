@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
+    
     // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found, migrates to new Keychain otherwise.
     func detectOldAccounts() {
         if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
@@ -69,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError, userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             }
             UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
+        }
+        if (!UserDefaults.standard.bool(forKey: "hasCleanedSessions")) {
+            Session.deleteAll()
+            UserDefaults.standard.set(true, forKey: "hasCleanedSessions")
         }
     }
     
