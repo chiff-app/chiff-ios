@@ -52,20 +52,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
     
+    
     // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found, migrates to new Keychain otherwise.
     func detectOldAccounts() {
         if !UserDefaults.standard.bool(forKey: "hasCheckedAlphaAccounts") {
-            Keychain.sharedInstance.deleteAll(service: "io.keyn.session.browser")
-            Keychain.sharedInstance.deleteAll(service: "io.keyn.session.app")
-            Logger.shared.info("Removed old sessions", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             do {
-                if let accounts = try Account.all() {
-                    for account in accounts {
-                        try account.updateKeychainClassification()
-                    }
-                    Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
-
+                let accounts = try Account.all()
+                for account in accounts {
+                    try account.updateKeychainClassification()
                 }
+                Logger.shared.info("Updated \(accounts.count) accounts", userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             } catch _ as DecodingError {
                 Account.deleteAll()
                 try? Seed.delete()
@@ -74,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Logger.shared.warning("Non-decoding error with getting accounts", error: error as NSError, userInfo: ["code": AnalyticsMessage.accountMigration.rawValue])
             }
             UserDefaults.standard.set(true, forKey: "hasCheckedAlphaAccounts")
+        }
+        if (!UserDefaults.standard.bool(forKey: "hasCleanedSessions")) {
+            Session.deleteAll()
+            UserDefaults.standard.set(true, forKey: "hasCleanedSessions")
         }
     }
     
@@ -87,9 +87,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                 if devicesViewController.isViewLoaded {
                                     devicesViewController.addSession(session: session)
                                 }
-                            } else if let qrViewController = viewController as? QRViewController {
-                                if qrViewController.isViewLoaded {
-                                    qrViewController.add(session: session)
+                            } else if let pairViewController = viewController as? PairViewController {
+                                if pairViewController.isViewLoaded {
+                                    pairViewController.add(session: session)
                                 }
                             }
                         }
@@ -444,8 +444,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             return content
         }
         do {
-            let processor = NotificationProcessor()
-            return try processor.process(content: mutableContent)
+            return try NotificationProcessor.process(content: mutableContent)
         } catch NotificationExtensionError.Decryption {
             Logger.shared.debug("Decryption error")
         } catch NotificationExtensionError.Session {

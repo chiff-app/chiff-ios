@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Sodium
 import JustLog
-//import CommonCrypto
+import CommonCrypto
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
@@ -68,6 +68,16 @@ extension String {
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
         data.withUnsafeBytes {
             _ = CC_SHA1($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
+    }
+    
+    func sha256() -> String {
+        let data = self.data(using: String.Encoding.utf8)!
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0, CC_LONG(data.count), &digest)
         }
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         return hexBytes.joined()
@@ -259,6 +269,7 @@ struct CredentialsResponse: Codable {
     let np: String?     // New password (for reset only! When registering p will be set)
     let b: Int
     let a: String?      // AccountID. Only used with changePasswordRequests
+    let o: String?      // OTP code
 }
 
 struct PushNotification {

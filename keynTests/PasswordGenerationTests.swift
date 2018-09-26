@@ -14,24 +14,20 @@ class PasswordGenerationTests: XCTestCase {
 
     let commonCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|"
     let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
-    
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        if !Seed.exists() {
-            try! Seed.create()
-        }
-
+        TestHelper.createSeed()
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testPasswordGeneration() {
-        Site.get(id: linkedInPPDHandle) { (site) in
+        XCTAssertNoThrow(try Site.get(id: linkedInPPDHandle) { (site) in
             let randomIndex = Int(arc4random_uniform(100000000))
             let randomUsername = "TestUsername"
             do {
@@ -40,10 +36,8 @@ class PasswordGenerationTests: XCTestCase {
                 let (calculatedPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: randomUsername, passwordIndex: index, siteID: site.id, ppd: site.ppd, offset: offset)
                 XCTAssertEqual(randomPassword, calculatedPassword)
                 XCTAssertEqual(index, newIndex)
-            } catch {
-                
-            }
-        }
+            } catch {}
+        })
     }
 
     func testPasswordLength() {
@@ -53,32 +47,32 @@ class PasswordGenerationTests: XCTestCase {
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertFalse(validator.validate(password: longPassword))
         XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
-        
+
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(validator.validate(password: shortPassword))
         XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
-        
+
         let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
         XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: veryLongPassword))
     }
-    
+
     func testDefaultPasswordLength() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: nil, maxLength: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
         let validator = PasswordValidator(ppd: ppd)
-        
+
         let longPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         XCTAssertTrue(validator.validate(password: longPassword))
         XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
-        
+
         let shortPassword = "Sh0rt*r" // 7 characters
         XCTAssertFalse(validator.validate(password: shortPassword))
         XCTAssertNoThrow(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: longPassword))
-        
+
         let veryLongPassword = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a*(&sa8d97mjaVer8a5" // 51 Characters
         XCTAssertFalse(validator.validate(password: veryLongPassword))
         XCTAssertThrowsError(try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: linkedInPPDHandle, ppd: ppd, password: veryLongPassword))
     }
-    
+
 
     func testUnallowedCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
@@ -206,12 +200,12 @@ class PasswordGenerationTests: XCTestCase {
 
     }
 
-    
+
     func testPerformanceExample() {
         // We can test here how long it takes to generate a password with restrictive PPD
         self.measure {
             // Put the code you want to measure the time of here.
         }
     }
-    
+
 }

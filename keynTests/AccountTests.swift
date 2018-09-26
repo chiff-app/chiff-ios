@@ -9,17 +9,28 @@ class AccountTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-//        site = Site.get(id: linkedInPPDHandle)
+        do {
+            try TestHelper.createSeed()
+            let exp = expectation(description: "Waiting for getting site.")
+            try Site.get(id: linkedInPPDHandle, completion: { (site) in
+                self.site = site
+                exp.fulfill()
+            })
+            waitForExpectations(timeout: 40, handler: nil)
+        } catch {
+            XCTFail("An error occured during setup: \(error)")
+        }
     }
     
     override func tearDown() {
         super.tearDown()
+        TestHelper.resetKeyn()
     }
 
     func testInitValidAccountDoesntThrow() {
-//        XCTAssertNoThrow(
-//            try Account(username: "user@example.com", site: site, password: "pass123")
-//        )
+        XCTAssertNoThrow(
+            try Account(username: "user@example.com", site: site, password: "pass123")
+        )
     }
 
 }

@@ -23,6 +23,7 @@ enum APIEndpoint: String {
     case queue = "queue"
     case message = "message"
     case questionnaire = "questionnaire"
+    case push = "push"
 }
 
 enum APIRequestType: String {
@@ -38,37 +39,23 @@ class API {
     
     private init() {}
     
-    func put(type: APIEndpoint, path: String, parameters: [String: String]) {
-        let url = createUrl(type: type, path: path, parameters: parameters)!
-        var request = URLRequest(url: url)
-        request.httpMethod = APIRequestType.put.rawValue
+    func put(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+        let request = try createRequest(type: type, path: path, parameters: parameters, method: .put)
         send(request)
     }
     
-    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]) -> Void) {
-        let url = createUrl(type: type, path: path, parameters: parameters)!
-        var request = URLRequest(url: url)
-        request.httpMethod = APIRequestType.get.rawValue
+    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]) -> Void) throws {
+        let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
         send(request, completionHandler: completionHandler)
     }
     
-    func post(type: APIEndpoint, path: String, parameters: [String: String], body: [String: String]?) throws {
-        let url = createUrl(type: type, path: path, parameters: parameters)!
-        var request = URLRequest(url: url)
-        if let body = body {
-            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
-        }
-        request.httpMethod = APIRequestType.post.rawValue
+    func post(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+        let request = try createRequest(type: type, path: path, parameters: parameters, method: .post)
         send(request)
     }
     
-    func delete(type: APIEndpoint, path: String, parameters: [String: String], body: [String: String]?) throws {
-        let url = createUrl(type: type, path: path, parameters: parameters)!
-        var request = URLRequest(url: url)
-        if let body = body {
-            request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
-        }
-        request.httpMethod = APIRequestType.delete.rawValue
+    func delete(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+        let request = try createRequest(type: type, path: path, parameters: parameters, method: .delete)
         send(request)
     }
     
@@ -106,7 +93,7 @@ class API {
         task.resume()
     }
     
-    private func createUrl(type: APIEndpoint, path: String?, parameters: [String: String]?) -> URL? {
+    private func createRequest(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIRequestType) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
@@ -122,7 +109,12 @@ class API {
             }
             components.queryItems = queryItems
         }
-        return components.url
+        guard let url = components.url else {
+            throw APIError.url
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        return request
     }
     
 }

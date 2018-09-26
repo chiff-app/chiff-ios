@@ -62,18 +62,12 @@ class PasswordValidator {
 
     func validateMaxLength(password: String) -> Bool {
         let maxLength = ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND
-        guard password.count <= maxLength else {
-            return false
-        }
-        return true
+        return password.count <= maxLength
     }
 
     func validateMinLength(password: String) -> Bool {
         let minLength = ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND
-        guard password.count >= minLength else {
-            return false
-        }
-        return true
+        return password.count >= minLength
     }
 
     // TODO: To what characterSet should we validate a custom password without a PPD? Now optimal characterSet (see init)

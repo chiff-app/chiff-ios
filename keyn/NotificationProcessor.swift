@@ -17,7 +17,7 @@ enum NotificationExtensionError: Error {
 
 class NotificationProcessor {
     
-    func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
+    class func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
         guard let ciphertext = content.userInfo["data"] as? String else {
             throw NotificationExtensionError.StringCast("ciphertext")
         }

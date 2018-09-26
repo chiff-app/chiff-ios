@@ -120,6 +120,17 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @objc func textFieldDidChange(textField: UITextField){
         updateSaveButtonState()
     }
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        if let notification = notification, let session = session {
+            do {
+                try session.acknowledge(browserTab: notification.browserTab)
+            } catch {
+                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+            }
+        }
+        self.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+    }
 
 
     
