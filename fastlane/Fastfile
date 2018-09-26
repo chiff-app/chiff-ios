@@ -45,6 +45,7 @@ platform :ios do
         scan
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
+        sigh(app_identifier: 'io.keyn.keyn.keynCredentialProvider')
         sigh(app_identifier: 'io.keyn.keyn')
         increment_build_number({
           build_number: latest_testflight_build_number + 1
