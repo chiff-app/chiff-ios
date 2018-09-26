@@ -4,11 +4,14 @@ PODS:
   - AWSCore (2.6.13)
   - AWSSNS (2.6.13):
     - AWSCore (= 2.6.13)
+  - Base32 (1.1.2)
   - CocoaAsyncSocket (7.6.3)
   - JustLog (2.3.0):
     - CocoaAsyncSocket (~> 7.6.3)
     - SwiftyBeaver (~> 1.5.2)
   - MBProgressHUD (1.0.0)
+  - OneTimePassword (3.1.3):
+    - Base32 (~> 1.1.2)
   - Sodium (0.6)
   - SwiftyBeaver (1.5.2)
 
@@ -17,6 +20,7 @@ DEPENDENCIES:
   - AWSSNS
   - JustLog
   - MBProgressHUD (~> 1.0.0)
+  - OneTimePassword (~> 3.1)
   - Sodium (from `https://github.com/jedisct1/swift-sodium.git`)
 
 SPEC REPOS:
@@ -24,9 +28,11 @@ SPEC REPOS:
     - AWSCognito
     - AWSCore
     - AWSSNS
+    - Base32
     - CocoaAsyncSocket
     - JustLog
     - MBProgressHUD
+    - OneTimePassword
     - SwiftyBeaver
 
 EXTERNAL SOURCES:
@@ -42,12 +48,14 @@ SPEC CHECKSUMS:
   AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
   AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
   AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
+  Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   JustLog: f45d7e84353e34742b177f0156fcfa1b65b7bd4e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  OneTimePassword: 155d3c0cffbf22b39fb0def99d9e0facf6a37a7c
   Sodium: 3cd000dc8d21be5d448fbb4366a7b1c9392b1ae6
   SwiftyBeaver: 85daaaa2b3ae6e31b7b55c99430e8b91dac088af
 
-PODFILE CHECKSUM: 2d1047a8f4c241eedcfe603d417b109b080b14db
+PODFILE CHECKSUM: b626f31e58ed8c65388bb90a9ead8e1bd66df643
 
 COCOAPODS: 1.5.3

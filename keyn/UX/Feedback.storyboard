@@ -351,24 +351,22 @@ Thank you!</string>
                                             <constraint firstAttribute="width" secondItem="c8s-Ox-tDm" secondAttribute="height" multiplier="13:6" id="Dzc-M5-xug"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="19"/>
-                                        <state key="normal" title="Yes">
+                                        <state key="normal" title="No">
                                             <color key="titleColor" red="0.2270841599" green="0.15862122179999999" blue="0.50603783130000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="yesButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="Jje-Cc-vNt"/>
-                                            <action selector="yesButton:" destination="nfO-je-a35" eventType="touchUpInside" id="NPX-v7-pSK"/>
+                                            <action selector="noButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="7g3-4B-fSv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ycy-5G-zYo">
                                         <rect key="frame" x="194.66666666666663" y="0.0" width="149.33333333333337" height="69"/>
                                         <color key="backgroundColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="IBMPlexMono-Medium" family="IBM Plex Mono" pointSize="19"/>
-                                        <state key="normal" title="No">
+                                        <state key="normal" title="Yes">
                                             <color key="titleColor" red="0.2270841599" green="0.15862122179999999" blue="0.50603783130000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="noButton:" destination="nfO-je-a35" eventType="touchUpInside" id="3g2-WP-EjK"/>
-                                            <action selector="noButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="tv6-d7-gAk"/>
+                                            <action selector="yesButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="AS7-yI-y63"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -409,7 +407,6 @@ Thank you!</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NLk-1H-hTk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="nfO-je-a35" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2804" y="45"/>
         </scene>

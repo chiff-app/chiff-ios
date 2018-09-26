@@ -11,14 +11,13 @@ enum CameraError: Error {
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     // MARK: Properties
-
+    
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
     @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
-    var devicesDelegate: canReceiveSession?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +30,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         }
     }
     
+    func handleURL(url: URL) throws {
+        preconditionFailure("This method must be overridden")
+    }
+    
     // MARK: AVCaptureMetadataOutputObjectsDelegate
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
@@ -38,10 +41,16 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 // TODO: Check if this can be exploited with specially crafted QR codes?
-                if let url = machineReadableCode.stringValue, !qrFound {
+                if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true
                     do {
-                        try pairPermission(url: url)
+                        guard !recentlyScannedUrls.contains(urlString) else {
+                            throw SessionError.exists
+                        }
+                        guard let url = URL(string: urlString) else {
+                            throw SessionError.invalid
+                        }
+                        try handleURL(url: url)
                     } catch {
                         switch error {
                         case SessionError.exists:
@@ -62,7 +71,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     
     // MARK: Private Methods
     
-    private func displayError(message: String) {
+    func displayError(message: String) {
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
         errorLabel.backgroundColor = UIColor.white
         errorLabel.textAlignment = .center
@@ -73,7 +82,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
     
-    private func scanQR() throws {
+    func scanQR() throws {
         
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
             throw CameraError.noCamera
@@ -99,45 +108,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         captureSession.startRunning()
     }
-    
-    private func pairPermission(url: String) throws {
-        guard !recentlyScannedUrls.contains(url) else {
-            throw SessionError.exists
-        }
-        guard let url = URL(string: url) else {
-            throw SessionError.invalid
-        }
-        try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
-            DispatchQueue.main.async {
-                if let session = session {
-                    self?.add(session: session)
-                } else if let error = error {
-                    switch error {
-                    case KeychainError.storeKey:
-                        Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
-                        self?.displayError(message: "This QR code was already scanned.")
-                    default:
-                        Logger.shared.error("Unhandled QR code error.", error: error as NSError)
-                        self?.displayError(message: "An error occured.")
-                    }
-                    self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                    self?.qrFound = false
-                } else {
-                    self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                    self?.qrFound = false
-                }
-            }
-        })
-    }
-    
-    func add(session: Session) {
-        if navigationController?.viewControllers[0] == self {
-            let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
-            navigationController?.setViewControllers([devicesVC], animated: false)
-        } else {
-            devicesDelegate?.addSession(session: session)
-            _ = navigationController?.popViewController(animated: true)
-        }
-    }
+
 
 }

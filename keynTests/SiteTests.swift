@@ -18,15 +18,16 @@ class SiteTests: XCTestCase {
     }
 
     func testGetReturnsSite() {
-        Site.get(id: linkedInPPDHandle) { (site) in
+        XCTAssertNoThrow(try Site.get(id: linkedInPPDHandle) { (site) in
             XCTAssertNotNil(site)
-        }
+        })
+
     }
 
     func testGetReturnsNilIfNoSiteForID() {
-        Site.get(id: "seeyalater!") { (site) in
+        XCTAssertNoThrow(try Site.get(id: "seeyalater!") { (site) in
             XCTAssertNil(site)
-        }
+        })
     }
 
 }

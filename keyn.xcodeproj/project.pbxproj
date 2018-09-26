@@ -75,22 +75,49 @@
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
+		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */; };
+		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
+		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
+		611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611F4B4A2146B47300B35A89 /* MainInterface.storyboard */; };
+		611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		611F4B562146B52600B35A89 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
+		611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
+		611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
+		611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
+		611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
+		611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
+		611F4B5F2146B62E00B35A89 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
+		611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
+		611F4B612146B63E00B35A89 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		611F4B622146B65200B35A89 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
+		611F4B632146B65500B35A89 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		611F4B642146B66400B35A89 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
+		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
+		611F4B692147DF2500B35A89 /* CredentialProviderNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */; };
+		611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
+		611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
+		611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
 		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		613CFB08201360C200460CC6 /* Homeless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A547951FC8559900CD4382 /* Homeless.swift */; };
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		613CFB0A201360D800460CC6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		613CFB0B201360DB00460CC6 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
+		6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */; };
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
+		61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CD214C21E5004C93FE /* QRViewController.swift */; };
+		61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CF214C253F004C93FE /* OTPViewController.swift */; };
+		61C8F56021569F4500862351 /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8F55F21569F4500862351 /* BackupTests.swift */; };
 		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
-		61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* QRViewController.swift */; };
+		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; };
+		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +143,13 @@
 			remoteGlobalIDString = 49E7664F1F7E6F420022C042;
 			remoteInfo = athena;
 		};
+		611F4B4F2146B47300B35A89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49E766481F7E6F420022C042 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 611F4B442146B47300B35A89;
+			remoteInfo = keynCredentialProvider;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -126,6 +160,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */,
+				611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,6 +180,7 @@
 		0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.release.xcconfig"; sourceTree = "<group>"; };
 		1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
+		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -180,7 +216,6 @@
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49A547951FC8559900CD4382 /* Homeless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homeless.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
-		49CBF169212DF66200FFAD1F /* KeynBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeynBridgingHeader.h; sourceTree = "<group>"; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -210,13 +245,26 @@
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireIntroductionViewController.swift; sourceTree = "<group>"; };
+		611F4B452146B47300B35A89 /* keynCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		611F4B4B2146B47300B35A89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		611F4B4D2146B47300B35A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynCredentialProvider.entitlements; sourceTree = "<group>"; };
+		611F4B652146C63F00B35A89 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderNavigationController.swift; sourceTree = "<group>"; };
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
 		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
+		6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOTPViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
+		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61B5D4CF214C253F004C93FE /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
+		61C8F55F21569F4500862351 /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
-		61F938C31FF4161300AF0880 /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
+		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
+		64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynCredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
 		7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.release.xcconfig"; sourceTree = "<group>"; };
 		8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.debug.xcconfig"; sourceTree = "<group>"; };
 		936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 				C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,6 +303,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		611F4B422146B47300B35A89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
+				5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -264,6 +322,7 @@
 				936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */,
 				07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */,
 				4906BDAF20E3C41300183664 /* AuthenticationServices.framework */,
+				64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -319,6 +378,7 @@
 			isa = PBXGroup;
 			children = (
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
 				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
@@ -366,6 +426,7 @@
 				49E766691F7E6F420022C042 /* keynTests */,
 				49E766741F7E6F420022C042 /* keynUITests */,
 				4919DAE520123FE50048B060 /* keynNotificationExtension */,
+				611F4B472146B47300B35A89 /* keynCredentialProvider */,
 				49E766511F7E6F420022C042 /* Products */,
 				D5C581DF5092A799CE55441A /* Pods */,
 				2A4E92B609DDA515653F86DA /* Frameworks */,
@@ -379,6 +440,7 @@
 				49E766661F7E6F420022C042 /* keynTests.xctest */,
 				49E766711F7E6F420022C042 /* keynUITests.xctest */,
 				4919DAE420123FE50048B060 /* keynNotificationExtension.appex */,
+				611F4B452146B47300B35A89 /* keynCredentialProvider.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -386,7 +448,6 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
-				49CBF169212DF66200FFAD1F /* KeynBridgingHeader.h */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49721F9B2128E5830090AF48 /* API.swift */,
@@ -410,6 +471,7 @@
 		49E766691F7E6F420022C042 /* keynTests */ = {
 			isa = PBXGroup;
 			children = (
+				61C8F55F21569F4500862351 /* BackupTests.swift */,
 				49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */,
 				0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */,
 				01839A761FACA99B00698B69 /* AccountTests.swift */,
@@ -474,8 +536,23 @@
 				495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */,
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */,
+				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
+				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 			);
 			path = Accounts;
+			sourceTree = "<group>";
+		};
+		611F4B472146B47300B35A89 /* keynCredentialProvider */ = {
+			isa = PBXGroup;
+			children = (
+				611F4B4A2146B47300B35A89 /* MainInterface.storyboard */,
+				611F4B4D2146B47300B35A89 /* Info.plist */,
+				611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */,
+				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
+				611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */,
+				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
+			);
+			path = keynCredentialProvider;
 			sourceTree = "<group>";
 		};
 		61D0BE991FF2A26F0072631D /* Devices */ = {
@@ -484,7 +561,7 @@
 				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
 				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
 				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
-				61F938C31FF4161300AF0880 /* QRViewController.swift */,
+				61F938C31FF4161300AF0880 /* PairViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -498,6 +575,8 @@
 				21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */,
 				8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */,
 				0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */,
+				2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */,
+				7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -538,6 +617,7 @@
 			);
 			dependencies = (
 				49214B872103327C00C793DE /* PBXTargetDependency */,
+				611F4B502146B47300B35A89 /* PBXTargetDependency */,
 			);
 			name = keyn;
 			productName = athena;
@@ -582,6 +662,24 @@
 			productReference = 49E766711F7E6F420022C042 /* keynUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		611F4B442146B47300B35A89 /* keynCredentialProvider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "keynCredentialProvider" */;
+			buildPhases = (
+				EBF1ED7B5DB4A469B7288E5E /* [CP] Check Pods Manifest.lock */,
+				611F4B412146B47300B35A89 /* Sources */,
+				611F4B422146B47300B35A89 /* Frameworks */,
+				611F4B432146B47300B35A89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = keynCredentialProvider;
+			productName = keynCredentialProvider;
+			productReference = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -614,6 +712,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 0;
 							};
+							com.apple.AutoFillCredentialProvider = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -635,6 +736,15 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49E7664F1F7E6F420022C042;
 					};
+					611F4B442146B47300B35A89 = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "keyn" */;
@@ -654,6 +764,7 @@
 				49E766651F7E6F420022C042 /* keynTests */,
 				49E766701F7E6F420022C042 /* keynUITests */,
 				4919DAE320123FE50048B060 /* keynNotificationExtension */,
+				611F4B442146B47300B35A89 /* keynCredentialProvider */,
 			);
 		};
 /* End PBXProject section */
@@ -696,6 +807,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		611F4B432146B47300B35A89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */,
+				611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */,
+				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
+				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -709,9 +831,11 @@
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
+				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -720,9 +844,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
@@ -777,9 +903,11 @@
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
+				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -788,15 +916,35 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EBF1ED7B5DB4A469B7288E5E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-keynCredentialProvider-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		ED5534BD03C4EAFF37244AD4 /* [CP] Check Pods Manifest.lock */ = {
@@ -857,6 +1005,8 @@
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
+				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
+				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
@@ -874,7 +1024,7 @@
 				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
-				61F938C41FF4161300AF0880 /* QRViewController.swift in Sources */,
+				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
 				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
@@ -889,6 +1039,7 @@
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
+				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49A547961FC8559900CD4382 /* Homeless.swift in Sources */,
@@ -907,6 +1058,7 @@
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
+				61C8F56021569F4500862351 /* BackupTests.swift in Sources */,
 				49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);
@@ -917,6 +1069,28 @@
 			buildActionMask = 2147483647;
 			files = (
 				49E766761F7E6F420022C042 /* keynUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		611F4B412146B47300B35A89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
+				611F4B622146B65200B35A89 /* API.swift in Sources */,
+				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
+				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
+				611F4B5F2146B62E00B35A89 /* Homeless.swift in Sources */,
+				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
+				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
+				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
+				611F4B642146B66400B35A89 /* Properties.swift in Sources */,
+				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
+				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
+				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
+				611F4B562146B52600B35A89 /* Account.swift in Sources */,
+				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
+				611F4B692147DF2500B35A89 /* CredentialProviderNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,6 +1112,11 @@
 			target = 49E7664F1F7E6F420022C042 /* keyn */;
 			targetProxy = 49E766721F7E6F420022C042 /* PBXContainerItemProxy */;
 		};
+		611F4B502146B47300B35A89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 611F4B442146B47300B35A89 /* keynCredentialProvider */;
+			targetProxy = 611F4B4F2146B47300B35A89 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -955,6 +1134,14 @@
 				49E7665F1F7E6F420022C042 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		611F4B4A2146B47300B35A89 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				611F4B4B2146B47300B35A89 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -977,6 +1164,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -999,7 +1187,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = keyn/KeynBridgingHeader.h;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1123,18 +1311,21 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1146,18 +1337,21 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -1179,6 +1373,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
@@ -1198,6 +1393,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
@@ -1216,6 +1412,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
@@ -1234,9 +1431,57 @@
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
+			};
+			name = Release;
+		};
+		611F4B522146B47300B35A89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		611F4B532146B47300B35A89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 35MFYY2JY5;
+				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -1284,6 +1529,15 @@
 			buildConfigurations = (
 				49E766811F7E6F420022C042 /* Debug */,
 				49E766821F7E6F420022C042 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "keynCredentialProvider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				611F4B522146B47300B35A89 /* Debug */,
+				611F4B532146B47300B35A89 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
