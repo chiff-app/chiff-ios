@@ -23,6 +23,12 @@ extension UIViewController {
     }
 }
 
+extension Int {
+    func mod(n: Int) -> Int {
+        return (self % n + n) % n
+    }
+}
+
 extension UIApplication {
 
     var visibleViewController: UIViewController? {

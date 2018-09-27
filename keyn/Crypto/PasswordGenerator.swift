@@ -86,11 +86,10 @@ class PasswordGenerator {
                 data += String(byte, radix: 2).pad(toSize: 8)
                 counter += 1
             } while counter < bytesPerChar
-
             // Calculate offset and add to array
-            offsets.append((characterIndices[index] - Int(data, radix: 2)!) % (chars.count + 1)) // TODO: check if this can be safely done
+            offsets.append((characterIndices[index] - Int(data, radix: 2)!).mod(n: chars.count + 1)) // TODO: check if this can be safely done
+            
         }
-
         return offsets
     }
 
