@@ -15,6 +15,7 @@ enum CryptoError: Error {
     case mnemonicConversion
     case mnemonicChecksum
     case signing
+    case indexOutOfRange
 }
 
 
@@ -89,6 +90,9 @@ class Crypto {
 
 
     func deriveKey(keyData: Data, context: Data, index: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
+        guard index >= 0 && index < 2^64 - 1 else {
+            throw CryptoError.indexOutOfRange
+        }
         guard let contextHash = sodium.genericHash.hash(message: context.bytes, outputLength: 8) else {
             throw CryptoError.hashing
         }
@@ -104,6 +108,9 @@ class Crypto {
     
     
     func deriveKey(key: String, context: String, index: Int = 0) throws ->  Data {
+        guard index >= 0 && index < 2^64 - 1 else {
+            throw CryptoError.indexOutOfRange
+        }
         guard let keyData = sodium.utils.base642bin(key, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
