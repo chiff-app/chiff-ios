@@ -27,7 +27,7 @@
 		491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */; };
 		49214B75210325B400C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
-		49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */; };
+		49214B7B21032E5000C793DE /* PasswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordTests.swift */; };
 		49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
@@ -79,6 +79,12 @@
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
+		611733D4215D074000F37B2A /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733D3215D074000F37B2A /* APITests.swift */; };
+		611733D8215D07BC00F37B2A /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733D7215D07BC00F37B2A /* SeedTests.swift */; };
+		611733DA215D07C900F37B2A /* QuestionnaireTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733D9215D07C900F37B2A /* QuestionnaireTests.swift */; };
+		611733DC215D07D900F37B2A /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DB215D07D900F37B2A /* KeychainTests.swift */; };
+		611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */; };
+		611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */; };
 		611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */; };
 		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
@@ -112,7 +118,7 @@
 		61AEFCC51FADAEBB00B7AE62 /* NewAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */; };
 		61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CD214C21E5004C93FE /* QRViewController.swift */; };
 		61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B5D4CF214C253F004C93FE /* OTPViewController.swift */; };
-		61C8F56021569F4500862351 /* BackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8F55F21569F4500862351 /* BackupTests.swift */; };
+		61C8F56021569F4500862351 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8F55F21569F4500862351 /* BackupManagerTests.swift */; };
 		61D0BE9B1FF2A2980072631D /* DevicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */; };
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
@@ -239,11 +245,17 @@
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerationTests.swift; sourceTree = "<group>"; };
+		49FB40C9202C9B9A0060267C /* PasswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTests.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		611733D3215D074000F37B2A /* APITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
+		611733D7215D07BC00F37B2A /* SeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
+		611733D9215D07C900F37B2A /* QuestionnaireTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireTests.swift; sourceTree = "<group>"; };
+		611733DB215D07D900F37B2A /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
+		611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidatorTests.swift; sourceTree = "<group>"; };
 		611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireIntroductionViewController.swift; sourceTree = "<group>"; };
 		611F4B452146B47300B35A89 /* keynCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
@@ -258,7 +270,7 @@
 		61AEFCC41FADAEBB00B7AE62 /* NewAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountViewController.swift; sourceTree = "<group>"; };
 		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		61B5D4CF214C253F004C93FE /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
-		61C8F55F21569F4500862351 /* BackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupTests.swift; sourceTree = "<group>"; };
+		61C8F55F21569F4500862351 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewController.swift; sourceTree = "<group>"; };
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
@@ -471,15 +483,12 @@
 		49E766691F7E6F420022C042 /* keynTests */ = {
 			isa = PBXGroup;
 			children = (
-				61C8F55F21569F4500862351 /* BackupTests.swift */,
-				49FB40C9202C9B9A0060267C /* PasswordGenerationTests.swift */,
+				611733D2215D06D900F37B2A /* CryptoTests */,
+				611733D1215D06D100F37B2A /* ModelTests */,
+				611733D3215D074000F37B2A /* APITests.swift */,
 				0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */,
-				01839A761FACA99B00698B69 /* AccountTests.swift */,
-				49E7666C1F7E6F420022C042 /* Info.plist */,
-				01839A741FACA98E00698B69 /* SiteTests.swift */,
-				01557423202AF75600F97DA2 /* SessionTests.swift */,
 				0155742A202B173F00F97DA2 /* TestHelper.swift */,
-				01B79AEE202C8E8000425BD5 /* CryptoTests.swift */,
+				49E7666C1F7E6F420022C042 /* Info.plist */,
 			);
 			path = keynTests;
 			sourceTree = "<group>";
@@ -496,13 +505,13 @@
 		49E7D3401FC318CD0059D97E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4908103520598AC700C770F1 /* PPD.swift */,
 				01839A701FACA93A00698B69 /* Account.swift */,
+				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
+				4908103520598AC700C770F1 /* PPD.swift */,
+				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
 				49FA7F751FB9E08E00EDB367 /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
-				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
-				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -512,8 +521,8 @@
 			children = (
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
-				49CF311220628E9100272277 /* PasswordValidator.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
+				49CF311220628E9100272277 /* PasswordValidator.swift */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -540,6 +549,31 @@
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 			);
 			path = Accounts;
+			sourceTree = "<group>";
+		};
+		611733D1215D06D100F37B2A /* ModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				01839A761FACA99B00698B69 /* AccountTests.swift */,
+				61C8F55F21569F4500862351 /* BackupManagerTests.swift */,
+				611733D9215D07C900F37B2A /* QuestionnaireTests.swift */,
+				611733D7215D07BC00F37B2A /* SeedTests.swift */,
+				01557423202AF75600F97DA2 /* SessionTests.swift */,
+				01839A741FACA98E00698B69 /* SiteTests.swift */,
+			);
+			path = ModelTests;
+			sourceTree = "<group>";
+		};
+		611733D2215D06D900F37B2A /* CryptoTests */ = {
+			isa = PBXGroup;
+			children = (
+				01B79AEE202C8E8000425BD5 /* CryptoTests.swift */,
+				611733DB215D07D900F37B2A /* KeychainTests.swift */,
+				611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */,
+				611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */,
+				49FB40C9202C9B9A0060267C /* PasswordTests.swift */,
+			);
+			path = CryptoTests;
 			sourceTree = "<group>";
 		};
 		611F4B472146B47300B35A89 /* keynCredentialProvider */ = {
@@ -1053,13 +1087,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */,
 				01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */,
+				611733D8215D07BC00F37B2A /* SeedTests.swift in Sources */,
 				01839A751FACA98E00698B69 /* SiteTests.swift in Sources */,
+				611733D4215D074000F37B2A /* APITests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */,
 				01839A771FACA99B00698B69 /* AccountTests.swift in Sources */,
-				61C8F56021569F4500862351 /* BackupTests.swift in Sources */,
-				49214B7B21032E5000C793DE /* PasswordGenerationTests.swift in Sources */,
+				61C8F56021569F4500862351 /* BackupManagerTests.swift in Sources */,
+				611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */,
+				611733DA215D07C900F37B2A /* QuestionnaireTests.swift in Sources */,
+				611733DC215D07D900F37B2A /* KeychainTests.swift in Sources */,
+				49214B7B21032E5000C793DE /* PasswordTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
