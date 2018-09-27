@@ -338,7 +338,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
         do {
             try session.getChangeConfirmations(shortPolling: shortPolling) { (data) in
-                if let messages = data["messages"] as? [[String:String]], messages.count > 0 {
+                if let data = data, let messages = data["messages"] as? [[String:String]], messages.count > 0 {
                     for message in messages {
                         guard let body = message["body"] else {
                             Logger.shared.error("Could not parse SQS message body.")

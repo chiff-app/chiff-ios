@@ -62,7 +62,7 @@ class TestHelper {
         return nil
     }
     
-    static func exampleSite(completionHandler: @escaping (Site) -> Void) {
+    static func exampleSite(completionHandler: @escaping (_ site: Site?) -> Void) {
         try! Site.get(id: linkedInPPDHandle, completion: completionHandler)
     }
 

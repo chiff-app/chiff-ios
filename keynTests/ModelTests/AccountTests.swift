@@ -10,7 +10,7 @@ class AccountTests: XCTestCase {
     override func setUp() {
         super.setUp()
         do {
-            try TestHelper.createSeed()
+            TestHelper.createSeed()
             let exp = expectation(description: "Waiting for getting site.")
             try Site.get(id: linkedInPPDHandle, completion: { (site) in
                 self.site = site
@@ -31,6 +31,70 @@ class AccountTests: XCTestCase {
         XCTAssertNoThrow(
             try Account(username: "user@example.com", site: site, password: "pass123")
         )
+    }
+    
+    func testBackupDoesntThrow() {
+        
+    }
+    
+    func testPasswordDoesntThrow() {
+        
+    }
+    
+    func testNextPassword() {
+        
+    }
+    
+    func testAddOtpTokenDoesntThrow() {
+        
+    }
+    
+    func testUpdteOtpToken() {
+        
+    }
+    
+    func testDeleteOtpToken() {
+        
+    }
+    
+    func testUpdateUsername() {
+        
+    }
+    
+    func testUpdatePassword() {
+        
+    }
+    
+    func testUpdateSiteName() {
+        
+    }
+    
+    func testUpdateURL() {
+        
+    }
+    
+    func testGenerateNewPassword() {
+        
+    }
+    
+    func testGetAccountWithSiteID() {
+        
+    }
+    
+    func testGetAccountWithAccountID() {
+        
+    }
+    
+    func testSaveAccount() {
+    
+    }
+    
+    func testAllAccounts() {
+        
+    }
+    
+    func testDeleteAllAccounts() {
+        
     }
 
 }
