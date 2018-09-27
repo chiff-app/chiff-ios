@@ -95,6 +95,9 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
         try API.sharedInstance.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
+            guard let dict = dict else {
+                return
+            }
             for (id, data) in dict {
                 if let base64Data = data as? String {
                     do {

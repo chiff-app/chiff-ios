@@ -187,6 +187,10 @@ class Questionnaire: Codable {
     static func fetch() {
         do {
             try API.sharedInstance.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
+                guard let dict = dict else {
+                    Logger.shared.warning("Could not get questionnaires")
+                    return
+                }
                 if let questionnaires = dict["questionnaires"] as? [Any] {
                     for object in questionnaires {
                         do {
@@ -204,6 +208,18 @@ class Questionnaire: Codable {
             }
         } catch {
             Logger.shared.warning("Could not get questionnaires", error: error as NSError)
+        }
+    }
+    
+    static func createQuestionnaireDirectory() {
+        let filemgr = FileManager.default
+        let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
+        let newDir = libraryURL.appendingPathComponent("questionnaires").path
+        do {
+            try filemgr.createDirectory(atPath: newDir,
+                                        withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            Logger.shared.error("Error creating questionnaire directory", error: error)
         }
     }
     
@@ -231,18 +247,6 @@ class Questionnaire: Codable {
             try? filemgr.removeItem(atPath: path) // Remove legacy questionnaire
         }
         return nil
-    }
-    
-    static func createQuestionnaireDirectory() {
-        let filemgr = FileManager.default
-        let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
-        let newDir = libraryURL.appendingPathComponent("questionnaires").path
-        do {
-            try filemgr.createDirectory(atPath: newDir,
-                                        withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            Logger.shared.error("Error creating questionnaire directory", error: error)
-        }
     }
     
     // DEBUGGING
