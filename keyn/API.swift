@@ -44,7 +44,7 @@ class API {
         send(request)
     }
     
-    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]) -> Void) throws {
+    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
         send(request, completionHandler: completionHandler)
     }
@@ -59,7 +59,7 @@ class API {
         send(request)
     }
     
-    private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]) -> Void)? = nil) {
+    private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)? = nil) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying Keyn API", error: error! as NSError)
@@ -81,12 +81,17 @@ class API {
                         throw APIError.statusCode(error: "Not 200 but no error")
                     }
                 } catch {
-                    print(error)
+                    if let completionHandler = completionHandler {
+                        completionHandler(nil)
+                    }
                     Logger.shared.error("API error", error: error as NSError, userInfo: [
                         "statusCode": httpStatus.statusCode
-                        ])
+                    ])
                 }
             } else {
+                if let completionHandler = completionHandler {
+                    completionHandler(nil)
+                }
                 Logger.shared.error("API error. Wrong Response type")
             }
         }

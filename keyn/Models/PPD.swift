@@ -30,18 +30,25 @@ struct PPD: Codable {
         }
     }
     
-    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) throws {
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) throws {
         try API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+            guard let dict = dict else {
+                Logger.shared.warning("PPD not found")
+                completionHandler(nil)
+                return
+            }
             if let ppd = dict["ppds"] as? [Any] {
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
                     let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
                     completionHandler(ppd)
                 } catch {
-                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
+                    Logger.shared.error("Failed to decode PPD", error: error as NSError)
+                    completionHandler(nil)
                 }
             } else {
                 Logger.shared.error("Failed to decode PPD")
+                completionHandler(nil)
             }
         }
     }

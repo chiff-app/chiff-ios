@@ -10,7 +10,7 @@ import XCTest
 
 @testable import keyn
 
-class BackupTests: XCTestCase {
+class BackupManagerTests: XCTestCase {
 
     override func setUp() {
         TestHelper.createSeed()
@@ -19,20 +19,32 @@ class BackupTests: XCTestCase {
     override func tearDown() {
         TestHelper.resetKeyn()
     }
-
-    func testGetBackup() {
+    
+    func testBackupInitializationDoesntThrow() {
+        
+    }
+    
+    func testBackup() {
+        
+    }
+    
+    func testDeleteAccount() {
+        
+    }
+    
+    func testGetBackupData() {
         let expectation = XCTestExpectation(description: "Download backup data")
         XCTAssertNoThrow(try BackupManager.sharedInstance.getBackupData {
             expectation.fulfill()
             })
         wait(for: [expectation], timeout: TimeInterval(exactly: 100)!)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testSignMessage() {
+        
     }
-
+    
+    func testDeleteAllKeys() {
+        
+    }
 }
