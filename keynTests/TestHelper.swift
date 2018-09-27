@@ -18,12 +18,24 @@ class TestHelper {
 
 
     static func createSeed() {
-        resetKeyn()
+        try? Seed.delete()
         var mnemonicArray = [String]()
         for word in mnemonic.split(separator: " ") {
             mnemonicArray.append(String(word))
         }
         try! Seed.recover(mnemonic: mnemonicArray)
+        initBackup()
+    }
+    
+    static func deleteSeed() {
+        try? Seed.delete()
+    }
+    
+    static func deinitBackup() {
+        BackupManager.sharedInstance.deleteAllKeys()
+    }
+    
+    static func initBackup() {
         try! BackupManager.sharedInstance.initialize()
     }
     
