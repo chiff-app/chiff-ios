@@ -68,31 +68,6 @@ struct Seed {
         return false
     }
     
-    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
-        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = wordlistData.components(separatedBy: .newlines)
-        
-        var bitstring = ""
-        for word in mnemonic {
-            guard let index: Int = wordlist.index(of: word) else {
-                throw CryptoError.mnemonicConversion
-            }
-            bitstring += String(index, radix: 2).pad(toSize: 11)
-        }
-        
-        let checksum = bitstring.suffix(mnemonic.count / 3)
-        let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
-        var seed = Data(capacity: seedString.count)
-        for byteString in seedString.components(withLength: 8) {
-            guard let byte = UInt8(byteString, radix: 2) else {
-                throw CryptoError.mnemonicConversion
-            }
-            seed.append(byte)
-        }
-        
-        return (String(checksum), seed)
-    }
-
     static func recover(mnemonic: [String]) throws -> Bool {
         let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
 
@@ -146,4 +121,31 @@ struct Seed {
         return label == "true"
     }
     
+    // MARK: Private functions
+    
+    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
+        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
+        let wordlist = wordlistData.components(separatedBy: .newlines)
+        
+        var bitstring = ""
+        for word in mnemonic {
+            guard let index: Int = wordlist.index(of: word) else {
+                throw CryptoError.mnemonicConversion
+            }
+            bitstring += String(index, radix: 2).pad(toSize: 11)
+        }
+        
+        let checksum = bitstring.suffix(mnemonic.count / 3)
+        let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
+        var seed = Data(capacity: seedString.count)
+        for byteString in seedString.components(withLength: 8) {
+            guard let byte = UInt8(byteString, radix: 2) else {
+                throw CryptoError.mnemonicConversion
+            }
+            seed.append(byte)
+        }
+        
+        return (String(checksum), seed)
+    }
+
 }

@@ -125,18 +125,7 @@ class Session: Codable {
         try sendToMessageQueue(ciphertext: ciphertext, type: type)
     }
     
-    func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
-        let data = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
-        let parameters = try sign(data: data, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
-        try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters)
-    }
-    
-    func sendToControlQueue(message: String) throws {
-        let parameters = try sign(data: message, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
-        try API.sharedInstance.post(type: .message, path: controlPubKey, parameters: parameters)
-    }
-    
-    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]) -> Void) throws {
+    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
         try API.sharedInstance.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
     }
@@ -236,6 +225,17 @@ class Session: Codable {
 
 
     // MARK: Private functions
+    
+    fileprivate func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
+        let data = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        let parameters = try sign(data: data, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
+        try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters)
+    }
+    
+    fileprivate func sendToControlQueue(message: String) throws {
+        let parameters = try sign(data: message, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
+        try API.sharedInstance.post(type: .message, path: controlPubKey, parameters: parameters)
+    }
     
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
