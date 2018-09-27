@@ -72,16 +72,55 @@ class SessionTests: XCTestCase {
     }
 
     // browserPublicKey
+    
+    func testBrowserPublicKey() {
+        
+    }
 
     // appPrivateKey
+    
+    func testAppPrivateKey() {
+        
+    }
+    
+    func testAppPublicKey() {
+        
+    }
 
     // decrypt
-
+    
+    func testDecrypt() {
+        
+    }
+    
     // sendCredentials
+    
+    func testAcknowledgeDoesntThrow() {
+        
+    }
+    
+    func testSendCredentialsDoesntThrow() {
+        
+    }
+    
+    func testGetChangeConfirmation() {
+        
+    }
+    
+    func testDeleteChangeConfirmation() {
+        
+    }
+    
+    func testAll() {
+        
+    }
+    
+    func testExists() {
+        
+    }
+    
+    func testDeleteAll() {
+        
+    }
 
-    // all
-
-    // exists
-
-    // getSession
 }
