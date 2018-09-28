@@ -54,17 +54,11 @@ class AccountTests: XCTestCase {
         XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: nil)) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
-        XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: 2^65, password: nil)) { error in
-            XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
-        }
         XCTAssertNil(testIfAccountIsSaved())
     }
     
     func testInitInValidAccountWithPasswordDoesThrow() {
         XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: "Pass123.")) { error in
-            XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
-        }
-        XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: 2^65, password: "Pass123.")) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
         XCTAssertNil(testIfAccountIsSaved())
