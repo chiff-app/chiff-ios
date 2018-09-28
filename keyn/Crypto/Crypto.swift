@@ -90,7 +90,7 @@ class Crypto {
 
 
     func deriveKey(keyData: Data, context: Data, index: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
-        guard index >= 0 && index < 2^64 - 1 else {
+        guard index >= 0 && index < UInt64.max else {
             throw CryptoError.indexOutOfRange
         }
         guard let contextHash = sodium.genericHash.hash(message: context.bytes, outputLength: 8) else {
@@ -108,7 +108,7 @@ class Crypto {
     
     
     func deriveKey(key: String, context: String, index: Int = 0) throws ->  Data {
-        guard index >= 0 && index < 2^64 - 1 else {
+        guard index >= 0 && index < UInt64.max else {
             throw CryptoError.indexOutOfRange
         }
         guard let keyData = sodium.utils.base642bin(key, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
