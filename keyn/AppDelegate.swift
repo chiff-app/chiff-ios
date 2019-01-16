@@ -591,15 +591,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         logger.enableFileLogging = false
         
         // logstash destination
-        logger.logstashHost = "analytics.keyn.io"
-        logger.logstashPort = 5000
+        logger.logstashHost = "listener.logz.io"
+        logger.logstashPort = 5052
+        logger.logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
         logger.logstashTimeout = 5
         logger.logLogstashSocketActivity = Properties.isDebug
         
         // default info
-        logger.defaultUserInfo = ["device": "APP",
-                                  "userID": Properties.userID(),
-                                  "debug": Properties.isDebug]
+        logger.defaultUserInfo = [
+            "app": "Keyn",
+            "device": "APP",
+            "userID": Properties.userID(),
+            "debug": Properties.isDebug]
         logger.setup()
     }
     
