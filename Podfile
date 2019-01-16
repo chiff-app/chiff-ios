@@ -9,12 +9,11 @@ use_frameworks!
 
 def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
-  pod 'Sodium', :git => 'https://github.com/jedisct1/swift-sodium.git'
+  pod 'Sodium', '~> 0.7'
   pod 'AWSCognito'
   pod 'AWSSNS'
-#  pod 'AWSAPIGateway'
   pod "JustLog"
-  pod 'OneTimePassword', '~> 3.1.4'
+  pod 'OneTimePassword', '~> 3.1'
 end
 
 target 'keyn' do
