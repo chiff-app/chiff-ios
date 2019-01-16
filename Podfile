@@ -14,7 +14,7 @@ def shared_pods
   pod 'AWSSNS'
 #  pod 'AWSAPIGateway'
   pod "JustLog"
-  pod 'OneTimePassword', '~> 3.1'
+  pod 'OneTimePassword', '~> 3.1.4'
 end
 
 target 'keyn' do
