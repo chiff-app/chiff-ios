@@ -45,52 +45,26 @@ class PasswordGenerator {
 
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
         // TODO: Check if this is OK. Not validating custom passwords
-        guard PasswordValidator(ppd: ppd).validateMaxLength(password: password) else {
+        let validator = PasswordValidator(ppd: ppd)
+        guard validator.validateMaxLength(password: password) else {
             throw PasswordGenerationError.invalidPassword
         }
-
-
-        let (length, chars) = parse(ppd: ppd, customPassword: true)
-
-        var characterIndices = [Int](repeatElement(chars.count, count: length))
-        var index = 0
-
-        for char in password {
-            guard let characterIndex = chars.index(of: char) else {
-                throw PasswordGenerationError.characterNotAllowed
-            }
-            characterIndices[index] = characterIndex
-            index += 1
+        guard validator.validateCharacters(password: password) else {
+            throw PasswordGenerationError.characterNotAllowed
         }
 
+        let (length, chars) = parse(ppd: ppd, customPassword: true)
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
         let keyData = try Crypto.sharedInstance.deterministicRandomBytes(seed: key, length: byteLength)
-
-        let bytesPerChar = byteLength / length
-        var keyDataIterator = keyData.makeIterator()
-        var offsets = [Int]()
-
-        // Generates the offset
-        for index in 0..<length {
-            var data: String = ""
-            var counter = 0
-
-            // Add up bytevalues to value
-            repeat {
-                guard let byte = keyDataIterator.next() else {
-                    throw PasswordGenerationError.keyGeneration
-                }
-                data += String(byte, radix: 2).pad(toSize: 8)
-                counter += 1
-            } while counter < bytesPerChar
-            // Calculate offset and add to array
-            offsets.append((characterIndices[index] - Int(data, radix: 2)!).mod(n: chars.count + 1)) // TODO: check if this can be safely done
-            
-        }
-        return offsets
+        
+        let characters = Array(password)
+        return (0..<length).map({ (index) -> Int in
+            let charIndex = index < characters.count ? chars.index(of: characters[index]) ?? chars.count : chars.count // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is check in guard statement above.
+            return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(n: chars.count + 1) }).mod(n: chars.count + 1)
+        })
+        
     }
 
 
@@ -119,42 +93,16 @@ class PasswordGenerator {
 
     private func generatePasswordCandidate(username: String, passwordIndex: Int, siteID: String, length: Int, chars: [Character], offset: [Int]?) throws -> String {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
-
-        // #bits N = L x ceil(log2(C)) + (128 + L - (128 % L), where L is password length and C is character set cardinality, see Horsch(2017), p90
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
         let keyData = try Crypto.sharedInstance.deterministicRandomBytes(seed: key, length: byteLength)
-
-        // Zero-offsets if no offset is given
-        // This will probably produce errors when password rejection is implemented because reference to offset is passed, not value
         let modulus = offset == nil ? chars.count : chars.count + 1
         let offset = offset ?? Array<Int>(repeatElement(0, count: length))
-        let bytesPerChar = byteLength / length
-        var keyDataIterator = keyData.makeIterator()
-        var password = ""
 
-        // Generates the password
-        for index in 0..<length {
-            var data: String = ""
-            var counter = 0
-
-            // Add up bytevalues to value
-            repeat {
-                guard let byte = keyDataIterator.next() else {
-                    throw PasswordGenerationError.keyGeneration
-                }
-                data += String(byte, radix: 2).pad(toSize: 8)
-                counter += 1
-            } while counter < bytesPerChar
-
-            // Choose character from value, taking offset into account
-            let characterValue = (Int(data, radix: 2)! + offset[index]) % modulus // TODO: check if this can be safely done
-            if characterValue != chars.count {
-                password += String(chars[characterValue])
-            }
+        return (0..<length).reduce("") { (pw, index) -> String in
+            let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(n: modulus) } + offset[index]).mod(n: modulus)
+            return charIndex == chars.count ? pw : pw + String(chars[charIndex])
         }
-
-        return password
     }
 
     private func roundUp(n: Int, m: Int) -> Int {
