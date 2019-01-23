@@ -62,7 +62,7 @@ class PasswordGenerator {
         let characters = Array(password)
         return (0..<length).map({ (index) -> Int in
             let charIndex = index < characters.count ? chars.index(of: characters[index]) ?? chars.count : chars.count // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is check in guard statement above.
-            return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(n: chars.count + 1) }).mod(n: chars.count + 1)
+            return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(chars.count + 1) }).mod(chars.count + 1)
         })
         
     }
@@ -100,7 +100,7 @@ class PasswordGenerator {
         let offset = offset ?? Array<Int>(repeatElement(0, count: length))
 
         return (0..<length).reduce("") { (pw, index) -> String in
-            let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(n: modulus) } + offset[index]).mod(n: modulus)
+            let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(modulus) } + offset[index]).mod(modulus)
             return charIndex == chars.count ? pw : pw + String(chars[charIndex])
         }
     }
