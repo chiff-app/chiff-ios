@@ -24,7 +24,7 @@ extension UIViewController {
 }
 
 extension Int {
-    func mod(n: Int) -> Int {
+    func mod(_ n: Int) -> Int {
         return (self % n + n) % n
     }
 }
