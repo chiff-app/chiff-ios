@@ -1,15 +1,10 @@
-//
-//  KeychainTests.swift
-//  keynTests
-//
-//  Created by Bas Doorn on 27/09/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 class KeychainTests: XCTestCase {
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -65,6 +60,4 @@ class KeychainTests: XCTestCase {
     func testDeletAll() {
         
     }
-
-
 }

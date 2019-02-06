@@ -1,17 +1,12 @@
-//
-//  PasswordGenerationTests.swift
-//  keynTests
-//
-//  Created by bas on 08/02/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 @testable import keyn
 
 class PasswordTests: XCTestCase {
-
     let commonCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|"
     var site: Site!
 
@@ -196,7 +191,6 @@ class PasswordTests: XCTestCase {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: requirementGroups)
         let validator = PasswordValidator(ppd: ppd)
 
-
         XCTAssertFalse(validator.validate(password: "asdpudfjkad"))
         XCTAssertTrue(validator.validate(password: "asdpuhfjkad45"))
         XCTAssertTrue(validator.validate(password: "Asdpuhfjkad"))
@@ -207,15 +201,13 @@ class PasswordTests: XCTestCase {
         XCTAssertFalse(validator.validate(password: "A&*skashdjk*%ad"))
         XCTAssertTrue(validator.validate(password: "A&*sd^3*&^*aad"))
         XCTAssertTrue(validator.validate(password: "A&skashdjk*%ad"))
-
     }
 
-
     func testPerformanceExample() {
+
         // We can test here how long it takes to generate a password with restrictive PPD
         self.measure {
             // Put the code you want to measure the time of here.
         }
     }
-
 }
