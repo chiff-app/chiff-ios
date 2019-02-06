@@ -1,15 +1,12 @@
-//
-//  Seed.swift
-//  keyn
-//
-//  Created by bas on 29/11/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
 struct Seed {
     static let keychainService = "io.keyn.seed"
+
     private enum KeyIdentifier: String, Codable {
         case password = "password"
         case backup = "backup"
@@ -29,7 +26,6 @@ struct Seed {
         try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
         try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
     }
-
 
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.sharedInstance.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
@@ -147,5 +143,4 @@ struct Seed {
         
         return (String(checksum), seed)
     }
-
 }

@@ -1,11 +1,7 @@
-//
-//  PPD.swift
-//  keyn
-//
-//  Created by bas on 14/03/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 
@@ -122,7 +118,6 @@ struct PPDRequirementRule: Codable {
         self.maxOccurs = maxOccurs
         self.characterSet = characterSet
     }
-
 }
 
 // TODO: Complete Service part.
@@ -135,7 +130,6 @@ struct PPDService: Codable {
 struct PPDLogin: Codable {
     let url: String?
 }
-
 
 struct PPDPasswordChange: Codable {
     let url: String?

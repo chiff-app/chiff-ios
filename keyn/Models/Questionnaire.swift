@@ -1,11 +1,7 @@
-//
-//  Question.swift
-//  keyn
-//
-//  Created by bas on 18/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 
@@ -45,7 +41,6 @@ struct Question: Codable {
         self.mpcOptions = mpcOptions
     }
 }
-
 
 class Questionnaire: Codable {
     static let suite = "keynQuestionnaire"
@@ -261,6 +256,5 @@ class Questionnaire: Codable {
         } catch {
             Logger.shared.warning("Could not delete questionnaires", error: error as NSError)
         }
-    }
-    
+    }    
 }

@@ -1,11 +1,7 @@
-//
-//  PasswordValidator.swift
-//  keyn
-//
-//  Created by bas on 21/03/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 
@@ -17,7 +13,6 @@ class PasswordValidator {
     let ppd: PPD?
     var characterSetDictionary = [String:String]()
     var characters = ""
-
 
     init(ppd: PPD?) {
         self.ppd = ppd
@@ -88,7 +83,6 @@ class PasswordValidator {
         }
         return true
     }
-
 
     func validateConsecutiveOrderedCharacters(password: String) -> Bool {
         if let maxConsecutive = ppd?.properties?.maxConsecutive, maxConsecutive > 0 {
@@ -165,6 +159,7 @@ class PasswordValidator {
     private func checkConsecutiveCharacters(password: String, characters: String, maxConsecutive: Int) -> Bool {
         let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)
         let pattern = "([\(escapedCharacters)])\\1{\(maxConsecutive),}"
+
         return password.range(of: pattern, options: .regularExpression) == nil
     }
 
@@ -172,13 +167,20 @@ class PasswordValidator {
         var lastValue = 256
         var longestSequence = 0
         var counter = 1
+
         for value in password.utf8 {
             if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) {
                 counter += 1
-            } else { counter = 1 }
+            } else {
+                counter = 1
+            }
+
             lastValue = Int(value)
-            if counter > longestSequence { longestSequence = counter }
+            if counter > longestSequence {
+                longestSequence = counter
+            }
         }
+
         return longestSequence <= maxConsecutive
     }
 
@@ -246,7 +248,9 @@ class PasswordValidator {
         for position in positions.split(separator: ",") {
             if let position = Int(position) {
                 let index = password.index(position < 0 ? password.endIndex : password.startIndex, offsetBy: position)
-                if characterSet.contains(password[index]) { occurences += 1 }
+                if characterSet.contains(password[index]) {
+                    occurences += 1
+                }
             }
         }
         return occurences
@@ -255,9 +259,10 @@ class PasswordValidator {
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
         var occurences = 0
         for character in password {
-            if characterSet.contains(character) { occurences += 1 }
+            if characterSet.contains(character) {
+                occurences += 1
+            }
         }
         return occurences
     }
-
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import UserNotifications
 import JustLog
@@ -9,7 +13,6 @@ enum SessionError: Error {
 }
 
 class Session: Codable {
-
     let id: String
     let messagePubKey: String
     let controlPubKey: String
@@ -30,7 +33,7 @@ class Session: Codable {
         case control = "control"
         case message = "message"
         case push = "push"
-        
+
         func identifier(for id:String) -> String {
             return "\(id)-\(self.rawValue)"
         }
@@ -57,7 +60,7 @@ class Session: Codable {
         try Keychain.sharedInstance.delete(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
         try Keychain.sharedInstance.delete(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
     }
-    
+
     func browserPublicKey() throws -> Data {
         return try Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey)
     }
@@ -65,7 +68,7 @@ class Session: Codable {
     func appPrivateKey() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService)
     }
-    
+
     func appPublicKey() throws -> Data {
         return try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService)
     }
@@ -82,14 +85,14 @@ class Session: Codable {
         let browserMessage = try JSONDecoder().decode(BrowserMessage.self, from: data)
         return browserMessage
     }
-    
+
     func acknowledge(browserTab: Int) throws {
         let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
         let jsonMessage = try JSONEncoder().encode(response)
         let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         try sendToMessageQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge)
     }
-    
+
     // TODO, add request ID etc
     func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
         var response: CredentialsResponse?
@@ -124,12 +127,12 @@ class Session: Codable {
         let ciphertext = try Crypto.sharedInstance.encrypt(message, pubKey: Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey), privKey: appPrivateKey())
         try sendToMessageQueue(ciphertext: ciphertext, type: type)
     }
-    
+
     func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
         try API.sharedInstance.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
     }
-    
+
     func deleteChangeConfirmation(receiptHandle: String) {
         do {
             let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle)
@@ -138,7 +141,6 @@ class Session: Codable {
             Logger.shared.warning("Failed to delete change confirmation from queue.")
         }
     }
-    
 
     // MARK: - Static functions
 
@@ -208,7 +210,7 @@ class Session: Codable {
         let controlPubKey = try Crypto.sharedInstance.convertToBase64(from: controlKeyPair.publicKey.data)
         let pushPubKey = try Crypto.sharedInstance.convertToBase64(from: pushKeyPair.publicKey.data)
         let session = Session(encryptionPubKey: pubKey, messagePubKey: messagePubKey, controlPubKey: controlPubKey, pushPubKey: pushPubKey, browser: browser, os: os)
-        
+
         do {
             try session.save(messagePrivKey: messageKeyPair.secretKey.data, controlPrivKey: controlKeyPair.secretKey.data, pushPrivKey: pushKeyPair.secretKey.data)
         } catch is KeychainError {
@@ -216,32 +218,31 @@ class Session: Codable {
         } catch is CryptoError {
             throw SessionError.invalid
         }
-        
+
         let pairingResponse = try self.createPairingResponse(session: session)
         try session.sendToMessageQueue(ciphertext: pairingResponse, type: BrowserMessageType.pair)
 
         return session
     }
 
-
     // MARK: - Private
-    
-    fileprivate func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
+
+    private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
         let data = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
         let parameters = try sign(data: data, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
         try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters)
     }
-    
-    fileprivate func sendToControlQueue(message: String) throws {
+
+    private func sendToControlQueue(message: String) throws {
         let parameters = try sign(data: message, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
         try API.sharedInstance.post(type: .message, path: controlPubKey, parameters: parameters)
     }
-    
+
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
         try API.sharedInstance.put(type: .push, path: pushPubKey, parameters: parameters)
     }
-    
+
     private func deleteEndpointAtAWS() throws {
         let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
         try API.sharedInstance.delete(type: .push, path: pushPubKey, parameters: parameters)
@@ -270,7 +271,7 @@ class Session: Codable {
         try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, classification: .restricted)
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, classification: .restricted)
     }
-    
+
     private func sign(data: String?, requestType: APIRequestType, privKey: Data, type: BrowserMessageType?, waitTime: String? = nil, receiptHandle: String? = nil) throws -> [String:String] {
         var message = [
             "type": requestType.rawValue,
@@ -285,7 +286,7 @@ class Session: Codable {
         if let receiptHandle = receiptHandle {
             message["receiptHandle"] = receiptHandle
         }
-        
+
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let signature = try Crypto.sharedInstance.sign(message: jsonData, privKey: privKey)
 
@@ -296,7 +297,7 @@ class Session: Codable {
         if let type = type {
             parameters["t"] = String(type.rawValue)
         }
+
         return parameters
     }
-
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import Sodium
 
@@ -18,15 +22,13 @@ enum CryptoError: Error {
     case indexOutOfRange
 }
 
-
 class Crypto {
-    
     static let sharedInstance = Crypto()
     
     private let sodium = Sodium()
     private let SEED_SIZE = 16
-    private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
+    private init() {}
 
     // MARK: - Key generation functions
 
@@ -64,7 +66,6 @@ class Crypto {
         return key.data
     }
 
-
     func createSessionKeyPair() throws -> Box.KeyPair {
         guard let keyPair = sodium.box.keyPair() else {
             throw CryptoError.keyGeneration
@@ -77,6 +78,7 @@ class Crypto {
         guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
             throw CryptoError.keyGeneration
         }
+
         return keyPair
     }
 
@@ -87,7 +89,6 @@ class Crypto {
         
         return keyData.data
     }
-
 
     func deriveKey(keyData: Data, context: Data, index: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
         guard index >= 0 && index < UInt64.max else {
@@ -121,12 +122,9 @@ class Crypto {
         return key.data
     }
 
-
-
     // MARK: - Base64 conversion functions
 
     func convertFromBase64(from base64String: String) throws -> Data  {
-        // Convert from base64 to Data
         guard let bytes = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
@@ -135,7 +133,6 @@ class Crypto {
     }
 
     func convertToBase64(from data: Data) throws -> String  {
-        // Convert from Data to base64
         guard let b64String = sodium.utils.bin2base64(data.bytes, variant: .URLSAFE_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
@@ -152,7 +149,6 @@ class Crypto {
         
         return signature.data
     }
-
 
     // MARK: - Encryption & decryption functions
     
@@ -184,6 +180,7 @@ class Crypto {
         guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, recipientPublicKey: pubKey.bytes) else {
             throw CryptoError.encryption
         }
+
         return ciphertext.data
     }
 
@@ -197,8 +194,7 @@ class Crypto {
         return (plaintext.data, nonce)
     }
 
-
-     // MARK: - Hash functions
+    // MARK: - Hash functions
 
     func hash(_ data: Data) throws -> Data {
         guard let hashData = sodium.genericHash.hash(message: data.bytes) else {
@@ -217,5 +213,4 @@ class Crypto {
         }
         return hash
     }
-
 }
