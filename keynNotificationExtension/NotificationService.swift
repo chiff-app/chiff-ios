@@ -1,8 +1,11 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UserNotifications
 import JustLog
 
 class NotificationService: UNNotificationServiceExtension {
-
     var contentHandler: ((UNNotificationContent) -> Void)?
     var content: UNMutableNotificationContent?
 
@@ -22,7 +25,6 @@ class NotificationService: UNNotificationServiceExtension {
         contentHandler(content)
     }
     
-
     // Called just before the extension will be terminated by the system.
     // Use this as an opportunity to deliver your "best attempt" at modified content,
     // otherwise the original push payload will be used.
@@ -32,5 +34,4 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(content)
         }
     }
-
 }

@@ -1,18 +1,13 @@
-//
-//  LoginViewController.swift
-//  keyn
-//
-//  Created by Bas Doorn on 09/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import LocalAuthentication
 import AuthenticationServices
 import JustLog
 
 class LoginViewController: ASCredentialProviderViewController {
-    
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var touchIDButton: UIButton!
     var credentialProviderViewController: CredentialProviderViewController?
@@ -36,12 +31,21 @@ class LoginViewController: ASCredentialProviderViewController {
     }
     
     // MARK: - Actions
+
     @IBAction func touchID(_ sender: UIButton) {
         authenticateUser()
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showAccounts", let navCon = segue.destination as? CredentialProviderNavigationController {
+            navCon.passedExtensionContext = extensionContext
+        }
     }
 
     // MARK: - AuthenicationServices
@@ -77,15 +81,7 @@ class LoginViewController: ASCredentialProviderViewController {
             extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showAccounts", let navCon = segue.destination as? CredentialProviderNavigationController {
-            navCon.passedExtensionContext = extensionContext
-        }
-    }
-    
+
     // MARK: - Authentication
     
     private func authenticateUser() {
@@ -134,9 +130,7 @@ class LoginViewController: ASCredentialProviderViewController {
         return message
     }
     
-    
     private func evaluateAuthenticationPolicyMessageForLA(errorCode: Int) -> String {
-        
         var message = ""
         
         switch errorCode {
@@ -174,5 +168,4 @@ class LoginViewController: ASCredentialProviderViewController {
         
         return false
     }
-
 }
