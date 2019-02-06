@@ -1,9 +1,12 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 @testable import keyn
 
 class CryptoTests: XCTestCase {
-    
     var site: Site!
 
     override func setUp() {
@@ -57,67 +60,66 @@ class CryptoTests: XCTestCase {
     }
     
     func testCreateSessionKeyPairDoesntThrow() {
-        
+
     }
     
     func testCreateSigningKeyPairDoesntThrow() {
-        
+
     }
     
     func testDeterministicRandomBytes() {
-        
+
     }
     
     func testDeterministicRandomBytesWithCustomLength() {
-        
+
     }
     
     func testDeriveKey() {
-        
+
     }
     
     func testConvertToBase64() {
-        
+
     }
     
     func testConvertFromBase64() {
-        
+
     }
     
     func testSign() {
-        
+
     }
     
     func testEncryptSymmetric() {
-        
+
     }
     
     func testDecryptSymmetric() {
-        
+
     }
     
     func testEncryptAndDecryptSymmetric() {
-        
+
     }
     
     func testEncryptAssymetric() {
-        
+
     }
     
     func testDecryptAssymetric() {
-        
+
     }
     
     func testEncryptAndDecryptAssymetric() {
-        
+
     }
     
     func testHashFromData() {
-        
+
     }
     
     func testHashFromString() {
-        
-    }
 
+    }
 }

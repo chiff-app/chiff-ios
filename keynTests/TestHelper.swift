@@ -1,14 +1,17 @@
 /*
- * Test helpers to be used in all tests.
- * We cannot (easily?) create mock objects so we actually modify the
- * Keychain, storage etc.
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
  */
 import XCTest
 
 @testable import keyn
 
+/*
+ * Test helpers to be used in all tests.
+ * We cannot (easily?) create mock objects so we actually modify the
+ * Keychain, storage etc.
+ */
 class TestHelper {
-
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble" // Use this seed for testing.
     static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
     static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
@@ -16,14 +19,16 @@ class TestHelper {
     static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
-
     static func createSeed() {
         try? Seed.delete()
+
         var mnemonicArray = [String]()
         for word in mnemonic.split(separator: " ") {
             mnemonicArray.append(String(word))
         }
+
         try! Seed.recover(mnemonic: mnemonicArray)
+
         initBackup()
     }
     
@@ -78,7 +83,6 @@ class TestHelper {
         try! Site.get(id: linkedInPPDHandle, completion: completionHandler)
     }
 
-
     static func examplePPD(maxConsecutive: Int?, minLength: Int?, maxLength: Int?, characterSetSettings: [PPDCharacterSetSettings]?, positionRestrictions: [PPDPositionRestriction]?, requirementGroups: [PPDRequirementGroup]?) -> PPD {
         var characterSets = [PPDCharacterSet]()
         characterSets.append(PPDCharacterSet(base: [String](), characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
@@ -94,5 +98,4 @@ class TestHelper {
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
         return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
-
 }

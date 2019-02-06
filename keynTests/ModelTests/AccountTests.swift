@@ -1,10 +1,13 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 @testable import keyn
 import OneTimePassword
 
 class AccountTests: XCTestCase {
-
     var accountId: String!
     var site: Site!
     let username = "demo@keyn.io"

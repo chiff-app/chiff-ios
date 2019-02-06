@@ -1,10 +1,12 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
-
 
 @testable import keyn
 
 class SessionTests: XCTestCase {
-
     override func setUp() {
         super.setUp()
     }
@@ -64,11 +66,11 @@ class SessionTests: XCTestCase {
     }
 
     func testDeleteShouldNotThrowIfBrowserServiceThrows() {
-
+        
     }
 
     func testDeleteShouldNotThrowIfAppServiceThrows() {
-
+        
     }
 
     // browserPublicKey
@@ -122,5 +124,4 @@ class SessionTests: XCTestCase {
     func testDeleteAll() {
         
     }
-
 }

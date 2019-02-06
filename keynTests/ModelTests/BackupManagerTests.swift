@@ -1,17 +1,12 @@
-//
-//  BackupTests.swift
-//  keynTests
-//
-//  Created by Bas Doorn on 22/09/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 @testable import keyn
 
 class BackupManagerTests: XCTestCase {
-
     override func setUp() {
         TestHelper.createSeed()
     }
@@ -34,9 +29,11 @@ class BackupManagerTests: XCTestCase {
     
     func testGetBackupData() {
         let expectation = XCTestExpectation(description: "Download backup data")
+
         XCTAssertNoThrow(try BackupManager.sharedInstance.getBackupData {
             expectation.fulfill()
-            })
+        })
+
         wait(for: [expectation], timeout: TimeInterval(exactly: 100)!)
     }
     

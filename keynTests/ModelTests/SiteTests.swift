@@ -1,9 +1,12 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import XCTest
 
 @testable import keyn
 
-class SiteTests: XCTestCase {
-    
+class SiteTests: XCTestCase {    
     override func setUp() {
         // TODO
         // Set up some example sites. Actually this is now still
@@ -40,5 +43,4 @@ class SiteTests: XCTestCase {
             XCTFail("An error occured during setup: \(error)")
         }
     }
-
 }

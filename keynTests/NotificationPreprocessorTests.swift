@@ -6,7 +6,7 @@ import UserNotifications
 class NotificationProcessorTests: XCTestCase {
 
     var sessionID: String!
-    
+
     override func setUp() {
         super.setUp()
         TestHelper.createSeed()
@@ -19,11 +19,12 @@ class NotificationProcessorTests: XCTestCase {
     }
 
     func testEnrichReturnsNilIfContentIsNil() {
-//        let content: UNMutableNotificationContent? = nil
-//        let notificationService = NotificationProcessor()
-//        let enriched = try! notificationService.process(content: content)
-//
-//        XCTAssertNil(enriched)
+        //        let content: UNMutableNotificationContent? = nil
+        //        let notificationService = NotificationProcessor()
+        //        let enriched = try! notificationService.process(content: content)
+        //
+        //        XCTAssertNil(enriched)
+
     }
 
     func testProcessDoesNotThrow() {
@@ -31,7 +32,7 @@ class NotificationProcessorTests: XCTestCase {
 
         let content: UNMutableNotificationContent = UNMutableNotificationContent()
         content.userInfo = ["data": encryptedMessage, "sessionID": TestHelper.sessionID]
-        
+
         XCTAssertNoThrow(try NotificationProcessor.process(content: content))
     }
 
@@ -97,76 +98,75 @@ class NotificationProcessorTests: XCTestCase {
         }
     }
 
-//    func testEnrichReturnsUnchangedIfuserInfoIsNil() {
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfuserInfoHasNoData() {
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["sessionID": "123"]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfuserInfoHasNoSessionID() {
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": "test"]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfSessionDoesntExist() {
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": "test", "sessionID": "123"]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfMessageCannotBeDecrypted() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            return XCTAssertFalse(true)
-//        }
-//
-//        let encryptedMessage = ".GarblEdMSsaAGe±"
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfDataCannotBeParsed() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("oops", sessionID)!
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-//
-//    func testEnrichReturnsUnchangedIfSiteCannotBeFound() {
-//        guard let sessionID = TestHelper.createSession() else {
-//            XCTAssertFalse(true)
-//            return
-//        }
-//
-//        let encryptedMessage = TestHelper.encryptAsBrowser("1000 42", sessionID)!
-//        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
-//        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
-//        let enriched = NotificationPreprocessor.enrich(notification: content)
-//
-//        XCTAssertEqual(content, enriched)
-//    }
-
+    //    func testEnrichReturnsUnchangedIfuserInfoIsNil() {
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfuserInfoHasNoData() {
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["sessionID": "123"]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfuserInfoHasNoSessionID() {
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["data": "test"]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfSessionDoesntExist() {
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["data": "test", "sessionID": "123"]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfMessageCannotBeDecrypted() {
+    //        guard let sessionID = TestHelper.createSession() else {
+    //            return XCTAssertFalse(true)
+    //        }
+    //
+    //        let encryptedMessage = ".GarblEdMSsaAGe±"
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfDataCannotBeParsed() {
+    //        guard let sessionID = TestHelper.createSession() else {
+    //            XCTAssertFalse(true)
+    //            return
+    //        }
+    //
+    //        let encryptedMessage = TestHelper.encryptAsBrowser("oops", sessionID)!
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
+    //
+    //    func testEnrichReturnsUnchangedIfSiteCannotBeFound() {
+    //        guard let sessionID = TestHelper.createSession() else {
+    //            XCTAssertFalse(true)
+    //            return
+    //        }
+    //
+    //        let encryptedMessage = TestHelper.encryptAsBrowser("1000 42", sessionID)!
+    //        let content: UNMutableNotificationContent? = UNMutableNotificationContent()
+    //        content?.userInfo = ["data": encryptedMessage, "sessionID": sessionID]
+    //        let enriched = NotificationPreprocessor.enrich(notification: content)
+    //
+    //        XCTAssertEqual(content, enriched)
+    //    }
 }
