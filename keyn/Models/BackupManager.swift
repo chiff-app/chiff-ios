@@ -1,16 +1,11 @@
-//
-//  BackupManager.swift
-//  keyn
-//
-//  Created by bas on 22/04/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 
 struct BackupManager {
-    
     private let keychainService = "io.keyn.backup"
     private let endpoint = "backup"
     static let sharedInstance = BackupManager()
@@ -165,5 +160,4 @@ struct BackupManager {
         let base64PubKey = try Crypto.sharedInstance.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey
     }
-    
 }
