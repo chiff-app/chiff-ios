@@ -1,17 +1,12 @@
-//
-//  CredentialProviderViewController.swift
-//  keynCredentialProvider
-//
-//  Created by bas on 17/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import AuthenticationServices
 import LocalAuthentication
 import JustLog
 
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
-    
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts = [Account]()
     var filteredAccounts: [Account]!
@@ -30,6 +25,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
             first.site.name < second.site.name
         })
+
         tableView.delegate = self
         tableView.dataSource = self
         searchController.searchResultsUpdater = self
@@ -74,7 +70,6 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
             navCon.passedExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
         }
     }
-
     
     // MARK: - SearchController
     
@@ -101,8 +96,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         }
         return accounts.count
     }
-    
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
         
@@ -129,6 +123,4 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
             }
         }
     }
-    
-
 }
