@@ -1,6 +1,9 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import Security
-
 
 enum KeychainError: Error {
     case stringEncoding
@@ -17,13 +20,11 @@ enum Classification {
     case secret
 }
 
-
 class Keychain {
-    
     static let sharedInstance = Keychain()
     
-    private init() {} //This prevents others from using the default '()' initializer for this singleton class.
-
+    private init() {}
+    
     // MARK: - CRUD methods
 
     func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, classification: Classification) throws {
@@ -134,7 +135,6 @@ class Keychain {
         guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
-
     
     func all(service: String) throws -> [[String: Any]]? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -161,7 +161,6 @@ class Keychain {
     
         return dataArray
     }
-
 
     func attributes(id identifier: String, service: String) throws -> [String: Any]? {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
@@ -195,5 +194,4 @@ class Keychain {
                                     kSecAttrService as String: service]
         SecItemDelete(query as CFDictionary)
     }
-
 }

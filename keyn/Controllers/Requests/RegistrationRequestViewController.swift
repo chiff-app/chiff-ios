@@ -233,5 +233,4 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     //            requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
     //        }
     //    }
-
 }

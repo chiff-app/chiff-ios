@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 import OneTimePassword
@@ -6,7 +10,6 @@ import OneTimePassword
  * An account belongs to the user and can have one Site.
  */
 struct Account: Codable {
-
     let id: String
     var username: String
     var site: Site
@@ -255,6 +258,4 @@ struct Account: Codable {
         try Keychain.sharedInstance.delete(id: id, service: Account.keychainService)
         try Keychain.sharedInstance.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
     }
-
 }
-

@@ -1,11 +1,7 @@
-//
-//  PasswordGenerator.swift
-//  keyn
-//
-//  Created by bas on 15/03/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
 enum PasswordGenerationError: Error {
@@ -16,12 +12,10 @@ enum PasswordGenerationError: Error {
     case invalidPassword
 }
 
-
 class PasswordGenerator {
-
     static let sharedInstance = PasswordGenerator()
-    private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
+    private init() {}
 
     func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
         let (length, chars) = parse(ppd: ppd, customPassword: offset != nil)
@@ -32,6 +26,7 @@ class PasswordGenerator {
 
         var index = passwordIndex
         var password = try generatePasswordCandidate(username: username, passwordIndex: index, siteID: siteID, length: length, chars: chars, offset: offset)
+
         if offset == nil { // Only validate generated password. Custom passwords should be validated in UI.
             let passwordValidator = PasswordValidator(ppd: ppd)
             while !passwordValidator.validate(password: password) {
@@ -64,9 +59,7 @@ class PasswordGenerator {
             let charIndex = index < characters.count ? chars.index(of: characters[index]) ?? chars.count : chars.count // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is check in guard statement above.
             return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(chars.count + 1) }).mod(chars.count + 1)
         })
-        
     }
-
 
     // MARK: - Private
     
@@ -121,5 +114,4 @@ class PasswordGenerator {
 
         return key
     }
-    
 }
