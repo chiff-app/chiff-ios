@@ -1,11 +1,7 @@
-//
-//  NotificationProcessor.swift
-//  keynNotificationExtension
-//
-//  Created by bas on 21/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UserNotifications
 import JustLog
 
@@ -16,7 +12,6 @@ enum NotificationExtensionError: Error {
 }
 
 class NotificationProcessor {
-    
     class func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
         guard let ciphertext = content.userInfo["data"] as? String else {
             throw NotificationExtensionError.StringCast("ciphertext")
@@ -85,5 +80,4 @@ class NotificationProcessor {
 
         return content
     }
-
 }

@@ -121,7 +121,7 @@ struct Seed {
         return label == "true"
     }
     
-    // MARK: Private functions
+    // MARK: - Private
     
     static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)

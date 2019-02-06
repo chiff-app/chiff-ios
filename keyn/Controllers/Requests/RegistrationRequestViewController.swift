@@ -1,10 +1,11 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class RegistrationRequestViewController: UITableViewController, UITextFieldDelegate {
-
-    // MARK: Properties
-
     var notification: PushNotification?
     var session: Session?
     var passwordIsHidden = true
@@ -13,10 +14,10 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     var breachCount: Int?
     var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
     var account: Account?
-    
-    
+
+
     @IBOutlet weak var saveButton: UIBarButtonItem!
-//    @IBOutlet var requirementLabels: [UILabel]!
+    //    @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var changePasswordCell: UITableViewCell!
     @IBOutlet weak var changePasswordLabel: UILabel!
     @IBOutlet weak var changePasswordSwitch: UISwitch!
@@ -25,11 +26,11 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
     @IBOutlet weak var showPasswordButton: UIButton!
-    
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let account = account {
             do {
                 websiteNameTextField.text = account.site.name
@@ -52,6 +53,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
             Logger.shared.error("Site was nil when creating new account.")
             fatalError("Site was nil when creating new account.")
         }
+
         if site.ppd?.service?.passwordChange == nil {
             changePasswordFooterText = "It's not possible to change the password for this site."
             changePasswordCell.isUserInteractionEnabled = false
@@ -59,7 +61,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
             changePasswordSwitch.isEnabled = false
             changePasswordSwitch.isOn = false
         }
-        
+
         websiteNameTextField.text = site.name
         websiteURLTextField.text = site.url
         if let currentPassword = notification?.currentPassword {
@@ -71,6 +73,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                 }
             }
         }
+
         if let username = notification?.username {
             userNameTextField.text = username
         }
@@ -78,8 +81,6 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         for textField in [websiteNameTextField, websiteURLTextField, userNameTextField, userPasswordTextField] {
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
-        
-        
 
         updateSaveButtonState()
     }
@@ -93,7 +94,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Override copy functionality
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
             return (breachCount != nil && breachCount != 0) ? "\u{26A0} This password has been found in \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
@@ -104,8 +105,8 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         return nil
     }
 
-    
-    // MARK: UITextFieldDelegate
+
+    // MARK: - UITextFieldDelegate
 
     // Hide the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -120,7 +121,9 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @objc func textFieldDidChange(textField: UITextField){
         updateSaveButtonState()
     }
-    
+
+    // MARK - Actions
+
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let notification = notification, let session = session {
             do {
@@ -132,10 +135,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         self.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
     }
 
-
-    
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
-        
         let newPassword = changePasswordSwitch.isOn
         var type: BrowserMessageType
         switch notification!.requestType {
@@ -146,14 +146,14 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         default:
             type = BrowserMessageType.acknowledge
         }
-        
+
         if let siteName = websiteNameTextField.text, site?.name != siteName {
             site?.name = siteName
         }
         if let siteUrl = websiteURLTextField.text, site?.url != siteUrl {
             site?.url = siteUrl
         }
-        
+
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
             AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
@@ -163,7 +163,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                             let newAccount = try Account(username: username, site: site, password: password)
                             self?.account = newAccount
                             try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
-                            
+
                             // TODO: Make this better. Works but ugly
                             if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
                                 for viewController in accountsNavigationController.viewControllers {
@@ -187,14 +187,13 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         }
     }
 
-    // MARK: Private Methods
+    // MARK: - Private
 
     // Disable the Save button if one the text fields is empty.
     private func updateSaveButtonState() {
         let username = userNameTextField.text ?? ""
         let password = userPasswordTextField.text ?? ""
-        
-//        updatePasswordRequirements(password: password)
+        //  updatePasswordRequirements(password: password)
 
         if (username.isEmpty || password.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
@@ -213,7 +212,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
             }
         }
     }
-    
+
     private func isValidPassword(password: String) -> Bool {
         if password.isEmpty { return false }
         if let passwordValidator = passwordValidator {
@@ -221,18 +220,18 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         }
         return true
     }
-    
-//    private func updatePasswordRequirements(password: String) {
-//        if let passwordValidator = passwordValidator {
-//            requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(site?.ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND) characters."
-//            requirementLabels[1].text = passwordValidator.validateMaxLength(password: password) ? "" : "\u{26A0} The password can have no more than \(site?.ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) characters."
-//            requirementLabels[2].text = passwordValidator.validateCharacters(password: password) ? "" : "\u{26A0} The password has invalid characters."
-//            requirementLabels[3].text = passwordValidator.validateCharacterSet(password: password) ? "" : "\u{26A0} There are specific constraints for this site."
-//            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password) ? "" : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
-//            requirementLabels[5].text = passwordValidator.validatePositionRestrictions(password: password) ? "" : "\u{26A0} The password needs to start with a mysterious character."
-//            requirementLabels[6].text = passwordValidator.validateRequirementGroups(password: password) ? "" : "\u{26A0} There are complicted rules for this site. Just try something."
-//            requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
-//        }
-//    }
+
+    //    private func updatePasswordRequirements(password: String) {
+    //        if let passwordValidator = passwordValidator {
+    //            requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(site?.ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND) characters."
+    //            requirementLabels[1].text = passwordValidator.validateMaxLength(password: password) ? "" : "\u{26A0} The password can have no more than \(site?.ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) characters."
+    //            requirementLabels[2].text = passwordValidator.validateCharacters(password: password) ? "" : "\u{26A0} The password has invalid characters."
+    //            requirementLabels[3].text = passwordValidator.validateCharacterSet(password: password) ? "" : "\u{26A0} There are specific constraints for this site."
+    //            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password) ? "" : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
+    //            requirementLabels[5].text = passwordValidator.validatePositionRestrictions(password: password) ? "" : "\u{26A0} The password needs to start with a mysterious character."
+    //            requirementLabels[6].text = passwordValidator.validateRequirementGroups(password: password) ? "" : "\u{26A0} There are complicted rules for this site. Just try something."
+    //            requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc or 0123."
+    //        }
+    //    }
 
 }

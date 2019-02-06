@@ -1,16 +1,11 @@
-//
-//  FeedbackViewController.swift
-//  keyn
-//
-//  Created by bas on 03/04/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class FeedbackViewController: UIViewController, UITextFieldDelegate {
-
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var sendButton: UIBarButtonItem!
@@ -31,7 +26,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
-    // MARK: TextFieldDelegate
+    // MARK: - TextFieldDelegate
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         let name = textField.text ?? ""
@@ -48,7 +43,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
     }
 
 
-    // MARK: Actions
+    // MARK: - Actions
     // TODO: Change this?
     @IBAction func sendFeedback(_ sender: UIBarButtonItem) {
         // Data
@@ -82,7 +77,5 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
             self.navigationController?.popViewController(animated: true)
         })
-        
     }
-
 }

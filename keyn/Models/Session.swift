@@ -140,7 +140,7 @@ class Session: Codable {
     }
     
 
-    // MARK: Static functions
+    // MARK: - Static functions
 
     static func all() throws -> [Session]? {
         guard let dataArray = try Keychain.sharedInstance.all(service: messageQueueService) else {
@@ -224,7 +224,7 @@ class Session: Codable {
     }
 
 
-    // MARK: Private functions
+    // MARK: - Private
     
     fileprivate func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
         let data = try Crypto.sharedInstance.convertToBase64(from: ciphertext)

@@ -35,7 +35,7 @@ class LoginViewController: ASCredentialProviderViewController {
         return UIStatusBarStyle.lightContent
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     @IBAction func touchID(_ sender: UIButton) {
         authenticateUser()
     }
@@ -43,9 +43,8 @@ class LoginViewController: ASCredentialProviderViewController {
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
     }
-    
-    
-    // MARK: AuthenicationServices
+
+    // MARK: - AuthenicationServices
 
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         for identifier in serviceIdentifiers {
@@ -79,7 +78,7 @@ class LoginViewController: ASCredentialProviderViewController {
         }
     }
     
-    // MARK: Actions
+    // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAccounts", let navCon = segue.destination as? CredentialProviderNavigationController {
@@ -87,7 +86,7 @@ class LoginViewController: ASCredentialProviderViewController {
         }
     }
     
-    // MARK: Authentication
+    // MARK: - Authentication
     
     private func authenticateUser() {
         let localAuthenticationContext = LAContext()

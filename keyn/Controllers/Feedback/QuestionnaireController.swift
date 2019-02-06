@@ -1,4 +1,7 @@
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
@@ -79,5 +82,4 @@ class QuestionnaireController: UINavigationController {
         questionnaire!.submit()
         dismiss(animated: true, completion: nil)
     }
-
 }

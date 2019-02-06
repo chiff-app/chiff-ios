@@ -28,7 +28,7 @@ class Crypto {
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
 
-    // MARK: Key generation functions
+    // MARK: - Key generation functions
 
     /*
      * The first time we use the app, we need to generate the seed and put it in the
@@ -123,7 +123,7 @@ class Crypto {
 
 
 
-    // MARK: Base64 conversion functions
+    // MARK: - Base64 conversion functions
 
     func convertFromBase64(from base64String: String) throws -> Data  {
         // Convert from base64 to Data
@@ -143,7 +143,7 @@ class Crypto {
         return b64String
     }
     
-    // MARK: Signing functions
+    // MARK: - Signing functions
     
     func sign(message: Data, privKey: Data) throws -> Data {
         guard let signature = sodium.sign.signature(message: message.bytes, secretKey: privKey.bytes) else {
@@ -154,7 +154,7 @@ class Crypto {
     }
 
 
-    // MARK: Encryption & decryption functions
+    // MARK: - Encryption & decryption functions
     
     func encryptSymmetric(_ plaintext: Data, secretKey: Data) throws -> Data {
         guard let ciphertext: Bytes = sodium.secretBox.seal(message: plaintext.bytes, secretKey: secretKey.bytes) else {
@@ -198,7 +198,7 @@ class Crypto {
     }
 
 
-     // MARK: Hash functions
+     // MARK: - Hash functions
 
     func hash(_ data: Data) throws -> Data {
         guard let hashData = sodium.genericHash.hash(message: data.bytes) else {

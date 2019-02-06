@@ -1,11 +1,7 @@
-//
-//  api.swift
-//  keyn
-//
-//  Created by bas on 19/08/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import JustLog
 
@@ -34,31 +30,30 @@ enum APIRequestType: String {
 }
 
 class API {
-    
     static let sharedInstance = API()
-    
+
     private init() {}
-    
+
     func put(type: APIEndpoint, path: String, parameters: [String: String]) throws {
         let request = try createRequest(type: type, path: path, parameters: parameters, method: .put)
         send(request)
     }
-    
+
     func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
         send(request, completionHandler: completionHandler)
     }
-    
+
     func post(type: APIEndpoint, path: String, parameters: [String: String]) throws {
         let request = try createRequest(type: type, path: path, parameters: parameters, method: .post)
         send(request)
     }
-    
+
     func delete(type: APIEndpoint, path: String, parameters: [String: String]) throws {
         let request = try createRequest(type: type, path: path, parameters: parameters, method: .delete)
         send(request)
     }
-    
+
     private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)? = nil) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
@@ -97,15 +92,17 @@ class API {
         }
         task.resume()
     }
-    
+
     private func createRequest(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIRequestType) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
         components.path = "/\(Properties.ppdTestingMode ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)"
+
         if let path = path {
             components.path += "/\(path)"
         }
+
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {
@@ -114,12 +111,14 @@ class API {
             }
             components.queryItems = queryItems
         }
+
         guard let url = components.url else {
             throw APIError.url
         }
+
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+
         return request
     }
-    
 }

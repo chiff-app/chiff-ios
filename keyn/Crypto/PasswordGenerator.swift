@@ -68,7 +68,7 @@ class PasswordGenerator {
     }
 
 
-    // MARK: Private functions
+    // MARK: - Private
     
     private func parse(ppd: PPD?, customPassword: Bool) -> (Int, [Character]) {
         var length = customPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH

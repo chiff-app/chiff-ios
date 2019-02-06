@@ -1,16 +1,11 @@
-//
-//  BackupStartViewController.swift
-//  keyn
-//
-//  Created by bas on 02/01/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class BackupStartViewController: UIViewController {
-
     var isInitialSetup = true
 
     override func viewDidLoad() {
@@ -22,11 +17,7 @@ class BackupStartViewController: UIViewController {
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+    // MARK: - Actions
     @IBAction func startBackupWizard(_ sender: UIButton) {
         let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
         if isInitialSetup {
@@ -53,5 +44,4 @@ class BackupStartViewController: UIViewController {
             }
         }
     }
-
 }

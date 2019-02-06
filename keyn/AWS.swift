@@ -1,11 +1,7 @@
-//
-//  BrowserInterface.swift
-//  keyn
-//
-//  Created by bas on 01/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import AWSCore
 import AWSSNS
@@ -18,19 +14,16 @@ enum AWSError: Error {
 }
 
 class AWS {
-
     static let sharedInstance = AWS()
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
     private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
-    private let PAIR_TIMEOUT = 1 // 60
-    private let LOGIN_TIMEOUT = 1 // 180
     var snsDeviceEndpointArn: String? // TODO: only save identifier here?
     var isFirstLaunch = false
 
-    private init() {}    
-    
+    private init() {}
+
     func getIdentityId() -> String {
         if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
             return credentialsProvider.identityId ?? "NoIdentityId"
@@ -60,19 +53,22 @@ class AWS {
     func deleteEndpointArn() {
         Keychain.sharedInstance.deleteAll(service: awsService)
     }
-    
+
     func subscribe() {
         guard let subscribeRequest = AWSSNSSubscribeInput() else {
             Logger.shared.error("Could not create subscribeRequest.")
             return
         }
+
         guard let endpoint = snsDeviceEndpointArn else {
             Logger.shared.error("Could not subscribe. No endpoint.")
             return
         }
+
         subscribeRequest.protocols = "application"
         subscribeRequest.endpoint = endpoint
         subscribeRequest.topicArn = Properties.isDebug ? Properties.AWSSNSNotificationArn.sandbox : Properties.AWSSNSNotificationArn.production
+
         sns.subscribe(subscribeRequest).continueOnSuccessWith { (task) -> Any? in
             if let result = task.result {
                 if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
@@ -87,47 +83,50 @@ class AWS {
                 }
             }
             return nil
-        }.continueWith { (task) -> Any? in
-            if let error = task.error {
-                Logger.shared.error("Error subscribing to Keyn notifications.", error: error as NSError)
-            }
-            return nil
+            }.continueWith { (task) -> Any? in
+                if let error = task.error {
+                    Logger.shared.error("Error subscribing to Keyn notifications.", error: error as NSError)
+                }
+                return nil
         }
     }
-    
+
     func unsubscribe() {
         do {
             guard let unsubscribeRequest = AWSSNSUnsubscribeInput() else {
                 throw AWSError.createObjectError(error: "Could not create unsubscribeRequest.")
             }
+
             let subscriptionEndpointData = try Keychain.sharedInstance.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
             guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
                 throw AWSError.decodingError
             }
+
             unsubscribeRequest.subscriptionArn = subscriptionEndpoint
+
             sns.unsubscribe(unsubscribeRequest).continueOnSuccessWith { (task) -> Any? in
                 do {
-                   try Keychain.sharedInstance.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                    try Keychain.sharedInstance.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
                 } catch {
                     Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error as NSError)
                 }
                 return nil
-            }.continueWith { (task) -> Any? in
-                if let error = task.error {
-                    Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error as NSError)
-                }
-                return nil
+                }.continueWith { (task) -> Any? in
+                    if let error = task.error {
+                        Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error as NSError)
+                    }
+                    return nil
             }
         } catch {
             Logger.shared.error("Error getting subcription endoint from Keychain", error: error as NSError)
         }
     }
-    
+
     func isSubscribed() -> Bool {
         return Keychain.sharedInstance.has(id: self.subscriptionKeychainIdentifier, service: self.awsService)
     }
 
-    // MARK: Private functions
+    // MARK: - Private
 
     private func checkIfUpdateIsNeeded(token: String) {
         guard let endpoint = snsDeviceEndpointArn else {
@@ -135,11 +134,14 @@ class AWS {
             createPlatformEndpoint(token: token)
             return
         }
+
         guard let attributesRequest = AWSSNSGetEndpointAttributesInput() else {
             Logger.shared.error("Could not create AWSSNSGetEndpointAttributesInput.")
             return
         }
+
         attributesRequest.endpointArn = endpoint
+
         sns.getEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
             if task.error != nil {
                 if let error = task.error as NSError? {
@@ -168,11 +170,14 @@ class AWS {
             Logger.shared.error("Could not create AWSSNSSetEndpointAttributesInput.")
             return
         }
+
         attributesRequest.attributes = [
             "Token": token,
             "Enabled": "true"
         ]
+
         attributesRequest.endpointArn = snsDeviceEndpointArn!
+
         sns.setEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
             if let error = task.error {
                 Logger.shared.error("Could not update AWS Platform Endpoint.", error: error as NSError)
@@ -186,8 +191,10 @@ class AWS {
             Logger.shared.error("Could not create AWSSNSCreatePlatformEndpointInput.")
             return
         }
+
         request.token = token
         request.platformApplicationArn = Properties.isDebug ? Properties.AWSPlaformApplicationArn.sandbox : Properties.AWSPlaformApplicationArn.production
+
         sns.createPlatformEndpoint(request).continueOnSuccessWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> Any? in
             guard let response = task.result else {
                 Logger.shared.error("Result was empty.")

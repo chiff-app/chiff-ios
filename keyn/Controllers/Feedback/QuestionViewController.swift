@@ -1,4 +1,7 @@
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
@@ -7,13 +10,13 @@ class QuestionViewController: UIViewController {
     var question: Question? = nil
     var questionIndex: Int = 0
     var isFirst = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         questionLabel.text = question?.text
         self.navigationItem.hidesBackButton = isFirst
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if self.isMovingFromParentViewController, let navCon = self.navigationController as? QuestionnaireController {
@@ -21,11 +24,12 @@ class QuestionViewController: UIViewController {
             navCon.previousQuestion()
         }
     }
-    
+
+    // MARK: - Actions
+
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.cancel()
         }
     }
-    
 }

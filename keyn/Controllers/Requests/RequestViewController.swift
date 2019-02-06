@@ -1,9 +1,12 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import LocalAuthentication
 import JustLog
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-
     var notification: PushNotification!
     var type: BrowserMessageType!
     var session: Session!
@@ -28,7 +31,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         return UIStatusBarStyle.lightContent
     }
     
-    // MARK: UIPickerView functions
+    // MARK: - UIPickerView functions
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -47,7 +50,27 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let username = NSAttributedString(string: accounts[row].username, attributes: [.foregroundColor : UIColor.white])
         return username
     }
-    
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "RegistrationRequestSegue" {
+            if let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
+                destinationController.site = site
+                destinationController.session = session
+                destinationController.notification = notification
+            }
+        }
+    }
+
+    @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
+        self.dismiss(animated: false, completion: nil)
+        AuthenticationGuard.sharedInstance.authorizationInProgress = false
+    }
+
+    // MARK: - Actions
+
     @IBAction func accept(_ sender: UIButton) {
         if let notification = notification, let session = session, let type = type {
             do {
@@ -96,7 +119,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         AuthenticationGuard.sharedInstance.authorizationInProgress = false
     }
     
-    // MARK: Private functions
+    // MARK: - Private
     
     private func authorize(notification: PushNotification, session: Session, accountID: String, type: BrowserMessageType) {
         AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
@@ -168,26 +191,4 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             siteLabel.text = "Request error :("
         }
     }
-
-
-    // MARK: - Navigation
-
-    @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
-        self.dismiss(animated: false, completion: nil)
-        AuthenticationGuard.sharedInstance.authorizationInProgress = false
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if segue.identifier == "RegistrationRequestSegue" {
-            if let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
-                destinationController.site = site
-                destinationController.session = session
-                destinationController.notification = notification
-            }
-        }
-    }
 }
-
-
-

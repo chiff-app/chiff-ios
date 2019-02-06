@@ -1,17 +1,21 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import AVFoundation
 import LocalAuthentication
 import JustLog
 import OneTimePassword
 
-class PairViewController: QRViewController {
-    
+class PairViewController: QRViewController {    
     var devicesDelegate: canReceiveSession?
     
     override func handleURL(url: URL) throws {
         guard let scheme = url.scheme, scheme == "keyn" else {
             return
         }
+
         try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
@@ -44,5 +48,4 @@ class PairViewController: QRViewController {
             _ = navigationController?.popViewController(animated: true)
         }
     }
-
 }

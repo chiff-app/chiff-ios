@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import MBProgressHUD
 import JustLog
@@ -9,8 +13,6 @@ protocol canAddOTPCode {
 }
 
 class AccountViewController: UITableViewController, UITextFieldDelegate, canAddOTPCode {
-
-    //MARK: Properties
     var editButton: UIBarButtonItem!
     var account: Account!
     var tap: UITapGestureRecognizer!
@@ -56,7 +58,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
     
-    // MARK: UITableView
+    // MARK: - UITableView
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing
@@ -72,7 +74,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
 
     }
     
-    // MARK: UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     
     // Hide the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -98,10 +100,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
 //        }
 //        return 44
 //    }
-    
 
-
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func showPassword(_ sender: UIButton) {
         if userPasswordTextField.isEnabled {
@@ -186,7 +186,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     }
     
     
-    // MARK: Private methods
+    // MARK: - Private
     
     private func endEditing() {
         tableView.setEditing(false, animated: true)
@@ -299,8 +299,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     @objc func updateTOTP() {
         userCodeTextField.text = token?.currentPassword ?? ""
     }
-    
-    
+
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -320,13 +319,13 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         if editingMode {
             endEditing()
         }
+
         self.token = token
         updateOTPUI()
     }
-
 }
 
-
+// TODO: Frank: Shouldn't this be inner class of controller?
 class LoadingCircle: UIView {
     var backgroundLayer: CAShapeLayer!
     var circleLayer: CAShapeLayer!
@@ -370,7 +369,7 @@ class LoadingCircle: UIView {
         self.animate(duration: duration, start: start, infinite: false)
         CATransaction.commit()
     }
-    
+
     private func animate(duration: TimeInterval, start: TimeInterval, infinite: Bool) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.duration = duration - start
@@ -379,11 +378,12 @@ class LoadingCircle: UIView {
         animation.fromValue = CGFloat(start / duration)
         animation.toValue = 1
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+
         if infinite {
             animation.repeatCount = .infinity
         }
+
         animation.isRemovedOnCompletion = false
         circleLayer.add(animation, forKey: "animateCircle")
     }
-    
 }

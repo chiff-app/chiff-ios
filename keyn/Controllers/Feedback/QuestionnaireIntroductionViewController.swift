@@ -1,11 +1,7 @@
-//
-//  QuestionnaireIntroductionViewController.swift
-//  keyn
-//
-//  Created by Bas Doorn on 10/09/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 class QuestionnaireIntroductionViewController: UIViewController {
@@ -17,7 +13,9 @@ class QuestionnaireIntroductionViewController: UIViewController {
         super.viewDidLoad()
         introductionLabel.text = introduction
     }
-    
+
+    // MARK: - Actions
+
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.cancel()
@@ -29,5 +27,4 @@ class QuestionnaireIntroductionViewController: UIViewController {
             navCon.nextQuestion()
         }
     }
-
 }

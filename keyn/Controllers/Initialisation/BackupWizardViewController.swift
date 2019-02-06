@@ -1,16 +1,11 @@
-//
-//  SeedGenerationViewController.swift
-//  keyn
-//
-//  Created by Bas Doorn on 09/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class BackupWizardViewController: UIViewController {
-
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
     var mnemonic: [String]?
@@ -27,14 +22,14 @@ class BackupWizardViewController: UIViewController {
         } catch {
             Logger.shared.error("Error getting mnemonic.", error: error as NSError)
         }
-
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
     
-    // MARK: Actions
+    // MARK: - Actions
+
     @IBAction func next(_ sender: UIButton) {
         if counter < mnemonic!.count - 1 {
             counter += 1
@@ -79,5 +74,4 @@ class BackupWizardViewController: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-
 }

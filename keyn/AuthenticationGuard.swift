@@ -1,39 +1,34 @@
-//
-//  AuthenticationGuard.swift
-//  keyn
-//
-//  Created by bas on 17/04/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import LocalAuthentication
 import JustLog
 import OneTimePassword
 
 class AuthenticationGuard {
-    
     static let sharedInstance = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
     var authorizationInProgress = false
     var authenticationInProgress = false
-    
+
     private init() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
         lockWindow.windowLevel = UIWindowLevelAlert
         lockWindow.screen = UIScreen.main
-        
+
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         lockWindow.rootViewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
-        
+
         let nc = NotificationCenter.default
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidFinishLaunching, object: nil, queue: OperationQueue.main, using: didFinishLaunchingWithOptions)
         nc.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
         nc.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
     }
-    
+
     func hideLockWindow() {
         UIView.animate(withDuration: 0.25, animations: {
             self.lockWindow.alpha = 0.0
@@ -44,87 +39,85 @@ class AuthenticationGuard {
             }
         }
     }
-    
-    // MARK: UIApplication Notification Handlers
-    
+
+    // MARK: - UIApplication Notification Handlers
     private func applicationWillEnterForeground(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
     }
-    
+
     private func applicationDidBecomeActive(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
         authenticateUser(cancelChecks: true)
     }
-    
+
     private func applicationDidEnterBackground(notification: Notification) {
         if Seed.exists() {
             lockWindow.makeKeyAndVisible()
         }
         authenticationInProgress = false
         authorizationInProgress = false
-        
+
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))
-        
+
         keynLogoView.frame = CGRect(x: 0, y: 289, width: 375, height: 88)
         keynLogoView.contentMode = .scaleAspectFit
         lockView.addSubview(keynLogoView)
         lockView.backgroundColor = UIColor(rgb: 0x46319B)
         lockView.tag = lockViewTag
-        
+
         lockWindow.addSubview(lockView)
         lockWindow.bringSubview(toFront: lockView)
-        
+
         // TODO: Make autolayout constrained
         //            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
         //            keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
         //            keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
         //            keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
     }
-    
+
     private func didFinishLaunchingWithOptions(notification: Notification) {
         if Seed.exists() {
             lockWindow.makeKeyAndVisible()
         }
     }
-    
-    // MARK: LocalAuthentication
-    
+
+    // MARK: - LocalAuthentication
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
             guard !authenticationInProgress && !lockWindow.isHidden && !authorizationInProgress else {
                 return
             }
+
             if let visibleViewController = UIApplication.shared.visibleViewController {
                 guard !(visibleViewController is RequestViewController) && !(visibleViewController is RegistrationRequestViewController) else {
                     return
                 }
             }
-            
         }
-        
+
         authenticationInProgress = true
         authenticateUser()
     }
-    
+
     private func authenticateUser() {
         let localAuthenticationContext = LAContext()
         localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
-        
+
         var authError: NSError?
         let reasonString = "Unlock Keyn"
-        
+
         guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
             //TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled
             authenticationInProgress = false
             Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
             return
         }
-        
+
         localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
             if succes {
                 self?.unlock()
@@ -136,7 +129,7 @@ class AuthenticationGuard {
             }
         }
     }
-    
+
     func addOTP(token: Token, account: Account, completion: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
         authorize(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { [weak self] (success, error) in
@@ -148,9 +141,8 @@ class AuthenticationGuard {
                 completion(error)
             }
         }
-        
     }
-    
+
     func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
         authorizationInProgress = true
         if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
@@ -184,7 +176,7 @@ class AuthenticationGuard {
             throw SessionError.invalid
         }
     }
-    
+
     private func unlock() {
         DispatchQueue.main.async {
             self.hideLockWindow()
@@ -201,19 +193,19 @@ class AuthenticationGuard {
     private func authorize(reason: String, completion: @escaping (_: Bool, _: Error?)->()) {
         let authenticationContext = LAContext()
         var error: NSError?
-        
+
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }
-        
+
         authenticationContext.evaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
             localizedReason: reason,
             reply: completion
         )
     }
-    
+
     func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
         var localizedReason = ""
         switch type {
@@ -230,10 +222,10 @@ class AuthenticationGuard {
         default:
             localizedReason = "\(siteName)"
         }
-        
+
         authorize(reason: localizedReason, completion: completion)
     }
-    
+
     func launchRequestView(with notification: PushNotification) {
         authorizationInProgress = true
         do {
@@ -257,7 +249,7 @@ class AuthenticationGuard {
             Logger.shared.error("Could not decode session.", error: error as NSError)
         }
     }
-    
+
     func evaluatePolicyFailErrorMessageForLA(errorCode: Int) -> String {
         var message = ""
         if #available(iOS 11.0, *) {
@@ -272,15 +264,13 @@ class AuthenticationGuard {
                 message = "Did not find error code on LAError object"
             }
         }
-        
+
         return message
     }
-    
-    
+
     func evaluateAuthenticationPolicyMessageForLA(errorCode: Int) -> String {
-        
         var message = ""
-        
+
         switch errorCode {
         case LAError.authenticationFailed.rawValue:
             message = "The user failed to provide valid credentials"
@@ -301,10 +291,10 @@ class AuthenticationGuard {
         default:
             message = evaluatePolicyFailErrorMessageForLA(errorCode: errorCode)
         }
-        
+
         return message
     }
-    
+
     func hasFaceID() -> Bool {
         if #available(iOS 11.0, *) {
             let context = LAContext.init()
@@ -313,8 +303,7 @@ class AuthenticationGuard {
                 return context.biometryType == LABiometryType.faceID
             }
         }
-        
+
         return false
     }
-    
 }

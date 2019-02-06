@@ -151,7 +151,7 @@ class Questionnaire: Codable {
         save()
     }
     
-    // MARK: Static functions
+    // MARK: - Static functions
     
     static func get(id: String) -> Questionnaire? {
         let filemgr = FileManager.default

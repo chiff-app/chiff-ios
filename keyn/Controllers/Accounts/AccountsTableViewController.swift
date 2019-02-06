@@ -1,8 +1,11 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
-
     var unfilteredAccounts = [Account]()
     var filteredAccounts: [Account]?
     let searchController = UISearchController(searchResultsController: nil)
@@ -70,10 +73,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         tableView.reloadData()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -109,7 +108,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         return cell
     }
-
 
     // MARK: - Navigation
 
@@ -155,7 +153,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         updateSearchResults(for: searchController)
     }
 
-    //MARK: Actions
+    // MARK: - Actions
     
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
@@ -169,7 +167,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }
         }
     }
-    
+
+    // MARK: - Private
+
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
         if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
             return account.id == unfilteredAccount.id
@@ -184,5 +184,4 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }
         }
     }
-
 }

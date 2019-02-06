@@ -1,11 +1,7 @@
-//
-//  SettingsViewController.swift
-//  keyn
-//
-//  Created by bas on 02/01/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
@@ -41,7 +37,8 @@ class SettingsViewController: UITableViewController {
         return nil
     }
 
-    // MARK: Actions
+    // MARK: - Actions
+
     @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {
         if sender.isOn {
             AWS.sharedInstance.subscribe()
@@ -67,19 +64,6 @@ class SettingsViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-
-    // MARK: Private functions
-
-    private func setFooterText() {
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        do {
-            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
-        } catch {
-            Logger.shared.warning("Could determine if seed is backed up.", error: error as NSError)
-        }
-    }
-
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -87,6 +71,17 @@ class SettingsViewController: UITableViewController {
             if let destination = segue.destination as? BackupStartViewController {
                 destination.isInitialSetup = false
             }
+        }
+    }
+    
+    // MARK: - Private
+
+    private func setFooterText() {
+        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        do {
+            securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
+        } catch {
+            Logger.shared.warning("Could determine if seed is backed up.", error: error as NSError)
         }
     }
 }
