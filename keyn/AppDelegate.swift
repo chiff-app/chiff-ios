@@ -1,11 +1,7 @@
-//
-//  AppDelegate.swift
-//  keyn
-//
-//  Created by bas on 29/09/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import AWSCore
 import UserNotifications
@@ -15,12 +11,10 @@ import CocoaAsyncSocket
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-
     var window: UIWindow?
     var deniedPushNotifications = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
         // FOR TESTING PURPOSES
         //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
         //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
@@ -51,7 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         return true
     }
-    
     
     // Temporary for Alpha --> Beta migration. Resets Keyn if undecodable accounts or sites are found, migrates to new Keychain otherwise.
     func detectOldAccounts() {
@@ -644,7 +637,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
-
     }
-
 }

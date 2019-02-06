@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
@@ -6,7 +10,6 @@ protocol canReceiveSession {
 }
 
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, canReceiveSession {
-    
     var sessions = [Session]()
     @IBOutlet weak var tableView: UITableView!
 
@@ -28,6 +31,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+    // TODO: Frank: wat zijn die nummers?
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
@@ -39,9 +43,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             // Dummy code for archive compiler
             return 44
         }
-
     }
-    
+
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case 0:
@@ -53,7 +56,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return nil
         }
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
@@ -66,7 +69,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return nil
         }
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -123,7 +126,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
@@ -158,12 +161,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    //MARK: Actions
+    // MARK: - Actions
     
     func addSession(session: Session) {
         let newIndexPath = IndexPath(row: sessions.count, section: 0)
         sessions.append(session)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
-
 }

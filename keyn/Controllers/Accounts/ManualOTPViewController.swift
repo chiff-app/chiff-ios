@@ -1,11 +1,7 @@
-//
-//  ManualOTPViewController.swift
-//  keyn
-//
-//  Created by Bas Doorn on 18/09/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import OneTimePassword
 import Base32
@@ -18,7 +14,6 @@ enum OTPError: Error {
 }
 
 class ManualOTPViewController: UITableViewController {
-
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!

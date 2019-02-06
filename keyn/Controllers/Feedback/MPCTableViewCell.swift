@@ -1,15 +1,10 @@
-//
-//  MPCTableViewCell.swift
-//  keyn
-//
-//  Created by bas on 25/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 class MPCTableViewCell: UITableViewCell {
-
     @IBOutlet weak var responseLabel: UILabel!
     
     override func awakeFromNib() {
@@ -21,6 +16,7 @@ class MPCTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+
         if selected {
             backgroundColor = UIColor(rgb: 0xFFB72F)
             responseLabel.textColor = UIColor(rgb: 0x4932A2)
@@ -29,5 +25,4 @@ class MPCTableViewCell: UITableViewCell {
             responseLabel.textColor = UIColor(rgb: 0xFFB72F)
         }  
     }
-
 }

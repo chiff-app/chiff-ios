@@ -67,7 +67,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         }
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func cancel(_ sender: AnyObject?) {
         if let navCon = navigationController as? CredentialProviderNavigationController {
@@ -76,7 +76,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     }
 
     
-    // MARK: SearchController
+    // MARK: - SearchController
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
@@ -93,7 +93,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         tableView.reloadData()
     }
     
-    // MARK: Table view data source
+    // MARK: - Table view data source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let accounts = filteredAccounts else {
@@ -114,7 +114,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         return cell
     }
     
-    // MARK: Table view delegate
+    // MARK: - Table view delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {

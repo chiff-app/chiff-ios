@@ -1,11 +1,14 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import AVFoundation
 import LocalAuthentication
 import JustLog
 import OneTimePassword
 
-class OTPViewController: QRViewController {
-    
+class OTPViewController: QRViewController {    
     var account: Account!
     var accountViewDelegate: canAddOTPCode?
     @IBOutlet weak var instructionLabel: UILabel!
@@ -49,17 +52,13 @@ class OTPViewController: QRViewController {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ManualEntry", let destination = segue.destination.contents as? ManualOTPViewController {
             destination.accountViewDelegate = accountViewDelegate
             destination.qrNavCon = navigationController
             destination.account = account
         }
-     }
-    
-    
+    }
 }

@@ -1,16 +1,11 @@
-//
-//  RecoveryViewController.swift
-//  keyn
-//
-//  Created by bas on 22/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
-    
     var isInitialSetup = true // TODO: Implement calling recovery from settings?
     @IBOutlet var wordTextFields: Array<UITextField>?
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
@@ -56,9 +51,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-    
 
-    //MARK: UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
@@ -117,7 +111,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         keyboardHeight = nil
     }
 
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
         // TODO: Show some progress bar or something will data is being fetched remotely
@@ -139,6 +133,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: - Private
+
     private func loadRootController() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
@@ -146,13 +142,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         UIApplication.shared.keyWindow?.rootViewController = rootController
     }
 
-    // MARK: Private functions
-
     private func checkMnemonic() -> Bool {
         for word in mnemonic {
             if word == "" { return false }
         }
         return Seed.validate(mnemonic: mnemonic)
     }
-
 }

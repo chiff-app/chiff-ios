@@ -1,11 +1,7 @@
-//
-//  Homeless.swift
-//  keyn
-//
-//  Created by bas on 24/11/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import UIKit
 import Sodium
@@ -30,9 +26,7 @@ extension Int {
 }
 
 extension UIApplication {
-
     var visibleViewController: UIViewController? {
-
         guard let rootViewController = keyWindow?.rootViewController else {
             return nil
         }
@@ -41,7 +35,6 @@ extension UIApplication {
     }
 
     private func getVisibleViewController(_ rootViewController: UIViewController) -> UIViewController? {
-
         if let presentedViewController = rootViewController.presentedViewController {
             return getVisibleViewController(presentedViewController)
         }
@@ -116,8 +109,6 @@ extension Notification.Name {
     static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
 }
 
-
-
 // Extension for URL that return parameters as dict
 extension URL {
     public var queryParameters: [String: String]? {
@@ -155,7 +146,6 @@ extension CALayer {
     }
 }
 
-
 extension Data {
     struct HexEncodingOptions: OptionSet {
         let rawValue: Int
@@ -175,7 +165,6 @@ extension Array where Element == UInt8 {
         return Data(bytes: self)
     }
 }
-
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
@@ -211,7 +200,6 @@ extension UIImage {
 
 @IBDesignable
 class FormTextField: UITextField {
-    
     @IBInspectable var inset: CGFloat = 0
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -221,9 +209,7 @@ class FormTextField: UITextField {
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return textRect(forBounds: bounds)
     }
-    
 }
-
 
 enum AnalyticsMessage: String {
     case install = "INSTALL"

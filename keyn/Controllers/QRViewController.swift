@@ -1,3 +1,7 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import AVFoundation
 import LocalAuthentication
@@ -9,9 +13,6 @@ enum CameraError: Error {
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    
-    // MARK: Properties
-    
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
@@ -33,8 +34,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     func handleURL(url: URL) throws {
         preconditionFailure("This method must be overridden")
     }
-    
-    // MARK: AVCaptureMetadataOutputObjectsDelegate
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count > 0 {
@@ -66,10 +65,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     }
                 }
             }
-        } else { return }
+        } else {
+            return
+        }
     }
-    
-    // MARK: Private Methods
     
     func displayError(message: String) {
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
@@ -77,13 +76,14 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         errorLabel.textAlignment = .center
         errorLabel.text = message
         errorLabel.alpha = 0.85
+
         view.addSubview(errorLabel)
         view.bringSubview(toFront: errorLabel)
+
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
     
     func scanQR() throws {
-        
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
             throw CameraError.noCamera
         }
@@ -108,6 +108,4 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         captureSession.startRunning()
     }
-
-
 }

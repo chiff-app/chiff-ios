@@ -1,10 +1,11 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 // TODO: Unused..
 class NewAccountViewController: AccountViewController {
-    
-    // MARK: Properties
-    
     var passwordIsHidden = true
     var customPassword = false
     let ppd: PPD? = nil
@@ -13,7 +14,6 @@ class NewAccountViewController: AccountViewController {
     @IBOutlet weak var requirementsView: UIView!
     @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var requirementLabelsStackView: UIStackView!
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +28,7 @@ class NewAccountViewController: AccountViewController {
         })
         
         updateSaveButtonState()
-
     }
-
 
     @IBAction override func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
@@ -49,10 +47,8 @@ class NewAccountViewController: AccountViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    
     // MARK: UITextFieldDelegate
-    
-    
+
     override func textFieldDidEndEditing(_ textField: UITextField) {
         updateSaveButtonState()
     }
@@ -61,7 +57,7 @@ class NewAccountViewController: AccountViewController {
         updateSaveButtonState()
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0 && indexPath.row == 3) {
@@ -101,11 +97,18 @@ class NewAccountViewController: AccountViewController {
             updateSaveButtonState()
         }
     }
-    
-    
-    // MARK: Private Methods
 
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let button = sender as? UIBarButtonItem, button === saveButton {
+            createAccount()
+        }
+    }
     
+    // MARK: - Private
+
     // Disable the Save button if one the text fields is empty.
     private func updateSaveButtonState() {
         let websiteName = websiteNameTextField.text ?? ""
@@ -166,18 +169,6 @@ class NewAccountViewController: AccountViewController {
                 // TODO: Handle errors in UX
                 print("Account could not be saved: \(error)")
             }
-
-
         }
     }
-    
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if let button = sender as? UIBarButtonItem, button === saveButton {
-            createAccount()
-        }
-    }
-
 }

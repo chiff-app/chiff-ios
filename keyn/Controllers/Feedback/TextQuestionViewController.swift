@@ -1,11 +1,7 @@
-//
-//  TextQuestionViewController.swift
-//  keyn
-//
-//  Created by bas on 19/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
@@ -89,5 +85,4 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             navCon.nextQuestion()
         }
     }
-
 }

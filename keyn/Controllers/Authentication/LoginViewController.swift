@@ -1,17 +1,12 @@
-//
-//  LoginViewController.swift
-//  keyn
-//
-//  Created by Bas Doorn on 09/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import LocalAuthentication
 import JustLog
 
 class LoginViewController: UIViewController {
-
     @IBOutlet weak var touchIDButton: UIButton!
     
     override func viewDidLoad() {
@@ -30,7 +25,6 @@ class LoginViewController: UIViewController {
         return UIStatusBarStyle.lightContent
     }
 
-    // MARK: Actions
     @IBAction func touchID(_ sender: UIButton) {
         Logger.shared.debug("Manual authenticate in viewDidAppear called.")
         AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: false)

@@ -1,15 +1,10 @@
-//
-//  DateComponentUnitFormatter.swift
-//  keyn
-//
-//  Created by bas on 08/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
 struct DateComponentUnitFormatter {
-
     private struct DateComponentUnitFormat {
         let unit: Calendar.Component
 
@@ -21,7 +16,6 @@ struct DateComponentUnitFormatter {
     }
 
     private let formats: [DateComponentUnitFormat] = [
-
         DateComponentUnitFormat(unit: .year,
                                 singularUnit: "year",
                                 pluralUnit: "years",
@@ -63,7 +57,6 @@ struct DateComponentUnitFormatter {
                                 pluralUnit: "seconds",
                                 futureSingular: "Just now",
                                 pastSingular: "Just now"),
-
         ]
 
     func string(forDateComponents dateComponents: DateComponents, useNumericDates: Bool) -> String {
@@ -109,14 +102,11 @@ struct DateComponentUnitFormatter {
 }
 
 extension Date {
-
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
-
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
         let now = Date()
         let components = calendar.dateComponents(unitFlags, from: self, to: now)
-
         let formatter = DateComponentUnitFormatter()
         return formatter.string(forDateComponents: components, useNumericDates: useNumericDates)
     }

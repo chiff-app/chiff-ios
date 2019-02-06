@@ -24,7 +24,7 @@ class Keychain {
     
     private init() {} //This prevents others from using the default '()' initializer for this singleton class.
 
-    // MARK:  CRUD methods
+    // MARK: - CRUD methods
 
     func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, classification: Classification) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,

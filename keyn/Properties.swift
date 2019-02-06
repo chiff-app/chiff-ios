@@ -1,11 +1,7 @@
-//
-//  Properties.swift
-//  keyn
-//
-//  Created by bas on 22/03/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
 struct Properties {
@@ -20,7 +16,7 @@ struct Properties {
         return debug
     }()
     
-    static let ppdTestingMode: Bool = {
+    static let ppdTestingMode = {
         return UserDefaults.standard.bool(forKey: "ppdTestingMode")
     }()
 
@@ -37,7 +33,6 @@ struct Properties {
         development: "dev"
     )
     
-    
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
@@ -46,15 +41,18 @@ struct Properties {
     static func isFirstLaunch() -> Bool {
         let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
+
         if (isFirstLaunch) {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
             UserDefaults.standard.synchronize()
         }
+
         return isFirstLaunch
     }
     
     static func installTimestamp() -> Date? {
         let installTimestamp = "installTimestamp"
+
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
             return installDate
         } else {
@@ -73,10 +71,4 @@ struct Properties {
             return userID
         }
     }
-
-
 }
-
-
-
-

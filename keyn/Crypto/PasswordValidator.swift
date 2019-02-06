@@ -160,7 +160,7 @@ class PasswordValidator {
         task.resume()
     }
 
-    // MARK: Private functions
+    // MARK: - Private
 
     private func checkConsecutiveCharacters(password: String, characters: String, maxConsecutive: Int) -> Bool {
         let escapedCharacters = NSRegularExpression.escapedPattern(for: characters).replacingOccurrences(of: "\\]", with: "\\\\]", options: .regularExpression)

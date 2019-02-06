@@ -1,15 +1,13 @@
-//
-//  FinishQuestionnaireViewController.swift
-//  keyn
-//
-//  Created by bas on 18/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 class FinishQuestionnaireViewController: UIViewController {
 
+    // MARK: - Actions
+    
     @IBAction func finish(_ sender: UIButton) {
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.finish()
@@ -21,5 +19,4 @@ class FinishQuestionnaireViewController: UIViewController {
             navCon.cancel()
         }
     }
-
 }

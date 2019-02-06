@@ -1,11 +1,7 @@
-//
-//  BackupCheckViewController.swift
-//  keyn
-//
-//  Created by bas on 31/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
@@ -55,8 +51,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         return UIStatusBarStyle.lightContent
     }
 
-
-    //MARK: UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
@@ -113,9 +108,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         keyboardHeight = nil
     }
 
-
-    // MARK: Actions
-
+    // MARK: - Actions
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if isInitialSetup {
@@ -139,7 +132,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    // MARK: Private functions
+    // MARK: - Private
 
     private func checkWords() {
         if (firstWordTextField.text == mnemonic![firstWordIndex] && secondWordTextField.text == mnemonic![secondWordIndex]) {
@@ -155,5 +148,4 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         rootController.selectedIndex = 1
         UIApplication.shared.keyWindow?.rootViewController = rootController
     }
-
 }

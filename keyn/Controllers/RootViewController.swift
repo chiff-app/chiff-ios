@@ -1,20 +1,14 @@
-//
-//  RootViewController.swift
-//  keyn
-//
-//  Created by bas on 03/11/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import JustLog
 
 class RootViewController: UITabBarController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,5 +45,4 @@ class RootViewController: UITabBarController {
         modalViewController.modalPresentationStyle = .fullScreen
         self.present(modalViewController, animated: true, completion: nil)
     }
-
 }
