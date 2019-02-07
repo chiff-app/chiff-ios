@@ -12,7 +12,6 @@ class AuthenticationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         drawButtons()
-        // Do any additional setup after loading the view.
     }
 
     // MARK: - Actions

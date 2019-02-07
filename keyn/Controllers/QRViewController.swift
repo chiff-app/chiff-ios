@@ -14,6 +14,7 @@ enum CameraError: Error {
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     @IBOutlet weak var videoView: UIView!
+    
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false

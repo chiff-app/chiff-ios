@@ -10,8 +10,9 @@ protocol canReceiveSession {
 }
 
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, canReceiveSession {
-    var sessions = [Session]()
     @IBOutlet weak var tableView: UITableView!
+    
+    var sessions = [Session]()
 
     override func viewDidLoad() {
         super.viewDidLoad()

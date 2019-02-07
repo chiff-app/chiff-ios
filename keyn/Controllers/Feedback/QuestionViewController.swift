@@ -7,6 +7,7 @@ import JustLog
 
 class QuestionViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!
+    
     var question: Question? = nil
     var questionIndex: Int = 0
     var isFirst = false

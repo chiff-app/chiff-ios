@@ -8,9 +8,10 @@ import JustLog
 class BackupWizardViewController: UIViewController {
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var previousButton: UIButton!
+    @IBOutlet weak var counterLabel: UILabel!
+    
     var mnemonic: [String]?
     var counter: Int = 0
-    @IBOutlet weak var counterLabel: UILabel!
     var isInitialSetup = true
 
     override func viewDidLoad() {

@@ -6,14 +6,15 @@ import UIKit
 
 // TODO: Unused..
 class NewAccountViewController: AccountViewController {
-    var passwordIsHidden = true
-    var customPassword = false
-    let ppd: PPD? = nil
-    var passwordValidator: PasswordValidator? = nil
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var requirementsView: UIView!
     @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var requirementLabelsStackView: UIStackView!
+
+    var passwordIsHidden = true
+    var customPassword = false
+    let ppd: PPD? = nil
+    var passwordValidator: PasswordValidator? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -42,8 +42,8 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-
     // MARK: - Actions
+
     // TODO: Change this?
     @IBAction func sendFeedback(_ sender: UIBarButtonItem) {
         // Data
