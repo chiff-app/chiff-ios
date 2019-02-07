@@ -103,7 +103,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             do {
                 try Session.getSession(id: sessionID)?.delete(includingQueue: false)
                 let nc = NotificationCenter.default
-                nc.post(name: .sessionHasEnded, object: nil, userInfo: ["sessionID": sessionID])
+                nc.post(name: .sessionEnded, object: nil, userInfo: ["sessionID": sessionID])
             } catch {
                 Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
             }

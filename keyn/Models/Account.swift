@@ -16,8 +16,8 @@ struct Account: Codable {
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
-    private var tokenURL: URL?       // Only for backup
-    private var tokenSecret: Data?    // Only for backup
+    private var tokenURL: URL? // Only for backup
+    private var tokenSecret: Data? // Only for backup
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
 

@@ -40,26 +40,18 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         do {
             try AuthenticationGuard.sharedInstance.authorizePairing(url: url) { (session, error) in
                 DispatchQueue.main.async {
-                    // TODO: replace with nc
-                    if let session = session, let rootViewController = self.window?.rootViewController as? RootViewController, let devicesNavigationController = rootViewController.viewControllers?[1] as? DevicesNavigationController {
-                        for viewController in devicesNavigationController.viewControllers {
-                            if let devicesViewController = viewController as? DevicesViewController {
-                                if devicesViewController.isViewLoaded {
-                                    devicesViewController.addSession(session: session)
-                                }
-                            } else if let pairViewController = viewController as? PairViewController {
-                                if pairViewController.isViewLoaded {
-                                    pairViewController.add(session: session)
-                                }
-                            }
-                        }
+                    if let session = session {
+                        let nc = NotificationCenter.default
+                        nc.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
                     } else if let error = error {
-                        Logger.shared.warning("Error creating session", error: error as NSError)
+                        Logger.shared.error("Error creating session.", error: error as NSError)
+                    } else {
+                        Logger.shared.error("Error opening app from URL.")
                     }
                 }
             }
         } catch {
-            Logger.shared.error("Error creating session", error: error as NSError)
+            Logger.shared.error("Error creating session.", error: error as NSError)
         }
 
         return true
@@ -88,18 +80,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     private func enableLogging() {
         let logger = Logger.shared
-
-        // Disable file logging
         logger.enableFileLogging = false
-
-        // logstash destination
         logger.logstashHost = "listener.logz.io"
         logger.logstashPort = 5052
         logger.logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
         logger.logstashTimeout = 5
         logger.logLogstashSocketActivity = Properties.isDebug
-
-        // default info
         logger.defaultUserInfo = [
             "app": "Keyn",
             "device": "APP",
@@ -111,31 +97,30 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     private func fetchAWSIdentification() {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
                                                                 identityPoolId: "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe")
-
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
 
     private func registerForPushNotifications() {
-        let passwordRequestNotificationCategory = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
-                                                                         actions: [],
-                                                                         intentIdentifiers: [],
-                                                                         options: .customDismissAction)
-        let keynNotificationCategory = UNNotificationCategory(identifier: "KEYN_NOTIFICATION",
-                                                              actions: [],
-                                                              intentIdentifiers: [],
-                                                              options: .customDismissAction)
-        let endSessionNotificationCategory = UNNotificationCategory(identifier: "END_SESSION",
-                                                                    actions: [],
-                                                                    intentIdentifiers: [],
-                                                                    options: UNNotificationCategoryOptions(rawValue: 0))
-        let changeConfirmationNotificationCategory = UNNotificationCategory(identifier: "CHANGE_CONFIRMATION",
-                                                                            actions: [],
-                                                                            intentIdentifiers: [],
-                                                                            options: UNNotificationCategoryOptions(rawValue: 0))
+        let passwordRequest = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
+                                                     actions: [],
+                                                     intentIdentifiers: [],
+                                                     options: .customDismissAction)
+        let endSession = UNNotificationCategory(identifier: "END_SESSION",
+                                                actions: [],
+                                                intentIdentifiers: [],
+                                                options: UNNotificationCategoryOptions(rawValue: 0))
+        let passwordChangeConfirmation = UNNotificationCategory(identifier: "CHANGE_CONFIRMATION",
+                                                                actions: [],
+                                                                intentIdentifiers: [],
+                                                                options: UNNotificationCategoryOptions(rawValue: 0))
+        let keyn = UNNotificationCategory(identifier: "KEYN_NOTIFICATION",
+                                          actions: [],
+                                          intentIdentifiers: [],
+                                          options: .customDismissAction)
         let center = UNUserNotificationCenter.current()
         center.delegate = pushNotificationService
-        center.setNotificationCategories([passwordRequestNotificationCategory, endSessionNotificationCategory, changeConfirmationNotificationCategory, keynNotificationCategory])
+        center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if granted {
                 DispatchQueue.main.async {
@@ -155,8 +140,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
+    // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
     private func launchInitialView() {
-        // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let viewController: UIViewController?
 

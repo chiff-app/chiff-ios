@@ -107,7 +107,8 @@ extension String {
 
 extension Notification.Name {
     static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
-    static let sessionHasEnded = Notification.Name("SessionHasEnded")
+    static let sessionStarted = Notification.Name("SessionStarted")
+    static let sessionEnded = Notification.Name("SessionEnded")
     static let accountAdded = Notification.Name("AccountAdded")
 }
 
