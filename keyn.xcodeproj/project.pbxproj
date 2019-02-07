@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		013438C7220C460A000685B2 /* AppStartupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438C6220C460A000685B2 /* AppStartupService.swift */; };
+		013438C9220C46D6000685B2 /* MigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438C8220C46D6000685B2 /* MigrationService.swift */; };
+		013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438CA220C4922000685B2 /* PushNotificationService.swift */; };
+		013438CD220C583F000685B2 /* PasteboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438CC220C583F000685B2 /* PasteboardService.swift */; };
 		01557424202AF75600F97DA2 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01557423202AF75600F97DA2 /* SessionTests.swift */; };
 		0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155742A202B173F00F97DA2 /* TestHelper.swift */; };
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
@@ -174,6 +178,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		013438C6220C460A000685B2 /* AppStartupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStartupService.swift; sourceTree = "<group>"; };
+		013438C8220C46D6000685B2 /* MigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationService.swift; sourceTree = "<group>"; };
+		013438CA220C4922000685B2 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		013438CC220C583F000685B2 /* PasteboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardService.swift; sourceTree = "<group>"; };
 		0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreprocessorTests.swift; sourceTree = "<group>"; };
 		01557423202AF75600F97DA2 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		0155742A202B173F00F97DA2 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
@@ -327,6 +335,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		013438C5220C45F3000685B2 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				49E766531F7E6F420022C042 /* AppDelegate.swift */,
+				013438C6220C460A000685B2 /* AppStartupService.swift */,
+				013438C8220C46D6000685B2 /* MigrationService.swift */,
+				013438CA220C4922000685B2 /* PushNotificationService.swift */,
+				013438CC220C583F000685B2 /* PasteboardService.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
 		2A4E92B609DDA515653F86DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,8 +480,8 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
+				013438C5220C45F3000685B2 /* AppDelegate */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
-				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				49721F9B2128E5830090AF48 /* API.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				49F448281FD1652C00643C4D /* AWS.swift */,
@@ -1035,6 +1055,7 @@
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
+				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
@@ -1044,6 +1065,7 @@
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
+				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
@@ -1061,6 +1083,7 @@
 				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
 				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
+				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
@@ -1072,6 +1095,7 @@
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
+				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */,

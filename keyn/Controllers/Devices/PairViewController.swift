@@ -25,8 +25,16 @@ class PairViewController: QRViewController {
                     case KeychainError.storeKey:
                         Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
                         self?.displayError(message: "This QR code was already scanned.")
+
+
+                    case SessionError.noEndpoint:
+                        Logger.shared.error("There is no endpoint in the QR code?", error: error as NSError)
+
+
                     default:
-                        Logger.shared.error("Unhandled QR code error.", error: error as NSError)
+                        Logger.shared.error("Unhandled QR code error during pairing.", error: error as NSError)
+                        Logger.shared.error(error.localizedDescription)
+
                         self?.displayError(message: "An error occured.")
                     }
                     self?.recentlyScannedUrls.removeAll(keepingCapacity: false)

@@ -9,6 +9,7 @@ struct BackupManager {
     private let keychainService = "io.keyn.backup"
     private let endpoint = "backup"
     static let sharedInstance = BackupManager()
+
     private enum KeyIdentifier: String, Codable {
         case priv = "priv"
         case pub = "pub"

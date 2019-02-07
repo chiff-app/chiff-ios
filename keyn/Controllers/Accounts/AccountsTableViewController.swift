@@ -30,6 +30,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
         navigationItem.searchController = searchController
+
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -136,6 +139,14 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
         }
+    }
+
+    func addAccount(notification: Notification) {
+        guard let account = notification.userInfo?["account"] as? Account else {
+            Logger.shared.warning("Account was nil when trying to add it to the view.")
+            return
+        }
+        addAccount(account: account)
     }
 
     func addAccount(account: Account) {
