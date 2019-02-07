@@ -6,7 +6,6 @@ import UIKit
 import JustLog
 
 class ReportSiteViewController: UIViewController, UITextViewDelegate {
-    var account: Account?
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var loginReport: UISwitch!
     @IBOutlet weak var changeReport: UISwitch!
@@ -15,6 +14,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
 
+    var account: Account?
     var lastOffset: CGPoint!
     var keyboardHeight: CGFloat!
 
@@ -43,6 +43,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         guard keyboardHeight == nil else {
             return
         }
+
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
             // so increase contentView's height by keyboard height
@@ -85,7 +86,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
             "changeError": changeReport.isOn,
             "addError": addReport.isOn,
             "remarks": textView.text
-            ])
+        ])
 
         dismiss(animated: true, completion: nil)
     }

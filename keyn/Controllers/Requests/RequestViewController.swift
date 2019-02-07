@@ -7,6 +7,11 @@ import LocalAuthentication
 import JustLog
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    @IBOutlet weak var siteLabel: UILabel!
+    @IBOutlet weak var accountPicker: UIPickerView!
+    @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
+
     var notification: PushNotification!
     var type: BrowserMessageType!
     var session: Session!
@@ -14,10 +19,6 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var site: Site?
     let PICKER_HEIGHT: CGFloat = 120.0
     let SPACE_PICKER_STACK: CGFloat = 10.0
-    @IBOutlet weak var siteLabel: UILabel!
-    @IBOutlet weak var accountPicker: UIPickerView!
-    @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()

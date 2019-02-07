@@ -6,10 +6,10 @@ import UIKit
 import JustLog
 
 class SettingsViewController: UITableViewController {
+    @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
 
     var securityFooterText = "\u{26A0} Paper backup not finished."
     var justLoaded = true
-    @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()

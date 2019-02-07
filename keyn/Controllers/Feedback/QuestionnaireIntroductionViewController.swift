@@ -5,9 +5,9 @@
 import UIKit
 
 class QuestionnaireIntroductionViewController: UIViewController {
+    @IBOutlet weak var introductionLabel: UILabel!
 
     var introduction: String!
-    @IBOutlet weak var introductionLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()

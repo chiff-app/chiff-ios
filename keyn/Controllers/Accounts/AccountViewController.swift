@@ -13,14 +13,6 @@ protocol canAddOTPCode {
 }
 
 class AccountViewController: UITableViewController, UITextFieldDelegate, canAddOTPCode {
-    var editButton: UIBarButtonItem!
-    var account: Account!
-    var tap: UITapGestureRecognizer!
-    var qrEnabled: Bool = true
-    var editingMode: Bool = false
-    var otpCodeTimer: Timer?
-    var token: Token?
-    
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -30,6 +22,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     @IBOutlet weak var userCodeCell: UITableViewCell!
     @IBOutlet weak var totpLoader: UIView!
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
+
+    var editButton: UIBarButtonItem!
+    var account: Account!
+    var tap: UITapGestureRecognizer!
+    var qrEnabled: Bool = true
+    var editingMode: Bool = false
+    var otpCodeTimer: Timer?
+    var token: Token?
     var loadingCircle: LoadingCircle?
     
     override func viewDidLoad() {

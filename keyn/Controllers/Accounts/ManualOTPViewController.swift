@@ -17,6 +17,7 @@ class ManualOTPViewController: UITableViewController {
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!
+    
     var qrNavCon: UINavigationController?
     var accountViewDelegate: canAddOTPCode?
     var account: Account!

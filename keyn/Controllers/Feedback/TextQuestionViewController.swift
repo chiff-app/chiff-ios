@@ -5,7 +5,6 @@
 import UIKit
 
 class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
-    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -18,11 +17,13 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         textView.delegate = self
+
         if self.view.frame.size.height > 480 {
             self.constraintContentHeight.constant = self.view.frame.size.height - 64
         } else {
             constraintMiddleDistance.priority = UILayoutPriority(999)
         }
+
         view.layoutIfNeeded()
         
         // Observe keyboard change
@@ -45,6 +46,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
         guard keyboardHeight == nil else {
             return
         }
+
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height
             // so increase contentView's height by keyboard height
@@ -67,6 +69,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
         guard keyboardHeight != nil else {
             return
         }
+
         UIView.animate(withDuration: 0.3) {
             if self.view.frame.size.height > 480 {
                 self.constraintMiddleDistance.priority = UILayoutPriority(990)
@@ -80,6 +83,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
 
     @IBAction func submit(_ sender: UIButton) {
         question?.response = String(textView.text)
+        
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.submitQuestion(index: questionIndex, question: question)
             navCon.nextQuestion()

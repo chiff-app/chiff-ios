@@ -9,10 +9,11 @@ import JustLog
 import OneTimePassword
 
 class OTPViewController: QRViewController {    
+    @IBOutlet weak var instructionLabel: UILabel!
+
     var account: Account!
     var accountViewDelegate: canAddOTPCode?
-    @IBOutlet weak var instructionLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         instructionLabel.text = "Scan the 2FA-code for \(account.site.name)."

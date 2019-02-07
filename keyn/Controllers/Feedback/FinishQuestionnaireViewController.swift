@@ -5,7 +5,6 @@
 import UIKit
 
 class FinishQuestionnaireViewController: UIViewController {
-
     // MARK: - Actions
     
     @IBAction func finish(_ sender: UIButton) {

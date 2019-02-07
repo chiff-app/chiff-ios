@@ -6,16 +6,6 @@ import UIKit
 import JustLog
 
 class RegistrationRequestViewController: UITableViewController, UITextFieldDelegate {
-    var notification: PushNotification?
-    var session: Session?
-    var passwordIsHidden = true
-    var passwordValidator: PasswordValidator? = nil
-    var site: Site?
-    var breachCount: Int?
-    var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
-    var account: Account?
-
-
     @IBOutlet weak var saveButton: UIBarButtonItem!
     //    @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var changePasswordCell: UITableViewCell!
@@ -27,6 +17,14 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @IBOutlet weak var userPasswordTextField: UITextField!
     @IBOutlet weak var showPasswordButton: UIButton!
 
+    var notification: PushNotification?
+    var session: Session?
+    var passwordIsHidden = true
+    var passwordValidator: PasswordValidator? = nil
+    var site: Site?
+    var breachCount: Int?
+    var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
+    var account: Account?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +102,6 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         }
         return nil
     }
-
 
     // MARK: - UITextFieldDelegate
 

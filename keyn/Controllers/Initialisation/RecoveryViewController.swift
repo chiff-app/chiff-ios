@@ -6,13 +6,14 @@ import UIKit
 import JustLog
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
-    var isInitialSetup = true // TODO: Implement calling recovery from settings?
     @IBOutlet var wordTextFields: Array<UITextField>?
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
+
+    var isInitialSetup = true // TODO: Implement calling recovery from settings?
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
