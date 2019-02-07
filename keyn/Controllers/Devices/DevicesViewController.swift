@@ -16,8 +16,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         let nc = NotificationCenter.default
-        nc.addObserver(forName: .sessionHasEnded, object: nil, queue: OperationQueue.main, using: removeSessionFromTableView)
+        nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
+        nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
+
         do {
             if let storedSessions = try Session.all() {
                 sessions = storedSessions
@@ -115,7 +118,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func removeSessionFromTableView(_ notification: Notification) {
+    func removeSession(_ notification: Notification) {
         guard let sessionID = notification.userInfo?["sessionID"] as? String else {
             Logger.shared.warning("Userinfo was nil when trying to remove session from view.")
             return
@@ -170,7 +173,15 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Actions
-    
+
+    func addSession(notification: Notification) {
+        guard let session = notification.userInfo?["session"] as? Session else {
+            Logger.shared.warning("Session was nil when trying to add it to the devices view.")
+            return
+        }
+        addSession(session: session)
+    }
+
     func addSession(session: Session) {
         let newIndexPath = IndexPath(row: sessions.count, section: 0)
         sessions.append(session)

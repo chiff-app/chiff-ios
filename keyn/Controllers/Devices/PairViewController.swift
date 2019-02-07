@@ -10,7 +10,11 @@ import OneTimePassword
 
 class PairViewController: QRViewController {    
     var devicesDelegate: canReceiveSession?
-    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
     override func handleURL(url: URL) throws {
         guard let scheme = url.scheme, scheme == "keyn" else {
             return
@@ -19,22 +23,18 @@ class PairViewController: QRViewController {
         try AuthenticationGuard.sharedInstance.authorizePairing(url: url, completion: { [weak self] (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
-                    self?.add(session: session)
+                    self?.addSession(session: session)
                 } else if let error = error {
                     switch error {
                     case KeychainError.storeKey:
                         Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
                         self?.displayError(message: "This QR code was already scanned.")
-
-
+                    // TODO: Frank: I added this but does it make sense?
                     case SessionError.noEndpoint:
-                        Logger.shared.error("There is no endpoint in the QR code?", error: error as NSError)
-
-
+                        Logger.shared.error("There is no endpoint in the session data.", error: error as NSError)
+                        self?.displayError(message: "There is no AWS endpoint in the session data.")
                     default:
                         Logger.shared.error("Unhandled QR code error during pairing.", error: error as NSError)
-                        Logger.shared.error(error.localizedDescription)
-
                         self?.displayError(message: "An error occured.")
                     }
                     self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
@@ -46,8 +46,10 @@ class PairViewController: QRViewController {
             }
         })
     }
-    
-    func add(session: Session) {
+
+    // MARK: - Actions
+
+    func addSession(session: Session) {
         if navigationController?.viewControllers[0] == self {
             let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
             navigationController?.setViewControllers([devicesVC], animated: false)
