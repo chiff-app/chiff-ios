@@ -32,11 +32,6 @@ class Crypto {
 
     // MARK: - Key generation functions
 
-    /*
-     * The first time we use the app, we need to generate the seed and put it in the
-     * keychain. This function will need to be called in the setup process and from
-     * the resulting seed all passwords will be generated.
-     */
     func generateSeed() throws -> Data {
         // Generate random seed
         // TODO: Should this be replaced by libsodium key generation function?
@@ -58,7 +53,7 @@ class Crypto {
             throw CryptoError.hashing
         }
         
-        // This derives a subkey from the seed for a given index and context
+        // This derives a subkey from the seed for a given index and context.
         guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: 32, context: String(context.prefix(8))) else {
             throw CryptoError.keyDerivation
         }
@@ -200,6 +195,7 @@ class Crypto {
         guard let hashData = sodium.genericHash.hash(message: data.bytes) else {
             throw CryptoError.hashing
         }
+
         return hashData.data
     }
 
@@ -207,10 +203,13 @@ class Crypto {
         guard let messageData = message.data(using: .utf8) else {
             throw CryptoError.convertToData
         }
+
         let hashData = try hash(messageData)
+
         guard let hash = sodium.utils.bin2hex(hashData.bytes) else {
             throw CryptoError.convertToHex
         }
+
         return hash
     }
 }

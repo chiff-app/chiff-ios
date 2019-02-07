@@ -15,6 +15,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: .sessionHasEnded, object: nil, queue: OperationQueue.main, using: removeSessionFromTableView)
         do {
             if let storedSessions = try Session.all() {
                 sessions = storedSessions
@@ -112,7 +114,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func removeSessionFromTableView(sessionID: String) {
+    func removeSessionFromTableView(_ notification: Notification) {
+        guard let sessionID = notification.userInfo?["sessionID"] as? String else {
+            Logger.shared.warning("Userinfo was nil when trying to remove session from view.")
+            return
+        }
+
         if let index = sessions.index(where: { (session) -> Bool in
             sessionID == session.id
         }) {

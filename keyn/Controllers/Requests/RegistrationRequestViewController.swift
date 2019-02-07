@@ -164,16 +164,8 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                             self?.account = newAccount
                             try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
 
-                            // TODO: Make this better. Works but ugly
-                            if let appDelegate = UIApplication.shared.delegate as? AppDelegate, let rootViewController = appDelegate.window!.rootViewController as? RootViewController, let accountsNavigationController = rootViewController.viewControllers?[0] as? UINavigationController {
-                                for viewController in accountsNavigationController.viewControllers {
-                                    if let accountsTableViewController = viewController as? AccountsTableViewController {
-                                        if accountsTableViewController.isViewLoaded {
-                                            accountsTableViewController.addAccount(account: newAccount)
-                                        }
-                                    }
-                                }
-                            }
+                            let nc = NotificationCenter.default
+                            nc.post(name: .accountAdded, object: nil, userInfo: ["account": newAccount])
                         } catch {
                             // TODO: Handle errors in UX
                             Logger.shared.error("Account could not be saved.", error: error as NSError)

@@ -41,6 +41,7 @@ class AuthenticationGuard {
     }
 
     // MARK: - UIApplication Notification Handlers
+
     private func applicationWillEnterForeground(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
@@ -87,6 +88,7 @@ class AuthenticationGuard {
     }
 
     // MARK: - LocalAuthentication
+
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
             guard !authenticationInProgress && !lockWindow.isHidden && !authorizationInProgress else {

@@ -13,10 +13,10 @@ enum CameraError: Error {
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+    @IBOutlet weak var videoView: UIView!
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
-    @IBOutlet weak var videoView: UIView!
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
     
@@ -53,7 +53,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     } catch {
                         switch error {
                         case SessionError.exists:
-                            Logger.shared.debug("Qr-code scanned twice.")
+                            Logger.shared.debug("QR-code scanned twice.")
                             displayError(message: "This QR-code was already scanned.")
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error as NSError)
