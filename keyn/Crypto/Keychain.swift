@@ -5,13 +5,22 @@
 import Foundation
 import Security
 
-enum KeychainError: Error {
-    case stringEncoding
-    case unexpectedData
-    case storeKey(OSStatus?)
-    case notFound(OSStatus?)
-    case unhandledError(OSStatus?)
-    case noData
+struct KeychainError: KeynError {
+    enum ErrorKind: String {
+        case stringEncoding
+        case unexpectedData
+        case storeKey
+        case notFound
+        case unhandledError
+        case noData
+        case interactionNotAllowed
+    }
+    
+    let kind: ErrorKind
+    let status: OSStatus?
+    var nsError: NSError {
+        return NSError(domain: "ViaVia.KeychainError", code: 0, userInfo: ["OSStatus": status ?? 0, "error_type": kind.rawValue ])
+    }
 }
 
 enum Classification: String {
@@ -53,7 +62,7 @@ class Keychain {
 
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw KeychainError.storeKey(status)
+            throw KeychainError(kind: .storeKey, status: status)
         }
     }
 
@@ -69,11 +78,11 @@ class Keychain {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
 
-        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
-        guard status == noErr else { throw KeychainError.unhandledError(status) }
+        guard status != errSecItemNotFound else { throw KeychainError(kind: .notFound, status: status) }
+        guard status == noErr else { throw KeychainError(kind: .unhandledError, status: status) }
 
         guard let data = queryResult as? Data else {
-            throw KeychainError.unexpectedData
+            throw KeychainError(kind: .unexpectedData, status: status)
         }
 
         return data
@@ -97,8 +106,8 @@ class Keychain {
 
         let status = SecItemDelete(query as CFDictionary)
 
-        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
+        guard status != errSecItemNotFound else { throw KeychainError(kind: .notFound, status: status) }
+        guard status == errSecSuccess else { throw KeychainError(kind: .unhandledError, status: status) }
     }
 
     func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil) throws {
@@ -107,7 +116,7 @@ class Keychain {
                                     kSecAttrService as String: service]
 
         guard (secretData != nil || label != nil || objectData != nil) else {
-            throw KeychainError.noData
+            throw KeychainError(kind: .noData, status: nil)
         }
 
         var attributes = [String: Any]()
@@ -126,8 +135,8 @@ class Keychain {
 
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
 
-        guard status != errSecItemNotFound else { throw KeychainError.notFound(status) }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
+        guard status != errSecItemNotFound else { throw KeychainError(kind: .notFound, status: status) }
+        guard status == errSecSuccess else { throw KeychainError(kind: .unhandledError, status: status) }
     }
     
     func all(service: String) throws -> [[String: Any]]? {
@@ -146,11 +155,11 @@ class Keychain {
         }
 
         guard status == noErr else {
-            throw KeychainError.unhandledError(status)
+            throw KeychainError(kind: .unhandledError, status: status)
         }
         
         guard let dataArray = queryResult as? [[String: Any]] else {
-            throw KeychainError.unexpectedData
+            throw KeychainError(kind: .unexpectedData, status: status)
         }
     
         return dataArray
@@ -173,11 +182,11 @@ class Keychain {
         }
 
         guard status == noErr else {
-            throw KeychainError.unhandledError(status)
+            throw KeychainError(kind: .unhandledError, status: status)
         }
 
         guard let dataArray = queryResult as? [String: Any] else {
-            throw KeychainError.unexpectedData
+            throw KeychainError(kind: .unexpectedData, status: status)
         }
 
         return dataArray

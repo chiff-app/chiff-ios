@@ -5,7 +5,7 @@
 import Foundation
 import Sodium
 
-enum CryptoError: Error {
+enum CryptoError: String, KeynError {
     case randomGeneration
     case base64Decoding
     case base64Encoding
@@ -20,6 +20,10 @@ enum CryptoError: Error {
     case mnemonicChecksum
     case signing
     case indexOutOfRange
+    
+    var nsError: NSError {
+        return NSError(domain: "Keyn.CryptoError", code: 0, userInfo: ["error_type": self.rawValue])
+    }
 }
 
 class Crypto {

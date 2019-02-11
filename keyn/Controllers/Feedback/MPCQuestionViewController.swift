@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class MPCQuestionViewController: QuestionViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!

@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class SettingsViewController: UITableViewController {
     @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
@@ -81,7 +80,7 @@ class SettingsViewController: UITableViewController {
         do {
             securityFooterText = try Seed.isBackedUp() ? "The paper backup is the only way to recover your accounts if your phone gets lost or broken." : "\u{26A0} Paper backup not finished."
         } catch {
-            Logger.shared.warning("Could determine if seed is backed up.", error: error as NSError)
+            Logger.shared.warning("Could determine if seed is backed up.", error: error)
         }
     }
 }

@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class BackupStartViewController: UIViewController {
     var isInitialSetup = true
@@ -40,7 +39,7 @@ class BackupStartViewController: UIViewController {
                 try BackupManager.shared.initialize()
                 Logger.shared.info("Seed created", userInfo: ["code": AnalyticsMessage.seedCreated.rawValue])
             } catch {
-                Logger.shared.error("Error generating seed.", error: error as NSError)
+                Logger.shared.error("Error generating seed.", error: error)
             }
         }
     }

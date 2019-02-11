@@ -4,7 +4,6 @@
  */
 import UIKit
 import MBProgressHUD
-import JustLog
 import OneTimePassword
 import QuartzCore
 
@@ -50,7 +49,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             userPasswordTextField.delegate = self
         } catch {
             // TODO: Present error to user?
-            Logger.shared.error("Could not get password.", error: error as NSError)
+            Logger.shared.error("Could not get password.", error: error)
         }
         navigationItem.title = account.site.name
         navigationItem.largeTitleDisplayMode = .never
@@ -152,7 +151,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         do {
             userPasswordTextField.text = try account?.password()
         } catch {
-            Logger.shared.warning("Could not get password.", error: error as NSError)
+            Logger.shared.warning("Could not get password.", error: error)
         }
         navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
@@ -178,7 +177,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
                 accountsTableViewController.updateAccount(account: account!)
             }
         } catch {
-            Logger.shared.warning("Could not change username", error: error as NSError)
+            Logger.shared.warning("Could not change username", error: error)
             userNameTextField.text = account?.username
             websiteNameTextField.text = account?.site.name
             websiteURLTextField.text = account?.site.url
@@ -219,7 +218,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
                     action: #selector(showPasswordHUD.hide(animated:)))
             )
         } catch {
-            Logger.shared.error("Could not get account", error: error as NSError)
+            Logger.shared.error("Could not get account", error: error)
         }
     }
     

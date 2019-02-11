@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class QuestionViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!

@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 
 struct BackupManager {
     private let keychainService = "io.keyn.backup"
@@ -102,7 +101,7 @@ struct BackupManager {
                         try Account.save(accountData: accountData, id: id)
                     } catch {
                         print(error)
-                        Logger.shared.error("Could not restore account.", error: error as NSError)
+                        Logger.shared.error("Could not restore account.", error: error)
                     }
                 }
             }

@@ -5,7 +5,6 @@
 import Foundation
 import AWSCore
 import AWSSNS
-import JustLog
 
 enum AWSError: Error {
     case queueUrl(error: String?)
@@ -40,7 +39,7 @@ class AWS {
                 snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
                 checkIfUpdateIsNeeded(token: token)
             } catch {
-                Logger.shared.warning("Error getting endpoint from Keychain. Creating new endpoint", error: error as NSError)
+                Logger.shared.warning("Error getting endpoint from Keychain. Creating new endpoint", error: error)
                 // Delete from Keychain
                 createPlatformEndpoint(token: token)
             }
@@ -75,7 +74,7 @@ class AWS {
                     do {
                         try Keychain.shared.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService, classification: .secret)
                     } catch {
-                        Logger.shared.error("Error saving Keyn subscription identifier.", error: error as NSError)
+                        Logger.shared.error("Error saving Keyn subscription identifier.", error: error)
                         try? Keychain.shared.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
                     }
                 } else {
@@ -85,7 +84,7 @@ class AWS {
             return nil
             }.continueWith { (task) -> Any? in
                 if let error = task.error {
-                    Logger.shared.error("Error subscribing to Keyn notifications.", error: error as NSError)
+                    Logger.shared.error("Error subscribing to Keyn notifications.", error: error)
                 }
                 return nil
         }
@@ -108,17 +107,17 @@ class AWS {
                 do {
                     try Keychain.shared.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
                 } catch {
-                    Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error as NSError)
+                    Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error)
                 }
                 return nil
                 }.continueWith { (task) -> Any? in
                     if let error = task.error {
-                        Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error as NSError)
+                        Logger.shared.error("Error unsubscribing to Keyn notifications.", error: error)
                     }
                     return nil
             }
         } catch {
-            Logger.shared.error("Error getting subcription endoint from Keychain", error: error as NSError)
+            Logger.shared.error("Error getting subcription endoint from Keychain", error: error)
         }
     }
 
@@ -180,7 +179,7 @@ class AWS {
 
         sns.setEndpointAttributes(attributesRequest).continueWith(block: { (task: AWSTask!) -> Any? in
             if let error = task.error {
-                Logger.shared.error("Could not update AWS Platform Endpoint.", error: error as NSError)
+                Logger.shared.error("Could not update AWS Platform Endpoint.", error: error)
             }
             return nil
         })
@@ -211,13 +210,13 @@ class AWS {
                         self.subscribe()
                     }
                 } catch {
-                    Logger.shared.error("Could not save endpoint to keychain", error: error as NSError)
+                    Logger.shared.error("Could not save endpoint to keychain", error: error)
                 }
             }
             return nil
         }).continueWith(block: { (task: AWSTask!) -> Any? in
             if let error = task.error {
-                Logger.shared.error("Could not create platform endpoint.", error: error as NSError)
+                Logger.shared.error("Could not create platform endpoint.", error: error)
             }
             return nil
         })

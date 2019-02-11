@@ -4,7 +4,6 @@
  */
 import UIKit
 import LocalAuthentication
-import JustLog
 
 class LoginViewController: UIViewController {
     @IBOutlet weak var touchIDButton: UIButton!

@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 import UIKit
 import UserNotifications
 
@@ -44,7 +43,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             do {
                 try Session.getSession(id: sessionID)?.delete(includingQueue: false)
             } catch {
-                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
+                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
         } else {
             let _ = handleNotification(userInfo: userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
@@ -105,7 +104,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 let nc = NotificationCenter.default
                 nc.post(name: .sessionEnded, object: nil, userInfo: ["sessionID": sessionID])
             } catch {
-                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
+                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
             completionHandler([.alert, .sound])
         } else {
@@ -171,7 +170,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             do {
                 try Session.getSession(id: sessionID)?.delete(includingQueue: false)
             } catch {
-                Logger.shared.error("Could not end session.", error: error as NSError, userInfo: nil)
+                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
         } else {
             let _ = handleNotification(userInfo: content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
@@ -241,7 +240,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             }
         } catch {
-            Logger.shared.error("Could not get sessions.", error: error as NSError)
+            Logger.shared.error("Could not get sessions.", error: error)
         }
 
         let center = UNUserNotificationCenter.current()
@@ -287,7 +286,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                         do {
                             try Session.getSession(id: sessionID)?.delete(includingQueue: false)
                         } catch {
-                            Logger.shared.error("Could not end session.", error: error as NSError)
+                            Logger.shared.error("Could not end session.", error: error)
                         }
 
                     } else if notification.date.timeIntervalSinceNow > -180.0  {
@@ -358,7 +357,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                                 try account?.updatePassword(offset: nil)
                             }
                         } catch {
-                            Logger.shared.warning("Could not change password", error: error as NSError, userInfo: nil)
+                            Logger.shared.warning("Could not change password", error: error, userInfo: nil)
                         }
                         if let handler = completionHandler {
                             handler()
@@ -391,7 +390,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         } catch NotificationExtensionError.StringCast(let type) {
             Logger.shared.debug("Stringcast error: \(type)")
         } catch {
-            Logger.shared.debug("Other error", error: error as NSError)
+            Logger.shared.debug("Other error", error: error)
         }
 
         return content

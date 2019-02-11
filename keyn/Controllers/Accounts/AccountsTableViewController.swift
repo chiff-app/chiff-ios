@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
     var unfilteredAccounts = [Account]()
@@ -17,7 +16,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             let savedAccounts = try Account.all()
             unfilteredAccounts.append(contentsOf: savedAccounts)
         } catch {
-            Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
+            Logger.shared.error("Could not get accounts from Keychain", error: error)
         }
 
         filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
@@ -191,7 +190,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 filteredAccounts?.remove(at: filteredIndexPath.row)
                 tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
             } catch {
-                Logger.shared.error("Could not delete account.", error: error as NSError)
+                Logger.shared.error("Could not delete account.", error: error)
             }
         }
     }

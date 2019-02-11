@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
@@ -22,7 +21,7 @@ struct PPD: Codable {
                 print(jsonString)
             }
         } catch {
-            Logger.shared.warning("PPD could not be decoded", error: error as NSError)
+            Logger.shared.warning("PPD could not be decoded", error: error)
         }
     }
     
@@ -39,7 +38,7 @@ struct PPD: Codable {
                     let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
                     completionHandler(ppd)
                 } catch {
-                    Logger.shared.error("Failed to decode PPD", error: error as NSError)
+                    Logger.shared.error("Failed to decode PPD", error: error)
                     completionHandler(nil)
                 }
             } else {

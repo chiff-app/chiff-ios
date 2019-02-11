@@ -5,7 +5,6 @@
 import UIKit
 import AVFoundation
 import LocalAuthentication
-import JustLog
 import OneTimePassword
 
 class OTPViewController: QRViewController {    
@@ -40,7 +39,7 @@ class OTPViewController: QRViewController {
                     }
                     self.add(token: token)
                 } catch {
-                    Logger.shared.error("Error adding OTP", error: error as NSError)
+                    Logger.shared.error("Error adding OTP", error: error)
                 }
             }
         })

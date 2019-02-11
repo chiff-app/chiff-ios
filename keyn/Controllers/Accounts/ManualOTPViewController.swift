@@ -5,7 +5,6 @@
 import UIKit
 import OneTimePassword
 import Base32
-import JustLog
 
 enum OTPError: Error {
     case invalidSecret
@@ -60,7 +59,7 @@ class ManualOTPViewController: UITableViewController {
                     _ = self.qrNavCon?.popViewController(animated: true)
                     self.dismiss(animated: true, completion: nil)
                 } catch {
-                    Logger.shared.error("Error adding OTP", error: error as NSError)
+                    Logger.shared.error("Error adding OTP", error: error)
                 }
             }
         })
@@ -80,7 +79,7 @@ class ManualOTPViewController: UITableViewController {
             case OTPError.empty:
                 errorLabel.text = "The secret can't be empty."
             default:
-                Logger.shared.error("OTP error occured", error: error as NSError)
+                Logger.shared.error("OTP error occured", error: error)
             }
         }
     }

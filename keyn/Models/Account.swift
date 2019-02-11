@@ -3,8 +3,16 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 import OneTimePassword
+
+enum AccountError: String, KeynError {
+    case stringEncoding
+    case unexpectedData
+    
+    var nsError: NSError {
+        return NSError(domain: "Keyn.AccountError", code: 0, userInfo: ["error_type": self.rawValue])
+    }
+}
 
 /*
  * An account belongs to the user and can have one Site.
@@ -47,7 +55,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
 
         guard let passwordData = password.data(using: .utf8) else {
-            throw KeychainError.stringEncoding
+            throw AccountError.stringEncoding
         }
 
         try Keychain.shared.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
@@ -68,7 +76,7 @@ struct Account: Codable {
         let data = try Keychain.shared.get(id: id, service: Account.keychainService)
 
         guard let password = String(data: data, encoding: .utf8) else {
-            throw KeychainError.unexpectedData
+            throw AccountError.unexpectedData
         }
 
         return password
@@ -91,7 +99,7 @@ struct Account: Codable {
         let secret = try Keychain.shared.get(id: id, service: Account.otpKeychainService)
         guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
             let url = URL(string: urlString) else {
-                throw KeychainError.unexpectedData
+                throw AccountError.unexpectedData
         }
         
         return Token(url: url, secret: secret)
@@ -104,7 +112,7 @@ struct Account: Codable {
     mutating func addOtp(token: Token) throws {
         let secret = token.generator.secret
         guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw KeychainError.stringEncoding
+            throw AccountError.stringEncoding
         }
         try Keychain.shared.save(secretData: secret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
         try backup()
@@ -113,7 +121,7 @@ struct Account: Codable {
     mutating func updateOtp(token: Token) throws {
         let secret = token.generator.secret
         guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw KeychainError.stringEncoding
+            throw AccountError.stringEncoding
         }
         try Keychain.shared.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
         try backup()
@@ -157,7 +165,7 @@ struct Account: Codable {
         passwordOffset = offset
 
         guard let passwordData = newPassword.data(using: .utf8) else {
-            throw KeychainError.stringEncoding
+            throw AccountError.stringEncoding
         }
 
         let accountData = try PropertyListEncoder().encode(self)
@@ -205,7 +213,7 @@ struct Account: Codable {
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
         
         guard let passwordData = password.data(using: .utf8) else {
-            throw KeychainError.stringEncoding
+            throw AccountError.stringEncoding
         }
     
         // Remove token and save seperately in Keychain
@@ -213,7 +221,7 @@ struct Account: Codable {
             account.tokenSecret = nil
             account.tokenURL = nil
             guard let tokenData = tokenURL.absoluteString.data(using: .utf8) else {
-                throw KeychainError.stringEncoding
+                throw AccountError.stringEncoding
             }
             try Keychain.shared.save(secretData: tokenSecret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
             data = try PropertyListEncoder().encode(account)
@@ -234,7 +242,7 @@ struct Account: Codable {
 
         for dict in dataArray {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                throw KeychainError.unexpectedData
+                throw AccountError.unexpectedData
             }
             let account = try decoder.decode(Account.self, from: accountData)
             accounts.append(account)

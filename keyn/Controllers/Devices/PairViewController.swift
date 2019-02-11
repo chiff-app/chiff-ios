@@ -5,7 +5,6 @@
 import UIKit
 import AVFoundation
 import LocalAuthentication
-import JustLog
 import OneTimePassword
 
 class PairViewController: QRViewController {    
@@ -27,14 +26,14 @@ class PairViewController: QRViewController {
                 } else if let error = error {
                     switch error {
                     case KeychainError.storeKey:
-                        Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error as NSError)
+                        Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error)
                         self?.displayError(message: "This QR code was already scanned.")
                     // TODO: Frank: I added this but does it make sense?
                     case SessionError.noEndpoint:
-                        Logger.shared.error("There is no endpoint in the session data.", error: error as NSError)
+                        Logger.shared.error("There is no endpoint in the session data.", error: error)
                         self?.displayError(message: "There is no AWS endpoint in the session data.")
                     default:
-                        Logger.shared.error("Unhandled QR code error during pairing.", error: error as NSError)
+                        Logger.shared.error("Unhandled QR code error during pairing.", error: error)
                         self?.displayError(message: "An error occured.")
                     }
                     self?.recentlyScannedUrls.removeAll(keepingCapacity: false)

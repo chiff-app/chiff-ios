@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 
 enum APIError: Error {
     case url
@@ -79,7 +78,7 @@ class API {
                     if let completionHandler = completionHandler {
                         completionHandler(nil)
                     }
-                    Logger.shared.error("API error", error: error as NSError, userInfo: [
+                    Logger.shared.error("API error", error: error, userInfo: [
                         "statusCode": httpStatus.statusCode
                     ])
                 }

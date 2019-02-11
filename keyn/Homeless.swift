@@ -5,7 +5,6 @@
 import Foundation
 import UIKit
 import Sodium
-import JustLog
 import CommonCrypto
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
@@ -57,7 +56,7 @@ extension String {
             let hash = try Crypto.shared.hash(self)
             return hash
         } catch {
-            Logger.shared.error("Could not create hash.", error: error as NSError)
+            Logger.shared.error("Could not create hash.", error: error)
             fatalError("Could not create hash.")
         }
     }

@@ -4,7 +4,6 @@
  */
 import UIKit
 import LocalAuthentication
-import JustLog
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     @IBOutlet weak var siteLabel: UILabel!
@@ -103,7 +102,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     Logger.shared.warning("Unknown request type received.")
                 }
             } catch {
-                Logger.shared.error("Could nog get PPD.", error: error as NSError)
+                Logger.shared.error("Could nog get PPD.", error: error)
             }
         }
     }
@@ -113,7 +112,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             do {
                 try session.acknowledge(browserTab: notification.browserTab)
             } catch {
-                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+                Logger.shared.error("Acknowledge could not be sent.", error: error)
             }
         }
         self.dismiss(animated: true, completion: nil)
@@ -131,7 +130,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         try session.sendCredentials(account: account!, browserTab: notification.browserTab, type: type)
                         self?.dismiss(animated: true, completion: nil)
                     } catch {
-                        Logger.shared.error("Error authorizing request", error: error as NSError)
+                        Logger.shared.error("Error authorizing request", error: error)
                     }
                 }
             } else {
@@ -157,7 +156,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
                 setLabel(requestType: type)
             } catch {
-                Logger.shared.error("Could not get account.", error: error as NSError)
+                Logger.shared.error("Could not get account.", error: error)
                 self.dismiss(animated: true, completion: nil)
             }
         }

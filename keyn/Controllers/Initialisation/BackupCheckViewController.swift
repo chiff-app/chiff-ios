@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var firstWordLabel: UILabel!
@@ -123,7 +122,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         do {
             try Seed.setBackedUp()
         } catch {
-            Logger.shared.warning("Could not set seed to backed up.", error: error as NSError)
+            Logger.shared.warning("Could not set seed to backed up.", error: error)
         }
         if isInitialSetup {
             loadRootController()

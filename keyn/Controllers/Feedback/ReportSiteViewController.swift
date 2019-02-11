@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class ReportSiteViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var textView: UITextView!

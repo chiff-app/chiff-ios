@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var wordTextFields: Array<UITextField>?
@@ -130,7 +129,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
             }
         } catch {
-            Logger.shared.error("Seed could not be recovered", error: error as NSError)
+            Logger.shared.error("Seed could not be recovered", error: error)
         }
     }
     
