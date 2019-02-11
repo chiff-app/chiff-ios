@@ -12,6 +12,7 @@ import UserNotifications
  * Code related to starting up the app in different ways.
  */
 class AppStartupService: NSObject, UIApplicationDelegate {
+
     var deniedPushNotifications = false
     var window: UIWindow?
     var pushNotificationService: PushNotificationService!
@@ -130,17 +131,17 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             } else {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
-                DispatchQueue.main.async {
-                    self.window = UIWindow(frame: UIScreen.main.bounds)
-                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ErrorViewController")
-                    self.window?.makeKeyAndVisible()
-                }
+                self.showError("""
+                    Unfortunately, Keyn doesn't work without push notifications :(
+
+                    Turn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.
+                """)
             }
         }
     }
 
-    // If there is no seed in the keychain (first run or if deleteSeed() has been called, a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
+    // If there is no seed in the keychain (first run or if deleteSeed() has been called,
+    // a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
     private func launchInitialView() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let viewController: UIViewController?
@@ -169,4 +170,21 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         self.window?.rootViewController = viewController
         self.window?.makeKeyAndVisible()
     }
+
+    private func showError(_ message: String) {
+        DispatchQueue.main.async {
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+
+            guard let viewController = storyboard.instantiateViewController(withIdentifier: "ErrorViewController") as? ErrorViewController else {
+                Logger.shared.error("Can't create ErrorViewController so we have no way to start the app.")
+                fatalError("Can't create ErrorViewController so we have no way to start the app.")
+            }
+
+            viewController.errorMessage = message
+            self.window?.rootViewController = viewController
+            self.window?.makeKeyAndVisible()
+        }
+    }
+
 }

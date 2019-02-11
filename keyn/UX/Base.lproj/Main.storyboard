@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -431,11 +431,11 @@
             </objects>
             <point key="canvasLocation" x="-1818" y="0.0"/>
         </scene>
-        <!--View Controller-->
+        <!--Error View Controller-->
         <scene sceneID="807-pr-mGw">
             <objects>
-                <viewController storyboardIdentifier="ErrorViewController" id="33Q-gN-1q8" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lxx-r9-eDF">
+                <viewController storyboardIdentifier="ErrorViewController" id="33Q-gN-1q8" customClass="ErrorViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lxx-r9-eDF" customClass="Error">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -445,27 +445,37 @@
                                     <constraint firstAttribute="height" constant="80" id="mpA-3n-Ms5"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
-                                <rect key="frame" x="16" y="300" width="382" height="140.66666666666663"/>
-                                <string key="text">Unfortunately, Keyn doesn't work without push notifications :(. 
-
-Please turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
-                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="An unknown problem occured." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
+                                <rect key="frame" x="20" y="312" width="374" height="114"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="16"/>
                                 <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There was a problem" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2r-bc-5ef">
+                                <rect key="frame" x="20" y="230" width="374" height="32"/>
+                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="24"/>
+                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.28582200410000003" green="0.19759389760000001" blue="0.63343566659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="20" id="9iO-kV-0yn"/>
                             <constraint firstItem="vag-ph-8Fe" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="Gx2-Dd-twn"/>
+                            <constraint firstItem="c2r-bc-5ef" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="20" id="LH2-dn-dgV"/>
                             <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="vag-ph-8Fe" secondAttribute="trailing" constant="16" id="OqB-YO-ty8"/>
-                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="iNK-us-ipI" secondAttribute="trailing" constant="16" id="aZi-wu-IHv"/>
-                            <constraint firstItem="iNK-us-ipI" firstAttribute="top" secondItem="vag-ph-8Fe" secondAttribute="bottom" constant="120" id="hA7-fS-rwH"/>
-                            <constraint firstItem="iNK-us-ipI" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="vhn-2G-W22"/>
+                            <constraint firstItem="c2r-bc-5ef" firstAttribute="top" secondItem="vag-ph-8Fe" secondAttribute="bottom" constant="50" id="PBI-ZQ-sdC"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="c2r-bc-5ef" secondAttribute="trailing" constant="20" id="Qu4-IQ-zh4"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="iNK-us-ipI" secondAttribute="trailing" constant="20" id="vC4-mY-nKJ"/>
+                            <constraint firstItem="iNK-us-ipI" firstAttribute="top" secondItem="c2r-bc-5ef" secondAttribute="bottom" constant="50" id="w6m-cb-FBR"/>
                             <constraint firstItem="vag-ph-8Fe" firstAttribute="top" secondItem="WLr-35-Emx" secondAttribute="top" constant="80" id="zbW-Gq-lB5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WLr-35-Emx"/>
                     </view>
+                    <connections>
+                        <outlet property="errorMessageLabel" destination="iNK-us-ipI" id="V8D-Am-nJM"/>
+                        <outlet property="errorTitleLabel" destination="c2r-bc-5ef" id="dkc-5T-psB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bXc-Mo-HZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1572,12 +1582,12 @@ Reproduction steps:
                         <rect key="frame" x="0.0" y="0.0" width="414" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="mTN-zR-iAo">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="mTN-zR-iAo">
                             <rect key="frame" x="0.0" y="248.66666666666669" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Niw-uM-jIv">
-                                    <rect key="frame" x="16" y="0.0" width="382" height="44"/>
+                                    <rect key="frame" x="16" y="0.0" width="382" height="0.0"/>
                                     <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="14"/>
                                     <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
