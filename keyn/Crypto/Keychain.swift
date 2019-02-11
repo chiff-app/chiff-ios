@@ -21,7 +21,7 @@ enum Classification: String {
 }
 
 class Keychain {
-    static let sharedInstance = Keychain()
+    static let shared = Keychain()
     
     private init() {}
     
