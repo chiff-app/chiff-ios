@@ -18,7 +18,7 @@ class PasswordGenerator {
     private init() {}
 
     func generatePassword(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, offset: [Int]?) throws -> (String, Int) {
-        let (length, chars) = parse(ppd: ppd, customPassword: offset != nil)
+        let (length, chars) = parse(ppd: ppd, isCustomPassword: offset != nil)
 
         guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
             throw PasswordGenerationError.tooShort
@@ -48,7 +48,7 @@ class PasswordGenerator {
             throw PasswordGenerationError.characterNotAllowed
         }
 
-        let (length, chars) = parse(ppd: ppd, customPassword: true)
+        let (length, chars) = parse(ppd: ppd, isCustomPassword: true)
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
@@ -63,8 +63,8 @@ class PasswordGenerator {
 
     // MARK: - Private
     
-    private func parse(ppd: PPD?, customPassword: Bool) -> (Int, [Character]) {
-        var length = customPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
+    private func parse(ppd: PPD?, isCustomPassword: Bool) -> (Int, [Character]) {
+        var length = isCustomPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
         var chars = [Character]()
         
         if let characterSets = ppd?.characterSets {
