@@ -12,7 +12,7 @@ class LikertQuestionViewController: QuestionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let font = UIFont.systemFont(ofSize: 20)
-        likertValue.setTitleTextAttributes([NSAttributedStringKey.font: font], for: .normal)
+        likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +42,6 @@ class LikertQuestionViewController: QuestionViewController {
 class ExtendedUISegmentedControl: UISegmentedControl {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        self.selectedSegmentIndex = UISegmentedControlNoSegment
+        self.selectedSegmentIndex = UISegmentedControl.noSegment
     }
 }

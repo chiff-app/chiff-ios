@@ -17,7 +17,7 @@ class LoginViewController: ASCredentialProviderViewController {
         
         navigationBar.shadowImage = UIImage()
         touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13)
+        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
         
         if !hasFaceID() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
