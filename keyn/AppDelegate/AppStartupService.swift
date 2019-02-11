@@ -23,7 +23,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         registerForPushNotifications()
 
         // AuthenticationGuard must be initialized first
-        let _ = AuthenticationGuard.sharedInstance
+        let _ = AuthenticationGuard.shared
         // ?
         let _: LAError? = nil
 
@@ -38,7 +38,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     // Open app from URL (e.g. QR code)
     func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         do {
-            try AuthenticationGuard.sharedInstance.authorizePairing(url: url) { (session, error) in
+            try AuthenticationGuard.shared.authorizePairing(url: url) { (session, error) in
                 DispatchQueue.main.async {
                     if let session = session {
                         let nc = NotificationCenter.default

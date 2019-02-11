@@ -228,7 +228,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return false
         }
 
-        AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+        AuthenticationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
 
         return true
     }
@@ -318,8 +318,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                         }
 
                         DispatchQueue.main.async {
-                            if !AuthenticationGuard.sharedInstance.authorizationInProgress {
-                                AuthenticationGuard.sharedInstance.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+                            if !AuthenticationGuard.shared.authorizationInProgress {
+                                AuthenticationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
                             }
                         }
                     }
