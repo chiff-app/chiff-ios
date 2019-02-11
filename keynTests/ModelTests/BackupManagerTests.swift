@@ -30,7 +30,7 @@ class BackupManagerTests: XCTestCase {
     func testGetBackupData() {
         let expectation = XCTestExpectation(description: "Download backup data")
 
-        XCTAssertNoThrow(try BackupManager.sharedInstance.getBackupData {
+        XCTAssertNoThrow(try BackupManager.shared.getBackupData {
             expectation.fulfill()
         })
 

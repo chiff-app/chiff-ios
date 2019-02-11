@@ -118,7 +118,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         // TODO: Show some progress bar or something will data is being fetched remotely
         do {
             if try Seed.recover(mnemonic: mnemonic)  {
-                try BackupManager.sharedInstance.getBackupData(completionHandler: {
+                try BackupManager.shared.getBackupData(completionHandler: {
                     DispatchQueue.main.async {
                         if self.isInitialSetup {
                             self.loadRootController()

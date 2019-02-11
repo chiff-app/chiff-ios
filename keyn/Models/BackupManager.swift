@@ -8,7 +8,7 @@ import JustLog
 struct BackupManager {
     private let keychainService = "io.keyn.backup"
     private let endpoint = "backup"
-    static let sharedInstance = BackupManager()
+    static let shared = BackupManager()
 
     private enum KeyIdentifier: String, Codable {
         case priv = "priv"

@@ -51,7 +51,7 @@ struct Account: Codable {
         }
 
         try Keychain.shared.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
-        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+        try BackupManager.shared.backup(id: id, accountData: accountData)
     }
     
     mutating func backup() throws {
@@ -61,7 +61,7 @@ struct Account: Codable {
         }
 
         let accountData = try PropertyListEncoder().encode(self)
-        try BackupManager.sharedInstance.backup(id: id, accountData: accountData)
+        try BackupManager.shared.backup(id: id, accountData: accountData)
     }
 
     func password() throws -> String {
@@ -173,7 +173,7 @@ struct Account: Codable {
 
     func delete() throws {
         try Keychain.shared.delete(id: id, service: Account.keychainService)
-        try BackupManager.sharedInstance.deleteAccount(accountId: id)
+        try BackupManager.shared.deleteAccount(accountId: id)
         Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
     }
 

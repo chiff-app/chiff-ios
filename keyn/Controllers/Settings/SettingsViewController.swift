@@ -54,7 +54,7 @@ class SettingsViewController: UITableViewController {
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
-            BackupManager.sharedInstance.deleteAllKeys()
+            BackupManager.shared.deleteAllKeys()
             AWS.shared.deleteEndpointArn()
             Logger.shared.info("Keyn reset.", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
             UIApplication.shared.registerForRemoteNotifications()
