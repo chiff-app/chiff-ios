@@ -18,7 +18,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     var pushNotificationService: PushNotificationService!
 
     // Open app normally
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let _ = Logger.shared
         
@@ -39,7 +39,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     // Open app from URL (e.g. QR code)
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         do {
             try AuthenticationGuard.shared.authorizePairing(url: url) { (session, error) in
                 DispatchQueue.main.async {

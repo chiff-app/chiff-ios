@@ -24,7 +24,7 @@ class AuthenticationViewController: UIViewController {
     
     private func drawButtons() {
         touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13)
+        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
 
         for button in passcodeButtons {
             button.layer.borderWidth = 1.3

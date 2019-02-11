@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         (services[.appStartup] as! AppStartupService).pushNotificationService = (services[.pushNotification] as! PushNotificationService)
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         clearUserData()
 
         for service in services.values {
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         for service in services.values {
             let _ = service.application?(application, open: url, options: options)
         }

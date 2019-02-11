@@ -15,17 +15,17 @@ class AuthenticationGuard {
 
     private init() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
-        lockWindow.windowLevel = UIWindowLevelAlert
+        lockWindow.windowLevel = UIWindow.Level.alert
         lockWindow.screen = UIScreen.main
 
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         lockWindow.rootViewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
 
         let nc = NotificationCenter.default
-        nc.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
-        nc.addObserver(forName: NSNotification.Name.UIApplicationDidFinishLaunching, object: nil, queue: OperationQueue.main, using: didFinishLaunchingWithOptions)
-        nc.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
-        nc.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
+        nc.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
+        nc.addObserver(forName: UIApplication.didFinishLaunchingNotification, object: nil, queue: OperationQueue.main, using: didFinishLaunchingWithOptions)
+        nc.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
+        nc.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
     }
 
     func hideLockWindow() {
@@ -71,7 +71,7 @@ class AuthenticationGuard {
         lockView.tag = lockViewTag
 
         lockWindow.addSubview(lockView)
-        lockWindow.bringSubview(toFront: lockView)
+        lockWindow.bringSubviewToFront(lockView)
 
         // TODO: Make autolayout constrained
         //            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true

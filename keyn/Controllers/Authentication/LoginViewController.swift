@@ -12,7 +12,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13)
+        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
     }
 
     override func viewDidAppear(_ animated: Bool) {

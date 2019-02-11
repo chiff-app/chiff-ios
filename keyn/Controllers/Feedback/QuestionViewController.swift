@@ -19,7 +19,7 @@ class QuestionViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if self.isMovingFromParentViewController, let navCon = self.navigationController as? QuestionnaireController {
+        if self.isMovingFromParent, let navCon = self.navigationController as? QuestionnaireController {
             navCon.submitQuestion(index: questionIndex, question: question)
             navCon.previousQuestion()
         }

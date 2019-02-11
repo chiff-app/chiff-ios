@@ -10,7 +10,7 @@ import UserNotifications
  * Handles push notification that come from outside the app.
  */
 class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         handlePendingNotifications()
 
         let nc = NotificationCenter.default
@@ -189,18 +189,18 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return
         }
 
-        guard session.backgroundTask == UIBackgroundTaskInvalid else {
+        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid else {
             return
         }
 
         session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(session.backgroundTask)
-            session.backgroundTask = UIBackgroundTaskInvalid
+            UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(session.backgroundTask.rawValue))
+            session.backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
         self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
-            if session.backgroundTask != UIBackgroundTaskInvalid {
-                UIApplication.shared.endBackgroundTask(session.backgroundTask)
+            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid {
+                UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(session.backgroundTask.rawValue))
             }
         })
     }
@@ -389,4 +389,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         return content
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
+	return UIBackgroundTaskIdentifier(rawValue: input)
 }

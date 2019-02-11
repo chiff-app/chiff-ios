@@ -33,7 +33,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(edit))
+        editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
         navigationItem.rightBarButtonItem = editButton
         
         do {
@@ -63,7 +63,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         try? self.account.deleteOtp()
         self.token = nil
         DispatchQueue.main.async {
@@ -130,8 +130,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     @objc func edit() {
         tableView.setEditing(true, animated: true)
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(cancel))
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(update))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(update))
         doneButton.style = .done
         
         navigationItem.setLeftBarButton(cancelButton, animated: true)
@@ -376,7 +376,7 @@ class LoadingCircle: UIView {
         circleLayer.strokeEnd = CGFloat(start / duration)
         animation.fromValue = CGFloat(start / duration)
         animation.toValue = 1
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
 
         if infinite {
             animation.repeatCount = .infinity

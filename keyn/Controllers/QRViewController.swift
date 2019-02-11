@@ -78,7 +78,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         errorLabel.alpha = 0.85
 
         view.addSubview(errorLabel)
-        view.bringSubview(toFront: errorLabel)
+        view.bringSubviewToFront(errorLabel)
 
         UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
     }
