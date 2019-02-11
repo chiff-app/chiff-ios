@@ -54,7 +54,7 @@ extension UIApplication {
 extension String {
     func hash() -> String {
         do {
-            let hash = try Crypto.sharedInstance.hash(self)
+            let hash = try Crypto.shared.hash(self)
             return hash
         } catch {
             Logger.shared.error("Could not create hash.", error: error as NSError)

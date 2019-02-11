@@ -52,7 +52,7 @@ class PasswordGenerator {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
-        let keyData = try Crypto.sharedInstance.deterministicRandomBytes(seed: key, length: byteLength)
+        let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
         
         let characters = Array(password)
         return (0..<length).map({ (index) -> Int in
@@ -88,7 +88,7 @@ class PasswordGenerator {
         let key = try generateKey(username: username, passwordIndex: passwordIndex, siteID: siteID)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
-        let keyData = try Crypto.sharedInstance.deterministicRandomBytes(seed: key, length: byteLength)
+        let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
         let modulus = offset == nil ? chars.count : chars.count + 1
         let offset = offset ?? Array<Int>(repeatElement(0, count: length))
 
@@ -109,8 +109,8 @@ class PasswordGenerator {
         }
         
         // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)
-        let siteKey = try Crypto.sharedInstance.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: 0)
-        let key = try Crypto.sharedInstance.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: 0)
+        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
 
         return key
     }

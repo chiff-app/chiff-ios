@@ -23,7 +23,7 @@ enum CryptoError: Error {
 }
 
 class Crypto {
-    static let sharedInstance = Crypto()
+    static let shared = Crypto()
     
     private let sodium = Sodium()
     private let SEED_SIZE = 16

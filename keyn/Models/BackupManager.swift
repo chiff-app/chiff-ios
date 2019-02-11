@@ -36,23 +36,23 @@ struct BackupManager {
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
-            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
         try API.sharedInstance.put(type: .backup, path: pubKey, parameters: parameters)
     }
     
     func backup(id: String, accountData: Data) throws {
-        let ciphertext = try Crypto.sharedInstance.encryptSymmetric(accountData, secretKey: try encryptionKey())
+        let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
         let message = [
             "type": APIRequestType.post.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "id": id,
-            "data": try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+            "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
-            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
         try API.sharedInstance.post(type: .backup, path: try publicKey(), parameters: parameters)
@@ -66,7 +66,7 @@ struct BackupManager {
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
-            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
         try API.sharedInstance.delete(type: .backup, path: try publicKey(), parameters: parameters)
@@ -87,7 +87,7 @@ struct BackupManager {
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
-            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
+            "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
         try API.sharedInstance.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
@@ -97,8 +97,8 @@ struct BackupManager {
             for (id, data) in dict {
                 if let base64Data = data as? String {
                     do {
-                        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: base64Data)
-                        let accountData = try Crypto.sharedInstance.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
+                        let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
+                        let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
                         try Account.save(accountData: accountData, id: id)
                     } catch {
                         print(error)
@@ -115,14 +115,14 @@ struct BackupManager {
         guard let messageData = message.data(using: .utf8) else {
             throw CryptoError.convertToData
         }
-        let signedMessage = try Crypto.sharedInstance.sign(message: messageData, privKey: try privateKey())
-        let base64Message = try Crypto.sharedInstance.convertToBase64(from: signedMessage)
+        let signedMessage = try Crypto.shared.sign(message: messageData, privKey: try privateKey())
+        let base64Message = try Crypto.shared.convertToBase64(from: signedMessage)
         return base64Message
     }
     
     func signMessage(message: Data) throws -> String {
-        let signature = try Crypto.sharedInstance.sign(message: message, privKey: try privateKey())
-        let base64Signature = try Crypto.sharedInstance.convertToBase64(from: signature)
+        let signature = try Crypto.shared.sign(message: message, privKey: try privateKey())
+        let base64Signature = try Crypto.shared.convertToBase64(from: signature)
         return base64Signature
     }
     
@@ -134,7 +134,7 @@ struct BackupManager {
         guard let contextData = "backup".data(using: .utf8) else {
             throw CryptoError.convertToData
         }
-        let encryptionKey = try Crypto.sharedInstance.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
         try Keychain.sharedInstance.save(secretData: encryptionKey, id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, classification: .secret)
     }
     
@@ -144,7 +144,7 @@ struct BackupManager {
     
     private func publicKey() throws -> String {
         let pubKey = try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService)
-        let base64PubKey = try Crypto.sharedInstance.convertToBase64(from: pubKey)
+        let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
@@ -154,11 +154,11 @@ struct BackupManager {
     }
     
     private func createSigningKeypair() throws -> String {
-        let keyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: try Seed.getBackupSeed())
+        let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
         try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, classification: .restricted)
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, classification: .secret)
         
-        let base64PubKey = try Crypto.sharedInstance.convertToBase64(from: keyPair.publicKey.data)
+        let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey
     }
 }

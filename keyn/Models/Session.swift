@@ -62,7 +62,7 @@ class Session: Codable {
     }
 
     func browserPublicKey() throws -> Data {
-        return try Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey)
+        return try Crypto.shared.convertFromBase64(from: encryptionPubKey)
     }
 
     func appPrivateKey() throws -> Data {
@@ -74,14 +74,14 @@ class Session: Codable {
     }
 
     func decrypt(message: String) throws -> String {
-        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let ciphertext = try Crypto.shared.convertFromBase64(from: message)
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         return String(data: data, encoding: .utf8)!
     }
 
     func decrypt(message: String) throws -> BrowserMessage {
-        let ciphertext = try Crypto.sharedInstance.convertFromBase64(from: message)
-        let (data, _) = try Crypto.sharedInstance.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
+        let ciphertext = try Crypto.shared.convertFromBase64(from: message)
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, privKey: appPrivateKey(), pubKey: browserPublicKey())
         let browserMessage = try JSONDecoder().decode(BrowserMessage.self, from: data)
         return browserMessage
     }
@@ -89,7 +89,7 @@ class Session: Codable {
     func acknowledge(browserTab: Int) throws {
         let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
         let jsonMessage = try JSONEncoder().encode(response)
-        let ciphertext = try Crypto.sharedInstance.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
+        let ciphertext = try Crypto.shared.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
         try sendToMessageQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge)
     }
 
@@ -124,7 +124,7 @@ class Session: Codable {
         }
 
         let message = try JSONEncoder().encode(response!)
-        let ciphertext = try Crypto.sharedInstance.encrypt(message, pubKey: Crypto.sharedInstance.convertFromBase64(from: encryptionPubKey), privKey: appPrivateKey())
+        let ciphertext = try Crypto.shared.encrypt(message, pubKey: Crypto.shared.convertFromBase64(from: encryptionPubKey), privKey: appPrivateKey())
         try sendToMessageQueue(ciphertext: ciphertext, type: type)
     }
 
@@ -162,9 +162,9 @@ class Session: Codable {
     }
 
     static func exists(encryptionPubKey: String, queueSeed: String) throws -> Bool {
-        let seed = try Crypto.sharedInstance.deriveKey(key: queueSeed, context: "message", index: 1)
-        let messageKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: seed)
-        let messagePubKey = try Crypto.sharedInstance.convertToBase64(from: messageKeyPair.publicKey.data)
+        let seed = try Crypto.shared.deriveKey(key: queueSeed, context: "message", index: 1)
+        let messageKeyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
+        let messagePubKey = try Crypto.shared.convertToBase64(from: messageKeyPair.publicKey.data)
         let id = "\(encryptionPubKey)_\(messagePubKey)".hash()
         return Keychain.sharedInstance.has(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
     }
@@ -203,12 +203,12 @@ class Session: Codable {
 
     static func initiate(queueSeed: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
-        let messageKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "message", index: 1))
-        let controlKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "control", index: 2))
-        let pushKeyPair = try Crypto.sharedInstance.createSigningKeyPair(seed: Crypto.sharedInstance.deriveKey(key: queueSeed, context: "pushpush", index: 3))
-        let messagePubKey = try Crypto.sharedInstance.convertToBase64(from: messageKeyPair.publicKey.data)
-        let controlPubKey = try Crypto.sharedInstance.convertToBase64(from: controlKeyPair.publicKey.data)
-        let pushPubKey = try Crypto.sharedInstance.convertToBase64(from: pushKeyPair.publicKey.data)
+        let messageKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "message", index: 1))
+        let controlKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "control", index: 2))
+        let pushKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "pushpush", index: 3))
+        let messagePubKey = try Crypto.shared.convertToBase64(from: messageKeyPair.publicKey.data)
+        let controlPubKey = try Crypto.shared.convertToBase64(from: controlKeyPair.publicKey.data)
+        let pushPubKey = try Crypto.shared.convertToBase64(from: pushKeyPair.publicKey.data)
         let session = Session(encryptionPubKey: pubKey, messagePubKey: messagePubKey, controlPubKey: controlPubKey, pushPubKey: pushPubKey, browser: browser, os: os)
 
         do {
@@ -228,7 +228,7 @@ class Session: Codable {
     // MARK: - Private
 
     private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
-        let data = try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+        let data = try Crypto.shared.convertToBase64(from: ciphertext)
         let parameters = try sign(data: data, requestType: .post, privKey: Keychain.sharedInstance.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
         try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters)
     }
@@ -252,10 +252,10 @@ class Session: Codable {
         guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
             throw SessionError.noEndpoint
         }
-        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.sharedInstance.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
+        let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.shared.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
         try session.authorizePushMessages(endpoint: endpoint)
-        return try Crypto.sharedInstance.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
+        return try Crypto.shared.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
     }
 
     private func save(messagePrivKey: Data, controlPrivKey: Data, pushPrivKey: Data) throws {
@@ -267,7 +267,7 @@ class Session: Codable {
         try Keychain.sharedInstance.save(secretData: pushPrivKey, id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService, classification: .restricted)
 
         // Generate and save own keypair1
-        let keyPair = try Crypto.sharedInstance.createSessionKeyPair()
+        let keyPair = try Crypto.shared.createSessionKeyPair()
         try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, classification: .restricted)
         try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, classification: .restricted)
     }
@@ -288,11 +288,11 @@ class Session: Codable {
         }
 
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        let signature = try Crypto.sharedInstance.sign(message: jsonData, privKey: privKey)
+        let signature = try Crypto.shared.sign(message: jsonData, privKey: privKey)
 
         var parameters = [
-            "m": try Crypto.sharedInstance.convertToBase64(from: jsonData),
-            "s": try Crypto.sharedInstance.convertToBase64(from: signature)
+            "m": try Crypto.shared.convertToBase64(from: jsonData),
+            "s": try Crypto.shared.convertToBase64(from: signature)
         ]
         if let type = type {
             parameters["t"] = String(type.rawValue)
