@@ -12,7 +12,7 @@ import XCTest
  */
 class TestHelper {
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
-    static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
+    static let browserPrivateKey = try! Crypto.shared.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
     static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
     static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
     static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
@@ -68,9 +68,9 @@ class TestHelper {
             let session = try Session.getSession(id: sessionID)!
             let appPublicKey: Data = try session.appPublicKey()
             let messageData = message.data(using: .utf8)!
-            let ciphertext = try Crypto.sharedInstance.encrypt(messageData, pubKey: appPublicKey, privKey: browserPrivateKey)
+            let ciphertext = try Crypto.shared.encrypt(messageData, pubKey: appPublicKey, privKey: browserPrivateKey)
 
-            return try Crypto.sharedInstance.convertToBase64(from: ciphertext)
+            return try Crypto.shared.convertToBase64(from: ciphertext)
         } catch {
             print("Cannot fake browser encryption, tests will fail: \(error)")
         }

@@ -18,9 +18,9 @@ struct Seed {
     }
 
     static func create() throws {
-        let seed = try Crypto.sharedInstance.generateSeed()
-        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
+        let seed = try Crypto.shared.generateSeed()
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
         try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, classification: .secret)
         try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
@@ -29,7 +29,7 @@ struct Seed {
 
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.sharedInstance.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        let seedHash = try Crypto.sharedInstance.hash(seed).first!
+        let seedHash = try Crypto.shared.hash(seed).first!
         var bitstring = ""
         for byte in Array<UInt8>(seed) {
             bitstring += String(byte, radix: 2).pad(toSize: 8)
@@ -55,7 +55,7 @@ struct Seed {
             return false
         }
         
-        guard let seedHash = try? Crypto.sharedInstance.hash(seed).first! else {
+        guard let seedHash = try? Crypto.shared.hash(seed).first! else {
             return false
         }
         if checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) {
@@ -67,14 +67,14 @@ struct Seed {
     static func recover(mnemonic: [String]) throws -> Bool {
         let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
 
-        let seedHash = try Crypto.sharedInstance.hash(seed).first!
+        let seedHash = try Crypto.shared.hash(seed).first!
         guard checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) else {
             return false
         }
 
 
-        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
         try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true", classification: .secret)
         try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
