@@ -131,7 +131,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             } else {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
-                self.showError("""
+                self.launchErrorView("""
                     Unfortunately, Keyn doesn't work without push notifications :(
 
                     Turn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.
@@ -171,7 +171,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         self.window?.makeKeyAndVisible()
     }
 
-    private func showError(_ message: String) {
+    private func launchErrorView(_ message: String) {
         DispatchQueue.main.async {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
