@@ -383,14 +383,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         do {
             return try NotificationProcessor.process(content: mutableContent)
-        } catch NotificationExtensionError.Decryption {
-            Logger.shared.debug("Decryption error")
-        } catch NotificationExtensionError.Session {
-            Logger.shared.debug("Session error")
-        } catch NotificationExtensionError.StringCast(let type) {
-            Logger.shared.debug("Stringcast error: \(type)")
         } catch {
-            Logger.shared.debug("Other error", error: error)
+            Logger.shared.debug("Error reprocessing data", error: error)
         }
 
         return content

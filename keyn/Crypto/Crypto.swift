@@ -5,7 +5,7 @@
 import Foundation
 import Sodium
 
-enum CryptoError: String, KeynError {
+enum CryptoError: Error {
     case randomGeneration
     case base64Decoding
     case base64Encoding
@@ -13,17 +13,10 @@ enum CryptoError: String, KeynError {
     case keyDerivation
     case encryption
     case decryption
-    case convertToData
     case convertToHex
     case hashing
-    case mnemonicConversion
-    case mnemonicChecksum
     case signing
     case indexOutOfRange
-    
-    var nsError: NSError {
-        return NSError(domain: "Keyn.CryptoError", code: 0, userInfo: ["error_type": self.rawValue])
-    }
 }
 
 class Crypto {
@@ -205,7 +198,7 @@ class Crypto {
 
     func hash(_ message: String) throws -> String {
         guard let messageData = message.data(using: .utf8) else {
-            throw CryptoError.convertToData
+            throw KeynError.stringDecoding
         }
 
         let hashData = try hash(messageData)

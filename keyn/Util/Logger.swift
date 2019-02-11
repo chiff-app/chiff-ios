@@ -23,48 +23,53 @@ struct Logger {
         logger.logLogstashSocketActivity = Properties.isDebug
         logger.defaultUserInfo = [
             "app": "Keyn",
-            "device": "APP",
+            "device": "ios",
             "userID": Properties.userID(),
             "debug": Properties.isDebug]
         logger.setup()
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.verbose(message, error: makeNSError(error: error), userInfo: userInfo)
+        logger.verbose(message, error: error?.nsError, userInfo: userInfo)
     }
     
     func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.debug(message, error: makeNSError(error: error), userInfo: userInfo)
+        logger.debug(message, error: error?.nsError, userInfo: userInfo)
     }
     
     func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.info(message, error: makeNSError(error: error), userInfo: userInfo)
+        logger.info(message, error: error?.nsError, userInfo: userInfo)
     }
     
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.warning(message, error: makeNSError(error: error), userInfo: userInfo)
+        logger.warning(message, error: error?.nsError, userInfo: userInfo)
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.error(message, error: makeNSError(error: error), userInfo: userInfo)
-    }
-    
-    // MARK: - Private functions
-    
-    private func makeNSError(error: Error?) -> NSError? {
-        guard let error = error else {
-            return nil
-        }
-        switch error {
-        case let error as KeynError:
-            return error.nsError
-        default:
-            return error as NSError
-        }
+        logger.error(message, error: error?.nsError, userInfo: userInfo)
     }
     
 }
 
-protocol KeynError: Error {
-    var nsError: NSError { get }
+enum KeynError: Error {
+    case stringEncoding
+    case stringDecoding
+    case unexpectedData
+}
+
+extension Error {
+    private var KEYN_ERROR_CODE: Int {
+        return 42
+    }
+    var nsError: NSError {
+        switch self {
+        case let self as NSError:
+            return self
+        default:
+            return NSError(
+                domain: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String,
+                code: KEYN_ERROR_CODE,
+                userInfo: ["class": type(of: self), "error_type": "\(self)"])
+        }
+    }
 }

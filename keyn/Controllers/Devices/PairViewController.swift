@@ -28,7 +28,6 @@ class PairViewController: QRViewController {
                     case KeychainError.storeKey:
                         Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error)
                         self?.displayError(message: "This QR code was already scanned.")
-                    // TODO: Frank: I added this but does it make sense?
                     case SessionError.noEndpoint:
                         Logger.shared.error("There is no endpoint in the session data.", error: error)
                         self?.displayError(message: "There is no AWS endpoint in the session data.")

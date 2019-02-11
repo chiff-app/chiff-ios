@@ -148,7 +148,7 @@ class AuthenticationGuard {
         authorizationInProgress = true
         if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
-                guard try !Session.exists(encryptionPubKey: pubKey, queueSeed: queueSeed) else {
+                guard try Session.exists(encryptionPubKey: pubKey, queueSeed: queueSeed) else {
                     authorizationInProgress = false
                     throw SessionError.exists
                 }

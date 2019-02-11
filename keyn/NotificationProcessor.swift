@@ -5,23 +5,22 @@
 import UserNotifications
 
 enum NotificationExtensionError: Error {
-    case StringCast(String)
-    case Decryption
-    case Session
+    case decodeCiphertext
+    case decodeSessionId
 }
 
 class NotificationProcessor {
     class func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
         guard let ciphertext = content.userInfo["data"] as? String else {
-            throw NotificationExtensionError.StringCast("ciphertext")
+            throw NotificationExtensionError.decodeCiphertext
         }
         
         guard let id = content.userInfo["sessionID"] as? String else {
-            throw NotificationExtensionError.StringCast("sessionID")
+            throw NotificationExtensionError.decodeSessionId
         }
         
         guard let session = try Session.getSession(id: id) else {
-            throw NotificationExtensionError.Session
+            throw SessionError.exists
         }
         
         let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)

@@ -8,7 +8,6 @@ import AWSSNS
 
 enum AWSError: Error {
     case queueUrl(error: String?)
-    case decodingError
     case createObjectError(error: String?)
 }
 
@@ -98,7 +97,7 @@ class AWS {
 
             let subscriptionEndpointData = try Keychain.shared.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
             guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
-                throw AWSError.decodingError
+                throw KeynError.stringDecoding
             }
 
             unsubscribeRequest.subscriptionArn = subscriptionEndpoint
