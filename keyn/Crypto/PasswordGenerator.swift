@@ -13,7 +13,7 @@ enum PasswordGenerationError: Error {
 }
 
 class PasswordGenerator {
-    static let sharedInstance = PasswordGenerator()
+    static let shared = PasswordGenerator()
 
     private init() {}
 

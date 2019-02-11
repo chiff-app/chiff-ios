@@ -8,11 +8,10 @@ import XCTest
 
 /*
  * Test helpers to be used in all tests.
- * We cannot (easily?) create mock objects so we actually modify the
- * Keychain, storage etc.
+ * We cannot (easily?) create mock objects so we actually modify the Keychain, storage etc.
  */
 class TestHelper {
-    static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble" // Use this seed for testing.
+    static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
     static let browserPrivateKey = try! Crypto.sharedInstance.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
     static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
     static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
