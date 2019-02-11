@@ -24,7 +24,7 @@ struct BackupManager {
     
     func initialize() throws {
         var pubKey: String
-        if !Keychain.sharedInstance.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
+        if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
             try createEncryptionKey()
             pubKey = try createSigningKeypair()
         } else {
@@ -74,7 +74,7 @@ struct BackupManager {
     
     func getBackupData(completionHandler: @escaping () -> Void) throws {
         var pubKey: String
-        if !Keychain.sharedInstance.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
+        if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
             try createEncryptionKey()
             pubKey = try createSigningKeypair()
         } else {
@@ -127,7 +127,7 @@ struct BackupManager {
     }
     
     func deleteAllKeys() {
-        Keychain.sharedInstance.deleteAll(service: keychainService)
+        Keychain.shared.deleteAll(service: keychainService)
     }
     
     private func createEncryptionKey() throws {
@@ -135,28 +135,28 @@ struct BackupManager {
             throw CryptoError.convertToData
         }
         let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
-        try Keychain.sharedInstance.save(secretData: encryptionKey, id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: encryptionKey, id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, classification: .secret)
     }
     
     private func encryptionKey() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
     }
     
     private func publicKey() throws -> String {
-        let pubKey = try Keychain.sharedInstance.get(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService)
+        let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService)
         let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
     private func privateKey() throws -> Data {
-        let privKey = try Keychain.sharedInstance.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
+        let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
         return privKey
     }
     
     private func createSigningKeypair() throws -> String {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
-        try Keychain.sharedInstance.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, classification: .restricted)
-        try Keychain.sharedInstance.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, classification: .restricted)
+        try Keychain.shared.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, classification: .secret)
         
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey

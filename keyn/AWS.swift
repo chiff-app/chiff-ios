@@ -33,10 +33,10 @@ class AWS {
 
     func snsRegistration(deviceToken: Data) {
         let token = deviceToken.hexEncodedString()
-        if Keychain.sharedInstance.has(id: endpointKeychainIdentifier, service: awsService) {
+        if Keychain.shared.has(id: endpointKeychainIdentifier, service: awsService) {
             // Get endpoint from Keychain
             do  {
-                let endpointData = try Keychain.sharedInstance.get(id: endpointKeychainIdentifier, service: awsService)
+                let endpointData = try Keychain.shared.get(id: endpointKeychainIdentifier, service: awsService)
                 snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
                 checkIfUpdateIsNeeded(token: token)
             } catch {
@@ -51,7 +51,7 @@ class AWS {
     }
 
     func deleteEndpointArn() {
-        Keychain.sharedInstance.deleteAll(service: awsService)
+        Keychain.shared.deleteAll(service: awsService)
     }
 
     func subscribe() {
@@ -73,10 +73,10 @@ class AWS {
             if let result = task.result {
                 if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
                     do {
-                        try Keychain.sharedInstance.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService, classification: .secret)
+                        try Keychain.shared.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService, classification: .secret)
                     } catch {
                         Logger.shared.error("Error saving Keyn subscription identifier.", error: error as NSError)
-                        try? Keychain.sharedInstance.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
+                        try? Keychain.shared.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
                     }
                 } else {
                     Logger.shared.error("Error subscribing to Keyn notifications.")
@@ -97,7 +97,7 @@ class AWS {
                 throw AWSError.createObjectError(error: "Could not create unsubscribeRequest.")
             }
 
-            let subscriptionEndpointData = try Keychain.sharedInstance.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+            let subscriptionEndpointData = try Keychain.shared.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
             guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
                 throw AWSError.decodingError
             }
@@ -106,7 +106,7 @@ class AWS {
 
             sns.unsubscribe(unsubscribeRequest).continueOnSuccessWith { (task) -> Any? in
                 do {
-                    try Keychain.sharedInstance.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+                    try Keychain.shared.delete(id: self.subscriptionKeychainIdentifier, service: self.awsService)
                 } catch {
                     Logger.shared.warning("Error deleting subscriptionArn from Keychian", error: error as NSError)
                 }
@@ -123,7 +123,7 @@ class AWS {
     }
 
     func isSubscribed() -> Bool {
-        return Keychain.sharedInstance.has(id: self.subscriptionKeychainIdentifier, service: self.awsService)
+        return Keychain.shared.has(id: self.subscriptionKeychainIdentifier, service: self.awsService)
     }
 
     // MARK: - Private
@@ -203,8 +203,8 @@ class AWS {
             if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
-                    try? Keychain.sharedInstance.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
-                    try Keychain.sharedInstance.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService, classification: .secret)
+                    try? Keychain.shared.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
+                    try Keychain.shared.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService, classification: .secret)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
                     if self.isFirstLaunch {

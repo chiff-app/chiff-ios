@@ -22,13 +22,13 @@ struct Seed {
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
     }
 
     static func mnemonic() throws -> [String] {
-        let seed = try Keychain.sharedInstance.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
         let seedHash = try Crypto.shared.hash(seed).first!
         var bitstring = ""
         for byte in Array<UInt8>(seed) {
@@ -76,37 +76,37 @@ struct Seed {
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true", classification: .secret)
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true", classification: .secret)
+        try Keychain.shared.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
         
         return true
     }
 
     static func getPasswordSeed() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
     }
 
     static func getBackupSeed() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
     }
 
     static func exists() -> Bool {
-        return Keychain.sharedInstance.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
     }
 
     static func delete() throws {
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
     }
 
     static func setBackedUp() throws {
-        try Keychain.sharedInstance.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
+        try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
     }
 
     static func isBackedUp() throws -> Bool {
-        guard let dataArray = try Keychain.sharedInstance.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
+        guard let dataArray = try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
             return false
         }
 
