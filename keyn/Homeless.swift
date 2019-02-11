@@ -200,6 +200,18 @@ extension UIImage {
     }
 }
 
+extension UIBackgroundTaskIdentifier: Codable {
+    
+    enum CodingKeys: CodingKey {
+        case rawValue
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(rawValue: try values.decode(Int.self, forKey: .rawValue))
+    }
+}
+
 @IBDesignable
 class FormTextField: UITextField {
     @IBInspectable var inset: CGFloat = 0
