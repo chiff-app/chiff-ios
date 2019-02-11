@@ -53,14 +53,14 @@ class AccountTests: XCTestCase {
         XCTAssertNoThrow(try account?.delete())
     }
     
-    func testInitInValidAccountDoesThrow() {
+    func testInitInValidPasswordIndexWithoutPasswordDoesThrow() {
         XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: nil)) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
         XCTAssertNil(testIfAccountIsSaved())
     }
     
-    func testInitInValidAccountWithPasswordDoesThrow() {
+    func testInitInValidPasswordIndexWithPasswordDoesThrow() {
         XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: "Pass123.")) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
