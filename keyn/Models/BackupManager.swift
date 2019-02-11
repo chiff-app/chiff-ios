@@ -112,7 +112,7 @@ struct BackupManager {
     
     func signMessage(message: String) throws -> String {
         guard let messageData = message.data(using: .utf8) else {
-            throw CryptoError.convertToData
+            throw KeynError.stringDecoding
         }
         let signedMessage = try Crypto.shared.sign(message: messageData, privKey: try privateKey())
         let base64Message = try Crypto.shared.convertToBase64(from: signedMessage)
@@ -131,7 +131,7 @@ struct BackupManager {
     
     private func createEncryptionKey() throws {
         guard let contextData = "backup".data(using: .utf8) else {
-            throw CryptoError.convertToData
+            throw KeynError.stringDecoding
         }
         let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
         try Keychain.shared.save(secretData: encryptionKey, id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, classification: .secret)

@@ -4,16 +4,11 @@
  */
 import Foundation
 
-enum PasswordGenerationError: String, KeynError {
+enum PasswordGenerationError: Error {
     case characterNotAllowed
     case tooShort
     case keyGeneration
-    case dataConversion
     case invalidPassword
-    
-    var nsError: NSError {
-        return NSError(domain: "Keyn.PasswordGenerationError", code: 0, userInfo: ["error_type": self.rawValue])
-    }
 }
 
 class PasswordGenerator {
@@ -109,7 +104,7 @@ class PasswordGenerator {
     private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.prefix(8).data(using: .utf8) else {
-                throw PasswordGenerationError.dataConversion
+                throw KeynError.stringDecoding
         }
         
         // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)

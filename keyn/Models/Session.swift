@@ -5,15 +5,11 @@
 import UIKit
 import UserNotifications
 
-enum SessionError: String, KeynError {
+enum SessionError: Error {
     case exists
     case invalid
     case noEndpoint
-    case unexpectedData
-    
-    var nsError: NSError {
-        return NSError(domain: "Keyn.AccountError", code: 0, userInfo: ["error_type": self.rawValue])
-    }
+    case unknownType
 }
 
 class Session: Codable {
@@ -123,8 +119,7 @@ class Session: Codable {
         case .acknowledge:
             response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
         default:
-            // TODO: throw error
-            return
+            throw SessionError.unknownType
         }
 
         let message = try JSONEncoder().encode(response!)
@@ -158,7 +153,7 @@ class Session: Codable {
 
         for dict in dataArray {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
-                throw SessionError.unexpectedData
+                throw KeynError.unexpectedData
             }
             sessions.append(try decoder.decode(Session.self, from: sessionData))
         }
@@ -182,7 +177,7 @@ class Session: Codable {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
-            throw SessionError.unexpectedData
+            throw KeynError.unexpectedData
         }
         let decoder = PropertyListDecoder()
         return try decoder.decode(Session.self, from: sessionData)

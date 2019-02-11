@@ -4,6 +4,10 @@
  */
 import Foundation
 
+enum SeedError: Error {
+    case mnemonicConversion
+}
+
 struct Seed {
     static let keychainService = "io.keyn.seed"
 
@@ -42,7 +46,7 @@ struct Seed {
         var mnemonic = [String]()
         for word in bitstring.components(withLength: 11) {
             guard let index = Int(word, radix: 2) else {
-                throw CryptoError.mnemonicConversion
+                throw SeedError.mnemonicConversion
             }
             mnemonic.append(wordlist[index])
         }
@@ -126,7 +130,7 @@ struct Seed {
         var bitstring = ""
         for word in mnemonic {
             guard let index: Int = wordlist.index(of: word) else {
-                throw CryptoError.mnemonicConversion
+                throw SeedError.mnemonicConversion
             }
             bitstring += String(index, radix: 2).pad(toSize: 11)
         }
@@ -136,7 +140,7 @@ struct Seed {
         var seed = Data(capacity: seedString.count)
         for byteString in seedString.components(withLength: 8) {
             guard let byte = UInt8(byteString, radix: 2) else {
-                throw CryptoError.mnemonicConversion
+                throw SeedError.mnemonicConversion
             }
             seed.append(byte)
         }
