@@ -130,13 +130,13 @@ class Session: Codable {
 
     func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
-        try API.sharedInstance.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
+        try API.shared.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
     }
 
     func deleteChangeConfirmation(receiptHandle: String) {
         do {
             let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle)
-            try API.sharedInstance.delete(type: .message, path: controlPubKey, parameters: parameters)
+            try API.shared.delete(type: .message, path: controlPubKey, parameters: parameters)
         } catch {
             Logger.shared.warning("Failed to delete change confirmation from queue.")
         }
@@ -230,22 +230,22 @@ class Session: Codable {
     private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
         let data = try Crypto.shared.convertToBase64(from: ciphertext)
         let parameters = try sign(data: data, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
-        try API.sharedInstance.post(type: .message, path: messagePubKey, parameters: parameters)
+        try API.shared.post(type: .message, path: messagePubKey, parameters: parameters)
     }
 
     private func sendToControlQueue(message: String) throws {
         let parameters = try sign(data: message, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
-        try API.sharedInstance.post(type: .message, path: controlPubKey, parameters: parameters)
+        try API.shared.post(type: .message, path: controlPubKey, parameters: parameters)
     }
 
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.sharedInstance.put(type: .push, path: pushPubKey, parameters: parameters)
+        try API.shared.put(type: .push, path: pushPubKey, parameters: parameters)
     }
 
     private func deleteEndpointAtAWS() throws {
         let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.sharedInstance.delete(type: .push, path: pushPubKey, parameters: parameters)
+        try API.shared.delete(type: .push, path: pushPubKey, parameters: parameters)
     }
 
     static private func createPairingResponse(session: Session) throws -> Data {
