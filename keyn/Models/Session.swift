@@ -249,7 +249,7 @@ class Session: Codable {
     }
 
     static private func createPairingResponse(session: Session) throws -> Data {
-        guard let endpoint = AWS.sharedInstance.snsDeviceEndpointArn else {
+        guard let endpoint = AWS.shared.snsDeviceEndpointArn else {
             throw SessionError.noEndpoint
         }
         let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.shared.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
