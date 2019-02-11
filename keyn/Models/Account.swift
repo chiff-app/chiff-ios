@@ -74,10 +74,6 @@ struct Account: Codable {
         return password
     }
     
-    func password() throws -> Data {
-        return try Keychain.shared.get(id: id, service: Account.keychainService)
-    }
-
     mutating func nextPassword(offset: [Int]?) throws -> String {
         let (newPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
         self.lastPasswordUpdateTryIndex = index
@@ -249,13 +245,5 @@ struct Account: Codable {
     static func deleteAll() {
         Keychain.shared.deleteAll(service: keychainService)
         Keychain.shared.deleteAll(service: otpKeychainService)
-    }
-    
-    // TEMPORARY, for migration to next version. Can be removed after versions 1.0.0 have disappeared.
-    func updateKeychainClassification() throws {
-        let passwordData: Data = try password()
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.delete(id: id, service: Account.keychainService)
-        try Keychain.shared.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
     }
 }
