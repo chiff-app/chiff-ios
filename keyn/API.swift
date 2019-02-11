@@ -6,9 +6,12 @@ import Foundation
 
 enum APIError: Error {
     case url
-    case jsonSerialization(error: String)
+    case jsonSerialization
     case request(error: Error)
-    case statusCode(error: String)
+    case statusCode(Int)
+    case noResponse
+    case noData
+    case response
 }
 
 enum APIEndpoint: String {
@@ -21,7 +24,7 @@ enum APIEndpoint: String {
     case push = "push"
 }
 
-enum APIRequestType: String {
+enum APIMethod: String {
     case get = "GET"
     case put = "PUT"
     case post = "POST"
@@ -29,31 +32,40 @@ enum APIRequestType: String {
 }
 
 class API {
+    
     static let shared = API()
 
     private init() {}
-
-    func put(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-        let request = try createRequest(type: type, path: path, parameters: parameters, method: .put)
-        send(request)
-    }
-
-    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
-        let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
+    
+    
+    func request(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: ((_ result: [String: Any]?) -> Void)? = nil) throws {
+        let request = try createRequest(type: type, path: path, parameters: nil, method: method)
         send(request, completionHandler: completionHandler)
     }
 
-    func post(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-        let request = try createRequest(type: type, path: path, parameters: parameters, method: .post)
-        send(request)
-    }
+//    func put(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .put)
+//        send(request)
+//    }
+//
+//    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
+//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
+//        send(request, completionHandler: completionHandler)
+//    }
+//
+//    func post(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .post)
+//        send(request)
+//    }
+//
+//    func delete(type: APIEndpoint, path: String, parameters: [String: String]) throws {
+//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .delete)
+//        send(request)
+//    }
+    
+    // MARK: - Private functions
 
-    func delete(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-        let request = try createRequest(type: type, path: path, parameters: parameters, method: .delete)
-        send(request)
-    }
-
-    private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)? = nil) {
+    private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)?) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying Keyn API", error: error! as NSError)
@@ -64,7 +76,7 @@ class API {
                     if httpStatus.statusCode == 200 {
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
                         guard let json = jsonData as? [String: Any] else {
-                            throw APIError.jsonSerialization(error: "Could not convert json to dict")
+                            throw APIError.jsonSerialization
                         }
                         if let completionHandler = completionHandler {
                             completionHandler(json)
@@ -72,15 +84,13 @@ class API {
                     } else if let error = error {
                         throw APIError.request(error: error)
                     } else {
-                        throw APIError.statusCode(error: "Not 200 but no error")
+                        throw APIError.statusCode(httpStatus.statusCode)
                     }
                 } catch {
                     if let completionHandler = completionHandler {
                         completionHandler(nil)
                     }
-                    Logger.shared.error("API error", error: error, userInfo: [
-                        "statusCode": httpStatus.statusCode
-                    ])
+                    Logger.shared.error("API error", error: error)
                 }
             } else {
                 if let completionHandler = completionHandler {
@@ -92,7 +102,7 @@ class API {
         task.resume()
     }
 
-    private func createRequest(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIRequestType) throws -> URLRequest {
+    private func createRequest(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi

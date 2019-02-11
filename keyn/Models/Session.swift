@@ -129,13 +129,13 @@ class Session: Codable {
 
     func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
         let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
-        try API.shared.get(type: .message, path: controlPubKey, parameters: parameters, completionHandler: completionHandler)
+        try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .get, completionHandler: completionHandler)
     }
 
     func deleteChangeConfirmation(receiptHandle: String) {
         do {
             let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle)
-            try API.shared.delete(type: .message, path: controlPubKey, parameters: parameters)
+            try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .delete)
         } catch {
             Logger.shared.warning("Failed to delete change confirmation from queue.")
         }
@@ -229,22 +229,22 @@ class Session: Codable {
     private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
         let data = try Crypto.shared.convertToBase64(from: ciphertext)
         let parameters = try sign(data: data, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
-        try API.shared.post(type: .message, path: messagePubKey, parameters: parameters)
+        try API.shared.request(type: .message, path: messagePubKey, parameters: parameters, method: .post)
     }
 
     private func sendToControlQueue(message: String) throws {
         let parameters = try sign(data: message, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
-        try API.shared.post(type: .message, path: controlPubKey, parameters: parameters)
+        try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .post)
     }
 
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.shared.put(type: .push, path: pushPubKey, parameters: parameters)
+        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .post)
     }
 
     private func deleteEndpointAtAWS() throws {
         let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.shared.delete(type: .push, path: pushPubKey, parameters: parameters)
+        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method:.delete)
     }
 
     static private func createPairingResponse(session: Session) throws -> Data {
@@ -271,7 +271,7 @@ class Session: Codable {
         try Keychain.shared.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, classification: .restricted)
     }
 
-    private func sign(data: String?, requestType: APIRequestType, privKey: Data, type: BrowserMessageType?, waitTime: String? = nil, receiptHandle: String? = nil) throws -> [String:String] {
+    private func sign(data: String?, requestType: APIMethod, privKey: Data, type: BrowserMessageType?, waitTime: String? = nil, receiptHandle: String? = nil) throws -> [String:String] {
         var message = [
             "type": requestType.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970))
