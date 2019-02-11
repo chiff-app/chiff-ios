@@ -180,7 +180,7 @@ class Questionnaire: Codable {
     
     static func fetch() {
         do {
-            try API.shared.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
+            try API.shared.request(type: .questionnaire, path: nil, parameters: nil, method: .get) { (dict) in
                 guard let dict = dict else {
                     Logger.shared.warning("Could not get questionnaires")
                     return

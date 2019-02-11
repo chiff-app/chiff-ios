@@ -30,7 +30,7 @@ struct BackupManager {
             pubKey = try publicKey()
         }
         let message = [
-            "type": APIRequestType.put.rawValue,
+            "type": APIMethod.put.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970))
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -38,13 +38,13 @@ struct BackupManager {
             "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.shared.put(type: .backup, path: pubKey, parameters: parameters)
+        try API.shared.request(type: .backup, path: pubKey, parameters: parameters, method: .put)
     }
     
     func backup(id: String, accountData: Data) throws {
         let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
         let message = [
-            "type": APIRequestType.post.rawValue,
+            "type": APIMethod.post.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "id": id,
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
@@ -54,12 +54,12 @@ struct BackupManager {
             "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.shared.post(type: .backup, path: try publicKey(), parameters: parameters)
+        try API.shared.request(type: .backup, path: try publicKey(), parameters: parameters, method: .post)
     }
     
     func deleteAccount(accountId: String) throws {
         let message = [
-            "type": APIRequestType.delete.rawValue,
+            "type": APIMethod.delete.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "id": accountId
         ]
@@ -68,7 +68,7 @@ struct BackupManager {
             "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.shared.delete(type: .backup, path: try publicKey(), parameters: parameters)
+        try API.shared.request(type: .backup, path: try publicKey(), parameters: parameters, method: .delete)
     }
     
     func getBackupData(completionHandler: @escaping () -> Void) throws {
@@ -81,7 +81,7 @@ struct BackupManager {
         }
         
         let message = [
-            "type": APIRequestType.get.rawValue,
+            "type": APIMethod.get.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970))
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -89,7 +89,7 @@ struct BackupManager {
             "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-        try API.shared.get(type: .backup, path: pubKey, parameters: parameters, completionHandler: { (dict) in
+        try API.shared.request(type: .backup, path: pubKey, parameters: parameters, method: .get, completionHandler: { (dict) in
             guard let dict = dict else {
                 return
             }
