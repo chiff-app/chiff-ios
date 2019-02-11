@@ -28,10 +28,10 @@ struct Account: Codable {
         self.site = site
 
         if let password = password {
-            passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
+            passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
         }
 
-        let (generatedPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
+        let (generatedPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
         self.passwordIndex = index
         self.lastPasswordUpdateTryIndex = index
         if password != nil {
@@ -79,7 +79,7 @@ struct Account: Codable {
     }
 
     mutating func nextPassword(offset: [Int]?) throws -> String {
-        let (newPassword, index) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        let (newPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.sharedInstance.update(id: id, service: Account.keychainService, secretData: nil, objectData: accountData, label: nil)
@@ -141,11 +141,11 @@ struct Account: Codable {
         
         if let newPassword = newPassword {
             let newIndex = passwordIndex + 1
-            self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
+            self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
         } else if let newUsername = newUsername {
-           self.passwordOffset = try PasswordGenerator.sharedInstance.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.password())
+           self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.password())
         }
         
         let accountData = try PropertyListEncoder().encode(self)
@@ -154,7 +154,7 @@ struct Account: Codable {
     }
 
     mutating func updatePassword(offset: [Int]?) throws {
-        let (newPassword, newIndex) = try PasswordGenerator.sharedInstance.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+        let (newPassword, newIndex) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
         self.passwordIndex = newIndex
         self.lastPasswordUpdateTryIndex = newIndex
@@ -204,7 +204,7 @@ struct Account: Codable {
         
         assert(account.id == id, "Account restoring went wrong. Different id")
 
-        let (password, index) = try PasswordGenerator.sharedInstance.generatePassword(username: account.username, passwordIndex: account.passwordIndex, siteID: account.site.id, ppd: account.site.ppd, offset: account.passwordOffset)
+        let (password, index) = try PasswordGenerator.shared.generatePassword(username: account.username, passwordIndex: account.passwordIndex, siteID: account.site.id, ppd: account.site.ppd, offset: account.passwordOffset)
         
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
         
