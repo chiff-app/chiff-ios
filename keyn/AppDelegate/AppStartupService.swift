@@ -58,7 +58,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        AWS.sharedInstance.snsRegistration(deviceToken: deviceToken)
+        AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
     // TODO: Is this when user denies push notifications? Do something with it.
@@ -150,7 +150,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
-            AWS.sharedInstance.isFirstLaunch = true
+            AWS.shared.isFirstLaunch = true
         }
 
         if !Seed.exists() {

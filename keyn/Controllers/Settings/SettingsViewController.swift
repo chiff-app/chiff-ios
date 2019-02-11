@@ -14,7 +14,7 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setFooterText()
-        newSiteNotficationSwitch.isOn = AWS.sharedInstance.isSubscribed()
+        newSiteNotficationSwitch.isOn = AWS.shared.isSubscribed()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -41,9 +41,9 @@ class SettingsViewController: UITableViewController {
 
     @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {
         if sender.isOn {
-            AWS.sharedInstance.subscribe()
+            AWS.shared.subscribe()
         } else {
-            AWS.sharedInstance.unsubscribe()
+            AWS.shared.unsubscribe()
         }
     }
     
@@ -55,7 +55,7 @@ class SettingsViewController: UITableViewController {
             Account.deleteAll()
             try? Seed.delete()
             BackupManager.sharedInstance.deleteAllKeys()
-            AWS.sharedInstance.deleteEndpointArn()
+            AWS.shared.deleteEndpointArn()
             Logger.shared.info("Keyn reset.", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
             UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
