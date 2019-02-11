@@ -36,18 +36,18 @@ class TestHelper {
     }
     
     static func deinitBackup() {
-        BackupManager.sharedInstance.deleteAllKeys()
+        BackupManager.shared.deleteAllKeys()
     }
     
     static func initBackup() {
-        try! BackupManager.sharedInstance.initialize()
+        try! BackupManager.shared.initialize()
     }
     
     static func resetKeyn() {
         Session.deleteAll()
         Account.deleteAll()
         try? Seed.delete()
-        BackupManager.sharedInstance.deleteAllKeys()
+        BackupManager.shared.deleteAllKeys()
     }
 
     static func createSession() {
