@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 protocol canReceiveSession {
     func addSession(session: Session)
@@ -26,7 +25,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 sessions = storedSessions
             }
         } catch {
-            Logger.shared.error("Could not get sessions.", error: error as NSError)
+            Logger.shared.error("Could not get sessions.", error: error)
         }
     }
     
@@ -111,7 +110,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                         }
                     }
                 } catch {
-                    Logger.shared.error("Could not delete session.", error: error as NSError)
+                    Logger.shared.error("Could not delete session.", error: error)
                 }
             }))
             self.present(alert, animated: true, completion: nil)

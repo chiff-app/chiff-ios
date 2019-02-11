@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class QuestionnaireController: UINavigationController {
     var questionnaire: Questionnaire? = nil

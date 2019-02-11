@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class RegistrationRequestViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -41,7 +40,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                 userPasswordTextField.delegate = self
             } catch {
                 // TODO: Present error to user?
-                Logger.shared.error("Could not get password.", error: error as NSError)
+                Logger.shared.error("Could not get password.", error: error)
             }
             navigationItem.title = account.site.name
             navigationItem.largeTitleDisplayMode = .never
@@ -126,7 +125,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
             do {
                 try session.acknowledge(browserTab: notification.browserTab)
             } catch {
-                Logger.shared.error("Acknowledge could not be sent.", error: error as NSError)
+                Logger.shared.error("Acknowledge could not be sent.", error: error)
             }
         }
         self.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
@@ -165,7 +164,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                             nc.post(name: .accountAdded, object: nil, userInfo: ["account": newAccount])
                         } catch {
                             // TODO: Handle errors in UX
-                            Logger.shared.error("Account could not be saved.", error: error as NSError)
+                            Logger.shared.error("Account could not be saved.", error: error)
                         }
                         self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                     }

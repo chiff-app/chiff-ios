@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class FeedbackViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textView: UITextView!

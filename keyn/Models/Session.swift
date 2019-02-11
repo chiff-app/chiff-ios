@@ -4,12 +4,16 @@
  */
 import UIKit
 import UserNotifications
-import JustLog
 
-enum SessionError: Error {
+enum SessionError: String, KeynError {
     case exists
     case invalid
     case noEndpoint
+    case unexpectedData
+    
+    var nsError: NSError {
+        return NSError(domain: "Keyn.AccountError", code: 0, userInfo: ["error_type": self.rawValue])
+    }
 }
 
 class Session: Codable {
@@ -154,7 +158,7 @@ class Session: Codable {
 
         for dict in dataArray {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
-                throw KeychainError.unexpectedData
+                throw SessionError.unexpectedData
             }
             sessions.append(try decoder.decode(Session.self, from: sessionData))
         }
@@ -178,7 +182,7 @@ class Session: Codable {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
-            throw KeychainError.unexpectedData
+            throw SessionError.unexpectedData
         }
         let decoder = PropertyListDecoder()
         return try decoder.decode(Session.self, from: sessionData)
@@ -192,7 +196,7 @@ class Session: Codable {
                 }
             }
         } catch {
-            Logger.shared.debug("Error deleting accounts.", error: error as NSError)
+            Logger.shared.debug("Error deleting accounts.", error: error)
         }
 
         // To be sure

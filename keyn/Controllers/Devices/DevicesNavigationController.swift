@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class DevicesNavigationController: UINavigationController {
     override func viewDidLoad() {
@@ -17,7 +16,7 @@ class DevicesNavigationController: UINavigationController {
                 pushViewController(pairViewController, animated: false)
             }
         } catch {
-            Logger.shared.error("Could not get sessions.", error: error as NSError)
+            Logger.shared.error("Could not get sessions.", error: error)
         }
     }
 }

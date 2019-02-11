@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UserNotifications
-import JustLog
 
 enum NotificationExtensionError: Error {
     case StringCast(String)

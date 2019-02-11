@@ -33,6 +33,8 @@ struct Properties {
         development: "dev"
     )
     
+    static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
+    
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"

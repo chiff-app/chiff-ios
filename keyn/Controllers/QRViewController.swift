@@ -5,7 +5,6 @@
 import UIKit
 import AVFoundation
 import LocalAuthentication
-import JustLog
 
 enum CameraError: Error {
     case noCamera
@@ -28,7 +27,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             try scanQR()
         } catch {
             displayError(message: "Camera not available.")
-            Logger.shared.warning("Camera not available.", error: error as NSError)
+            Logger.shared.warning("Camera not available.", error: error)
         }
     }
     
@@ -57,10 +56,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                             Logger.shared.debug("QR-code scanned twice.")
                             displayError(message: "This QR-code was already scanned.")
                         case SessionError.invalid:
-                            Logger.shared.warning("Invalid QR code scanned", error: error as NSError)
+                            Logger.shared.warning("Invalid QR code scanned", error: error)
                             displayError(message: "This QR-code could not be decoded.")
                         default:
-                            Logger.shared.error("Unhandled QR code error.", error: error as NSError)
+                            Logger.shared.error("Unhandled QR code error.", error: error)
                         }
                         qrFound = false
                     }

@@ -5,7 +5,7 @@
 import UIKit
 import LocalAuthentication
 import AuthenticationServices
-import JustLog
+
 
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var navigationBar: UINavigationBar!
@@ -63,7 +63,7 @@ class LoginViewController: ASCredentialProviderViewController {
                 }
                 ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
             } catch {
-                Logger.shared.warning("Error getting account", error: error as NSError, userInfo: ["url": identifier.identifier])
+                Logger.shared.warning("Error getting account", error: error, userInfo: ["url": identifier.identifier])
             }
         }
     }
@@ -77,7 +77,7 @@ class LoginViewController: ASCredentialProviderViewController {
                 extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
         } catch {
-            Logger.shared.warning("Error getting account.", error: error as NSError)
+            Logger.shared.warning("Error getting account.", error: error)
             extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
@@ -102,10 +102,10 @@ class LoginViewController: ASCredentialProviderViewController {
                 if succes {
                     self?.performSegue(withIdentifier: "showAccounts", sender: self)
                 } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
-                    Logger.shared.error(errorMessage, error: error as NSError)
+                    Logger.shared.error(errorMessage, error: error)
                     
                     if error._code == LAError.userFallback.rawValue {
-                        Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
+                        Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
                     }
                 }
             }

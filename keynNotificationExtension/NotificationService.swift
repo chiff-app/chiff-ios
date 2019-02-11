@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 import UserNotifications
-import JustLog
+
 
 class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?

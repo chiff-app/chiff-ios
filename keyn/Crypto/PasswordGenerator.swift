@@ -4,12 +4,16 @@
  */
 import Foundation
 
-enum PasswordGenerationError: Error {
+enum PasswordGenerationError: String, KeynError {
     case characterNotAllowed
     case tooShort
     case keyGeneration
     case dataConversion
     case invalidPassword
+    
+    var nsError: NSError {
+        return NSError(domain: "Keyn.PasswordGenerationError", code: 0, userInfo: ["error_type": self.rawValue])
+    }
 }
 
 class PasswordGenerator {

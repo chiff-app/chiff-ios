@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import CocoaAsyncSocket
-import JustLog
 import UIKit
 
 /*

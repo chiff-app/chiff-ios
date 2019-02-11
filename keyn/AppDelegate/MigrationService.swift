@@ -2,7 +2,6 @@
  * Copyright © 2019 Keyn B.V.
  * All rights reserved.
  */
-import JustLog
 import UIKit
 
 /*
@@ -11,14 +10,7 @@ import UIKit
 class MigrationService: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        migrateStuff()
         return true
     }
 
-    // MARK: - Private
-
-    private func migrateStuff() {
-       //
-    }
-    
 }

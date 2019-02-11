@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 import AWSCore
-import JustLog
+
 import LocalAuthentication
 import UIKit
 import UserNotifications
@@ -19,7 +19,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // Open app normally
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        enableLogging()
+        
+        let _ = Logger.shared
+        
         fetchAWSIdentification()
         registerForPushNotifications()
 
@@ -45,14 +47,14 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                         let nc = NotificationCenter.default
                         nc.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
                     } else if let error = error {
-                        Logger.shared.error("Error creating session.", error: error as NSError)
+                        Logger.shared.error("Error creating session.", error: error)
                     } else {
                         Logger.shared.error("Error opening app from URL.")
                     }
                 }
             }
         } catch {
-            Logger.shared.error("Error creating session.", error: error as NSError)
+            Logger.shared.error("Error creating session.", error: error)
         }
 
         return true
@@ -65,7 +67,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     // TODO: Is this when user denies push notifications? Do something with it.
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
-        Logger.shared.error("Failed to register for remote notifications.", error: error as NSError, userInfo: nil)
+        Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -78,22 +80,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     // MARK: - Private
-
-    private func enableLogging() {
-        let logger = Logger.shared
-        logger.enableFileLogging = false
-        logger.logstashHost = "listener.logz.io"
-        logger.logstashPort = 5052
-        logger.logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
-        logger.logstashTimeout = 5
-        logger.logLogstashSocketActivity = Properties.isDebug
-        logger.defaultUserInfo = [
-            "app": "Keyn",
-            "device": "APP",
-            "userID": Properties.userID(),
-            "debug": Properties.isDebug]
-        logger.setup()
-    }
 
     private func fetchAWSIdentification() {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,

@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class RootViewController: UITabBarController {
     override func viewDidLoad() {

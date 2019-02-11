@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 
 enum QuestionType: String, Codable {
     case likert = "likert"
@@ -128,7 +127,7 @@ class Questionnaire: Codable {
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(id).path
             filemgr.createFile(atPath: questionnairePath, contents: data, attributes: nil)
         } catch {
-            Logger.shared.warning("Could not write questionnaire", error: error as NSError)
+            Logger.shared.warning("Could not write questionnaire", error: error)
         }
     }
     
@@ -174,7 +173,7 @@ class Questionnaire: Codable {
                 }
             }
         } catch {
-            Logger.shared.warning("No questionnaires not found.", error: error as NSError)
+            Logger.shared.warning("No questionnaires not found.", error: error)
         }
         return questionnaires
     }
@@ -195,14 +194,14 @@ class Questionnaire: Codable {
                                 questionnaire.save()
                             }
                         } catch {
-                            Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
+                            Logger.shared.error("Failed to decode questionnaire", error: error)
                         }
                         
                     }
                 }
             }
         } catch {
-            Logger.shared.warning("Could not get questionnaires", error: error as NSError)
+            Logger.shared.warning("Could not get questionnaires", error: error)
         }
     }
     
@@ -238,7 +237,7 @@ class Questionnaire: Codable {
         do {
             return try PropertyListDecoder().decode(Questionnaire.self, from: data)
         } catch {
-            Logger.shared.warning("Questionnaire not found.", error: error as NSError)
+            Logger.shared.warning("Questionnaire not found.", error: error)
             try? filemgr.removeItem(atPath: path) // Remove legacy questionnaire
         }
         return nil
@@ -254,7 +253,7 @@ class Questionnaire: Codable {
                 try filemgr.removeItem(atPath: questionnaireDirUrl.appendingPathComponent(filename).path)
             }
         } catch {
-            Logger.shared.warning("Could not delete questionnaires", error: error as NSError)
+            Logger.shared.warning("Could not delete questionnaires", error: error)
         }
     }    
 }

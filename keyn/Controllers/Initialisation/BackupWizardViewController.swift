@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import UIKit
-import JustLog
 
 class BackupWizardViewController: UIViewController {
     @IBOutlet weak var wordLabel: UILabel!
@@ -21,7 +20,7 @@ class BackupWizardViewController: UIViewController {
             wordLabel.text = mnemonic![counter]
             counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
         } catch {
-            Logger.shared.error("Error getting mnemonic.", error: error as NSError)
+            Logger.shared.error("Error getting mnemonic.", error: error)
         }
     }
 

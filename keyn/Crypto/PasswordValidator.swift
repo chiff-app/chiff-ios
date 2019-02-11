@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 import Foundation
-import JustLog
 
 class PasswordValidator {
     static let FALLBACK_PASSWORD_LENGTH = 22
@@ -145,7 +144,7 @@ class PasswordValidator {
                     }
                     completionHandler(breachCount ?? 0)
                 } else if let error = error {
-                    Logger.shared.warning("Error querying HIBP", error: error as NSError, userInfo: [
+                    Logger.shared.warning("Error querying HIBP", error: error, userInfo: [
                         "statusCode": httpStatus.statusCode
                         ])
                 }

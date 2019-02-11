@@ -4,7 +4,7 @@
  */
 import AuthenticationServices
 import LocalAuthentication
-import JustLog
+
 
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
@@ -19,7 +19,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
             let savedAccounts = try Account.all()
             unfilteredAccounts.append(contentsOf: savedAccounts)
         } catch {
-            Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
+            Logger.shared.error("Could not get accounts from Keychain", error: error)
         }
         
         filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
@@ -119,7 +119,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
                 }
 
             } catch {
-                Logger.shared.warning("Error getting password", error: error as NSError)
+                Logger.shared.warning("Error getting password", error: error)
             }
         }
     }

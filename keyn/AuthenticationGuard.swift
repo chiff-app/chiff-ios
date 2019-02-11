@@ -4,7 +4,6 @@
  */
 import UIKit
 import LocalAuthentication
-import JustLog
 import OneTimePassword
 
 class AuthenticationGuard {
@@ -124,9 +123,9 @@ class AuthenticationGuard {
             if succes {
                 self?.unlock()
             } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
-                Logger.shared.error(errorMessage, error: error as NSError)
+                Logger.shared.error(errorMessage, error: error)
                 if error._code == LAError.userFallback.rawValue {
-                    Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error as NSError)
+                    Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
                 }
             }
         }
@@ -248,7 +247,7 @@ class AuthenticationGuard {
             }
         } catch {
             authorizationInProgress = false
-            Logger.shared.error("Could not decode session.", error: error as NSError)
+            Logger.shared.error("Could not decode session.", error: error)
         }
     }
 
