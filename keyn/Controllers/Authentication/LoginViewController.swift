@@ -26,7 +26,7 @@ class LoginViewController: UIViewController {
 
     @IBAction func touchID(_ sender: UIButton) {
         Logger.shared.debug("Manual authenticate in viewDidAppear called.")
-        AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: false)
+        AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
     }
 
     @IBAction func unwindToLoginViewController(sender: UIStoryboardSegue) { }

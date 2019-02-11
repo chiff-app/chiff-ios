@@ -8,7 +8,7 @@ import JustLog
 import OneTimePassword
 
 class AuthenticationGuard {
-    static let sharedInstance = AuthenticationGuard()
+    static let shared = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
     var authorizationInProgress = false

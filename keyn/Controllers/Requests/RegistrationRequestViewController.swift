@@ -153,7 +153,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
 
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
-            AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
+            AuthenticationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {

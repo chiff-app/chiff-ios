@@ -17,7 +17,7 @@ class AuthenticationViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func touchID(_ sender: UIButton) {
-        AuthenticationGuard.sharedInstance.authenticateUser(cancelChecks: false)
+        AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
     }
 
     // MARK: - Private

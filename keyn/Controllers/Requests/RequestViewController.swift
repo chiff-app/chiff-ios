@@ -67,7 +67,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
         self.dismiss(animated: false, completion: nil)
-        AuthenticationGuard.sharedInstance.authorizationInProgress = false
+        AuthenticationGuard.shared.authorizationInProgress = false
     }
 
     // MARK: - Actions
@@ -117,13 +117,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
         }
         self.dismiss(animated: true, completion: nil)
-        AuthenticationGuard.sharedInstance.authorizationInProgress = false
+        AuthenticationGuard.shared.authorizationInProgress = false
     }
     
     // MARK: - Private
     
     private func authorize(notification: PushNotification, session: Session, accountID: String, type: BrowserMessageType) {
-        AuthenticationGuard.sharedInstance.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
+        AuthenticationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
                     do {
@@ -151,7 +151,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
-                    if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.sharedInstance.hasFaceID() {
+                    if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.shared.hasFaceID() {
                         authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
