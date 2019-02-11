@@ -27,7 +27,7 @@ struct PPD: Codable {
     }
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) throws {
-        try API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+        try API.shared.get(type: .ppd, path: id, parameters: nil) { (dict) in
             guard let dict = dict else {
                 Logger.shared.warning("PPD not found")
                 completionHandler(nil)

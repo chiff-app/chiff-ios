@@ -30,7 +30,7 @@ enum APIRequestType: String {
 }
 
 class API {
-    static let sharedInstance = API()
+    static let shared = API()
 
     private init() {}
 
