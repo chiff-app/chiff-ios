@@ -47,7 +47,7 @@ class Session: Codable {
         self.creationDate = Date()
         self.browser = browser
         self.os = os
-        self.id = "\(encryptionPubKey)_\(messagePubKey)".hash()
+        self.id = "\(encryptionPubKey)_\(messagePubKey)".hash
     }
 
     func delete(includingQueue: Bool) throws {
@@ -164,7 +164,7 @@ class Session: Codable {
         let seed = try Crypto.shared.deriveKey(key: queueSeed, context: "message", index: 1)
         let messageKeyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         let messagePubKey = try Crypto.shared.convertToBase64(from: messageKeyPair.publicKey.data)
-        let id = "\(encryptionPubKey)_\(messagePubKey)".hash()
+        let id = "\(encryptionPubKey)_\(messagePubKey)".hash
         return Keychain.shared.has(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService)
     }
 

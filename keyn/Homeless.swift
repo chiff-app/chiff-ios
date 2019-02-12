@@ -5,7 +5,6 @@
 import Foundation
 import UIKit
 import Sodium
-import CommonCrypto
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
 extension UIViewController {
@@ -51,34 +50,17 @@ extension UIApplication {
 }
 
 extension String {
-    func hash() -> String {
-        do {
-            let hash = try Crypto.shared.hash(self)
-            return hash
-        } catch {
-            Logger.shared.error("Could not create hash.", error: error)
-            fatalError("Could not create hash.")
-        }
+
+    var hash: String {
+        return try! Crypto.shared.hash(self)
     }
     
-    func sha1() -> String {
-        let data = self.data(using: String.Encoding.utf8)!
-        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA1($0, CC_LONG(data.count), &digest)
-        }
-        let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        return hexBytes.joined()
+    var sha1: String {
+        return Crypto.shared.sha1(from: self)
     }
     
-    func sha256() -> String {
-        let data = self.data(using: String.Encoding.utf8)!
-        var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA256($0, CC_LONG(data.count), &digest)
-        }
-        let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        return hexBytes.joined()
+    var sha256: String {
+        return Crypto.shared.sha256(from: self)
     }
     
     func components(withLength length: Int) -> [String] {

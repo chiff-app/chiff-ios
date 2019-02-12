@@ -160,7 +160,7 @@ class NewAccountViewController: AccountViewController {
             print("TODO: Site info + id should be fetched from somewhere instead of generated here..")
 
             let url = URL(string: websiteURL)
-            let id = url!.absoluteString.hash() // TODO, fix
+            let id = url!.absoluteString.sha256 // TODO, fix
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
 
             do {
