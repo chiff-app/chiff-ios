@@ -4,6 +4,7 @@
  */
 import Foundation
 import Sodium
+import CommonCrypto
 
 enum CryptoError: Error {
     case randomGeneration
@@ -208,5 +209,25 @@ class Crypto {
         }
 
         return hash
+    }
+    
+    func sha1(from string: String) -> String {
+        let data = string.data(using: String.Encoding.utf8)!
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA1($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
+    }
+    
+    func sha256(from string: String) -> String {
+        let data = string.data(using: String.Encoding.utf8)!
+        var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0, CC_LONG(data.count), &digest)
+        }
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
     }
 }

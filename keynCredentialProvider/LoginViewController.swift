@@ -58,7 +58,7 @@ class LoginViewController: ASCredentialProviderViewController {
                     return
                 }
                 var identities = [ASPasswordCredentialIdentity]()
-                for account in try Account.get(siteID: "\(scheme)://\(host)".sha256()) {
+                for account in try Account.get(siteID: "\(scheme)://\(host)".sha256) {
                     identities.append(ASPasswordCredentialIdentity(serviceIdentifier: identifier, user: account.username, recordIdentifier: account.id))
                 }
                 ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)

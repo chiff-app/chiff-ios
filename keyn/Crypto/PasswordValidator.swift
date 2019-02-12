@@ -120,7 +120,7 @@ class PasswordValidator {
     }
     
     func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
-        let hash = password.sha1().uppercased()
+        let hash = password.sha1.uppercased()
         let index = hash.index(hash.startIndex, offsetBy: 5)
         let prefix = hash.prefix(upTo: index).uppercased()
         let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!

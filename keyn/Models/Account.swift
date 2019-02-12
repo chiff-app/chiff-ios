@@ -21,7 +21,7 @@ struct Account: Codable {
     static let otpKeychainService = "io.keyn.otp"
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
-        id = "\(site.id)_\(username)".hash()
+        id = "\(site.id)_\(username)".hash
 
         self.username = username
         self.site = site
