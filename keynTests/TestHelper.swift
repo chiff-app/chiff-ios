@@ -3,12 +3,17 @@
  * All rights reserved.
  */
 import XCTest
+import OneTimePassword
 
 @testable import keyn
 
 /*
  * Test helpers to be used in all tests.
+ *
  * We cannot (easily?) create mock objects so we actually modify the Keychain, storage etc.
+ *
+ * Testing whether function don't throw an error is done by making the test throw the error
+ * because XCTAssertNoThrow() does not check for our type of errors.
  */
 class TestHelper {
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
@@ -96,5 +101,11 @@ class TestHelper {
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
         return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+    }
+
+    static func token() -> Token {
+        let url = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
+        let token = Token(url: url!)
+        return token!
     }
 }

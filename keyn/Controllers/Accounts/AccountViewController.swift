@@ -290,7 +290,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     @objc func updateHOTP() {
         if let token = token?.updatedToken() {
             self.token = token
-            try? account.updateOtp(token: token)
+            try? account.setOtp(token: token)
             userCodeTextField.text = token.currentPassword
         }
     }
