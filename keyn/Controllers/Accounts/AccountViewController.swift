@@ -40,7 +40,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.url
             userNameTextField.text = account.username
-            userPasswordTextField.text = try account.password()
+            userPasswordTextField.text = account.password
             token = try account.oneTimePasswordToken()
             updateOTPUI()
             websiteNameTextField.delegate = self
@@ -148,11 +148,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     @objc func cancel() {
         endEditing()
-        do {
-            userPasswordTextField.text = try account?.password()
-        } catch {
-            Logger.shared.warning("Could not get password.", error: error)
-        }
+        userPasswordTextField.text = account?.password
         navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
         websiteNameTextField.text = account?.site.name
@@ -165,7 +161,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             var newPassword: String? = nil
             let newUsername = userNameTextField.text != account?.username ? userNameTextField.text : nil
             let newSiteName = websiteNameTextField.text != account?.site.name ? websiteNameTextField.text : nil
-            if let oldPassword: String = try account?.password() {
+            if let oldPassword: String = account?.password {
                 newPassword = userPasswordTextField.text != oldPassword ? userPasswordTextField.text : nil
             }
             let newUrl = websiteURLTextField.text != account?.site.url ? websiteURLTextField.text : nil
@@ -206,7 +202,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
             showPasswordHUD.mode = .text
             showPasswordHUD.bezelView.color = .black
-            showPasswordHUD.label.text = try account?.password() ?? "Error fetching password"
+            showPasswordHUD.label.text = account?.password
             showPasswordHUD.label.textColor = .white
             showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
             showPasswordHUD.margin = 10
