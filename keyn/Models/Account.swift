@@ -20,8 +20,9 @@ struct Account: Codable {
     private var tokenSecret: Data? // Only for backup
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
-    var password: String {
-        return try? password()
+
+    var password: String? {
+        return try? getPassword()
     }
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
@@ -56,16 +57,6 @@ struct Account: Codable {
         try BackupManager.shared.backup(id: id, accountData: accountData)
     }
 
-    func password() throws -> String {
-        let data = try Keychain.shared.get(id: id, service: Account.keychainService)
-
-        guard let password = String(data: data, encoding: .utf8) else {
-            throw KeynError.stringEncoding
-        }
-
-        return password
-    }
-    
     mutating func nextPassword() throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
 
@@ -133,7 +124,7 @@ struct Account: Codable {
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
         } else if let newUsername = newUsername {
-           self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.password())
+            self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.getPassword())
         }
         
         let accountData = try PropertyListEncoder().encode(self)
@@ -261,6 +252,21 @@ struct Account: Codable {
 
         try Keychain.shared.save(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, classification: .confidential)
         try BackupManager.shared.backup(id: id, accountData: accountData)
+    }
+
+    func getPassword() throws -> String {
+        do {
+            let data = try Keychain.shared.get(id: id, service: Account.keychainService)
+
+            guard let password = String(data: data, encoding: .utf8) else {
+                throw KeynError.stringEncoding
+            }
+
+            return password
+        } catch {
+            Logger.shared.error("Could not retrieve password from account", error: error, userInfo: nil)
+            throw error
+        }
     }
 
 }
