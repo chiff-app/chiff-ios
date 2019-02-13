@@ -43,26 +43,6 @@ class API {
         send(request, completionHandler: completionHandler)
     }
 
-//    func put(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .put)
-//        send(request)
-//    }
-//
-//    func get(type: APIEndpoint, path: String?, parameters: [String: String]?, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
-//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .get)
-//        send(request, completionHandler: completionHandler)
-//    }
-//
-//    func post(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .post)
-//        send(request)
-//    }
-//
-//    func delete(type: APIEndpoint, path: String, parameters: [String: String]) throws {
-//        let request = try createRequest(type: type, path: path, parameters: parameters, method: .delete)
-//        send(request)
-//    }
-    
     // MARK: - Private functions
 
     private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)?) {

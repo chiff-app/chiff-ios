@@ -5,6 +5,7 @@
 import Foundation
 
 struct DateComponentUnitFormatter {
+    
     private struct DateComponentUnitFormat {
         let unit: Calendar.Component
 
@@ -98,16 +99,5 @@ struct DateComponentUnitFormatter {
         }
 
         return "Just now"
-    }
-}
-
-extension Date {
-    func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
-        let calendar = Calendar.current
-        let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
-        let now = Date()
-        let components = calendar.dateComponents(unitFlags, from: self, to: now)
-        let formatter = DateComponentUnitFormatter()
-        return formatter.string(forDateComponents: components, useNumericDates: useNumericDates)
     }
 }
