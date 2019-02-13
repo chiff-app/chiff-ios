@@ -63,7 +63,9 @@ struct Account: Codable {
         return password
     }
     
-    mutating func nextPassword(offset: [Int]?) throws -> String {
+    mutating func nextPassword() throws -> String {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
         let (newPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)

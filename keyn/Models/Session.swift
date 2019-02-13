@@ -99,10 +99,10 @@ class Session: Codable {
         var account = account
         switch type {
         case .addAndChange:
-            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id, o: nil)
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
-            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(offset: nil), b: browserTab, a: account.id, o: nil)
+            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
