@@ -32,11 +32,7 @@ class OTPViewController: QRViewController {
                     return
                 }
                 do {
-                    if self.account.hasOtp() {
-                        try self.account.updateOtp(token: token)
-                    } else {
-                        try self.account.addOtp(token: token)
-                    }
+                    try self.account.setOtp(token: token)
                     self.add(token: token)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
