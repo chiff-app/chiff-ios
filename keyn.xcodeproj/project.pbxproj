@@ -443,7 +443,7 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		499BE4F91FC0953C001038DF /* UX */ = {
+		499BE4F91FC0953C001038DF /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				49E766591F7E6F420022C042 /* Main.storyboard */,
@@ -452,7 +452,7 @@
 				6105598B1FDC41C30030F871 /* Initialisation.storyboard */,
 				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
 			);
-			path = UX;
+			path = UI;
 			sourceTree = "<group>";
 		};
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
@@ -507,7 +507,7 @@
 				49E7D3401FC318CD0059D97E /* Models */,
 				49F2A106221434C600429875 /* SupportFiles */,
 				495E72B9221186DA003132ED /* Util */,
-				499BE4F91FC0953C001038DF /* UX */,
+				499BE4F91FC0953C001038DF /* UI */,
 			);
 			path = keyn;
 			sourceTree = "<group>";
@@ -566,12 +566,12 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
-				49E766611F7E6F420022C042 /* Info.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
+				49E766611F7E6F420022C042 /* Info.plist */,
+				491C485720249D3B00397071 /* Assets.xcassets */,
 				499569C21FED47BF00D75848 /* english_wordlist.txt */,
 				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
 				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
-				491C485720249D3B00397071 /* Assets.xcassets */,
 			);
 			path = SupportFiles;
 			sourceTree = "<group>";
