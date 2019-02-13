@@ -55,7 +55,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         Logger.shared.debug("PushNotificationService:userNotificationCenter(.. willPresent ..)")
 
-        guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+        guard notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
             Logger.shared.debug("TODO: Make alert banner")
             completionHandler([.alert])
             return
@@ -122,7 +122,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         // TODO: Find out why we cannot pass RequestType in userInfo..
 
-        guard response.notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+        guard response.notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
             Logger.shared.debug("TODO: Make alert banner")
             completionHandler()
             return
@@ -247,7 +247,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         center.getDeliveredNotifications { (notifications) in
             for notification in notifications {
 
-                guard notification.request.content.categoryIdentifier != "KEYN_NOTIFICATION" else {
+                guard notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
                     Logger.shared.debug("TODO: Make alert banner")
                     return
                 }
