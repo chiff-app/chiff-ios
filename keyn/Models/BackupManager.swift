@@ -134,7 +134,7 @@ struct BackupManager {
             throw KeynError.stringDecoding
         }
         let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
-        try Keychain.shared.save(secretData: encryptionKey, id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, secretData: encryptionKey, classification: .secret)
     }
     
     private func encryptionKey() throws -> Data {
@@ -154,8 +154,8 @@ struct BackupManager {
     
     private func createSigningKeypair() throws -> String {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
-        try Keychain.shared.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, classification: .restricted)
-        try Keychain.shared.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, secretData: keyPair.publicKey.data, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, secretData: keyPair.secretKey.data, classification: .secret)
         
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey

@@ -261,14 +261,14 @@ class Session: Codable {
         // Save browser public key
 
         let sessionData = try PropertyListEncoder().encode(self) // Now contains public keys
-        try Keychain.shared.save(secretData: messagePrivKey, id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService, objectData: sessionData, classification: .restricted)
-        try Keychain.shared.save(secretData: controlPrivKey, id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService, classification: .restricted)
-        try Keychain.shared.save(secretData: pushPrivKey, id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService, secretData: messagePrivKey, objectData: sessionData, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService, secretData: controlPrivKey, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService, secretData: pushPrivKey, classification: .restricted)
 
         // Generate and save own keypair1
         let keyPair = try Crypto.shared.createSessionKeyPair()
-        try Keychain.shared.save(secretData: keyPair.publicKey.data, id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, classification: .restricted)
-        try Keychain.shared.save(secretData: keyPair.secretKey.data, id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: id), service: Session.appService, secretData: keyPair.publicKey.data, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: id), service: Session.appService, secretData: keyPair.secretKey.data,classification: .restricted)
     }
 
     private func sign(data: String?, requestType: APIMethod, privKey: Data, type: BrowserMessageType?, waitTime: String? = nil, receiptHandle: String? = nil) throws -> [String:String] {
