@@ -354,7 +354,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                             let browserMessage: BrowserMessage = try session.decrypt(message: body)
                             if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
                                 var account = try Account.get(accountID: accountId)
-                                try account?.updatePassword(offset: nil)
+                                try account?.updatePasswordAfterConfirmation()
                             }
                         } catch {
                             Logger.shared.warning("Could not change password", error: error, userInfo: nil)
