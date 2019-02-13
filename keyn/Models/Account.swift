@@ -136,7 +136,14 @@ struct Account: Codable {
         try backup()
     }
 
-    mutating func updatePassword(offset: [Int]?) throws {
+    /*
+     * After saving a new (generated) password in the browser we place a message
+     * on the queue stating that it succeeded. We can then call this function to
+     * confirm the new password and store it in the account.
+     */
+    mutating func updatePasswordAfterConfirmation() throws {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
         let (newPassword, newIndex) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
         self.passwordIndex = newIndex
