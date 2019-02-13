@@ -12,6 +12,11 @@ import UserNotifications
  * Code related to starting up the app in different ways.
  */
 class AppStartupService: NSObject, UIApplicationDelegate {
+    
+    private let PASSWORD_REQUEST = "PASSWORD_REQUEST"
+    private let END_SESSION = "END_SESSION"
+    private let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
+    private let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
 
     var deniedPushNotifications = false
     var window: UIWindow?
@@ -27,7 +32,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         // AuthenticationGuard must be initialized first
         let _ = AuthenticationGuard.shared
-        // ?
+        // Fixes some LocalAuthentication bug
         let _: LAError? = nil
 
         Questionnaire.fetch()
@@ -83,25 +88,25 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     private func fetchAWSIdentification() {
         let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
-                                                                identityPoolId: "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe")
+                                                                identityPoolId: Properties.AWSIdentityPoolId)
         let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
         AWSServiceManager.default().defaultServiceConfiguration = configuration
     }
 
     private func registerForPushNotifications() {
-        let passwordRequest = UNNotificationCategory(identifier: "PASSWORD_REQUEST",
+        let passwordRequest = UNNotificationCategory(identifier: PASSWORD_REQUEST,
                                                      actions: [],
                                                      intentIdentifiers: [],
                                                      options: .customDismissAction)
-        let endSession = UNNotificationCategory(identifier: "END_SESSION",
+        let endSession = UNNotificationCategory(identifier: END_SESSION,
                                                 actions: [],
                                                 intentIdentifiers: [],
                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let passwordChangeConfirmation = UNNotificationCategory(identifier: "CHANGE_CONFIRMATION",
+        let passwordChangeConfirmation = UNNotificationCategory(identifier: CHANGE_CONFIRMATION,
                                                                 actions: [],
                                                                 intentIdentifiers: [],
                                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let keyn = UNNotificationCategory(identifier: "KEYN_NOTIFICATION",
+        let keyn = UNNotificationCategory(identifier: KEYN_NOTIFICATION,
                                           actions: [],
                                           intentIdentifiers: [],
                                           options: .customDismissAction)
@@ -117,6 +122,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             } else {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
+                // TODO: Localize
                 self.launchErrorView("""
                     Unfortunately, Keyn doesn't work without push notifications :(
 

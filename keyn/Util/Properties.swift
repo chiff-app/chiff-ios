@@ -19,6 +19,8 @@ struct Properties {
     static let ppdTestingMode = {
         return UserDefaults.standard.bool(forKey: "ppdTestingMode")
     }()
+    
+    static let AWSIdentityPoolId = "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe"
 
     static let AWSPlaformApplicationArn = (
         sandbox: "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn",
