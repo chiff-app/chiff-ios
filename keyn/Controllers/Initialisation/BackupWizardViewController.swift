@@ -64,8 +64,7 @@ class BackupWizardViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { action in
             if self.isInitialSetup {
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+                let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
                 rootController.selectedIndex = 1
                 UIApplication.shared.keyWindow?.rootViewController = rootController
             } else {

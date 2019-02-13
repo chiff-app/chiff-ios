@@ -26,7 +26,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         do {
             try scanQR()
         } catch {
-            displayError(message: "Camera not available.")
+            displayError(message: "no_camera".localized)
             Logger.shared.warning("Camera not available.", error: error)
         }
     }
@@ -54,7 +54,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         switch error {
                         case SessionError.exists:
                             Logger.shared.debug("QR-code scanned twice.")
-                            displayError(message: "This QR-code was already scanned.")
+                            displayError(message: "qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)
                             displayError(message: "This QR-code could not be decoded.")

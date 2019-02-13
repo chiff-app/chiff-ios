@@ -18,8 +18,7 @@ class AuthenticationGuard {
         lockWindow.windowLevel = UIWindow.Level.alert
         lockWindow.screen = UIScreen.main
 
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        lockWindow.rootViewController = storyboard.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+        lockWindow.rootViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
 
         let nc = NotificationCenter.default
         nc.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
@@ -231,7 +230,7 @@ class AuthenticationGuard {
         authorizationInProgress = true
         do {
             if let session = try Session.getSession(id: notification.sessionID) {
-                let storyboard: UIStoryboard = UIStoryboard(name: "Request", bundle: nil)
+                let storyboard: UIStoryboard = UIStoryboard.get(.request)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
                 viewController.type = notification.requestType
                 viewController.notification = notification

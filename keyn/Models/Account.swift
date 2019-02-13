@@ -20,6 +20,9 @@ struct Account: Codable {
     private var tokenSecret: Data? // Only for backup
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
+    var password: String {
+        return try? password()
+    }
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
         id = "\(site.id)_\(username)".hash

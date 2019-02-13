@@ -1,0 +1,34 @@
+{
+  "generic_problem": {
+    "value": "There was a problem",
+    "comment": "A generic problem description"
+  },
+  "add_otp_code": {
+    "value": "Add code",
+    "comment": "Add a one-time-password code"
+  },
+  "delete": {
+    "value": "Delete",
+    "comment": "Deletes something"
+  },
+  "cancel": {
+    "value": "Cancel",
+    "comment": "Cancels something"
+  },
+  "delete_account": {
+    "value": "Delete account?",
+    "comment": "Ask the user to delete the account"
+  },
+  "no_camera": {
+    "value": "Camera not available",
+    "comment": "The camera is not available"
+  },
+  "qr_scanned_twice": {
+    "value": "This QR-code was already scanned.",
+    "comment": "This QR-code was already scanned."
+  },
+  "undecodable_qr": {
+    "value": "This QR-code could not be decoded.",
+    "comment": "The QR-code could not be decoded."
+  }
+}

@@ -18,7 +18,7 @@ class BackupStartViewController: UIViewController {
 
     // MARK: - Actions
     @IBAction func startBackupWizard(_ sender: UIButton) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
+        let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
         if isInitialSetup {
             let viewController = storyboard.instantiateViewController(withIdentifier: "Backup Wizard")
             navigationController?.pushViewController(viewController, animated: true)
