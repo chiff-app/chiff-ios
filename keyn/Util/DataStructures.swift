@@ -4,6 +4,13 @@
  */
 import Foundation
 
+enum NotificationCategory {
+    static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
+    static let END_SESSION = "END_SESSION"
+    static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
+    static let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
+}
+
 enum AnalyticsMessage: String {
     case install = "INSTALL"
     case seedCreated = "SEED_CREATED"

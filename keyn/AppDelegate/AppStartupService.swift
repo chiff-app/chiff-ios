@@ -12,11 +12,6 @@ import UserNotifications
  * Code related to starting up the app in different ways.
  */
 class AppStartupService: NSObject, UIApplicationDelegate {
-    
-    private let PASSWORD_REQUEST = "PASSWORD_REQUEST"
-    private let END_SESSION = "END_SESSION"
-    private let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
-    private let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
 
     var deniedPushNotifications = false
     var window: UIWindow?
@@ -94,19 +89,19 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     private func registerForPushNotifications() {
-        let passwordRequest = UNNotificationCategory(identifier: PASSWORD_REQUEST,
+        let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
                                                      actions: [],
                                                      intentIdentifiers: [],
                                                      options: .customDismissAction)
-        let endSession = UNNotificationCategory(identifier: END_SESSION,
+        let endSession = UNNotificationCategory(identifier: NotificationCategory.END_SESSION,
                                                 actions: [],
                                                 intentIdentifiers: [],
                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let passwordChangeConfirmation = UNNotificationCategory(identifier: CHANGE_CONFIRMATION,
+        let passwordChangeConfirmation = UNNotificationCategory(identifier: NotificationCategory.CHANGE_CONFIRMATION,
                                                                 actions: [],
                                                                 intentIdentifiers: [],
                                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let keyn = UNNotificationCategory(identifier: KEYN_NOTIFICATION,
+        let keyn = UNNotificationCategory(identifier: NotificationCategory.KEYN_NOTIFICATION,
                                           actions: [],
                                           intentIdentifiers: [],
                                           options: .customDismissAction)
