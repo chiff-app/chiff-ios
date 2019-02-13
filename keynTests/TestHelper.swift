@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import XCTest
+import OneTimePassword
 
 @testable import keyn
 
@@ -100,5 +101,11 @@ class TestHelper {
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
         return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+    }
+
+    static func token() -> Token {
+        let url = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
+        let token = Token(url: url!)
+        return token!
     }
 }

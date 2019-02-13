@@ -169,6 +169,8 @@ struct Account: Codable {
         Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
+    // MARK: - Static
+
     static func get(siteID: String) throws -> [Account] {
         // TODO: optimize when we're bored
         let accounts = try Account.all()
@@ -180,10 +182,11 @@ struct Account: Codable {
     
     static func get(accountID: String) throws -> Account? {
         let accounts = try Account.all()
+
         guard !accounts.isEmpty else {
             return nil
         }
-        
+
         return accounts.first { (account) -> Bool in
             account.id == accountID
         }
@@ -235,6 +238,7 @@ struct Account: Codable {
             let account = try decoder.decode(Account.self, from: accountData)
             accounts.append(account)
         }
+
         return accounts
     }
 
