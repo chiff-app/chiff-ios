@@ -48,11 +48,7 @@ class ManualOTPViewController: UITableViewController {
                     return
                 }
                 do {
-                    if self.account.hasOtp() {
-                        try self.account.updateOtp(token: token)
-                    } else {
-                        try self.account.addOtp(token: token)
-                    }
+                    try self.account.setOtp(token: token)
                     if let delegate = self.accountViewDelegate {
                         delegate.addOTPCode(token: token)
                     }

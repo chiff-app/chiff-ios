@@ -9,6 +9,7 @@ import OneTimePassword
  * An account belongs to the user and can have one Site.
  */
 struct Account: Codable {
+
     let id: String
     var username: String
     var site: Site
@@ -42,17 +43,6 @@ struct Account: Codable {
         try save(password: generatedPassword)
     }
 
-    private func save(password: String) throws {
-        let accountData = try PropertyListEncoder().encode(self)
-
-        guard let passwordData = password.data(using: .utf8) else {
-            throw KeynError.stringDecoding
-        }
-
-        try Keychain.shared.save(secretData: passwordData, id: id, service: Account.keychainService, objectData: accountData, classification: .confidential)
-        try BackupManager.shared.backup(id: id, accountData: accountData)
-    }
-    
     mutating func backup() throws {
         if let token = try oneTimePasswordToken() {
             tokenSecret = token.generator.secret
@@ -73,7 +63,9 @@ struct Account: Codable {
         return password
     }
     
-    mutating func nextPassword(offset: [Int]?) throws -> String {
+    mutating func nextPassword() throws -> String {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
         let (newPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
@@ -99,25 +91,23 @@ struct Account: Codable {
     func hasOtp() -> Bool {
         return Keychain.shared.has(id: id, service: Account.otpKeychainService)
     }
-    
-    mutating func addOtp(token: Token) throws {
+
+    mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
+
         guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
             throw KeynError.stringEncoding
         }
-        try Keychain.shared.save(secretData: secret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
-        try backup()
-    }
-    
-    mutating func updateOtp(token: Token) throws {
-        let secret = token.generator.secret
-        guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw KeynError.stringEncoding
+
+        if self.hasOtp() {
+            try Keychain.shared.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
+        } else {
+            try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, classification: .secret)
         }
-        try Keychain.shared.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
         try backup()
+
     }
-    
+
     mutating func deleteOtp() throws {
         try Keychain.shared.delete(id: id, service: Account.otpKeychainService)
         try backup()
@@ -148,7 +138,14 @@ struct Account: Codable {
         try backup()
     }
 
-    mutating func updatePassword(offset: [Int]?) throws {
+    /*
+     * After saving a new (generated) password in the browser we place a message
+     * on the queue stating that it succeeded. We can then call this function to
+     * confirm the new password and store it in the account.
+     */
+    mutating func updatePasswordAfterConfirmation() throws {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
         let (newPassword, newIndex) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
 
         self.passwordIndex = newIndex
@@ -172,6 +169,8 @@ struct Account: Codable {
         Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
     }
 
+    // MARK: - Static
+
     static func get(siteID: String) throws -> [Account] {
         // TODO: optimize when we're bored
         let accounts = try Account.all()
@@ -183,10 +182,11 @@ struct Account: Codable {
     
     static func get(accountID: String) throws -> Account? {
         let accounts = try Account.all()
+
         guard !accounts.isEmpty else {
             return nil
         }
-        
+
         return accounts.first { (account) -> Bool in
             account.id == accountID
         }
@@ -214,13 +214,13 @@ struct Account: Codable {
             guard let tokenData = tokenURL.absoluteString.data(using: .utf8) else {
                 throw KeynError.stringEncoding
             }
-            try Keychain.shared.save(secretData: tokenSecret, id: id, service: Account.otpKeychainService, objectData: tokenData, classification: .secret)
+            try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: tokenSecret, objectData: tokenData, classification: .secret)
             data = try PropertyListEncoder().encode(account)
         } else {
             data = accountData
         }
 
-        try Keychain.shared.save(secretData: passwordData, id: account.id, service: Account.keychainService, objectData: data, classification: .confidential)
+        try Keychain.shared.save(id: account.id, service: Account.keychainService, secretData: passwordData, objectData: data, classification: .confidential)
     }
 
     static func all() throws -> [Account] {
@@ -238,6 +238,7 @@ struct Account: Codable {
             let account = try decoder.decode(Account.self, from: accountData)
             accounts.append(account)
         }
+
         return accounts
     }
 
@@ -245,4 +246,18 @@ struct Account: Codable {
         Keychain.shared.deleteAll(service: keychainService)
         Keychain.shared.deleteAll(service: otpKeychainService)
     }
+
+    // MARK: - Private
+
+    private func save(password: String) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+
+        guard let passwordData = password.data(using: .utf8) else {
+            throw KeychainError.stringEncoding
+        }
+
+        try Keychain.shared.save(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, classification: .confidential)
+        try BackupManager.shared.backup(id: id, accountData: accountData)
+    }
+
 }

@@ -8,6 +8,7 @@ import XCTest
 import OneTimePassword
 
 class AccountTests: XCTestCase {
+
     var accountId: String!
     var site: Site!
     let username = "demo@keyn.io"
@@ -37,138 +38,177 @@ class AccountTests: XCTestCase {
         TestHelper.resetKeyn()
     }
 
-    func testInitValidAccountWithPasswordDoesntThrow() {
-        // Also saves account to Keychain.
-        XCTAssertNoThrow(try Account(username: username, site: site, password: "Pass123."))
-        let account = testIfAccountIsSaved()
+    func testInitValidAccountWithPasswordDoesntThrow() throws {
+        let _ = try Account(username: self.username, site: self.site, password: "hunter2")
+        let account = try Account.get(accountID: accountId)
         XCTAssertNotNil(account)
-        XCTAssertNoThrow(try account?.delete())
     }
     
-    func testInitValidAccountDoesntThrow() {
-        // Also saves account to Keychain.
-        XCTAssertNoThrow(try Account(username: username, site: site, password: nil))
-        let account = testIfAccountIsSaved()
+    func testInitValidAccountDoesntThrow() throws {
+        let _ = try Account(username: self.username, site: self.site, password: nil)
+        let account = try Account.get(accountID: accountId)
         XCTAssertNotNil(account)
-        XCTAssertNoThrow(try account?.delete())
     }
     
-    func testInitInValidPasswordIndexWithoutPasswordDoesThrow() {
+    func testInitInValidPasswordIndexWithoutPasswordDoesThrow() throws {
         XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: nil)) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
-        XCTAssertNil(testIfAccountIsSaved())
+        let account = try Account.get(accountID: accountId)
+        XCTAssertNil(account)
     }
     
-    func testInitInValidPasswordIndexWithPasswordDoesThrow() {
-        XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: "Pass123.")) { error in
+    func testInitInValidPasswordIndexWithPasswordDoesThrow() throws {
+        XCTAssertThrowsError(try Account(username: username, site: site, passwordIndex: -1, password: "hunter2")) { error in
             XCTAssertEqual(error as? CryptoError, CryptoError.indexOutOfRange)
         }
-        XCTAssertNil(testIfAccountIsSaved())
+        let account = try Account.get(accountID: accountId)
+        XCTAssertNil(account)
     }
-    
-    func testBackupDoesntThrow() {
-        var account = try? Account(username: username, site: site, password: nil)
-        XCTAssertNotNil(account)
-        XCTAssertNoThrow(try account!.backup())
-        XCTAssertNoThrow(try account?.delete())
-    }
-    
-    func testPassword() {
-        let password = "Passzzword12"
-        let account = try? Account(username: username, site: site, password: password)
-        XCTAssertNotNil(account)
-        do {
-            let keychainPassword: String = try account!.password()
-            XCTAssertEqual(password, keychainPassword)
-        } catch {
-            XCTFail("Error getting password")
-        }
-        XCTAssertNoThrow(try account?.delete())
-    }
-    
-    func testNextPassword() {
-        var account = try? Account(username: username, site: site, password: nil)
-        XCTAssertNotNil(account)
-        XCTAssertNoThrow(try account!.nextPassword(offset: nil))
-        XCTAssertNoThrow(try account?.delete())
-    }
-    
-    func testAddOtpTokenDoesntThrow() {
-        
-    }
-    
-    func testOneTimePasswordToken() {
-        let account = try? Account(username: username, site: site, password: nil)
-        XCTAssertNoThrow(
-            XCTAssertNil(try account?.oneTimePasswordToken())
-        )
-        XCTAssertNoThrow(try account?.delete())
-    }
-    
 
-    
-    func testUpdteOtpToken() {
-        
+    func testBackupDoesntThrow() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        XCTAssertNotNil(account)
+        try account.backup()
     }
     
-    func testDeleteOtpToken() {
-        
+    func testPasswordIsCorrectForCustom() throws {
+        let account = try Account(username: username, site: site, password: "hunter2")
+        let keychainPassword: String = try account.password()
+        XCTAssertEqual("hunter2", keychainPassword)
     }
-    
-    func testUpdateUsername() {
-        
-    }
-    
-    func testUpdatePassword() {
-        
-    }
-    
-    func testUpdateSiteName() {
-        
-    }
-    
-    func testUpdateURL() {
-        
-    }
-    
-    func testGenerateNewPassword() {
-        
-    }
-    
-    func testGetAccountWithSiteID() {
-        
-    }
-    
-    func testGetAccountWithAccountID() {
-//        do {
-//            let account = Account.get(accountID: accountId)
-//            XCTAssertNotNil(account)
-//        }
 
+    func testPasswordIsCorrectForGenerated() throws {
+        let account = try Account(username: username, site: site, password: nil)
+        let keychainPassword: String = try account.password()
+        XCTAssertEqual("(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)", keychainPassword)
+    }
+
+    func testNextPassword() throws {
+        var account = try Account(username: self.username, site: self.site, password: "hunter2")
+        let password = try account.nextPassword()
+        XCTAssertEqual(password, "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
+    }
+
+    func testOneTimePasswordToken() throws {
+        let account = try Account(username: username, site: site, password: nil)
+        XCTAssertNil(try account.oneTimePasswordToken())
+    }
+
+    func testSetOtpTokenDoesntThrow() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        try account.setOtp(token: TestHelper.token())
+    }
+
+    func testHasOtpReturnsTrue() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        try account.setOtp(token: TestHelper.token())
+        XCTAssertTrue(account.hasOtp())
+    }
+
+    func testHasOtpReturnsFalse() throws {
+        let account = try Account(username: username, site: site, password: nil)
+        XCTAssertEqual(account.hasOtp(), false)
+    }
+
+    func testDeleteOtpToken() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        try account.setOtp(token: TestHelper.token())
+        XCTAssertEqual(account.hasOtp(), true)
+        try account.deleteOtp()
+        XCTAssertEqual(account.hasOtp(), false)
+    }
+
+    func testDeleteOtpTokenThrows() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        XCTAssertEqual(account.hasOtp(), false)
+        XCTAssertThrowsError(try account.deleteOtp())
     }
     
+    func testUpdateUsername() throws {
+        var account = try Account(username: username, site: site, password: nil)
+        try account.update(username: "test", password: nil, siteName: nil, url: nil)
+        XCTAssertEqual(account.username, "test")
+    }
+    
+    func testUpdatePassword() throws {
+        var account = try Account(username: username, site: site, password: "hunter2")
+        try account.update(username: nil, password: "test", siteName: nil, url: nil)
+        XCTAssertEqual(try account.password(), "test")
+    }
+
+    func testUpdatePasswordAfterConfirmation() throws {
+        var account = try Account(username: username, site: site, password: "hunter2")
+        try account.updatePasswordAfterConfirmation()
+        XCTAssertEqual(try account.password(), "(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)")
+        let _ = try account.nextPassword()
+        try account.updatePasswordAfterConfirmation()
+        XCTAssertEqual(try account.password(), "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
+    }
+
+    func testUpdateSiteName() throws {
+        var account = try Account(username: username, site: site, password: "hunter2")
+        try account.update(username: nil, password: nil, siteName: "test", url: nil)
+        XCTAssertEqual(account.site.name, "test")
+    }
+    
+    func testUpdateURL() throws {
+        var account = try Account(username: username, site: site, password: "hunter2")
+        try account.update(username: nil, password: nil, siteName: nil, url: "test")
+        XCTAssertEqual(account.site.url, "test")
+    }
+
+    func testGetAccountWithSiteIDShouldHaveNoResults() throws {
+        let accounts = try Account.get(siteID: "test")
+        XCTAssertEqual(accounts.count, 0)
+    }
+
+    func testGetAccountWithSiteIDShouldHaveResult() throws {
+        let _ = try Account(username: username, site: site, password: "hunter2")
+        let id = "\(site.id)_\(username)".hash
+        let accounts = try Account.get(siteID: site.id)
+        XCTAssertEqual(accounts.first!.id, id)
+    }
+
+    func testGetAccountWithSiteIDShouldHaveResults() throws {
+        let _ = try Account(username: "user1", site: site, password: "hunter1")
+        let _ = try Account(username: "user2", site: site, password: "hunter2")
+        let id1 = "\(site.id)_user1".hash
+        let id2 = "\(site.id)_user2".hash
+        let accounts = try Account.get(siteID: site.id)
+        XCTAssertEqual(accounts.first!.id, id1)
+        XCTAssertEqual(accounts.last!.id, id2)
+    }
+
+    func testGetAccountWithAccountIDShouldReturnNil() throws {
+        let account = try Account.get(accountID: "id")
+        XCTAssertNil(account)
+    }
+
+    func testGetAccountWithAccountIDShouldHaveResult() throws {
+        let _ = try Account(username: username, site: site, password: "hunter2")
+        let id = "\(site.id)_\(username)".hash
+        let account = try Account.get(accountID: id)
+        XCTAssertNotNil(account)
+    }
+
     func testSaveAccount() {
-    
+        assert(false, "To be implemented.")
     }
     
-    func testAllAccounts() {
-        
+    func testAllAccounts() throws {
+        let _ = try Account(username: "user1", site: site, password: "hunter1")
+        let _ = try Account(username: "user2", site: site, password: "hunter2")
+        let _ = try Account(username: "user3", site: site, password: "hunter3")
+        XCTAssertEqual(try Account.all().count, 3)
     }
     
-    func testDeleteAllAccounts() {
-        
+    func testDeleteAllAccounts() throws {
+        let _ = try Account(username: "user1", site: site, password: "hunter1")
+        let _ = try Account(username: "user2", site: site, password: "hunter2")
+        let _ = try Account(username: "user3", site: site, password: "hunter3")
+        Account.deleteAll()
+        XCTAssertEqual(try Account.all().count, 0)
     }
     
-    // Private methods
-    
-    private func testIfAccountIsSaved() -> Account? {
-        do {
-            return try Account.get(accountID: accountId)
-        } catch {
-            print("Error getting account: \(error)")
-        }
-        return nil
-    }
-
 }
