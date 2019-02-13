@@ -89,25 +89,23 @@ struct Account: Codable {
     func hasOtp() -> Bool {
         return Keychain.shared.has(id: id, service: Account.otpKeychainService)
     }
-    
-    mutating func addOtp(token: Token) throws {
+
+    mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
+
         guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
             throw KeynError.stringEncoding
         }
-        try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, classification: .secret)
-        try backup()
-    }
-    
-    mutating func updateOtp(token: Token) throws {
-        let secret = token.generator.secret
-        guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw KeynError.stringEncoding
+
+        if self.hasOtp() {
+            try Keychain.shared.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
+        } else {
+            try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, classification: .secret)
         }
-        try Keychain.shared.update(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, label: nil)
         try backup()
+
     }
-    
+
     mutating func deleteOtp() throws {
         try Keychain.shared.delete(id: id, service: Account.otpKeychainService)
         try backup()
