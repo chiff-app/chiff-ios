@@ -8,7 +8,11 @@ import XCTest
 
 /*
  * Test helpers to be used in all tests.
+ *
  * We cannot (easily?) create mock objects so we actually modify the Keychain, storage etc.
+ *
+ * Testing whether function don't throw an error is done by making the test throw the error
+ * because XCTAssertNoThrow() does not check for our type of errors.
  */
 class TestHelper {
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"

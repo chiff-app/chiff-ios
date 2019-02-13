@@ -71,7 +71,7 @@ class AWS {
             if let result = task.result {
                 if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
                     do {
-                        try Keychain.shared.save(secretData: subscriptionArnData, id: self.subscriptionKeychainIdentifier, service: self.awsService, classification: .secret)
+                        try Keychain.shared.save(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData, classification: .secret)
                     } catch {
                         Logger.shared.error("Error saving Keyn subscription identifier.", error: error)
                         try? Keychain.shared.update(id: self.subscriptionKeychainIdentifier, service: self.awsService, secretData: subscriptionArnData)
@@ -202,7 +202,7 @@ class AWS {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
                     try? Keychain.shared.delete(id: self.endpointKeychainIdentifier, service: self.awsService)
-                    try Keychain.shared.save(secretData: endpointData, id: self.endpointKeychainIdentifier, service: self.awsService, classification: .secret)
+                    try Keychain.shared.save(id: self.endpointKeychainIdentifier, service: self.awsService, secretData: endpointData, classification: .secret)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
                     if self.isFirstLaunch {

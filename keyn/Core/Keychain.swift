@@ -28,7 +28,7 @@ class Keychain {
     
     // MARK: - CRUD methods
 
-    func save(secretData: Data, id identifier: String, service: String, objectData: Data? = nil, label: String? = nil, classification: Classification) throws {
+    func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, classification: Classification) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,

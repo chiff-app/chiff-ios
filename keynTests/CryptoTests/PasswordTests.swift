@@ -7,6 +7,7 @@ import XCTest
 @testable import keyn
 
 class PasswordTests: XCTestCase {
+
     let commonCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|"
     var site: Site!
 
@@ -77,7 +78,6 @@ class PasswordTests: XCTestCase {
         XCTAssertFalse(validator.validate(password: veryLongPassword))
         XCTAssertThrowsError(try PasswordGenerator.shared.calculatePasswordOffset(username: "demo", passwordIndex: 0, siteID: TestHelper.linkedInPPDHandle, ppd: ppd, password: veryLongPassword))
     }
-
 
     func testUnallowedCharacters() {
         let ppd = TestHelper.examplePPD(maxConsecutive: nil, minLength: 8, maxLength: 32, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
@@ -210,4 +210,5 @@ class PasswordTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+
 }
