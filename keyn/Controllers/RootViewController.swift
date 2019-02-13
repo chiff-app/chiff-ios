@@ -35,7 +35,7 @@ class RootViewController: UITabBarController {
     }    
     
     func launchQuestionnaire(questionnaire: Questionnaire) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
+        let storyboard: UIStoryboard = UIStoryboard.get(.feedback)
         guard let modalViewController = storyboard.instantiateViewController(withIdentifier: "QuestionnaireController") as? QuestionnaireController else {
             Logger.shared.error("ViewController has wrong type.")
             return

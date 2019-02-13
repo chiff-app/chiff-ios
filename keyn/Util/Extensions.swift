@@ -120,6 +120,26 @@ extension UIViewController {
     }
 }
 
+extension UIStoryboard {
+    
+    enum StoryboardType: String {
+        case main = "Main"
+        case initialisation = "Initialisation"
+        case request = "Request"
+        case launchScreen = "LaunchScreen"
+        case feedback = "Feedback"
+    }
+    
+    static var main: UIStoryboard {
+        return get(.main)
+    }
+    
+    static func get(_ type: StoryboardType) -> UIStoryboard {
+        return UIStoryboard(name: type.rawValue, bundle: nil)
+    }
+    
+}
+
 extension UIApplication {
     var visibleViewController: UIViewController? {
         guard let rootViewController = keyWindow?.rootViewController else {

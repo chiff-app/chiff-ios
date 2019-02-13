@@ -26,6 +26,12 @@
 		49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		49062C5A221449C700A30669 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49062C5B221449D200A30669 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		49062C6D2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
+		49062C6E2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
+		49062C6F2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
+		49062C7822146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
+		49062C7922146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
+		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
@@ -211,6 +217,9 @@
 		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
+		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
+		49062C7B22146D8700A30669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Localized.plist; sourceTree = "<group>"; };
+		49062C862214731700A30669 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
@@ -258,7 +267,6 @@
 		49E766501F7E6F420022C042 /* keyn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49E7665A1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		49E7665F1F7E6F420022C042 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49E766611F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49E766661F7E6F420022C042 /* keynTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E7666C1F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -413,6 +421,7 @@
 				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				495E72BA22118717003132ED /* Logger.swift */,
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
+				49062C6C2214679400A30669 /* Localizer.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -566,6 +575,7 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				49062C7C22146D8700A30669 /* Localized.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
@@ -862,6 +872,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49062C7922146D8700A30669 /* Localized.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,6 +880,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49062C7822146D8700A30669 /* Localized.plist in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
@@ -899,6 +911,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
 				611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */,
 				611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
@@ -1067,6 +1080,7 @@
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				495E72BC22118F9D003132ED /* Logger.swift in Sources */,
+				49062C6E2214679400A30669 /* Localizer.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
 				49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */,
 				49F2A0FE2214322600429875 /* DataStructures.swift in Sources */,
@@ -1113,6 +1127,7 @@
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
+				49062C6D2214679400A30669 /* Localizer.swift in Sources */,
 				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
@@ -1194,6 +1209,7 @@
 				49F2A1012214337300429875 /* AWS.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,
 				49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */,
+				49062C6F2214679400A30669 /* Localizer.swift in Sources */,
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
@@ -1231,6 +1247,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		49062C7C22146D8700A30669 /* Localized.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49062C7B22146D8700A30669 /* Base */,
+			);
+			name = Localized.plist;
+			sourceTree = "<group>";
+		};
 		49E766591F7E6F420022C042 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1242,7 +1266,7 @@
 		49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49E7665F1F7E6F420022C042 /* Base */,
+				49062C862214731700A30669 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1309,6 +1333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1369,6 +1394,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

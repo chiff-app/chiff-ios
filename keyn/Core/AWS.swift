@@ -12,7 +12,9 @@ enum AWSError: Error {
 }
 
 class AWS {
+    
     static let shared = AWS()
+    
     private let sns = AWSSNS.default()
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"

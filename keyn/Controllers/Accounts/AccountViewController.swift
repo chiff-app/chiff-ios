@@ -111,9 +111,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     }
     
     @IBAction func deleteAccount(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "delete_account".localized, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
             self.performSegue(withIdentifier: "DeleteAccount", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
@@ -283,7 +283,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
             userCodeCell.accessoryType = .disclosureIndicator
-            userCodeTextField.placeholder = "Add code"
+            userCodeTextField.placeholder = "add_otp_code".localized
         }
     }
     

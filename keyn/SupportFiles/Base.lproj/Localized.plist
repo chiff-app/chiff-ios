@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>add_otp_code</key>
+	<dict>
+		<key>comment</key>
+		<string>Add a one-time-password code</string>
+		<key>value</key>
+		<string>Add code</string>
+	</dict>
+	<key>cancel</key>
+	<dict>
+		<key>comment</key>
+		<string>Cancels something</string>
+		<key>value</key>
+		<string>Cancel</string>
+	</dict>
+	<key>delete</key>
+	<dict>
+		<key>comment</key>
+		<string>Deletes something</string>
+		<key>value</key>
+		<string>Delete</string>
+	</dict>
+	<key>delete_account</key>
+	<dict>
+		<key>comment</key>
+		<string>Ask the user to delete the account</string>
+		<key>value</key>
+		<string>Delete account?</string>
+	</dict>
+	<key>generic_problem</key>
+	<dict>
+		<key>comment</key>
+		<string>A generic problem description</string>
+		<key>value</key>
+		<string>There was a problem</string>
+	</dict>
+	<key>no_camera</key>
+	<dict>
+		<key>comment</key>
+		<string>The camera is not available</string>
+		<key>value</key>
+		<string>Camera not available</string>
+	</dict>
+	<key>qr_scanned_twice</key>
+	<dict>
+		<key>comment</key>
+		<string>This QR-code was already scanned.</string>
+		<key>value</key>
+		<string>This QR-code was already scanned.</string>
+	</dict>
+</dict>
+</plist>

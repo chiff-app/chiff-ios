@@ -141,12 +141,11 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
 
         if !Seed.exists() {
-            let storyboard: UIStoryboard = UIStoryboard(name: "Initialisation", bundle: nil)
+            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
             viewController = rootController
         } else {
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            guard let vc = storyboard.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+            guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                 Logger.shared.error("Unexpected root view controller type")
                 fatalError("Unexpected root view controller type")
             }
@@ -160,9 +159,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     private func launchErrorView(_ message: String) {
         DispatchQueue.main.async {
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-
-            guard let viewController = storyboard.instantiateViewController(withIdentifier: "ErrorViewController") as? ErrorViewController else {
+            guard let viewController = UIStoryboard.main.instantiateViewController(withIdentifier: "ErrorViewController") as? ErrorViewController else {
                 Logger.shared.error("Can't create ErrorViewController so we have no way to start the app.")
                 fatalError("Can't create ErrorViewController so we have no way to start the app.")
             }

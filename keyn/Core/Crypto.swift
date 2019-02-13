@@ -21,28 +21,24 @@ enum CryptoError: Error {
 }
 
 class Crypto {
-    static let shared = Crypto()
     
-    private let sodium = Sodium()
     private let SEED_SIZE = 16
+    private let KEY_SIZE = 32
+    private let CONTEXT_SIZE = 8
+    static let shared = Crypto()
 
+    private let sodium = Sodium()
+    
     private init() {}
 
     // MARK: - Key generation functions
 
     func generateSeed() throws -> Data {
-        // Generate random seed
-        // TODO: Should this be replaced by libsodium key generation function?
-        var seed = Data(count: SEED_SIZE)
-        let seedGenerationStatus = seed.withUnsafeMutableBytes { mutableBytes in
-            SecRandomCopyBytes(kSecRandomDefault, SEED_SIZE, mutableBytes)
-        }
-
-        guard seedGenerationStatus == errSecSuccess else {
+        guard let seed = sodium.randomBytes.buf(length: SEED_SIZE) else {
             throw CryptoError.randomGeneration
         }
 
-        return seed
+        return seed.data
     }
 
     func deriveKeyFromSeed(seed: Data, keyType: KeyType, context: String) throws -> Data {
@@ -52,7 +48,7 @@ class Crypto {
         }
         
         // This derives a subkey from the seed for a given index and context.
-        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: 32, context: String(context.prefix(8))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: KEY_SIZE, context: String(context.prefix(CONTEXT_SIZE))) else {
             throw CryptoError.keyDerivation
         }
 
@@ -83,17 +79,17 @@ class Crypto {
         return keyData.data
     }
 
-    func deriveKey(keyData: Data, context: Data, index: Int = 0, keyLengthBytes: Int = 32) throws ->  Data {
+    func deriveKey(keyData: Data, context: Data, index: Int = 0) throws ->  Data {
         guard index >= 0 && index < UInt64.max else {
             throw CryptoError.indexOutOfRange
         }
-        guard let contextHash = sodium.genericHash.hash(message: context.bytes, outputLength: 8) else {
+        guard let contextHash = sodium.genericHash.hash(message: context.bytes, outputLength: CONTEXT_SIZE) else {
             throw CryptoError.hashing
         }
         guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: UInt64(index), length: keyLengthBytes, context: String(context.prefix(8))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: UInt64(index), length: KEY_SIZE, context: String(context.prefix(CONTEXT_SIZE))) else {
             throw CryptoError.keyDerivation
         }
 

@@ -14,7 +14,7 @@ class ErrorViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        errorTitleLabel.text = "There was a problem"
+        errorTitleLabel.text = "generic_problem".localized
         errorMessageLabel.text = errorMessage
     }
 

@@ -37,7 +37,7 @@ class QuestionnaireController: UINavigationController {
     }
     
     func nextQuestion() {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
+        let storyboard: UIStoryboard = UIStoryboard.get(.feedback)
         if index < questionnaire!.questions.count {
             switch questionnaire!.questions[index].type {
             case .boolean:

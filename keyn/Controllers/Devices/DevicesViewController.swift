@@ -11,6 +11,9 @@ protocol canReceiveSession {
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, canReceiveSession {
     @IBOutlet weak var tableView: UITableView!
     
+    private let DEVICE_ROW_HEIGHT: CGFloat = 90
+    private let DEFAULT_ROW_HEIGHT: CGFloat = 44
+    
     var sessions = [Session]()
 
     override func viewDidLoad() {
@@ -40,13 +43,13 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return 90
+            return DEVICE_ROW_HEIGHT
         case 1:
-            return 44
+            return DEFAULT_ROW_HEIGHT
         default:
             assert(false, "section \(indexPath.section)")
             // Dummy code for archive compiler
-            return 44
+            return DEFAULT_ROW_HEIGHT
         }
     }
 
