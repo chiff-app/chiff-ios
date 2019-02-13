@@ -501,9 +501,6 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
-				613C8A16200D213F005C7D61 /* keyn.entitlements */,
-				491C485720249D3B00397071 /* Assets.xcassets */,
-				49E766611F7E6F420022C042 /* Info.plist */,
 				013438C5220C45F3000685B2 /* AppDelegate */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
@@ -569,9 +566,12 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				49E766611F7E6F420022C042 /* Info.plist */,
+				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				499569C21FED47BF00D75848 /* english_wordlist.txt */,
 				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
 				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
+				491C485720249D3B00397071 /* Assets.xcassets */,
 			);
 			path = SupportFiles;
 			sourceTree = "<group>";
@@ -1424,13 +1424,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
+				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keyn/Info.plist;
+				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
@@ -1450,13 +1450,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = keyn/keyn.entitlements;
+				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keyn/Info.plist;
+				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;

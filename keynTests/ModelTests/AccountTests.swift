@@ -23,7 +23,7 @@ class AccountTests: XCTestCase {
                     return
                 }
                 self.site = site
-                self.accountId = "\(site.id)_\(self.username)".hash()
+                self.accountId = "\(site.id)_\(self.username)".hash
                 exp.fulfill()
             })
             waitForExpectations(timeout: 40, handler: nil)
