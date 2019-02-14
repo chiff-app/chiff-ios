@@ -179,29 +179,31 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        do {
-            try API.shared.request(type: .questionnaire, path: nil, parameters: nil, method: .get) { (dict) in
-                guard let dict = dict else {
-                    Logger.shared.warning("Could not get questionnaires")
-                    return
-                }
-                if let questionnaires = dict["questionnaires"] as? [Any] {
-                    for object in questionnaires {
-                        do {
-                            let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
-                            let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
-                            if !exists(id: questionnaire.id) {
-                                questionnaire.save()
-                            }
-                        } catch {
-                            Logger.shared.error("Failed to decode questionnaire", error: error)
+        API.shared.request(type: .questionnaire, path: nil, parameters: nil, method: .get) { (dict, error) in
+            if let error = error {
+                Logger.shared.error("Could not get questionnaire.", error: error)
+                return
+            }
+
+            guard let dict = dict else {
+                Logger.shared.warning("Could not get questionnaires")
+                return
+            }
+
+            if let questionnaires = dict["questionnaires"] as? [Any] {
+                for object in questionnaires {
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
+                        let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
+                        if !exists(id: questionnaire.id) {
+                            questionnaire.save()
                         }
-                        
+                    } catch {
+                        Logger.shared.error("Failed to decode questionnaire", error: error)
                     }
+
                 }
             }
-        } catch {
-            Logger.shared.warning("Could not get questionnaires", error: error)
         }
     }
     

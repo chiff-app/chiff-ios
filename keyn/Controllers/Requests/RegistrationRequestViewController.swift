@@ -117,10 +117,10 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let notification = notification, let session = session {
-            do {
-                try session.acknowledge(browserTab: notification.browserTab)
-            } catch {
-                Logger.shared.error("Acknowledge could not be sent.", error: error)
+            session.acknowledge(browserTab: notification.browserTab) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("Acknowledge could not be sent.", error: error)
+                }
             }
         }
         self.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
