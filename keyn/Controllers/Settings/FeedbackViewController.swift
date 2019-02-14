@@ -66,12 +66,10 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        Logger.shared.analytics(userFeedback, code: .userFeedback, userInfo: [
-                "name": debugLogUser
-            ])
+        Logger.shared.analytics(userFeedback, code: .userFeedback, userInfo: [ "name": debugLogUser ])
         
         self.nameTextField.text = ""
-        self.textView.text = "Feedback verstuurd. Bedankt!"
+        self.textView.text = "feedback_submitted".localized
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
             self.navigationController?.popViewController(animated: true)
         })

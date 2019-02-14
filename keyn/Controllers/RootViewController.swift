@@ -5,6 +5,9 @@
 import UIKit
 
 class RootViewController: UITabBarController {
+    
+    private let oneDay = 3600*24
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -27,7 +30,7 @@ class RootViewController: UITabBarController {
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
-            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(3600*24), since: Date()))
+            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(self.oneDay), since: Date()))
             questionnaire.save()
             Logger.shared.analytics("Postponed questionnaire.", code: .postponedQuestionnaire)
         }))

@@ -5,6 +5,7 @@
 import UIKit
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var firstWordLabel: UILabel!
     @IBOutlet weak var secondWordLabel: UILabel!
     @IBOutlet weak var firstWordTextField: UITextField!
@@ -15,24 +16,26 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
     
-    var textFieldOffset: CGPoint!
-    var textFieldHeight: CGFloat!
-    var keyboardHeight: CGFloat!
+    private var textFieldOffset: CGPoint!
+    private var textFieldHeight: CGFloat!
+    private var keyboardHeight: CGFloat!
+    private let lowerBoundaryOffset: CGFloat = 15
+    private let keyboardHeightOffset: CGFloat = 40
 
-    var mnemonic: [String]?
-    var firstWordIndex = 0
-    var secondWordIndex = 0
+    var mnemonic: [String]!
     var isInitialSetup = true
+    private var firstWordIndex = 0
+    private var secondWordIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         firstWordIndex = Int(arc4random_uniform(5))
         secondWordIndex = Int(arc4random_uniform(5)) + 6
 
-        firstWordLabel.text = "Word #\(firstWordIndex+1)"
-        secondWordLabel.text = "Word #\(secondWordIndex+1)"
-        firstWordTextField.placeholder = "\(mnemonic![firstWordIndex].prefix(3))..."
-        secondWordTextField.placeholder = "\(mnemonic![secondWordIndex].prefix(3))..."
+        firstWordLabel.text = "\("word".localized.capitalized) #\(firstWordIndex+1)"
+        secondWordLabel.text = "\("word".localized.capitalized) #\(secondWordIndex+1)"
+        firstWordTextField.placeholder = "\(mnemonic[firstWordIndex].prefix(3))..."
+        secondWordTextField.placeholder = "\(mnemonic[secondWordIndex].prefix(3))..."
 
         firstWordTextField.delegate = self
         secondWordTextField.delegate = self
@@ -40,8 +43,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         secondWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         
         // Observe keyboard change
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
@@ -81,11 +85,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             return
         }
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            let lowerBoundary = (wordFieldStack.frame.origin.y + wordFieldStack.frame.size.height) - (self.scrollView.frame.size.height - keyboardSize.height) + 15
+            let lowerBoundary = (wordFieldStack.frame.origin.y + wordFieldStack.frame.size.height) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
             if lowerBoundary > 0 {
-                keyboardHeight = keyboardSize.height
+                keyboardHeight = keyboardSize.height - keyboardHeightOffset
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.constraintContentHeight.constant += (self.keyboardHeight - 40)
+                    self.constraintContentHeight.constant += (self.keyboardHeight)
                 })
                 
                 UIView.animate(withDuration: 0.3, animations: {
@@ -100,7 +104,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             return
         }
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight - 40)
+            self.constraintContentHeight.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         }
         
@@ -134,7 +138,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Private
 
     private func checkWords() {
-        if (firstWordTextField.text == mnemonic![firstWordIndex] && secondWordTextField.text == mnemonic![secondWordIndex]) {
+        if (firstWordTextField.text == mnemonic[firstWordIndex] && secondWordTextField.text == mnemonic[secondWordIndex]) {
             finishButton.isEnabled = true
         } else {
             finishButton.isEnabled = false

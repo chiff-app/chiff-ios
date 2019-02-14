@@ -44,7 +44,7 @@ class ManualOTPViewController: UITableViewController {
         try AuthenticationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
             DispatchQueue.main.async {
                 guard error == nil else {
-                    Logger.shared.error("Error authorizing OTP", error: error! as NSError)
+                    Logger.shared.error("Error authorizing OTP", error: error)
                     return
                 }
                 do {

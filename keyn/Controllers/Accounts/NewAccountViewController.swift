@@ -62,9 +62,9 @@ class NewAccountViewController: AccountViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.section == 0 && indexPath.row == 3) {
-            return customPassword ? 44 : 0
+            return customPassword ? UITableViewCell.defaultHeight : 0
         }
-        return 44
+        return UITableViewCell.defaultHeight
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
