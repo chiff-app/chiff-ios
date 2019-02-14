@@ -24,13 +24,6 @@ class AWS {
 
     private init() {}
 
-    func getIdentityId() -> String {
-        if let credentialsProvider = AWSServiceManager.default().defaultServiceConfiguration.credentialsProvider as? AWSCognitoCredentialsProvider {
-            return credentialsProvider.identityId ?? "NoIdentityId"
-        }
-        return "NoIdentityId"
-    }
-
     func snsRegistration(deviceToken: Data) {
         let token = deviceToken.hexEncodedString()
         if Keychain.shared.has(id: endpointKeychainIdentifier, service: awsService) {

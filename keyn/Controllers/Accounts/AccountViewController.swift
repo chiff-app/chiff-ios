@@ -300,7 +300,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "reportSite", let destination = segue.destination.contents as? ReportSiteViewController {
-            destination.navigationItem.title = account?.site.name
+            guard let account = account else {
+                return
+            }
+            destination.navigationItem.title = account.site.name
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeAnimations()

@@ -6,8 +6,6 @@ import UIKit
 
 class RootViewController: UITabBarController {
     
-    private let oneDay = 3600*24
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -24,13 +22,13 @@ class RootViewController: UITabBarController {
         }))
         if !questionnaire.compulsory {
             alert.addAction(UIAlertAction(title: "questionnaire_deny".localized, style: .cancel, handler: { _ in
-                questionnaire.setFinished()
+                questionnaire.isFinished = true
                 questionnaire.save()
                 Logger.shared.analytics("Declined questionnaire.", code: .declinedQuestionnaire)
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
-            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(self.oneDay), since: Date()))
+            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
             questionnaire.save()
             Logger.shared.analytics("Postponed questionnaire.", code: .postponedQuestionnaire)
         }))

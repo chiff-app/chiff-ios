@@ -12,11 +12,11 @@ enum NotificationExtensionError: Error {
 class NotificationProcessor {
     
     class func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
-        guard let ciphertext = content.userInfo["data"] as? String else {
+        guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
             throw NotificationExtensionError.decodeCiphertext
         }
         
-        guard let id = content.userInfo["sessionID"] as? String else {
+        guard let id = content.userInfo[NotificationContentKey.sessionId] as? String else {
             throw NotificationExtensionError.decodeSessionId
         }
         
@@ -26,7 +26,7 @@ class NotificationProcessor {
         
         let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)
         
-        content.userInfo["requestType"] = browserMessage.r.rawValue
+        content.userInfo[NotificationContentKey.requestType] = browserMessage.r.rawValue
         
         let siteName = browserMessage.n ?? "Unknown"
         var addSiteInfo = false
@@ -36,10 +36,10 @@ class NotificationProcessor {
             content.title = "Add site request"
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
             if let password = browserMessage.p {
-                content.userInfo["password"] = password
+                content.userInfo[NotificationContentKey.password] = password
             }
             if let username = browserMessage.u {
-                content.userInfo["username"] = username
+                content.userInfo[NotificationContentKey.username] = username
             }
             addSiteInfo = true
         case.end:
@@ -71,10 +71,10 @@ class NotificationProcessor {
         }
         
         if addSiteInfo {
-            content.userInfo["siteName"] = siteName
-            content.userInfo["siteID"] = browserMessage.s
-            content.userInfo["browserTab"] = browserMessage.b
-            content.userInfo["requestType"] = browserMessage.r.rawValue
+            content.userInfo[NotificationContentKey.siteName] = siteName
+            content.userInfo[NotificationContentKey.siteId] = browserMessage.s
+            content.userInfo[NotificationContentKey.browserTab] = browserMessage.b
+            content.userInfo[NotificationContentKey.requestType] = browserMessage.r.rawValue
         }
 
         return content

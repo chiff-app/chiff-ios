@@ -28,8 +28,9 @@ class QuestionViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        if let navCon = self.navigationController as? QuestionnaireController {
-            navCon.cancel()
+        guard let navCon = self.navigationController as? QuestionnaireController else {
+            fatalError("QuestionViewController not contained in navigationController")
         }
+        navCon.cancel()
     }
 }

@@ -11,11 +11,12 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
 
-    var notification: PushNotification!
     var type: BrowserMessageType!
+    var notification: PushNotification!
     var session: Session!
-    var accounts = [Account]()
-    var site: Site?
+
+    private var site: Site?
+    private var accounts = [Account]()
     private let PICKER_HEIGHT: CGFloat = 120.0
     private let SPACE_PICKER_STACK: CGFloat = 10.0
     
@@ -55,12 +56,10 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if segue.identifier == "RegistrationRequestSegue" {
-            if let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
-                destinationController.site = site
-                destinationController.session = session
-                destinationController.notification = notification
-            }
+        if segue.identifier == "RegistrationRequestSegue", let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
+            destinationController.site = site
+            destinationController.session = session
+            destinationController.notification = notification
         }
     }
 
@@ -154,7 +153,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
-                setLabel(requestType: type)
+                siteLabel.text = AuthenticationGuard.shared.requestText(siteName: notification.siteName, type: type, accountExists: accountExists())
             } catch {
                 Logger.shared.error("Could not get account.", error: error)
                 self.dismiss(animated: true, completion: nil)
@@ -163,32 +162,12 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     private func accountExists() -> Bool {
-        if self.accounts.isEmpty {
-            return false
-        } else if let username = notification?.username {
-            return accounts.contains { (account) -> Bool in
-                account.username == username
-            }
+        guard accounts.isEmpty else {
+           return false
+        }
+        if let username = notification?.username {
+            return accounts.contains { $0.username == username }
         }
         return true
-    }
-
-    private func setLabel(requestType: BrowserMessageType) {
-        switch requestType {
-        case .login:
-            siteLabel.text = "Login to \(notification!.siteName)?"
-        case .fill:
-            siteLabel.text = "Fill password for \(notification!.siteName)?"
-        case .change:
-            siteLabel.text = accountExists() ? "Change password for \(notification!.siteName)?" : "Add \(notification!.siteName)?"
-        case .reset:
-            siteLabel.text = "Reset password for \(notification!.siteName)?"
-        case .register:
-            siteLabel.text = "Register for \(notification!.siteName)?"
-        case .add:
-            siteLabel.text = "Add \(notification!.siteName)?"
-        default:
-            siteLabel.text = "Request error :("
-        }
     }
 }

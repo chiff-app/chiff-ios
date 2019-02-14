@@ -9,7 +9,8 @@ enum SeedError: Error {
 }
 
 struct Seed {
-    static let keychainService = "io.keyn.seed"
+    
+    private static let keychainService = "io.keyn.seed"
 
     private enum KeyIdentifier: String, Codable {
         case password = "password"
@@ -34,24 +35,12 @@ struct Seed {
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
         let seedHash = try Crypto.shared.hash(seed).first!
-        var bitstring = ""
-        for byte in Array<UInt8>(seed) {
-            bitstring += String(byte, radix: 2).pad(toSize: 8)
-        }
-        bitstring += String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4)
+        var bitstring = seed.bitstring
+        bitstring += String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) // Add checksum
 
-        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = wordlistData.components(separatedBy: .newlines)
+        let wordlist = try self.wordlist()
 
-        var mnemonic = [String]()
-        for word in bitstring.components(withLength: 11) {
-            guard let index = Int(word, radix: 2) else {
-                throw SeedError.mnemonicConversion
-            }
-            mnemonic.append(wordlist[index])
-        }
-
-        return mnemonic
+        return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
     }
     
     static func validate(mnemonic: [String]) -> Bool {
@@ -123,28 +112,30 @@ struct Seed {
     
     // MARK: - Private
     
-    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
+    static private func wordlist() throws -> [String] {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = wordlistData.components(separatedBy: .newlines)
-        
-        var bitstring = ""
-        for word in mnemonic {
+        return wordlistData.components(separatedBy: .newlines)
+    }
+    
+    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
+        let wordlist = try self.wordlist()
+
+        let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
             guard let index: Int = wordlist.index(of: word) else {
                 throw SeedError.mnemonicConversion
             }
-            bitstring += String(index, radix: 2).pad(toSize: 11)
+            return result + String(index, radix: 2).pad(toSize: 11)
         }
         
         let checksum = bitstring.suffix(mnemonic.count / 3)
         let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
-        var seed = Data(capacity: seedString.count)
-        for byteString in seedString.components(withLength: 8) {
+        let seed = try seedString.components(withLength: 8).map { (byteString) throws -> UInt8 in
             guard let byte = UInt8(byteString, radix: 2) else {
                 throw SeedError.mnemonicConversion
             }
-            seed.append(byte)
+            return byte
         }
         
-        return (String(checksum), seed)
+        return (String(checksum), seed.data)
     }
 }
