@@ -72,15 +72,15 @@ class AccountTests: XCTestCase {
         try account.backup()
     }
     
-    func testPasswordIsCorrectForCustom() throws {
+    func testPasswordIsCorrectForCustom() throws    {
         let account = try Account(username: username, site: site, password: "hunter2")
-        let keychainPassword: String = try account.password()
+        let keychainPassword: String = account.password!
         XCTAssertEqual("hunter2", keychainPassword)
     }
 
     func testPasswordIsCorrectForGenerated() throws {
         let account = try Account(username: username, site: site, password: nil)
-        let keychainPassword: String = try account.password()
+        let keychainPassword: String = account.password!
         XCTAssertEqual("(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)", keychainPassword)
     }
 
@@ -134,16 +134,16 @@ class AccountTests: XCTestCase {
     func testUpdatePassword() throws {
         var account = try Account(username: username, site: site, password: "hunter2")
         try account.update(username: nil, password: "test", siteName: nil, url: nil)
-        XCTAssertEqual(try account.password(), "test")
+        XCTAssertEqual(account.password!, "test")
     }
 
     func testUpdatePasswordAfterConfirmation() throws {
         var account = try Account(username: username, site: site, password: "hunter2")
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(try account.password(), "(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)")
+        XCTAssertEqual(account.password!, "(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)")
         let _ = try account.nextPassword()
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(try account.password(), "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
+        XCTAssertEqual(account.password!, "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
     }
 
     func testUpdateSiteName() throws {

@@ -67,19 +67,18 @@ class LoginViewController: ASCredentialProviderViewController {
             }
         }
     }
-    
+
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        do {
-            if let account = try Account.get(accountID: credentialIdentity.recordIdentifier!) {
-                let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password())
-                extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-            } else {
-                extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
-            }
-        } catch {
-            Logger.shared.warning("Error getting account.", error: error)
-            extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+        guard let account = try? Account.get(accountID: credentialIdentity.recordIdentifier!) else {
+            return extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
         }
+
+        guard let password = account?.password, let username = account?.username else {
+            return extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+        }
+
+        let passwordCredential = ASPasswordCredential(user: username, password: password)
+        extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
     }
 
     // MARK: - Authentication

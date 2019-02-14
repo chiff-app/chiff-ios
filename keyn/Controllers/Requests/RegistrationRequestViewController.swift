@@ -29,19 +29,14 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         super.viewDidLoad()
 
         if let account = account {
-            do {
-                websiteNameTextField.text = account.site.name
-                websiteURLTextField.text = account.site.url
-                userNameTextField.text = account.username
-                userPasswordTextField.text = try account.password()
-                websiteNameTextField.delegate = self
-                websiteURLTextField.delegate = self
-                userNameTextField.delegate = self
-                userPasswordTextField.delegate = self
-            } catch {
-                // TODO: Present error to user?
-                Logger.shared.error("Could not get password.", error: error)
-            }
+            websiteNameTextField.text = account.site.name
+            websiteURLTextField.text = account.site.url
+            userNameTextField.text = account.username
+            userPasswordTextField.text = account.password
+            websiteNameTextField.delegate = self
+            websiteURLTextField.delegate = self
+            userNameTextField.delegate = self
+            userPasswordTextField.delegate = self
             navigationItem.title = account.site.name
             navigationItem.largeTitleDisplayMode = .never
         }
