@@ -207,23 +207,25 @@ class AuthenticationGuard {
     }
 
     func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
-        var localizedReason = ""
-        switch type {
-        case .add, .addAndChange:
-            localizedReason = "Add \(siteName)"
-        case .change:
-            localizedReason = "Change password for \(siteName)"
-        case .login:
-            localizedReason = "Login to \(siteName)"
-        case .reset:
-            localizedReason = "Reset password for \(siteName)"
-        case .register:
-            localizedReason = "Register for \(siteName)"
-        default:
-            localizedReason = "\(siteName)"
-        }
-
+        let localizedReason = requestText(siteName: siteName, type: type) ?? "\(siteName)"
         authorize(reason: localizedReason, completion: completion)
+    }
+    
+    
+    func requestText(siteName: String, type: BrowserMessageType, accountExists: Bool = true) -> String? {
+        switch type {
+        case .login:
+            return "\("login_to".localized.capitalized) \(siteName)?"
+        case .fill:
+            return "\("fill_for".localized.capitalized) \(siteName)?"
+        case .change:
+            return accountExists ? "\("change_for".localized.capitalized) \(siteName)?" : "\("add_site".localized.capitalized) \(siteName)?"
+        case .add:
+            return "\("add_site".localized.capitalized) \(siteName)?"
+        default:
+            return nil
+        }
+        
     }
 
     func launchRequestView(with notification: PushNotification) {

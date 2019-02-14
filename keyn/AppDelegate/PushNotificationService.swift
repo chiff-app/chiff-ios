@@ -24,19 +24,19 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
     // TODO: When does this occur?
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo["requestType"] ?? "nada"])
+        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.requestType] ?? "nada"])
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo["requestType"] ?? "nada"])
+        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.requestType] ?? "nada"])
 
-        guard let browserMessageTypeValue = userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+        guard let browserMessageTypeValue = userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             Logger.shared.warning("Could not parse browsermessage.")
             completionHandler(UIBackgroundFetchResult.noData)
             return
         }
 
-        guard let sessionID = userInfo["sessionID"] as? String else {
+        guard let sessionID = userInfo[NotificationContentKey.sessionId] as? String else {
             Logger.shared.warning("Could not parse sessionID.")
             completionHandler(UIBackgroundFetchResult.noData)
             return
@@ -69,7 +69,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         var content: UNNotificationContent
         var reprocessed = false
         var error: String?
-        if notification.request.content.userInfo["requestType"] != nil {
+        if notification.request.content.userInfo[NotificationContentKey.requestType] != nil {
             content = notification.request.content
             error = content.userInfo["error"] as? String
         } else {
@@ -90,13 +90,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-        guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+        guard let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             Logger.shared.warning("Could not parse browsermessage.")
             completionHandler([])
             return
         }
 
-        guard let sessionID = content.userInfo["sessionID"] as? String else {
+        guard let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String else {
             Logger.shared.warning("Could not parse sessionID.")
             completionHandler([])
             return
@@ -105,7 +105,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             do {
                 try Session.getSession(id: sessionID)?.delete(includingQueue: false)
                 let nc = NotificationCenter.default
-                nc.post(name: .sessionEnded, object: nil, userInfo: ["sessionID": sessionID])
+                nc.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
             } catch {
                 Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
@@ -136,7 +136,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         var content: UNNotificationContent
         var reprocessed = false
         var error: String?
-        if response.notification.request.content.userInfo["requestType"] != nil {
+        if response.notification.request.content.userInfo[NotificationContentKey.requestType] != nil {
             content = response.notification.request.content
             error = content.userInfo["error"] as? String
         } else {
@@ -157,13 +157,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-        guard let browserMessageTypeValue = content.userInfo["requestType"] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
+        guard let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
             Logger.shared.warning("Could not parse browsermessage.")
             completionHandler()
             return
         }
 
-        guard let sessionID = content.userInfo["sessionID"] as? String else {
+        guard let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String else {
             Logger.shared.warning("Could not parse sessionID.")
             completionHandler()
             return
@@ -210,23 +210,23 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, browserMessageType: BrowserMessageType) -> Bool {
-        guard let siteID = userInfo["siteID"] as? String else {
+        guard let siteID = userInfo[NotificationContentKey.siteId] as? String else {
             Logger.shared.warning("Wrong siteID type.")
             return false
         }
-        guard let siteName = userInfo["siteName"] as? String else {
+        guard let siteName = userInfo[NotificationContentKey.siteName] as? String else {
             Logger.shared.warning("Wrong siteName type.")
             return false
         }
-        guard let browserTab = userInfo["browserTab"] as? Int else {
+        guard let browserTab = userInfo[NotificationContentKey.browserTab] as? Int else {
             Logger.shared.warning("Wrong browserTab type.")
             return false
         }
-        guard let currentPassword = userInfo["password"] as? String? else {
+        guard let currentPassword = userInfo[NotificationContentKey.password] as? String? else {
             Logger.shared.warning("Wrong currentPassword type.")
             return false
         }
-        guard let username = userInfo["username"] as? String? else {
+        guard let username = userInfo[NotificationContentKey.username] as? String? else {
             Logger.shared.warning("Wrong username type.")
             return false
         }
@@ -261,7 +261,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 var content: UNNotificationContent
                 var reprocessed = false
                 var error: String?
-                if notification.request.content.userInfo["requestType"] != nil {
+                if notification.request.content.userInfo[NotificationContentKey.requestType] != nil {
                     content = notification.request.content
                     error = content.userInfo["error"] as? String
                 } else {
@@ -282,9 +282,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
                 Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-                if let browserMessageTypeValue = content.userInfo["requestType"] as? Int,
+                if let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int,
                     let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
-                    let sessionID = content.userInfo["sessionID"] as? String
+                    let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String
                 {
                     if browserMessageType == .end {
                         do {
@@ -299,23 +299,23 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                             Logger.shared.warning("iOS notification content parsing failed")
                         }
 
-                        guard let siteID = content.userInfo["siteID"] as? String else {
+                        guard let siteID = content.userInfo[NotificationContentKey.siteId] as? String else {
                             Logger.shared.warning("Wrong siteID type.")
                             return
                         }
-                        guard let siteName = content.userInfo["siteName"] as? String else {
+                        guard let siteName = content.userInfo[NotificationContentKey.siteName] as? String else {
                             Logger.shared.warning("Wrong siteName type.")
                             return
                         }
-                        guard let browserTab = content.userInfo["browserTab"] as? Int else {
+                        guard let browserTab = content.userInfo[NotificationContentKey.browserTab] as? Int else {
                             Logger.shared.warning("Wrong browserTab type.")
                             return
                         }
-                        guard let currentPassword = content.userInfo["password"] as? String? else {
+                        guard let currentPassword = content.userInfo[NotificationContentKey.password] as? String? else {
                             Logger.shared.warning("Wrong currentPassword type.")
                             return
                         }
-                        guard let username = content.userInfo["username"] as? String? else {
+                        guard let username = content.userInfo[NotificationContentKey.username] as? String? else {
                             Logger.shared.warning("Wrong username type.")
                             return
                         }

@@ -42,6 +42,7 @@ struct Question: Codable {
 }
 
 class Questionnaire: Codable {
+    
     static let suite = "keynQuestionnaire"
     
     let id: String
@@ -94,14 +95,6 @@ class Questionnaire: Codable {
         }
         self.questions = try values.decode([Question].self, forKey: .questions)
         self.compulsory = try values.decode(Bool.self, forKey: .compulsory)
-    }
-
-    func add(question: Question) {
-        questions.append(question)
-    }
-    
-    func setFinished() {
-        isFinished = true
     }
     
     func askAgainAt(date: Date) {

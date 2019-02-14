@@ -419,14 +419,14 @@
 		495E72B9221186DA003132ED /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				493A35B12215653F002EB043 /* Constants.swift */,
 				49F2A0F8221431C700429875 /* DataStructures.swift */,
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49F2A0F422142EB900429875 /* Extensions.swift */,
 				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				495E72BA22118717003132ED /* Logger.swift */,
-				49DCA6982063E44D008F4DF2 /* Properties.swift */,
 				49062C6C2214679400A30669 /* Localizer.swift */,
-				493A35B12215653F002EB043 /* Constants.swift */,
+				49DCA6982063E44D008F4DF2 /* Properties.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";

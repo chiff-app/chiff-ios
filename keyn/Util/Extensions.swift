@@ -77,6 +77,14 @@ extension Data {
         return map { String(format: format, $0) }.joined()
     }
     
+    var bitstring: String {
+        var string = ""
+        for byte in self {
+            string += String(byte, radix: 2).pad(toSize: 8)
+        }
+        return string
+    }
+    
     var bytes: Bytes { return Bytes(self) }
 }
 
@@ -95,6 +103,10 @@ extension Date {
         let formatter = DateComponentUnitFormatter()
         return formatter.string(forDateComponents: components, useNumericDates: useNumericDates)
     }
+}
+
+extension TimeInterval {
+    static let ONE_DAY: TimeInterval = 3600*24
 }
 
 

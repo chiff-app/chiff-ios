@@ -16,14 +16,15 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @IBOutlet weak var userPasswordTextField: UITextField!
     @IBOutlet weak var showPasswordButton: UIButton!
 
-    var notification: PushNotification?
-    var session: Session?
-    var passwordIsHidden = true
-    var passwordValidator: PasswordValidator? = nil
     var site: Site?
-    var breachCount: Int?
-    var changePasswordFooterText = "If enabled, Keyn will automatically change the password to a secure password"
-    var account: Account?
+    var session: Session?
+    var notification: PushNotification?
+
+    private var passwordIsHidden = true
+    private var passwordValidator: PasswordValidator? = nil
+    private var breachCount: Int?
+    private var changePasswordFooterText = "change_password_footer".localized.capitalized
+    private var account: Account?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +48,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         }
 
         if site.ppd?.service?.passwordChange == nil {
-            changePasswordFooterText = "It's not possible to change the password for this site."
+            changePasswordFooterText = "change_password_impossible".localized.capitalized
             changePasswordCell.isUserInteractionEnabled = false
             changePasswordLabel.isEnabled = false
             changePasswordSwitch.isEnabled = false
@@ -88,13 +89,15 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 0 {
-            return (breachCount != nil && breachCount != 0) ? "\u{26A0} This password has been found in \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
-        }
-        if section == 1 {
+        switch section {
+        case 0:
+            // TODO: Localize with plurals.
+            return (breachCount != nil && breachCount != 0) ? "\u{26A0} \("breach_password_found".localized.capitalized) \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
+        case 1:
             return changePasswordFooterText
+        default:
+            return nil
         }
-        return nil
     }
 
     // MARK: - UITextFieldDelegate
@@ -155,8 +158,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
                             self?.account = newAccount
                             try session.sendCredentials(account: newAccount, browserTab: notification.browserTab, type: type)
 
-                            let nc = NotificationCenter.default
-                            nc.post(name: .accountAdded, object: nil, userInfo: ["account": newAccount])
+                            NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": newAccount])
                         } catch {
                             // TODO: Handle errors in UX
                             Logger.shared.error("Account could not be saved.", error: error)

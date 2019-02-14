@@ -4,19 +4,6 @@
  */
 import Foundation
 
-enum NotificationCategory {
-    static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
-    static let END_SESSION = "END_SESSION"
-    static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
-    static let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
-}
-
-enum MessageParameter {
-    static let body = "body"
-    static let receiptHandle = "receiptHandle"
-    static let type = "type"
-}
-
 enum AnalyticsMessage: String {
     case install = "INSTALL"
     case seedCreated = "SEED_CREATED"
@@ -42,4 +29,28 @@ enum AnalyticsMessage: String {
     case accountMigration = "ACCOUNT_MIGRATION"
     case declinedQuestionnaire = "QUESTIONNAIRE_DECLINED"
     case postponedQuestionnaire = "QUESTIONNAIRE_POSTPONED"
+}
+
+enum MessageParameter {
+    static let body = "body"
+    static let receiptHandle = "receiptHandle"
+    static let type = "type"
+}
+
+enum NotificationCategory {
+    static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
+    static let END_SESSION = "END_SESSION"
+    static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
+    static let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
+}
+
+enum NotificationContentKey {
+    static let browserTab = "browserTab"
+    static let data = "data"
+    static let password = "password"
+    static let requestType = "requestType"
+    static let sessionId = "sessionID"
+    static let siteId = "siteID"
+    static let siteName = "siteName"
+    static let username = "username"
 }
