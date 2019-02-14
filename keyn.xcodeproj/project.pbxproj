@@ -22,6 +22,7 @@
 		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
+		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
 		49062C582214499A00A30669 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		49062C5A221449C700A30669 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
@@ -68,7 +69,6 @@
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
-		499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 499569C21FED47BF00D75848 /* english_wordlist.txt */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
@@ -220,6 +220,7 @@
 		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
+		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		49062C7B22146D8700A30669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Localized.plist; sourceTree = "<group>"; };
 		49062C862214731700A30669 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -250,7 +251,6 @@
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupStartViewController.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
-		499569C21FED47BF00D75848 /* english_wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = english_wordlist.txt; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
@@ -584,7 +584,7 @@
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
-				499569C21FED47BF00D75848 /* english_wordlist.txt */,
+				4905772D2215BA5C006D98C0 /* wordlist.txt */,
 				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
 				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
 			);
@@ -887,7 +887,7 @@
 			files = (
 				49062C7822146D8700A30669 /* Localized.plist in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
-				499569C31FED47BF00D75848 /* english_wordlist.txt in Resources */,
+				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
@@ -1255,6 +1255,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		4905772D2215BA5C006D98C0 /* wordlist.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4905772C2215BA5C006D98C0 /* Base */,
+			);
+			name = wordlist.txt;
+			sourceTree = "<group>";
+		};
 		49062C7C22146D8700A30669 /* Localized.plist */ = {
 			isa = PBXVariantGroup;
 			children = (

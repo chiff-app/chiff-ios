@@ -198,6 +198,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>value</key>
 				<string>Delete</string>
 			</dict>
+			<key>no</key>
+			<dict>
+				<key>comment</key>
+				<string>no</string>
+				<key>value</key>
+				<string>no</string>
+			</dict>
 			<key>questionnaire_deny</key>
 			<dict>
 				<key>comment</key>
@@ -226,7 +233,9 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>breach_password_found</key>
 		<dict>
 			<key>comment</key>
-			<string>Part of sentence':' This password has been found in 3 breaches! You should probably change it.</string>
+			<string>Part of sentence This password has been found in 3 breaches! You should probably change it.</string>
+			<key>value</key>
+			<string>This password has been found in</string>
 		</dict>
 		<key>change_password_footer</key>
 		<dict>
