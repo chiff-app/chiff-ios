@@ -99,23 +99,23 @@ class Session: Codable {
         var account = account
         switch type {
         case .addAndChange:
-            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
+            response = CredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
-            response = CredentialsResponse(u: account.username, p: try account.password() , np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
+            response = CredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
+            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
         case .login:
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
+            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
         case .fill:
             Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = CredentialsResponse(u: nil, p: try account.password(), np: nil, b: browserTab, a: nil, o: nil)
+            response = CredentialsResponse(u: nil, p: account.password, np: nil, b: browserTab, a: nil, o: nil)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             // TODO: create new account, set password etc.
-            response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: nil)
+            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil)
         case .acknowledge:
             response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
         default:

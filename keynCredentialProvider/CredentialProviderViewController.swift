@@ -7,6 +7,7 @@ import LocalAuthentication
 
 
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
+
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts = [Account]()
     var filteredAccounts: [Account]!
@@ -112,15 +113,16 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
-            do {
-                let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password())
-                if let navCon = navigationController as? CredentialProviderNavigationController {
-                    navCon.passedExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-                }
+            guard let password = account.password else {
+                // TODO: Hey Bas, hoe doen we dat hier zonder password?
+                return
+            }
 
-            } catch {
-                Logger.shared.warning("Error getting password", error: error)
+            let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+            if let navCon = navigationController as? CredentialProviderNavigationController {
+                navCon.passedExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             }
         }
     }
+
 }
