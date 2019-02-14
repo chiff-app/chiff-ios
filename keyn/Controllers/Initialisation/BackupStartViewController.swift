@@ -37,7 +37,7 @@ class BackupStartViewController: UIViewController {
             do {
                 try Seed.create()
                 try BackupManager.shared.initialize()
-                Logger.shared.info("Seed created", userInfo: ["code": AnalyticsMessage.seedCreated.rawValue])
+                Logger.shared.analytics("Seed created", code: .seedCreated)
             } catch {
                 Logger.shared.error("Error generating seed.", error: error)
             }

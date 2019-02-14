@@ -49,6 +49,12 @@ struct Logger {
         logger.error(message, error: error?.nsError, userInfo: userInfo)
     }
     
+    func analytics(_ message: String, code: AnalyticsMessage, userInfo providedUserInfo: [String: Any]? = nil, error: Error? = nil) {
+        var userInfo = providedUserInfo ?? [String:Any]()
+        userInfo["code"] = code.rawValue
+        logger.info(message, error: error?.nsError, userInfo: userInfo)
+    }
+    
 }
 
 enum KeynError: Error {

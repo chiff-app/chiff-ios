@@ -30,5 +30,9 @@
   "undecodable_qr": {
     "value": "This QR-code could not be decoded.",
     "comment": "The QR-code could not be decoded."
+  },
+  "no_push_notifications": {
+    "value": "Unfortunately, Keyn doesn't work without push notifications :(\n\nTurn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.",
+    "comment": "Error when push notifications are not available"
   }
 }

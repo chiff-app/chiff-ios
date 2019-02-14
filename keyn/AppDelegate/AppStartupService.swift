@@ -44,8 +44,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try AuthenticationGuard.shared.authorizePairing(url: url) { (session, error) in
                 DispatchQueue.main.async {
                     if let session = session {
-                        let nc = NotificationCenter.default
-                        nc.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
+                        NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
                     } else if let error = error {
                         Logger.shared.error("Error creating session.", error: error)
                     } else {
@@ -118,11 +117,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
                 // TODO: Localize
-                self.launchErrorView("""
-                    Unfortunately, Keyn doesn't work without push notifications :(
-
-                    Turn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.
-                """)
+                self.launchErrorView("no_push_notifications".localized)
             }
         }
     }
@@ -134,8 +129,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let viewController: UIViewController?
 
         if Properties.isFirstLaunch() {
-            Logger.shared.info("App was installed", userInfo: ["code": AnalyticsMessage.install.rawValue])
-            _ = Properties.installTimestamp()
+            Logger.shared.analytics("App was installed", code: .install)
+            let _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
             AWS.shared.isFirstLaunch = true

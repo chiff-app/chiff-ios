@@ -66,8 +66,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        Logger.shared.info(userFeedback, userInfo: [
-                "code": AnalyticsMessage.userFeedback.rawValue,
+        Logger.shared.analytics(userFeedback, code: .userFeedback, userInfo: [
                 "name": debugLogUser
             ])
         

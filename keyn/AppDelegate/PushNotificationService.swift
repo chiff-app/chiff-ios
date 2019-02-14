@@ -194,13 +194,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
 
         session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(session.backgroundTask.rawValue))
+            UIApplication.shared.endBackgroundTask(session.backgroundTask)
+            UIApplication.shared.endBackgroundTask(session.backgroundTask)
             session.backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
         self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
             if session.backgroundTask != UIBackgroundTaskIdentifier.invalid {
-                UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(session.backgroundTask.rawValue))
+                UIApplication.shared.endBackgroundTask(session.backgroundTask)
             }
         })
     }
@@ -332,15 +333,15 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             try session.getChangeConfirmations(shortPolling: shortPolling) { (data) in
                 if let data = data, let messages = data["messages"] as? [[String:String]], messages.count > 0 {
                     for message in messages {
-                        guard let body = message["body"] else {
+                        guard let body = message[MessageParameter.body] else {
                             Logger.shared.error("Could not parse SQS message body.")
                             return
                         }
-                        guard let receiptHandle = message["receiptHandle"] else {
+                        guard let receiptHandle = message[MessageParameter.receiptHandle] else {
                             Logger.shared.error("Could not parse SQS message body.")
                             return
                         }
-                        guard let typeString = message["type"], let type = Int(typeString) else {
+                        guard let typeString = message[MessageParameter.type], let type = Int(typeString) else {
                             Logger.shared.error("Could not parse SQS message body.")
                             return
                         }
@@ -389,9 +390,4 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         return content
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
 }
