@@ -9,6 +9,7 @@ enum SessionError: Error {
     case exists
     case invalid
     case noEndpoint
+    case signing
     case unknownType
 }
 
@@ -52,7 +53,9 @@ class Session: Codable {
 
     func delete(includingQueue: Bool) throws {
         Logger.shared.analytics("Session ended.", code: .sessionEnd, userInfo: ["appInitiated": includingQueue])
-        if includingQueue { try sendToControlQueue(message: "Ynll") } // Is base64encoded for bye
+        if includingQueue {
+            try sendToControlQueue(message: "Ynll") // Is base64encoded for bye
+        }
         try deleteEndpointAtAWS()
         try Keychain.shared.delete(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService)
         try Keychain.shared.delete(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService)
@@ -86,11 +89,15 @@ class Session: Codable {
         return browserMessage
     }
 
-    func acknowledge(browserTab: Int) throws {
-        let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
-        let jsonMessage = try JSONEncoder().encode(response)
-        let ciphertext = try Crypto.shared.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
-        try sendToMessageQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge)
+    func acknowledge(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+        do {
+            let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
+            let jsonMessage = try JSONEncoder().encode(response)
+            let ciphertext = try Crypto.shared.encrypt(jsonMessage, pubKey: browserPublicKey(), privKey: appPrivateKey())
+            try sendToMessageQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge, completionHandler: completionHandler)
+        } catch {
+            completionHandler(nil, error)
+        }
     }
 
     // TODO, add request ID etc
@@ -124,20 +131,40 @@ class Session: Codable {
 
         let message = try JSONEncoder().encode(response!)
         let ciphertext = try Crypto.shared.encrypt(message, pubKey: Crypto.shared.convertFromBase64(from: encryptionPubKey), privKey: appPrivateKey())
-        try sendToMessageQueue(ciphertext: ciphertext, type: type)
+        try sendToMessageQueue(ciphertext: ciphertext, type: type) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Error sending credentials", error: error)
+            }
+        }
     }
 
-    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ result: [String: Any]?) -> Void) throws {
-        let parameters = try sign(data: nil, requestType: .get, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20")
-        try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .get, completionHandler: completionHandler)
+    // TODO: This is now different from deleteChangeConfirmation with the signing error, make it the same.
+    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+        guard let parameters = try? sign(data: nil, requestType: .get, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, waitTime: shortPolling ? "0" : "20") else {
+            // Logger.shared.warning("Failed to get password change confirmation from queue (signing problem).")
+            return completionHandler(nil, SessionError.signing)
+        }
+
+        API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .get) { (res, error) in
+            if let error = error {
+                Logger.shared.warning("Failed to get password change confirmation from queue.", error: error)
+                completionHandler(nil, error)
+            }
+            if let res = res {
+                completionHandler(res, nil)
+            }
+        }
     }
 
     func deleteChangeConfirmation(receiptHandle: String) {
-        do {
-            let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle)
-            try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .delete)
-        } catch {
-            Logger.shared.warning("Failed to delete change confirmation from queue.")
+        guard let parameters = try? sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: nil, receiptHandle: receiptHandle) else {
+            return Logger.shared.warning("Failed to delete password change confirmation from queue (signing problem).")
+        }
+
+        API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .delete) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
+            }
         }
     }
 
@@ -200,8 +227,10 @@ class Session: Codable {
         Keychain.shared.deleteAll(service: appService)
     }
 
+    // TODO: Call this function with succes and error handlers. Remove throws.
     static func initiate(queueSeed: String, pubKey: String, browser: String, os: String) throws -> Session {
         // Create session and save to Keychain
+        // TODO: Think if we can combine the keys for the two message + control queue.
         let messageKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "message", index: 1))
         let controlKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "control", index: 2))
         let pushKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(key: queueSeed, context: "pushpush", index: 3))
@@ -219,32 +248,49 @@ class Session: Codable {
         }
 
         let pairingResponse = try self.createPairingResponse(session: session)
-        try session.sendToMessageQueue(ciphertext: pairingResponse, type: BrowserMessageType.pair)
+        try session.sendToMessageQueue(ciphertext: pairingResponse, type: BrowserMessageType.pair) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Error initiating session.", error: error)
+            }
+        }
 
         return session
     }
 
     // MARK: - Private
 
-    private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType) throws {
+    private func sendToMessageQueue(ciphertext: Data, type: BrowserMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
         let data = try Crypto.shared.convertToBase64(from: ciphertext)
         let parameters = try sign(data: data, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.message.identifier(for: id), service: Session.messageQueueService), type: type)
-        try API.shared.request(type: .message, path: messagePubKey, parameters: parameters, method: .post)
+
+        API.shared.request(type: .message, path: messagePubKey, parameters: parameters, method: .post, completionHandler: completionHandler)
     }
 
     private func sendToControlQueue(message: String) throws {
         let parameters = try sign(data: message, requestType: .post, privKey: Keychain.shared.get(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService), type: .end)
-        try API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .post)
+        API.shared.request(type: .message, path: controlPubKey, parameters: parameters, method: .post) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Cannot send message to control queue.", error: error)
+            }
+        }
     }
 
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .put)
+        API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .put) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Cannot authorize push messages.", error: error)
+            }
+        }
     }
 
     private func deleteEndpointAtAWS() throws {
         let parameters = try sign(data: nil, requestType: .delete, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method:.delete)
+        API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .delete) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Cannot delete endpoint as AWS.", error: error)
+            }
+        }
     }
 
     static private func createPairingResponse(session: Session) throws -> Data {
@@ -253,7 +299,10 @@ class Session: Codable {
         }
         let pairingResponse = try PairingResponse(sessionID: session.id, pubKey: Crypto.shared.convertToBase64(from: session.appPublicKey()), sns: endpoint, userID: Properties.userID())
         let jsonPasswordMessage = try JSONEncoder().encode(pairingResponse)
+
+        // TODO: Voor nu error loggen, maar als dit niet lukt dan werkt de sessie niet dus hier moeten we wat mee.
         try session.authorizePushMessages(endpoint: endpoint)
+
         return try Crypto.shared.encrypt(jsonPasswordMessage, pubKey: session.browserPublicKey())
     }
 
