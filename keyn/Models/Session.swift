@@ -239,7 +239,7 @@ class Session: Codable {
 
     private func authorizePushMessages(endpoint: String) throws {
         let parameters = try sign(data: endpoint, requestType: .put, privKey: Keychain.shared.get(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService), type: nil)
-        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .post)
+        try API.shared.request(type: .push, path: pushPubKey, parameters: parameters, method: .put)
     }
 
     private func deleteEndpointAtAWS() throws {

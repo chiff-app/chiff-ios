@@ -7,7 +7,10 @@ import AVFoundation
 import LocalAuthentication
 import OneTimePassword
 
-class OTPViewController: QRViewController {    
+class OTPViewController: QRViewController {
+    
+    private let OTP_URL_SCHEME = "otpauth"
+    
     @IBOutlet weak var instructionLabel: UILabel!
 
     var account: Account!
@@ -15,11 +18,11 @@ class OTPViewController: QRViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        instructionLabel.text = "Scan the 2FA-code for \(account.site.name)."
+        instructionLabel.text = "\("two_fa_instruction".localized) \(account.site.name)."
     }
     
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme, scheme == "otpauth" else {
+        guard let scheme = url.scheme, scheme == OTP_URL_SCHEME else {
             return
         }
         guard let token = Token(url: url) else {
@@ -27,13 +30,13 @@ class OTPViewController: QRViewController {
         }
         try AuthenticationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
             DispatchQueue.main.async {
-                guard error == nil else {
-                    Logger.shared.error("Error authorizing OTP", error: error! as NSError)
-                    return
-                }
                 do {
-                    try self.account.setOtp(token: token)
-                    self.add(token: token)
+                    if let error = error {
+                        throw error
+                    } else {
+                        try self.account.setOtp(token: token)
+                        self.add(token: token)
+                    }
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
                 }

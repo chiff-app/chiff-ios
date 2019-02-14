@@ -128,7 +128,7 @@ class PasswordValidator {
         request.httpMethod = "GET"
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                Logger.shared.warning("Error querying HIBP", error: error! as NSError)
+                Logger.shared.warning("Error querying HIBP", error: error!)
                 completionHandler(0)
                 return
             }

@@ -230,3 +230,7 @@ extension UIBackgroundTaskIdentifier: Codable {
         self.init(rawValue: try values.decode(Int.self, forKey: .rawValue))
     }
 }
+
+extension UITableViewCell {
+    static let defaultHeight: CGFloat = 44
+}

@@ -12,7 +12,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     
     private let DEVICE_ROW_HEIGHT: CGFloat = 90
-    private let DEFAULT_ROW_HEIGHT: CGFloat = 44
     
     var sessions = [Session]()
 
@@ -45,11 +44,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return DEVICE_ROW_HEIGHT
         case 1:
-            return DEFAULT_ROW_HEIGHT
+            return UITableViewCell.defaultHeight
         default:
             assert(false, "section \(indexPath.section)")
             // Dummy code for archive compiler
-            return DEFAULT_ROW_HEIGHT
+            return UITableViewCell.defaultHeight
         }
     }
 
@@ -58,7 +57,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return nil
         case 1:
-            return "Open the Keyn browser extension to display QR-code."
+            return "pairing_instruction".localized
         default:
             assert(false, "section \(section)")
             return nil
@@ -68,7 +67,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "devices"
+            return "devices".localized
         case 1:
             return nil
         default:
@@ -87,7 +86,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             assert(false, "section \(section)")
             // Dummy code for archive compiler
-            return 44
+            return 1
         }
     }
     
@@ -99,9 +98,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "Delete \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            let alert = UIAlertController(title: "\("delete".localized) \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
                 do {
                     try self.sessions[indexPath.row].delete(includingQueue: true)
                     self.sessions.remove(at: indexPath.row)
@@ -126,9 +125,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
 
-        if let index = sessions.index(where: { (session) -> Bool in
-            sessionID == session.id
-        }) {
+        if let index = sessions.index(where: { sessionID == $0.id }) {
             sessions.remove(at: index)
             tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
             if self.sessions.isEmpty {
@@ -154,7 +151,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "Scan QR", for: indexPath)
-            cell.textLabel?.text = "Scan QR"
+            cell.textLabel?.text = "scan_qr".localized
             return cell
         default:
             assert(false, "section \(indexPath.section)")
@@ -167,10 +164,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Add Session" {
-            if let destination = (segue.destination.contents) as? PairViewController {
-                destination.devicesDelegate = self
-            }
+        if segue.identifier == "Add Session", let destination = segue.destination.contents as? PairViewController {
+            destination.devicesDelegate = self
         }
     }
 

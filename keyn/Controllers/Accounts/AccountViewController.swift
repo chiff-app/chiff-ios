@@ -202,7 +202,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
             showPasswordHUD.mode = .text
             showPasswordHUD.bezelView.color = .black
-            showPasswordHUD.label.text = account?.password
+            showPasswordHUD.label.text = account?.password ?? "password_error".localized
             showPasswordHUD.label.textColor = .white
             showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
             showPasswordHUD.margin = 10
@@ -229,7 +229,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text
         
         let copiedLabel = UILabel(frame: cell.bounds)
-        copiedLabel.text = "Copied"
+        copiedLabel.text = "copied".localized
         copiedLabel.font = copiedLabel.font.withSize(18)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
@@ -247,7 +247,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     private func updateOTPUI() {
         if let token = token {
             qrEnabled = false
-            totpLoaderWidthConstraint.constant = 44
+            totpLoaderWidthConstraint.constant = UITableViewCell.defaultHeight
             userCodeCell.updateConstraints()
             userCodeCell.accessoryType = .none
             userCodeTextField.text = token.currentPassword

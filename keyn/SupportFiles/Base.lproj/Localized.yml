@@ -1,0 +1,110 @@
+---
+Errors:
+  generic_problem:
+    value: There was a problem
+    comment: A generic problem description
+  generic_error:
+    value: An error occured.
+    comment: A generic errpr description
+  no_push_notifications:
+    value: |-
+      Unfortunately, Keyn doesn't work without push notifications :(
+
+      Turn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.
+    comment: Error when push notifications are not available
+  no_camera:
+    value: Camera not available
+    comment: The camera is not available
+  qr_scanned_twice:
+    value: This QR-code was already scanned.
+    comment: This QR-code was already scanned.
+  undecodable_qr:
+    value: This QR-code could not be decoded.
+    comment: The QR-code could not be decoded.
+  password_error:
+    comment: Error fetching password
+    value: Error fetching password
+  session_error_no_endpoint:
+    comment: There was no endpoint found
+    value: There is no AWS endpoint in the session data.
+Popups:
+  Questions:
+    cancel_backup:
+      value: Cancel backup?
+      comment: Ask the user to cancel the backup
+    delete_account:
+      value: Delete account?
+      comment: Ask the user to delete the account
+    reset_keyn:
+      comment: Resets Keyn and deletes all data
+      value: Reset Keyn?
+    cancel_backup_description:
+      comment: Tell the user he can complete the backup process later
+      value: You can complete the backup sequence later.
+    reset_keyn_description:
+      comment: This will delete the seed and all passwords.
+      value: This will delete the seed and all passwords.
+    questionnaire_permission:
+      comment: Ask the user to answer some questions
+      value: Do you have time to answer a few questions? It'll only take a moment.
+    questionnaire_popup_title:
+      comment: The title of the popup that asks the user fill a questionnaire
+      value: Questiontime!
+  Responses:
+    delete:
+      value: Delete
+      comment: Deletes something
+    cancel:
+      value: Cancel
+      comment: Cancels something
+    continue:
+      value: Continue
+      comment: Continue something
+    reset:
+      value: Reset
+      comment: Resets something
+    'yes':
+      comment: 'yes'
+      value: 'yes'
+    questionnaire_deny:
+      comment: Deny the questionnaire
+      value: No, thanks
+Accounts:
+  add_otp_code:
+    value: Add code
+    comment: Add a one-time-password code
+  copied:
+    comment: Show the user that a value has been copied
+    value: Copied
+  two_fa_instruction:
+    comment: Instruct the user to scan a 2FA-code
+    value: Scan the 2FA-code for
+Devices:
+  devices:
+    comment: Section title for devices
+    value: devices
+  pairing_instruction:
+    comment: Instruction shown above the qr-code scanner
+    value: Open the Keyn browser extension to display QR-code.
+  scan_qr:
+    comment: Cell title for scanning qr code
+    value: Scan QR
+Settings:
+  feedback_description:
+    comment: Description under feedback form
+    value: Use this form to provide feedback :)
+  reset_warning:
+    comment: Description under reset Keyn
+    value: Resetting Keyn will delete the seed and all accounts.
+  backup_not_finished:
+    comment: Warning that the user did not finish paper backup yet
+    value: Paper backup not finished
+  backup_completed_footer:
+    comment: Description if backup is already completed
+    value: The paper backup is the only way to recover your accounts if your phone gets lost or broken.
+  feedback_submitted:
+    comment: Message to the user after feedback has been submitted
+    value: Feedback sent, thanks!
+Backup:
+  comment: The word for word
+  value: word

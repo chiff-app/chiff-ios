@@ -19,9 +19,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             Logger.shared.error("Could not get accounts from Keychain", error: error)
         }
 
-        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-            first.site.name < second.site.name
-        })
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = true
@@ -30,8 +28,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         self.definesPresentationContext = true
         navigationItem.searchController = searchController
 
-        let nc = NotificationCenter.default
-        nc.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
+        NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -64,13 +61,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { (first, second) -> Bool in
-                first.site.name < second.site.name
-            })
+            }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-                first.site.name < second.site.name
-            })
+            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
@@ -90,9 +83,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
-            let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+            let alert = UIAlertController(title: "delete_account".localized, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
                 let account = self.filteredAccounts![indexPath.row]
                 self.deleteAccount(account: account, filteredIndexPath: indexPath)
             }))
@@ -126,13 +119,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
     
     func updateAccount(account: Account) {
-        if let unfilteredIndex = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
-            return account.id == unfilteredAccount.id
-        }) {
+        if let unfilteredIndex = unfilteredAccounts.index(where: { account.id == $0.id }) {
             unfilteredAccounts[unfilteredIndex] = account
-            if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
-                return account.id == filteredAccount.id
-            }) {
+            if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
                 filteredAccounts?[filteredIndex] = account
                 let indexPath = IndexPath(row: filteredIndex, section: 0)
                 tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -151,12 +140,8 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     func addAccount(account: Account) {
         unfilteredAccounts.append(account)
         filteredAccounts?.append(account)
-        filteredAccounts?.sort(by: { (first, second) -> Bool in
-            return first.site.name < second.site.name
-        })
-        if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
-            return account.id == filteredAccount.id
-        }) {
+        filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
+        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
@@ -169,9 +154,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts!.index(where: { (filteredAccount) -> Bool in
-                return account.id == filteredAccount.id
-            }) {
+            if let index = filteredAccounts!.index(where: { account.id == $0.id }) {
                 let indexPath = IndexPath(row: index, section: 0)
                 deleteAccount(account: account, filteredIndexPath: indexPath)
             }
@@ -181,9 +164,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
-            return account.id == unfilteredAccount.id
-        }) {
+        if let index = unfilteredAccounts.index(where: { account.id == $0.id }) {
             do {
                 try account.delete()
                 unfilteredAccounts.remove(at: index)

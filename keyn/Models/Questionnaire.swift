@@ -212,7 +212,7 @@ class Questionnaire: Codable {
         do {
             try filemgr.createDirectory(atPath: newDir,
                                         withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
+        } catch {
             Logger.shared.error("Error creating questionnaire directory", error: error)
         }
     }
@@ -224,7 +224,7 @@ class Questionnaire: Codable {
             let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(questionnaire.id).path
             filemgr.createFile(atPath: questionnairePath, contents: data, attributes: nil)
-        } catch let error as NSError {
+        } catch {
             Logger.shared.warning("Could not write questionnaire", error: error)
         }
     }

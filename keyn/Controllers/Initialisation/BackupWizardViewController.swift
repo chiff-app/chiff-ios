@@ -10,7 +10,11 @@ class BackupWizardViewController: UIViewController {
     @IBOutlet weak var counterLabel: UILabel!
     
     var mnemonic: [String]?
-    var counter: Int = 0
+    var counter: Int = 0 {
+        didSet {
+            counterLabel.text = "\("word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
+        }
+    }
     var isInitialSetup = true
 
     override func viewDidLoad() {
@@ -18,7 +22,7 @@ class BackupWizardViewController: UIViewController {
         do {
             mnemonic = try Seed.mnemonic()
             wordLabel.text = mnemonic![counter]
-            counterLabel.text = "Word \(counter + 1) of \(mnemonic!.count)"
+            counterLabel.text = "\("word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
         } catch {
             Logger.shared.error("Error getting mnemonic.", error: error)
         }
@@ -34,7 +38,6 @@ class BackupWizardViewController: UIViewController {
         if counter < mnemonic!.count - 1 {
             counter += 1
             wordLabel.text = mnemonic![counter]
-            counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
             if (counter >= 1) {
                 previousButton.isEnabled = true
                 previousButton.alpha = 1.0
@@ -51,7 +54,6 @@ class BackupWizardViewController: UIViewController {
         if counter > 0 {
             counter -= 1
             wordLabel.text = mnemonic![counter]
-            counterLabel.text = "word \(counter + 1) of \(mnemonic!.count)"
             if (counter <= 0) {
                 previousButton.isEnabled = false
                 previousButton.alpha = 0.5
@@ -60,9 +62,9 @@ class BackupWizardViewController: UIViewController {
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Cancel backup?", message: "You can complete the backup sequence later.", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "\("cancel_backup".localized.capitalized)", message: "cancel_backup_description".localized, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "continue".localized.capitalized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "cancel".localized.capitalized, style: .destructive, handler: { action in
             if self.isInitialSetup {
                 let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
                 rootController.selectedIndex = 1

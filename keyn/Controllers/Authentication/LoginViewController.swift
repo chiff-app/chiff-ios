@@ -6,13 +6,16 @@ import UIKit
 import LocalAuthentication
 
 class LoginViewController: UIViewController {
+    
+    private let inset: CGFloat = 13
+    
     @IBOutlet weak var touchIDButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
+        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: inset, left: inset, bottom: inset, right: inset)
     }
 
     override func viewDidAppear(_ animated: Bool) {

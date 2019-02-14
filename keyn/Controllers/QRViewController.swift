@@ -57,7 +57,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                             displayError(message: "qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)
-                            displayError(message: "This QR-code could not be decoded.")
+                            displayError(message: "undecodable_qr".localized)
                         default:
                             Logger.shared.error("Unhandled QR code error.", error: error)
                         }

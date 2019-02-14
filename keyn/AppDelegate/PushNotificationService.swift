@@ -10,6 +10,9 @@ import UserNotifications
  * Handles push notification that come from outside the app.
  */
 class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    
+    private let PASSWORD_CONFIRMATION_POLLING_ATTEMPTS = 3
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         handlePendingNotifications()
 
@@ -199,7 +202,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             session.backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
-        self.pollQueue(attempts: 3, session: session, shortPolling: false, completionHandler: {
+        self.pollQueue(attempts: PASSWORD_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, completionHandler: {
             if session.backgroundTask != UIBackgroundTaskIdentifier.invalid {
                 UIApplication.shared.endBackgroundTask(session.backgroundTask)
             }

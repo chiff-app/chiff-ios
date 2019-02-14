@@ -11,8 +11,13 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
-
-    var isInitialSetup = true // TODO: Implement calling recovery from settings?
+    
+    private let lowerBoundaryOffset: CGFloat = 15
+    private let keyboardHeightOffset: CGFloat = 40
+    
+    private var textFieldOffset: CGPoint!
+    private var textFieldHeight: CGFloat!
+    private var keyboardHeight: CGFloat!
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
@@ -24,28 +29,22 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             finishButton.isEnabled = mnemonicIsValid
         }
     }
-    
-    var textFieldOffset: CGPoint!
-    var textFieldHeight: CGFloat!
-    var keyboardHeight: CGFloat!
+    var isInitialSetup = true // TODO: Implement calling recovery from settings?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        wordTextFields?.sort(by: { (first, second) -> Bool in
-            return first.tag < second.tag
-        })
+        wordTextFields?.sort(by: { $0.tag < $1.tag })
         for textField in wordTextFields! {
             textField.delegate = self
             textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
         
         // Observe keyboard change
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
-        // Do any additional setup after loading the view.
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -87,12 +86,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             return
         }
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height
+            keyboardHeight = keyboardSize.height - keyboardHeightOffset
             UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += (self.keyboardHeight - 40)
+                self.constraintContentHeight.constant += (self.keyboardHeight)
             })
 
-            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + 15
+            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
             if distanceToKeyboard > 0 {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: distanceToKeyboard)
@@ -104,7 +103,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight - 40)
+            self.constraintContentHeight.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         }
         
@@ -116,17 +115,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBAction func finish(_ sender: UIBarButtonItem) {
         // TODO: Show some progress bar or something will data is being fetched remotely
         do {
-            if try Seed.recover(mnemonic: mnemonic)  {
-                try BackupManager.shared.getBackupData(completionHandler: {
-                    DispatchQueue.main.async {
-                        if self.isInitialSetup {
-                            self.loadRootController()
-                        } else {
-                            self.dismiss(animated: true, completion: nil)
-                        }
+            guard try Seed.recover(mnemonic: mnemonic) else {
+                return
+            }
+            try BackupManager.shared.getBackupData() {
+                DispatchQueue.main.async {
+                    if self.isInitialSetup {
+                        self.loadRootController()
+                    } else {
+                        self.dismiss(animated: true, completion: nil)
                     }
-                })
-
+                }
             }
         } catch {
             Logger.shared.error("Seed could not be recovered", error: error)

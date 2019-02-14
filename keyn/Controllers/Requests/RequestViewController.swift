@@ -16,8 +16,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var session: Session!
     var accounts = [Account]()
     var site: Site?
-    let PICKER_HEIGHT: CGFloat = 120.0
-    let SPACE_PICKER_STACK: CGFloat = 10.0
+    private let PICKER_HEIGHT: CGFloat = 120.0
+    private let SPACE_PICKER_STACK: CGFloat = 10.0
     
     override func viewDidLoad() {
         super.viewDidLoad()

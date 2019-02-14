@@ -2,70 +2,231 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>add_otp_code</key>
+	<key>Accounts</key>
 	<dict>
-		<key>comment</key>
-		<string>Add a one-time-password code</string>
-		<key>value</key>
-		<string>Add code</string>
+		<key>add_otp_code</key>
+		<dict>
+			<key>comment</key>
+			<string>Add a one-time-password code</string>
+			<key>value</key>
+			<string>Add code</string>
+		</dict>
+		<key>copied</key>
+		<dict>
+			<key>comment</key>
+			<string>Show the user that a value has been copied</string>
+			<key>value</key>
+			<string>Copied</string>
+		</dict>
+		<key>two_fa_instruction</key>
+		<dict>
+			<key>comment</key>
+			<string>Instruct the user to scan a 2FA-code</string>
+			<key>value</key>
+			<string>Scan the 2FA-code for</string>
+		</dict>
 	</dict>
-	<key>cancel</key>
+	<key>Devices</key>
 	<dict>
-		<key>comment</key>
-		<string>Cancels something</string>
-		<key>value</key>
-		<string>Cancel</string>
+		<key>devices</key>
+		<dict>
+			<key>comment</key>
+			<string>Section title for devices</string>
+			<key>value</key>
+			<string>devices</string>
+		</dict>
+		<key>pairing_instruction</key>
+		<dict>
+			<key>comment</key>
+			<string>Instruction shown above the qr-code scanner</string>
+			<key>value</key>
+			<string>Open the Keyn browser extension to display QR-code.</string>
+		</dict>
+		<key>scan_qr</key>
+		<dict>
+			<key>comment</key>
+			<string>Cell title for scanning qr code</string>
+			<key>value</key>
+			<string>Scan QR</string>
+		</dict>
 	</dict>
-	<key>delete</key>
+	<key>Errors</key>
 	<dict>
-		<key>comment</key>
-		<string>Deletes something</string>
-		<key>value</key>
-		<string>Delete</string>
-	</dict>
-	<key>delete_account</key>
-	<dict>
-		<key>comment</key>
-		<string>Ask the user to delete the account</string>
-		<key>value</key>
-		<string>Delete account?</string>
-	</dict>
-	<key>generic_problem</key>
-	<dict>
-		<key>comment</key>
-		<string>A generic problem description</string>
-		<key>value</key>
-		<string>There was a problem</string>
-	</dict>
-	<key>no_camera</key>
-	<dict>
-		<key>comment</key>
-		<string>The camera is not available</string>
-		<key>value</key>
-		<string>Camera not available</string>
-	</dict>
-	<key>no_push_notifications</key>
-	<dict>
-		<key>comment</key>
-		<string>Error when push notifications are not available</string>
-		<key>value</key>
-		<string>Unfortunately, Keyn doesn't work without push notifications :(
+		<key>generic_error</key>
+		<dict>
+			<key>comment</key>
+			<string>A generic errpr description</string>
+			<key>value</key>
+			<string>An error occured.</string>
+		</dict>
+		<key>generic_problem</key>
+		<dict>
+			<key>comment</key>
+			<string>A generic problem description</string>
+			<key>value</key>
+			<string>There was a problem</string>
+		</dict>
+		<key>no_camera</key>
+		<dict>
+			<key>comment</key>
+			<string>The camera is not available</string>
+			<key>value</key>
+			<string>Camera not available</string>
+		</dict>
+		<key>no_push_notifications</key>
+		<dict>
+			<key>comment</key>
+			<string>Error when push notifications are not available</string>
+			<key>value</key>
+			<string>Unfortunately, Keyn doesn't work without push notifications :(
 
 Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+		</dict>
+		<key>password_error</key>
+		<dict>
+			<key>comment</key>
+			<string>Error fetching password</string>
+			<key>value</key>
+			<string>Error fetching password</string>
+		</dict>
+		<key>qr_scanned_twice</key>
+		<dict>
+			<key>comment</key>
+			<string>This QR-code was already scanned.</string>
+			<key>value</key>
+			<string>This QR-code was already scanned.</string>
+		</dict>
+		<key>session_error_no_endpoint</key>
+		<dict>
+			<key>comment</key>
+			<string>There was no endpoint found</string>
+			<key>value</key>
+			<string>There is no AWS endpoint in the session data.</string>
+		</dict>
+		<key>undecodable_qr</key>
+		<dict>
+			<key>comment</key>
+			<string>The QR-code could not be decoded.</string>
+			<key>value</key>
+			<string>This QR-code could not be decoded.</string>
+		</dict>
 	</dict>
-	<key>qr_scanned_twice</key>
+	<key>Popups</key>
 	<dict>
-		<key>comment</key>
-		<string>This QR-code was already scanned.</string>
-		<key>value</key>
-		<string>This QR-code was already scanned.</string>
+		<key>Questions</key>
+		<dict>
+			<key>delete_account</key>
+			<dict>
+				<key>comment</key>
+				<string>Ask the user to delete the account</string>
+				<key>value</key>
+				<string>Delete account?</string>
+			</dict>
+			<key>questionnaire_permission</key>
+			<dict>
+				<key>comment</key>
+				<string>Ask the user to answer some questions</string>
+				<key>value</key>
+				<string>Do you have time to answer a few questions? It'll only take a moment.</string>
+			</dict>
+			<key>questionnaire_popup_title</key>
+			<dict>
+				<key>comment</key>
+				<string>The title of the popup that asks the user fill a questionnaire</string>
+				<key>value</key>
+				<string>Questiontime!</string>
+			</dict>
+			<key>reset_keyn</key>
+			<dict>
+				<key>comment</key>
+				<string>Resets Keyn and deletes all data</string>
+				<key>value</key>
+				<string>Reset Keyn?</string>
+			</dict>
+			<key>reset_keyn_description</key>
+			<dict>
+				<key>comment</key>
+				<string>This will delete the seed and all passwords.</string>
+				<key>value</key>
+				<string>This will delete the seed and all passwords.</string>
+			</dict>
+		</dict>
+		<key>Responses</key>
+		<dict>
+			<key>cancel</key>
+			<dict>
+				<key>comment</key>
+				<string>Cancels something</string>
+				<key>value</key>
+				<string>Cancel</string>
+			</dict>
+			<key>delete</key>
+			<dict>
+				<key>comment</key>
+				<string>Deletes something</string>
+				<key>value</key>
+				<string>Delete</string>
+			</dict>
+			<key>questionnaire_deny</key>
+			<dict>
+				<key>comment</key>
+				<string>Deny the questionnaire</string>
+				<key>value</key>
+				<string>No, thanks</string>
+			</dict>
+			<key>reset</key>
+			<dict>
+				<key>comment</key>
+				<string>Resets something</string>
+				<key>value</key>
+				<string>Reset</string>
+			</dict>
+			<key>yes</key>
+			<dict>
+				<key>comment</key>
+				<string>yes</string>
+				<key>value</key>
+				<string>yes</string>
+			</dict>
+		</dict>
 	</dict>
-	<key>undecodable_qr</key>
+	<key>Settings</key>
 	<dict>
-		<key>comment</key>
-		<string>The QR-code could not be decoded.</string>
-		<key>value</key>
-		<string>This QR-code could not be decoded.</string>
+		<key>backup_completed_footer</key>
+		<dict>
+			<key>comment</key>
+			<string>Description if backup is already completed</string>
+			<key>value</key>
+			<string>The paper backup is the only way to recover your accounts if your phone gets lost or broken.</string>
+		</dict>
+		<key>backup_not_finished</key>
+		<dict>
+			<key>comment</key>
+			<string>Warning that the user did not finish paper backup yet</string>
+			<key>value</key>
+			<string>Paper backup not finished</string>
+		</dict>
+		<key>feedback_description</key>
+		<dict>
+			<key>comment</key>
+			<string>Description under feedback form</string>
+			<key>value</key>
+			<string>Use this form to provide feedback :)</string>
+		</dict>
+		<key>feedback_submitted</key>
+		<dict>
+			<key>comment</key>
+			<string>Message to the user after feedback has been submitted</string>
+			<key>value</key>
+			<string>Feedback sent, thanks!</string>
+		</dict>
+		<key>reset_warning</key>
+		<dict>
+			<key>comment</key>
+			<string>Description under reset Keyn</string>
+			<key>value</key>
+			<string>Resetting Keyn will delete the seed and all accounts.</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

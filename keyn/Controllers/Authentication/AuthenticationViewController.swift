@@ -5,6 +5,9 @@
 import UIKit
 
 class AuthenticationViewController: UIViewController {
+    
+    private let inset: CGFloat = 13
+    
     @IBOutlet var passcodeButtons: [UIButton]!
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var touchIDButton: UIButton!
@@ -24,7 +27,7 @@ class AuthenticationViewController: UIViewController {
     
     private func drawButtons() {
         touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
+        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: inset, left: inset, bottom: inset, right: inset)
 
         for button in passcodeButtons {
             button.layer.borderWidth = 1.3
