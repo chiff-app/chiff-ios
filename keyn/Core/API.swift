@@ -12,6 +12,7 @@ enum APIError: Error {
     case noResponse
     case noData
     case response
+    case wrongResponseType
 }
 
 enum APIEndpoint: String {
@@ -36,16 +37,20 @@ class API {
     static let shared = API()
 
     private init() {}
-    
-    
-    func request(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: ((_ result: [String: Any]?) -> Void)? = nil) throws {
-        let request = try createRequest(type: type, path: path, parameters: nil, method: method)
-        send(request, completionHandler: completionHandler)
+
+    // TODO: Misschien kan dit `typealias JSONDictionary  [String: Any]`?
+    func request(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+        do {
+            let request = try createRequest(type: type, path: path, parameters: nil, method: method)
+            send(request, completionHandler: completionHandler)
+        } catch {
+            completionHandler(nil, error)
+        }
     }
 
-    // MARK: - Private functions
+    // MARK: - Private
 
-    private func send(_ request: URLRequest, completionHandler: ((_ result: [String: Any]?) -> Void)?) {
+    private func send(_ request: URLRequest, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying Keyn API", error: error! as NSError)
@@ -58,25 +63,19 @@ class API {
                         guard let json = jsonData as? [String: Any] else {
                             throw APIError.jsonSerialization
                         }
-                        if let completionHandler = completionHandler {
-                            completionHandler(json)
-                        }
+                        completionHandler(json, nil)
                     } else if let error = error {
                         throw APIError.request(error: error)
                     } else {
                         throw APIError.statusCode(httpStatus.statusCode)
                     }
                 } catch {
-                    if let completionHandler = completionHandler {
-                        completionHandler(nil)
-                    }
                     Logger.shared.error("API error", error: error)
+                    completionHandler(nil, error)
                 }
             } else {
-                if let completionHandler = completionHandler {
-                    completionHandler(nil)
-                }
                 Logger.shared.error("API error. Wrong Response type")
+                completionHandler(nil, APIError.wrongResponseType)
             }
         }
         task.resume()

@@ -26,12 +26,18 @@ struct PPD: Codable {
     }
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) throws {
-        try API.shared.request(type: .ppd, path: id, parameters: nil, method: .get) { (dict) in
+        API.shared.request(type: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
+            if let error = error {
+                Logger.shared.error("PPG retrieval problem.", error: error)
+                return
+            }
+
             guard let dict = dict else {
                 Logger.shared.warning("PPD not found")
                 completionHandler(nil)
                 return
             }
+
             if let ppd = dict["ppds"] as? [Any] {
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
