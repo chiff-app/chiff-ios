@@ -46,6 +46,9 @@
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
+		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
+		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
+		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
@@ -232,6 +235,7 @@
 		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
+		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -422,6 +426,7 @@
 				495E72BA22118717003132ED /* Logger.swift */,
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
 				49062C6C2214679400A30669 /* Localizer.swift */,
+				493A35B12215653F002EB043 /* Constants.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1084,6 +1089,7 @@
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
 				49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */,
 				49F2A0FE2214322600429875 /* DataStructures.swift in Sources */,
+				493A35B32215660E002EB043 /* Constants.swift in Sources */,
 				49062C5B221449D200A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
@@ -1142,6 +1148,7 @@
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
+				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,
 				49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */,
@@ -1202,6 +1209,7 @@
 				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
 				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
 				49F2A0FF2214322700429875 /* DataStructures.swift in Sources */,
+				493A35B42215660E002EB043 /* Constants.swift in Sources */,
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,

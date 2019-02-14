@@ -51,8 +51,8 @@ class Session: Codable {
     }
 
     func delete(includingQueue: Bool) throws {
-        Logger.shared.info("Session ended.", userInfo: ["code": AnalyticsMessage.sessionEnd.rawValue, "appInitiated": includingQueue])
-        if includingQueue { try sendToControlQueue(message: "Ynll") }
+        Logger.shared.analytics("Session ended.", code: .sessionEnd, userInfo: ["appInitiated": includingQueue])
+        if includingQueue { try sendToControlQueue(message: "Ynll") } // Is base64encoded for bye
         try deleteEndpointAtAWS()
         try Keychain.shared.delete(id: KeyIdentifier.control.identifier(for: id), service: Session.controlQueueService)
         try Keychain.shared.delete(id: KeyIdentifier.push.identifier(for: id), service: Session.controlQueueService)
@@ -107,13 +107,13 @@ class Session: Codable {
         case .add:
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
         case .login:
-            Logger.shared.info("Login response sent.", userInfo: ["code": AnalyticsMessage.loginResponse.rawValue, "siteName": account.site.name])
+            Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
         case .fill:
-            Logger.shared.info("Fill password response sent.", userInfo: ["code": AnalyticsMessage.fillResponse.rawValue, "siteName": account.site.name])
+            Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
             response = CredentialsResponse(u: nil, p: try account.password(), np: nil, b: browserTab, a: nil, o: nil)
         case .register:
-            Logger.shared.info("Register response sent.", userInfo: ["code": AnalyticsMessage.registrationResponse.rawValue, "siteName": account.site.name])
+            Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             // TODO: create new account, set password etc.
             response = CredentialsResponse(u: account.username, p: try account.password(), np: nil, b: browserTab, a: nil, o: nil)
         case .acknowledge:

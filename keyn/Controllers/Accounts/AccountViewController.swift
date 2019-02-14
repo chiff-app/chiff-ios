@@ -227,7 +227,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             return
         }
         
-        Logger.shared.info("\(indexPath.row == 1 ? "Password" : "OTP-code") copied to pasteboard.", userInfo: ["code": AnalyticsMessage.passwordCopy.rawValue])
+        Logger.shared.analytics("\(indexPath.row == 1 ? "Password" : "OTP-code") copied to pasteboard.", code: .passwordCopy)
         
         let pasteBoard = UIPasteboard.general
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text

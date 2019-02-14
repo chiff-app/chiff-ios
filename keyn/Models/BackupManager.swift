@@ -105,7 +105,7 @@ struct BackupManager {
                     }
                 }
             }
-            Logger.shared.info("Accunts restored", userInfo: ["code": AnalyticsMessage.accountsRestored.rawValue, "accounts": dict.count])
+            Logger.shared.analytics("Accunts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
             completionHandler()
         })
     }

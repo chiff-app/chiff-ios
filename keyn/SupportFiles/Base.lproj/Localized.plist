@@ -44,12 +44,28 @@
 		<key>value</key>
 		<string>Camera not available</string>
 	</dict>
+	<key>no_push_notifications</key>
+	<dict>
+		<key>comment</key>
+		<string>Error when push notifications are not available</string>
+		<key>value</key>
+		<string>Unfortunately, Keyn doesn't work without push notifications :(
+
+Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+	</dict>
 	<key>qr_scanned_twice</key>
 	<dict>
 		<key>comment</key>
 		<string>This QR-code was already scanned.</string>
 		<key>value</key>
 		<string>This QR-code was already scanned.</string>
+	</dict>
+	<key>undecodable_qr</key>
+	<dict>
+		<key>comment</key>
+		<string>The QR-code could not be decoded.</string>
+		<key>value</key>
+		<string>This QR-code could not be decoded.</string>
 	</dict>
 </dict>
 </plist>

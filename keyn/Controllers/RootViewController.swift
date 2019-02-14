@@ -15,21 +15,21 @@ class RootViewController: UITabBarController {
     }
     
     func presentQuestionAlert(questionnaire: Questionnaire) {
-        let alert = UIAlertController(title: "Questiontime!", message: "Do you have time to answer a few questions? It'll take a moment.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Yes!", style: .default, handler: { _ in
+        let alert = UIAlertController(title: "questionnaire_popup_title".localized, message: "questionnaire_permission".localized, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "\("yes".localized.capitalized)!", style: .default, handler: { _ in
             self.launchQuestionnaire(questionnaire: questionnaire)
         }))
         if !questionnaire.compulsory {
-            alert.addAction(UIAlertAction(title: "No, thanks", style: .cancel, handler: { _ in
+            alert.addAction(UIAlertAction(title: "questionnaire_deny".localized, style: .cancel, handler: { _ in
                 questionnaire.setFinished()
                 questionnaire.save()
-                Logger.shared.info("Declined questionnaire.")
+                Logger.shared.analytics("Declined questionnaire.", code: .declinedQuestionnaire)
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
             questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval(3600*24), since: Date()))
             questionnaire.save()
-            Logger.shared.info("Postponed questionnaire.")
+            Logger.shared.analytics("Postponed questionnaire.", code: .postponedQuestionnaire)
         }))
         self.present(alert, animated: true, completion: nil)
     }    

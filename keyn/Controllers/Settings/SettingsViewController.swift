@@ -55,7 +55,7 @@ class SettingsViewController: UITableViewController {
             try? Seed.delete()
             BackupManager.shared.deleteAllKeys()
             AWS.shared.deleteEndpointArn()
-            Logger.shared.info("Keyn reset.", userInfo: ["code": AnalyticsMessage.keynReset.rawValue])
+            Logger.shared.analytics("Keyn reset.", code: .keynReset)
             UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")

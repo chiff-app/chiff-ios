@@ -118,7 +118,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func finish(_ sender: UIBarButtonItem) {
-        Logger.shared.info("Backup completed.", userInfo: ["code": AnalyticsMessage.backupCompleted.rawValue])
+        Logger.shared.analytics("Backup completed.", code: .backupCompleted)
         do {
             try Seed.setBackedUp()
         } catch {

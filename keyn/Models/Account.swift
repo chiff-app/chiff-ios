@@ -20,9 +20,6 @@ struct Account: Codable {
     private var tokenSecret: Data? // Only for backup
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
-    var password: String {
-        return try? password()
-    }
 
     init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
         id = "\(site.id)_\(username)".hash
@@ -41,7 +38,7 @@ struct Account: Codable {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
         
-        Logger.shared.info("Site added to Keyn.", userInfo: ["code": AnalyticsMessage.siteAdded.rawValue, "changed": password == nil, "siteID": site.id, "siteName": site.name])
+        Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
         
         try save(password: generatedPassword)
     }
@@ -163,13 +160,13 @@ struct Account: Codable {
 
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
         try backup()
-        Logger.shared.info("Password changed.", userInfo: ["code": AnalyticsMessage.passwordChange.rawValue, "siteName": site.name, "siteID": site.id])
+        Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
     func delete() throws {
         try Keychain.shared.delete(id: id, service: Account.keychainService)
         try BackupManager.shared.deleteAccount(accountId: id)
-        Logger.shared.info("Account deleted.", userInfo: ["code": AnalyticsMessage.deleteAccount.rawValue, "siteName": site.name, "siteID": site.id])
+        Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
     // MARK: - Static
