@@ -32,6 +32,13 @@ class TestHelper {
         Session.deleteAll()
         Account.deleteAll()
         try? Seed.delete()
+    }
+
+    static func setUpBackupManager() {
+        try! BackupManager.shared.initialize()
+    }
+
+    static func tearDownBackupManager() {
         BackupManager.shared.deleteAllKeys()
     }
 
@@ -45,18 +52,6 @@ class TestHelper {
 
         let _ = try! Seed.recover(mnemonic: mnemonicArray)
 
-        initBackup()
-    }
-    
-    static func deleteSeed() {
-        try? Seed.delete()
-    }
-    
-    static func deinitBackup() {
-        BackupManager.shared.deleteAllKeys()
-    }
-    
-    static func initBackup() {
         try! BackupManager.shared.initialize()
     }
     
