@@ -16,7 +16,7 @@ class AccountTests: XCTestCase {
     override func setUp() {
         super.setUp()
         do {
-            TestHelper.createSeed()
+            TestHelper.setUp()
             let exp = expectation(description: "Waiting for getting site.")
             try Site.get(id: TestHelper.linkedInPPDHandle, completion: { (site) in
                 guard let site = site else {
@@ -35,7 +35,7 @@ class AccountTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        TestHelper.resetKeyn()
+        TestHelper.tearDown()
     }
 
     func testInitValidAccountWithPasswordDoesntThrow() throws {
@@ -193,7 +193,7 @@ class AccountTests: XCTestCase {
     }
 
     func testSaveAccount() {
-        assert(false, "To be implemented.")
+        XCTAssert(false, "To be implemented.")
     }
     
     func testAllAccounts() throws {

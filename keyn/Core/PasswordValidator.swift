@@ -5,6 +5,7 @@
 import Foundation
 
 class PasswordValidator {
+
     static let FALLBACK_PASSWORD_LENGTH = 22
     static let MIN_PASSWORD_LENGTH_BOUND = 8 // TODO: What is sensible value for this?
     static let MAX_PASSWORD_LENGTH_BOUND = 50
@@ -26,13 +27,13 @@ class PasswordValidator {
     }
 
     func validate(password: String) -> Bool {
-        // Checks if password is less than or equal to maximum length. Relevant for custom passwords
+        // Checks if password is less than or equal to maximum length. Relevant for custom passwords.
         guard validateMaxLength(password: password) else { return false }
 
-        // Checks if password is less than or equal to minimum length. Relevant for custom passwords
+        // Checks if password is less than or equal to minimum length. Relevant for custom passwords.
         guard validateMinLength(password: password) else { return false }
 
-        // Checks if password doesn't contain unallowed characters
+        // Checks if password doesn't contain unallowed characters.
         guard validateCharacters(password: password) else { return false }
 
         // Max consecutive characters. This tests if n characters are the same.
@@ -41,13 +42,13 @@ class PasswordValidator {
         // Max consecutive characters. This tests if n characters are an ordered sequence.
         guard validateConsecutiveOrderedCharacters(password: password) else { return false }
 
-        // CharacterSet restrictions
+        // CharacterSet restrictions.
         guard validateCharacterSet(password: password) else { return false }
 
-        // Position restrictions
+        // Position restrictions.
         guard validatePositionRestrictions(password: password) else { return false }
 
-        // Requirement groups
+        // Requirement groups.
         guard validateRequirementGroups(password: password) else { return false }
 
         // All tests passed, password is valid.
@@ -264,4 +265,5 @@ class PasswordValidator {
         }
         return occurences
     }
+
 }

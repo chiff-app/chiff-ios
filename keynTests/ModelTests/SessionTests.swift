@@ -13,7 +13,7 @@ class SessionTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        TestHelper.resetKeyn()
+        TestHelper.tearDown()
     }
 
     // init
