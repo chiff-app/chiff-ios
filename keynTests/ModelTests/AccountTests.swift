@@ -15,22 +15,9 @@ class AccountTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        do {
-            TestHelper.setUp()
-            let exp = expectation(description: "Waiting for getting site.")
-            try Site.get(id: TestHelper.linkedInPPDHandle, completion: { (site) in
-                guard let site = site else {
-                    XCTFail("Could not find site.")
-                    return
-                }
-                self.site = site
-                self.accountId = "\(site.id)_\(self.username)".hash
-                exp.fulfill()
-            })
-            waitForExpectations(timeout: 40, handler: nil)
-        } catch {
-            XCTFail("An error occured during setup: \(error)")
-        }
+        TestHelper.setUp()
+        site = TestHelper.testSite
+        accountId = "\(site.id)_\(username)".hash
     }
     
     override func tearDown() {
@@ -39,13 +26,13 @@ class AccountTests: XCTestCase {
     }
 
     func testInitValidAccountWithPasswordDoesntThrow() throws {
-        let _ = try Account(username: self.username, site: self.site, password: "hunter2")
+        let _ = try Account(username: username, site: site, password: "hunter2")
         let account = try Account.get(accountID: accountId)
         XCTAssertNotNil(account)
     }
     
     func testInitValidAccountDoesntThrow() throws {
-        let _ = try Account(username: self.username, site: self.site, password: nil)
+        let _ = try Account(username: username, site: site, password: nil)
         let account = try Account.get(accountID: accountId)
         XCTAssertNotNil(account)
     }
@@ -81,13 +68,13 @@ class AccountTests: XCTestCase {
     func testPasswordIsCorrectForGenerated() throws {
         let account = try Account(username: username, site: site, password: nil)
         let keychainPassword: String = account.password!
-        XCTAssertEqual("(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)", keychainPassword)
+        XCTAssertEqual(")2QdciBLDo;Y4U^,g;;bEc|!6mXHVVN(", keychainPassword)
     }
 
     func testNextPassword() throws {
-        var account = try Account(username: self.username, site: self.site, password: "hunter2")
+        var account = try Account(username: username, site: site, password: "hunter2")
         let password = try account.nextPassword()
-        XCTAssertEqual(password, "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
+        XCTAssertEqual(password, "9`R8kM@^0D;%7P/NzV>l,pzP>RF1Z/Ex")
     }
 
     func testOneTimePasswordToken() throws {
@@ -140,10 +127,10 @@ class AccountTests: XCTestCase {
     func testUpdatePasswordAfterConfirmation() throws {
         var account = try Account(username: username, site: site, password: "hunter2")
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(account.password!, "(H$RW@9o;+S5h5@2wh-nVy/=)!af@Tc)")
+        XCTAssertEqual(account.password!, ")2QdciBLDo;Y4U^,g;;bEc|!6mXHVVN(")
         let _ = try account.nextPassword()
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(account.password!, "Z|A|q[O:{LGr^Tnxvyf@W`Z3;R}T^R%P")
+        XCTAssertEqual(account.password!, "9`R8kM@^0D;%7P/NzV>l,pzP>RF1Z/Ex")
     }
 
     func testUpdateSiteName() throws {
