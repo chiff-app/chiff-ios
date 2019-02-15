@@ -10,10 +10,12 @@ class BackupManagerTests: XCTestCase {
 
     override func setUp() {
         TestHelper.setUp()
+        TestHelper.setUpBackupManager() // probably needed here
     }
 
     override func tearDown() {
         TestHelper.tearDown()
+        TestHelper.tearDownBackupManager() // probably needed here
     }
     
     func testBackupInitializationDoesntThrow() {
