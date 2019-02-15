@@ -12,6 +12,7 @@ enum PasswordGenerationError: Error {
 }
 
 class PasswordGenerator {
+
     static let shared = PasswordGenerator()
 
     private init() {}
@@ -101,6 +102,7 @@ class PasswordGenerator {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
 
+    // TODO: Kunnen we die Crypto errors niet opvangen hier?
     private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.prefix(8).data(using: .utf8) else {

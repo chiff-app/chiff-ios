@@ -7,12 +7,13 @@ import XCTest
 @testable import keyn
 
 class BackupManagerTests: XCTestCase {
+
     override func setUp() {
-        TestHelper.createSeed()
+        TestHelper.setUp()
     }
 
     override func tearDown() {
-        TestHelper.resetKeyn()
+        TestHelper.tearDown()
     }
     
     func testBackupInitializationDoesntThrow() {
@@ -44,4 +45,5 @@ class BackupManagerTests: XCTestCase {
     func testDeleteAllKeys() {
         
     }
+
 }

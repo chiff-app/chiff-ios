@@ -16,6 +16,7 @@ import OneTimePassword
  * because XCTAssertNoThrow() does not check for our type of errors.
  */
 class TestHelper {
+
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
     static let browserPrivateKey = try! Crypto.shared.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
     static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
@@ -23,7 +24,18 @@ class TestHelper {
     static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
-    static func createSeed() {
+    static func setUp() {
+        createSeed()
+    }
+
+    static func tearDown() {
+        Session.deleteAll()
+        Account.deleteAll()
+        try? Seed.delete()
+        BackupManager.shared.deleteAllKeys()
+    }
+
+    private static func createSeed() {
         try? Seed.delete()
 
         var mnemonicArray = [String]()
@@ -31,7 +43,7 @@ class TestHelper {
             mnemonicArray.append(String(word))
         }
 
-        try! Seed.recover(mnemonic: mnemonicArray)
+        let _ = try! Seed.recover(mnemonic: mnemonicArray)
 
         initBackup()
     }
@@ -48,13 +60,6 @@ class TestHelper {
         try! BackupManager.shared.initialize()
     }
     
-    static func resetKeyn() {
-        Session.deleteAll()
-        Account.deleteAll()
-        try? Seed.delete()
-        BackupManager.shared.deleteAllKeys()
-    }
-
     static func createSession() {
         do {
             let _ = try Session.initiate(queueSeed: browserQueueSeed, pubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
@@ -83,11 +88,12 @@ class TestHelper {
         return nil
     }
     
-    static func exampleSite(completionHandler: @escaping (_ site: Site?) -> Void) {
-        try! Site.get(id: linkedInPPDHandle, completion: completionHandler)
+    static var testSite: Site {
+        let testPPD = examplePPD(minLength: 8, maxLength: 32)
+        return Site(name: "Example", id: "example.com".sha256, url: "example.com", ppd: testPPD)
     }
 
-    static func examplePPD(maxConsecutive: Int?, minLength: Int?, maxLength: Int?, characterSetSettings: [PPDCharacterSetSettings]?, positionRestrictions: [PPDPositionRestriction]?, requirementGroups: [PPDRequirementGroup]?) -> PPD {
+    static func examplePPD(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
         var characterSets = [PPDCharacterSet]()
         characterSets.append(PPDCharacterSet(base: [String](), characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
         characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
@@ -108,4 +114,5 @@ class TestHelper {
         let token = Token(url: url!)
         return token!
     }
+
 }

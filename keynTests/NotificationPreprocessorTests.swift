@@ -9,13 +9,13 @@ class NotificationProcessorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        TestHelper.createSeed()
+        TestHelper.setUp()
         TestHelper.createSession()
     }
 
     override func tearDown() {
         super.tearDown()
-        TestHelper.resetKeyn()
+        TestHelper.tearDown()
     }
 
     func testEnrichReturnsNilIfContentIsNil() {

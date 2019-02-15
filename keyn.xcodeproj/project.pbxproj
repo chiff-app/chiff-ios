@@ -42,7 +42,6 @@
 		491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C485A2024AB2F00397071 /* AuthenticationViewController.swift */; };
 		491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */; };
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
-		49214B7B21032E5000C793DE /* PasswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FB40C9202C9B9A0060267C /* PasswordTests.swift */; };
 		49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
@@ -282,7 +281,6 @@
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		49FB40C9202C9B9A0060267C /* PasswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTests.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
@@ -635,7 +633,6 @@
 				611733DB215D07D900F37B2A /* KeychainTests.swift */,
 				611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */,
 				611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */,
-				49FB40C9202C9B9A0060267C /* PasswordTests.swift */,
 			);
 			path = CryptoTests;
 			sourceTree = "<group>";
@@ -1186,7 +1183,6 @@
 				611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */,
 				611733DA215D07C900F37B2A /* QuestionnaireTests.swift in Sources */,
 				611733DC215D07D900F37B2A /* KeychainTests.swift in Sources */,
-				49214B7B21032E5000C793DE /* PasswordTests.swift in Sources */,
 				01557424202AF75600F97DA2 /* SessionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
