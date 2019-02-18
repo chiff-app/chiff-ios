@@ -68,14 +68,13 @@ extension Error {
         return 42
     }
     var nsError: NSError {
-        switch self {
-        case let self as NSError:
-            return self
-        default:
+        if self is KeynError {
             return NSError(
                 domain: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String,
                 code: KEYN_ERROR_CODE,
                 userInfo: ["class": type(of: self), "error_type": "\(self)"])
+        } else {
+            return self as NSError
         }
     }
 }

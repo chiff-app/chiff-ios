@@ -113,7 +113,7 @@ class PasswordValidatorTests: XCTestCase {
     func testValidateReturnsFalseIfMultiplePositionRestrictionNotMet() {
         var positionRestrictions = [PPDPositionRestriction]()
         // There should be no more than 2 specials combined on positions 1, 2, 3
-        positionRestrictions.append(PPDPositionRestriction(positions: "0,1,2", maxOccurs: 2, characterSet: "Specials"))
+        positionRestrictions.append(PPDPositionRestriction(positions: "0,1,2", minOccurs: 0, maxOccurs: 2, characterSet: "Specials"))
 
         let ppd = TestHelper.examplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
         let validator = PasswordValidator(ppd: ppd)
