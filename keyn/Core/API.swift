@@ -41,7 +41,7 @@ class API {
     // TODO: Misschien kan dit `typealias JSONDictionary  [String: Any]`?
     func request(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let request = try createRequest(type: type, path: path, parameters: nil, method: method)
+            let request = try createRequest(type: type, path: path, parameters: parameters, method: method)
             send(request, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
