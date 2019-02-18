@@ -5,7 +5,7 @@
 import Foundation
 import Security
 
-enum KeychainError: Error {
+enum KeychainError: KeynError {
     case stringEncoding
     case unexpectedData
     case storeKey

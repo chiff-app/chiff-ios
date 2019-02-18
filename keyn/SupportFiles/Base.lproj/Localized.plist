@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Accounts</key>
+	<key>accounts</key>
 	<dict>
 		<key>add_otp_code</key>
 		<dict>
@@ -26,7 +26,7 @@
 			<string>Scan the 2FA-code for</string>
 		</dict>
 	</dict>
-	<key>Backup</key>
+	<key>backup</key>
 	<dict>
 		<key>word</key>
 		<dict>
@@ -36,7 +36,7 @@
 			<string>word</string>
 		</dict>
 	</dict>
-	<key>Devices</key>
+	<key>devices</key>
 	<dict>
 		<key>devices</key>
 		<dict>
@@ -60,7 +60,7 @@
 			<string>Scan QR</string>
 		</dict>
 	</dict>
-	<key>Errors</key>
+	<key>errors</key>
 	<dict>
 		<key>generic_error</key>
 		<dict>
@@ -121,9 +121,9 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>This QR-code could not be decoded.</string>
 		</dict>
 	</dict>
-	<key>Popups</key>
+	<key>popups</key>
 	<dict>
-		<key>Questions</key>
+		<key>questions</key>
 		<dict>
 			<key>cancel_backup</key>
 			<dict>
@@ -175,7 +175,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<string>This will delete the seed and all passwords.</string>
 			</dict>
 		</dict>
-		<key>Responses</key>
+		<key>responses</key>
 		<dict>
 			<key>cancel</key>
 			<dict>
@@ -228,7 +228,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			</dict>
 		</dict>
 	</dict>
-	<key>Registration</key>
+	<key>registration</key>
 	<dict>
 		<key>breach_password_found</key>
 		<dict>
@@ -252,7 +252,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>It's not possible to change the password for this site.</string>
 		</dict>
 	</dict>
-	<key>Requests</key>
+	<key>requests</key>
 	<dict>
 		<key>add_site</key>
 		<dict>
@@ -283,7 +283,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Login to</string>
 		</dict>
 	</dict>
-	<key>Settings</key>
+	<key>settings</key>
 	<dict>
 		<key>backup_completed_footer</key>
 		<dict>

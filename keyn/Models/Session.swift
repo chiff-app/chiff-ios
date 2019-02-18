@@ -5,7 +5,7 @@
 import UIKit
 import UserNotifications
 
-enum SessionError: Error {
+enum SessionError: KeynError {
     case exists
     case invalid
     case noEndpoint
@@ -170,17 +170,18 @@ class Session: Codable {
 
     // MARK: - Static functions
 
-    static func all() throws -> [Session]? {
+    static func all() throws -> [Session] {
+        var sessions = [Session]()
+        
         guard let dataArray = try Keychain.shared.all(service: messageQueueService) else {
-            return nil
+            return sessions
         }
 
-        var sessions = [Session]()
         let decoder = PropertyListDecoder()
 
         for dict in dataArray {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
-                throw KeynError.unexpectedData
+                throw CodingError.unexpectedData
             }
             sessions.append(try decoder.decode(Session.self, from: sessionData))
         }
@@ -204,7 +205,7 @@ class Session: Codable {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
-            throw KeynError.unexpectedData
+            throw CodingError.unexpectedData
         }
         let decoder = PropertyListDecoder()
         return try decoder.decode(Session.self, from: sessionData)
@@ -212,15 +213,13 @@ class Session: Codable {
 
     static func deleteAll() {
         do {
-            if let sessions = try Session.all() {
-                for session in sessions {
-                    try session.delete(includingQueue: true)
-                }
+            for session in try Session.all() {
+                try session.delete(includingQueue: true)
             }
         } catch {
-            Logger.shared.debug("Error deleting accounts.", error: error)
+            Logger.shared.debug("Error deleting sessions.", error: error)
         }
-
+        
         // To be sure
         Keychain.shared.deleteAll(service: messageQueueService)
         Keychain.shared.deleteAll(service: controlQueueService)

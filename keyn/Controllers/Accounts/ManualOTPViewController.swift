@@ -6,7 +6,7 @@ import UIKit
 import OneTimePassword
 import Base32
 
-enum OTPError: Error {
+enum OTPError: KeynError {
     case invalidSecret
     case invalidParameters
     case empty
@@ -41,7 +41,7 @@ class ManualOTPViewController: UITableViewController {
             throw OTPError.invalidSecret
         }
         let token = Token(generator: generator)
-        try AuthenticationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
+        try AuthorizationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
             DispatchQueue.main.async {
                 guard error == nil else {
                     Logger.shared.error("Error authorizing OTP", error: error)

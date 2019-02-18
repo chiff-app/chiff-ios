@@ -4,7 +4,7 @@
  */
 import UserNotifications
 
-enum NotificationExtensionError: Error {
+enum NotificationExtensionError: KeynError {
     case decodeCiphertext
     case decodeSessionId
 }

@@ -231,17 +231,15 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return false
         }
 
-        AuthenticationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+        AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
 
         return true
     }
 
     private func handlePendingNotifications() {
         do {
-            if let sessions = try Session.all() {
-                for session in sessions {
-                    self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
-                }
+            for session in try Session.all() {
+                self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
@@ -321,8 +319,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                         }
 
                         DispatchQueue.main.async {
-                            if !AuthenticationGuard.shared.authorizationInProgress {
-                                AuthenticationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+                            if !AuthorizationGuard.shared.authorizationInProgress {
+                                AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
                             }
                         }
                     }

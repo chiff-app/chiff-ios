@@ -58,3 +58,9 @@ enum BrowserMessageType: Int, Codable {
 enum KeyType: UInt64 {
     case passwordSeed, backupSeed
 }
+
+enum CodingError: KeynError {
+    case stringEncoding
+    case stringDecoding
+    case unexpectedData
+}

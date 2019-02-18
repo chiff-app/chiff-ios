@@ -4,7 +4,7 @@
  */
 import Foundation
 
-enum APIError: Error {
+enum APIError: KeynError {
     case url
     case jsonSerialization
     case request(error: Error)
@@ -52,17 +52,20 @@ class API {
 
     private func send(_ request: URLRequest, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            print(error)
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying Keyn API", error: error!)
                 return
             }
             if let httpStatus = response as? HTTPURLResponse {
+                    print(httpStatus)
                 do {
                     if httpStatus.statusCode == 200 {
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
                         guard let json = jsonData as? [String: Any] else {
                             throw APIError.jsonSerialization
                         }
+                        print(json)
                         completionHandler(json, nil)
                     } else if let error = error {
                         throw APIError.request(error: error)
@@ -85,7 +88,7 @@ class API {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.ppdTestingMode ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)"
+        components.path = "/\(Properties.isDebug ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)"
 
         if let path = path {
             components.path += "/\(path)"

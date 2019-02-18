@@ -41,7 +41,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     // Open app from URL (e.g. QR code)
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         do {
-            try AuthenticationGuard.shared.authorizePairing(url: url) { (session, error) in
+            try AuthorizationGuard.shared.authorizePairing(url: url) { (session, error) in
                 DispatchQueue.main.async {
                     if let session = session {
                         NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
@@ -117,7 +117,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
                 // TODO: Localize
-                self.launchErrorView("no_push_notifications".localized)
+                self.launchErrorView("errors.no_push_notifications".localized)
             }
         }
     }

@@ -8,7 +8,7 @@ class DevicesNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
-            if try Session.all() != nil {
+            if try !Session.all().isEmpty  {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
             } else {

@@ -65,7 +65,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
         self.dismiss(animated: false, completion: nil)
-        AuthenticationGuard.shared.authorizationInProgress = false
+        AuthorizationGuard.shared.authorizationInProgress = false
     }
 
     // MARK: - Actions
@@ -115,13 +115,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
         }
         self.dismiss(animated: true, completion: nil)
-        AuthenticationGuard.shared.authorizationInProgress = false
+        AuthorizationGuard.shared.authorizationInProgress = false
     }
     
     // MARK: - Private
     
     private func authorize(notification: PushNotification, session: Session, accountID: String, type: BrowserMessageType) {
-        AuthenticationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
+        AuthorizationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
                     do {
@@ -153,7 +153,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
-                siteLabel.text = AuthenticationGuard.shared.requestText(siteName: notification.siteName, type: type, accountExists: accountExists())
+                siteLabel.text = AuthorizationGuard.shared.requestText(siteName: notification.siteName, type: type, accountExists: accountExists())
             } catch {
                 Logger.shared.error("Could not get account.", error: error)
                 self.dismiss(animated: true, completion: nil)

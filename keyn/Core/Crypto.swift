@@ -6,7 +6,7 @@ import Foundation
 import Sodium
 import CommonCrypto
 
-enum CryptoError: Error {
+enum CryptoError: KeynError {
     case randomGeneration
     case base64Decoding
     case base64Encoding
@@ -195,7 +195,7 @@ class Crypto {
 
     func hash(_ message: String) throws -> String {
         guard let messageData = message.data(using: .utf8) else {
-            throw KeynError.stringDecoding
+            throw CodingError.stringDecoding
         }
 
         let hashData = try hash(messageData)
