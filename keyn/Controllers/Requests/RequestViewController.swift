@@ -101,7 +101,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     Logger.shared.warning("Unknown request type received.")
                 }
             } catch {
-                Logger.shared.error("Could nog get PPD.", error: error)
+                Logger.shared.error("Could not get PPD.", error: error)
             }
         }
     }

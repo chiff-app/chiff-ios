@@ -112,9 +112,9 @@ struct PPDRequirementGroup: Codable {
 }
 
 struct PPDRequirementRule: Codable {
+    let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
     let minOccurs: Int // Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
     let maxOccurs: Int? // Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
-    let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
     let characterSet: String
 
     init(positions: String?, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
