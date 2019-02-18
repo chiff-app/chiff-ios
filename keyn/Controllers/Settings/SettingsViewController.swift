@@ -7,7 +7,7 @@ import UIKit
 class SettingsViewController: UITableViewController {
     @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
 
-    var securityFooterText = "\u{26A0} \("Settings.backup_not_finished".localized)."
+    var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     
     override func viewDidLoad() {
@@ -28,9 +28,9 @@ class SettingsViewController: UITableViewController {
         case 0:
             return securityFooterText
         case 1:
-            return "feedback_description".localized
+            return "settings.feedback_description".localized
         case 2:
-            return "reset_warning".localized
+            return "settings.reset_warning".localized
         default:
             return nil
         }
@@ -47,9 +47,9 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func resetKeyn(_ sender: UIButton) {
-        let alert = UIAlertController(title: "reset_keyn".localized, message: "reset_keyn_description".localized, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "reset".localized, style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "popups.questions.reset_keyn_description".localized, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
@@ -76,7 +76,7 @@ class SettingsViewController: UITableViewController {
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
         do {
-            securityFooterText = try Seed.isPaperBackupCompleted() ? "backup_completed_footer".localized : "\u{26A0} \("Settings.backup_not_finished".localized)."
+            securityFooterText = try Seed.isPaperBackupCompleted() ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
         } catch {
             Logger.shared.warning("Could determine if seed is backed up.", error: error)
         }

@@ -76,7 +76,7 @@ struct Account: Codable {
         let secret = try Keychain.shared.get(id: id, service: Account.otpKeychainService)
         guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
             let url = URL(string: urlString) else {
-                throw KeynError.unexpectedData
+                throw CodingError.unexpectedData
         }
         
         return Token(url: url, secret: secret)
@@ -90,7 +90,7 @@ struct Account: Codable {
         let secret = token.generator.secret
 
         guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw KeynError.stringEncoding
+            throw CodingError.stringEncoding
         }
 
         if self.hasOtp() {
@@ -147,7 +147,7 @@ struct Account: Codable {
         passwordOffset = offset
 
         guard let passwordData = newPassword.data(using: .utf8) else {
-            throw KeynError.stringEncoding
+            throw CodingError.stringEncoding
         }
 
         let accountData = try PropertyListEncoder().encode(self)
@@ -198,7 +198,7 @@ struct Account: Codable {
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
         
         guard let passwordData = password.data(using: .utf8) else {
-            throw KeynError.stringEncoding
+            throw CodingError.stringEncoding
         }
     
         // Remove token and save seperately in Keychain
@@ -206,7 +206,7 @@ struct Account: Codable {
             account.tokenSecret = nil
             account.tokenURL = nil
             guard let tokenData = tokenURL.absoluteString.data(using: .utf8) else {
-                throw KeynError.stringEncoding
+                throw CodingError.stringEncoding
             }
             try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: tokenSecret, objectData: tokenData, classification: .secret)
             data = try PropertyListEncoder().encode(account)
@@ -227,7 +227,7 @@ struct Account: Codable {
 
         for dict in dataArray {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                throw KeynError.unexpectedData
+                throw CodingError.unexpectedData
             }
             let account = try decoder.decode(Account.self, from: accountData)
             accounts.append(account)
@@ -259,7 +259,7 @@ struct Account: Codable {
             let data = try Keychain.shared.get(id: id, service: Account.keychainService)
 
             guard let password = String(data: data, encoding: .utf8) else {
-                throw KeynError.stringEncoding
+                throw CodingError.stringEncoding
             }
 
             return password

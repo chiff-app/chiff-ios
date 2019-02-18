@@ -18,7 +18,7 @@ class OTPViewController: QRViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        instructionLabel.text = "\("two_fa_instruction".localized) \(account.site.name)."
+        instructionLabel.text = "\("accounts.two_fa_instruction".localized) \(account.site.name)."
     }
     
     override func handleURL(url: URL) throws {
@@ -28,7 +28,7 @@ class OTPViewController: QRViewController {
         guard let token = Token(url: url) else {
             return
         }
-        try AuthenticationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
+        try AuthorizationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
             DispatchQueue.main.async {
                 do {
                     if let error = error {

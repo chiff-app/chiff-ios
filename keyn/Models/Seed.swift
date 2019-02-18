@@ -4,7 +4,7 @@
  */
 import Foundation
 
-enum SeedError: Error {
+enum SeedError: KeynError {
     case mnemonicConversion
 }
 

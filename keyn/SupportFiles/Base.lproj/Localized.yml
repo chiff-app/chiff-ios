@@ -1,5 +1,5 @@
 ---
-Errors:
+errors:
   generic_problem:
     value: There was a problem
     comment: A generic problem description
@@ -27,8 +27,8 @@ Errors:
   session_error_no_endpoint:
     comment: There was no endpoint found
     value: There is no AWS endpoint in the session data.
-Popups:
-  Questions:
+popups:
+  questions:
     cancel_backup:
       value: Cancel backup?
       comment: Ask the user to cancel the backup
@@ -50,7 +50,7 @@ Popups:
     questionnaire_popup_title:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Questiontime!
-  Responses:
+  responses:
     delete:
       value: Delete
       comment: Deletes something
@@ -72,7 +72,7 @@ Popups:
     questionnaire_deny:
       comment: Deny the questionnaire
       value: No, thanks
-Accounts:
+accounts:
   add_otp_code:
     value: Add code
     comment: Add a one-time-password code
@@ -82,7 +82,7 @@ Accounts:
   two_fa_instruction:
     comment: Instruct the user to scan a 2FA-code
     value: Scan the 2FA-code for
-Devices:
+devices:
   devices:
     comment: Section title for devices
     value: devices
@@ -92,7 +92,7 @@ Devices:
   scan_qr:
     comment: Cell title for scanning qr code
     value: Scan QR
-Settings:
+settings:
   feedback_description:
     comment: Description under feedback form
     value: Use this form to provide feedback :)
@@ -108,11 +108,11 @@ Settings:
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
-Backup:
+backup:
   word:
     comment: The word for word
     value: word
-Requests:
+requests:
   login_to:
     comment: Ask to the user to login to a site, e.g. Login to Amazon.com?
     value: Login to
@@ -125,7 +125,7 @@ Requests:
   add_site:
     comment: Ask the user to add a site, e.g. Add Amazon.com?
     value: Add
-Registration:
+registration:
   change_password_footer:
     comment: Description for enabling changing a password
     value: If enabled, Keyn will automatically change the password to a secure password

@@ -23,7 +23,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     private var passwordIsHidden = true
     private var passwordValidator: PasswordValidator? = nil
     private var breachCount: Int?
-    private var changePasswordFooterText = "change_password_footer".localized.capitalized
+    private var changePasswordFooterText = "registration.change_password_footer".localized.capitalized
     private var account: Account?
 
     override func viewDidLoad() {
@@ -48,7 +48,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         }
 
         if site.ppd?.service?.passwordChange == nil {
-            changePasswordFooterText = "change_password_impossible".localized.capitalized
+            changePasswordFooterText = "registration.change_password_impossible".localized.capitalized
             changePasswordCell.isUserInteractionEnabled = false
             changePasswordLabel.isEnabled = false
             changePasswordSwitch.isEnabled = false
@@ -92,7 +92,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         switch section {
         case 0:
             // TODO: Localize with plurals.
-            return (breachCount != nil && breachCount != 0) ? "\u{26A0} \("breach_password_found".localized.capitalized) \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
+            return (breachCount != nil && breachCount != 0) ? "\u{26A0} \("registration.breach_password_found".localized.capitalized) \(breachCount!) breach\(breachCount! > 1 ? "es" : "")! You should probably change it." : nil
         case 1:
             return changePasswordFooterText
         default:
@@ -150,7 +150,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
 
         let password = userPasswordTextField.text
         if let username = userNameTextField.text, let site = site, let notification = notification, let session = session {
-            AuthenticationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
+            AuthorizationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: nil, type: type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {

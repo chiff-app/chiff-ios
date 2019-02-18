@@ -192,7 +192,7 @@ struct BackupManager {
     
     private func createEncryptionKey() throws {
         guard let contextData = "backup".data(using: .utf8) else {
-            throw KeynError.stringDecoding
+            throw CodingError.stringDecoding
         }
         
         let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)

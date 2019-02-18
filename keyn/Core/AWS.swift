@@ -6,7 +6,7 @@ import Foundation
 import AWSCore
 import AWSSNS
 
-enum AWSError: Error {
+enum AWSError: KeynError {
     case queueUrl(error: String?)
     case createObjectError(error: String?)
 }
@@ -92,7 +92,7 @@ class AWS {
 
             let subscriptionEndpointData = try Keychain.shared.get(id: self.subscriptionKeychainIdentifier, service: self.awsService)
             guard let subscriptionEndpoint = String(data: subscriptionEndpointData, encoding: .utf8) else {
-                throw KeynError.stringDecoding
+                throw CodingError.stringDecoding
             }
 
             unsubscribeRequest.subscriptionArn = subscriptionEndpoint

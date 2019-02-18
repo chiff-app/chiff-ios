@@ -12,7 +12,7 @@ class BackupWizardViewController: UIViewController {
     var mnemonic: [String]?
     var counter: Int = 0 {
         didSet {
-            counterLabel.text = "\("word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
+            counterLabel.text = "\("backup.word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
         }
     }
     var isInitialSetup = true
@@ -22,7 +22,7 @@ class BackupWizardViewController: UIViewController {
         do {
             mnemonic = try Seed.mnemonic()
             wordLabel.text = mnemonic![counter]
-            counterLabel.text = "\("word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
+            counterLabel.text = "\("backup.word".localized.capitalized) \(counter + 1) of \(mnemonic!.count)"
         } catch {
             Logger.shared.error("Error getting mnemonic.", error: error)
         }
@@ -62,9 +62,9 @@ class BackupWizardViewController: UIViewController {
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "\("cancel_backup".localized.capitalized)", message: "cancel_backup_description".localized, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "continue".localized.capitalized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "cancel".localized.capitalized, style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "\("popups.questions.cancel_backup".localized.capitalized)", message: "popups.questions.cancel_backup_description".localized, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.continue".localized.capitalized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalized, style: .destructive, handler: { action in
             if self.isInitialSetup {
                 let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
                 rootController.selectedIndex = 1

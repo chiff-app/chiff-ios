@@ -111,9 +111,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     }
     
     @IBAction func deleteAccount(_ sender: UIButton) {
-        let alert = UIAlertController(title: "delete_account".localized, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             self.performSegue(withIdentifier: "DeleteAccount", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
@@ -202,7 +202,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
             showPasswordHUD.mode = .text
             showPasswordHUD.bezelView.color = .black
-            showPasswordHUD.label.text = account?.password ?? "password_error".localized
+            showPasswordHUD.label.text = account?.password ?? "errors.password_error".localized
             showPasswordHUD.label.textColor = .white
             showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
             showPasswordHUD.margin = 10
@@ -229,7 +229,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text
         
         let copiedLabel = UILabel(frame: cell.bounds)
-        copiedLabel.text = "copied".localized
+        copiedLabel.text = "accounts.copied".localized
         copiedLabel.font = copiedLabel.font.withSize(18)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
@@ -279,7 +279,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
             userCodeCell.accessoryType = .disclosureIndicator
-            userCodeTextField.placeholder = "add_otp_code".localized
+            userCodeTextField.placeholder = "accounts.add_otp_code".localized
         }
     }
     

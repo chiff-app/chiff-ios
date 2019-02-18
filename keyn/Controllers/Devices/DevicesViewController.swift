@@ -23,9 +23,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
 
         do {
-            if let storedSessions = try Session.all() {
-                sessions = storedSessions
-            }
+            sessions = try Session.all()
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
@@ -38,7 +36,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    // TODO: Frank: wat zijn die nummers?
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
@@ -57,7 +54,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return nil
         case 1:
-            return "pairing_instruction".localized
+            return "devices.pairing_instruction".localized
         default:
             assert(false, "section \(section)")
             return nil
@@ -67,7 +64,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "devices".localized
+            return "devices.devices".localized
         case 1:
             return nil
         default:
@@ -98,9 +95,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "\("delete".localized) \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
+            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 do {
                     try self.sessions[indexPath.row].delete(includingQueue: true)
                     self.sessions.remove(at: indexPath.row)
@@ -151,7 +148,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "Scan QR", for: indexPath)
-            cell.textLabel?.text = "scan_qr".localized
+            cell.textLabel?.text = "devices.scan_qr".localized
             return cell
         default:
             assert(false, "section \(indexPath.section)")

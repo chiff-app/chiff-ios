@@ -30,51 +30,56 @@ struct Logger {
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.verbose(message, error: error?.nsError, userInfo: userInfo)
+        logger.verbose(message, error: getNSError(error), userInfo: userInfo)
     }
     
     func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.debug(message, error: error?.nsError, userInfo: userInfo)
+        logger.debug(message, error: getNSError(error), userInfo: userInfo)
     }
     
     func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.info(message, error: error?.nsError, userInfo: userInfo)
+        logger.info(message, error: getNSError(error), userInfo: userInfo)
     }
     
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.warning(message, error: error?.nsError, userInfo: userInfo)
+        logger.warning(message, error: getNSError(error), userInfo: userInfo)
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.error(message, error: error?.nsError, userInfo: userInfo)
+        logger.error(message, error: getNSError(error), userInfo: userInfo)
     }
     
     func analytics(_ message: String, code: AnalyticsMessage, userInfo providedUserInfo: [String: Any]? = nil, error: Error? = nil) {
         var userInfo = providedUserInfo ?? [String:Any]()
         userInfo["code"] = code.rawValue
-        logger.info(message, error: error?.nsError, userInfo: userInfo)
+        logger.info(message, error: getNSError(error), userInfo: userInfo)
+    }
+    
+    private func getNSError(_ error: Error?) -> NSError? {
+        guard let error = error else {
+            return nil
+        }
+        if let error = error as? KeynError {
+            return error.nsError
+        } else  {
+            return error as NSError
+        }
     }
     
 }
 
-enum KeynError: Error {
-    case stringEncoding
-    case stringDecoding
-    case unexpectedData
+protocol KeynError: Error {
+    var nsError: NSError { get }
 }
 
-extension Error {
+extension KeynError {
     private var KEYN_ERROR_CODE: Int {
         return 42
     }
     var nsError: NSError {
-        if self is KeynError {
-            return NSError(
-                domain: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String,
-                code: KEYN_ERROR_CODE,
-                userInfo: ["class": type(of: self), "error_type": "\(self)"])
-        } else {
-            return self as NSError
-        }
+        return NSError(
+            domain: Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String,
+            code: KEYN_ERROR_CODE,
+            userInfo: ["class": "\(type(of: self))", "error_type": "\(self)"])
     }
 }

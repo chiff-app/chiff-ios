@@ -83,9 +83,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
-            let alert = UIAlertController(title: "delete_account".localized, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "delete".localized, style: .destructive, handler: { action in
+            let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 let account = self.filteredAccounts![indexPath.row]
                 self.deleteAccount(account: account, filteredIndexPath: indexPath)
             }))

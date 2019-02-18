@@ -19,7 +19,7 @@ class PairViewController: QRViewController {
             return
         }
 
-        try AuthenticationGuard.shared.authorizePairing(url: url, completion: { [weak self] (session, error) in
+        try AuthorizationGuard.shared.authorizePairing(url: url, completion: { [weak self] (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
                     self?.addSession(session: session)
@@ -27,13 +27,13 @@ class PairViewController: QRViewController {
                     switch error {
                     case KeychainError.storeKey:
                         Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error)
-                        self?.displayError(message: "qr_scanned_twice".localized)
+                        self?.displayError(message: "errors.qr_scanned_twice".localized)
                     case SessionError.noEndpoint:
                         Logger.shared.error("There is no endpoint in the session data.", error: error)
-                        self?.displayError(message: "session_error_no_endpoint".localized)
+                        self?.displayError(message: "errors.session_error_no_endpoint".localized)
                     default:
                         Logger.shared.error("Unhandled QR code error during pairing.", error: error)
-                        self?.displayError(message: "generic_error".localized)
+                        self?.displayError(message: "errors.generic_error".localized)
                     }
                     self?.recentlyScannedUrls.removeAll(keepingCapacity: false)
                     self?.qrFound = false
@@ -48,6 +48,7 @@ class PairViewController: QRViewController {
     // MARK: - Actions
 
     func addSession(session: Session) {
+        // TODO: Check if there's a better way to check if the Pair View Controller in the bottomNavigation or navigationcontroller
         if navigationController?.viewControllers[0] == self {
             let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
             navigationController?.setViewControllers([devicesVC], animated: false)

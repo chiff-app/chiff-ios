@@ -32,8 +32,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         firstWordIndex = Int(arc4random_uniform(5))
         secondWordIndex = Int(arc4random_uniform(5)) + 6
 
-        firstWordLabel.text = "\("word".localized.capitalized) #\(firstWordIndex+1)"
-        secondWordLabel.text = "\("word".localized.capitalized) #\(secondWordIndex+1)"
+        firstWordLabel.text = "\("backup.word".localized.capitalized) #\(firstWordIndex+1)"
+        secondWordLabel.text = "\("backup.word".localized.capitalized) #\(secondWordIndex+1)"
         firstWordTextField.placeholder = "\(mnemonic[firstWordIndex].prefix(3))..."
         secondWordTextField.placeholder = "\(mnemonic[secondWordIndex].prefix(3))..."
 
