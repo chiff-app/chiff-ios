@@ -550,7 +550,6 @@
 			isa = PBXGroup;
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
-				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 				4908103520598AC700C770F1 /* PPD.swift */,
 				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
@@ -566,6 +565,7 @@
 				49F448281FD1652C00643C4D /* AWS.swift */,
 				49721F9B2128E5830090AF48 /* API.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
+				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,

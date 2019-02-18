@@ -135,17 +135,18 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.createQuestionnaireDirectory()
             AWS.shared.isFirstLaunch = true
         }
-
-        if !Seed.exists() {
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-            viewController = rootController
-        } else {
+        
+        if Seed.hasKeys && BackupManager.shared.hasKeys {
             guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                 Logger.shared.error("Unexpected root view controller type")
                 fatalError("Unexpected root view controller type")
             }
             viewController = vc
+            
+        } else {
+            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            viewController = rootController
         }
 
         self.window?.rootViewController = viewController
