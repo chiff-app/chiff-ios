@@ -930,7 +930,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
@@ -957,7 +957,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */ = {
@@ -1002,7 +1002,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
 				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
@@ -1029,7 +1029,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EBF1ED7B5DB4A469B7288E5E /* [CP] Check Pods Manifest.lock */ = {
