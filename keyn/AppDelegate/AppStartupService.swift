@@ -19,7 +19,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // Open app normally
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         let _ = Logger.shared
         
         fetchAWSIdentification()

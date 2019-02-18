@@ -8,6 +8,7 @@ import UIKit
  * Clears copied password from clipboard after a specified time.
  */
 class PasteboardService: NSObject, UIApplicationDelegate {
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let nc = NotificationCenter.default
         nc.addObserver(forName: UIPasteboard.changedNotification, object: nil, queue: nil, using: handlePasteboardChangeNotification)
@@ -40,6 +41,7 @@ class PasteboardService: NSObject, UIApplicationDelegate {
             }
         }
     }
+
 }
 
 // Helper function inserted by Swift 4.2 migrator.

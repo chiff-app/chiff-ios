@@ -7,10 +7,8 @@ import XCTest
 @testable import keyn
 
 class SiteTests: XCTestCase {    
+
     override func setUp() {
-        // TODO
-        // Set up some example sites. Actually this is now still
-        // already done because we already use sample data.
         super.setUp()
     }
 
