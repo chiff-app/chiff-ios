@@ -22,7 +22,8 @@ class Session: Codable {
     let creationDate: Date
     let browser: String
     let os: String
-    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
+    // This used to be a UIBackgroundTaskIdentifier, but that gave us vague decoding errors.
+    var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
 
     private static let messageQueueService = "io.keyn.session.message"
     private static let controlQueueService = "io.keyn.session.control"
@@ -183,8 +184,16 @@ class Session: Codable {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
                 throw CodingError.unexpectedData
             }
-            sessions.append(try decoder.decode(Session.self, from: sessionData))
+            // TODO: If not decodable, remove specific session instead of all.
+            do {
+                let session = try decoder.decode(Session.self, from: sessionData)
+                sessions.append(session)
+            } catch {
+                Logger.shared.error("Can not decode session, deleting all session data from keychain.", error: error)
+                purgeSessionDataFromKeychain()
+            }
         }
+
         return sessions
     }
 
@@ -221,9 +230,7 @@ class Session: Codable {
         }
         
         // To be sure
-        Keychain.shared.deleteAll(service: messageQueueService)
-        Keychain.shared.deleteAll(service: controlQueueService)
-        Keychain.shared.deleteAll(service: appService)
+        purgeSessionDataFromKeychain()
     }
 
     // TODO: Call this function with succes and error handlers. Remove throws.
@@ -347,4 +354,11 @@ class Session: Codable {
 
         return parameters
     }
+
+    private static func purgeSessionDataFromKeychain() {
+        Keychain.shared.deleteAll(service: messageQueueService)
+        Keychain.shared.deleteAll(service: controlQueueService)
+        Keychain.shared.deleteAll(service: appService)
+    }
+
 }

@@ -192,19 +192,20 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return
         }
 
-        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid else {
+        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid.rawValue else {
             return
         }
 
         session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(session.backgroundTask)
-            UIApplication.shared.endBackgroundTask(session.backgroundTask)
-            session.backgroundTask = UIBackgroundTaskIdentifier.invalid
-        })
+            let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
+            UIApplication.shared.endBackgroundTask(id)
+            session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        }).rawValue
 
         self.pollQueue(attempts: PASSWORD_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, completionHandler: {
-            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid {
-                UIApplication.shared.endBackgroundTask(session.backgroundTask)
+            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
+                let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
+                UIApplication.shared.endBackgroundTask(id)
             }
         })
     }
