@@ -76,7 +76,7 @@ class SettingsViewController: UITableViewController {
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
         do {
-            securityFooterText = try Seed.isBackedUp() ? "backup_completed_footer".localized : "\u{26A0} \("Settings.backup_not_finished".localized)."
+            securityFooterText = try Seed.isPaperBackupCompleted() ? "backup_completed_footer".localized : "\u{26A0} \("Settings.backup_not_finished".localized)."
         } catch {
             Logger.shared.warning("Could determine if seed is backed up.", error: error)
         }

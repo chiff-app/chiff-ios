@@ -11,6 +11,12 @@ enum SeedError: Error {
 struct Seed {
     
     private static let keychainService = "io.keyn.seed"
+    
+    static var hasKeys: Bool {
+        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) &&
+        Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService) &&
+        Keychain.shared.has(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+    }
 
     private enum KeyIdentifier: String, Codable {
         case password = "password"
@@ -35,9 +41,8 @@ struct Seed {
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
         let seedHash = try Crypto.shared.hash(seed).first!
-        var bitstring = seed.bitstring
-        bitstring += String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) // Add checksum
-
+        let checksumSize = seed.count / 4
+        let bitstring = seed.bitstring + String(seedHash, radix: 2).prefix(checksumSize).pad(toSize: checksumSize)
         let wordlist = try self.wordlist()
 
         return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
@@ -83,21 +88,17 @@ struct Seed {
         return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
     }
 
-    static func exists() -> Bool {
-        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-    }
-
     static func delete() throws {
         try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
         try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
         try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
     }
 
-    static func setBackedUp() throws {
+    static func setPaperBackupCompleted() throws {
         try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
     }
 
-    static func isBackedUp() throws -> Bool {
+    static func isPaperBackupCompleted() throws -> Bool {
         guard let dataArray = try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
             return false
         }

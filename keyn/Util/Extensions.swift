@@ -50,6 +50,16 @@ extension String {
     }
 }
 
+extension Substring {
+    func pad(toSize: Int) -> String {
+        var padded = String(self)
+        for _ in 0..<(toSize - self.count) {
+            padded = "0" + padded
+        }
+        return padded
+    }
+}
+
 // Extension for URL that return parameters as dict
 extension URL {
     public var queryParameters: [String: String]? {

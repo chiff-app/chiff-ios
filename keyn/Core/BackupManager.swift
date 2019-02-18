@@ -9,6 +9,12 @@ struct BackupManager {
     private let keychainService = "io.keyn.backup"
     private let endpoint = "backup"
     static let shared = BackupManager()
+    
+    var hasKeys: Bool {
+        return Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) &&
+        Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService) &&
+        Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
+    }
 
     private enum KeyIdentifier: String, Codable {
         case priv = "priv"
@@ -20,32 +26,40 @@ struct BackupManager {
         }
     }
     
-    private init() {}
+    private enum MessageIdentifier {
+        static let type = "type"
+        static let timestamp = "timestamp"
+        static let id = "id"
+        static let data = "data"
+    }
     
-    func initialize() throws {
-        var pubKey: String
+    private init() {}
 
-        if !hasPublicKeyInKeychain() {
-            try createEncryptionKey()
-            pubKey = try createSigningKeypair()
-        } else {
-            pubKey = try publicKey()
+    func initialize(completion: @escaping (_ success: Bool) -> Void) throws {
+        guard !hasKeys else {
+            Logger.shared.warning("Tried to create backup keys while they already existed")
+            return
         }
-
+        try createEncryptionKey()
+        let pubKey = try createSigningKeypair()
+        
         let message = [
-            "type": APIMethod.put.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970))
+            MessageIdentifier.type: APIMethod.put.rawValue,
+            MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
         ]
-
+        
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         let parameters = [
             "m": try Crypto.shared.convertToBase64(from: jsonData),
             "s": try signMessage(message: jsonData)
         ]
-
+        
         API.shared.request(type: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot initialize BackupManager.", error: error)
+                completion(false)
+            } else {
+                completion(true)
             }
         }
     }
@@ -54,10 +68,10 @@ struct BackupManager {
         let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
 
         let message = [
-            "type": APIMethod.post.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "id": id,
-            "data": try Crypto.shared.convertToBase64(from: ciphertext)
+            MessageIdentifier.type: APIMethod.post.rawValue,
+            MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970)),
+            MessageIdentifier.id: id,
+            MessageIdentifier.data: try Crypto.shared.convertToBase64(from: ciphertext)
         ]
 
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -69,16 +83,15 @@ struct BackupManager {
         API.shared.request(type: .backup, path: try publicKey(), parameters: parameters, method: .post) { (_, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot backup account data.", error: error)
-//                throw(error)
             }
         }
     }
     
     func deleteAccount(accountId: String) throws {
         let message = [
-            "type": APIMethod.delete.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "id": accountId
+            MessageIdentifier.type: APIMethod.delete.rawValue,
+            MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970)),
+            MessageIdentifier.id: accountId
         ]
 
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -105,8 +118,8 @@ struct BackupManager {
         }
         
         let message = [
-            "type": APIMethod.get.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970))
+            MessageIdentifier.type: APIMethod.get.rawValue,
+            MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
         ]
 
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -142,17 +155,6 @@ struct BackupManager {
         })
     }
     
-    func signMessage(message: String) throws -> String {
-        guard let messageData = message.data(using: .utf8) else {
-            throw KeynError.stringDecoding
-        }
-
-        let signedMessage = try Crypto.shared.sign(message: messageData, privKey: try privateKey())
-        let base64Message = try Crypto.shared.convertToBase64(from: signedMessage)
-
-        return base64Message
-    }
-    
     func signMessage(message: Data) throws -> String {
         let signature = try Crypto.shared.sign(message: message, privKey: try privateKey())
         let base64Signature = try Crypto.shared.convertToBase64(from: signature)
@@ -165,15 +167,6 @@ struct BackupManager {
     }
 
     // MARK: - Private
-
-    private func createEncryptionKey() throws {
-        guard let contextData = "backup".data(using: .utf8) else {
-            throw KeynError.stringDecoding
-        }
-
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
-        try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, secretData: encryptionKey, classification: .secret)
-    }
     
     private func encryptionKey() throws -> Data {
         return try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
@@ -186,8 +179,7 @@ struct BackupManager {
     }
     
     private func privateKey() throws -> Data {
-        let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
-        return privKey
+        return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
     }
     
     private func createSigningKeypair() throws -> String {
@@ -197,9 +189,14 @@ struct BackupManager {
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.publicKey.data)
         return base64PubKey
     }
-
-    private func hasPublicKeyInKeychain() -> Bool {
-        return Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService)
+    
+    private func createEncryptionKey() throws {
+        guard let contextData = "backup".data(using: .utf8) else {
+            throw KeynError.stringDecoding
+        }
+        
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
+        try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, secretData: encryptionKey, classification: .secret)
     }
 
 }
