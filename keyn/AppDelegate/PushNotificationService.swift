@@ -390,4 +390,5 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         return content
     }
+
 }

@@ -28,7 +28,7 @@ struct PPD: Codable {
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) throws {
         API.shared.request(type: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
             if let error = error {
-                Logger.shared.error("PPG retrieval problem.", error: error)
+                Logger.shared.error("PPD retrieval problem.", error: error)
                 return
             }
 

@@ -10,6 +10,7 @@ import UIKit
  */
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
     enum Service {
         case appStartup
         case migration
@@ -89,4 +90,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
     }
+
 }

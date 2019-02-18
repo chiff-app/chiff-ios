@@ -12,6 +12,7 @@ enum CameraError: KeynError {
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+
     @IBOutlet weak var videoView: UIView!
     
     var captureSession: AVCaptureSession?
@@ -108,4 +109,5 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         captureSession.startRunning()
     }
+
 }
