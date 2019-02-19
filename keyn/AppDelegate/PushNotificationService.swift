@@ -44,7 +44,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if browserMessageType == .end {
             do {
-                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                try Session.get(id: sessionID)?.delete(includingQueue: false)
             } catch {
                 Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
@@ -103,7 +103,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         if browserMessageType == .end {
             do {
-                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                try Session.get(id: sessionID)?.delete(includingQueue: false)
                 let nc = NotificationCenter.default
                 nc.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
             } catch {
@@ -171,7 +171,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if browserMessageType == .end {
             do {
-                try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                try Session.get(id: sessionID)?.delete(includingQueue: false)
             } catch {
                 Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
@@ -287,7 +287,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 {
                     if browserMessageType == .end {
                         do {
-                            try Session.getSession(id: sessionID)?.delete(includingQueue: false)
+                            try Session.get(id: sessionID)?.delete(includingQueue: false)
                         } catch {
                             Logger.shared.error("Could not end session.", error: error)
                         }
@@ -331,7 +331,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-
         session.getChangeConfirmations(shortPolling: shortPolling) { (data, error) in
             if let data = data, let messages = data["messages"] as? [[String:String]], messages.count > 0 {
                 for message in messages {
@@ -353,7 +352,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                     session.deleteChangeConfirmation(receiptHandle: receiptHandle)
                     do {
-                        let browserMessage: BrowserMessage = try session.decrypt(message: body)
+                        let browserMessage = try session.decrypt(message: body)
                         if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
                             var account = try Account.get(accountID: accountId)
                             try account?.updatePasswordAfterConfirmation()

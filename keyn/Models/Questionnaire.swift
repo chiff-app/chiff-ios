@@ -172,7 +172,7 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        API.shared.request(type: .questionnaire, path: nil, parameters: nil, method: .get) { (dict, error) in
+        API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get) { (dict, error) in
             if let error = error {
                 Logger.shared.error("Could not get questionnaire.", error: error)
                 return

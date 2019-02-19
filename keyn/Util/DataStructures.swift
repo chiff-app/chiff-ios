@@ -64,3 +64,8 @@ enum CodingError: KeynError {
     case stringDecoding
     case unexpectedData
 }
+
+struct KeyPair {
+    let pubKey: Data
+    let privKey: Data
+}

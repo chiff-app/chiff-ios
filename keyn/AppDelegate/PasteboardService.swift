@@ -27,7 +27,7 @@ class PasteboardService: NSObject, UIApplicationDelegate {
 
         var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
         backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(backgroundTask.rawValue))
+            UIApplication.shared.endBackgroundTask(backgroundTask)
             backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
@@ -37,14 +37,9 @@ class PasteboardService: NSObject, UIApplicationDelegate {
             }
 
             if backgroundTask != UIBackgroundTaskIdentifier.invalid {
-                UIApplication.shared.endBackgroundTask(convertToUIBackgroundTaskIdentifier(backgroundTask.rawValue))
+                UIApplication.shared.endBackgroundTask(backgroundTask)
             }
         }
     }
 
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
 }

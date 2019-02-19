@@ -55,20 +55,29 @@ class Crypto {
         return key.data
     }
 
-    func createSessionKeyPair() throws -> Box.KeyPair {
+    func createSessionKeyPair() throws -> KeyPair {
         guard let keyPair = sodium.box.keyPair() else {
             throw CryptoError.keyGeneration
         }
 
-        return keyPair
+        return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
     
-    func createSigningKeyPair(seed: Data) throws -> Sign.KeyPair {
+    func generateSharedKey(pubKey: String, privKey: Data) throws -> Data {
+        let pubKeyData = try convertFromBase64(from: pubKey)
+        guard let sharedKey = sodium.box.beforenm(recipientPublicKey: pubKeyData.bytes, senderSecretKey: privKey.bytes) else {
+            throw CryptoError.keyDerivation
+        }
+
+        return sharedKey.data
+    }
+
+    func createSigningKeyPair(seed: Data) throws -> KeyPair {
         guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
             throw CryptoError.keyGeneration
         }
 
-        return keyPair
+        return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
 
     func deterministicRandomBytes(seed: Data, length: Int) throws -> Data {
@@ -140,15 +149,15 @@ class Crypto {
     }
 
     // MARK: - Encryption & decryption functions
-    
+
     func encryptSymmetric(_ plaintext: Data, secretKey: Data) throws -> Data {
         guard let ciphertext: Bytes = sodium.secretBox.seal(message: plaintext.bytes, secretKey: secretKey.bytes) else {
             throw CryptoError.encryption
         }
-        
+
         return ciphertext.data
     }
-    
+
     func decryptSymmetric(_ ciphertext: Data, secretKey: Data) throws -> Data {
         guard let plaintext: Bytes = sodium.secretBox.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, secretKey: secretKey.bytes) else {
             throw CryptoError.encryption
@@ -161,7 +170,7 @@ class Crypto {
         guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, recipientPublicKey: pubKey.bytes, senderSecretKey: privKey.bytes) else {
             throw CryptoError.encryption
         }
-    
+
         return ciphertext.data
     }
 
@@ -171,6 +180,23 @@ class Crypto {
         }
 
         return ciphertext.data
+    }
+
+    func encrypt(_ plaintext: Data, key: Data) throws -> Data {
+        guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, beforenm: key.bytes) else {
+            throw CryptoError.encryption
+        }
+
+        return ciphertext.data
+    }
+
+    func decrypt(_ ciphertext: Data, key: Data) throws -> (Data, Data) {
+        let nonce = ciphertext[..<Data.Index(sodium.box.NonceBytes)]
+        guard let plaintext: Bytes = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, beforenm: key.bytes) else {
+            throw CryptoError.decryption
+        }
+
+        return (plaintext.data, nonce)
     }
 
     // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key

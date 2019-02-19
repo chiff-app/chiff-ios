@@ -11,7 +11,7 @@ enum NotificationExtensionError: KeynError {
 
 class NotificationProcessor {
     
-    class func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
+    static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
         guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
             throw NotificationExtensionError.decodeCiphertext
         }
@@ -20,11 +20,11 @@ class NotificationProcessor {
             throw NotificationExtensionError.decodeSessionId
         }
         
-        guard let session = try Session.getSession(id: id) else {
+        guard let session = try Session.get(id: id) else {
             throw SessionError.exists
         }
         
-        let browserMessage: BrowserMessage = try session.decrypt(message: ciphertext)
+        let browserMessage = try session.decrypt(message: ciphertext)
         
         content.userInfo[NotificationContentKey.requestType] = browserMessage.r.rawValue
         

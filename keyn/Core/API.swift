@@ -15,14 +15,17 @@ enum APIError: KeynError {
     case wrongResponseType
 }
 
+// TODO: Nested enum for endpoint possible?
 enum APIEndpoint: String {
     case backup = "backup"
     case ppd = "ppd"
     case analytics = "analytics"
-    case queue = "queue"
     case message = "message"
+    case pairing = "message/pairing"
+    case volatile = "message/volatile"
+    case persistent = "message/persistent"
+    case push = "message/push"
     case questionnaire = "questionnaire"
-    case push = "push"
 }
 
 enum APIMethod: String {
@@ -39,9 +42,9 @@ class API {
     private init() {}
 
     // TODO: Misschien kan dit `typealias JSONDictionary  [String: Any]`?
-    func request(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let request = try createRequest(type: type, path: path, parameters: parameters, method: method)
+            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, method: method)
             send(request, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
@@ -81,11 +84,11 @@ class API {
         task.resume()
     }
 
-    private func createRequest(type: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod) throws -> URLRequest {
+    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.isDebug ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(type.rawValue)"
+        components.path = "/\(Properties.isDebug ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(endpoint.rawValue)"
 
         if let path = path {
             components.path += "/\(path)"

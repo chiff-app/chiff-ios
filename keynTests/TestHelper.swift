@@ -57,7 +57,7 @@ class TestHelper {
     
     static func createSession() {
         do {
-            let _ = try Session.initiate(queueSeed: browserQueueSeed, pubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
+            let _ = try Session.initiate(queueSeed: browserQueueSeed, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
         } catch {
             switch error {
             case SessionError.noEndpoint:
@@ -70,7 +70,7 @@ class TestHelper {
 
     static func encryptAsBrowser(_ message: String, _ sessionID: String) -> String? {
         do {
-            let session = try Session.getSession(id: sessionID)!
+            let session = try Session.get(id: sessionID)!
             let appPublicKey: Data = try session.appPublicKey()
             let messageData = message.data(using: .utf8)!
             let ciphertext = try Crypto.shared.encrypt(messageData, pubKey: appPublicKey, privKey: browserPrivateKey)
