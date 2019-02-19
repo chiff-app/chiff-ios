@@ -19,7 +19,7 @@ class TestHelper {
 
     static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
     static let browserPrivateKey = try! Crypto.shared.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
-    static let browserQueueSeed = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
+    static let pairingQueuePrivKey = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
     static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
     static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
@@ -57,7 +57,7 @@ class TestHelper {
     
     static func createSession() {
         do {
-            let _ = try Session.initiate(queueSeed: browserQueueSeed, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
+            let _ = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
         } catch {
             switch error {
             case SessionError.noEndpoint:
@@ -71,10 +71,9 @@ class TestHelper {
     static func encryptAsBrowser(_ message: String, _ sessionID: String) -> String? {
         do {
             let session = try Session.get(id: sessionID)!
-            let appPublicKey: Data = try session.appPublicKey()
             let messageData = message.data(using: .utf8)!
-            let ciphertext = try Crypto.shared.encrypt(messageData, pubKey: appPublicKey, privKey: browserPrivateKey)
-
+            let sharedKey = try TestHelper.sharedKey(for: session)
+            let ciphertext = try Crypto.shared.encrypt(messageData, key: sharedKey)
             return try Crypto.shared.convertToBase64(from: ciphertext)
         } catch {
             print("Cannot fake browser encryption, tests will fail: \(error)")
@@ -108,6 +107,12 @@ class TestHelper {
         let url = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
         let token = Token(url: url!)
         return token!
+    }
+
+    static func sharedKey(for session: Session) throws -> Data {
+        let id = "\(session.id)-io.keyn.session.shared"
+        let service = "io.keyn.session.shared"
+        return try Keychain.shared.get(id: id, service: service)
     }
 
 }
