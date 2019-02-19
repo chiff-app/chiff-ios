@@ -21,10 +21,13 @@ class TestHelper {
     static let browserPrivateKey = try! Crypto.shared.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
     static let pairingQueuePrivKey = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
     static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
-    static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
+//    static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
+    static let sessionID = browserPublicKeyBase64
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
     static func setUp() {
+        tearDown()
+        tearDownBackupManager()
         createSeed()
     }
 
@@ -57,11 +60,13 @@ class TestHelper {
     
     static func createSession() {
         do {
-            let _ = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
+            let session = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
+            print("Created session with id \(session.id)")
         } catch {
             switch error {
             case SessionError.noEndpoint:
-                print("No endpoint because testing on simulator.")
+                print("Cannot create session. There is no endpoint. Tests will fail.")
+                print(error)
             default:
                 fatalError("Error creating session")
             }
