@@ -33,9 +33,9 @@ class AuthorizationGuard {
     
     func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
         authorizationInProgress = true
-        if let parameters = url.queryParameters, let pubKey = parameters["p"], let queueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
+        if let parameters = url.queryParameters, let pubKey = parameters["p"], let pairingQueuePrivKey = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
-                guard try !Session.exists(encryptionPubKey: pubKey, queueSeed: queueSeed) else {
+                guard try !Session.exists(id: pubKey.hash) else {
                     authorizationInProgress = false
                     throw SessionError.exists
                 }
@@ -46,7 +46,7 @@ class AuthorizationGuard {
             authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
                 if success {
                     do  {
-                        let session = try Session.initiate(queueSeed: queueSeed, pubKey: pubKey, browser: browser, os: os)
+                        let session = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: browser, os: os)
                         self?.authorizationInProgress = false
                         completion(session, nil)
                     } catch {
@@ -89,7 +89,7 @@ class AuthorizationGuard {
     func launchRequestView(with notification: PushNotification) {
         authorizationInProgress = true
         do {
-            if let session = try Session.getSession(id: notification.sessionID) {
+            if let session = try Session.get(id: notification.sessionID) {
                 // TODO: Refactor not notifications
                 let storyboard: UIStoryboard = UIStoryboard.get(.request)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController

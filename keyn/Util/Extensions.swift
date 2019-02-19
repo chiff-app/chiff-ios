@@ -27,6 +27,10 @@ extension String {
         return Crypto.shared.sha256(from: self)
     }
     
+    var fromBase64: Data? {
+        return try? Crypto.shared.convertFromBase64(from: self)
+    }
+
     func components(withLength length: Int) -> [String] {
         return stride(from: 0, to: self.count, by: length).map {
             let start = self.index(self.startIndex, offsetBy: $0)
@@ -95,6 +99,14 @@ extension Data {
         return string
     }
     
+    var hash: Data {
+        return try! Crypto.shared.hash(self)
+    }
+
+    var base64: String {
+        return try! Crypto.shared.convertToBase64(from: self)
+    }
+
     var bytes: Bytes { return Bytes(self) }
 }
 

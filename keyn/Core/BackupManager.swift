@@ -54,7 +54,7 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
         
-        API.shared.request(type: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
+        API.shared.request(endpoint: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot initialize BackupManager.", error: error)
                 completion(false)
@@ -80,7 +80,7 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
 
-        API.shared.request(type: .backup, path: try publicKey(), parameters: parameters, method: .post) { (_, error) in
+        API.shared.request(endpoint: .backup, path: try publicKey(), parameters: parameters, method: .post) { (_, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot backup account data.", error: error)
             }
@@ -100,7 +100,7 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
 
-        API.shared.request(type: .backup, path: try publicKey(), parameters: parameters, method: .delete) { (_, error) in
+        API.shared.request(endpoint: .backup, path: try publicKey(), parameters: parameters, method: .delete) { (_, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot delete account.", error: error)
             }
@@ -128,7 +128,7 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
 
-        API.shared.request(type: .backup, path: pubKey, parameters: parameters, method: .get, completionHandler: { (dict, error) in
+        API.shared.request(endpoint: .backup, path: pubKey, parameters: parameters, method: .get, completionHandler: { (dict, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot get backup data.", error: error)
                 return
@@ -184,9 +184,9 @@ struct BackupManager {
     
     private func createSigningKeypair() throws -> String {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
-        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, secretData: keyPair.publicKey.data, classification: .restricted)
-        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, secretData: keyPair.secretKey.data, classification: .secret)
-        let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.publicKey.data)
+        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, secretData: keyPair.pubKey, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, secretData: keyPair.privKey, classification: .secret)
+        let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
         return base64PubKey
     }
     
