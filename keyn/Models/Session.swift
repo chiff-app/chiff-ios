@@ -152,7 +152,7 @@ class Session: Codable {
 
     static func all() throws -> [Session] {
         var sessions = [Session]()
-        
+
         guard let dataArray = try Keychain.shared.all(service: KeyIdentifier.sharedKey.service) else {
             return sessions
         }
@@ -222,35 +222,45 @@ class Session: Codable {
             throw SessionError.invalid
         }
 
-        guard let deviceEndpoint = AWS.shared.snsDeviceEndpointArn else {
-            throw SessionError.noEndpoint
-        }
-
-        // The creation of volatile and persistent queues as well as the pushmessage endpoint is one atomic operation.
-        session.apiRequestForCreatingQueues(endpoint: .message, method: .put, keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
-            }
-        }
-
-        // op message/pairing
-        let pairingResponse = PairingResponse(sessionID: session.id, pubKey: keyPairForSharedKey.pubKey.base64, deviceEndpoint: deviceEndpoint, userID: Properties.userID())
-        let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
-        let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKeyData)
-        let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
-
-        // Complete pairing process.
-        session.apiRequest(endpoint: .pairing, method: .post, message: ["data": ciphertextBase64], privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Error sending pairing response.", error: error)
-            }
-        }
+        try session.createQueues(signingKeyPair: signingKeyPair)
+        try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
 
         return session
     }
 
     // MARK: - Private
-    
+
+    private func createQueues(signingKeyPair: KeyPair) throws {
+        guard let deviceEndpoint = AWS.shared.snsDeviceEndpointArn else {
+            throw SessionError.noEndpoint
+        }
+
+        // The creation of volatile and persistent queues as well as the pushmessage endpoint is one atomic operation.
+        apiRequestForCreatingQueues(endpoint: .message, method: .put, keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
+            }
+        }
+    }
+
+    private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws {
+        guard let deviceEndpoint = AWS.shared.snsDeviceEndpointArn else {
+            throw SessionError.noEndpoint
+        }
+
+        let pairingResponse = PairingResponse(sessionID: id, pubKey: sharedKeyPubkey, deviceEndpoint: deviceEndpoint, userID: Properties.userID())
+        let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
+        let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
+        let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
+
+        // Complete pairing process.
+        apiRequest(endpoint: .pairing, method: .post, message: ["data": ciphertextBase64], privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Error sending pairing response.", error: error)
+            }
+        }
+    }
+
     private static func purgeSessionDataFromKeychain() {
         Keychain.shared.deleteAll(service: KeyIdentifier.sharedKey.service)
         Keychain.shared.deleteAll(service: KeyIdentifier.signingKeyPair.service)
