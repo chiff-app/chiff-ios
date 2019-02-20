@@ -8,12 +8,12 @@ import Foundation
 struct PairingResponse: Codable {
     let sessionID: String
     let pubKey: String
-    let sns: String
+    let deviceEndpoint: String
     let userID: String
 }
 
 struct BrowserMessage: Codable {
-    let s: String?          // PPDHandle
+    let s: String?       // PPDHandle
     let r: BrowserMessageType
     let b: Int?          // browserTab
     let n: String?       // Site name
@@ -21,6 +21,19 @@ struct BrowserMessage: Codable {
     let p: String?       // Old password
     let u: String?       // Possible username
     let a: String?       // AccountID
+}
+
+enum BrowserMessageType: Int, Codable {
+    case pair
+    case login
+    case register
+    case change
+    case reset
+    case add
+    case addAndChange
+    case end
+    case acknowledge
+    case fill
 }
 
 struct CredentialsResponse: Codable {
@@ -40,19 +53,6 @@ struct PushNotification {
     let currentPassword: String?
     let requestType: BrowserMessageType
     let username: String?
-}
-
-enum BrowserMessageType: Int, Codable {
-    case pair
-    case login
-    case register
-    case change
-    case reset
-    case add
-    case addAndChange
-    case end
-    case acknowledge
-    case fill
 }
 
 enum KeyType: UInt64 {

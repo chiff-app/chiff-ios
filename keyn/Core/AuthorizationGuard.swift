@@ -33,9 +33,9 @@ class AuthorizationGuard {
     
     func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
         authorizationInProgress = true
-        if let parameters = url.queryParameters, let pubKey = parameters["p"], let pairingQueuePrivKey = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
+        if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
-                guard try !Session.exists(id: pubKey.hash) else {
+                guard try !Session.exists(id: browserPubKey.hash) else {
                     authorizationInProgress = false
                     throw SessionError.exists
                 }
@@ -46,7 +46,7 @@ class AuthorizationGuard {
             authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
                 if success {
                     do  {
-                        let session = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: browser, os: os)
+                        let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
                         self?.authorizationInProgress = false
                         completion(session, nil)
                     } catch {

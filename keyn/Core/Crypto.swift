@@ -63,9 +63,8 @@ class Crypto {
         return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
     
-    func generateSharedKey(pubKey: String, privKey: Data) throws -> Data {
-        let pubKeyData = try convertFromBase64(from: pubKey)
-        guard let sharedKey = sodium.box.beforenm(recipientPublicKey: pubKeyData.bytes, senderSecretKey: privKey.bytes) else {
+    func generateSharedKey(pubKey: Data, privKey: Data) throws -> Data {
+        guard let sharedKey = sodium.box.beforenm(recipientPublicKey: pubKey.bytes, senderSecretKey: privKey.bytes) else {
             throw CryptoError.keyDerivation
         }
 
