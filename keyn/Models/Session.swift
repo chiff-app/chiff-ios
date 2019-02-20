@@ -256,7 +256,7 @@ class Session: Codable {
         let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
 
         let message: [String: Any] = [
-            "type": KeynMessageType.pair,
+            "type": KeynMessageType.pair.rawValue,
             "data": ciphertextBase64
         ]
         apiRequest(endpoint: .pairing, method: .post, message: message, privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
@@ -273,7 +273,7 @@ class Session: Codable {
 
     private func sendToVolatileQueue(ciphertext: Data, type: KeynMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
         let message: [String: Any] = [
-            "type": type,
+            "type": type.rawValue,
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
         apiRequest(endpoint: .volatile, method: .post, message: message, completionHandler: completionHandler)
