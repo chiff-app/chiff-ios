@@ -35,20 +35,19 @@ enum MessageType: String {
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 class Session: Codable {
-    let id: String
-    let creationDate: Date
-    let signingPubKey: String
-    let browser: String
-    let os: String
-    // This used to be a UIBackgroundTaskIdentifier, but that gave us vague decoding errors.
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
+    let browser: String
+    let creationDate: Date
+    let id: String
+    let os: String
+    let signingPubKey: String
 
-    init(browser: String, os: String, signingPubKey: Data, id: String) {
+    init(id: String, signingPubKey: Data, browser: String, os: String) {
         self.creationDate = Date()
+        self.id = id
         self.signingPubKey = signingPubKey.base64
         self.browser = browser
         self.os = os
-        self.id = id
     }
 
     func delete(includingQueue: Bool) throws {
@@ -213,7 +212,7 @@ class Session: Codable {
 
         let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
-        let session = Session(browser: browser, os: os, signingPubKey: signingKeyPair.pubKey, id: browserPubKey.hash)
+        let session = Session(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os)
         do {
             try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
         } catch is KeychainError {
