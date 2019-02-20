@@ -30,8 +30,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.requestType] ?? "nada"])
 
-        guard let browserMessageTypeValue = userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
-            Logger.shared.warning("Could not parse browsermessage.")
+        guard let messageTypeValue = userInfo[NotificationContentKey.requestType] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
+            Logger.shared.warning("Could not parse message from browser (unknown message type).")
             completionHandler(UIBackgroundFetchResult.noData)
             return
         }
@@ -42,14 +42,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return
         }
 
-        if browserMessageType == .end {
+        if messageType == .end {
             do {
                 try Session.get(id: sessionID)?.delete(includingQueue: false)
             } catch {
                 Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
         } else {
-            let _ = handleNotification(userInfo: userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+            let _ = handleNotification(userInfo: userInfo, sessionID: sessionID, messageType: messageType)
         }
         completionHandler(UIBackgroundFetchResult.noData)
     }
@@ -90,8 +90,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-        guard let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
-            Logger.shared.warning("Could not parse browsermessage.")
+        guard let messageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
+            Logger.shared.warning("Could not parse message from browser (unknown message type).")
             completionHandler([])
             return
         }
@@ -101,7 +101,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             completionHandler([])
             return
         }
-        if browserMessageType == .end {
+        if messageType == .end {
             do {
                 try Session.get(id: sessionID)?.delete(includingQueue: false)
                 let nc = NotificationCenter.default
@@ -111,7 +111,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             completionHandler([.alert, .sound])
         } else {
-            if handleNotification(userInfo: content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType) {
+            if handleNotification(userInfo: content.userInfo, sessionID: sessionID, messageType: messageType) {
                 completionHandler([.sound])
             } else {
                 completionHandler([])
@@ -157,8 +157,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-        guard let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue) else {
-            Logger.shared.warning("Could not parse browsermessage.")
+        guard let messageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
+            Logger.shared.warning("Could not parse message from browser (unknown message type).")
             completionHandler()
             return
         }
@@ -169,14 +169,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return
         }
 
-        if browserMessageType == .end {
+        if messageType == .end {
             do {
                 try Session.get(id: sessionID)?.delete(includingQueue: false)
             } catch {
                 Logger.shared.error("Could not end session.", error: error, userInfo: nil)
             }
         } else {
-            let _ = handleNotification(userInfo: content.userInfo, sessionID: sessionID, browserMessageType: browserMessageType)
+            let _ = handleNotification(userInfo: content.userInfo, sessionID: sessionID, messageType: messageType)
         }
         completionHandler()
     }
@@ -210,7 +210,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         })
     }
 
-    private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, browserMessageType: BrowserMessageType) -> Bool {
+    private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, messageType: KeynMessageType) -> Bool {
         guard let siteID = userInfo[NotificationContentKey.siteId] as? String else {
             Logger.shared.warning("Wrong siteID type.")
             return false
@@ -232,7 +232,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return false
         }
 
-        AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+        AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: messageType, username: username))
 
         return true
     }
@@ -281,11 +281,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
                 Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
 
-                if let browserMessageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int,
-                    let browserMessageType = BrowserMessageType(rawValue: browserMessageTypeValue),
+                if let messageTypeValue = content.userInfo[NotificationContentKey.requestType] as? Int,
+                    let messageType = KeynMessageType(rawValue: messageTypeValue),
                     let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String
                 {
-                    if browserMessageType == .end {
+                    if messageType == .end {
                         do {
                             try Session.get(id: sessionID)?.delete(includingQueue: false)
                         } catch {
@@ -321,7 +321,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
                         DispatchQueue.main.async {
                             if !AuthorizationGuard.shared.authorizationInProgress {
-                                AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: browserMessageType, username: username))
+                                AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, requestType: messageType, username: username))
                             }
                         }
                     }
@@ -346,7 +346,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                         Logger.shared.error("Could not parse SQS message body.")
                         return
                     }
-                    guard type == BrowserMessageType.acknowledge.rawValue else {
+                    guard type == KeynMessageType.acknowledge.rawValue else {
                         Logger.shared.error("Wrong message type.", userInfo: ["type": type])
                         return
                     }

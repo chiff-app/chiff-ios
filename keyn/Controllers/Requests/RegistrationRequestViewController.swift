@@ -131,14 +131,14 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
 
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
         let newPassword = changePasswordSwitch.isOn
-        var type: BrowserMessageType
+        var type: KeynMessageType
         switch notification!.requestType {
         case .login, .add:
-            type = newPassword ? BrowserMessageType.addAndChange : BrowserMessageType.add
+            type = newPassword ? KeynMessageType.addAndChange : KeynMessageType.add
         case .change:
-            type = newPassword ? BrowserMessageType.change : BrowserMessageType.acknowledge
+            type = newPassword ? KeynMessageType.change : KeynMessageType.acknowledge
         default:
-            type = BrowserMessageType.acknowledge
+            type = KeynMessageType.acknowledge
         }
 
         if let siteName = websiteNameTextField.text, site?.name != siteName {

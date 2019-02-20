@@ -64,11 +64,11 @@ class Session: Codable {
         try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service)
     }
 
-    func decrypt(message: String) throws -> BrowserMessage {
-        let ciphertext = try Crypto.shared.convertFromBase64(from: message)
+    func decrypt(message message64: String) throws -> KeynMessage {
+        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
         let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
-        let browserMessage = try JSONDecoder().decode(BrowserMessage.self, from: data)
-        return browserMessage
+        let message = try JSONDecoder().decode(KeynMessage.self, from: data)
+        return message
     }
 
     func acknowledge(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
@@ -76,14 +76,14 @@ class Session: Codable {
             let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
-            try sendToVolatileQueue(ciphertext: ciphertext, type: BrowserMessageType.acknowledge, completionHandler: completionHandler)
+            try sendToVolatileQueue(ciphertext: ciphertext, type: KeynMessageType.acknowledge, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
     }
 
     // TODO, add request ID etc
-    func sendCredentials(account: Account, browserTab: Int, type: BrowserMessageType) throws {
+    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType) throws {
         var response: CredentialsResponse?
         var account = account
         switch type {
@@ -252,8 +252,11 @@ class Session: Codable {
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
 
-        // Complete pairing process.
-        apiRequest(endpoint: .pairing, method: .post, message: ["data": ciphertextBase64], privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
+        let message: [String: Any] = [
+            "type": KeynMessageType.pair,
+            "data": ciphertextBase64
+        ]
+        apiRequest(endpoint: .pairing, method: .post, message: message, privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
             if let error = error {
                 Logger.shared.error("Error sending pairing response.", error: error)
             }
@@ -265,7 +268,7 @@ class Session: Codable {
         Keychain.shared.deleteAll(service: KeyIdentifier.signingKeyPair.service)
     }
 
-    private func sendToVolatileQueue(ciphertext: Data, type: BrowserMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
+    private func sendToVolatileQueue(ciphertext: Data, type: KeynMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
         let data = try Crypto.shared.convertToBase64(from: ciphertext)
         apiRequest(endpoint: .volatile, method: .post, message: ["data": data], completionHandler: completionHandler)
     }
