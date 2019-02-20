@@ -35,6 +35,7 @@ enum MessageType: String {
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 class Session: Codable {
+
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let browser: String
     let creationDate: Date
@@ -82,12 +83,13 @@ class Session: Codable {
         }
     }
 
-    // TODO, add request ID etc
+    // TODO: Add request ID etc - Wat bedoel je Bas?
     func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType) throws {
         var response: CredentialsResponse?
         var account = account
+
         switch type {
-        case .addAndChange:
+        case .addAndChange: // TODO: Deprecated?
             response = CredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
@@ -113,6 +115,7 @@ class Session: Codable {
 
         let message = try JSONEncoder().encode(response!)
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
+
         try sendToVolatileQueue(ciphertext: ciphertext, type: type) { (_, error) in
             if let error = error {
                 Logger.shared.error("Error sending credentials", error: error)
@@ -269,13 +272,19 @@ class Session: Codable {
     }
 
     private func sendToVolatileQueue(ciphertext: Data, type: KeynMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let data = try Crypto.shared.convertToBase64(from: ciphertext)
-        apiRequest(endpoint: .volatile, method: .post, message: ["data": data], completionHandler: completionHandler)
+        let message: [String: Any] = [
+            "type": type,
+            "data": try Crypto.shared.convertToBase64(from: ciphertext)
+        ]
+        apiRequest(endpoint: .volatile, method: .post, message: message, completionHandler: completionHandler)
     }
 
+    // TODO: Heeft deze een bericht type?
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let data = "Ynll" // Base64 'bye'
-        apiRequest(endpoint: .persistent, method: .post, message: ["data": data]) { (_, error) in
+        let message: [String: Any] = [
+            "data": "Ynll" // Base64 'bye'
+        ]
+        apiRequest(endpoint: .persistent, method: .post, message: message) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot send message to control queue.", error: error)
             }
