@@ -11,7 +11,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
 
-    var type: BrowserMessageType!
+    var type: KeynMessageType!
     var notification: PushNotification!
     var session: Session!
 
@@ -120,7 +120,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // MARK: - Private
     
-    private func authorize(notification: PushNotification, session: Session, accountID: String, type: BrowserMessageType) {
+    private func authorize(notification: PushNotification, session: Session, accountID: String, type: KeynMessageType) {
         AuthorizationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {

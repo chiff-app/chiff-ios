@@ -65,12 +65,12 @@ class AuthorizationGuard {
         }
     }
     
-    func authorizeRequest(siteName: String, accountID: String?, type: BrowserMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
+    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
         let localizedReason = requestText(siteName: siteName, type: type) ?? "\(siteName)"
         authorize(reason: localizedReason, completion: completion)
     }
     
-    func requestText(siteName: String, type: BrowserMessageType, accountExists: Bool = true) -> String? {
+    func requestText(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
         switch type {
         case .login:
             return "\("requests.login_to".localized.capitalized) \(siteName)?"
