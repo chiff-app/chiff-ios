@@ -48,7 +48,7 @@ enum NotificationContentKey {
     static let browserTab = "browserTab"
     static let data = "data"
     static let password = "password"
-    static let requestType = "requestType"
+    static let type = "type"
     static let sessionId = "sessionID"
     static let siteId = "siteID"
     static let siteName = "siteName"

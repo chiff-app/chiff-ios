@@ -108,9 +108,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @IBAction func reject(_ sender: UIButton) {
         if let notification = notification, let session = session {
-            session.acknowledge(browserTab: notification.browserTab) { (_, error) in
+            session.reject(browserTab: notification.browserTab) { (_, error) in
                 if let error = error {
-                    Logger.shared.error("Acknowledge could not be sent.", error: error)
+                    Logger.shared.error("Reject message could not be sent.", error: error)
                 }
             }
         }
@@ -133,7 +133,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     }
                 }
             } else {
-                Logger.shared.analytics("Request denied.", code: .requestDenied, userInfo: ["result": false, "requestType": type.rawValue])
+                Logger.shared.analytics("Request denied.", code: .requestDenied, userInfo: ["result": false, "type": type.rawValue])
                 Logger.shared.debug("TODO: Handle touchID errors.")
             }
         })
