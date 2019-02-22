@@ -139,6 +139,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         })
     }
 
+    // TODO: Refactor when we have more time, accountExists() too.
     private func analyseRequest() {
         if let notification = notification, let session = session {
             do {
@@ -162,8 +163,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     private func accountExists() -> Bool {
-        guard accounts.isEmpty else {
-           return false
+        if accounts.isEmpty {
+            return false
         }
         if let username = notification?.username {
             return accounts.contains { $0.username == username }
