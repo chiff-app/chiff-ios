@@ -93,7 +93,7 @@ class AuthorizationGuard {
                 // TODO: Refactor not notifications
                 let storyboard: UIStoryboard = UIStoryboard.get(.request)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-                viewController.type = notification.requestType
+                viewController.type = notification.type
                 viewController.notification = notification
                 viewController.session = session
                 UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)

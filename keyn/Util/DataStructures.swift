@@ -4,55 +4,74 @@
  */
 import Foundation
 
-// Used by Session
-struct PairingResponse: Codable {
-    let sessionID: String
-    let pubKey: String
-    let deviceEndpoint: String
-    let userID: String
+
+/*
+ * Keyn messages go app <-> browser
+ *
+ * They always have a type so the app/browser can determine course of action.
+ * There is one struct for requests, there are multiple for responses.
+ */
+enum KeynMessageType: Int, Codable {
+    case pair = 0
+    case login = 1
+    case register = 2
+    case change = 3
+    case reset = 4          // Unused
+    case add = 5
+    case addAndChange = 6   // Unused
+    case end = 7
+    case acknowledge = 8
+    case fill = 9
+    case reject = 10
 }
 
-struct KeynMessage: Codable {
-    let s: String?          // PPDHandle
-    let r: KeynMessageType  // One of the message types Keyn understands
+/*
+ * Keyn Requests.
+ *
+ * Direction: browser -> app
+ */
+struct KeynRequest: Codable {
+    let s: String?          // Site id (e.g. PPDHandle)
     let b: Int?             // Browser tab id
     let n: String?          // Site name
     let v: Bool?            // Value for change password confirmation
-    let p: String?          // Old password
-    let u: String?          // Possible username
+    let p: String?          // Password
+    let u: String?          // Username
     let a: String?          // Account id
+    let r: KeynMessageType  // One of the message types Keyn understands
 }
 
-enum KeynMessageType: Int, Codable {
-    case pair
-    case login
-    case register
-    case change
-    case reset
-    case add
-    case addAndChange
-    case end
-    case acknowledge
-    case fill
+/*
+ * Keyn Responses.
+ *
+ * Direction: app -> browser
+ */
+struct KeynPairingResponse: Codable {
+    let sessionID: String
+    let pubKey: String
+    let userID: String
+    let sandboxed: Bool
+    let type: KeynMessageType
 }
 
-struct CredentialsResponse: Codable {
-    let u: String?       // Username
-    let p: String?      // Password
-    let np: String?     // New password (for reset only! When registering p will be set)
-    let b: Int
-    let a: String?      // AccountID. Only used with changePasswordRequests
-    let o: String?      // OTP code
+struct KeynCredentialsResponse: Codable {
+    let u: String?          // Username
+    let p: String?          // Password
+    let np: String?         // New password (for reset only! When registering p will be set)
+    let b: Int              // Browser tab id
+    let a: String?          // Account id (Only used with changePasswordRequests
+    let o: String?          // OTP code
+    let t: KeynMessageType  // One of the message types Keyn understands
 }
 
 struct PushNotification {
-    let sessionID : String
+    let sessionID: String
     let siteID: String
     let siteName: String
     let browserTab: Int
     let currentPassword: String?
-    let requestType: KeynMessageType
     let username: String?
+    let type: KeynMessageType
 }
 
 enum KeyType: UInt64 {

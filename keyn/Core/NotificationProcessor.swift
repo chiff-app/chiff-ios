@@ -26,11 +26,11 @@ class NotificationProcessor {
         
         let browserMessage = try session.decrypt(message: ciphertext)
         
-        content.userInfo[NotificationContentKey.requestType] = browserMessage.r.rawValue
+        content.userInfo[NotificationContentKey.type] = browserMessage.r.rawValue
         
         let siteName = browserMessage.n ?? "Unknown"
         var addSiteInfo = false
-        
+
         switch browserMessage.r {
         case .add:
             content.title = "Add site request"
@@ -42,7 +42,7 @@ class NotificationProcessor {
                 content.userInfo[NotificationContentKey.username] = username
             }
             addSiteInfo = true
-        case.end:
+        case .end:
             content.title = "Session ended"
             content.body = "\(session.browser) on \(session.os)."
         case .change, .addAndChange:
@@ -74,7 +74,7 @@ class NotificationProcessor {
             content.userInfo[NotificationContentKey.siteName] = siteName
             content.userInfo[NotificationContentKey.siteId] = browserMessage.s
             content.userInfo[NotificationContentKey.browserTab] = browserMessage.b
-            content.userInfo[NotificationContentKey.requestType] = browserMessage.r.rawValue
+            content.userInfo[NotificationContentKey.type] = browserMessage.r.rawValue
         }
 
         return content

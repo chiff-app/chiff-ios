@@ -120,9 +120,9 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let notification = notification, let session = session {
-            session.acknowledge(browserTab: notification.browserTab) { (_, error) in
+            session.reject(browserTab: notification.browserTab) { (_, error) in
                 if let error = error {
-                    Logger.shared.error("Acknowledge could not be sent.", error: error)
+                    Logger.shared.error("Reject message could not be sent.", error: error)
                 }
             }
         }
@@ -132,7 +132,8 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
     @IBAction func saveAccount(_ sender: UIBarButtonItem) {
         let newPassword = changePasswordSwitch.isOn
         var type: KeynMessageType
-        switch notification!.requestType {
+
+        switch notification!.type {
         case .login, .add:
             type = newPassword ? KeynMessageType.addAndChange : KeynMessageType.add
         case .change:
@@ -183,7 +184,7 @@ class RegistrationRequestViewController: UITableViewController, UITextFieldDeleg
         if (username.isEmpty || password.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
         } else {
-            if let notification = notification, notification.requestType == .add, let accounts = try? Account.get(siteID: notification.siteID) {
+            if let notification = notification, notification.type == .add, let accounts = try? Account.get(siteID: notification.siteID) {
                 let usernameExists = accounts.contains { (account) -> Bool in
                     account.username == username
                 }

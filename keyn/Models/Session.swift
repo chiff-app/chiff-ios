@@ -65,19 +65,19 @@ class Session: Codable {
         try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service)
     }
 
-    func decrypt(message message64: String) throws -> KeynMessage {
+    func decrypt(message message64: String) throws -> KeynRequest {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
         let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
-        let message = try JSONDecoder().decode(KeynMessage.self, from: data)
+        let message = try JSONDecoder().decode(KeynRequest.self, from: data)
         return message
     }
 
-    func acknowledge(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func reject(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
+            let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .reject)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
-            try sendToVolatileQueue(ciphertext: ciphertext, type: KeynMessageType.acknowledge, completionHandler: completionHandler)
+            try sendToVolatileQueue(ciphertext: ciphertext, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
@@ -85,30 +85,30 @@ class Session: Codable {
 
     // TODO: Add request ID etc - Wat bedoel je Bas?
     func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType) throws {
-        var response: CredentialsResponse?
+        var response: KeynCredentialsResponse?
         var account = account
 
         switch type {
         case .addAndChange: // TODO: Deprecated?
-            response = CredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
+            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .addAndChange)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
-            response = CredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil)
+            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
-            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
+            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
         case .login:
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
-            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword)
+            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
         case .fill:
             Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = CredentialsResponse(u: nil, p: account.password, np: nil, b: browserTab, a: nil, o: nil)
+            response = KeynCredentialsResponse(u: nil, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             // TODO: create new account, set password etc.
-            response = CredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil)
+            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
         case .acknowledge:
-            response = CredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil)
+            response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .acknowledge)
         default:
             throw SessionError.unknownType
         }
@@ -116,7 +116,7 @@ class Session: Codable {
         let message = try JSONEncoder().encode(response!)
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
 
-        try sendToVolatileQueue(ciphertext: ciphertext, type: type) { (_, error) in
+        try sendToVolatileQueue(ciphertext: ciphertext) { (_, error) in
             if let error = error {
                 Logger.shared.error("Error sending credentials", error: error)
             }
@@ -246,17 +246,12 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws {
-        guard let deviceEndpoint = AWS.shared.snsDeviceEndpointArn else {
-            throw SessionError.noEndpoint
-        }
-
-        let pairingResponse = PairingResponse(sessionID: id, pubKey: sharedKeyPubkey, deviceEndpoint: deviceEndpoint, userID: Properties.userID())
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), sandboxed: Properties.isDebug, type: .pair)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
 
-        let message: [String: Any] = [
-            "type": KeynMessageType.pair.rawValue,
+        let message = [
             "data": ciphertextBase64
         ]
         apiRequest(endpoint: .pairing, method: .post, message: message, privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
@@ -271,9 +266,8 @@ class Session: Codable {
         Keychain.shared.deleteAll(service: KeyIdentifier.signingKeyPair.service)
     }
 
-    private func sendToVolatileQueue(ciphertext: Data, type: KeynMessageType, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let message: [String: Any] = [
-            "type": type.rawValue,
+    private func sendToVolatileQueue(ciphertext: Data, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
+        let message = [
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
         apiRequest(endpoint: .volatile, method: .post, message: message, completionHandler: completionHandler)
@@ -281,8 +275,8 @@ class Session: Codable {
 
     // TODO: Heeft deze een bericht type?
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let message: [String: Any] = [
-            "data": "Ynll" // Base64 'bye'
+        let message = [
+            "data": "Ynll" // Base64 'bye' for fun and gezelligheid.
         ]
         apiRequest(endpoint: .persistent, method: .post, message: message) { (_, error) in
             if let error = error {
