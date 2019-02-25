@@ -89,9 +89,9 @@ class Session: Codable {
         var account = account
 
         switch type {
-        case .addAndChange: // TODO: Deprecated?
-            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .addAndChange)
-            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+//        case .addAndChange: // TODO: Deprecated?
+//            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .addAndChange)
+//            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
             response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
@@ -124,7 +124,7 @@ class Session: Codable {
     }
 
     // TODO: This is now different from deleteChangeConfirmation with the signing error, make it the same.
-    func getChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func getPasswordChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
         ]
@@ -139,7 +139,7 @@ class Session: Codable {
         }
     }
 
-    func deleteChangeConfirmation(receiptHandle: String) {
+    func deletePasswordChangeConfirmation(receiptHandle: String) {
         let message = [
             "receiptHandle": receiptHandle
         ]
