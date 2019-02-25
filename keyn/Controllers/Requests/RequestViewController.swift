@@ -6,6 +6,7 @@ import UIKit
 import LocalAuthentication
 
 class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+
     @IBOutlet weak var siteLabel: UILabel!
     @IBOutlet weak var accountPicker: UIPickerView!
     @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
@@ -171,4 +172,5 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         return true
     }
+
 }

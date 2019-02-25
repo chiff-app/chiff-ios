@@ -27,7 +27,7 @@ struct BackupManager {
     }
     
     private enum MessageIdentifier {
-        static let type = "type"
+        static let httpMethod = "httpMethod"
         static let timestamp = "timestamp"
         static let id = "id"
         static let data = "data"
@@ -44,7 +44,7 @@ struct BackupManager {
         let pubKey = try createSigningKeypair()
         
         let message = [
-            MessageIdentifier.type: APIMethod.put.rawValue,
+            MessageIdentifier.httpMethod: APIMethod.put.rawValue,
             MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
         ]
         
@@ -68,7 +68,7 @@ struct BackupManager {
         let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
 
         let message = [
-            MessageIdentifier.type: APIMethod.post.rawValue,
+            MessageIdentifier.httpMethod: APIMethod.post.rawValue,
             MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970)),
             MessageIdentifier.id: id,
             MessageIdentifier.data: try Crypto.shared.convertToBase64(from: ciphertext)
@@ -80,7 +80,10 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
 
-        API.shared.request(endpoint: .backup, path: try publicKey(), parameters: parameters, method: .post) { (_, error) in
+        print(jsonData)
+        print(parameters)
+        API.shared.request(endpoint: .backup, path: try publicKey(), parameters: parameters, method: .post) { (res, error) in
+            print(res)
             if let error = error {
                 Logger.shared.error("BackupManager cannot backup account data.", error: error)
             }
@@ -89,7 +92,7 @@ struct BackupManager {
     
     func deleteAccount(accountId: String) throws {
         let message = [
-            MessageIdentifier.type: APIMethod.delete.rawValue,
+            MessageIdentifier.httpMethod: APIMethod.delete.rawValue,
             MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970)),
             MessageIdentifier.id: accountId
         ]
@@ -118,7 +121,7 @@ struct BackupManager {
         }
         
         let message = [
-            MessageIdentifier.type: APIMethod.get.rawValue,
+            MessageIdentifier.httpMethod: APIMethod.get.rawValue,
             MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
         ]
 

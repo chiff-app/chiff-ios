@@ -11,7 +11,7 @@ import UserNotifications
  */
 class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
-    private let PASSWORD_CONFIRMATION_POLLING_ATTEMPTS = 3
+    private let PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS = 3
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         handlePendingNotifications()
@@ -202,7 +202,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         }).rawValue
 
-        self.pollQueue(attempts: PASSWORD_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, completionHandler: {
+        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, completionHandler: {
             if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
                 let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
                 UIApplication.shared.endBackgroundTask(id)
@@ -331,26 +331,18 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-        session.getChangeConfirmations(shortPolling: shortPolling) { (data, error) in
+        session.getPasswordChangeConfirmations(shortPolling: shortPolling) { (data, error) in
             if let data = data, let messages = data["messages"] as? [[String:String]], messages.count > 0 {
                 for message in messages {
                     guard let body = message[MessageParameter.body] else {
-                        Logger.shared.error("Could not parse SQS message body.")
+                        Logger.shared.error("Could not parse SQS message. The body is missing.")
                         return
                     }
                     guard let receiptHandle = message[MessageParameter.receiptHandle] else {
-                        Logger.shared.error("Could not parse SQS message body.")
+                        Logger.shared.error("Could not parse SQS message. The receiptHandle is missing.")
                         return
                     }
-                    guard let typeString = message[MessageParameter.type], let type = Int(typeString) else {
-                        Logger.shared.error("Could not parse SQS message body.")
-                        return
-                    }
-                    guard type == KeynMessageType.acknowledge.rawValue else {
-                        Logger.shared.error("Wrong message type.", userInfo: ["type": type])
-                        return
-                    }
-                    session.deleteChangeConfirmation(receiptHandle: receiptHandle)
+                    session.deletePasswordChangeConfirmation(receiptHandle: receiptHandle)
                     do {
                         let browserMessage = try session.decrypt(message: body)
                         if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
@@ -365,7 +357,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                 }
             } else if let error = error {
-                Logger.shared.error("Error getting change confirmations", error: error)
+                Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
             } else {
                 if (attempts > 1) {
                     self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
