@@ -151,7 +151,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     // MARK: - Actions
     
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
+        if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
             if let index = filteredAccounts!.index(where: { account.id == $0.id }) {

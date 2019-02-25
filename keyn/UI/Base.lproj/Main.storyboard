@@ -62,8 +62,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Accounts" id="GH4-oP-Nb7">
                         <barButtonItem key="backBarButtonItem" title=" " id="eiC-H9-frL"/>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="add" id="dKl-Nw-1vE">
-                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="dKl-Nw-1vE">
                             <connections>
                                 <segue destination="QBn-BQ-Jis" kind="presentation" identifier="AddAccount" id="Lfw-JU-WkR"/>
                             </connections>
@@ -522,10 +521,10 @@
             </objects>
             <point key="canvasLocation" x="490" y="-863"/>
         </scene>
-        <!--New Account-->
+        <!--Add Account-->
         <scene sceneID="5s6-ha-LyF">
             <objects>
-                <tableViewController id="ndI-SS-mi6" customClass="NewAccountViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Add Account" id="ndI-SS-mi6" customClass="AddAccountViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="NK4-FC-Akv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

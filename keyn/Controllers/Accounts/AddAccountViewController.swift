@@ -4,8 +4,8 @@
  */
 import UIKit
 
-// TODO: Unused..
-class NewAccountViewController: AccountViewController {
+class AddAccountViewController: AccountViewController {
+
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var requirementsView: UIView!
     @IBOutlet var requirementLabels: [UILabel]!
@@ -172,4 +172,5 @@ class NewAccountViewController: AccountViewController {
             }
         }
     }
+
 }
