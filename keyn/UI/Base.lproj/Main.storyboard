@@ -530,7 +530,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="7ks-L0-j3t" userLabel="Requirements">
-                            <rect key="frame" x="0.0" y="400.66666666666674" width="414" height="198"/>
+                            <rect key="frame" x="0.0" y="249.33333333333337" width="414" height="198"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qKW-6i-oLI">
@@ -617,7 +617,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WgG-Sq-8zS">
+                                                        <textField opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WgG-Sq-8zS">
                                                             <rect key="frame" x="89" y="0.0" width="293" height="43.666666666666664"/>
                                                             <nil key="textColor"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -653,7 +653,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F1u-fj-AYi">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F1u-fj-AYi">
                                                             <rect key="frame" x="89" y="0.0" width="285" height="43.666666666666664"/>
                                                             <nil key="textColor"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -689,7 +689,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-R7-kki">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-R7-kki">
                                                             <rect key="frame" x="89" y="0.0" width="285" height="43.666666666666664"/>
                                                             <nil key="textColor"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -726,7 +726,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xAa-5U-3bK">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xAa-5U-3bK">
                                                             <rect key="frame" x="89" y="0.0" width="261" height="43.666666666666664"/>
                                                             <nil key="textColor"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -759,42 +759,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="password" id="48E-YQ-PB8">
-                                <string key="footerTitle">It is recommended to let Keyn generate strong random passwords for you. Only choose a custom password unless absolutely necessary.</string>
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="02X-Xj-mw5">
-                                        <rect key="frame" x="0.0" y="294.66666666666669" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="02X-Xj-mw5" id="Wnq-CI-ysU">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Custom password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ub9-Te-Dzr">
-                                                    <rect key="frame" x="16" y="0.0" width="329" height="43.666666666666664"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="urb-RI-elp">
-                                                    <rect key="frame" x="345" y="6.3333333333333321" width="51" height="30.999999999999996"/>
-                                                    <connections>
-                                                        <action selector="customPasswordSwitch:" destination="ndI-SS-mi6" eventType="valueChanged" id="JE7-1H-wDY"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Ub9-Te-Dzr" firstAttribute="top" secondItem="Wnq-CI-ysU" secondAttribute="top" id="3jw-Mo-1Io"/>
-                                                <constraint firstAttribute="bottom" secondItem="Ub9-Te-Dzr" secondAttribute="bottom" id="4aU-uh-INB"/>
-                                                <constraint firstItem="urb-RI-elp" firstAttribute="leading" secondItem="Ub9-Te-Dzr" secondAttribute="trailing" id="MMD-AK-8Yq"/>
-                                                <constraint firstItem="Ub9-Te-Dzr" firstAttribute="leading" secondItem="Wnq-CI-ysU" secondAttribute="leading" constant="16" id="TNq-AU-AvO"/>
-                                                <constraint firstItem="urb-RI-elp" firstAttribute="leading" secondItem="Ub9-Te-Dzr" secondAttribute="trailing" id="Y8j-bc-Ust"/>
-                                                <constraint firstItem="urb-RI-elp" firstAttribute="centerY" secondItem="Wnq-CI-ysU" secondAttribute="centerY" id="szV-mi-AUW"/>
-                                                <constraint firstAttribute="trailing" secondItem="urb-RI-elp" secondAttribute="trailing" constant="20" symbolic="YES" id="yW9-SZ-Kfu"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="ndI-SS-mi6" id="Eff-TT-nqH"/>
@@ -815,14 +779,14 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="passwordField" destination="xAa-5U-3bK" id="nhh-Vt-2L2"/>
                         <outlet property="requirementLabelsStackView" destination="qKW-6i-oLI" id="mYU-Kb-RYd"/>
                         <outlet property="requirementsView" destination="7ks-L0-j3t" id="5zQ-yn-uY8"/>
                         <outlet property="saveButton" destination="Spf-Be-diS" id="12r-Iv-CMc"/>
-                        <outlet property="showPasswordButton" destination="rKx-px-oo7" id="xxN-TA-SDg"/>
-                        <outlet property="userNameTextField" destination="Omp-R7-kki" id="TFJ-NE-Zlb"/>
-                        <outlet property="userPasswordTextField" destination="xAa-5U-3bK" id="plO-Vo-OMu"/>
-                        <outlet property="websiteNameTextField" destination="WgG-Sq-8zS" id="Rhg-fr-FyZ"/>
-                        <outlet property="websiteURLTextField" destination="F1u-fj-AYi" id="fjE-N1-QKX"/>
+                        <outlet property="showPasswordButton" destination="rKx-px-oo7" id="dZW-Dj-ePK"/>
+                        <outlet property="siteNameField" destination="WgG-Sq-8zS" id="Kuf-cE-bcj"/>
+                        <outlet property="siteURLField" destination="F1u-fj-AYi" id="3mW-0w-NwN"/>
+                        <outlet property="usernameField" destination="Omp-R7-kki" id="tqy-ku-eXe"/>
                         <outletCollection property="requirementLabels" destination="jAz-0i-czw" collectionClass="NSMutableArray" id="xtU-vc-GWV"/>
                         <outletCollection property="requirementLabels" destination="7Hf-8t-MQF" collectionClass="NSMutableArray" id="84j-wa-Hrj"/>
                         <outletCollection property="requirementLabels" destination="PAX-v8-gVe" collectionClass="NSMutableArray" id="tV5-td-bvR"/>

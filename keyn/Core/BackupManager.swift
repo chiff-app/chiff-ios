@@ -80,10 +80,7 @@ struct BackupManager {
             "s": try signMessage(message: jsonData)
         ]
 
-        print(jsonData)
-        print(parameters)
         API.shared.request(endpoint: .backup, path: try publicKey(), parameters: parameters, method: .post) { (res, error) in
-            print(res)
             if let error = error {
                 Logger.shared.error("BackupManager cannot backup account data.", error: error)
             }
