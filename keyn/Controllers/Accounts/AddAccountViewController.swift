@@ -4,22 +4,28 @@
  */
 import UIKit
 
-class AddAccountViewController: AccountViewController {
+class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var requirementsView: UIView!
     @IBOutlet var requirementLabels: [UILabel]!
     @IBOutlet weak var requirementLabelsStackView: UIStackView!
 
-    var passwordIsHidden = true
-    var customPassword = false
-    let ppd: PPD? = nil
-    var passwordValidator: PasswordValidator? = nil
+    @IBOutlet weak var siteNameField: UITextField!
+    @IBOutlet weak var siteURLField: UITextField!
+    @IBOutlet weak var usernameField: UITextField!
+    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var showPasswordButton: UIButton!
+
+    private let ppd: PPD? = nil
+    private var passwordValidator: PasswordValidator? = nil
+    private var passwordIsHidden = true
+    var account: Account?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        for textField in [websiteNameTextField, websiteURLTextField, userNameTextField, userPasswordTextField] {
+        for textField in [siteNameField, siteURLField, usernameField, passwordField] {
             textField?.delegate = self
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
@@ -31,16 +37,9 @@ class AddAccountViewController: AccountViewController {
         updateSaveButtonState()
     }
 
-    @IBAction override func showPassword(_ sender: UIButton) {
+    @IBAction func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
-        
-        let wasFirstResponder = userPasswordTextField.isFirstResponder
-        if wasFirstResponder { userPasswordTextField.resignFirstResponder() }
-        
-        userPasswordTextField.isSecureTextEntry = passwordIsHidden
-        
-        if wasFirstResponder { userPasswordTextField.becomeFirstResponder() }
-        
+        passwordField.isSecureTextEntry = passwordIsHidden
         showPasswordButton.setImage(UIImage(named: passwordIsHidden ? "eye_logo" : "eye_logo_off"), for: .normal)
     }
 
@@ -50,53 +49,14 @@ class AddAccountViewController: AccountViewController {
     
     // MARK: UITextFieldDelegate
 
-    override func textFieldDidEndEditing(_ textField: UITextField) {
-        updateSaveButtonState()
-    }
-    
     @objc func textFieldDidChange(textField: UITextField){
         updateSaveButtonState()
     }
     
     // MARK: - Actions
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0 && indexPath.row == 3) {
-            return customPassword ? UITableViewCell.defaultHeight : 0
-        }
-        return UITableViewCell.defaultHeight
-    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Override copy functionality
-    }
-    
-    @IBAction func customPasswordSwitch(_ sender: UISwitch) {
-        let passwordRowIndex = IndexPath(row: 3, section: 0)
-        let usernameRowIndex = IndexPath(row: 2, section: 0)
-        if sender.isOn {
-            customPassword = true
-            userPasswordTextField.isEnabled = true
-            userPasswordTextField.text = ""
-            if passwordValidator == nil {
-                passwordValidator = PasswordValidator(ppd: ppd)
-            }
-            requirementsView.isHidden = false
-            updatePasswordRequirements(password: userPasswordTextField.text ?? "")
-            tableView.reloadRows(at: [passwordRowIndex], with: .bottom)
-            tableView.reloadSections([1], with: .fade)
-            tableView.reloadData()
-            tableView.cellForRow(at: usernameRowIndex)?.separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
-        } else {
-            customPassword = false
-            tableView.cellForRow(at: usernameRowIndex)?.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            tableView.reloadRows(at: [passwordRowIndex], with: .top)
-            tableView.reloadSections([1], with: .fade)
-            tableView.reloadData()
-            requirementsView.isHidden = true
-            userPasswordTextField.isEnabled = false
-            updateSaveButtonState()
-        }
     }
 
     // MARK: - Navigation
@@ -110,16 +70,15 @@ class AddAccountViewController: AccountViewController {
     
     // MARK: - Private
 
-    // Disable the Save button if one the text fields is empty.
     private func updateSaveButtonState() {
-        let websiteName = websiteNameTextField.text ?? ""
-        let websiteURL = websiteURLTextField.text ?? ""
-        let userName = userNameTextField.text ?? ""
-        let password = userPasswordTextField.text ?? ""
+        let siteName = siteNameField.text ?? ""
+        let siteURL = siteURLField.text ?? ""
+        let username = usernameField.text ?? ""
+        let password = passwordField.text ?? ""
 
         updatePasswordRequirements(password: password)
 
-        if (websiteName.isEmpty || websiteURL.isEmpty || userName.isEmpty || !isValidPassword(password: password)) {
+        if (siteName.isEmpty || siteURL.isEmpty || username.isEmpty || !isValidPassword(password: password)) {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
@@ -127,13 +86,15 @@ class AddAccountViewController: AccountViewController {
     }
 
     private func isValidPassword(password: String) -> Bool {
-        if customPassword {
-            if password.isEmpty { return false }
-            if let passwordValidator = passwordValidator {
-                return passwordValidator.validate(password: password)
-            }
+        if password.isEmpty {
+            return false
         }
-        return true
+        
+        if let passwordValidator = passwordValidator {
+            return passwordValidator.validate(password: password)
+        } else {
+            return true
+        }
     }
 
     // TODO: Fetch correct requirements from PPD and present to user.
@@ -151,9 +112,7 @@ class AddAccountViewController: AccountViewController {
     }
     
     private func createAccount() {
-        if let websiteName = websiteNameTextField.text,
-            let websiteURL = websiteURLTextField.text,
-            let username = userNameTextField.text {
+        if let websiteName = siteNameField.text, let websiteURL = siteURLField.text, let username = usernameField.text, let password = passwordField.text {
 
             // TODO: Where to get site(ID) from if account is manually added?
             //       How to determine password requirements? > Maybe don't allow creation in app.
@@ -164,8 +123,7 @@ class AddAccountViewController: AccountViewController {
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
 
             do {
-                let newAccount = try Account(username: username, site: site, password: customPassword ? userPasswordTextField.text : nil)
-                account = newAccount
+                self.account = try Account(username: username, site: site, password: password) // saves
             } catch {
                 // TODO: Handle errors in UX
                 print("Account could not be saved: \(error)")
