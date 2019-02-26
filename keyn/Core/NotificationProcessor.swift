@@ -15,17 +15,17 @@ class NotificationProcessor {
         guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
             throw NotificationExtensionError.decodeCiphertext
         }
-        
+
         guard let id = content.userInfo[NotificationContentKey.sessionId] as? String else {
             throw NotificationExtensionError.decodeSessionId
         }
-        
+
         guard let session = try Session.get(id: id) else {
             throw SessionError.exists
         }
-        
-        let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)
-        content.userInfo["keynRequest"] = keynRequest
+
+        let keynRequest = try session.decrypt(message: ciphertext)
+        content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
 
         let siteName = keynRequest.siteName ?? "Unknown"
 
