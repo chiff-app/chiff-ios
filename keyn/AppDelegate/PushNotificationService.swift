@@ -213,41 +213,43 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
-        session.getPasswordChangeConfirmations(shortPolling: shortPolling) { (data, error) in
-            if let data = data, let messages = data["messages"] as? [[String:String]], messages.count > 0 {
-                for message in messages {
-                    guard let body = message[MessageParameter.body] else {
-                        Logger.shared.error("Could not parse SQS message. The body is missing.")
-                        return
-                    }
-                    guard let receiptHandle = message[MessageParameter.receiptHandle] else {
-                        Logger.shared.error("Could not parse SQS message. The receiptHandle is missing.")
-                        return
-                    }
-                    session.deletePasswordChangeConfirmation(receiptHandle: receiptHandle)
-                    do {
-                        let keynRequest = try session.decrypt(message: body)
-                        if let result = keynRequest.passwordSuccessfullyChanged, let accountId = keynRequest.accountID, keynRequest.type == .acknowledge, result {
-                            var account = try Account.get(accountID: accountId)
-                            try account?.updatePasswordAfterConfirmation()
-                        }
-                    } catch {
-                        Logger.shared.warning("Could not change password", error: error, userInfo: nil)
-                    }
-                    if let handler = completionHandler {
-                        handler()
-                    }
-                }
-            } else if let error = error {
+        session.getPersistentQueueMessages(shortPolling: shortPolling) { (messages, error) in
+            if let error = error {
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
-            } else {
+                return
+            }
+            guard let messages = messages, !messages.isEmpty else {
                 if (attempts > 1) {
                     self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
                 } else if let handler = completionHandler {
                     handler()
                 }
+                return
+            }
+            do {
+                try messages.filter({ $0.type == .confirm }).forEach({ try self.updatePassword(keynMessage: $0, session: session) })
+                let accountListMessages = messages.filter({ $0.type == .accountList })
+                if accountListMessages.isEmpty {
+                    try session.sendAccountList()
+                }
+            } catch {
+                Logger.shared.warning("Could not send account list", error: error, userInfo: nil)
+            }
+            if let handler = completionHandler {
+                handler()
             }
         }
+    }
+    
+    private func updatePassword(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
+        guard let result = keynMessage.passwordSuccessfullyChanged, let accountId = keynMessage.accountID else  {
+            throw CodingError.missingData
+        }
+        if result {
+            var account = try Account.get(accountID: accountId)
+            try account?.updatePasswordAfterConfirmation()
+        }
+        session.deleteFromPersistentQueue(receiptHandle: keynMessage.receiptHandle)
     }
 
     // DEBUG
