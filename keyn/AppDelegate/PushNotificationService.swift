@@ -149,8 +149,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             content = reprocess(content: notification.request.content)
         }
 
-        guard let keynRequest = content.userInfo["keynRequest"] as? KeynRequest else {
-            Logger.shared.error("Did not receive a (valid) KeynRequest through a push notification.")
+        guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
+            Logger.shared.error("Cannot find a KeynRequest in the push notification.")
+            return ""
+        }
+
+        guard let keynRequest = try? PropertyListDecoder().decode(KeynRequest.self, from: encodedKeynRequest) else {
+            Logger.shared.error("Cannot decode the KeynRequest sent through a push notification.")
             return ""
         }
 
