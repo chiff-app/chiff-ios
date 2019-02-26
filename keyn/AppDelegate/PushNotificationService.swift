@@ -71,6 +71,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Called when a notification is delivered when Keyn app is open in the foreground.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
         let res = handleNotification(notification)
 
         if (res == "only popup") {
@@ -87,7 +88,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     /*
-     * Called when a user clicks on the notification (or selects an option from it) when the app is in the background.
+     * Called whenever the app is opened in the foreground after receiving a notification.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let res = handleNotification(response.notification)
