@@ -31,8 +31,14 @@ class AuthorizationGuard {
         }
     }
     
-    func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?)->()) throws {
+    func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?) -> ()) throws {
+        if authorizationInProgress {
+            Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
+            return
+        }
+
         authorizationInProgress = true
+
         if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
                 guard try !Session.exists(id: browserPubKey.hash) else {
@@ -43,6 +49,7 @@ class AuthorizationGuard {
                 authorizationInProgress = false
                 throw SessionError.invalid
             }
+
             authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
                 if success {
                     do  {
@@ -65,9 +72,18 @@ class AuthorizationGuard {
         }
     }
     
-    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completion: @escaping (_: Bool, _: Error?)->()) {
+    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completion: @escaping (_: Bool, _: Error?) -> ()) {
+        if authorizationInProgress {
+            Logger.shared.debug("authorizeRequest() called while already in the process of authorizing.")
+            return
+        }
+
         let localizedReason = requestText(siteName: siteName, type: type) ?? "\(siteName)"
-        authorize(reason: localizedReason, completion: completion)
+
+        authorize(reason: localizedReason) { (success: Bool, error: Error?) in
+            self.authorizationInProgress = false
+            completion(success, error)
+        }
     }
     
     func requestText(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
@@ -83,11 +99,14 @@ class AuthorizationGuard {
         default:
             return nil
         }
-        
     }
     
     func launchRequestView(with request: KeynRequest) {
-        authorizationInProgress = true
+        if authorizationInProgress {
+            Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
+            return
+        }
+
         do {
             if let sessionID = request.sessionID, let session = try Session.get(id: sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard.get(.request)
@@ -97,18 +116,16 @@ class AuthorizationGuard {
                 viewController.session = session
                 UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
             } else {
-                authorizationInProgress = false
                 Logger.shared.warning("Received request for session that doesn't exist.")
             }
         } catch {
-            authorizationInProgress = false
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
     
     // MARK: - Private functions
     
-    private func authorize(reason: String, completion: @escaping (_: Bool, _: Error?)->()) {
+    private func authorize(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
         let authenticationContext = LAContext()
         var error: NSError?
         
@@ -116,12 +133,12 @@ class AuthorizationGuard {
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }
-        
+
         authenticationContext.evaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
             localizedReason: reason,
             reply: completion
         )
     }
-}
 
+}

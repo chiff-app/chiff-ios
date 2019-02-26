@@ -127,14 +127,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return []
         }
 
-        if !AuthorizationGuard.shared.authorizationInProgress {
-            DispatchQueue.main.async {
-                AuthorizationGuard.shared.launchRequestView(with: keynRequest)
-            }
-            return [.sound]
+        DispatchQueue.main.async {
+            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
         }
 
-        return []
+        return [.sound]
     }
 
     private func handlePendingNotifications() {
