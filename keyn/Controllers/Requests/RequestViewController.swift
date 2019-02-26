@@ -167,6 +167,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 // TODO: Add without site
                 return
             }
+
             AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type, completion: { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
