@@ -20,9 +20,10 @@ enum KeynMessageType: Int, Codable {
     case add = 5
     case addAndChange = 6   // Unused
     case end = 7
-    case acknowledge = 8
+    case confirm = 8
     case fill = 9
     case reject = 10
+    case accountList = 11
 }
 
 /*
@@ -56,16 +57,21 @@ struct KeynRequest: Codable {
     }
 }
 
-//struct PushNotification {
-//    let sessionID: String
-//    let siteID: String
-//    let siteName: String
-//    let siteURL: String
-//    let browserTab: Int
-//    let currentPassword: String?
-//    let username: String?
-//    let type: KeynMessageType
-//}
+struct KeynPersistentQueueMessage: Codable {
+    let accountList: KeynAccountList?
+    let passwordSuccessfullyChanged: Bool?
+    let accountID: String?
+    let type: KeynMessageType
+    var receiptHandle: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accountID = "a"
+        case accountList = "c"
+        case passwordSuccessfullyChanged = "p"
+        case type = "t"
+        case receiptHandle = "r"
+    }
+}
 
 /*
  * Keyn Responses.
@@ -78,6 +84,64 @@ struct KeynPairingResponse: Codable {
     let userID: String
     let sandboxed: Bool
     let type: KeynMessageType
+}
+
+/*
+ * Keyn account list.
+ *
+ * Direction: app -> browser
+ */
+struct KeynAccountList: Codable {
+    let accountList: AccountList
+    let type = KeynMessageType.accountList.rawValue
+    
+    init(accounts: [Account]) throws {
+        guard let accounts = AccountList(accounts: accounts) else {
+            throw CodingError.unexpectedData
+        }
+        self.accountList = accounts
+    }
+    
+    enum AccountList: Codable {
+        case string(String)
+        case list([AccountList])
+        case dictionary([String : AccountList])
+        
+        init?(accounts: [Account]) {
+            self = AccountList.dictionary(Dictionary(grouping: accounts, by: { $0.site.id }).mapValues { (accounts) -> AccountList in
+                return AccountList.dictionary([
+                    "siteName": AccountList.string(accounts[0].site.name),
+                    "accountIds": AccountList.list(accounts.map({ AccountList.string($0.id) }))
+                ])
+            })
+        }
+        
+        // Should catch other errors than DecodingError.typeMismatch
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let value = try? container.decode(String.self) {
+                self = .string(value)
+            } else if let value = try? container.decode([AccountList].self) {
+                self = .list(value)
+            } else if let value = try? container.decode([String : AccountList].self) {
+                self = .dictionary(value)
+            } else {
+                throw CodingError.unexpectedData
+            }
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            switch self {
+                case .string(let string):
+                    try container.encode(string)
+                case .list(let list):
+                    try container.encode(list)
+                case .dictionary(let dictionary):
+                    try container.encode(dictionary)
+            }
+        }
+    }
 }
 
 struct KeynCredentialsResponse: Codable {
@@ -98,6 +162,7 @@ enum CodingError: KeynError {
     case stringEncoding
     case stringDecoding
     case unexpectedData
+    case missingData
 }
 
 struct KeyPair {
