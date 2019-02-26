@@ -22,163 +22,87 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         return true
     }
 
-    // TODO: When does this occur?
+    /*
+     * This function is called when I DONT KNOW.
+     */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.type] ?? "nada"])
     }
 
+    /*
+     * This function is called when I DONT KNOW.
+     * Tells the app that a remote notification arrived that indicates there is data to be fetched.
+     */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.type] ?? "nada"])
+        Logger.shared.debug("PushNotificationDebug: didReceiveRemoteNotification, fetchCompletionHandler", userInfo: ["title": userInfo[NotificationContentKey.type] ?? "nada"])
 
-        guard let messageTypeValue = userInfo[NotificationContentKey.type] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
-            Logger.shared.warning("Could not parse message from browser (unknown message type).")
-            completionHandler(UIBackgroundFetchResult.noData)
-            return
-        }
+//        guard let messageTypeValue = userInfo[NotificationContentKey.type] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
+//            Logger.shared.warning("Could not parse message from browser (unknown message type).")
+//            completionHandler(UIBackgroundFetchResult.noData)
+//            return
+//        }
+//
+//        guard let sessionID = userInfo[NotificationContentKey.sessionId] as? String else {
+//            Logger.shared.warning("Could not parse sessionID.")
+//            completionHandler(UIBackgroundFetchResult.noData)
+//            return
+//        }
+//
+//        guard let keynRequest = userInfo["keynRequest"] as? KeynRequest else {
+//            Logger.shared.error("Did not receive a (valid) KeynRequest through a push notification.")
+//            completionHandler(UIBackgroundFetchResult.noData)
+//            return
+//        }
+//
+//        if messageType == .end {
+//            do {
+//                try Session.get(id: sessionID)?.delete(includingQueue: false)
+//            } catch {
+//                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
+//            }
+//        } else {
+//            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
+//        }
 
-        guard let sessionID = userInfo[NotificationContentKey.sessionId] as? String else {
-            Logger.shared.warning("Could not parse sessionID.")
-            completionHandler(UIBackgroundFetchResult.noData)
-            return
-        }
-
-        if messageType == .end {
-            do {
-                try Session.get(id: sessionID)?.delete(includingQueue: false)
-            } catch {
-                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
-            }
-        } else {
-            let _ = handleNotification(userInfo: userInfo, sessionID: sessionID, messageType: messageType)
-        }
         completionHandler(UIBackgroundFetchResult.noData)
     }
 
-    // Called when a notification is delivered when Keyn app is opened in foreground.
+    /*
+     * Called when a notification is delivered when Keyn app is open in the foreground.
+     */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        Logger.shared.debug("PushNotificationService:userNotificationCenter(.. willPresent ..)")
+        let res = handleNotification(notification)
 
-        guard notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
-            Logger.shared.debug("TODO: Make alert banner")
+        if (res == "only popup") {
             completionHandler([.alert])
             return
-        }
-
-        // DEBUG: Push notifications
-        var originalBody: String?
-        var content: UNNotificationContent
-        var reprocessed = false
-        var error: String?
-        if notification.request.content.userInfo[NotificationContentKey.type] != nil {
-            content = notification.request.content
-            error = content.userInfo["error"] as? String
-        } else {
-            originalBody = notification.request.content.body
-            content = reprocess(content: notification.request.content)
-            error = content.userInfo["error"] as? String
-            reprocessed = true
-        }
-        var userInfo: [String: Any] = [
-            "body": content.body,
-            "reprocessed": reprocessed
-        ]
-        if let error = error {
-            userInfo["error"] = error
-        }
-        if let originalBody = originalBody {
-            userInfo["originalBody"] = originalBody
-        }
-        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
-
-        guard let messageTypeValue = content.userInfo[NotificationContentKey.type] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
-            Logger.shared.warning("Could not parse message from browser (unknown message type).")
-            completionHandler([])
-            return
-        }
-
-        guard let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String else {
-            Logger.shared.warning("Could not parse sessionID.")
-            completionHandler([])
-            return
-        }
-        if messageType == .end {
-            do {
-                try Session.get(id: sessionID)?.delete(includingQueue: false)
-                let nc = NotificationCenter.default
-                nc.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
-            } catch {
-                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
-            }
+        } else if (res == "session ended") {
             completionHandler([.alert, .sound])
-        } else {
-            if handleNotification(userInfo: content.userInfo, sessionID: sessionID, messageType: messageType) {
-                completionHandler([.sound])
-            } else {
-                completionHandler([])
-            }
+            return
+        } else if (res == "request view launched") {
+            completionHandler([.sound])
+        } else { // res == ""
+            completionHandler([])
         }
     }
 
-    // Called when a user selects an option directly from the notification.
+    /*
+     * Called when a user clicks on the notification (or selects an option from it) when the app is in the background.
+     */
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        Logger.shared.debug("PushNotificationService:userNotificationCenter(.. withCompletionHandler ..)")
+        let res = handleNotification(response.notification)
 
-        // TODO: Find out why we cannot pass RequestType in userInfo..
-
-        guard response.notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
-            Logger.shared.debug("TODO: Make alert banner")
+        if (res == "only popup") {
             completionHandler()
             return
-        }
-
-        // DEBUG: Push notifications
-        var originalBody: String?
-        var content: UNNotificationContent
-        var reprocessed = false
-        var error: String?
-        if response.notification.request.content.userInfo[NotificationContentKey.type] != nil {
-            content = response.notification.request.content
-            error = content.userInfo["error"] as? String
-        } else {
-            originalBody = response.notification.request.content.body
-            content = reprocess(content: response.notification.request.content)
-            error = content.userInfo["error"] as? String
-            reprocessed = true
-        }
-        var userInfo: [String: Any] = [
-            "body": content.body,
-            "reprocessed": reprocessed
-        ]
-        if let error = error {
-            userInfo["error"] = error
-        }
-        if let originalBody = originalBody {
-            userInfo["originalBody"] = originalBody
-        }
-        Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
-
-        guard let messageTypeValue = content.userInfo[NotificationContentKey.type] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
-            Logger.shared.warning("Could not parse message from browser (unknown message type).")
+        } else if (res == "session ended") {
             completionHandler()
             return
-        }
-
-        guard let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String else {
-            Logger.shared.warning("Could not parse sessionID.")
+        } else if (res == "request view launched") {
             completionHandler()
-            return
+        } else { // res == ""
+            completionHandler()
         }
-
-        if messageType == .end {
-            do {
-                try Session.get(id: sessionID)?.delete(includingQueue: false)
-            } catch {
-                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
-            }
-        } else {
-            let _ = handleNotification(userInfo: content.userInfo, sessionID: sessionID, messageType: messageType)
-        }
-        completionHandler()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -210,31 +134,56 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         })
     }
 
-    private func handleNotification(userInfo: [AnyHashable: Any], sessionID: String, messageType: KeynMessageType) -> Bool {
-        guard let siteID = userInfo[NotificationContentKey.siteId] as? String else {
-            Logger.shared.warning("Wrong siteID type.")
-            return false
-        }
-        guard let siteName = userInfo[NotificationContentKey.siteName] as? String else {
-            Logger.shared.warning("Wrong siteName type.")
-            return false
-        }
-        guard let browserTab = userInfo[NotificationContentKey.browserTab] as? Int else {
-            Logger.shared.warning("Wrong browserTab type.")
-            return false
-        }
-        guard let currentPassword = userInfo[NotificationContentKey.password] as? String? else {
-            Logger.shared.warning("Wrong currentPassword type.")
-            return false
-        }
-        guard let username = userInfo[NotificationContentKey.username] as? String? else {
-            Logger.shared.warning("Wrong username type.")
-            return false
+    private func handleNotification(_ notification: UNNotification) -> String {
+        if (notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION) {
+            Logger.shared.debug("TODO: Make alert banner to show user a general keyn message.")
+            return "only popup"
         }
 
-        AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, username: username, type: messageType))
+        var content: UNNotificationContent = notification.request.content
 
-        return true
+        if !content.isProcessed() {
+            print(notification.request.content.userInfo)
+            Logger.shared.debug("It seems we need to manually call NotificationProcessor.process().")
+            content = reprocess(content: notification.request.content)
+        }
+
+        guard let keynRequest = content.userInfo["keynRequest"] as? KeynRequest else {
+            Logger.shared.error("Did not receive a (valid) KeynRequest through a push notification.")
+            return ""
+        }
+
+        if keynRequest.type == .end {
+            do {
+                if let sessionID = keynRequest.sessionID {
+                    try Session.get(id: sessionID)?.delete(includingQueue: false)
+                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                }
+            } catch {
+                let error = content.userInfo["error"] as? String
+                Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
+            }
+            return "session ended"
+        }
+
+        if notification.date.timeIntervalSinceNow <= -180.0 {
+            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
+            return ""
+        }
+
+        if notification.request.content.title == "Error" {
+            Logger.shared.warning("iOS notification content parsing failed")
+            return ""
+        }
+
+        if !AuthorizationGuard.shared.authorizationInProgress {
+            DispatchQueue.main.async {
+                AuthorizationGuard.shared.launchRequestView(with: keynRequest)
+            }
+            return "request view launched"
+        }
+
+        return ""
     }
 
     private func handlePendingNotifications() {
@@ -246,85 +195,18 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             Logger.shared.error("Could not get sessions.", error: error)
         }
 
-        let center = UNUserNotificationCenter.current()
-        center.getDeliveredNotifications { (notifications) in
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
             for notification in notifications {
+                let res = self.handleNotification(notification)
 
-                guard notification.request.content.categoryIdentifier != NotificationCategory.KEYN_NOTIFICATION else {
-                    Logger.shared.debug("TODO: Make alert banner")
+                if (res == "only popup") {
                     return
-                }
-
-                // DEBUG: Push notifications
-                var originalBody: String?
-                var content: UNNotificationContent
-                var reprocessed = false
-                var error: String?
-                if notification.request.content.userInfo[NotificationContentKey.type] != nil {
-                    content = notification.request.content
-                    error = content.userInfo["error"] as? String
-                } else {
-                    originalBody = notification.request.content.body
-                    content = self.reprocess(content: notification.request.content)
-                    error = content.userInfo["error"] as? String
-                    reprocessed = true
-                }
-                var userInfo: [String: Any] = [
-                    "body": content.body,
-                    "reprocessed": reprocessed
-                ]
-                if let error = error {
-                    userInfo["error"] = error
-                }
-                if let originalBody = originalBody {
-                    userInfo["originalBody"] = originalBody
-                }
-                Logger.shared.debug("PushNotificationDebug", userInfo: userInfo)
-
-                if let messageTypeValue = content.userInfo[NotificationContentKey.type] as? Int,
-                    let messageType = KeynMessageType(rawValue: messageTypeValue),
-                    let sessionID = content.userInfo[NotificationContentKey.sessionId] as? String
-                {
-                    if messageType == .end {
-                        do {
-                            try Session.get(id: sessionID)?.delete(includingQueue: false)
-                        } catch {
-                            Logger.shared.error("Could not end session.", error: error)
-                        }
-
-                    } else if notification.date.timeIntervalSinceNow > -180.0  {
-
-                        if content.title == "Error" {
-                            Logger.shared.warning("iOS notification content parsing failed")
-                        }
-
-                        guard let siteID = content.userInfo[NotificationContentKey.siteId] as? String else {
-                            Logger.shared.warning("Wrong siteID type.")
-                            return
-                        }
-                        guard let siteName = content.userInfo[NotificationContentKey.siteName] as? String else {
-                            Logger.shared.warning("Wrong siteName type.")
-                            return
-                        }
-                        guard let browserTab = content.userInfo[NotificationContentKey.browserTab] as? Int else {
-                            Logger.shared.warning("Wrong browserTab type.")
-                            return
-                        }
-                        guard let currentPassword = content.userInfo[NotificationContentKey.password] as? String? else {
-                            Logger.shared.warning("Wrong currentPassword type.")
-                            return
-                        }
-                        guard let username = content.userInfo[NotificationContentKey.username] as? String? else {
-                            Logger.shared.warning("Wrong username type.")
-                            return
-                        }
-
-                        DispatchQueue.main.async {
-                            if !AuthorizationGuard.shared.authorizationInProgress {
-                                AuthorizationGuard.shared.launchRequestView(with: PushNotification(sessionID: sessionID, siteID: siteID, siteName: siteName, browserTab: browserTab, currentPassword: currentPassword, username: username, type: messageType))
-                            }
-                        }
-                    }
+                } else if (res == "session ended") {
+                    return
+                } else if (res == "request view launched") {
+                    //
+                } else { // res == ""
+                    return
                 }
             }
         }
@@ -344,8 +226,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                     session.deletePasswordChangeConfirmation(receiptHandle: receiptHandle)
                     do {
-                        let browserMessage = try session.decrypt(message: body)
-                        if let result = browserMessage.v, let accountId = browserMessage.a, browserMessage.r == .acknowledge, result {
+                        let keynRequest = try session.decrypt(message: body)
+                        if let result = keynRequest.passwordSuccessfullyChanged, let accountId = keynRequest.accountID, keynRequest.type == .acknowledge, result {
                             var account = try Account.get(accountID: accountId)
                             try account?.updatePasswordAfterConfirmation()
                         }
@@ -373,6 +255,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         guard let mutableContent = (content.mutableCopy() as? UNMutableNotificationContent) else {
             return content
         }
+
         do {
             return try NotificationProcessor.process(content: mutableContent)
         } catch {

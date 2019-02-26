@@ -41,7 +41,6 @@
 		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
 		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
 		491C485B2024AB2F00397071 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C485A2024AB2F00397071 /* AuthenticationViewController.swift */; };
-		491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */; };
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49214B7E21032EA700C793DE /* NotificationPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0155741E202A562A00F97DA2 /* NotificationPreprocessorTests.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
@@ -234,7 +233,6 @@
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationRequestViewController.swift; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -402,7 +400,6 @@
 			isa = PBXGroup;
 			children = (
 				4919DAF1201261FE0048B060 /* RequestViewController.swift */,
-				491C722E206E4E770047C672 /* RegistrationRequestViewController.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -1122,7 +1119,6 @@
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
-				491C722F206E4E770047C672 /* RegistrationRequestViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,

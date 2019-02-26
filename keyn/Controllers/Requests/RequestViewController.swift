@@ -13,7 +13,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
 
     var type: KeynMessageType!
-    var notification: PushNotification!
+    var request: KeynRequest!
     var session: Session!
 
     private var site: Site?
@@ -48,56 +48,22 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
         let username = NSAttributedString(string: accounts[row].username, attributes: [.foregroundColor : UIColor.white])
         return username
-    }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if segue.identifier == "RegistrationRequestSegue", let destinationController = (segue.destination.contents) as? RegistrationRequestViewController {
-            destinationController.site = site
-            destinationController.session = session
-            destinationController.notification = notification
-        }
-    }
-
-    @IBAction func unwindToRequestViewController(sender: UIStoryboardSegue) {
-        self.dismiss(animated: false, completion: nil)
-        AuthorizationGuard.shared.authorizationInProgress = false
     }
 
     // MARK: - Actions
 
     @IBAction func accept(_ sender: UIButton) {
-        if let notification = notification, let session = session, let type = type {
+        if let request = request, let session = session, let type = type {
             do {
                 switch type {
                 case .add:
-                    try Site.get(id: notification.siteID, completion: { (site) in
-                        self.site = site
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
-                        }
-                    })
+                    try self.acceptAddRequest(request: request, session: session) // WIP HERE
                 case .login, .change, .fill:
-                    if accounts.count == 0 {
-                        try Site.get(id: notification.siteID, completion: { (site) in
-                            self.site = site
-                            DispatchQueue.main.async {
-                                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
-                            }
-                        })
-                    } else if accounts.count == 1 {
-                        authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
-                    } else {
-                        let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
-                        authorize(notification: notification, session: session, accountID: accountID, type: type)
-                    }
+                    try self.acceptLoginChangeOrFillRequest()
                 case .register:
-                    Logger.shared.debug("TODO: Fix register requests")
+                    self.acceptRegisterRequest()
                 default:
                     Logger.shared.warning("Unknown request type received.")
                 }
@@ -108,8 +74,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func reject(_ sender: UIButton) {
-        if let notification = notification, let session = session {
-            session.reject(browserTab: notification.browserTab) { (_, error) in
+        if let request = request, let session = session, let browserTab = request.browserTab {
+            session.reject(browserTab: browserTab) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Reject message could not be sent.", error: error)
                 }
@@ -120,14 +86,19 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     // MARK: - Private
-    
-    private func authorize(notification: PushNotification, session: Session, accountID: String, type: KeynMessageType) {
-        AuthorizationGuard.shared.authorizeRequest(siteName: notification.siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
+
+    private func authorize(request: KeynRequest, session: Session, accountID: String, type: KeynMessageType) {
+        guard let siteName = request.siteName, let browserTab = request.browserTab else {
+            // TODO?: What now
+            return
+        }
+
+        AuthorizationGuard.shared.authorizeRequest(siteName: siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
                     do {
                         let account = try Account.get(accountID: accountID)
-                        try session.sendCredentials(account: account!, browserTab: notification.browserTab, type: type)
+                        try session.sendCredentials(account: account!, browserTab: browserTab, type: type)
                         self?.dismiss(animated: true, completion: nil)
                     } catch {
                         Logger.shared.error("Error authorizing request", error: error)
@@ -142,9 +113,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     // TODO: Refactor when we have more time, accountExists() too.
     private func analyseRequest() {
-        if let notification = notification, let session = session {
+        if let request = request, let session = session, let siteID = request.siteID {
             do {
-                accounts = try Account.get(siteID: notification.siteID)
+                accounts = try Account.get(siteID: siteID)
                 if !accountExists() {
                     type = .add
                 } else if accounts.count > 1 {
@@ -152,10 +123,10 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
                 } else if accounts.count == 1 {
                     if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.shared.hasFaceID() {
-                        authorize(notification: notification, session: session, accountID: accounts.first!.id, type: type)
+                        authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
-                siteLabel.text = AuthorizationGuard.shared.requestText(siteName: notification.siteName, type: type, accountExists: accountExists())
+                siteLabel.text = AuthorizationGuard.shared.requestText(siteName: request.siteName ?? "", type: type, accountExists: accountExists())
             } catch {
                 Logger.shared.error("Could not get account.", error: error)
                 self.dismiss(animated: true, completion: nil)
@@ -167,10 +138,76 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if accounts.isEmpty {
             return false
         }
-        if let username = notification?.username {
+        if let username = request?.username {
             return accounts.contains { $0.username == username }
         }
         return true
     }
 
+    private func acceptAddRequest(request: KeynRequest, session: Session) throws {
+        guard let browserTab = request.browserTab else {
+            Logger.shared.error("Cannot accept the add site request because there is no browserTab to send the reply back to.")
+            return
+        }
+        guard let siteID = request.siteID else {
+            Logger.shared.error("Cannot accept the add site request because there is no site ID.")
+            return
+        }
+        guard let password = request.password else {
+            Logger.shared.error("Cannot accept the add site request because there is no password.")
+            return
+        }
+        guard let username = request.username else {
+            Logger.shared.error("Cannot accept the add site request because there is no username.")
+            return
+        }
+
+        try Site.get(id: siteID, completion: { (site) in
+            guard let site = site else {
+                // TODO: Add without site
+                return
+            }
+            AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type, completion: { [weak self] (succes, error) in
+                if (succes) {
+                    DispatchQueue.main.async {
+                        do {
+                            let account = try Account(username: username, site: site, password: password)
+                            try session.sendCredentials(account: account, browserTab: browserTab, type: request.type)
+                            NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                        } catch {
+                            // TODO: Handle errors in UX
+                            Logger.shared.error("Account could not be saved.", error: error)
+                        }
+                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+                    }
+                } else {
+                    Logger.shared.debug("TODO: Fix touchID errors.")
+                }
+            })
+        })
+    }
+
+    private func acceptLoginChangeOrFillRequest() throws {
+        if accounts.count == 0 {
+            guard let siteID = request.siteID else {
+                // TODO WHAT NOW - throw...
+                return
+            }
+            try Site.get(id: siteID, completion: { (site) in
+                self.site = site
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+                }
+            })
+        } else if accounts.count == 1 {
+            authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
+        } else {
+            let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
+            authorize(request: request, session: session, accountID: accountID, type: type)
+        }
+    }
+
+    private func acceptRegisterRequest() {
+        Logger.shared.debug("TODO: Fix register requests")
+    }
 }

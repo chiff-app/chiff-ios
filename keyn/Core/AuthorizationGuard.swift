@@ -86,15 +86,14 @@ class AuthorizationGuard {
         
     }
     
-    func launchRequestView(with notification: PushNotification) {
+    func launchRequestView(with request: KeynRequest) {
         authorizationInProgress = true
         do {
-            if let session = try Session.get(id: notification.sessionID) {
-                // TODO: Refactor not notifications
+            if let sessionID = request.sessionID, let session = try Session.get(id: sessionID) {
                 let storyboard: UIStoryboard = UIStoryboard.get(.request)
                 let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-                viewController.type = notification.type
-                viewController.notification = notification
+                viewController.type = request.type
+                viewController.request = request
                 viewController.session = session
                 UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
             } else {

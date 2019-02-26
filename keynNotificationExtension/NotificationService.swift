@@ -4,25 +4,26 @@
  */
 import UserNotifications
 
-
 class NotificationService: UNNotificationServiceExtension {
+
     var contentHandler: ((UNNotificationContent) -> Void)?
     var content: UNMutableNotificationContent?
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        
+
         guard let content = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
             contentHandler(request.content)
             return
         }
+
         do {
-            let processContent = try NotificationProcessor.process(content: content)
-            contentHandler(processContent)
+            let processedContent = try NotificationProcessor.process(content: content)
+            contentHandler(processedContent)
         } catch {
             content.userInfo["error"] = error.localizedDescription
+            contentHandler(content)
         }
-        contentHandler(content)
     }
     
     // Called just before the extension will be terminated by the system.
@@ -34,4 +35,5 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(content)
         }
     }
+
 }

@@ -68,7 +68,8 @@ class Session: Codable {
     func decrypt(message message64: String) throws -> KeynRequest {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
         let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
-        let message = try JSONDecoder().decode(KeynRequest.self, from: data)
+        var message = try JSONDecoder().decode(KeynRequest.self, from: data)
+        message.sessionID = id
         return message
     }
 

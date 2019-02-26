@@ -31,15 +31,41 @@ enum KeynMessageType: Int, Codable {
  * Direction: browser -> app
  */
 struct KeynRequest: Codable {
-    let s: String?          // Site id (e.g. PPDHandle)
-    let b: Int?             // Browser tab id
-    let n: String?          // Site name
-    let v: Bool?            // Value for change password confirmation
-    let p: String?          // Password
-    let u: String?          // Username
-    let a: String?          // Account id
-    let r: KeynMessageType  // One of the message types Keyn understands
+    let accountID: String?
+    let browserTab: Int?
+    let password: String?
+    let passwordSuccessfullyChanged: Bool?
+    var sessionID: String?
+    let siteID: String?
+    let siteName: String?
+    let siteURL: String?
+    let type: KeynMessageType
+    let username: String?
+
+    enum CodingKeys: String, CodingKey {
+        case accountID = "a"
+        case browserTab = "b"
+        case password = "p"
+        case passwordSuccessfullyChanged = "v"
+        case sessionID = "i"
+        case siteID = "s"
+        case siteName = "n"
+        case siteURL = "l"
+        case type = "r"
+        case username = "u"
+    }
 }
+
+//struct PushNotification {
+//    let sessionID: String
+//    let siteID: String
+//    let siteName: String
+//    let siteURL: String
+//    let browserTab: Int
+//    let currentPassword: String?
+//    let username: String?
+//    let type: KeynMessageType
+//}
 
 /*
  * Keyn Responses.
@@ -62,16 +88,6 @@ struct KeynCredentialsResponse: Codable {
     let a: String?          // Account id (Only used with changePasswordRequests
     let o: String?          // OTP code
     let t: KeynMessageType  // One of the message types Keyn understands
-}
-
-struct PushNotification {
-    let sessionID: String
-    let siteID: String
-    let siteName: String
-    let browserTab: Int
-    let currentPassword: String?
-    let username: String?
-    let type: KeynMessageType
 }
 
 enum KeyType: UInt64 {

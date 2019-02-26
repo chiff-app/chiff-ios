@@ -4,6 +4,11 @@
  */
 import UIKit
 
+/*
+ * TODO:
+ * - Add breached accounts information
+ * - Add MFA QR-code scan
+ */
 class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
