@@ -35,7 +35,7 @@ class AuthenticationGuard {
             }
 
             if let visibleViewController = UIApplication.shared.visibleViewController {
-                guard !(visibleViewController is RequestViewController) && !(visibleViewController is RegistrationRequestViewController) else {
+                guard !(visibleViewController is RequestViewController) else {
                     return
                 }
             }

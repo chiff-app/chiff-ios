@@ -4,6 +4,7 @@
  */
 import UIKit
 import Sodium
+import UserNotifications
 
 // MARK: - Primitive extensions
 
@@ -256,4 +257,10 @@ extension UIImage {
 
 extension UITableViewCell {
     static let defaultHeight: CGFloat = 44
+}
+
+extension UNNotificationContent {
+    func isProcessed() -> Bool {
+        return userInfo[NotificationContentKey.type] != nil
+    }
 }
