@@ -51,18 +51,15 @@ class AuthorizationGuard {
             }
 
             authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
+                self?.authorizationInProgress = false
                 if success {
                     do  {
                         let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
-                        self?.authorizationInProgress = false
                         completion(session, nil)
                     } catch {
-                        self?.authorizationInProgress = false
                         completion(nil, error)
                     }
-//                    self?.unlock() // Why is here?
                 } else if let error = error {
-                    self?.authorizationInProgress = false
                     completion(nil, error)
                 }
             }
