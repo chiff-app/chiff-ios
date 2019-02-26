@@ -23,87 +23,28 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     /*
-     * This function is called when I DONT KNOW.
-     */
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        Logger.shared.debug("PushNotificationDebug", userInfo: ["title": userInfo[NotificationContentKey.type] ?? "nada"])
-    }
-
-    /*
-     * This function is called when I DONT KNOW.
      * Tells the app that a remote notification arrived that indicates there is data to be fetched.
+     * Called when we set "content-available": 1
+     * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Logger.shared.debug("PushNotificationDebug: didReceiveRemoteNotification, fetchCompletionHandler", userInfo: ["title": userInfo[NotificationContentKey.type] ?? "nada"])
-
-//        guard let messageTypeValue = userInfo[NotificationContentKey.type] as? Int, let messageType = KeynMessageType(rawValue: messageTypeValue) else {
-//            Logger.shared.warning("Could not parse message from browser (unknown message type).")
-//            completionHandler(UIBackgroundFetchResult.noData)
-//            return
-//        }
-//
-//        guard let sessionID = userInfo[NotificationContentKey.sessionId] as? String else {
-//            Logger.shared.warning("Could not parse sessionID.")
-//            completionHandler(UIBackgroundFetchResult.noData)
-//            return
-//        }
-//
-//        guard let keynRequest = userInfo["keynRequest"] as? KeynRequest else {
-//            Logger.shared.error("Did not receive a (valid) KeynRequest through a push notification.")
-//            completionHandler(UIBackgroundFetchResult.noData)
-//            return
-//        }
-//
-//        if messageType == .end {
-//            do {
-//                try Session.get(id: sessionID)?.delete(includingQueue: false)
-//            } catch {
-//                Logger.shared.error("Could not end session.", error: error, userInfo: nil)
-//            }
-//        } else {
-//            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
-//        }
-
         completionHandler(UIBackgroundFetchResult.noData)
     }
 
     /*
-     * Called when a notification is delivered when Keyn app is open in the foreground.
+     * Called whenever the app is in the foreground and notification comes in.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-        let res = handleNotification(notification)
-
-        if (res == "only popup") {
-            completionHandler([.alert])
-            return
-        } else if (res == "session ended") {
-            completionHandler([.alert, .sound])
-            return
-        } else if (res == "request view launched") {
-            completionHandler([.sound])
-        } else { // res == ""
-            completionHandler([])
-        }
+        let presentationOptions = handleNotification(notification)
+        completionHandler(presentationOptions)
     }
 
     /*
-     * Called whenever the app is opened in the foreground after receiving a notification.
+     * Called whenever the app is opened by clicking on a notification.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let res = handleNotification(response.notification)
-
-        if (res == "only popup") {
-            completionHandler()
-            return
-        } else if (res == "session ended") {
-            completionHandler()
-            return
-        } else if (res == "request view launched") {
-            completionHandler()
-        } else { // res == ""
-            completionHandler()
-        }
+        let _ = handleNotification(response.notification)
+        completionHandler()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -135,28 +76,32 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         })
     }
 
-    private func handleNotification(_ notification: UNNotification) -> String {
+    /*
+     * Parses the push notification then ends session or presents the requestview.
+     *
+     * Only one calling function actually uses the returned presentation options.
+     */
+    private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
         if (notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION) {
             Logger.shared.debug("TODO: Make alert banner to show user a general keyn message.")
-            return "only popup"
+            return [.alert]
         }
 
         var content: UNNotificationContent = notification.request.content
 
         if !content.isProcessed() {
-            print(notification.request.content.userInfo)
-            Logger.shared.debug("It seems we need to manually call NotificationProcessor.process().")
+            Logger.shared.warning("It seems we need to manually call NotificationProcessor.process().")
             content = reprocess(content: notification.request.content)
         }
 
         guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
             Logger.shared.error("Cannot find a KeynRequest in the push notification.")
-            return ""
+            return []
         }
 
         guard let keynRequest = try? PropertyListDecoder().decode(KeynRequest.self, from: encodedKeynRequest) else {
             Logger.shared.error("Cannot decode the KeynRequest sent through a push notification.")
-            return ""
+            return []
         }
 
         if keynRequest.type == .end {
@@ -169,27 +114,27 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 let error = content.userInfo["error"] as? String
                 Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
             }
-            return "session ended"
+            return [.alert, .sound]
         }
 
         if notification.date.timeIntervalSinceNow <= -180.0 {
             Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
-            return ""
+            return []
         }
 
         if notification.request.content.title == "Error" {
             Logger.shared.warning("iOS notification content parsing failed")
-            return ""
+            return []
         }
 
         if !AuthorizationGuard.shared.authorizationInProgress {
             DispatchQueue.main.async {
                 AuthorizationGuard.shared.launchRequestView(with: keynRequest)
             }
-            return "request view launched"
+            return [.sound]
         }
 
-        return ""
+        return []
     }
 
     private func handlePendingNotifications() {
@@ -203,17 +148,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
             for notification in notifications {
-                let res = self.handleNotification(notification)
-
-                if (res == "only popup") {
-                    return
-                } else if (res == "session ended") {
-                    return
-                } else if (res == "request view launched") {
-                    //
-                } else { // res == ""
-                    return
-                }
+                let _ = self.handleNotification(notification)
             }
         }
     }
