@@ -7,6 +7,7 @@ import XCTest
 @testable import keyn
 
 class SessionTests: XCTestCase {
+
     override func setUp() {
         super.setUp()
     }
@@ -19,32 +20,32 @@ class SessionTests: XCTestCase {
     // init
 
     func testInitValidSessionDoesntThrow() {
-        let pairingQueuePrivKey = "q9ZJ9pCc6rBRCLkeujpGUzNNI0lzXnBVXKt4PYspOjE" // MesssageQueuePubKey: GdfCq4cmtUGqRVQUbpjEjOX4a4towe0t5LtV5FWyuYw. Queue is created for testing.
-        let pubKey = "97prXmJaSDLrNlt4tljlgaih6OJ-IBW6r6uknz7X-Tk"
+//        let pairingQueuePrivKey = "q9ZJ9pCc6rBRCLkeujpGUzNNI0lzXnBVXKt4PYspOjE" // MesssageQueuePubKey: GdfCq4cmtUGqRVQUbpjEjOX4a4towe0t5LtV5FWyuYw. Queue is created for testing.
+//        let pubKey = "97prXmJaSDLrNlt4tljlgaih6OJ-IBW6r6uknz7X-Tk"
         XCTAssertThrowsError(
-        try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
+        try Session.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: "Chrome", os: "MacOS")) { error in
             XCTAssertEqual(error as? SessionError, SessionError.noEndpoint)
         }
     }
 
     func testInitWithInvalidBrowserPublicKeyThrows() {
-        let pairingQueuePrivKey = "6OciTGA2VLCSOTmQyKf8HLd_JXFCtgpBUy6YT2DcEvE"
+//        let pairingQueuePrivKey = "6OciTGA2VLCSOTmQyKf8HLd_JXFCtgpBUy6YT2DcEvE"
         let pubKey = "joe"//"BdPWy3VOU1JwrNZpbLv_h88DRc0g1BZ_IMTbgyYXEmi"
         XCTAssertThrowsError(
-        try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
+        try Session.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
             print(error)
         }
     }
 
     func testInitShouldThrowWhenSessionAlreadyPresent() {
-        let pairingQueuePrivKey = "v39jwPlUChbQi9NNNyriRxApHfdciCvmVdJSEuwiu3E"
+        let pairingQueueSeed = "v39jwPlUChbQi9NNNyriRxApHfdciCvmVdJSEuwiu3E"
         let pubKey = "fEcOKBCrOXBus1lmfoemGcLSX-TwePKZWZ6BIWAT1Xc"
         XCTAssertThrowsError(
-        try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
+        try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
             XCTAssertEqual(error as? SessionError, SessionError.noEndpoint)
         }
         XCTAssertThrowsError(
-        try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
+        try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: pubKey, browser: "Chrome", os: "MacOS")) { error in
             XCTAssertEqual(error as? SessionError, SessionError.exists)
         }
     }
@@ -124,4 +125,5 @@ class SessionTests: XCTestCase {
     func testDeleteAll() {
         
     }
+
 }
