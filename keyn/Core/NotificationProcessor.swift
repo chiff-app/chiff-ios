@@ -9,6 +9,10 @@ enum NotificationExtensionError: KeynError {
     case decodeSessionId
 }
 
+/*
+ * This class does processes push notifications before they appear to the user.
+ * It gets called from the KeynNotificationExtension.
+ */
 class NotificationProcessor {
 
     static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
@@ -21,7 +25,7 @@ class NotificationProcessor {
         }
 
         guard let session = try Session.get(id: id) else {
-            throw SessionError.exists
+            throw SessionError.doesntExist
         }
 
         let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)

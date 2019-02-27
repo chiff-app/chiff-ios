@@ -166,7 +166,7 @@ struct Account: Codable {
 
     // MARK: - Static
 
-    #warning("TODO: Can be optimized.")
+    #warning("TODO: Can be optimized")
     static func get(siteID: String) throws -> [Account] {
         let accounts = try Account.all()
 
