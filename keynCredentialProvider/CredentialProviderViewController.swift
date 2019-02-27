@@ -5,7 +5,6 @@
 import AuthenticationServices
 import LocalAuthentication
 
-
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
@@ -15,7 +14,9 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
+
         do {
             let savedAccounts = try Account.all()
             unfilteredAccounts.append(contentsOf: savedAccounts)
@@ -40,6 +41,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         if let navigationView = navigationController?.view {
             fixShadowImage(inView: navigationView)
         }
@@ -59,6 +61,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
                 line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             }
         }
+
         for subview in view.subviews {
             fixShadowImage(inView: subview)
         }
@@ -86,6 +89,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
                 first.site.name < second.site.name
             })
         }
+
         tableView.reloadData()
     }
     
@@ -95,6 +99,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         guard let accounts = filteredAccounts else {
             return 0
         }
+
         return accounts.count
     }
 
@@ -106,6 +111,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
             cell.textLabel?.text = account.site.name
             cell.detailTextLabel?.text = account.username
         }
+
         return cell
     }
     
@@ -114,7 +120,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
             guard let password = account.password else {
-                // TODO: Hey Bas, hoe doen we dat hier zonder password?
+                #warning("TODO: What to do when there is no password?")
                 return
             }
 

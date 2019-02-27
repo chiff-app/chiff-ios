@@ -7,7 +7,8 @@ import Foundation
 class PasswordValidator {
 
     static let FALLBACK_PASSWORD_LENGTH = 22
-    static let MIN_PASSWORD_LENGTH_BOUND = 8 // TODO: What is sensible value for this?
+    #warning("TODO: Find a value for the default minimum password length.")
+    static let MIN_PASSWORD_LENGTH_BOUND = 8
     static let MAX_PASSWORD_LENGTH_BOUND = 50
     static let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
     let ppd: PPD?
@@ -16,6 +17,7 @@ class PasswordValidator {
 
     init(ppd: PPD?) {
         self.ppd = ppd
+
         if let characterSets = ppd?.characterSets {
             for characterSet in characterSets {
                 if let characters = characterSet.characters {
@@ -23,7 +25,10 @@ class PasswordValidator {
                 }
                 characterSetDictionary[characterSet.name] = characterSet.characters
             }
-        } else { characters += PasswordValidator.OPTIMAL_CHARACTER_SET } // PPD doesn't contain characterSets. That shouldn't be right. TODO: Check with XSD if characterSet can be null..
+        } else {
+            #warning("TODO: PPD doesn't contain characterSets. That shouldn't be right. Check with XSD if characterSet can be null.")
+            characters += PasswordValidator.OPTIMAL_CHARACTER_SET
+        }
     }
 
     func validate(password: String) -> Bool {
@@ -65,7 +70,7 @@ class PasswordValidator {
         return password.count >= minLength
     }
 
-    // TODO: To what characterSet should we validate a custom password without a PPD? Now optimal characterSet (see init)
+    #warning("TODO: To what characterSet should we validate a custom password without a PPD? Now optimal characterSet (see init)")
     func validateCharacters(password: String) -> Bool {
         for char in password {
             guard characters.contains(char) else {
@@ -127,6 +132,7 @@ class PasswordValidator {
         let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying HIBP", error: error!)

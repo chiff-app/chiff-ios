@@ -15,7 +15,6 @@ enum APIError: KeynError {
     case wrongResponseType
 }
 
-// TODO: Nested enum for endpoint possible?
 enum APIEndpoint: String {
     case backup = "backup"
     case ppd = "ppd"
@@ -41,7 +40,6 @@ class API {
 
     private init() {}
 
-    // TODO: Misschien kan dit `typealias JSONDictionary  [String: Any]`?
     func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
             let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, method: method)

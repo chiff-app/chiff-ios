@@ -12,6 +12,7 @@ protocol canAddOTPCode {
 }
 
 class AccountViewController: UITableViewController, UITextFieldDelegate, canAddOTPCode {
+
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
@@ -48,8 +49,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             userNameTextField.delegate = self
             userPasswordTextField.delegate = self
         } catch {
-            // TODO: Present error to user?
-            Logger.shared.error("Could not get password.", error: error)
+            #warning("TODO: Show the user that there was an error retrieving the OTP token.")
+            Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
         navigationItem.title = account.site.name
         navigationItem.largeTitleDisplayMode = .never
@@ -321,13 +322,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         self.token = token
         updateOTPUI()
     }
+
 }
 
-// TODO: Frank: Shouldn't this be inner class of controller?
 class LoadingCircle: UIView {
+
     var backgroundLayer: CAShapeLayer!
     var circleLayer: CAShapeLayer!
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         let radius = 13
@@ -350,15 +352,15 @@ class LoadingCircle: UIView {
         layer.addSublayer(backgroundLayer)
         layer.addSublayer(circleLayer)
     }
-    
+
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func removeAnimations() {
         circleLayer.removeAllAnimations()
     }
-    
+
     func animateCircle(duration: TimeInterval, start: TimeInterval) {
         CATransaction.begin()
         CATransaction.setCompletionBlock {
@@ -384,4 +386,5 @@ class LoadingCircle: UIView {
         animation.isRemovedOnCompletion = false
         circleLayer.add(animation, forKey: "animateCircle")
     }
+
 }

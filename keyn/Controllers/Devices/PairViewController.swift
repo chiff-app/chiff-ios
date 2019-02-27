@@ -7,7 +7,8 @@ import AVFoundation
 import LocalAuthentication
 import OneTimePassword
 
-class PairViewController: QRViewController {    
+class PairViewController: QRViewController {
+
     var devicesDelegate: canReceiveSession?
 
     override func viewDidLoad() {
@@ -47,8 +48,8 @@ class PairViewController: QRViewController {
 
     // MARK: - Actions
 
+    #warning("TODO: Check if there's a better way to check if the Pair View Controller is in the bottomNavigation or navigationcontroller")
     func addSession(session: Session) {
-        // TODO: Check if there's a better way to check if the Pair View Controller in the bottomNavigation or navigationcontroller
         if navigationController?.viewControllers[0] == self {
             let devicesVC = storyboard?.instantiateViewController(withIdentifier: "Devices Controller") as! DevicesViewController
             navigationController?.setViewControllers([devicesVC], animated: false)
@@ -57,4 +58,5 @@ class PairViewController: QRViewController {
             _ = navigationController?.popViewController(animated: true)
         }
     }
+
 }
