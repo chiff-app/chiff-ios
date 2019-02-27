@@ -7,6 +7,7 @@ import UserNotifications
 
 enum SessionError: KeynError {
     case exists
+    case doesntExist
     case invalid
     case noEndpoint
     case signing

@@ -5,6 +5,7 @@
 import Foundation
 
 struct Site: Codable {
+
     var name: String
     var id: String
     var url: String
@@ -20,4 +21,5 @@ struct Site: Codable {
             completionHandler(Site(name: ppd.name, id: id, url: ppd.url, ppd: ppd))
         }
     }
+    
 }

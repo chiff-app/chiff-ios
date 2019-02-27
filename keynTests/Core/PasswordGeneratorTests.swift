@@ -10,24 +10,23 @@ class PasswordGeneratorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        TestHelper.setUp()
+        TestHelper.createSeed()
     }
 
     override func tearDown() {
         super.tearDown()
-        TestHelper.tearDown()
     }
     
     func testGeneratePasswordShouldReturnPassword() throws {
-        let ppd = TestHelper.examplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
 
         let (password, index) = try PasswordGenerator.shared.generatePassword(username: "test", passwordIndex: 0, siteID: TestHelper.linkedInPPDHandle, ppd: ppd, offset: nil)
-        XCTAssertEqual(password, "Q{S/(jaT5w#PFAuaP`'QpAyod#UHA[}w")
+        XCTAssertEqual("$}?)5/{OGa5wj9%H%4]8(O1yDn:}dRPs", password)
         XCTAssertEqual(index, 0)
     }
     
     func testCalculatePasswordOffsetShouldResultInSamePassword() throws {
-        let site = TestHelper.testSite
+        let site = TestHelper.sampleSite
         let randomIndex = Int(arc4random_uniform(100000000))
         let username = "test"
 
@@ -40,7 +39,7 @@ class PasswordGeneratorTests: XCTestCase {
     }
 
     func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLong() {
-        let ppd = TestHelper.examplePPD(minLength: 8, maxLength: 32)
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
         let password = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
 
         XCTAssertThrowsError(
@@ -49,7 +48,7 @@ class PasswordGeneratorTests: XCTestCase {
     }
 
     func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLongUsingFallback() {
-        let ppd = TestHelper.examplePPD(minLength: 8, maxLength: nil)
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: nil)
         let password = String(repeating: "a", count: PasswordValidator.MAX_PASSWORD_LENGTH_BOUND + 1)
         XCTAssertThrowsError(
             try PasswordGenerator.shared.calculatePasswordOffset(username: "test", passwordIndex: 0, siteID: TestHelper.linkedInPPDHandle, ppd: ppd, password: password)
