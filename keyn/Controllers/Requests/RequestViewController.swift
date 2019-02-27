@@ -179,7 +179,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             // TODO: Handle errors in UX
                             Logger.shared.error("Account could not be saved.", error: error)
                         }
-                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+//                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+                        #warning("TODO: Go to the request completed view (to be made)")
+                        self?.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     Logger.shared.debug("TODO: Fix touchID errors.")

@@ -135,6 +135,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func handlePendingNotifications() {
+        print("Handlepending called")
         do {
             for session in try Session.all() {
                 self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
@@ -156,20 +157,21 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
                 return
             }
-            guard let messages = messages, !messages.isEmpty else {
-                if (attempts > 1) {
-                    self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
-                } else if let handler = completionHandler {
-                    handler()
-                }
-                return
-            }
             do {
+                guard let messages = messages, !messages.isEmpty else {
+                    try session.sendAccountList()
+                    if (attempts > 1) {
+                        self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+                    } else if let handler = completionHandler {
+                        handler()
+                    }
+                    return
+                }
                 try messages.filter({ $0.type == .confirm }).forEach({ try self.updatePassword(keynMessage: $0, session: session) })
                 let accountListMessages = messages.filter({ $0.type == .accountList })
                 if accountListMessages.isEmpty {
                     try session.sendAccountList()
-                }
+                } 
             } catch {
                 Logger.shared.warning("Could not send account list", error: error, userInfo: nil)
             }
@@ -180,14 +182,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
     
     private func updatePassword(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
-        guard let result = keynMessage.passwordSuccessfullyChanged, let accountId = keynMessage.accountID else  {
+        guard let result = keynMessage.passwordSuccessfullyChanged, let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
         if result {
             var account = try Account.get(accountID: accountId)
             try account?.updatePasswordAfterConfirmation()
         }
-        session.deleteFromPersistentQueue(receiptHandle: keynMessage.receiptHandle)
+        session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
     }
 
     // DEBUG
