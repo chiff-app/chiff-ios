@@ -54,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    // TODO: Is this when user denies push notifications? Do something with it.
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         for service in services.values {
             service.application?(application, didFailToRegisterForRemoteNotificationsWithError: error)

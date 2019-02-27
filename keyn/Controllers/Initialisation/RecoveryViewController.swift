@@ -5,6 +5,7 @@
 import UIKit
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
+
     @IBOutlet var wordTextFields: Array<UITextField>?
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
@@ -29,7 +30,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             finishButton.isEnabled = mnemonicIsValid
         }
     }
-    var isInitialSetup = true // TODO: Implement calling recovery from settings?
+
+    var isInitialSetup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +87,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         guard keyboardHeight == nil else {
             return
         }
+
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height - keyboardHeightOffset
             UIView.animate(withDuration: 0.3, animations: {
@@ -112,8 +115,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Actions
     
+    #warning("TODO: Show a progress bar while data is being fetched remotely")
     @IBAction func finish(_ sender: UIBarButtonItem) {
-        // TODO: Show some progress bar or something will data is being fetched remotely
         do {
             guard try Seed.recover(mnemonic: mnemonic) else {
                 return
@@ -146,4 +149,5 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }
         return Seed.validate(mnemonic: mnemonic)
     }
+
 }

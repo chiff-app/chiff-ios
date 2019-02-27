@@ -5,12 +5,14 @@
 import UIKit
 
 class MPCTableViewCell: UITableViewCell {
+
     @IBOutlet weak var responseLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         layer.addBorder(edge: .left, color: UIColor(rgb: 0xFFB72F), thickness: 1)
-        layer.addBorder(edge: .right, color: UIColor(rgb: 0xFFB72F), thickness: 40) // TODO: Fix this for real.
+        #warning("TODO: Fix thickness 40 for real.")
+        layer.addBorder(edge: .right, color: UIColor(rgb: 0xFFB72F), thickness: 40)
         layer.addBorder(edge: .bottom, color: UIColor(rgb: 0xFFB72F), thickness: 1)
     }
 
@@ -25,4 +27,5 @@ class MPCTableViewCell: UITableViewCell {
             responseLabel.textColor = UIColor(rgb: 0xFFB72F)
         }  
     }
+
 }

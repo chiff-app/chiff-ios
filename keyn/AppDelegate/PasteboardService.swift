@@ -23,7 +23,6 @@ class PasteboardService: NSObject, UIApplicationDelegate {
         }
 
         let pasteboardVersion = pasteboard.changeCount
-        let clearPasteboardTimeout = 60.0 // TODO: hardcoded for now. This should be editable in settings I guess?
 
         var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
         backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
@@ -31,7 +30,7 @@ class PasteboardService: NSObject, UIApplicationDelegate {
             backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + clearPasteboardTimeout) {
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + Properties.PASTEBOARD_TIMEOUT) {
             if pasteboardVersion == pasteboard.changeCount {
                 pasteboard.string = ""
             }

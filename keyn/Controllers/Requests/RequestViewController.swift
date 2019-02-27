@@ -89,7 +89,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     private func authorize(request: KeynRequest, session: Session, accountID: String, type: KeynMessageType) {
         guard let siteName = request.siteName, let browserTab = request.browserTab else {
-            // TODO?: What now
+            #warning("Show error to user that the request was not valid. Or perhaps check before and never call this function.")
             return
         }
 
@@ -106,12 +106,12 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
             } else {
                 Logger.shared.analytics("Request denied.", code: .requestDenied, userInfo: ["result": false, "type": type.rawValue])
+                #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
                 Logger.shared.debug("TODO: Handle touchID errors.")
             }
         })
     }
 
-    // TODO: Refactor when we have more time, accountExists() too.
     private func analyseRequest() {
         if let request = request, let session = session, let siteID = request.siteID {
             do {
@@ -164,7 +164,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
         try Site.get(id: siteID, completion: { (site) in
             guard let site = site else {
-                // TODO: Add without site
+                #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
                 return
             }
 
@@ -176,13 +176,14 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             try session.sendCredentials(account: account, browserTab: browserTab, type: request.type)
                             NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
                         } catch {
-                            // TODO: Handle errors in UX
+                            #warning("TODO: Show the user that the account could not be added.")
                             Logger.shared.error("Account could not be saved.", error: error)
                         }
                         self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                     }
                 } else {
-                    Logger.shared.debug("TODO: Fix touchID errors.")
+                    #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
+                    Logger.shared.debug("TODO: Handle touchID errors.")
                 }
             })
         })
@@ -191,9 +192,10 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     private func acceptLoginChangeOrFillRequest() throws {
         if accounts.count == 0 {
             guard let siteID = request.siteID else {
-                // TODO WHAT NOW - throw...
+                #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
                 return
             }
+
             try Site.get(id: siteID, completion: { (site) in
                 self.site = site
                 DispatchQueue.main.async {
@@ -208,7 +210,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
     }
 
+    #warning("TODO: Implement acceptRegisterRequest in RequestViewController")
     private func acceptRegisterRequest() {
-        Logger.shared.debug("TODO: Fix register requests")
+        Logger.shared.debug("TODO: Implement acceptRegisterRequest in RequestViewController.")
     }
 }

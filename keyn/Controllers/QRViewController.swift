@@ -35,12 +35,12 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     func handleURL(url: URL) throws {
         preconditionFailure("This method must be overridden")
     }
-    
+
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         if metadataObjects.count > 0 {
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
-                // TODO: Check if this can be exploited with specially crafted QR codes?
+                #warning("TODO: Check if this can be exploited with specially crafted QR codes?")
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true
                     do {

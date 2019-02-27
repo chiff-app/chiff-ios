@@ -125,7 +125,7 @@ struct PPDRequirementRule: Codable {
     }
 }
 
-// TODO: Complete Service part.
+#warning("TODO: Do we have to complete the Service part?")
 
 struct PPDService: Codable {
     let login: PPDLogin

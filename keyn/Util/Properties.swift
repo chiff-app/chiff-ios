@@ -15,11 +15,7 @@ struct Properties {
         #endif
         return debug
     }()
-    
-    static let ppdTestingMode = {
-        return UserDefaults.standard.bool(forKey: "ppdTestingMode")
-    }()
-    
+
     static let AWSIdentityPoolId = "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe"
 
     static let AWSPlaformApplicationArn = (
@@ -41,7 +37,10 @@ struct Properties {
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
     )
-    
+
+    #warning("TODO: Should this be an editable settings?")
+    static let PASTEBOARD_TIMEOUT = 60.0 // seconds
+
     static func isFirstLaunch() -> Bool {
         let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)

@@ -4,11 +4,8 @@
  */
 import UIKit
 
-/*
- * TODO:
- * - Add breached accounts information
- * - Add MFA QR-code scan
- */
+#warning("TODO: Add breached accounts information")
+#warning("TODO: Add MFA QR-code scan")
 class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -102,7 +99,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    // TODO: Fetch correct requirements from PPD and present to user.
+    #warning("TODO: Fetch correct requirements from PPD and present to user.")
     private func updatePasswordRequirements(password: String) {
         if let passwordValidator = passwordValidator {
             requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(8) characters."
@@ -115,23 +112,19 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc pr 0123."
         }
     }
-    
+
+    #warning("TODO: How do we save accounts when there is no Site object? This happens when a user adds an account manually.")
     private func createAccount() {
         if let websiteName = siteNameField.text, let websiteURL = siteURLField.text, let username = usernameField.text, let password = passwordField.text {
-
-            // TODO: Where to get site(ID) from if account is manually added?
-            //       How to determine password requirements? > Maybe don't allow creation in app.
-            print("TODO: Site info + id should be fetched from somewhere instead of generated here..")
-
             let url = URL(string: websiteURL)
-            let id = url!.absoluteString.sha256 // TODO, fix
+            let id = url!.absoluteString.sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
 
             do {
                 self.account = try Account(username: username, site: site, password: password) // saves
             } catch {
-                // TODO: Handle errors in UX
-                print("Account could not be saved: \(error)")
+                #warning("TODO: Show an error in the user interface that the account could not be added.")
+                Logger.shared.error("Account could not be saved", error: error)
             }
         }
     }

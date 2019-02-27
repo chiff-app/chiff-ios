@@ -1,11 +1,7 @@
-//
-//  AuthorizationGuard.swift
-//  keyn
-//
-//  Created by Bas Doorn on 18/02/2019.
-//  Copyright © 2019 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import OneTimePassword
 import LocalAuthentication
@@ -127,6 +123,7 @@ class AuthorizationGuard {
         var error: NSError?
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            #warning("TODO: Handle fingerprint absence in authorize function")
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }
