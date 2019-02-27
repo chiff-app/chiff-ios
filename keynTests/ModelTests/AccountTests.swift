@@ -68,13 +68,13 @@ class AccountTests: XCTestCase {
     func testPasswordIsCorrectForGenerated() throws {
         let account = try Account(username: username, site: site, password: nil)
         let keychainPassword: String = account.password!
-        XCTAssertEqual(")2QdciBLDo;Y4U^,g;;bEc|!6mXHVVN(", keychainPassword)
+        XCTAssertEqual("Tv(m8sC)I3pXPzl3.Q9#@wm}iXF3pYU6", keychainPassword)
     }
 
     func testNextPassword() throws {
         var account = try Account(username: username, site: site, password: "hunter2")
         let password = try account.nextPassword()
-        XCTAssertEqual(password, "9`R8kM@^0D;%7P/NzV>l,pzP>RF1Z/Ex")
+        XCTAssertEqual("pyXl!xw[haa`atmf&HbxpQ9{l:9iFY&@", password)
     }
 
     func testOneTimePasswordToken() throws {
@@ -127,10 +127,10 @@ class AccountTests: XCTestCase {
     func testUpdatePasswordAfterConfirmation() throws {
         var account = try Account(username: username, site: site, password: "hunter2")
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(account.password!, ")2QdciBLDo;Y4U^,g;;bEc|!6mXHVVN(")
+        XCTAssertEqual("Tv(m8sC)I3pXPzl3.Q9#@wm}iXF3pYU6", account.password!)
         let _ = try account.nextPassword()
         try account.updatePasswordAfterConfirmation()
-        XCTAssertEqual(account.password!, "9`R8kM@^0D;%7P/NzV>l,pzP>RF1Z/Ex")
+        XCTAssertEqual("pyXl!xw[haa`atmf&HbxpQ9{l:9iFY&@", account.password!)
     }
 
     func testUpdateSiteName() throws {
@@ -180,7 +180,7 @@ class AccountTests: XCTestCase {
     }
 
     func testSaveAccount() {
-        XCTAssert(false, "To be implemented.")
+        XCTAssert(false, "TODO")
     }
     
     func testAllAccounts() throws {

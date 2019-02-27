@@ -8,7 +8,7 @@ import OneTimePassword
 @testable import keyn
 
 /*
- * Test helpers to be used in all tests.
+ * Test helpers can be used in all tests.
  *
  * We cannot (easily?) create mock objects so we actually modify the Keychain, storage etc.
  *
@@ -17,12 +17,10 @@ import OneTimePassword
  */
 class TestHelper {
 
-    static let mnemonic = "protect twenty coach stairs picnic give patient awkward crisp option faint resemble"
-    static let browserPrivateKey = try! Crypto.shared.convertFromBase64(from: "B0CyLVnG5ktYVaulLmu0YaLeTKgO7Qz16qnwLU0L904")
-    static let pairingQueuePrivKey = "jlbhdgtIotiW6A20rnzkdFE87i83NaNI42rZnHLbihE"
-    static let browserPublicKeyBase64 = "YlxYz86OpYfogynw-aowbLwqVsPb7OVykpEx5y1VzBQ"
-//    static let sessionID = "50426461766b8f7adf0800400cde997d51b5c67c493a2d12696235bd00efd5b0"
-    static let sessionID = browserPublicKeyBase64
+    static let mnemonic = "wreck together kick tackle rely embrace enlist bright double happy group honey"
+    static let pairingQueueSeed = "0F5l3RTX8f0TUpC9aBe-dgOwzMqaPrjPGTmh60LULFs"
+    static let browserPublicKeyBase64 = "uQ-JTC6gejxrz2dNw1sXO6JAQP32wNpXFPnJ2PgksuM"
+    static let sessionID = "9d710842c9cc6df1b2f4f3ca2074bc1408e525e7ce46635ce21579c9fe6f01e7"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
 
     static func setUp() {
@@ -60,7 +58,7 @@ class TestHelper {
     
     static func createSession() {
         do {
-            let session = try Session.initiate(pairingQueuePrivKey: pairingQueuePrivKey, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
+            let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPublicKeyBase64, browser: "Chrome", os: "MacOS")
             print("Created session with id \(session.id)")
         } catch {
             switch error {
