@@ -58,11 +58,11 @@ struct KeynRequest: Codable {
 }
 
 struct KeynPersistentQueueMessage: Codable {
-    let accountList: KeynAccountList?
+    let accountList: AccountList?
     let passwordSuccessfullyChanged: Bool?
     let accountID: String?
     let type: KeynMessageType
-    var receiptHandle: String
+    var receiptHandle: String?
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
@@ -91,55 +91,43 @@ struct KeynPairingResponse: Codable {
  *
  * Direction: app -> browser
  */
-struct KeynAccountList: Codable {
-    let accountList: AccountList
-    let type = KeynMessageType.accountList.rawValue
+enum AccountList: Codable {
+    case string(String)
+    case list([AccountList])
+    case dictionary([String : AccountList])
 
-    init(accounts: [Account]) throws {
-        guard let accounts = AccountList(accounts: accounts) else {
-            throw CodingError.unexpectedData
-        }
-        self.accountList = accounts
+    init?(accounts: [Account]) {
+        self = AccountList.dictionary(Dictionary(grouping: accounts, by: { $0.site.id }).mapValues { (accounts) -> AccountList in
+            return AccountList.dictionary([
+                "siteName": AccountList.string(accounts[0].site.name),
+                "accountIds": AccountList.list(accounts.map({ AccountList.string($0.id) }))
+                ])
+        })
     }
 
-    enum AccountList: Codable {
-        case string(String)
-        case list([AccountList])
-        case dictionary([String : AccountList])
-
-        init?(accounts: [Account]) {
-            self = AccountList.dictionary(Dictionary(grouping: accounts, by: { $0.site.id }).mapValues { (accounts) -> AccountList in
-                return AccountList.dictionary([
-                    "siteName": AccountList.string(accounts[0].site.name),
-                    "accountIds": AccountList.list(accounts.map({ AccountList.string($0.id) }))
-                ])
-            })
+    // Should catch other errors than DecodingError.typeMismatch
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let value = try? container.decode(String.self) {
+            self = .string(value)
+        } else if let value = try? container.decode([AccountList].self) {
+            self = .list(value)
+        } else if let value = try? container.decode([String : AccountList].self) {
+            self = .dictionary(value)
+        } else {
+            throw CodingError.unexpectedData
         }
+    }
 
-        // Should catch other errors than DecodingError.typeMismatch
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.singleValueContainer()
-            if let value = try? container.decode(String.self) {
-                self = .string(value)
-            } else if let value = try? container.decode([AccountList].self) {
-                self = .list(value)
-            } else if let value = try? container.decode([String : AccountList].self) {
-                self = .dictionary(value)
-            } else {
-                throw CodingError.unexpectedData
-            }
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
-            switch self {
-                case .string(let string):
-                    try container.encode(string)
-                case .list(let list):
-                    try container.encode(list)
-                case .dictionary(let dictionary):
-                    try container.encode(dictionary)
-            }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .string(let string):
+            try container.encode(string)
+        case .list(let list):
+            try container.encode(list)
+        case .dictionary(let dictionary):
+            try container.encode(dictionary)
         }
     }
 }

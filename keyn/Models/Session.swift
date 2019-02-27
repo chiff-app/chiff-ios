@@ -163,8 +163,11 @@ class Session: Codable {
     }
 
     func sendAccountList() throws {
-        let accounts = try KeynAccountList(accounts: Account.all())
-        let message = try JSONEncoder().encode(accounts)
+        guard let accounts = try AccountList(accounts: Account.all()) else {
+            Logger.shared.debug("No accounts?")
+            return
+        }
+        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accountList: accounts, passwordSuccessfullyChanged: nil, accountID: nil, type: .accountList, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
@@ -180,8 +183,8 @@ class Session: Codable {
                     throw error
                 }
                 for message in messages! {
-                    if message.type == .accountList {
-                        self.deleteFromPersistentQueue(receiptHandle: message.receiptHandle)
+                    if message.type == .accountList, let receiptHandle = message.receiptHandle {
+                        self.deleteFromPersistentQueue(receiptHandle: receiptHandle)
                     }
                 }
                 do {}
