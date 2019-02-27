@@ -5,12 +5,12 @@
 import UIKit
 
 class BackupStartViewController: UIViewController {
+
     var isInitialSetup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
         if !isInitialSetup {
             navigationItem.largeTitleDisplayMode = .never
         }
@@ -37,13 +37,14 @@ class BackupStartViewController: UIViewController {
         if isInitialSetup {
             do {
                 try Seed.create()
-                try BackupManager.shared.initialize(completion: { (result) in
-                    // TODO: Only continue if result = true.
-                })
+                try BackupManager.shared.initialize() { (result) in
+                    #warning("TODO: When the creation failed (e.g. result != true) we should not continue backup process and inform the user.")
+                }
                 Logger.shared.analytics("Seed created", code: .seedCreated)
             } catch {
                 Logger.shared.error("Error generating seed.", error: error)
             }
         }
     }
+
 }

@@ -4,7 +4,9 @@
  */
 import UIKit
 
+#warning("TODO: Make the feedback system prettier and more user friendly.")
 class FeedbackViewController: UIViewController, UITextFieldDelegate {
+
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var sendButton: UIBarButtonItem!
@@ -43,7 +45,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Actions
 
-    // TODO: Change this?
+    #warning("TODO: Figure out if this still works.")
     @IBAction func sendFeedback(_ sender: UIBarButtonItem) {
         // Data
         if let name = nameTextField.text {
@@ -53,25 +55,15 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate {
         guard let userFeedback = textView.text else {
             return
         }
-        
-        // PPD Testing mode toggle
-        guard nameTextField.text != "Ppdtesting On" else {
-            UserDefaults.standard.set(true, forKey: "ppdTestingMode")
-            self.textView.text = "PPD Testing mode ON. Submit 'Ppdtesting Off' as name to revert to normal mode."
-            return
-        }
-        guard nameTextField.text != "Ppdtesting Off" else {
-            UserDefaults.standard.set(false, forKey: "ppdTestingMode")
-            self.textView.text = "PPD Testing mode OFF"
-            return
-        }
-        
+
         Logger.shared.analytics(userFeedback, code: .userFeedback, userInfo: [ "name": debugLogUser ])
         
         self.nameTextField.text = ""
         self.textView.text = "settings.feedback_submitted".localized
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2, execute: {
             self.navigationController?.popViewController(animated: true)
         })
     }
+
 }

@@ -1,11 +1,7 @@
-//
-//  AuthorizationGuard.swift
-//  keyn
-//
-//  Created by Bas Doorn on 18/02/2019.
-//  Copyright © 2019 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 import OneTimePassword
 import LocalAuthentication
@@ -18,20 +14,20 @@ class AuthorizationGuard {
     
     private init() {}
     
-    func addOTP(token: Token, account: Account, completion: @escaping (_: Error?)->()) throws {
+    func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
         authorize(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { [weak self] (success, error) in
             if success {
                 self?.authorizationInProgress = false
-                completion(nil)
+                completionHandler(nil)
             } else if let error = error {
                 self?.authorizationInProgress = false
-                completion(error)
+                completionHandler(error)
             }
         }
     }
     
-    func authorizePairing(url: URL, unlock: Bool = false, completion: @escaping (_: Session?, _: Error?) -> ()) throws {
+    func authorizePairing(url: URL, unlock: Bool = false, completionHandler: @escaping (_: Session?, _: Error?) -> ()) throws {
         if authorizationInProgress {
             Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
@@ -55,12 +51,12 @@ class AuthorizationGuard {
                 if success {
                     do  {
                         let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
-                        completion(session, nil)
+                        completionHandler(session, nil)
                     } catch {
-                        completion(nil, error)
+                        completionHandler(nil, error)
                     }
                 } else if let error = error {
-                    completion(nil, error)
+                    completionHandler(nil, error)
                 }
             }
         } else {
@@ -69,7 +65,7 @@ class AuthorizationGuard {
         }
     }
     
-    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completion: @escaping (_: Bool, _: Error?) -> ()) {
+    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completionHandler: @escaping (_: Bool, _: Error?) -> ()) {
         if authorizationInProgress {
             Logger.shared.debug("authorizeRequest() called while already in the process of authorizing.")
             return
@@ -79,7 +75,7 @@ class AuthorizationGuard {
 
         authorize(reason: localizedReason) { (success: Bool, error: Error?) in
             self.authorizationInProgress = false
-            completion(success, error)
+            completionHandler(success, error)
         }
     }
     
@@ -127,6 +123,7 @@ class AuthorizationGuard {
         var error: NSError?
         
         guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            #warning("TODO: Handle fingerprint absence in authorize function")
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }

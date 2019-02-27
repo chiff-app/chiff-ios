@@ -7,6 +7,7 @@ import LocalAuthentication
 import OneTimePassword
 
 class AuthenticationGuard {
+
     static let shared = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
@@ -78,7 +79,7 @@ class AuthenticationGuard {
         let reasonString = "Unlock Keyn"
         
         guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
-            //TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled
+            #warning("TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled")
             authenticationInProgress = false
             Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
             return
@@ -90,6 +91,7 @@ class AuthenticationGuard {
             } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
                 Logger.shared.error(errorMessage, error: error)
                 if error._code == LAError.userFallback.rawValue {
+                    #warning("TODO: Handle fallback for lack of biometric authentication")
                     Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
                 }
             }
@@ -182,7 +184,7 @@ class AuthenticationGuard {
         lockWindow.addSubview(lockView)
         lockWindow.bringSubviewToFront(lockView)
         
-        // TODO: Make autolayout constrained
+        #warning("TODO:Make autolayout constrained")
         //            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
         //            keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
         //            keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
@@ -195,4 +197,5 @@ class AuthenticationGuard {
         }
         lockWindow.makeKeyAndVisible()
     }
+
 }
