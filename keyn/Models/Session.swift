@@ -72,7 +72,7 @@ class Session: Codable {
         message.sessionID = id
         return message
     }
-    
+
     func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
         let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
@@ -90,15 +90,11 @@ class Session: Codable {
         }
     }
 
-    // TODO: Add request ID etc - Wat bedoel je Bas?
     func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType) throws {
         var response: KeynCredentialsResponse?
         var account = account
 
         switch type {
-//        case .addAndChange: // TODO: Deprecated?
-//            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .addAndChange)
-//            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .change:
             response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
@@ -112,7 +108,7 @@ class Session: Codable {
             response = KeynCredentialsResponse(u: nil, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
-            // TODO: create new account, set password etc.
+            #warning("TODO: Implement registering for account. This case is probably never reached now.")
             response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
@@ -128,7 +124,6 @@ class Session: Codable {
         }
     }
 
-    // TODO: This is now different from deleteChangeConfirmation with the signing error, make it the same.
     func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (_ messages: [KeynPersistentQueueMessage]?, _ error: Error?) -> Void) {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
@@ -166,7 +161,7 @@ class Session: Codable {
             }
         }
     }
-    
+
     func sendAccountList() throws {
         guard let accounts = try AccountList(accounts: Account.all()) else {
             Logger.shared.debug("No accounts?")
@@ -180,7 +175,7 @@ class Session: Codable {
             }
         }
     }
-    
+
     func updateAccountList() throws {
         getPersistentQueueMessages(shortPolling: true) { (messages, error) in
             do {
@@ -215,7 +210,7 @@ class Session: Codable {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
                 throw CodingError.unexpectedData
             }
-            // TODO: If not decodable, remove specific session instead of all.
+            #warning("TODO: Instead of deleting all the sessions when one session can not be decoded, we should just remove this session.")
             do {
                 let session = try decoder.decode(Session.self, from: sessionData)
                 sessions.append(session)
@@ -256,7 +251,7 @@ class Session: Codable {
         purgeSessionDataFromKeychain()
     }
 
-    // TODO: Call this function with succes and error handlers. Remove throws.
+    #warning("TODO: Call this function with succes and error handlers. Remove throws.")
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String) throws -> Session {
         let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
         let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -323,7 +318,6 @@ class Session: Codable {
         apiRequest(endpoint: .volatile, method: .post, message: message, completionHandler: completionHandler)
     }
 
-    // TODO: Heeft deze een bericht type?
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
         let message = [
             "data": "Ynll" // Base64 'bye' for fun and gezelligheid.
@@ -374,7 +368,6 @@ class Session: Codable {
         }
     }
 
-    // TODO: Later combine this with other apiRequest function?
     private func apiRequestForCreatingQueues(endpoint: APIEndpoint, method: APIMethod, keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         let message = [
             "httpMethod": method.rawValue,

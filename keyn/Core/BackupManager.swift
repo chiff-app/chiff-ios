@@ -35,7 +35,7 @@ struct BackupManager {
     
     private init() {}
 
-    func initialize(completion: @escaping (_ success: Bool) -> Void) throws {
+    func initialize(completionHandler: @escaping (_ success: Bool) -> Void) throws {
         guard !hasKeys else {
             Logger.shared.warning("Tried to create backup keys while they already existed")
             return
@@ -57,9 +57,9 @@ struct BackupManager {
         API.shared.request(endpoint: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                completion(false)
+                completionHandler(false)
             } else {
-                completion(true)
+                completionHandler(true)
             }
         }
     }

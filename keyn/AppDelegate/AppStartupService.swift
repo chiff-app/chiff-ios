@@ -62,7 +62,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
-    // TODO: Is this when user denies push notifications? Do something with it.
+    #warning("TODO: Show an error to the user: This app cannot register for push notifications.")
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
         Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
@@ -115,7 +115,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             } else {
                 Logger.shared.warning("User denied remote notifications.")
                 self.deniedPushNotifications = true
-                // TODO: Localize
                 self.launchErrorView("errors.no_push_notifications".localized)
             }
         }

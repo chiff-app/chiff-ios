@@ -83,6 +83,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
         if (notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION) {
+            #warning("TODO: Make alert banner to show user a general keyn message.")
             Logger.shared.debug("TODO: Make alert banner to show user a general keyn message.")
             return [.alert]
         }
@@ -180,7 +181,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
         }
     }
-    
+
     private func updatePassword(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
         guard let result = keynMessage.passwordSuccessfullyChanged, let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData

@@ -39,7 +39,7 @@ class PasswordGenerator {
     }
 
     func calculatePasswordOffset(username: String, passwordIndex: Int, siteID: String, ppd: PPD?, password: String) throws -> [Int] {
-        // TODO: Check if this is OK. Not validating custom passwords
+        #warning("TODO: Check if this is OK. Not validating custom passwords.")
         let validator = PasswordValidator(ppd: ppd)
         guard validator.validateMaxLength(password: password) else {
             throw PasswordGenerationError.invalidPassword
@@ -102,14 +102,14 @@ class PasswordGenerator {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
 
-    // TODO: Kunnen we die Crypto errors niet opvangen hier?
+    #warning("TODO: Kunnen we die Crypto errors niet opvangen hier?")
     private func generateKey(username: String, passwordIndex: Int, siteID: String) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
             let siteData = siteID.prefix(8).data(using: .utf8) else {
                 throw CodingError.stringDecoding
         }
         
-        // TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)
+        #warning("TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)")
         let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: 0)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
 

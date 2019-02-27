@@ -19,7 +19,8 @@ class AWS {
     private let awsService = "io.keyn.aws"
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
     private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
-    var snsDeviceEndpointArn: String? // TODO: only save identifier here?
+    #warning("TODO: Minor improvement to only save identifier here instead of complete URL")
+    var snsDeviceEndpointArn: String?
     var isFirstLaunch = false
 
     private init() {}

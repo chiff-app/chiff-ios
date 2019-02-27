@@ -28,7 +28,7 @@ class OTPViewController: QRViewController {
         guard let token = Token(url: url) else {
             return
         }
-        try AuthorizationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
+        try AuthorizationGuard.shared.addOTP(token: token, account: account) { (error) in
             DispatchQueue.main.async {
                 do {
                     if let error = error {
@@ -41,7 +41,7 @@ class OTPViewController: QRViewController {
                     Logger.shared.error("Error adding OTP", error: error)
                 }
             }
-        })
+        }
     }
     
     func add(token: Token) {
