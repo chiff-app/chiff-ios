@@ -73,6 +73,12 @@ class Session: Codable {
         return message
     }
 
+    func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
+        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
+        return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
+    }
+
     func reject(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
             let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .reject)
@@ -104,8 +110,6 @@ class Session: Codable {
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             #warning("TODO: Implement registering for account. This case is probably never reached now.")
             response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
-        case .acknowledge:
-            response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .acknowledge)
         default:
             throw SessionError.unknownType
         }
@@ -120,28 +124,70 @@ class Session: Codable {
         }
     }
 
-    func getPasswordChangeConfirmations(shortPolling: Bool, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (_ messages: [KeynPersistentQueueMessage]?, _ error: Error?) -> Void) {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
         ]
         apiRequest(endpoint: .persistent, method: .get, message: message) { (res, error) in
-            if let res = res {
-                completionHandler(res, nil)
-            }
-            if let error = error {
-                Logger.shared.warning("Failed to get password change confirmation from queue.", error: error)
+            do {
+                if let error = error {
+                    throw error
+                }
+                guard let data = res, let sqsMessages = data["messages"] as? [[String:String]] else {
+                    throw CodingError.missingData
+                }
+                let messages = try sqsMessages.map({ (message) -> KeynPersistentQueueMessage in
+                    guard let body = message[MessageParameter.body], let receiptHandle = message[MessageParameter.receiptHandle] else {
+                        throw CodingError.missingData
+                    }
+                    var keynMessage: KeynPersistentQueueMessage = try self.decrypt(message: body)
+                    keynMessage.receiptHandle = receiptHandle
+                    return keynMessage
+                })
+                completionHandler(messages, nil)
+            } catch {
                 completionHandler(nil, error)
             }
         }
     }
 
-    func deletePasswordChangeConfirmation(receiptHandle: String) {
+    func deleteFromPersistentQueue(receiptHandle: String) {
         let message = [
             "receiptHandle": receiptHandle
         ]
         apiRequest(endpoint: .persistent, method: .delete, message: message) { (_, error) in
             if let error = error {
                 Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
+            }
+        }
+    }
+
+    func sendAccountList() throws {
+        let accounts = try KeynAccountList(accounts: Account.all())
+        let message = try JSONEncoder().encode(accounts)
+        let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
+        apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
+            }
+        }
+    }
+
+    func updateAccountList() throws {
+        getPersistentQueueMessages(shortPolling: true) { (messages, error) in
+            do {
+                if let error = error {
+                    throw error
+                }
+                for message in messages! {
+                    if message.type == .accountList {
+                        self.deleteFromPersistentQueue(receiptHandle: message.receiptHandle)
+                    }
+                }
+                do {}
+                try self.sendAccountList()
+            } catch {
+                Logger.shared.error("Error updating account list", error: error)
             }
         }
     }
