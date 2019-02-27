@@ -179,7 +179,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                             #warning("TODO: Show the user that the account could not be added.")
                             Logger.shared.error("Account could not be saved.", error: error)
                         }
-                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+//                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+                        #warning("TODO: Go to the request completed view (to be made)")
+                        self?.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")

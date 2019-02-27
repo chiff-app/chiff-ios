@@ -160,6 +160,7 @@ struct Account: Codable {
     func delete() throws {
         try Keychain.shared.delete(id: id, service: Account.keychainService)
         try BackupManager.shared.deleteAccount(accountId: id)
+        try Session.all().forEach({ try $0.updateAccountList() })
         Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
@@ -252,9 +253,10 @@ struct Account: Codable {
 
         try Keychain.shared.save(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, classification: .confidential)
         try BackupManager.shared.backup(id: id, accountData: accountData)
+        try Session.all().forEach({ try $0.updateAccountList() })
     }
 
-    func getPassword() throws -> String {
+    private func getPassword() throws -> String {
         do {
             let data = try Keychain.shared.get(id: id, service: Account.keychainService)
 
