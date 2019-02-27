@@ -93,7 +93,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             return
         }
 
-        AuthorizationGuard.shared.authorizeRequest(siteName: siteName, accountID: accountID, type: type, completion: { [weak self] (succes, error) in
+        AuthorizationGuard.shared.authorizeRequest(siteName: siteName, accountID: accountID, type: type) { [weak self] (succes, error) in
             if (succes) {
                 DispatchQueue.main.async {
                     do {
@@ -109,7 +109,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
                 Logger.shared.debug("TODO: Handle touchID errors.")
             }
-        })
+        }
     }
 
     private func analyseRequest() {
@@ -162,13 +162,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             return
         }
 
-        try Site.get(id: siteID, completion: { (site) in
+        try Site.get(id: siteID) { (site) in
             guard let site = site else {
                 #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
                 return
             }
 
-            AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type, completion: { [weak self] (succes, error) in
+            AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type) { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {
@@ -185,8 +185,8 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
                     Logger.shared.debug("TODO: Handle touchID errors.")
                 }
-            })
-        })
+            }
+        }
     }
 
     private func acceptLoginChangeOrFillRequest() throws {
@@ -196,12 +196,12 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 return
             }
 
-            try Site.get(id: siteID, completion: { (site) in
+            try Site.get(id: siteID) { (site) in
                 self.site = site
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                 }
-            })
+            }
         } else if accounts.count == 1 {
             authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
         } else {

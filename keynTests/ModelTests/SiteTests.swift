@@ -19,10 +19,10 @@ class SiteTests: XCTestCase {
     func testGetReturnsSite() {
         do {
             let exp = expectation(description: "Get a site.")
-            try Site.get(id: TestHelper.linkedInPPDHandle, completion: { (site) in
+            try Site.get(id: TestHelper.linkedInPPDHandle) { (site) in
                 XCTAssertNotNil(site)
                 exp.fulfill()
-            })
+            }
             waitForExpectations(timeout: 10, handler: nil)
         } catch {
             XCTFail("An error occured during setup: \(error)")
@@ -32,10 +32,10 @@ class SiteTests: XCTestCase {
     func testGetReturnsNilIfNoSiteForID() {
         do {
             let exp = expectation(description: "Get a site.")
-            try Site.get(id: "seeyalater!", completion: { (site) in
+            try Site.get(id: "seeyalater!") { (site) in
                 XCTAssertNil(site)
                 exp.fulfill()
-            })
+            }
             waitForExpectations(timeout: 10, handler: nil)
         } catch {
             XCTFail("An error occured during setup: \(error)")

@@ -13,26 +13,28 @@ enum OTPError: KeynError {
 }
 
 class ManualOTPViewController: UITableViewController {
+
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!
-    
+
     var qrNavCon: UINavigationController?
     var accountViewDelegate: canAddOTPCode?
     var account: Account!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = account.site.name
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
-    
+
     func add(secret: String, timeBased: Bool) throws {
         guard let secretData = MF_Base32Codec.data(fromBase32String: secret),
             !secretData.isEmpty else {
                 throw OTPError.invalidSecret
         }
+
         guard let generator = Generator(
             factor: timeBased ? .timer(period: 30) : .counter(0),
             secret: secretData,
@@ -40,8 +42,10 @@ class ManualOTPViewController: UITableViewController {
             digits: 6) else {
             throw OTPError.invalidSecret
         }
+
         let token = Token(generator: generator)
-        try AuthorizationGuard.shared.addOTP(token: token, account: account, completion: { (error) in
+
+        try AuthorizationGuard.shared.addOTP(token: token, account: account) { (error) in
             DispatchQueue.main.async {
                 guard error == nil else {
                     Logger.shared.error("Error authorizing OTP", error: error)
@@ -58,8 +62,7 @@ class ManualOTPViewController: UITableViewController {
                     Logger.shared.error("Error adding OTP", error: error)
                 }
             }
-        })
-
+        }
     }
 
     @IBAction func save(_ sender: UIBarButtonItem) {
@@ -83,4 +86,5 @@ class ManualOTPViewController: UITableViewController {
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+
 }

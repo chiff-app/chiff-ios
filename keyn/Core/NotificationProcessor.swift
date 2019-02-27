@@ -24,7 +24,7 @@ class NotificationProcessor {
             throw SessionError.exists
         }
 
-        let keynRequest = try session.decrypt(message: ciphertext)
+        let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)
         content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
 
         let siteName = keynRequest.siteName ?? "Unknown"
