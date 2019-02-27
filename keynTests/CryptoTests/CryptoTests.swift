@@ -13,10 +13,10 @@ class CryptoTests: XCTestCase {
         super.setUp()
         do {
             let exp = expectation(description: "Waiting for getting site.")
-            try Site.get(id: TestHelper.linkedInPPDHandle, completion: { (site) in
+            try Site.get(id: TestHelper.linkedInPPDHandle) { (site) in
                 self.site = site
                 exp.fulfill()
-            })
+            }
             waitForExpectations(timeout: 10, handler: nil)
         } catch {
             XCTFail("An error occured during setup: \(error)")

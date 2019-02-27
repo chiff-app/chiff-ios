@@ -38,7 +38,7 @@ class TestHelper {
     }
 
     static func setUpBackupManager() {
-        try! BackupManager.shared.initialize(completion: { (res) in })
+        try! BackupManager.shared.initialize() { (res) in }
     }
 
     static func tearDownBackupManager() {
@@ -55,7 +55,7 @@ class TestHelper {
 
         let _ = try! Seed.recover(mnemonic: mnemonicArray)
 
-        try! BackupManager.shared.initialize(completion: { (res) in })
+        try! BackupManager.shared.initialize() { (res) in }
     }
     
     static func createSession() {
