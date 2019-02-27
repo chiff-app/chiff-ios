@@ -168,7 +168,7 @@ class Session: Codable {
             Logger.shared.debug("No accounts?")
             return
         }
-        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accountList: accounts, passwordSuccessfullyChanged: nil, accountID: nil, type: .accountList, receiptHandle: nil))
+        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accounts: accounts, passwordSuccessfullyChanged: nil, accountID: nil, type: .accountList, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
@@ -292,7 +292,11 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws {
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), sandboxed: Properties.isDebug, type: .pair)
+        guard let accounts = try AccountList(accounts: Account.all()) else {
+            Logger.shared.debug("No accounts?")
+            return
+        }
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), sandboxed: Properties.isDebug, accounts: accounts, type: .pair)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
@@ -320,10 +324,9 @@ class Session: Codable {
     }
 
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let message = [
-            "data": "Ynll" // Base64 'bye' for fun and gezelligheid.
-        ]
-        apiRequest(endpoint: .persistent, method: .post, message: message) { (_, error) in
+        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accounts: nil, passwordSuccessfullyChanged: nil, accountID: nil, type: .end, receiptHandle: nil))
+        let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
+        apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot send message to control queue.", error: error)
             }
