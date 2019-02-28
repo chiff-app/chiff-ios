@@ -162,24 +162,20 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             return
         }
 
-        try Site.get(id: siteID) { (site) in
-            guard let site = site else {
-                #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
-                return
-            }
-
+        try PPD.get(id: siteID, completionHandler: { (ppd) in
+            let site = Site(name: request.siteName ?? ppd?.name ?? "Unknown", id: siteID, url: request.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type) { [weak self] (succes, error) in
                 if (succes) {
                     DispatchQueue.main.async {
                         do {
-                            let account = try Account(username: username, site: site, password: password)
+                            let account = try Account(username: username, sites: [site], password: password)
                             try session.sendCredentials(account: account, browserTab: browserTab, type: request.type)
                             NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
                         } catch {
                             #warning("TODO: Show the user that the account could not be added.")
                             Logger.shared.error("Account could not be saved.", error: error)
                         }
-//                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
+                        //                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
                         #warning("TODO: Go to the request completed view (to be made)")
                         self?.dismiss(animated: true, completion: nil)
                     }
@@ -188,7 +184,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     Logger.shared.debug("TODO: Handle touchID errors.")
                 }
             }
-        }
+        })
     }
 
     private func acceptLoginChangeOrFillRequest() throws {
@@ -197,13 +193,14 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
                 return
             }
-
-            try Site.get(id: siteID) { (site) in
+            try PPD.get(id: siteID, completionHandler: { (ppd) in
+                let site = Site(name: self.request.siteName ?? ppd?.name ?? "Unknown", id: siteID, url: self.request.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
                 self.site = site
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
                 }
-            }
+            })
+
         } else if accounts.count == 1 {
             authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
         } else {
