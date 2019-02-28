@@ -12,7 +12,10 @@ struct Account: Codable {
 
     let id: String
     var username: String
-    var site: Site
+    var sites: [Site]
+    var site: Site {
+        return sites[0]
+    }
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
@@ -25,17 +28,17 @@ struct Account: Codable {
         return try? getPassword()
     }
 
-    init(username: String, site: Site, passwordIndex: Int = 0, password: String?) throws {
-        id = "\(site.id)_\(username)".hash
+    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?) throws {
+        id = "\(sites[0].id)_\(username)".hash
 
+        self.sites = sites
         self.username = username
-        self.site = site
 
         if let password = password {
-            passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: password)
+            passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: sites[0].id, ppd: sites[0].ppd, password: password)
         }
 
-        let (generatedPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, offset: passwordOffset)
+        let (generatedPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: passwordIndex, siteID: sites[0].id, ppd: sites[0].ppd, offset: passwordOffset)
         self.passwordIndex = index
         self.lastPasswordUpdateTryIndex = index
         if password != nil {
@@ -111,13 +114,14 @@ struct Account: Codable {
         if let newUsername = newUsername {
             self.username = newUsername
         }
+        #warning("TODO: Update accounts with multiple sites")
         if let siteName = siteName {
-            self.site.name = siteName
+            self.sites[0].name = siteName
         }
         if let url = url {
-            self.site.url = url
+            self.sites[0].url = url
         }
-        
+
         if let newPassword = newPassword {
             let newIndex = passwordIndex + 1
             self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
@@ -126,7 +130,7 @@ struct Account: Codable {
         } else if let newUsername = newUsername {
             self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.getPassword())
         }
-        
+
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil)
         try backup()

@@ -92,6 +92,7 @@ struct KeynPairingResponse: Codable {
  *
  * Direction: app -> browser
  */
+#warning("TODO: Make this work with accounts array, just picking first site now.")
 enum AccountList: Codable {
     case string(String)
     case list([AccountList])

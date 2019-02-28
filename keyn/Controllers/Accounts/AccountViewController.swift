@@ -155,7 +155,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         websiteNameTextField.text = account?.site.name
         websiteURLTextField.text = account?.site.url
     }
-    
+
+    #warning("TODO: Adjust the interface so sites can also be added to an account.")
     @objc func update() {
         endEditing()
         do {
