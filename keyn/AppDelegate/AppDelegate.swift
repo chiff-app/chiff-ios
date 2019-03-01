@@ -88,6 +88,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //BackupManager.shared.deleteAll()
         //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
+        try! Session.all().forEach({ (session) in
+            try session.updateAccountList()
+        })
     }
 
 }

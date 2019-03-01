@@ -160,7 +160,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             do {
                 guard let messages = messages, !messages.isEmpty else {
-                    try session.sendAccountList()
                     if (attempts > 1) {
                         self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
                     } else if let handler = completionHandler {
@@ -169,10 +168,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     return
                 }
                 try messages.filter({ $0.type == .confirm }).forEach({ try self.updatePassword(keynMessage: $0, session: session) })
-                let accountListMessages = messages.filter({ $0.type == .accountList })
-                if accountListMessages.isEmpty {
-                    try session.sendAccountList()
-                } 
             } catch {
                 Logger.shared.warning("Could not send account list", error: error, userInfo: nil)
             }
