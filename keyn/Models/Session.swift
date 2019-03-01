@@ -163,35 +163,17 @@ class Session: Codable {
         }
     }
 
-    func sendAccountList() throws {
+    func updateAccountList() throws {
         guard let accounts = try AccountList(accounts: Account.all()) else {
             Logger.shared.debug("No accounts?")
             return
         }
-        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accounts: accounts, passwordSuccessfullyChanged: nil, accountID: nil, type: .accountList, receiptHandle: nil))
+
+        let message = try JSONEncoder().encode(accounts)
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
+        apiRequest(endpoint: .accounts, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
                 Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
-            }
-        }
-    }
-
-    func updateAccountList() throws {
-        getPersistentQueueMessages(shortPolling: true) { (messages, error) in
-            do {
-                if let error = error {
-                    throw error
-                }
-                for message in messages! {
-                    if message.type == .accountList, let receiptHandle = message.receiptHandle {
-                        self.deleteFromPersistentQueue(receiptHandle: receiptHandle)
-                    }
-                }
-                do {}
-                try self.sendAccountList()
-            } catch {
-                Logger.shared.error("Error updating account list", error: error)
             }
         }
     }
@@ -333,6 +315,7 @@ class Session: Codable {
         }
     }
 
+    #warning("This seems to fail..")
     private func deleteEndpointAtAWS() {
         apiRequest(endpoint: .message, method: .delete) { (_, error) in
             if let error = error {
@@ -373,7 +356,7 @@ class Session: Codable {
     }
 
     private func apiRequestForCreatingQueues(endpoint: APIEndpoint, method: APIMethod, keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
-        let message = [
+        var message = [
             "httpMethod": method.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "pubkey": keyPair.pubKey.base64,
@@ -381,6 +364,11 @@ class Session: Codable {
         ]
 
         do {
+            if let accounts = try AccountList(accounts: Account.all()) {
+                let accountData = try JSONEncoder().encode(accounts)
+                let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
+                message["accountList"] = ciphertext.base64
+            }
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
 
