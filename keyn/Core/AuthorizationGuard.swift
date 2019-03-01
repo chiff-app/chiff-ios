@@ -71,7 +71,7 @@ class AuthorizationGuard {
             return
         }
 
-        let localizedReason = requestText(siteName: siteName, type: type) ?? "\(siteName)"
+        let localizedReason = textLabelFor(siteName: siteName, type: type) ?? "\(siteName)"
 
         authorize(reason: localizedReason) { (success: Bool, error: Error?) in
             self.authorizationInProgress = false
@@ -79,7 +79,7 @@ class AuthorizationGuard {
         }
     }
     
-    func requestText(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
+    func textLabelFor(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
         switch type {
         case .login:
             return "\("requests.login_to".localized.capitalized) \(siteName)?"
