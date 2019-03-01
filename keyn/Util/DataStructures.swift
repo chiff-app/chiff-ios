@@ -92,19 +92,33 @@ struct KeynPairingResponse: Codable {
  *
  * Direction: app -> browser
  */
-#warning("TODO: Make this work with accounts array, just picking first site now.")
+#warning("TODO: Make this more efficient.")
 enum AccountList: Codable {
     case string(String)
     case list([AccountList])
     case dictionary([String : AccountList])
 
     init?(accounts: [Account]) {
-        self = AccountList.dictionary(Dictionary(grouping: accounts, by: { $0.site.id }).mapValues { (accounts) -> AccountList in
+        var dict = [String:(AccountList, [AccountList])]()
+        for account in accounts {
+            for site in account.sites {
+                if let values = dict[site.id] {
+                    var accountArray = values.1
+                    accountArray.append(AccountList.string(account.id))
+                    dict.updateValue((values.0, accountArray), forKey: site.id)
+                } else {
+                    dict.updateValue((AccountList.string(site.name), [AccountList.string(account.id)]), forKey: site.id)
+                }
+            }
+        }
+        self = AccountList.dictionary(dict.mapValues { (arg) -> AccountList in
+            let (siteName, accountIds) = arg
             return AccountList.dictionary([
-                "siteName": AccountList.string(accounts[0].site.name),
-                "accountIds": AccountList.list(accounts.map({ AccountList.string($0.id) }))
-                ])
+                "siteName": siteName,
+                "accountIds": AccountList.list(accountIds)
+            ])
         })
+
     }
 
     // Should catch other errors than DecodingError.typeMismatch
