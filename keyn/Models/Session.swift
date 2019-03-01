@@ -306,7 +306,7 @@ class Session: Codable {
     }
 
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
-        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(accounts: nil, passwordSuccessfullyChanged: nil, accountID: nil, type: .end, receiptHandle: nil))
+        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
