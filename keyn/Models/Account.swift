@@ -34,11 +34,12 @@ struct Account: Codable {
         self.sites = sites
         self.username = username
 
+        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd)
         if let password = password {
-            passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: username, passwordIndex: passwordIndex, siteID: sites[0].id, ppd: sites[0].ppd, password: password)
+            passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
         }
 
-        let (generatedPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: passwordIndex, siteID: sites[0].id, ppd: sites[0].ppd, offset: passwordOffset)
+        let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
         self.passwordIndex = index
         self.lastPasswordUpdateTryIndex = index
         if password != nil {
@@ -62,8 +63,8 @@ struct Account: Codable {
 
     mutating func nextPassword() throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
-
-        let (newPassword, index) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex + 1, siteID: site.id, ppd: site.ppd, offset: offset)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd)
+        let (newPassword, index) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex + 1, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: nil, objectData: accountData, label: nil)
@@ -124,11 +125,13 @@ struct Account: Codable {
 
         if let newPassword = newPassword {
             let newIndex = passwordIndex + 1
-            self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: self.username, passwordIndex: newIndex, siteID: site.id, ppd: site.ppd, password: newPassword)
+            let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd)
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
         } else if let newUsername = newUsername {
-            self.passwordOffset = try PasswordGenerator.shared.calculatePasswordOffset(username: newUsername, passwordIndex: passwordIndex, siteID: site.id, ppd: site.ppd, password: try self.getPassword())
+            let passwordGenerator = PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd)
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.getPassword())
         }
 
         let accountData = try PropertyListEncoder().encode(self)
@@ -144,7 +147,8 @@ struct Account: Codable {
     mutating func updatePasswordAfterConfirmation() throws {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
 
-        let (newPassword, newIndex) = try PasswordGenerator.shared.generatePassword(username: username, passwordIndex: lastPasswordUpdateTryIndex, siteID: site.id, ppd: site.ppd, offset: offset)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd)
+        let (newPassword, newIndex) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex, offset: offset)
 
         self.passwordIndex = newIndex
         self.lastPasswordUpdateTryIndex = newIndex
@@ -174,9 +178,7 @@ struct Account: Codable {
     static func get(siteID: String) throws -> [Account] {
         let accounts = try Account.all()
 
-        return accounts.filter { (account) -> Bool in
-            account.site.id == siteID
-        }
+        return accounts.filter { $0.site.id == siteID }
     }
     
     static func get(accountID: String) throws -> Account? {
@@ -186,9 +188,7 @@ struct Account: Codable {
             return nil
         }
 
-        return accounts.first { (account) -> Bool in
-            account.id == accountID
-        }
+        return accounts.first { $0.id == accountID }
     }
     
     static func save(accountData: Data, id: String) throws {
@@ -198,7 +198,8 @@ struct Account: Codable {
         
         assert(account.id == id, "Account restoring went wrong. Different id")
 
-        let (password, index) = try PasswordGenerator.shared.generatePassword(username: account.username, passwordIndex: account.passwordIndex, siteID: account.site.id, ppd: account.site.ppd, offset: account.passwordOffset)
+        let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd)
+        let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
         
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
         

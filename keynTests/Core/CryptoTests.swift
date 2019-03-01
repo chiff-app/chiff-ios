@@ -13,8 +13,8 @@ class CryptoTests: XCTestCase {
         super.setUp()
         do {
             let exp = expectation(description: "Waiting for getting site.")
-            try Site.get(id: TestHelper.linkedInPPDHandle) { (site) in
-                self.site = site
+            try PPD.get(id: TestHelper.linkedInPPDHandle) { (ppd) in
+                self.site = Site(name: ppd?.name ?? "Example", id: TestHelper.linkedInPPDHandle, url: ppd?.url ?? "https://example.com", ppd: ppd)
                 exp.fulfill()
             }
             waitForExpectations(timeout: 10, handler: nil)

@@ -65,7 +65,7 @@ class API {
                             throw APIError.jsonSerialization
                         }
                         completionHandler(json, nil)
-                    } else if   httpStatus.statusCode == 404 {
+                    } else if httpStatus.statusCode == 404 {
                         completionHandler(nil, nil)
                     } else if let error = error {
                         throw APIError.request(error: error)
