@@ -58,7 +58,6 @@ struct KeynRequest: Codable {
 }
 
 struct KeynPersistentQueueMessage: Codable {
-    let accounts: AccountList?
     let passwordSuccessfullyChanged: Bool?
     let accountID: String?
     let type: KeynMessageType
@@ -66,7 +65,6 @@ struct KeynPersistentQueueMessage: Codable {
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
-        case accounts = "c"
         case passwordSuccessfullyChanged = "p"
         case type = "t"
         case receiptHandle = "r"
