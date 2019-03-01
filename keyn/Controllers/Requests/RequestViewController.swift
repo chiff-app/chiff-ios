@@ -61,7 +61,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 case .add:
                     try self.acceptAddRequest(request: request, session: session) // WIP HERE
                 case .login, .change, .fill:
-                    try self.acceptLoginChangeOrFillRequest()
+                    self.acceptLoginChangeOrFillRequest()
                 case .register:
                     self.acceptRegisterRequest()
                 default:
@@ -117,7 +117,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             do {
                 accounts = try Account.get(siteID: siteID)
                 if !accountExists() {
-                    type = .add
+                    Logger.shared.error("RequestViewController could not get accounts.")
+                    #warning("TODO: Show message to user.")
+                    self.dismiss(animated: true, completion: nil)
                 } else if accounts.count > 1 {
                     pickerHeightConstraint.constant = PICKER_HEIGHT
                     spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
@@ -126,7 +128,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                         authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
                     }
                 }
-                siteLabel.text = AuthorizationGuard.shared.requestText(siteName: request.siteName ?? "", type: type, accountExists: accountExists())
+                siteLabel.text = AuthorizationGuard.shared.textLabelFor(siteName: request.siteName ?? "", type: type, accountExists: accountExists())
             } catch {
                 Logger.shared.error("Could not get account.", error: error)
                 self.dismiss(animated: true, completion: nil)
@@ -187,20 +189,15 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         })
     }
 
-    private func acceptLoginChangeOrFillRequest() throws {
-        if accounts.count == 0 {
-            guard let siteID = request.siteID else {
-                #warning("TODO: We don't have a site object here but we do want to add the account. Solve!")
-                return
-            }
-            try PPD.get(id: siteID, completionHandler: { (ppd) in
-                let site = Site(name: self.request.siteName ?? ppd?.name ?? "Unknown", id: siteID, url: self.request.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-                self.site = site
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
-                }
-            })
-
+    /*
+     * These three scenarios have the same codepath:
+     * - get credentials for login
+     * - request a change of password
+     * - request for filling password in specific field
+     */
+    private func acceptLoginChangeOrFillRequest() {
+        if accounts.count <= 0 {
+            // Not possible because we just called analyseRequest()
         } else if accounts.count == 1 {
             authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
         } else {
@@ -212,5 +209,12 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     #warning("TODO: Implement acceptRegisterRequest in RequestViewController")
     private func acceptRegisterRequest() {
         Logger.shared.debug("TODO: Implement acceptRegisterRequest in RequestViewController.")
+//        try PPD.get(id: siteID, completionHandler: { (ppd) in
+//            let site = Site(name: self.request.siteName ?? ppd?.name ?? "Unknown", id: siteID, url: self.request.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
+//            self.site = site
+//            DispatchQueue.main.async {
+//                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
+//            }
+//        })
     }
 }
