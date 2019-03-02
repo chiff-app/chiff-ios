@@ -97,22 +97,23 @@ enum AccountList: Codable {
     case dictionary([String : AccountList])
 
     init?(accounts: [Account]) {
-        var dict = [String:(AccountList, [AccountList])]()
+        var dict = [String:(AccountList, AccountList, [AccountList])]()
         for account in accounts {
             for site in account.sites {
                 if let values = dict[site.id] {
-                    var accountArray = values.1
+                    var accountArray = values.2
                     accountArray.append(AccountList.string(account.id))
-                    dict.updateValue((values.0, accountArray), forKey: site.id)
+                    dict.updateValue((values.0, values.1, accountArray), forKey: site.id)
                 } else {
-                    dict.updateValue((AccountList.string(site.name), [AccountList.string(account.id)]), forKey: site.id)
+                    dict.updateValue((AccountList.string(site.name), AccountList.string(site.url), [AccountList.string(account.id)]), forKey: site.id)
                 }
             }
         }
         self = AccountList.dictionary(dict.mapValues { (arg) -> AccountList in
-            let (siteName, accountIds) = arg
+            let (siteName, siteUrl, accountIds) = arg
             return AccountList.dictionary([
                 "siteName": siteName,
+                "siteUrl": siteUrl,
                 "accountIds": AccountList.list(accountIds)
             ])
         })
