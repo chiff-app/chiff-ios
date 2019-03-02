@@ -74,15 +74,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func reject(_ sender: UIButton) {
-        if let request = request, let session = session, let browserTab = request.browserTab {
-            session.reject(browserTab: browserTab) { (_, error) in
-                if let error = error {
-                    Logger.shared.error("Reject message could not be sent.", error: error)
-                }
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-        AuthorizationGuard.shared.authorizationInProgress = false
+        rejectRequest()
     }
     
     // MARK: - Private
@@ -106,8 +98,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
             } else {
                 Logger.shared.analytics("Request denied.", code: .requestDenied, userInfo: ["result": false, "type": type.rawValue])
-                #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
-                Logger.shared.debug("TODO: Handle touchID errors.")
+                self?.rejectRequest()
             }
         }
     }
@@ -216,5 +207,17 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 //                self.performSegue(withIdentifier: "RegistrationRequestSegue", sender: self)
 //            }
 //        })
+    }
+
+    private func rejectRequest() {
+        if let request = request, let session = session, let browserTab = request.browserTab {
+            session.reject(browserTab: browserTab) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("Reject message could not be sent.", error: error)
+                }
+            }
+        }
+        self.dismiss(animated: true, completion: nil)
+        AuthorizationGuard.shared.authorizationInProgress = false
     }
 }
