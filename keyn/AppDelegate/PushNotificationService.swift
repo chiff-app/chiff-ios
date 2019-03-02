@@ -108,7 +108,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         if keynRequest.type == .end {
             do {
                 if let sessionID = keynRequest.sessionID {
-                    try Session.get(id: sessionID)?.delete(includingQueue: false)
+                    try Session.get(id: sessionID)?.delete(notifyExtension: false)
                     NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
                 }
             } catch {
@@ -118,13 +118,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return [.alert, .sound]
         }
 
-        if notification.date.timeIntervalSinceNow <= -180.0 {
-            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
+        guard notification.request.content.title != "Error" else {
+            Logger.shared.warning("iOS notification content parsing failed")
             return []
         }
 
-        if notification.request.content.title == "Error" {
-            Logger.shared.warning("iOS notification content parsing failed")
+        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -5 else {
+            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
+            DispatchQueue.main.async {
+                AuthorizationGuard.shared.launchExpiredRequestView(with: keynRequest)
+            }
             return []
         }
 
