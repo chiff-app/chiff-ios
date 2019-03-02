@@ -23,7 +23,7 @@ enum KeynMessageType: Int, Codable {
     case confirm = 8
     case fill = 9
     case reject = 10
-    case accountList = 11
+    case expired = 11
 }
 
 /*
@@ -42,6 +42,7 @@ struct KeynRequest: Codable {
     let siteURL: String?
     let type: KeynMessageType
     let username: String?
+    let sentTimestamp: TimeInterval
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
@@ -54,6 +55,7 @@ struct KeynRequest: Codable {
         case siteURL = "l"
         case type = "r"
         case username = "u"
+        case sentTimestamp = "z"
     }
 }
 

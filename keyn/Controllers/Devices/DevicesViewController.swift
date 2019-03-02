@@ -99,7 +99,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 do {
-                    try self.sessions[indexPath.row].delete(includingQueue: true)
+                    try self.sessions[indexPath.row].delete(notifyExtension: true)
                     self.sessions.remove(at: indexPath.row)
                     self.tableView.deleteRows(at: [indexPath], with: .automatic)
                     if self.sessions.isEmpty {

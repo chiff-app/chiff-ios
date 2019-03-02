@@ -95,22 +95,40 @@ class AuthorizationGuard {
     }
     
     func launchRequestView(with request: KeynRequest) {
-        if authorizationInProgress {
+        guard !authorizationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
         }
 
         do {
-            if let sessionID = request.sessionID, let session = try Session.get(id: sessionID) {
-                let storyboard: UIStoryboard = UIStoryboard.get(.request)
-                let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-                viewController.type = request.type
-                viewController.request = request
-                viewController.session = session
-                UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
-            } else {
-                Logger.shared.warning("Received request for session that doesn't exist.")
+            guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID) else {
+                throw SessionError.doesntExist
             }
+            let storyboard: UIStoryboard = UIStoryboard.get(.request)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
+            viewController.type = request.type
+            viewController.request = request
+            viewController.session = session
+            UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
+        } catch {
+            Logger.shared.error("Could not decode session.", error: error)
+        }
+    }
+
+    func launchExpiredRequestView(with request: KeynRequest) {
+        guard !authorizationInProgress else {
+            return
+        }
+        do {
+            guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
+                throw SessionError.doesntExist
+            }
+            session.cancelRequest(reason: .expired, browserTab: browserTab) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("Error rejecting request", error: error)
+                }
+            }
+            #warning("TODO: Show the generic error viewController here with message that the request expired")
         } catch {
             Logger.shared.error("Could not decode session.", error: error)
         }

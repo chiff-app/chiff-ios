@@ -211,7 +211,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
     private func rejectRequest() {
         if let request = request, let session = session, let browserTab = request.browserTab {
-            session.reject(browserTab: browserTab) { (_, error) in
+            session.cancelRequest(reason: .reject, browserTab: browserTab) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Reject message could not be sent.", error: error)
                 }

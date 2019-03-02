@@ -52,16 +52,17 @@ class Session: Codable {
         self.os = os
     }
 
-    func delete(includingQueue: Bool) throws {
-        Logger.shared.analytics("Session ended.", code: .sessionEnd, userInfo: ["appInitiated": includingQueue])
-        if includingQueue {
+    func delete(notifyExtension: Bool) throws {
+        Logger.shared.analytics("Session ended.", code: .sessionEnd, userInfo: ["appInitiated": notifyExtension])
+        if notifyExtension {
             try sendByeToPersistentQueue() { (_, error) in
                 if let error = error {
                     Logger.shared.error("Error sending bye to persistent queue.", error: error)
                 }
             }
+        } else { // App should delete the queues
+            deleteQueuesAtAWS()
         }
-        deleteEndpointAtAWS()
         try Keychain.shared.delete(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service)
         try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service)
     }
@@ -80,9 +81,9 @@ class Session: Codable {
         return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
     }
 
-    func reject(browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func cancelRequest(reason: KeynMessageType, browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .reject)
+            let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             try sendToVolatileQueue(ciphertext: ciphertext, completionHandler: completionHandler)
@@ -224,7 +225,7 @@ class Session: Codable {
     static func deleteAll() {
         do {
             for session in try Session.all() {
-                try session.delete(includingQueue: true)
+                try session.delete(notifyExtension: true)
             }
         } catch {
             Logger.shared.debug("Error deleting sessions.", error: error)
@@ -315,8 +316,7 @@ class Session: Codable {
         }
     }
 
-    #warning("This seems to fail..")
-    private func deleteEndpointAtAWS() {
+    private func deleteQueuesAtAWS() {
         apiRequest(endpoint: .message, method: .delete) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
