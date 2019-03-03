@@ -242,6 +242,14 @@ struct Account: Codable {
         return accounts
     }
 
+    static func accountList() throws -> AccountList {
+        let accountKeyValues = try Account.all().map({ (account) -> (String, [MinimalSite]) in
+            return (account.id, account.sites.map({ MinimalSite(site: $0) } ))
+        })
+
+        return Dictionary(uniqueKeysWithValues: accountKeyValues)
+    }
+
     static func deleteAll() {
         Keychain.shared.deleteAll(service: keychainService)
         Keychain.shared.deleteAll(service: otpKeychainService)
