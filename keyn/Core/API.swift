@@ -23,7 +23,8 @@ enum APIEndpoint: String {
     case message = "message"
     case pairing = "message/pairing"
     case volatile = "message/volatile"
-    case persistent = "message/persistent"
+    case persistentAppToBrowser = "message/persistent/app-to-browser"
+    case persistentBrowserToApp = "message/persistent/browser-to-app"
     case push = "message/push"
     case questionnaire = "questionnaire"
 }
