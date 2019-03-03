@@ -170,7 +170,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                     return
                 }
-                try messages.filter({ $0.type == .confirm }).forEach({ try self.updatePassword(keynMessage: $0, session: session) })
+                try messages.forEach({ try self.handlePersistenQueuetMessage(keynMessage: $0, session: session) })
             } catch {
                 Logger.shared.warning("Could not send account list", error: error, userInfo: nil)
             }
@@ -180,13 +180,24 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func updatePassword(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
-        guard let result = keynMessage.passwordSuccessfullyChanged, let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
+    private func handlePersistenQueuetMessage(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
+        guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
-        if result {
-            var account = try Account.get(accountID: accountId)
-            try account?.updatePasswordAfterConfirmation()
+        var account = try Account.get(accountID: accountId)
+
+        switch keynMessage.type {
+        case .confirm:
+            guard let result = keynMessage.passwordSuccessfullyChanged else {
+                throw CodingError.missingData
+            }
+            if result {
+                try account?.updatePasswordAfterConfirmation()
+            }
+        case .preferences:
+            try account?.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
+        default:
+            Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
         session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
     }
