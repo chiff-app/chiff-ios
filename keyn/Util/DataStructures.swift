@@ -24,6 +24,7 @@ enum KeynMessageType: Int, Codable {
     case fill = 9
     case reject = 10
     case expired = 11
+    case preferences = 12
 }
 
 /*
@@ -63,6 +64,8 @@ struct KeynPersistentQueueMessage: Codable {
     let passwordSuccessfullyChanged: Bool?
     let accountID: String?
     let type: KeynMessageType
+    let askToLogin: Bool?
+    let askToChange: Bool?
     var receiptHandle: String?
 
     enum CodingKeys: String, CodingKey {
@@ -70,6 +73,8 @@ struct KeynPersistentQueueMessage: Codable {
         case passwordSuccessfullyChanged = "p"
         case type = "t"
         case receiptHandle = "r"
+        case askToLogin = "l"
+        case askToChange = "c"
     }
 }
 
@@ -92,9 +97,21 @@ struct KeynPairingResponse: Codable {
  *
  * Direction: app -> browser
  */
-typealias AccountList = [String:[MinimalSite]]
+typealias AccountList = [String:JSONAccount]
 
-struct MinimalSite: Codable {
+struct JSONAccount: Codable {
+    let askToLogin: Bool
+    let askToChange: Bool
+    let sites: [JSONSite]
+
+    init(account: Account) {
+        self.askToLogin = account.askToLogin
+        self.askToChange = account.askToChange
+        self.sites = account.sites.map({ JSONSite(site: $0) })
+    }
+}
+
+struct JSONSite: Codable {
     let id: String
     let url: String
     let name: String

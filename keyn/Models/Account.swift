@@ -19,6 +19,8 @@ struct Account: Codable {
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
+    var askToLogin: Bool = true
+    var askToChange: Bool = true
     private var tokenURL: URL? // Only for backup
     private var tokenSecret: Data? // Only for backup
     static let keychainService = "io.keyn.account"
@@ -47,7 +49,7 @@ struct Account: Codable {
         }
         
         Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
-        
+
         try save(password: generatedPassword)
     }
 
@@ -111,7 +113,7 @@ struct Account: Codable {
         try backup()
     }
     
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?) throws {
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -121,6 +123,12 @@ struct Account: Codable {
         }
         if let url = url {
             self.sites[0].url = url
+        }
+        if let askToLogin = askToLogin {
+            self.askToLogin = askToLogin
+        }
+        if let askToChange = askToChange {
+            self.askToChange = askToChange
         }
 
         if let newPassword = newPassword {
@@ -243,11 +251,7 @@ struct Account: Codable {
     }
 
     static func accountList() throws -> AccountList {
-        let accountKeyValues = try Account.all().map({ (account) -> (String, [MinimalSite]) in
-            return (account.id, account.sites.map({ MinimalSite(site: $0) } ))
-        })
-
-        return Dictionary(uniqueKeysWithValues: accountKeyValues)
+        return Dictionary(uniqueKeysWithValues: try Account.all().map({ ($0.id, JSONAccount(account: $0)) }))
     }
 
     static func deleteAll() {

@@ -170,7 +170,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl)
+            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
             if let accountsTableViewController = navigationController?.viewControllers[0] as? AccountsTableViewController {
                 accountsTableViewController.updateAccount(account: account!)
             }
