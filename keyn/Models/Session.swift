@@ -130,7 +130,7 @@ class Session: Codable {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
         ]
-        apiRequest(endpoint: .persistent, method: .get, message: message) { (res, error) in
+        apiRequest(endpoint: .persistentBrowserToApp, method: .get, message: message) { (res, error) in
             do {
                 if let error = error {
                     throw error
@@ -157,7 +157,7 @@ class Session: Codable {
         let message = [
             "receiptHandle": receiptHandle
         ]
-        apiRequest(endpoint: .persistent, method: .delete, message: message) { (_, error) in
+        apiRequest(endpoint: .persistentBrowserToApp, method: .delete, message: message) { (_, error) in
             if let error = error {
                 Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
             }
@@ -309,7 +309,7 @@ class Session: Codable {
     private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
         let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        apiRequest(endpoint: .persistent, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
+        apiRequest(endpoint: .persistentAppToBrowser, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot send message to control queue.", error: error)
             }
@@ -317,6 +317,7 @@ class Session: Codable {
     }
 
     private func deleteQueuesAtAWS() {
+        #warning("TODO: Add pubkey to request otherwise it doesn't work")
         apiRequest(endpoint: .message, method: .delete) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
