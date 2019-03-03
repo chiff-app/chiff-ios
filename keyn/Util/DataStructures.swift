@@ -92,60 +92,17 @@ struct KeynPairingResponse: Codable {
  *
  * Direction: app -> browser
  */
-#warning("TODO: Make this more efficient.")
-enum AccountList: Codable {
-    case string(String)
-    case list([AccountList])
-    case dictionary([String : AccountList])
+typealias AccountList = [String:[MinimalSite]]
 
-    init?(accounts: [Account]) {
-        var dict = [String:(AccountList, AccountList, [AccountList])]()
-        for account in accounts {
-            for site in account.sites {
-                if let values = dict[site.id] {
-                    var accountArray = values.2
-                    accountArray.append(AccountList.string(account.id))
-                    dict.updateValue((values.0, values.1, accountArray), forKey: site.id)
-                } else {
-                    dict.updateValue((AccountList.string(site.name), AccountList.string(site.url), [AccountList.string(account.id)]), forKey: site.id)
-                }
-            }
-        }
-        self = AccountList.dictionary(dict.mapValues { (arg) -> AccountList in
-            let (siteName, siteUrl, accountIds) = arg
-            return AccountList.dictionary([
-                "siteName": siteName,
-                "siteUrl": siteUrl,
-                "accountIds": AccountList.list(accountIds)
-            ])
-        })
+struct MinimalSite: Codable {
+    let id: String
+    let url: String
+    let name: String
 
-    }
-
-    // Should catch other errors than DecodingError.typeMismatch
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let value = try? container.decode(String.self) {
-            self = .string(value)
-        } else if let value = try? container.decode([AccountList].self) {
-            self = .list(value)
-        } else if let value = try? container.decode([String : AccountList].self) {
-            self = .dictionary(value)
-        } else {
-            throw CodingError.unexpectedData
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch self {
-        case .string(let string):
-            try container.encode(string)
-        case .list(let list):
-            try container.encode(list)
-        case .dictionary(let dictionary):
-            try container.encode(dictionary)
-        }
+    init(site: Site) {
+        self.id = site.id
+        self.url = site.url
+        self.name = site.name
     }
 }
 

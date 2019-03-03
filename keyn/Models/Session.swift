@@ -165,12 +165,7 @@ class Session: Codable {
     }
 
     func updateAccountList() throws {
-        guard let accounts = try AccountList(accounts: Account.all()) else {
-            Logger.shared.debug("No accounts?")
-            return
-        }
-
-        let message = try JSONEncoder().encode(accounts)
+        let message = try JSONEncoder().encode(Account.accountList())
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .accounts, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {
@@ -275,11 +270,7 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws {
-        guard let accounts = try AccountList(accounts: Account.all()) else {
-            Logger.shared.debug("No accounts?")
-            return
-        }
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), sandboxed: Properties.isDebug, accounts: accounts, type: .pair)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), sandboxed: Properties.isDebug, accounts: try Account.accountList(), type: .pair)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
@@ -365,11 +356,9 @@ class Session: Codable {
         ]
 
         do {
-            if let accounts = try AccountList(accounts: Account.all()) {
-                let accountData = try JSONEncoder().encode(accounts)
-                let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
-                message["accountList"] = ciphertext.base64
-            }
+            let accountData = try JSONEncoder().encode(Account.accountList())
+            let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
+            message["accountList"] = ciphertext.base64
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
 
