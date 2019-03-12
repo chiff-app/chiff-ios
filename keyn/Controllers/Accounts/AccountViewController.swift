@@ -41,7 +41,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.url
             userNameTextField.text = account.username
-            userPasswordTextField.text = account.password
+            userPasswordTextField.text = "tralalalallala" // This should correspond with the number of characters
             token = try account.oneTimePasswordToken()
             updateOTPUI()
             websiteNameTextField.delegate = self
@@ -149,7 +149,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     @objc func cancel() {
         endEditing()
-        userPasswordTextField.text = account?.password
+        userPasswordTextField.text = "tralalalallala"
         navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
         websiteNameTextField.text = account?.site.name
@@ -160,12 +160,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     @objc func update() {
         endEditing()
         do {
-            var newPassword: String? = nil
             let newUsername = userNameTextField.text != account?.username ? userNameTextField.text : nil
             let newSiteName = websiteNameTextField.text != account?.site.name ? websiteNameTextField.text : nil
-            if let oldPassword: String = account?.password {
-                newPassword = userPasswordTextField.text != oldPassword ? userPasswordTextField.text : nil
-            }
+            let newPassword = userPasswordTextField.text != password ? userPasswordTextField.text : nil
             let newUrl = websiteURLTextField.text != account?.site.url ? websiteURLTextField.text : nil
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return

@@ -141,6 +141,7 @@ extension Notification.Name {
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountAdded = Notification.Name("AccountAdded")
     static let appWasUnlocked = Notification.Name("AppWasUnlocked")
+    static let accountsLoaded = Notification.Name("accountsLoaded")
 }
 
 // MARK: - UIExtensions

@@ -18,7 +18,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
         do {
-            let savedAccounts = try Account.all()
+            let savedAccounts = Account.all
             unfilteredAccounts.append(contentsOf: savedAccounts)
         } catch {
             Logger.shared.error("Could not get accounts from Keychain", error: error)
@@ -119,7 +119,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
-            guard let password = account.password else {
+            guard let password = try? account.password(reason: "Get password for \(account.site.name)") else {
                 #warning("TODO: What to do when there is no password?")
                 return
             }

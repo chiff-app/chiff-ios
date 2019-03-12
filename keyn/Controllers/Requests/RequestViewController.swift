@@ -79,51 +79,40 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // MARK: - Private
 
-    private func authorize(request: KeynRequest, session: Session, accountID: String, type: KeynMessageType) {
-        guard let siteName = request.siteName, let browserTab = request.browserTab else {
+    private func authorize(request: KeynRequest, session: Session, account: Account, type: KeynMessageType) {
+        guard let browserTab = request.browserTab else {
             #warning("Show error to user that the request was not valid. Or perhaps check before and never call this function.")
             return
         }
 
-        AuthorizationGuard.shared.authorizeRequest(siteName: siteName, accountID: accountID, type: type) { [weak self] (succes, error) in
-            if (succes) {
-                DispatchQueue.main.async {
-                    do {
-                        let account = try Account.get(accountID: accountID)
-                        try session.sendCredentials(account: account!, browserTab: browserTab, type: type)
-                        self?.dismiss(animated: true, completion: nil)
-                    } catch {
-                        Logger.shared.error("Error authorizing request", error: error)
-                    }
+        DispatchQueue.global().async {
+            do {
+                try session.sendCredentials(account: account, browserTab: browserTab, type: type)
+                DispatchQueue.main.async { [weak self] in
+                    self?.dismiss(animated: true, completion: nil)
                 }
-            } else {
-                Logger.shared.analytics("Request denied.", code: .requestDenied, userInfo: ["result": false, "type": type.rawValue])
-                self?.rejectRequest()
+            } catch {
+                Logger.shared.error("Error authorizing request", error: error)
             }
         }
     }
 
     private func analyseRequest() {
         if let request = request, let session = session, let siteID = request.siteID {
-            do {
-                accounts = try Account.get(siteID: siteID)
-                if !accountExists() {
-                    Logger.shared.error("RequestViewController could not get accounts.")
-                    #warning("TODO: Show message to user.")
-                    self.dismiss(animated: true, completion: nil)
-                } else if accounts.count > 1 {
-                    pickerHeightConstraint.constant = PICKER_HEIGHT
-                    spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
-                } else if accounts.count == 1 {
-                    if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.shared.hasFaceID() {
-                        authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
-                    }
-                }
-                siteLabel.text = AuthorizationGuard.shared.textLabelFor(siteName: request.siteName ?? "", type: type, accountExists: accountExists())
-            } catch {
-                Logger.shared.error("Could not get account.", error: error)
+            accounts = Account.get(siteID: siteID)
+            if !accountExists() {
+                Logger.shared.error("RequestViewController could not get accounts.")
+                #warning("TODO: Show message to user.")
                 self.dismiss(animated: true, completion: nil)
+            } else if accounts.count > 1 {
+                pickerHeightConstraint.constant = PICKER_HEIGHT
+                spaceBetweenPickerAndStackview.constant = SPACE_PICKER_STACK
+            } else if accounts.count == 1 {
+                if (type == .login || type == .change || type == .fill) && !AuthenticationGuard.shared.hasFaceID() {
+                    authorize(request: request, session: session, account: accounts.first!, type: type)
+                }
             }
+            siteLabel.text = AuthorizationGuard.shared.textLabelFor(siteName: request.siteName ?? "", type: type, accountExists: accountExists())
         }
     }
     
@@ -157,25 +146,16 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 
         try PPD.get(id: siteID, completionHandler: { (ppd) in
             let site = Site(name: request.siteName ?? ppd?.name ?? "Unknown", id: siteID, url: request.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            AuthorizationGuard.shared.authorizeRequest(siteName: site.name, accountID: nil, type: request.type) { [weak self] (succes, error) in
-                if (succes) {
-                    DispatchQueue.main.async {
-                        do {
-                            let account = try Account(username: username, sites: [site], password: password)
-                            try session.sendCredentials(account: account, browserTab: browserTab, type: request.type)
-                            NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                        } catch {
-                            #warning("TODO: Show the user that the account could not be added.")
-                            Logger.shared.error("Account could not be saved.", error: error)
-                        }
-                        //                        self?.performSegue(withIdentifier: "UnwindToRequestViewController", sender: self)
-                        #warning("TODO: Go to the request completed view (to be made)")
-                        self?.dismiss(animated: true, completion: nil)
-                    }
-                } else {
-                    #warning("TODO: Some user interaction generates touchID errors? Check if we get here not when user denied but when these kinds of error occured.")
-                    Logger.shared.debug("TODO: Handle touchID errors.")
+            do {
+                let account = try Account(username: username, sites: [site], password: password)
+                try session.sendCredentials(account: account, browserTab: browserTab, type: request.type)
+                NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                DispatchQueue.main.async { [weak self] in
+                    self?.dismiss(animated: true, completion: nil)
                 }
+            } catch {
+                #warning("TODO: Show the user that the account could not be added.")
+                Logger.shared.error("Account could not be saved.", error: error)
             }
         })
     }
@@ -190,10 +170,10 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if accounts.count <= 0 {
             // Not possible because we just called analyseRequest()
         } else if accounts.count == 1 {
-            authorize(request: request, session: session, accountID: accounts.first!.id, type: type)
+            authorize(request: request, session: session, account: accounts.first!, type: type)
         } else {
-            let accountID = accounts[accountPicker.selectedRow(inComponent: 0)].id
-            authorize(request: request, session: session, accountID: accountID, type: type)
+            let account = accounts[accountPicker.selectedRow(inComponent: 0)]
+            authorize(request: request, session: session, account: account, type: type)
         }
     }
 
