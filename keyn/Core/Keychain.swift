@@ -25,7 +25,7 @@ enum Classification: String {
 class Keychain {
     
     static let shared = Keychain()
-    
+
     private init() {}
     
     func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, classification: Classification, reason: String? = nil) throws {
@@ -45,10 +45,10 @@ class Keychain {
 
         switch classification {
         case .restricted:
-            query[kSecAttrAccessible as String] = kSecAttrAccessibleAlwaysThisDeviceOnly
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
         case .confidential:
             let access = SecAccessControlCreateWithFlags(nil, // Use the default allocator.
-                kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+                kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
                 .userPresence,
                 nil) // Ignore any error.
             query[kSecAttrAccessControl as String] = access
@@ -65,7 +65,7 @@ class Keychain {
         }
     }
 
-    func get(id identifier: String, service: String, reason: String? = nil) throws -> Data {
+    func get(id identifier: String, service: String, reason: String? = nil, context: LAContext? = nil, skipAuthenticationUI: Bool = false) throws -> Data {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -75,6 +75,13 @@ class Keychain {
         if let reason = reason {
             query[kSecUseOperationPrompt as String] = reason
         }
+        if let context = context {
+            query[kSecUseAuthenticationContext as String] = context
+        }
+        if skipAuthenticationUI {
+            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip
+        }
+
 
         var queryResult: AnyObject?
         let status = withUnsafeMutablePointer(to: &queryResult) {
@@ -142,7 +149,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
     
-    func all(service: String, reason: String? = nil) throws -> [[String: Any]]? {
+    func all(service: String, reason: String? = nil, context: LAContext? = nil) throws -> [[String: Any]]? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
@@ -150,6 +157,9 @@ class Keychain {
 
         if let reason = reason {
             query[kSecUseOperationPrompt as String] = reason
+        }
+        if let context = context {
+            query[kSecUseAuthenticationContext as String] = context
         }
         
         var queryResult: AnyObject?

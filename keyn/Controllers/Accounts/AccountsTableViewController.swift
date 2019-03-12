@@ -10,7 +10,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Load vc")
 
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
@@ -25,7 +24,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     private func loadAccounts(notification: Notification) {
-        filteredAccounts = Account.all.sorted(by: { $0.site.name < $1.site.name })
+        filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
         tableView.reloadData()
     }
 
@@ -57,11 +56,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = Account.all.filter({ (account) -> Bool in
+            filteredAccounts = Account.all.values.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = Account.all.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
@@ -117,13 +116,10 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
     
     func updateAccount(account: Account) {
-        if let unfilteredIndex = Account.all.index(where: { account.id == $0.id }) {
-            Account.all[unfilteredIndex] = account
-            if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
-                filteredAccounts?[filteredIndex] = account
-                let indexPath = IndexPath(row: filteredIndex, section: 0)
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
+            filteredAccounts?[filteredIndex] = account
+            let indexPath = IndexPath(row: filteredIndex, section: 0)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 
@@ -142,7 +138,6 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     func addAccount(account: Account) {
-        Account.all.append(account)
         filteredAccounts?.append(account)
         filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {

@@ -86,7 +86,7 @@ class AuthenticationGuard {
         }
 
         DispatchQueue.global().async {
-            let alreadyAuthenticated = try! Account.loadAll(reason: reasonString)
+            let alreadyAuthenticated = try! Account.loadAll(context: self.localAuthenticationContext, reason: reasonString)
             if alreadyAuthenticated {
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 DispatchQueue.main.async { [weak self] in
@@ -181,6 +181,7 @@ class AuthenticationGuard {
         }
         lockWindow.makeKeyAndVisible()
         authenticationInProgress = false
+        localAuthenticationContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))

@@ -6,6 +6,10 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 
+enum AccountError: KeynError {
+    case duplicateAccountId
+}
+
 /*
  * An account belongs to the user and can have one Site.
  */
@@ -27,7 +31,7 @@ struct Account: Codable {
 
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
-    static var all = [Account]()
+    static var all = [String: Account]()
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -48,7 +52,7 @@ struct Account: Codable {
         }
 
         try save(password: generatedPassword)
-        Account.all.append(self)
+        Account.all[id] = self
         try Session.all().forEach({ try $0.updateAccountList() })
         
         Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
@@ -106,7 +110,7 @@ struct Account: Codable {
             try Keychain.shared.save(id: id, service: Account.otpKeychainService, secretData: secret, objectData: tokenData, classification: .secret)
         }
         try backup()
-
+        Account.all[id] = self
     }
 
     mutating func deleteOtp() throws {
@@ -146,6 +150,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil)
         try backup()
+        Account.all[id] = self
     }
 
     /*
@@ -177,14 +182,14 @@ struct Account: Codable {
     func delete() throws {
         try Keychain.shared.delete(id: id, service: Account.keychainService)
         try BackupManager.shared.deleteAccount(accountId: id)
-        Account.all.removeAll(where: { $0.id == id })
+        Account.all.removeValue(forKey: id)
         try Session.all().forEach({ try $0.updateAccountList() })
         Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
-    func password(reason: String) throws -> String {
+    func password(reason: String, context: LAContext? = nil, skipAuthenticationUI: Bool = false) throws -> String {
         do {
-            let data = try Keychain.shared.get(id: id, service: Account.keychainService, reason: reason)
+            let data = try Keychain.shared.get(id: id, service: Account.keychainService, reason: reason, context: context, skipAuthenticationUI: skipAuthenticationUI)
 
             guard let password = String(data: data, encoding: .utf8) else {
                 throw CodingError.stringEncoding
@@ -203,7 +208,7 @@ struct Account: Codable {
     static func get(siteID: String) -> [Account] {
         let accounts = Account.all
 
-        return accounts.filter { $0.site.id == siteID }
+        return accounts.values.filter { $0.site.id == siteID }
     }
     
     static func get(accountID: String) -> Account? {
@@ -213,7 +218,7 @@ struct Account: Codable {
             return nil
         }
 
-        return accounts.first { $0.id == accountID }
+        return Account.all[accountID]
     }
     
     static func save(accountData: Data, id: String) throws {
@@ -248,12 +253,11 @@ struct Account: Codable {
         try Keychain.shared.save(id: account.id, service: Account.keychainService, secretData: passwordData, objectData: data, classification: .confidential, reason: "Save \(account.site.name)")
     }
 
-    static func loadAll(reason: String) throws -> Bool {
-        guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason) else {
+    static func loadAll(context: LAContext, reason: String) throws -> Bool {
+        guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason, context: context) else {
             return false
         }
 
-        var accounts = [Account]()
         let decoder = PropertyListDecoder()
 
         for dict in dataArray {
@@ -261,16 +265,17 @@ struct Account: Codable {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(Account.self, from: accountData)
-            accounts.append(account)
+            guard !all.keys.contains(account.id) else {
+                throw AccountError.duplicateAccountId
+            }
+            all[account.id] = account
         }
 
-        all = accounts
-        print("Load accounts")
-        return !accounts.isEmpty
+        return !all.isEmpty
     }
 
     static func accountList() -> AccountList {
-        return Dictionary(uniqueKeysWithValues: Account.all.map({ ($0.id, JSONAccount(account: $0)) }))
+        return all.mapValues({ JSONAccount(account: $0) })
     }
 
     static func deleteAll() {
