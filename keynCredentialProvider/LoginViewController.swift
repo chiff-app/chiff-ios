@@ -18,12 +18,12 @@ class LoginViewController: ASCredentialProviderViewController {
         navigationBar.shadowImage = UIImage()
         touchIDButton.imageView!.contentMode = .scaleAspectFit
         touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
-        
-        if !hasFaceID() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                self?.authenticateUser()
-            }
-        }
+//
+//        if !hasFaceID() {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+//                self?.authenticateUser()
+//            }
+//        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -52,32 +52,29 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func prepareCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         for identifier in serviceIdentifiers {
-            do {
-                guard let url = URL(string: identifier.identifier), let scheme = url.scheme, let host = url.host else {
-                    Logger.shared.debug("Could not decode URL", userInfo: ["url": identifier.identifier])
-                    return
-                }
-                var identities = [ASPasswordCredentialIdentity]()
-                for account in try Account.get(siteID: "\(scheme)://\(host)".sha256) {
-                    identities.append(ASPasswordCredentialIdentity(serviceIdentifier: identifier, user: account.username, recordIdentifier: account.id))
-                }
-                ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
-            } catch {
-                Logger.shared.warning("Error getting account", error: error, userInfo: ["url": identifier.identifier])
+            guard let url = URL(string: identifier.identifier), let scheme = url.scheme, let host = url.host else {
+                Logger.shared.debug("Could not decode URL", userInfo: ["url": identifier.identifier])
+                return
             }
+            var identities = [ASPasswordCredentialIdentity]()
+            for account in Account.get(siteID: "\(scheme)://\(host)".sha256) {
+                identities.append(ASPasswordCredentialIdentity(serviceIdentifier: identifier, user: account.username, recordIdentifier: account.id))
+            }
+            ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
         }
     }
 
+    #warning("TODO: this will probably fail")
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
-        guard let account = try? Account.get(accountID: credentialIdentity.recordIdentifier!) else {
+        guard let account = Account.get(accountID: credentialIdentity.recordIdentifier!) else {
             return extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
         }
 
-        guard let password = account?.password, let username = account?.username else {
+        guard let password = try? account.password(reason: "Get password for \(account.site.name)") else {
             return extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
 
-        let passwordCredential = ASPasswordCredential(user: username, password: password)
+        let passwordCredential = ASPasswordCredential(user: account.username, password: password)
         extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
     }
 

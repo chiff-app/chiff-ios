@@ -5,21 +5,13 @@
 import UIKit
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
-    var unfilteredAccounts = [Account]()
     var filteredAccounts: [Account]?
     let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Load vc")
 
-        do {
-            let savedAccounts = try Account.all()
-            unfilteredAccounts.append(contentsOf: savedAccounts)
-        } catch {
-            Logger.shared.error("Could not get accounts from Keychain", error: error)
-        }
-
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = true
@@ -29,6 +21,12 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         navigationItem.searchController = searchController
 
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
+        NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+    }
+
+    private func loadAccounts(notification: Notification) {
+        filteredAccounts = Account.all.sorted(by: { $0.site.name < $1.site.name })
+        tableView.reloadData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -59,11 +57,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
+            filteredAccounts = Account.all.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = Account.all.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
@@ -119,8 +117,8 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
     
     func updateAccount(account: Account) {
-        if let unfilteredIndex = unfilteredAccounts.index(where: { account.id == $0.id }) {
-            unfilteredAccounts[unfilteredIndex] = account
+        if let unfilteredIndex = Account.all.index(where: { account.id == $0.id }) {
+            Account.all[unfilteredIndex] = account
             if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
                 filteredAccounts?[filteredIndex] = account
                 let indexPath = IndexPath(row: filteredIndex, section: 0)
@@ -134,11 +132,17 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             Logger.shared.warning("Account was nil when trying to add it to the view.")
             return
         }
-        addAccount(account: account)
+        filteredAccounts?.append(account)
+        filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
+        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
+            let newIndexPath = IndexPath(row: filteredIndex, section: 0)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+        updateSearchResults(for: searchController)
     }
 
     func addAccount(account: Account) {
-        unfilteredAccounts.append(account)
+        Account.all.append(account)
         filteredAccounts?.append(account)
         filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
@@ -164,15 +168,12 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        if let index = unfilteredAccounts.index(where: { account.id == $0.id }) {
-            do {
-                try account.delete()
-                unfilteredAccounts.remove(at: index)
-                filteredAccounts?.remove(at: filteredIndexPath.row)
-                tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
-            } catch {
-                Logger.shared.error("Could not delete account.", error: error)
-            }
+        do {
+            try account.delete()
+            filteredAccounts?.remove(at: filteredIndexPath.row)
+            tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+        } catch {
+            Logger.shared.error("Could not delete account.", error: error)
         }
     }
 }

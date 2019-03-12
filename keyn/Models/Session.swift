@@ -98,20 +98,20 @@ class Session: Codable {
 
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: account.password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Change password for \(account.site.name)"), np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
-            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Add \(account.site.name)"), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
         case .login:
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+            response = KeynCredentialsResponse(u: account.username, p:try account.password(reason: "Login to \(account.site.name)"), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
         case .fill:
             Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: nil, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
+            response = KeynCredentialsResponse(u: nil, p: try account.password(reason: "Fill password for \(account.site.name)"), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             #warning("TODO: Implement registering for account. This case is probably never reached now.")
-            response = KeynCredentialsResponse(u: account.username, p: account.password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Add \(account.site.name)"), np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
         }

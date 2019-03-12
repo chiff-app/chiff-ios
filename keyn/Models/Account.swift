@@ -4,6 +4,7 @@
  */
 import Foundation
 import OneTimePassword
+import LocalAuthentication
 
 /*
  * An account belongs to the user and can have one Site.
@@ -23,12 +24,10 @@ struct Account: Codable {
     var askToChange: Bool = true
     private var tokenURL: URL? // Only for backup
     private var tokenSecret: Data? // Only for backup
+
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
-
-    var password: String? {
-        return try? getPassword()
-    }
+    static var all = [Account]()
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -47,10 +46,12 @@ struct Account: Codable {
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
-        
-        Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
 
         try save(password: generatedPassword)
+        Account.all.append(self)
+        try Session.all().forEach({ try $0.updateAccountList() })
+        
+        Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
     }
 
     mutating func backup() throws {
@@ -139,7 +140,7 @@ struct Account: Codable {
             self.lastPasswordUpdateTryIndex = newIndex
         } else if let newUsername = newUsername {
             let passwordGenerator = PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd)
-            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.getPassword())
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(reason: "Update password"))
         }
 
         let accountData = try PropertyListEncoder().encode(self)
@@ -176,21 +177,37 @@ struct Account: Codable {
     func delete() throws {
         try Keychain.shared.delete(id: id, service: Account.keychainService)
         try BackupManager.shared.deleteAccount(accountId: id)
+        Account.all.removeAll(where: { $0.id == id })
         try Session.all().forEach({ try $0.updateAccountList() })
         Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": site.name, "siteID": site.id])
+    }
+
+    func password(reason: String) throws -> String {
+        do {
+            let data = try Keychain.shared.get(id: id, service: Account.keychainService, reason: reason)
+
+            guard let password = String(data: data, encoding: .utf8) else {
+                throw CodingError.stringEncoding
+            }
+
+            return password
+        } catch {
+            Logger.shared.error("Could not retrieve password from account", error: error, userInfo: nil)
+            throw error
+        }
     }
 
     // MARK: - Static
 
     #warning("TODO: Can be optimized")
-    static func get(siteID: String) throws -> [Account] {
-        let accounts = try Account.all()
+    static func get(siteID: String) -> [Account] {
+        let accounts = Account.all
 
         return accounts.filter { $0.site.id == siteID }
     }
     
-    static func get(accountID: String) throws -> Account? {
-        let accounts = try Account.all()
+    static func get(accountID: String) -> Account? {
+        let accounts = Account.all
 
         guard !accounts.isEmpty else {
             return nil
@@ -228,12 +245,12 @@ struct Account: Codable {
             data = accountData
         }
 
-        try Keychain.shared.save(id: account.id, service: Account.keychainService, secretData: passwordData, objectData: data, classification: .confidential)
+        try Keychain.shared.save(id: account.id, service: Account.keychainService, secretData: passwordData, objectData: data, classification: .confidential, reason: "Save \(account.site.name)")
     }
 
-    static func all() throws -> [Account] {
-        guard let dataArray = try Keychain.shared.all(service: keychainService) else {
-            return []
+    static func loadAll(reason: String) throws -> Bool {
+        guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason) else {
+            return false
         }
 
         var accounts = [Account]()
@@ -247,11 +264,13 @@ struct Account: Codable {
             accounts.append(account)
         }
 
-        return accounts
+        all = accounts
+        print("Load accounts")
+        return !accounts.isEmpty
     }
 
-    static func accountList() throws -> AccountList {
-        return Dictionary(uniqueKeysWithValues: try Account.all().map({ ($0.id, JSONAccount(account: $0)) }))
+    static func accountList() -> AccountList {
+        return Dictionary(uniqueKeysWithValues: Account.all.map({ ($0.id, JSONAccount(account: $0)) }))
     }
 
     static func deleteAll() {
@@ -268,24 +287,8 @@ struct Account: Codable {
             throw KeychainError.stringEncoding
         }
 
-        try Keychain.shared.save(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, classification: .confidential)
+        try Keychain.shared.save(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, classification: .confidential, reason: "Save \(site.name)")
         try BackupManager.shared.backup(id: id, accountData: accountData)
-        try Session.all().forEach({ try $0.updateAccountList() })
-    }
-
-    private func getPassword() throws -> String {
-        do {
-            let data = try Keychain.shared.get(id: id, service: Account.keychainService)
-
-            guard let password = String(data: data, encoding: .utf8) else {
-                throw CodingError.stringEncoding
-            }
-
-            return password
-        } catch {
-            Logger.shared.error("Could not retrieve password from account", error: error, userInfo: nil)
-            throw error
-        }
     }
 
 }
