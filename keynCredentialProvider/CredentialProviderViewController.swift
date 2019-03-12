@@ -17,16 +17,9 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
 
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
-        do {
-            let savedAccounts = Account.all
-            unfilteredAccounts.append(contentsOf: savedAccounts)
-        } catch {
-            Logger.shared.error("Could not get accounts from Keychain", error: error)
-        }
+        unfilteredAccounts.append(contentsOf: Account.all.values)
         
-        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-            first.site.name < second.site.name
-        })
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
 
         tableView.delegate = self
         tableView.dataSource = self

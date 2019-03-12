@@ -65,20 +65,6 @@ class AuthorizationGuard {
         }
     }
     
-    func authorizeRequest(siteName: String, accountID: String?, type: KeynMessageType, completionHandler: @escaping (_: Bool, _: Error?) -> ()) {
-        if authorizationInProgress {
-            Logger.shared.debug("authorizeRequest() called while already in the process of authorizing.")
-            return
-        }
-
-        let localizedReason = textLabelFor(siteName: siteName, type: type) ?? "\(siteName)"
-
-        authorize(reason: localizedReason) { (success: Bool, error: Error?) in
-            self.authorizationInProgress = false
-            completionHandler(success, error)
-        }
-    }
-    
     func textLabelFor(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
         switch type {
         case .login:

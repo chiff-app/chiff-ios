@@ -31,17 +31,21 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     var otpCodeTimer: Timer?
     var token: Token?
     var loadingCircle: LoadingCircle?
+
+    var password: String? {
+        return try? account.password(reason: "nooooo", context: AuthenticationGuard.shared.localAuthenticationContext, skipAuthenticationUI: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
         navigationItem.rightBarButtonItem = editButton
-        
+
         do {
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.url
             userNameTextField.text = account.username
-            userPasswordTextField.text = "tralalalallala" // This should correspond with the number of characters
+            userPasswordTextField.text = password ?? "22characterplaceholder"
             token = try account.oneTimePasswordToken()
             updateOTPUI()
             websiteNameTextField.delegate = self
@@ -149,7 +153,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     @objc func cancel() {
         endEditing()
-        userPasswordTextField.text = "tralalalallala"
+        userPasswordTextField.text = password ?? "22characterplaceholder"
         navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
         websiteNameTextField.text = account?.site.name
@@ -160,9 +164,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     @objc func update() {
         endEditing()
         do {
+            var newPassword: String? = nil
             let newUsername = userNameTextField.text != account?.username ? userNameTextField.text : nil
             let newSiteName = websiteNameTextField.text != account?.site.name ? websiteNameTextField.text : nil
-            let newPassword = userPasswordTextField.text != password ? userPasswordTextField.text : nil
+            if let oldPassword: String = password {
+                newPassword = userPasswordTextField.text != oldPassword ? userPasswordTextField.text : nil
+            }
             let newUrl = websiteURLTextField.text != account?.site.url ? websiteURLTextField.text : nil
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
@@ -201,7 +208,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
             showPasswordHUD.mode = .text
             showPasswordHUD.bezelView.color = .black
-            showPasswordHUD.label.text = account?.password ?? "errors.password_error".localized
+            showPasswordHUD.label.text = try account.password(reason: "Retrieve password for \(account.site.name)", context: AuthenticationGuard.shared.localAuthenticationContext)
             showPasswordHUD.label.textColor = .white
             showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
             showPasswordHUD.margin = 10
@@ -213,6 +220,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
                     action: #selector(showPasswordHUD.hide(animated:)))
             )
         } catch {
+            #warning("TODO: Add \"errors.password_error\".localized to error message")
             Logger.shared.error("Could not get account", error: error)
         }
     }
