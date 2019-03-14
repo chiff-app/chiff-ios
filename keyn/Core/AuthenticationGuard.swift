@@ -12,7 +12,7 @@ class AuthenticationGuard {
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
 
-    let localAuthenticationContext = LAContext()
+    var localAuthenticationContext = LAContext()
     var authenticationInProgress = false
     
     private init() {
@@ -78,11 +78,18 @@ class AuthenticationGuard {
         var authError: NSError?
         let reasonString = "Unlock Keyn"
 
-        guard localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) else {
-            #warning("TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled")
+        if !localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
             authenticationInProgress = false
-            Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
-            return
+            switch authError!.code {
+            case LAError.userFallback.rawValue:
+                #warning("TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled")
+                return
+            case LAError.invalidContext.rawValue:
+                localAuthenticationContext = LAContext()
+            default:
+                Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
+                return
+            }
         }
 
         DispatchQueue.global(qos: .userInteractive).async {
@@ -183,6 +190,7 @@ class AuthenticationGuard {
         }
         lockWindow.makeKeyAndVisible()
         authenticationInProgress = false
+        localAuthenticationContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))
