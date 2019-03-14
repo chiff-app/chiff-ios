@@ -5,6 +5,7 @@
 import Foundation
 import OneTimePassword
 import LocalAuthentication
+import AuthenticationServices
 
 enum AccountError: KeynError {
     case duplicateAccountId
@@ -31,7 +32,7 @@ struct Account: Codable {
 
     static let keychainService = "io.keyn.account"
     static let otpKeychainService = "io.keyn.otp"
-    static var all = [String: Account]()
+    static var all: [String: Account]!
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -56,6 +57,41 @@ struct Account: Codable {
         try Session.all().forEach({ try $0.updateAccountList() })
         
         Logger.shared.analytics("Site added to Keyn.", code: .siteAdded, userInfo: ["changed": password == nil, "siteID": site.id, "siteName": site.name])
+    }
+
+    /*
+     * This function must always be called to load the accounts
+     * but is delayed because it coincides with when touchID is asked.
+     */
+    static func loadAll(context: LAContext?, reason: String, skipAuthenticationUI: Bool = false) throws -> [String: Account] {
+        all = [:]
+
+        guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason, context: context, skipAuthenticationUI: skipAuthenticationUI) else {
+            return all
+        }
+
+        let decoder = PropertyListDecoder()
+
+        for dict in dataArray {
+            guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
+                throw CodingError.unexpectedData
+            }
+            let account = try decoder.decode(Account.self, from: accountData)
+            guard !all.keys.contains(account.id) else {
+                throw AccountError.duplicateAccountId
+            }
+            all[account.id] = account
+        }
+
+        if #available(iOS 12.0, *) {
+            let identities = all.values.map { (account) -> ASPasswordCredentialIdentity in
+                let identifier = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                return ASPasswordCredentialIdentity(serviceIdentifier: identifier, user: account.username, recordIdentifier: account.id)
+            }
+            ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
+        }
+
+        return all
     }
 
     mutating func backup() throws {
@@ -206,18 +242,10 @@ struct Account: Codable {
 
     #warning("TODO: Can be optimized")
     static func get(siteID: String) -> [Account] {
-        let accounts = Account.all
-
-        return accounts.values.filter { $0.site.id == siteID }
+        return Account.all.values.filter { $0.site.id == siteID }
     }
     
     static func get(accountID: String) -> Account? {
-        let accounts = Account.all
-
-        guard !accounts.isEmpty else {
-            return nil
-        }
-
         return Account.all[accountID]
     }
     
@@ -251,27 +279,6 @@ struct Account: Codable {
         }
 
         try Keychain.shared.save(id: account.id, service: Account.keychainService, secretData: passwordData, objectData: data, classification: .confidential, reason: "Save \(account.site.name)")
-    }
-
-    static func loadAll(context: LAContext, reason: String) throws -> Bool {
-        guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason, context: context) else {
-            return false
-        }
-
-        let decoder = PropertyListDecoder()
-
-        for dict in dataArray {
-            guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                throw CodingError.unexpectedData
-            }
-            let account = try decoder.decode(Account.self, from: accountData)
-            guard !all.keys.contains(account.id) else {
-                throw AccountError.duplicateAccountId
-            }
-            all[account.id] = account
-        }
-
-        return !all.isEmpty
     }
 
     static func accountList() -> AccountList {
