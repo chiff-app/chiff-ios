@@ -122,7 +122,6 @@
 		611F4B632146B65500B35A89 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		611F4B642146B66400B35A89 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
-		611F4B692147DF2500B35A89 /* CredentialProviderNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */; };
 		611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
 		611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
 		611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
@@ -281,7 +280,6 @@
 		611F4B4D2146B47300B35A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynCredentialProvider.entitlements; sourceTree = "<group>"; };
 		611F4B652146C63F00B35A89 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderNavigationController.swift; sourceTree = "<group>"; };
 		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
 		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
 		6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOTPViewController.swift; sourceTree = "<group>"; };
@@ -609,7 +607,6 @@
 				611F4B4D2146B47300B35A89 /* Info.plist */,
 				611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */,
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
-				611F4B682147DF2500B35A89 /* CredentialProviderNavigationController.swift */,
 				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
 			);
 			path = keynCredentialProvider;
@@ -1177,7 +1174,6 @@
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
 				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
-				611F4B692147DF2500B35A89 /* CredentialProviderNavigationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1547,6 +1543,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1561,6 +1558,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1571,6 +1569,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1584,6 +1583,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -149,7 +149,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
     
-    func all(service: String, reason: String? = nil, context: LAContext? = nil) throws -> [[String: Any]]? {
+    func all(service: String, reason: String? = nil, context: LAContext? = nil, skipAuthenticationUI: Bool = false) throws -> [[String: Any]]? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
@@ -160,6 +160,9 @@ class Keychain {
         }
         if let context = context {
             query[kSecUseAuthenticationContext as String] = context
+        }
+        if skipAuthenticationUI {
+            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip
         }
         
         var queryResult: AnyObject?

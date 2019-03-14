@@ -8,7 +8,6 @@ import LocalAuthentication
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    var unfilteredAccounts = [Account]()
     var filteredAccounts: [Account]!
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -17,9 +16,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
 
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
 
-        unfilteredAccounts.append(contentsOf: Account.all.values)
-        
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+        filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -63,22 +60,20 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     // MARK: - Actions
     
     @IBAction func cancel(_ sender: AnyObject?) {
-        if let navCon = navigationController as? CredentialProviderNavigationController {
-            navCon.passedExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
-        }
+        Extension.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
     }
     
     // MARK: - SearchController
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
+            filteredAccounts = Account.all.values.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { (first, second) -> Bool in
                 first.site.name < second.site.name
             })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
+            filteredAccounts = Account.all.values.sorted(by: { (first, second) -> Bool in
                 first.site.name < second.site.name
             })
         }
@@ -112,15 +107,14 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
-            guard let password = try? account.password(reason: "Get password for \(account.site.name)") else {
-                #warning("TODO: What to do when there is no password?")
-                return
+            do {
+                let password = try account.password(reason: "Get password for \(account.site.name)", context: Extension.localAuthenticationContext)
+                let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+                Extension.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+            } catch {
+                Extension.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
             }
 
-            let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-            if let navCon = navigationController as? CredentialProviderNavigationController {
-                navCon.passedExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-            }
         }
     }
 

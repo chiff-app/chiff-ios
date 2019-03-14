@@ -74,7 +74,7 @@ class AuthenticationGuard {
     
     private func authenticateUser() {
         localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
-        
+
         var authError: NSError?
         let reasonString = "Unlock Keyn"
 
@@ -85,25 +85,28 @@ class AuthenticationGuard {
             return
         }
 
-        DispatchQueue.global().async {
-            let alreadyAuthenticated = try! Account.loadAll(context: self.localAuthenticationContext, reason: reasonString)
-            if alreadyAuthenticated {
-                NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                DispatchQueue.main.async { [weak self] in
-                    self?.unlock()
-                }
-            } else {
-                self.localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
-                    if succes {
+        DispatchQueue.global(qos: .userInteractive).async {
+            do {
+                if try !Account.loadAll(context: self.localAuthenticationContext, reason: reasonString).isEmpty {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                    DispatchQueue.main.async { [weak self] in
                         self?.unlock()
-                    } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
-                        Logger.shared.error(errorMessage, error: error)
-                        if error._code == LAError.userFallback.rawValue {
-                            #warning("TODO: Handle fallback for lack of biometric authentication")
-                            Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
+                    }
+                } else {
+                    self.localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
+                        if succes {
+                            self?.unlock()
+                        } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
+                            Logger.shared.error(errorMessage, error: error)
+                            if error._code == LAError.userFallback.rawValue {
+                                #warning("TODO: Handle fallback for lack of biometric authentication")
+                                Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
+                            }
                         }
                     }
                 }
+            } catch {
+                Logger.shared.error("Error getting accounts.", error: error)
             }
         }
     }
@@ -111,7 +114,6 @@ class AuthenticationGuard {
     private func unlock() {
         DispatchQueue.main.async {
             self.hideLockWindow()
-            NotificationCenter.default.post(name: Notification.Name.appWasUnlocked, object: nil)
         }
     }
 
@@ -181,7 +183,6 @@ class AuthenticationGuard {
         }
         lockWindow.makeKeyAndVisible()
         authenticationInProgress = false
-        localAuthenticationContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))

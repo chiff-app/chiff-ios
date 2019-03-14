@@ -140,8 +140,7 @@ extension Notification.Name {
     static let sessionStarted = Notification.Name("SessionStarted")
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountAdded = Notification.Name("AccountAdded")
-    static let appWasUnlocked = Notification.Name("AppWasUnlocked")
-    static let accountsLoaded = Notification.Name("accountsLoaded")
+    static let accountsLoaded = Notification.Name("AccountsLoaded")
 }
 
 // MARK: - UIExtensions
