@@ -32,7 +32,7 @@ class AuthenticationGuard {
 
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
-            guard !authenticationInProgress && !lockWindow.isHidden && !AuthorizationGuard.shared.authorizationInProgress else {
+            guard !authenticationInProgress && !lockWindow.isHidden && !AuthorizationGuard.authorizationInProgress else {
                 return
             }
 

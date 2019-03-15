@@ -9,6 +9,7 @@ import AuthenticationServices
 
 enum AccountError: KeynError {
     case duplicateAccountId
+    case accountsNotLoaded
 }
 
 /*
@@ -35,6 +36,9 @@ struct Account: Codable {
     static var all: [String: Account]!
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?) throws {
+        guard Account.all != nil else {
+            throw AccountError.accountsNotLoaded
+        }
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -64,9 +68,12 @@ struct Account: Codable {
      * but is delayed because it coincides with when touchID is asked.
      */
     static func loadAll(context: LAContext?, reason: String, skipAuthenticationUI: Bool = false) throws -> [String: Account] {
-        all = [:]
-
+        guard all == nil else {
+            return all
+        }
+        #warning("Check what this returns if there are no accounts")
         guard let dataArray = try Keychain.shared.all(service: keychainService, reason: reason, context: context, skipAuthenticationUI: skipAuthenticationUI) else {
+            all = [:]
             return all
         }
 
@@ -185,8 +192,9 @@ struct Account: Codable {
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil)
-        try backup()
         Account.all[id] = self
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList() })
     }
 
     /*
@@ -241,11 +249,17 @@ struct Account: Codable {
     // MARK: - Static
 
     #warning("TODO: Can be optimized")
-    static func get(siteID: String) -> [Account] {
+    static func get(siteID: String) throws -> [Account] {
+        guard Account.all != nil else {
+            throw AccountError.accountsNotLoaded
+        }
         return Account.all.values.filter { $0.site.id == siteID }
     }
     
-    static func get(accountID: String) -> Account? {
+    static func get(accountID: String) throws -> Account? {
+        guard Account.all != nil else {
+            throw AccountError.accountsNotLoaded
+        }
         return Account.all[accountID]
     }
     

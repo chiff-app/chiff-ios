@@ -20,7 +20,7 @@ class PairViewController: QRViewController {
             return
         }
 
-        try AuthorizationGuard.shared.authorizePairing(url: url) { [weak self] (session, error) in
+        try AuthorizationGuard.authorizePairing(url: url) { [weak self] (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
                     self?.addSession(session: session)

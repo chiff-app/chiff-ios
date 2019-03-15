@@ -28,7 +28,7 @@ class OTPViewController: QRViewController {
         guard let token = Token(url: url) else {
             return
         }
-        try AuthorizationGuard.shared.addOTP(token: token, account: account) { (error) in
+        try AuthorizationGuard.addOTP(token: token, account: account) { (error) in
             DispatchQueue.main.async {
                 do {
                     if let error = error {
