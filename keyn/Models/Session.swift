@@ -4,6 +4,7 @@
  */
 import UIKit
 import UserNotifications
+import LocalAuthentication
 
 enum SessionError: KeynError {
     case exists
@@ -92,26 +93,26 @@ class Session: Codable {
         }
     }
 
-    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType) throws {
+    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext?, reason: String) throws {
         var response: KeynCredentialsResponse?
         var account = account
 
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Change password for \(account.site.name)"), np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason, context: context), np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
         case .add:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Add \(account.site.name)"), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
         case .login:
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: account.username, p:try account.password(reason: "Login to \(account.site.name)"), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+            response = KeynCredentialsResponse(u: account.username, p:try account.password(reason: reason, context: context), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
         case .fill:
             Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: nil, p: try account.password(reason: "Fill password for \(account.site.name)"), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
+            response = KeynCredentialsResponse(u: nil, p: try account.password(reason: reason, context: context), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
             #warning("TODO: Implement registering for account. This case is probably never reached now.")
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: "Add \(account.site.name)"), np: nil, b: browserTab, a: nil, o: nil, t: .register)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason), np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
         }
@@ -165,6 +166,8 @@ class Session: Codable {
     }
 
     func updateAccountList() throws {
+        print("Should update account list")
+        print(Account.accountList())
         let message = try JSONEncoder().encode(Account.accountList())
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .accounts, method: .post, message: ["data": ciphertext.base64]) { (_, error) in

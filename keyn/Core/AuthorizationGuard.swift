@@ -7,80 +7,110 @@ import OneTimePassword
 import LocalAuthentication
 
 class AuthorizationGuard {
-    
-    static let shared = AuthorizationGuard()
-    
-    var authorizationInProgress = false
-    
-    private init() {}
-    
-    func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
-        authorizationInProgress = true
-        authorize(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { [weak self] (success, error) in
-            if success {
-                self?.authorizationInProgress = false
-                completionHandler(nil)
-            } else if let error = error {
-                self?.authorizationInProgress = false
-                completionHandler(error)
-            }
+
+    static var authorizationInProgress = false
+
+    let localAuthenticationContext = LAContext()
+    let session: Session
+    let type: KeynMessageType
+    let browserTab: Int!    // Should be present for all requests
+    let siteName: String!   // Should be present for all requests
+    let siteURL: String!    // Should be present for all requests
+    let accountId: String!  // Should be present for login, change and fill requests
+    let siteId: String!     // Should be present for add site requests
+    let password: String!   // Should be present for add site requests
+    let username: String!   // Should be present for add site requests
+
+    var authenticationReason: String {
+        switch type {
+        case .login:
+            return "\("requests.login_to".localized.capitalized) \(siteName!)"
+        case .add, .register:
+            return "\("requests.add_site".localized.capitalized) \(siteName!)"
+        case .change:
+            return "\("requests.change_for".localized.capitalized) \(siteName!)"
+        case .fill:
+            return "\("requests.fill_for".localized.capitalized) \(siteName!)"
+        default:
+            return "Unknown request type"
         }
     }
-    
-    func authorizePairing(url: URL, unlock: Bool = false, completionHandler: @escaping (_: Session?, _: Error?) -> ()) throws {
-        if authorizationInProgress {
-            Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
+
+    init?(request: KeynRequest, session: Session) {
+        guard request.verifyIntegrity() else {
+            return nil
+        }
+        self.type = request.type
+        self.session = session
+        self.browserTab = request.browserTab
+        self.siteId = request.siteID
+        self.siteName = request.siteName
+        self.siteURL = request.siteURL
+        self.password = request.password
+        self.username = request.username
+        self.accountId = request.accountID
+    }
+
+    // MARK: - Handle request responses
+
+    func acceptRequest(completionHandler: @escaping () -> Void) throws {
+        switch type {
+        case .add, .register:
+            try PPD.get(id: siteId, completionHandler: { (ppd) in
+                let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
+                do {
+                    let account = try Account(username: self.username, sites: [site], password: self.password)
+                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
+                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                    completionHandler()
+                } catch {
+                    #warning("TODO: Show the user that the account could not be added.")
+                    Logger.shared.error("Account could not be saved.", error: error)
+                }
+            })
+        case .login, .change, .fill:
+            authorizeForKeychain(completionHandler: completionHandler)
+        default:
+            // TODO: throw error?
             return
         }
 
-        authorizationInProgress = true
+    }
 
-        if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
+    func rejectRequest(completionHandler: @escaping () -> Void) {
+        session.cancelRequest(reason: .reject, browserTab: browserTab) { (_, error) in
+            if let error = error {
+                Logger.shared.error("Reject message could not be sent.", error: error)
+            }
+        }
+        AuthorizationGuard.authorizationInProgress = false
+        completionHandler()
+    }
+
+    // MARK: - Private functions
+
+    private func authorizeForKeychain(completionHandler: @escaping () -> Void) {
+        DispatchQueue.global(qos: .userInteractive).async { [ weak self ] in
             do {
-                guard try !Session.exists(id: browserPubKey.hash) else {
-                    authorizationInProgress = false
-                    throw SessionError.exists
+                guard let self = self else {
+                    return
                 }
+                let accounts = try Account.loadAll(context: self.localAuthenticationContext, reason: self.authenticationReason)
+                guard let account = accounts[self.accountId] else {
+                    return // TODO: throw error
+                }
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
+                completionHandler()
             } catch {
-                authorizationInProgress = false
-                throw SessionError.invalid
+                Logger.shared.error("Error authorizing request", error: error)
             }
+        }
+    }
 
-            authorize(reason: "Pair with \(browser) on \(os).") { [weak self] (success, error) in
-                self?.authorizationInProgress = false
-                if success {
-                    do  {
-                        let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
-                        completionHandler(session, nil)
-                    } catch {
-                        completionHandler(nil, error)
-                    }
-                } else if let error = error {
-                    completionHandler(nil, error)
-                }
-            }
-        } else {
-            authorizationInProgress = false
-            throw SessionError.invalid
-        }
-    }
-    
-    func textLabelFor(siteName: String, type: KeynMessageType, accountExists: Bool = true) -> String? {
-        switch type {
-        case .login:
-            return "\("requests.login_to".localized.capitalized) \(siteName)?"
-        case .fill:
-            return "\("requests.fill_for".localized.capitalized) \(siteName)?"
-        case .change:
-            return accountExists ? "\("requests.change_for".localized.capitalized) \(siteName)?" : "\("requests.add_site".localized.capitalized) \(siteName)?"
-        case .add:
-            return "\("requests.add_site".localized.capitalized) \(siteName)?"
-        default:
-            return nil
-        }
-    }
-    
-    func launchRequestView(with request: KeynRequest) {
+
+    // MARK: - Static launch request view functions
+
+    static func launchRequestView(with request: KeynRequest) {
         guard !authorizationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
@@ -92,16 +122,18 @@ class AuthorizationGuard {
             }
             let storyboard: UIStoryboard = UIStoryboard.get(.request)
             let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
-            viewController.type = request.type
-            viewController.request = request
-            viewController.session = session
+            guard let authorizationGuard = AuthorizationGuard(request: request, session: session) else {
+                // TODO: Throw error
+                return
+            }
+            viewController.authorizationGuard = authorizationGuard
             UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
         } catch {
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
 
-    func launchExpiredRequestView(with request: KeynRequest) {
+    static func launchExpiredRequestView(with request: KeynRequest) {
         guard !authorizationInProgress else {
             return
         }
@@ -119,20 +151,70 @@ class AuthorizationGuard {
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
-    
-    // MARK: - Private functions
-    
-    private func authorize(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
-        let authenticationContext = LAContext()
+
+    // MARK: - Static authorization functions
+
+    static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
+        AuthorizationGuard.authorizationInProgress = true
+        authorizeWithoutKeychain(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { (success, error) in
+            if success {
+                AuthorizationGuard.authorizationInProgress = false
+                completionHandler(nil)
+            } else if let error = error {
+                AuthorizationGuard.authorizationInProgress = false
+                completionHandler(error)
+            }
+        }
+    }
+
+    static func authorizePairing(url: URL, completionHandler: @escaping (_: Session?, _: Error?) -> ()) throws {
+        if AuthorizationGuard.authorizationInProgress {
+            Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
+            return
+        }
+
+        AuthorizationGuard.authorizationInProgress = true
+
+        if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
+            do {
+                guard try !Session.exists(id: browserPubKey.hash) else {
+                    AuthorizationGuard.authorizationInProgress = false
+                    throw SessionError.exists
+                }
+            } catch {
+                AuthorizationGuard.authorizationInProgress = false
+                throw SessionError.invalid
+            }
+
+            authorizeWithoutKeychain(reason: "Pair with \(browser) on \(os).") { (success, error) in
+                AuthorizationGuard.authorizationInProgress = false
+                if success {
+                    do  {
+                        let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
+                        completionHandler(session, nil)
+                    } catch {
+                        completionHandler(nil, error)
+                    }
+                } else if let error = error {
+                    completionHandler(nil, error)
+                }
+            }
+        } else {
+            AuthorizationGuard.authorizationInProgress = false
+            throw SessionError.invalid
+        }
+    }
+
+    private static func authorizeWithoutKeychain(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
         var error: NSError?
-        
-        guard authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+        let context = LAContext()
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             #warning("TODO: Handle fingerprint absence in authorize function")
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
             return
         }
 
-        authenticationContext.evaluatePolicy(
+        context.evaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
             localizedReason: reason,
             reply: completion

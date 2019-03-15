@@ -58,6 +58,46 @@ struct KeynRequest: Codable {
         case username = "u"
         case sentTimestamp = "z"
     }
+
+    /// This checks if the appropriate variables are set for the type of of this request
+    func verifyIntegrity() -> Bool {
+        guard browserTab != nil else {
+            Logger.shared.warning("VerifyIntegrity failed because there is no browserTab to send the reply back to.")
+            return false
+        }
+        guard siteName != nil else {
+            Logger.shared.error("VerifyIntegrity failed because there is no siteName.")
+            return false
+        }
+        guard siteURL != nil else {
+            Logger.shared.error("VerifyIntegrity failed because there is no siteURL.")
+            return false
+        }
+        switch type {
+        case .add:
+            guard siteID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no site ID.")
+                return false
+            }
+            guard password != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no password.")
+                return false
+            }
+            guard username != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no username.")
+                return false
+            }
+        case .login, .change, .fill:
+            guard accountID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no username.")
+                return false
+            }
+        default:
+            return false
+        }
+        
+        return true
+    }
 }
 
 struct KeynPersistentQueueMessage: Codable {

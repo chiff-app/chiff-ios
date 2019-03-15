@@ -126,13 +126,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
             Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
             DispatchQueue.main.async {
-                AuthorizationGuard.shared.launchExpiredRequestView(with: keynRequest)
+                AuthorizationGuard.launchExpiredRequestView(with: keynRequest)
             }
             return []
         }
 
         DispatchQueue.main.async {
-            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
+            AuthorizationGuard.launchRequestView(with: keynRequest)
         }
 
         return [.sound]
@@ -170,9 +170,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                     return
                 }
-                try messages.forEach({ try self.handlePersistenQueuetMessage(keynMessage: $0, session: session) })
+                try messages.forEach({ try self.handlePersistenQueueMessage(keynMessage: $0, session: session) })
             } catch {
-                Logger.shared.warning("Could not send account list", error: error, userInfo: nil)
+                Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
             }
             if let handler = completionHandler {
                 handler()
@@ -180,7 +180,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func handlePersistenQueuetMessage(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
+    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
         guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
