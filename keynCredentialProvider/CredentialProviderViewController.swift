@@ -8,6 +8,7 @@ import LocalAuthentication
 class CredentialProviderViewController: UIViewController, UITableViewDataSource, UISearchResultsUpdating, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -15,8 +16,13 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         super.viewDidLoad()
 
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-
-        filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
+        if let accounts = try? Account.all(context: Extension.localAuthenticationContext, reason: nil) {
+            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts
+        } else {
+            unfilteredAccounts = []
+            filteredAccounts = []
+        }
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -67,13 +73,13 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = Account.all.values.filter({ (account) -> Bool in
+            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { (first, second) -> Bool in
                 first.site.name < second.site.name
             })
         } else {
-            filteredAccounts = Account.all.values.sorted(by: { (first, second) -> Bool in
+            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
                 first.site.name < second.site.name
             })
         }

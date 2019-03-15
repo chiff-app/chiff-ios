@@ -5,6 +5,7 @@
 import UIKit
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
+    var unfilteredAccounts: [Account]?
     var filteredAccounts: [Account]?
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -24,8 +25,14 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     private func loadAccounts(notification: Notification) {
-        filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
-        tableView.reloadData()
+        do {
+            let accounts = try Account.all(context: AuthenticationGuard.shared.localAuthenticationContext, reason: nil)
+            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts
+            tableView.reloadData()
+        } catch {
+            Logger.shared.error("Error getting accounts")
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -56,11 +63,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = Account.all.values.filter({ (account) -> Bool in
+            filteredAccounts = unfilteredAccounts?.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = Account.all.values.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts?.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
@@ -164,7 +171,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
         do {
-            try account.delete()
+            try account.delete(context: AuthenticationGuard.shared.localAuthenticationContext)
             filteredAccounts?.remove(at: filteredIndexPath.row)
             tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
         } catch {

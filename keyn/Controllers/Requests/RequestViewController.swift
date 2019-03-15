@@ -20,7 +20,13 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if (authorizationGuard.type == .login || authorizationGuard.type == .change || authorizationGuard.type == .fill) {
+            try? authorizationGuard.acceptRequest {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
         accountPicker.dataSource = self
         accountPicker.delegate = self
     }
@@ -53,7 +59,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBAction func accept(_ sender: UIButton) {
         do {
             try authorizationGuard.acceptRequest {
-                self.dismiss(animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
         } catch {
             #warning("TODO: SHow error")
@@ -62,7 +70,9 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @IBAction func reject(_ sender: UIButton) {
         authorizationGuard.rejectRequest() {
-            self.dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 

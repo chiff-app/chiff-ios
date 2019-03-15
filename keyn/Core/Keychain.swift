@@ -28,7 +28,7 @@ class Keychain {
 
     private init() {}
     
-    func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, classification: Classification, reason: String? = nil) throws {
+    func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, classification: Classification, reason: String? = nil, context: LAContext? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -54,6 +54,9 @@ class Keychain {
             query[kSecAttrAccessControl as String] = access
             if let reason = reason {
                 query[kSecUseOperationPrompt as String] = reason
+            }
+            if let context = context {
+                query[kSecUseAuthenticationContext as String] = context
             }
         case .secret:
             query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
@@ -120,13 +123,17 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil) throws {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+    func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil, context: LAContext? = nil) throws {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
 
         guard (secretData != nil || label != nil || objectData != nil) else {
             throw KeychainError.noData
+        }
+
+        if let context = context {
+            query[kSecUseAuthenticationContext as String] = context
         }
 
         var attributes = [String: Any]()
@@ -185,12 +192,22 @@ class Keychain {
         return dataArray
     }
 
-    func attributes(id identifier: String, service: String) throws -> [String: Any]? {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+    func attributes(id identifier: String, service: String, reason: String? = nil, context: LAContext? = nil, skipAuthenticationUI: Bool = false) throws -> [String: Any]? {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnAttributes as String: true]
+
+        if let reason = reason {
+            query[kSecUseOperationPrompt as String] = reason
+        }
+        if let context = context {
+            query[kSecUseAuthenticationContext as String] = context
+        }
+        if skipAuthenticationUI {
+            query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUISkip
+        }
 
         var queryResult: AnyObject?
         let status = withUnsafeMutablePointer(to: &queryResult) {
