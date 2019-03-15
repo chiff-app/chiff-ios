@@ -17,7 +17,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         handlePendingNotifications()
 
         let nc = NotificationCenter.default
-        nc.addObserver(forName: NSNotification.Name.passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
+        nc.addObserver(forName: .passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
+        nc.addObserver(forName: .accountsLoaded, object: nil, queue: nil, using: checkPersistentQueue)
 
         return true
     }
@@ -139,19 +140,20 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func handlePendingNotifications() {
-        print("Handlepending called")
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                let _ = self.handleNotification(notification)
+            }
+        }
+    }
+
+    @objc func checkPersistentQueue(notification: Notification) {
         do {
             for session in try Session.all() {
                 self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
-        }
-
-        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
-            for notification in notifications {
-                let _ = self.handleNotification(notification)
-            }
         }
     }
 
@@ -184,7 +186,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
-        var account = try Account.get(accountID: accountId)
+        var account = try Account.get(accountID: accountId, context: AuthenticationGuard.shared.localAuthenticationContext, reason: "Update password", skipAuthenticationUI: true)
+        guard account != nil else {
+            throw AccountError.accountsNotLoaded
+        }
 
         switch keynMessage.type {
         case .confirm:
@@ -192,10 +197,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 throw CodingError.missingData
             }
             if result {
-                try account?.updatePasswordAfterConfirmation()
+                try account!.updatePasswordAfterConfirmation()
             }
         case .preferences:
-            try account?.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
+            try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, context: AuthenticationGuard.shared.localAuthenticationContext)
         default:
             Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }

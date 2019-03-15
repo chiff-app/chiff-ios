@@ -165,10 +165,8 @@ class Session: Codable {
         }
     }
 
-    func updateAccountList() throws {
-        print("Should update account list")
-        print(Account.accountList())
-        let message = try JSONEncoder().encode(Account.accountList())
+    func updateAccountList(with accountList: AccountList) throws {
+        let message = try JSONEncoder().encode(accountList)
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         apiRequest(endpoint: .accounts, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
             if let error = error {

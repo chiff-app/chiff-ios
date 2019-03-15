@@ -52,9 +52,7 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
-            let accounts = try Account.loadAll(context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)", skipAuthenticationUI: true)
-
-            guard let account = accounts[credentialIdentity.recordIdentifier!] else {
+            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)", skipAuthenticationUI: true) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
             }
 
@@ -77,32 +75,29 @@ class LoginViewController: ASCredentialProviderViewController {
     // MARK: - Private functions
 
     private func loadUsers() {
-        DispatchQueue.global(qos: .userInteractive).async {
-            do {
-                if let credentialIdentity = self.credentialIdentity {
-                    let accounts = try Account.loadAll(context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)", skipAuthenticationUI: false)
-                    guard let account = accounts[credentialIdentity.recordIdentifier!] else {
-                        return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
-                    }
-
-                    let password = try account.password(reason: "Login to \(account.site.name)", context: Extension.localAuthenticationContext, skipAuthenticationUI: false)
-
-                    let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-                    self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-                } else {
-                    Extension.localAuthenticationContext = LAContext()
-                    let accounts = try Account.loadAll(context: Extension.localAuthenticationContext, reason: "Unlock Keyn", skipAuthenticationUI: false)
-                    if !accounts.isEmpty {
-                        DispatchQueue.main.async {
-                            self.performSegue(withIdentifier: "showAccounts", sender: self)
-                        }
-                    } else {
-                        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                    }
+        do {
+            if let credentialIdentity = self.credentialIdentity {
+                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)") else {
+                    return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
                 }
-            } catch {
-                self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+
+                let password = try account.password(reason: "Login to \(account.site.name)", context: Extension.localAuthenticationContext)
+
+                let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+                self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+            } else {
+                Extension.localAuthenticationContext = LAContext()
+                let accounts = try Account.all(context: Extension.localAuthenticationContext, reason: "Unlock Keyn")
+                if !accounts.isEmpty {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "showAccounts", sender: self)
+                    }
+                } else {
+                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                }
             }
+        } catch {
+            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
 }

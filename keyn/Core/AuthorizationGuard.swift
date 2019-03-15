@@ -56,47 +56,39 @@ class AuthorizationGuard {
     func acceptRequest(completionHandler: @escaping () -> Void) throws {
         switch type {
         case .add, .register:
-            try PPD.get(id: siteId, completionHandler: { (ppd) in
-                let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-                do {
-                    let account = try Account(username: self.username, sites: [site], password: self.password)
-                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
-                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                    completionHandler()
-                } catch {
-                    #warning("TODO: Show the user that the account could not be added.")
-                    Logger.shared.error("Account could not be saved.", error: error)
-                }
-            })
+            try addSite(completionHandler: completionHandler)
         case .login, .change, .fill:
             authorizeForKeychain(completionHandler: completionHandler)
         default:
-            // TODO: throw error?
+            AuthorizationGuard.authorizationInProgress = false
             return
         }
 
     }
 
     func rejectRequest(completionHandler: @escaping () -> Void) {
+        defer {
+            AuthorizationGuard.authorizationInProgress = false
+        }
         session.cancelRequest(reason: .reject, browserTab: browserTab) { (_, error) in
             if let error = error {
                 Logger.shared.error("Reject message could not be sent.", error: error)
             }
         }
-        AuthorizationGuard.authorizationInProgress = false
         completionHandler()
     }
 
     // MARK: - Private functions
 
     private func authorizeForKeychain(completionHandler: @escaping () -> Void) {
-        DispatchQueue.global(qos: .userInteractive).async { [ weak self ] in
+        defer {
+            print("authorization ended")
+            AuthorizationGuard.authorizationInProgress = false
+        }
+        LocalAuthenticationManager.shared.authorize(with: self.localAuthenticationContext) {
             do {
-                guard let self = self else {
-                    return
-                }
-                let accounts = try Account.loadAll(context: self.localAuthenticationContext, reason: self.authenticationReason)
-                guard let account = accounts[self.accountId] else {
+                guard let account = try Account.get(accountID: self.accountId, context: self.localAuthenticationContext, reason: self.authenticationReason) else {
+                    Logger.shared.error("Account not found")
                     return // TODO: throw error
                 }
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
@@ -107,28 +99,49 @@ class AuthorizationGuard {
         }
     }
 
+    private func addSite(completionHandler: @escaping () -> Void) throws {
+        try PPD.get(id: siteId, completionHandler: { (ppd) in
+            defer {
+                AuthorizationGuard.authorizationInProgress = false
+            }
+            let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
+            do {
+                let account = try Account(username: self.username, sites: [site], password: self.password, context: self.localAuthenticationContext)
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
+                NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                completionHandler()
+            } catch {
+                #warning("TODO: Show the user that the account could not be added.")
+                Logger.shared.error("Account could not be saved.", error: error)
+            }
+        })
+    }
+
 
     // MARK: - Static launch request view functions
 
     static func launchRequestView(with request: KeynRequest) {
+        print("LaunchRequestViewCalled")
         guard !authorizationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
         }
-
+        AuthorizationGuard.authorizationInProgress = true
         do {
             guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID) else {
+                AuthorizationGuard.authorizationInProgress = false
                 throw SessionError.doesntExist
             }
             let storyboard: UIStoryboard = UIStoryboard.get(.request)
             let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
             guard let authorizationGuard = AuthorizationGuard(request: request, session: session) else {
-                // TODO: Throw error
+                AuthorizationGuard.authorizationInProgress = false
                 return
             }
             viewController.authorizationGuard = authorizationGuard
             UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
         } catch {
+            AuthorizationGuard.authorizationInProgress = false
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
@@ -137,17 +150,21 @@ class AuthorizationGuard {
         guard !authorizationInProgress else {
             return
         }
+        AuthorizationGuard.authorizationInProgress = true
         do {
             guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
+                AuthorizationGuard.authorizationInProgress = true
                 throw SessionError.doesntExist
             }
             session.cancelRequest(reason: .expired, browserTab: browserTab) { (_, error) in
+                AuthorizationGuard.authorizationInProgress = true
                 if let error = error {
                     Logger.shared.error("Error rejecting request", error: error)
                 }
             }
             #warning("TODO: Show the generic error viewController here with message that the request expired")
         } catch {
+            AuthorizationGuard.authorizationInProgress = true
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
@@ -155,39 +172,41 @@ class AuthorizationGuard {
     // MARK: - Static authorization functions
 
     static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
-        AuthorizationGuard.authorizationInProgress = true
+        authorizationInProgress = true
         authorizeWithoutKeychain(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { (success, error) in
-            if success {
+            defer {
                 AuthorizationGuard.authorizationInProgress = false
+            }
+            if success {
                 completionHandler(nil)
             } else if let error = error {
-                AuthorizationGuard.authorizationInProgress = false
                 completionHandler(error)
             }
         }
     }
 
     static func authorizePairing(url: URL, completionHandler: @escaping (_: Session?, _: Error?) -> ()) throws {
-        if AuthorizationGuard.authorizationInProgress {
+        guard !authorizationInProgress else {
             Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
         }
-
-        AuthorizationGuard.authorizationInProgress = true
+        authorizationInProgress = true
 
         if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
             do {
                 guard try !Session.exists(id: browserPubKey.hash) else {
-                    AuthorizationGuard.authorizationInProgress = false
+                    authorizationInProgress = false
                     throw SessionError.exists
                 }
             } catch {
-                AuthorizationGuard.authorizationInProgress = false
+                authorizationInProgress = false
                 throw SessionError.invalid
             }
 
             authorizeWithoutKeychain(reason: "Pair with \(browser) on \(os).") { (success, error) in
-                AuthorizationGuard.authorizationInProgress = false
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
                 if success {
                     do  {
                         let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
@@ -200,7 +219,7 @@ class AuthorizationGuard {
                 }
             }
         } else {
-            AuthorizationGuard.authorizationInProgress = false
+            authorizationInProgress = false
             throw SessionError.invalid
         }
     }
@@ -211,6 +230,7 @@ class AuthorizationGuard {
         guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
             #warning("TODO: Handle fingerprint absence in authorize function")
             Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
+            completion(false, error)
             return
         }
 

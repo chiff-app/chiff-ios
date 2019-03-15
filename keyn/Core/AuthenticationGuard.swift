@@ -6,15 +6,84 @@ import UIKit
 import LocalAuthentication
 import OneTimePassword
 
+class LocalAuthenticationManager {
+    static let shared = LocalAuthenticationManager()
+
+    private var localAuthenticationQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.name = "LocalAuthenticationQueue"
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInteractive
+        return queue
+    }()
+
+    var authorizationInProgress: Bool {
+        if let currentOperation = localAuthenticationQueue.operations.first, let authenticationOperation = currentOperation as? AuthenticationOperation {
+            return authenticationOperation.type == .authorization
+        } else {
+            return false
+        }
+    }
+
+
+    func authenticate(with context: LAContext, operation:  @escaping () -> Void){
+        guard localAuthenticationQueue.operationCount < localAuthenticationQueue.maxConcurrentOperationCount else {
+            return
+        }
+
+        let task = AuthenticationOperation(with: context, type: .authentication, operation: operation)
+        localAuthenticationQueue.addOperation(task)
+    }
+
+    func authorize(with context: LAContext, operation: @escaping () -> Void) {
+        if !authorizationInProgress {
+            localAuthenticationQueue.cancelAllOperations()
+        }
+        let task = AuthenticationOperation(with: context, type: .authorization, operation: operation)
+        localAuthenticationQueue.addOperation(task)
+    }
+
+    class AuthenticationOperation: Operation {
+        private let context: LAContext
+        private let operation: () -> Void
+        let type: OperationType
+
+        init(with context: LAContext, type: OperationType, operation: @escaping () -> Void) {
+            self.context = context
+            self.operation = operation
+            self.type = type
+        }
+
+        override func main() {
+            operation()
+        }
+
+        override func cancel() {
+            context.invalidate()
+            super.cancel()
+        }
+    }
+
+    enum OperationType {
+        case authentication
+        case authorization
+    }
+}
+
 class AuthenticationGuard {
 
     static let shared = AuthenticationGuard()
     private let lockWindow: UIWindow
     private let lockViewTag = 390847239047
+    private var lockWindowIsHidden = true {
+        didSet {
+            lockWindow.isHidden = lockWindowIsHidden
+        }
+    }
 
     var localAuthenticationContext = LAContext()
     var authenticationInProgress = false
-    
+
     private init() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
         lockWindow.windowLevel = UIWindow.Level.alert
@@ -30,9 +99,10 @@ class AuthenticationGuard {
 
     // MARK: - LocalAuthentication
 
+
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
-            guard !authenticationInProgress && !lockWindow.isHidden && !AuthorizationGuard.authorizationInProgress else {
+            guard !authenticationInProgress && !lockWindowIsHidden else {
                 return
             }
 
@@ -42,7 +112,6 @@ class AuthenticationGuard {
                 }
             }
         }
-
         authenticationInProgress = true
         authenticateUser()
     }
@@ -51,25 +120,25 @@ class AuthenticationGuard {
         UIView.animate(withDuration: 0.25, animations: {
             self.lockWindow.alpha = 0.0
         }) { if $0 {
-            self.lockWindow.isHidden = true
+            self.lockWindowIsHidden = true
             self.lockWindow.alpha = 1.0
             self.authenticationInProgress = false
             }
         }
     }
-    
-    func hasFaceID() -> Bool {
-        if #available(iOS 11.0, *) {
-            let context = LAContext.init()
-            var error: NSError?
-            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                return context.biometryType == LABiometryType.faceID
-            }
-        }
-        
-        return false
-    }
-    
+
+//    func hasFaceID() -> Bool {
+//        if #available(iOS 11.0, *) {
+//            let context = LAContext.init()
+//            var error: NSError?
+//            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+//                return context.biometryType == LABiometryType.faceID
+//            }
+//        }
+//
+//        return false
+//    }
+
     // MARK: - Private functions
     
     private func authenticateUser() {
@@ -79,7 +148,6 @@ class AuthenticationGuard {
         let reasonString = "Unlock Keyn"
 
         if !localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
-            authenticationInProgress = false
             switch authError!.code {
             case LAError.userFallback.rawValue:
                 #warning("TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled")
@@ -91,10 +159,10 @@ class AuthenticationGuard {
                 return
             }
         }
-
-        DispatchQueue.global(qos: .userInteractive).async {
+        LocalAuthenticationManager.shared.authenticate(with: self.localAuthenticationContext) {
             do {
-                if try !Account.loadAll(context: self.localAuthenticationContext, reason: reasonString).isEmpty {
+                let accounts = try Account.all(context: self.localAuthenticationContext, reason: reasonString)
+                if !accounts.isEmpty {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     DispatchQueue.main.async { [weak self] in
                         self?.unlock()
@@ -181,7 +249,7 @@ class AuthenticationGuard {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
-        authenticateUser(cancelChecks: true)
+        self.authenticateUser(cancelChecks: true)
     }
     
     private func applicationDidEnterBackground(notification: Notification) {
@@ -189,6 +257,7 @@ class AuthenticationGuard {
             return
         }
         lockWindow.makeKeyAndVisible()
+        lockWindowIsHidden = false
         authenticationInProgress = false
         localAuthenticationContext.invalidate()
         
@@ -216,6 +285,7 @@ class AuthenticationGuard {
             return
         }
         lockWindow.makeKeyAndVisible()
+        lockWindowIsHidden = false
     }
 
 }
