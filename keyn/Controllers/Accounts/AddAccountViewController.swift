@@ -119,13 +119,18 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let url = URL(string: websiteURL)
             let id = url!.absoluteString.sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
-
             do {
-                self.account = try Account(username: username, sites: [site], password: password, context: AuthenticationGuard.shared.localAuthenticationContext) // saves
+                self.account = try Account(username: username, sites: [site], password: password, context: nil) { (account, error) in
+                    if let error = error {
+                        #warning("TODO: Show an error in the user interface that the account could not be added.")
+                        Logger.shared.error("Account could not be saved", error: error)
+                    }
+                }
             } catch {
                 #warning("TODO: Show an error in the user interface that the account could not be added.")
                 Logger.shared.error("Account could not be saved", error: error)
             }
+
         }
     }
 

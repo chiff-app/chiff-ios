@@ -33,7 +33,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     var loadingCircle: LoadingCircle?
 
     var password: String? {
-        return try? account.password(reason: "nooooo", context: AuthenticationGuard.shared.localAuthenticationContext, skipAuthenticationUI: true)
+        return try? account.password()
     }
     
     override func viewDidLoad() {
@@ -108,10 +108,22 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     // MARK: - Actions
     
     @IBAction func showPassword(_ sender: UIButton) {
-        if userPasswordTextField.isEnabled {
-            userPasswordTextField.isSecureTextEntry = !userPasswordTextField.isSecureTextEntry
-        } else {
-            showHiddenPasswordPopup()
+        account.password(reason: "Retrieve password for \(account.site.name)", context: nil, type: .ifNeeded) { (password, error) in
+            if let error = error {
+                Logger.shared.error("Could not get account", error: error)
+            }
+            guard let password = password else {
+                Logger.shared.error("Account was nil")
+                return
+            }
+            DispatchQueue.main.async {
+                if self.userPasswordTextField.isEnabled {
+                    self.userPasswordTextField.text = password
+                    self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+                } else {
+                    self.showHiddenPasswordPopup(password: password)
+                }
+            }
         }
     }
     
@@ -203,26 +215,21 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         editingMode = false
     }
     
-    private func showHiddenPasswordPopup() {
-        do {
-            let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
-            showPasswordHUD.mode = .text
-            showPasswordHUD.bezelView.color = .black
-            showPasswordHUD.label.text = try account.password(reason: "Retrieve password for \(account.site.name)", context: AuthenticationGuard.shared.localAuthenticationContext)
-            showPasswordHUD.label.textColor = .white
-            showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
-            showPasswordHUD.margin = 10
-            showPasswordHUD.label.numberOfLines = 0
-            showPasswordHUD.removeFromSuperViewOnHide = true
-            showPasswordHUD.addGestureRecognizer(
-                UITapGestureRecognizer(
-                    target: showPasswordHUD,
-                    action: #selector(showPasswordHUD.hide(animated:)))
-            )
-        } catch {
-            #warning("TODO: Add \"errors.password_error\".localized to error message")
-            Logger.shared.error("Could not get account", error: error)
-        }
+    private func showHiddenPasswordPopup(password: String) {
+        let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
+        showPasswordHUD.mode = .text
+        showPasswordHUD.bezelView.color = .black
+        showPasswordHUD.label.text = password
+        showPasswordHUD.label.textColor = .white
+        showPasswordHUD.label.font = UIFont(name: "Courier New", size: 24)
+        showPasswordHUD.margin = 10
+        showPasswordHUD.label.numberOfLines = 0
+        showPasswordHUD.removeFromSuperViewOnHide = true
+        showPasswordHUD.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: showPasswordHUD,
+                action: #selector(showPasswordHUD.hide(animated:)))
+        )
     }
     
     private func copyToPasteboard(_ indexPath: IndexPath) {

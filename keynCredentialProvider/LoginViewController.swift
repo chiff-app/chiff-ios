@@ -52,11 +52,11 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
-            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)", skipAuthenticationUI: true) else {
+            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
             }
 
-            guard let password = try? account.password(reason: "Get password for \(account.site.name)", context: Extension.localAuthenticationContext, skipAuthenticationUI: true) else {
+            guard let password = try? account.password(context: Extension.localAuthenticationContext) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
             }
 
@@ -77,17 +77,16 @@ class LoginViewController: ASCredentialProviderViewController {
     private func loadUsers() {
         do {
             if let credentialIdentity = self.credentialIdentity {
-                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext, reason: "Login with \(credentialIdentity.user)") else {
+                #warning("TODO: Check if this needs to be async")
+                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext) else {
                     return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
                 }
-
-                let password = try account.password(reason: "Login to \(account.site.name)", context: Extension.localAuthenticationContext)
-
+                let password = try account.password(context: Extension.localAuthenticationContext)
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } else {
                 Extension.localAuthenticationContext = LAContext()
-                let accounts = try Account.all(context: Extension.localAuthenticationContext, reason: "Unlock Keyn")
+                let accounts = try Account.all(context: Extension.localAuthenticationContext)
                 if !accounts.isEmpty {
                     DispatchQueue.main.async {
                         self.performSegue(withIdentifier: "showAccounts", sender: self)

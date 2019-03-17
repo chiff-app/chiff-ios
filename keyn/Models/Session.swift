@@ -94,36 +94,50 @@ class Session: Codable {
     }
 
     func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext?, reason: String) throws {
-        var response: KeynCredentialsResponse?
         var account = account
+        account.password(reason: reason, context: context, type: .ifNeeded) { [weak self] (password, error) in
+            do {
+                if let error = error {
+                    throw error
+                }
+                guard let password = password, let self = self else {
+                    throw CodingError.missingData
+                }
+                var response: KeynCredentialsResponse?
+                switch type {
+                case .change:
+                    response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
+                    NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+                case .add:
+                    #warning("TODO: is it really necessary to send the password back after adding a site?")
+                    response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
+                case .login:
+                    Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
+                    response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+                case .fill:
+                    Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
+                    response = KeynCredentialsResponse(u: nil, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
+                case .register:
+                    Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
+                    #warning("TODO: Implement registering for account. This case is probably never reached now.")
+                    response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
+                default:
+                    throw SessionError.unknownType
+                }
 
-        switch type {
-        case .change:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason, context: context), np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
-            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
-        case .add:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
-        case .login:
-            Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: account.username, p:try account.password(reason: reason, context: context), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
-        case .fill:
-            Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: nil, p: try account.password(reason: reason, context: context), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
-        case .register:
-            Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
-            #warning("TODO: Implement registering for account. This case is probably never reached now.")
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(reason: reason), np: nil, b: browserTab, a: nil, o: nil, t: .register)
-        default:
-            throw SessionError.unknownType
-        }
+                let message = try JSONEncoder().encode(response!)
+                let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
 
-        let message = try JSONEncoder().encode(response!)
-        let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-
-        try sendToVolatileQueue(ciphertext: ciphertext) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Error sending credentials", error: error)
+                try self.sendToVolatileQueue(ciphertext: ciphertext) { (_, error) in
+                    if let error = error {
+                        Logger.shared.error("Error sending credentials", error: error)
+                    }
+                }
+            } catch {
+                Logger.shared.error("Error getting password", error: error)
             }
+
+
         }
     }
 

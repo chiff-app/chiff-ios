@@ -16,7 +16,8 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         super.viewDidLoad()
 
         UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-        if let accounts = try? Account.all(context: Extension.localAuthenticationContext, reason: nil) {
+        #warning("TODO: Check if this needs to use async")
+        if let accounts = try? Account.all(context: Extension.localAuthenticationContext) {
             unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
             filteredAccounts = unfilteredAccounts
         } else {
@@ -114,7 +115,8 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
             do {
-                let password = try account.password(reason: "Get password for \(account.site.name)", context: Extension.localAuthenticationContext)
+                #warning("TODO: Check if this needs to be async")
+                let password = try account.password(context: Extension.localAuthenticationContext)
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 Extension.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } catch {
