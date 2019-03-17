@@ -10,7 +10,6 @@ class AuthorizationGuard {
 
     static var authorizationInProgress = false
 
-    let localAuthenticationContext = LAContext()
     let session: Session
     let type: KeynMessageType
     let browserTab: Int!    // Should be present for all requests
@@ -81,17 +80,18 @@ class AuthorizationGuard {
     // MARK: - Private functions
 
     private func authorizeForKeychain(completionHandler: @escaping () -> Void) {
-        defer {
-            print("authorization ended")
-            AuthorizationGuard.authorizationInProgress = false
-        }
-        LocalAuthenticationManager.shared.authorize(with: self.localAuthenticationContext) {
+        Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { [weak self] (account, context, error) in
             do {
-                guard let account = try Account.get(accountID: self.accountId, context: self.localAuthenticationContext, reason: self.authenticationReason) else {
-                    Logger.shared.error("Account not found")
-                    return // TODO: throw error
+                if let error = error {
+                    throw error
                 }
-                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
+                guard let self = self else {
+                    return
+                }
+                guard let account = account else {
+                    throw AccountError.notFound
+                }
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, reason: self.authenticationReason)
                 completionHandler()
             } catch {
                 Logger.shared.error("Error authorizing request", error: error)
@@ -106,10 +106,18 @@ class AuthorizationGuard {
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             do {
-                let account = try Account(username: self.username, sites: [site], password: self.password, context: self.localAuthenticationContext)
-                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: self.localAuthenticationContext, reason: self.authenticationReason)
-                NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                completionHandler()
+                let context = LAContext()
+                let _ = try Account(username: self.username, sites: [site], password: self.password, context: context) { (account, error) in
+                    defer {
+                        completionHandler()
+                    }
+                    do {
+                        try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, reason: self.authenticationReason)
+                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                    } catch {
+                        Logger.shared.error("Add account response could not be sent", error: error)
+                    }
+                }
             } catch {
                 #warning("TODO: Show the user that the account could not be added.")
                 Logger.shared.error("Account could not be saved.", error: error)

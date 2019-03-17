@@ -25,13 +25,10 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     private func loadAccounts(notification: Notification) {
-        do {
-            let accounts = try Account.all(context: AuthenticationGuard.shared.localAuthenticationContext, reason: nil)
+        if let accounts = notification.userInfo as? [String: Account] {
             unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
             filteredAccounts = unfilteredAccounts
             tableView.reloadData()
-        } catch {
-            Logger.shared.error("Error getting accounts")
         }
     }
 

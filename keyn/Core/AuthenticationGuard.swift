@@ -6,70 +6,6 @@ import UIKit
 import LocalAuthentication
 import OneTimePassword
 
-class LocalAuthenticationManager {
-    static let shared = LocalAuthenticationManager()
-
-    private var localAuthenticationQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "LocalAuthenticationQueue"
-        queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = .userInteractive
-        return queue
-    }()
-
-    var authorizationInProgress: Bool {
-        if let currentOperation = localAuthenticationQueue.operations.first, let authenticationOperation = currentOperation as? AuthenticationOperation {
-            return authenticationOperation.type == .authorization
-        } else {
-            return false
-        }
-    }
-
-
-    func authenticate(with context: LAContext, operation:  @escaping () -> Void){
-        guard localAuthenticationQueue.operationCount < localAuthenticationQueue.maxConcurrentOperationCount else {
-            return
-        }
-
-        let task = AuthenticationOperation(with: context, type: .authentication, operation: operation)
-        localAuthenticationQueue.addOperation(task)
-    }
-
-    func authorize(with context: LAContext, operation: @escaping () -> Void) {
-        if !authorizationInProgress {
-            localAuthenticationQueue.cancelAllOperations()
-        }
-        let task = AuthenticationOperation(with: context, type: .authorization, operation: operation)
-        localAuthenticationQueue.addOperation(task)
-    }
-
-    class AuthenticationOperation: Operation {
-        private let context: LAContext
-        private let operation: () -> Void
-        let type: OperationType
-
-        init(with context: LAContext, type: OperationType, operation: @escaping () -> Void) {
-            self.context = context
-            self.operation = operation
-            self.type = type
-        }
-
-        override func main() {
-            operation()
-        }
-
-        override func cancel() {
-            context.invalidate()
-            super.cancel()
-        }
-    }
-
-    enum OperationType {
-        case authentication
-        case authorization
-    }
-}
-
 class AuthenticationGuard {
 
     static let shared = AuthenticationGuard()
@@ -142,48 +78,25 @@ class AuthenticationGuard {
     // MARK: - Private functions
     
     private func authenticateUser() {
-        localAuthenticationContext.localizedFallbackTitle = "Use Passcode"
-
-        var authError: NSError?
-        let reasonString = "Unlock Keyn"
-
-        if !localAuthenticationContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
-            switch authError!.code {
-            case LAError.userFallback.rawValue:
-                #warning("TODO: Show appropriate alert if biometry/TouchID/FaceID is lockout or not enrolled")
-                return
-            case LAError.invalidContext.rawValue:
-                localAuthenticationContext = LAContext()
-            default:
-                Logger.shared.error(self.evaluateAuthenticationPolicyMessageForLA(errorCode: authError!.code), error: authError)
-                return
-            }
-        }
-        LocalAuthenticationManager.shared.authenticate(with: self.localAuthenticationContext) {
-            do {
-                let accounts = try Account.all(context: self.localAuthenticationContext, reason: reasonString)
-                if !accounts.isEmpty {
-                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                    DispatchQueue.main.async { [weak self] in
-                        self?.unlock()
-                    }
-                } else {
-                    self.localAuthenticationContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reasonString)  { [weak self] (succes, error) in
-                        if succes {
-                            self?.unlock()
-                        } else if let error = error, let errorCode = authError?.code, let errorMessage = self?.evaluateAuthenticationPolicyMessageForLA(errorCode: errorCode) {
-                            Logger.shared.error(errorMessage, error: error)
-                            if error._code == LAError.userFallback.rawValue {
-                                #warning("TODO: Handle fallback for lack of biometric authentication")
-                                Logger.shared.debug("TODO: Handle fallback for lack of biometric authentication", error: error)
-                            }
-                        }
-                    }
-                }
-            } catch {
+        Account.all(reason: "Unlock Keyn", type: .ifNeeded) { (accounts, error) in
+            if let error = error {
+                #warning("TODO: Handle fallback for lack of biometric authentication")
                 Logger.shared.error("Error getting accounts.", error: error)
+                return
+            }
+            guard let accounts = accounts else {
+                return
+            }
+            if !accounts.isEmpty {
+                DispatchQueue.main.async { [weak self] in
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
+                    self?.unlock()
+                }
+            } else {
+                print("TODO: Fix unlock mechanism if there are no accounts")
             }
         }
+
     }
     
     private func unlock() {
@@ -259,7 +172,7 @@ class AuthenticationGuard {
         lockWindow.makeKeyAndVisible()
         lockWindowIsHidden = false
         authenticationInProgress = false
-        localAuthenticationContext.invalidate()
+        LocalAuthenticationManager.shared.mainContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))

@@ -74,6 +74,9 @@
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
+		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
+		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
+		49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */; };
 		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
 		49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */; };
@@ -245,6 +248,7 @@
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
 		49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedback.storyboard; sourceTree = "<group>"; };
 		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
 		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
@@ -545,6 +549,7 @@
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
+				49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */,
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
@@ -1043,6 +1048,7 @@
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
+				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				495E72BC22118F9D003132ED /* Logger.swift in Sources */,
 				49062C6E2214679400A30669 /* Localizer.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
@@ -1085,6 +1091,7 @@
 				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
+				49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
 				611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */,
@@ -1168,6 +1175,7 @@
 				49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				49062C6F2214679400A30669 /* Localizer.swift in Sources */,
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
+				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
