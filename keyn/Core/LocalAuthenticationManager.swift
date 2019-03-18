@@ -60,6 +60,30 @@ class LocalAuthenticationManager {
         }
     }
 
+    func evaluatePolicy(reason: String, with context: LAContext? = nil, completion: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
+        let usedContext = context ?? LAContext()
+        usedContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (result, error) in
+            if let error = error {
+                return completion(nil, error)
+            }
+            return completion(result ? usedContext : nil, nil)
+        }
+    }
+
+    func unlock(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
+        do {
+            try checkMainContext()
+            mainContext.evaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                localizedReason: reason,
+                reply: completion
+            )
+        } catch {
+            Logger.shared.warning("Localauthentication failed")
+            completion(false, error)
+        }
+    }
+
     private func checkMainContext() throws {
         var authError: NSError?
         if !mainContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {

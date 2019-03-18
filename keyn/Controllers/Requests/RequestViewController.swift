@@ -20,6 +20,7 @@ class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        siteLabel.text = authorizationGuard.authenticationReason
         if (authorizationGuard.type == .login || authorizationGuard.type == .change || authorizationGuard.type == .fill) {
             try? authorizationGuard.acceptRequest {
                 DispatchQueue.main.async {

@@ -82,6 +82,9 @@ class AuthorizationGuard {
     private func authorizeForKeychain(completionHandler: @escaping () -> Void) {
         Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { [weak self] (account, context, error) in
             do {
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
                 if let error = error {
                     throw error
                 }
@@ -106,12 +109,14 @@ class AuthorizationGuard {
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             do {
-                let context = LAContext()
-                let _ = try Account(username: self.username, sites: [site], password: self.password, context: context) { (account, error) in
+                let _ = try Account(username: self.username, sites: [site], password: self.password, type: .override) { (account, context, error) in
                     defer {
                         completionHandler()
                     }
                     do {
+                        if let error = error {
+                            throw error
+                        }
                         try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, reason: self.authenticationReason)
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
                     } catch {

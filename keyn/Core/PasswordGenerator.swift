@@ -27,6 +27,7 @@ class PasswordGenerator {
                 }
             })
         } else {
+            #warning("When manually adding passwords, the character set should also include special chars otherwise a generated password will be different")
             return PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
         }
     }

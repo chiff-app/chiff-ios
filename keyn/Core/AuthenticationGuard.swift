@@ -78,7 +78,8 @@ class AuthenticationGuard {
     // MARK: - Private functions
     
     private func authenticateUser() {
-        Account.all(reason: "Unlock Keyn", type: .ifNeeded) { (accounts, error) in
+        let unlocalizedReason = "Unlock Keyn"
+        Account.all(reason: unlocalizedReason, type: .ifNeeded) { (accounts, error) in
             if let error = error {
                 #warning("TODO: Handle fallback for lack of biometric authentication")
                 Logger.shared.error("Error getting accounts.", error: error)
@@ -90,18 +91,25 @@ class AuthenticationGuard {
             if !accounts.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
-                    self?.unlock()
+                    self?.hideLockWindow()
                 }
             } else {
-                print("TODO: Fix unlock mechanism if there are no accounts")
+                LocalAuthenticationManager.shared.unlock(reason: unlocalizedReason, completion: { (result, error) in
+                    DispatchQueue.main.async { [weak self] in
+                        if let error = error {
+                            print("TODO: handle authentication error")
+                            return
+                        }
+                        if result {
+                            DispatchQueue.main.async { [weak self] in
+                                self?.hideLockWindow()
+                            }
+                        } else {
+                            print("TODO: handle authentication unsuccesful")
+                        }
+                    }
+                })
             }
-        }
-
-    }
-    
-    private func unlock() {
-        DispatchQueue.main.async {
-            self.hideLockWindow()
         }
     }
 
