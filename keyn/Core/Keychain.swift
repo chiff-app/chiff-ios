@@ -14,6 +14,7 @@ enum KeychainError: KeynError {
     case unhandledError(OSStatus)
     case noData
     case interactionNotAllowed
+    case failedCreatingSecAccess
 }
 
 enum Classification: String {
@@ -138,7 +139,7 @@ class Keychain {
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
                                     kSecReturnAttributes as String: true,
-                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUISkip,
+                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail,
                                     kSecUseAuthenticationContext as String: context ?? LocalAuthenticationManager.shared.mainContext]
 
         var queryResult: AnyObject?
@@ -167,7 +168,7 @@ class Keychain {
                                     kSecAttrService as String: service,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnAttributes as String: true,
-                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUISkip,
+                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail,
                                     kSecUseAuthenticationContext as String: context ?? LocalAuthenticationManager.shared.mainContext]
 
         var queryResult: AnyObject?
@@ -209,6 +210,7 @@ class Keychain {
         SecItemDelete(query as CFDictionary)
     }
 
+    
     // MARK: - Authenticated Keychain operations
     // These operations ask the user to authenticate the operation if necessary. This is handled on a custom OperationQueue that is managed by LocalAuthenticationManager.shared
 
@@ -242,7 +244,7 @@ class Keychain {
         }
     }
 
-    func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) {
+    func save(id identifier: String, service: String, secretData: Data, objectData: Data? = nil, label: String? = nil, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service,
@@ -256,45 +258,42 @@ class Keychain {
             query[kSecAttrLabel as String] = label
         }
 
-        let access = SecAccessControlCreateWithFlags(nil, // Use the default allocator.
-            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
-            .userPresence,
-            nil) // Ignore any error.
+        guard let access = SecAccessControlCreateWithFlags(nil, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, .userPresence, nil) else {
+                return completionHandler(nil, KeychainError.failedCreatingSecAccess)
+        } // Ignore any error.
         query[kSecAttrAccessControl as String] = access
 
-        do {
-            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
-                let status = SecItemAdd(query as CFDictionary, nil)
-                completionHandler(status == errSecSuccess ? nil : KeychainError.storeKey)
-            }
-        } catch {
-            completionHandler(error) // These can be LocalAuthenticationErrors
-        }
+        // SecItemAdd does not present LocalAuthentication by itself, so this method is used instead.
+        LocalAuthenticationManager.shared.evaluatePolicy(reason: reason, completion: { (context, error) in
+            let status = SecItemAdd(query as CFDictionary, nil)
+            completionHandler(context, status == errSecSuccess ? nil : KeychainError.storeKey)
+        })
     }
 
 
-    func delete(id identifier: String, service: String, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) throws {
+    func delete(id identifier: String, service: String, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
 
         do {
-            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
+            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, context) in
                 let status = SecItemDelete(query as CFDictionary)
 
                 guard status != errSecItemNotFound else {
-                    return completionHandler(KeychainError.notFound)
+                    return completionHandler(nil, KeychainError.notFound)
                 }
                 guard status == errSecSuccess else {
-                    return completionHandler(KeychainError.unhandledError(status))
+                    return completionHandler(nil, KeychainError.unhandledError(status))
                 }
+                completionHandler(context, nil)
             }
         } catch {
-            completionHandler(error)
+            completionHandler(nil,error)
         }
     }
 
-    func deleteAll(service: String, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) throws {
+    func deleteAll(service: String, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service]
 
@@ -308,19 +307,20 @@ class Keychain {
                 guard status == errSecSuccess else {
                     return completionHandler(KeychainError.unhandledError(status))
                 }
+                completionHandler(nil)
             }
         } catch {
             completionHandler(error)
         }
     }
 
-    func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) throws {
+    func update(id identifier: String, service: String, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ error: Error?) -> Void) {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service]
 
         guard (secretData != nil || label != nil || objectData != nil) else {
-            throw KeychainError.noData
+            return completionHandler(KeychainError.noData)
         }
 
         if let context = context {
@@ -344,13 +344,13 @@ class Keychain {
         do {
             try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
                 let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-
                 guard status != errSecItemNotFound else {
                     return completionHandler(KeychainError.notFound)
                 }
                 guard status == errSecSuccess else {
                     return completionHandler(KeychainError.unhandledError(status))
                 }
+                completionHandler(nil)
             }
         } catch {
             completionHandler(error)

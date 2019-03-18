@@ -5,12 +5,19 @@
 import UIKit
 
 class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
-    var unfilteredAccounts: [Account]?
-    var filteredAccounts: [Account]?
+    var unfilteredAccounts: [Account]!
+    var filteredAccounts: [Account]!
     let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if let accountDict = try? Account.all(context: nil) {
+            unfilteredAccounts = Array(accountDict.values)
+        } else {
+            unfilteredAccounts = [Account]()
+        }
+        filteredAccounts = unfilteredAccounts
 
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal
@@ -25,10 +32,12 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     private func loadAccounts(notification: Notification) {
-        if let accounts = notification.userInfo as? [String: Account] {
-            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
-            filteredAccounts = unfilteredAccounts
-            tableView.reloadData()
+        DispatchQueue.main.async {
+            if let accounts = notification.userInfo as? [String: Account] {
+                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+                self.filteredAccounts = self.unfilteredAccounts
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -60,11 +69,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = unfilteredAccounts?.filter({ (account) -> Bool in
+            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
             }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = unfilteredAccounts?.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
@@ -96,12 +105,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
-
-        if let accounts = filteredAccounts {
-            let account = accounts[indexPath.row]
-            cell.textLabel?.text = account.site.name
-            cell.detailTextLabel?.text = account.username
-        }
+        let account = filteredAccounts[indexPath.row]
+        cell.textLabel?.text = account.site.name
+        cell.detailTextLabel?.text = account.username
         return cell
     }
 
@@ -114,14 +120,14 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = filteredAccounts![indexPath.row]
+                 controller.account = filteredAccounts[indexPath.row]
             }
         }
     }
     
     func updateAccount(account: Account) {
-        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
-            filteredAccounts?[filteredIndex] = account
+        if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
+            filteredAccounts[filteredIndex] = account
             let indexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
@@ -132,19 +138,15 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             Logger.shared.warning("Account was nil when trying to add it to the view.")
             return
         }
-        filteredAccounts?.append(account)
-        filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
-        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
-            let newIndexPath = IndexPath(row: filteredIndex, section: 0)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        DispatchQueue.main.async {
+            self.addAccount(account: account)
         }
-        updateSearchResults(for: searchController)
     }
 
     func addAccount(account: Account) {
-        filteredAccounts?.append(account)
-        filteredAccounts?.sort(by: { $0.site.name < $1.site.name })
-        if let filteredIndex = filteredAccounts?.index(where: { account.id == $0.id }) {
+        filteredAccounts.append(account)
+        filteredAccounts.sort(by: { $0.site.name < $1.site.name })
+        if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
@@ -157,7 +159,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts!.index(where: { account.id == $0.id }) {
+            if let index = filteredAccounts.index(where: { account.id == $0.id }) {
                 let indexPath = IndexPath(row: index, section: 0)
                 deleteAccount(account: account, filteredIndexPath: indexPath)
             }
@@ -167,12 +169,15 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        do {
-            try account.delete(context: AuthenticationGuard.shared.localAuthenticationContext)
-            filteredAccounts?.remove(at: filteredIndexPath.row)
-            tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
-        } catch {
-            Logger.shared.error("Could not delete account.", error: error)
-        }
+        account.delete(completionHandler: { (error) in
+            guard error == nil else {
+                #warning("TODO: Present error")
+                return
+            }
+            DispatchQueue.main.async {
+                self.filteredAccounts.remove(at: filteredIndexPath.row)
+                self.tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+            }
+        })
     }
 }
