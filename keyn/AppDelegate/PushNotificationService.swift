@@ -186,33 +186,24 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
-        Account.get(accountID: accountId, reason: "Update password", type: .never) { (account, context, error) in
-            do {
-                var mutableAccount = account
-                if let error = error {
-                    throw error
-                }
-                guard mutableAccount != nil else {
-                    throw AccountError.accountsNotLoaded
-                }
-                switch keynMessage.type {
-                case .confirm:
-                    guard let result = keynMessage.passwordSuccessfullyChanged else {
-                        throw CodingError.missingData
-                    }
-                    if result {
-                        try mutableAccount!.updatePasswordAfterConfirmation()
-                    }
-                case .preferences:
-                    try mutableAccount!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, context: context)
-                default:
-                    Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
-                }
-                session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
-            } catch {
-                Logger.shared.error("Error handling persistent queue message", error: error)
-            }
+        var account = try Account.get(accountID: accountId, context: nil)
+        guard account != nil else {
+            throw AccountError.notFound
         }
+        switch keynMessage.type {
+        case .confirm:
+            guard let result = keynMessage.passwordSuccessfullyChanged else {
+                throw CodingError.missingData
+            }
+            if result {
+                try account!.updatePasswordAfterConfirmation()
+            }
+        case .preferences:
+            try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
+        default:
+            Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
+        }
+        session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
     }
 
     // DEBUG

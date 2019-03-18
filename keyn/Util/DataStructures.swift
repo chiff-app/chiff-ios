@@ -140,8 +140,8 @@ struct KeynPairingResponse: Codable {
 typealias AccountList = [String:JSONAccount]
 
 struct JSONAccount: Codable {
-    let askToLogin: Bool
-    let askToChange: Bool
+    let askToLogin: Bool?
+    let askToChange: Bool?
     let sites: [JSONSite]
 
     init(account: Account) {

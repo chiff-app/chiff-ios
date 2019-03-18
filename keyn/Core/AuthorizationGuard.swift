@@ -135,7 +135,7 @@ class AuthorizationGuard {
 
     static func launchRequestView(with request: KeynRequest) {
         print("LaunchRequestViewCalled")
-        guard !authorizationInProgress else {
+        guard !authorizationInProgress && !LocalAuthenticationManager.shared.authenticationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
         }

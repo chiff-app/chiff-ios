@@ -27,8 +27,8 @@ struct Account: Codable {
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
-    var askToLogin: Bool = true
-    var askToChange: Bool = true
+    var askToLogin: Bool?
+    var askToChange: Bool?
     private var tokenURL: URL? // Only for backup
     private var tokenSecret: Data? // Only for backup
 
@@ -44,6 +44,8 @@ struct Account: Codable {
         let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd)
         if let password = password {
             passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
+        } else {
+            askToChange = false
         }
         
         let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
@@ -135,6 +137,9 @@ struct Account: Codable {
         }
 
         if let newPassword = newPassword {
+            if askToChange == nil {
+                self.askToChange = true
+            }
             let newIndex = passwordIndex + 1
             let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd)
             self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
@@ -169,11 +174,13 @@ struct Account: Codable {
         guard let passwordData = newPassword.data(using: .utf8) else {
             throw CodingError.stringEncoding
         }
+        askToChange = false
 
         let accountData = try PropertyListEncoder().encode(self)
 
         try Keychain.shared.update(id: id, service: Account.keychainService, secretData: passwordData, objectData: accountData, label: nil)
         try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
         Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
