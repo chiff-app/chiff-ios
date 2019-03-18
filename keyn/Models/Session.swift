@@ -13,6 +13,7 @@ enum SessionError: KeynError {
     case noEndpoint
     case signing
     case unknownType
+    case destroyed
 }
 
 fileprivate enum KeyIdentifier: String, Codable {
@@ -100,7 +101,10 @@ class Session: Codable {
                 if let error = error {
                     throw error
                 }
-                guard let password = password, let self = self else {
+                guard let self = self else {
+                    throw SessionError.destroyed
+                }
+                guard let password = password else {
                     throw CodingError.missingData
                 }
                 var response: KeynCredentialsResponse?
@@ -112,8 +116,8 @@ class Session: Codable {
                     #warning("TODO: is it really necessary to send the password back after adding a site?")
                     response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
                 case .login:
-                    Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
                     response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+                    Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
                 case .fill:
                     Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
                     response = KeynCredentialsResponse(u: nil, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
