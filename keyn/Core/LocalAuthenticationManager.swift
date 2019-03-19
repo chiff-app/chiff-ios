@@ -87,7 +87,7 @@ class LocalAuthenticationManager {
     private func checkMainContext() throws {
         var authError: NSError?
         if !mainContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
-            guard authError!.code != LAError.invalidContext.rawValue else {
+            guard authError!.code != LAError.invalidContext.rawValue && authError!.code != NSXPCConnectionInvalid else {
                 mainContext = LAContext()
                 return
             }

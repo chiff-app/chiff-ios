@@ -11,6 +11,7 @@ enum AccountError: KeynError {
     case duplicateAccountId
     case accountsNotLoaded
     case notFound
+    case missingContext
 }
 
 /*
@@ -46,7 +47,7 @@ struct Account: Codable {
         }
         
         let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
-        self.passwordIndex = index
+        self.passwordIndex = index  
         self.lastPasswordUpdateTryIndex = index
         if password != nil {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
@@ -284,7 +285,7 @@ struct Account: Codable {
                 let decoder = PropertyListDecoder()
 
                 guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                    return completionHandler(nil, context, CodingError.unexpectedData)
+                    return completionHandler(nil, nil, CodingError.unexpectedData)
                 }
 
                 let account = try decoder.decode(Account.self, from: accountData)
@@ -366,6 +367,9 @@ struct Account: Codable {
                 do {
                     if let error = error {
                         throw error
+                    }
+                    guard let context = context else {
+                        throw AccountError.missingContext
                     }
                     try BackupManager.shared.backup(id: self.id, accountData: accountData)
                     try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })

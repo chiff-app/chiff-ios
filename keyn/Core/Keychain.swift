@@ -15,6 +15,7 @@ enum KeychainError: KeynError {
     case noData
     case interactionNotAllowed
     case failedCreatingSecAccess
+    case authenticationCancelled
 }
 
 enum KeychainService: String {
@@ -415,6 +416,9 @@ class Keychain {
 
                 if status == errSecItemNotFound {
                     return completionHandler(nil, nil)
+                }
+                if status == errSecInternalError {
+                    return completionHandler(nil, KeychainError.authenticationCancelled)
                 }
 
                 guard status == noErr else {
