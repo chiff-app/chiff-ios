@@ -5,6 +5,7 @@
 import Foundation
 import UIKit
 import UserNotifications
+import LocalAuthentication
 
 /*
  * Handles push notification that come from outside the app.
@@ -17,7 +18,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         handlePendingNotifications()
 
         let nc = NotificationCenter.default
-        nc.addObserver(forName: .passwordChangeConfirmation, object: nil, queue: nil, using: handlePasswordConfirmationNotification)
+        nc.addObserver(forName: .passwordChangeConfirmation, object: nil, queue: nil, using: waitForPasswordChangeConfirmation)
         nc.addObserver(forName: .accountsLoaded, object: nil, queue: nil, using: checkPersistentQueue)
 
         return true
@@ -53,29 +54,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     // MARK: - Private
-
-    private func handlePasswordConfirmationNotification(notification: Notification) {
-        guard let session = notification.object as? Session else {
-            return
-        }
-
-        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid.rawValue else {
-            return
-        }
-
-        session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
-            UIApplication.shared.endBackgroundTask(id)
-            session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-        }).rawValue
-
-        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, completionHandler: {
-            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
-                let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
-                UIApplication.shared.endBackgroundTask(id)
-            }
-        })
-    }
 
     /*
      * Parses the push notification then ends session or presents the requestview.
@@ -147,17 +125,41 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    @objc func checkPersistentQueue(notification: Notification) {
+    private func waitForPasswordChangeConfirmation(notification: Notification) {
+        guard let session = notification.object as? Session else {
+            Logger.shared.debug("Received notification from unexpected object")
+            return
+        }
+
+        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid.rawValue else {
+            return
+        }
+
+        session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
+            UIApplication.shared.endBackgroundTask(id)
+            session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        }).rawValue
+
+        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext, completionHandler: {
+            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
+                let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
+                UIApplication.shared.endBackgroundTask(id)
+            }
+        })
+    }
+
+    private func checkPersistentQueue(notification: Notification) {
         do {
             for session in try Session.all() {
-                self.pollQueue(attempts: 1, session: session, shortPolling: true, completionHandler: nil)
+                self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil, completionHandler: nil)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
     }
 
-    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, completionHandler: (() -> Void)?) {
+    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: (() -> Void)?) {
         session.getPersistentQueueMessages(shortPolling: shortPolling) { (messages, error) in
             if let error = error {
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
@@ -166,13 +168,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             do {
                 guard let messages = messages, !messages.isEmpty else {
                     if (attempts > 1) {
-                        self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, completionHandler: completionHandler)
+                        self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context, completionHandler: completionHandler)
                     } else if let handler = completionHandler {
                         handler()
                     }
                     return
                 }
-                try messages.forEach({ try self.handlePersistenQueueMessage(keynMessage: $0, session: session) })
+                try messages.forEach({ try self.handlePersistenQueueMessage(keynMessage: $0, session: session, context: context) })
             } catch {
                 Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
             }
@@ -182,11 +184,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session) throws {
+    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws {
         guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
-        var account = try Account.get(accountID: accountId, context: nil)
+        var account = try Account.get(accountID: accountId, context: context)
         guard account != nil else {
             throw AccountError.notFound
         }

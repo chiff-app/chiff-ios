@@ -66,13 +66,13 @@ struct Account: Codable {
         try BackupManager.shared.backup(id: id, accountData: accountData)
     }
 
-    mutating func nextPassword() throws -> String {
+    mutating func nextPassword(context: LAContext? = nil) throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
         let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd)
         let (newPassword, index) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex + 1, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil);#warning("sync")
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: context)
         return newPassword
     }
     
@@ -201,7 +201,7 @@ struct Account: Codable {
 
     func password(context: LAContext? = nil) throws -> String {
         do {
-            let data = try Keychain.shared.get(id: id, service: .account, context: context);#warning("sync")
+            let data = try Keychain.shared.get(id: id, service: .account, context: context)
 
             guard let password = String(data: data, encoding: .utf8) else {
                 throw CodingError.stringEncoding
