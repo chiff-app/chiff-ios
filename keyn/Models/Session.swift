@@ -105,8 +105,8 @@ class Session: Codable {
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(), b: browserTab, a: account.id, o: nil, t: .change)
-            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self)
+            response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
+            NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add:
             #warning("TODO: is it really n  ecessary to send the password back after adding a site?")
             response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)

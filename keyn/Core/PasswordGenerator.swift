@@ -17,7 +17,7 @@ class PasswordGenerator {
     let siteId: String
     let ppd: PPD?
 
-    var chars: [Character] {
+    var characters: [Character] {
         if let characterSets = ppd?.characterSets {
             return characterSets.reduce([Character](), { (result, characterSet) -> [Character] in
                 if let characters = characterSet.characters {
@@ -27,7 +27,6 @@ class PasswordGenerator {
                 }
             })
         } else {
-            #warning("When manually adding passwords, the character set should also include special chars otherwise a generated password will be different")
             return PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
         }
     }
@@ -60,6 +59,7 @@ class PasswordGenerator {
 
     func calculateOffset(index passwordIndex: Int, password: String) throws -> [Int] {
         #warning("TODO: Check if this is OK. Not validating custom passwords.")
+        let chars = PasswordValidator.MAXIMAL_CHARACTER_SET.sorted()
         let length = self.length(isCustomPassword: true)
         let validator = PasswordValidator(ppd: ppd)
         guard validator.validateMaxLength(password: password) else {
@@ -83,6 +83,7 @@ class PasswordGenerator {
 
     private func length(isCustomPassword: Bool) -> Int {
         var length = isCustomPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
+        let chars = isCustomPassword ? PasswordValidator.MAXIMAL_CHARACTER_SET.sorted() : characters
         if let maxLength = ppd?.properties?.maxLength {
             length = maxLength < PasswordValidator.MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
         }
@@ -90,6 +91,7 @@ class PasswordGenerator {
     }
 
     private func generatePasswordCandidate(index passwordIndex: Int, length: Int, offset: [Int]?) throws -> String {
+        let chars = offset != nil ? PasswordValidator.MAXIMAL_CHARACTER_SET.sorted() : characters
         let key = try generateKey(index: passwordIndex)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
