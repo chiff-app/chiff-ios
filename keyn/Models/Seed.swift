@@ -10,12 +10,10 @@ enum SeedError: KeynError {
 
 struct Seed {
     
-    private static let keychainService = "io.keyn.seed"
-    
     static var hasKeys: Bool {
-        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) &&
-        Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService) &&
-        Keychain.shared.has(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
+        Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed) &&
+        Keychain.shared.has(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
 
     private enum KeyIdentifier: String, Codable {
@@ -23,8 +21,8 @@ struct Seed {
         case backup = "backup"
         case master = "master"
 
-        func identifier(for keychainService: String) -> String {
-            return "\(keychainService).\(self.rawValue)"
+        func identifier(for keychainService: KeychainService) -> String {
+            return "\(keychainService.rawValue).\(self.rawValue)"
         }
     }
 
@@ -33,13 +31,13 @@ struct Seed {
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, secretData: seed, classification: .secret)
-        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, secretData: passwordSeed, classification: .secret)
-        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, secretData: backupSeed, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
     }
 
     static func mnemonic() throws -> [String] {
-        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
+        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
         let seedHash = try Crypto.shared.hash(seed).first!
         let checksumSize = seed.count / 4
         let bitstring = seed.bitstring + String(seedHash, radix: 2).prefix(checksumSize).pad(toSize: checksumSize)
@@ -73,33 +71,33 @@ struct Seed {
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
         let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
 
-        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, secretData: seed, label: "true", classification: .secret)
-        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, secretData: passwordSeed, classification: .secret)
-        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, secretData: backupSeed, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed, label: "true")
+        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
         
         return true
     }
 
     static func getPasswordSeed() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
 
     static func getBackupSeed() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
     }
 
     static func delete() throws {
-        try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
-        try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
+        try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
+        try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+        try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
 
     static func setPaperBackupCompleted() throws {
-        try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
+        try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, label: "true")
     }
 
     static func isPaperBackupCompleted() throws -> Bool {
-        guard let dataArray = try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
+        guard let dataArray = try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) else {
             return false
         }
 

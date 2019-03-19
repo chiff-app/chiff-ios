@@ -6,14 +6,13 @@ import Foundation
 
 struct BackupManager {
 
-    private let keychainService = "io.keyn.backup"
     private let endpoint = "backup"
     static let shared = BackupManager()
     
     var hasKeys: Bool {
-        return Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) &&
-        Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService) &&
-        Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
+        return Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) &&
+        Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) &&
+        Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
 
     private enum KeyIdentifier: String, Codable {
@@ -21,8 +20,8 @@ struct BackupManager {
         case pub = "pub"
         case encryption = "encryption"
         
-        func identifier(for keychainService: String) -> String {
-            return "\(keychainService).\(self.rawValue)"
+        func identifier(for keychainService: KeychainService) -> String {
+            return "\(keychainService.rawValue).\(self.rawValue)"
         }
     }
     
@@ -110,7 +109,7 @@ struct BackupManager {
     func getBackupData(completionHandler: @escaping () -> Void) throws {
         var pubKey: String
 
-        if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService) {
+        if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
             try createEncryptionKey()
             pubKey = try createSigningKeypair()
         } else {
@@ -163,29 +162,29 @@ struct BackupManager {
     }
     
     func deleteAllKeys() {
-        Keychain.shared.deleteAll(service: keychainService)
+        Keychain.shared.deleteAll(service: .backup)
     }
 
     // MARK: - Private
     
     private func encryptionKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
     
     private func publicKey() throws -> String {
-        let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService)
+        let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
         let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
     private func privateKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService)
+        return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
     }
     
     private func createSigningKeypair() throws -> String {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
-        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: keychainService), service: keychainService, secretData: keyPair.pubKey, classification: .restricted)
-        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: keychainService), service: keychainService, secretData: keyPair.privKey, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
+        try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
         return base64PubKey
     }
@@ -196,7 +195,7 @@ struct BackupManager {
         }
         
         let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
-        try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: keychainService), service: keychainService, secretData: encryptionKey, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
     }
 
 }
