@@ -91,10 +91,7 @@ class AuthorizationGuard {
                 guard let self = self else {
                     return
                 }
-                guard let account = account else {
-                    throw AccountError.notFound
-                }
-                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, reason: self.authenticationReason)
+                try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler()
             } catch {
                 Logger.shared.error("Error authorizing request", error: error)
@@ -117,7 +114,7 @@ class AuthorizationGuard {
                         if let error = error {
                             throw error
                         }
-                        try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, reason: self.authenticationReason)
+                        try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
                     } catch {
                         Logger.shared.error("Add account response could not be sent", error: error)
@@ -135,7 +132,7 @@ class AuthorizationGuard {
 
     static func launchRequestView(with request: KeynRequest) {
         print("LaunchRequestViewCalled")
-        guard !authorizationInProgress && !LocalAuthenticationManager.shared.authenticationInProgress else {
+        guard !authorizationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
         }

@@ -38,7 +38,10 @@ class AuthenticationGuard {
 
     func authenticateUser(cancelChecks: Bool) {
         if cancelChecks {
-            guard !authenticationInProgress && !lockWindowIsHidden else {
+            guard !authenticationInProgress &&
+                !lockWindowIsHidden &&
+                !LocalAuthenticationManager.shared.authenticationInProgress &&
+                !AuthorizationGuard.authorizationInProgress else {
                 return
             }
 
@@ -80,35 +83,41 @@ class AuthenticationGuard {
     private func authenticateUser() {
         let unlocalizedReason = "Unlock Keyn"
         Account.all(reason: unlocalizedReason, type: .ifNeeded) { (accounts, error) in
-            if let error = error {
+            do {
+                if let error = error {
+                    throw error
+                }
+                guard let accounts = accounts else {
+                    return
+                }
+                if !accounts.isEmpty {
+                    DispatchQueue.main.async { [weak self] in
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
+                        self?.hideLockWindow()
+                    }
+                } else {
+                    LocalAuthenticationManager.shared.unlock(reason: unlocalizedReason, completion: { (result, error) in
+                        DispatchQueue.main.async { [weak self] in
+                            if let error = error {
+                                print("TODO: handle authentication error")
+                                return
+                            }
+                            if result {
+                                DispatchQueue.main.async { [weak self] in
+                                    self?.hideLockWindow()
+                                }
+                            } else {
+                                print("TODO: handle authentication unsuccesful")
+                            }
+                        }
+                    })
+                }
+            } catch KeychainError.authenticationCancelled {
+                Logger.shared.debug("Authentication was cancelled by an incoming request")
+            } catch {
                 #warning("TODO: Handle fallback for lack of biometric authentication")
                 Logger.shared.error("Error getting accounts.", error: error)
                 return
-            }
-            guard let accounts = accounts else {
-                return
-            }
-            if !accounts.isEmpty {
-                DispatchQueue.main.async { [weak self] in
-                    NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
-                    self?.hideLockWindow()
-                }
-            } else {
-                LocalAuthenticationManager.shared.unlock(reason: unlocalizedReason, completion: { (result, error) in
-                    DispatchQueue.main.async { [weak self] in
-                        if let error = error {
-                            print("TODO: handle authentication error")
-                            return
-                        }
-                        if result {
-                            DispatchQueue.main.async { [weak self] in
-                                self?.hideLockWindow()
-                            }
-                        } else {
-                            print("TODO: handle authentication unsuccesful")
-                        }
-                    }
-                })
             }
         }
     }
