@@ -20,11 +20,7 @@ fileprivate enum KeyIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
 
-    var service: String {
-        return "io.keyn.session.\(self.rawValue)"
-    }
-
-    func identifier(for id:String) -> String {
+    func identifier(for id: String) -> String {
         return "\(id)-\(self.rawValue)"
     }
 }
@@ -65,8 +61,8 @@ class Session: Codable {
         } else { // App should delete the queues
             deleteQueuesAtAWS()
         }
-        try Keychain.shared.delete(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service)
-        try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service)
+        try Keychain.shared.delete(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
+        try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
     }
 
     func decrypt(message message64: String) throws -> KeynRequest {
@@ -198,7 +194,7 @@ class Session: Codable {
     static func all() throws -> [Session] {
         var sessions = [Session]()
 
-        guard let dataArray = try Keychain.shared.all(service: KeyIdentifier.sharedKey.service) else {
+        guard let dataArray = try Keychain.shared.all(service: .sharedSessionKey) else {
             return sessions
         }
 
@@ -222,11 +218,11 @@ class Session: Codable {
     }
 
     static func exists(id: String) throws -> Bool {
-        return Keychain.shared.has(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service)
+        return Keychain.shared.has(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
     }
 
     static func get(id: String) throws -> Session? {
-        guard let sessionDict = try Keychain.shared.attributes(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service) else {
+        guard let sessionDict = try Keychain.shared.attributes(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey) else {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
@@ -305,8 +301,8 @@ class Session: Codable {
     }
 
     private static func purgeSessionDataFromKeychain() {
-        Keychain.shared.deleteAll(service: KeyIdentifier.sharedKey.service)
-        Keychain.shared.deleteAll(service: KeyIdentifier.signingKeyPair.service)
+        Keychain.shared.deleteAll(service: .sharedSessionKey)
+        Keychain.shared.deleteAll(service: .signingSessionKey)
     }
 
     private func sendToVolatileQueue(ciphertext: Data, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
@@ -336,13 +332,13 @@ class Session: Codable {
     }
 
     private func sharedKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service)
+        return try Keychain.shared.get(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
     }
 
     private func save(key: Data, signingKeyPair: KeyPair) throws {
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: KeyIdentifier.sharedKey.service, secretData: key, objectData: sessionData, classification: .restricted)
-        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service, secretData: signingKeyPair.privKey, classification: .restricted)
+        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey, secretData: key, objectData: sessionData)
+        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
     }
 
     private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
@@ -351,7 +347,7 @@ class Session: Codable {
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
 
         do {
-            let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: KeyIdentifier.signingKeyPair.service)
+            let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.sign(message: jsonData, privKey: privKey)
 
