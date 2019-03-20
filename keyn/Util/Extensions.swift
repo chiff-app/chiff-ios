@@ -154,6 +154,15 @@ extension UIViewController {
             return self
         }
     }
+
+    @IBAction func dismiss(sender: UIStoryboardSegue) {
+        if let navCon = navigationController {
+            navCon.popViewController(animated: false)
+        } else {
+            dismiss(animated: false, completion: nil)
+        }
+    }
+
 }
 
 extension UIStoryboard {
