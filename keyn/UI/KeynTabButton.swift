@@ -1,5 +1,5 @@
 //
-//  KeynButton.swift
+//  KeynTabButton.swift
 //  keyn
 //
 //  Created by Bas Doorn on 20/03/2019.
@@ -8,14 +8,7 @@
 
 import UIKit
 
-
-enum KeynButtonType: String {
-    case primary
-    case secondary
-    case accent
-}
-
-@IBDesignable class KeynButton: UIButton {
+@IBDesignable class KeynTabButton: UIButton {
 
     @IBInspectable var keynButtonType: String {
         get {
@@ -28,16 +21,10 @@ enum KeynButtonType: String {
 
     var type: KeynButtonType = .primary {
         didSet {
-            switch type {
-            case .primary:
-                backgroundColor = UIColor.primary
-                tintColor = UIColor.white
-            case .secondary:
-                backgroundColor = UIColor.secondary
-                tintColor = UIColor.primary
-            case .accent:
-                backgroundColor = UIColor.primaryAccent
-                tintColor = UIColor.white
+            if type == .primary {
+                layer.maskedCorners = [.layerMaxXMinYCorner]
+            } else {
+                layer.maskedCorners = [.layerMinXMinYCorner]
             }
         }
     }

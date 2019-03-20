@@ -265,6 +265,9 @@ extension UIColor {
     static var secondary: UIColor = {
         return UIColor(rgb: 0xE5E1F5)
     }()
+    static var primaryAccent: UIColor = {
+        return UIColor(rgb: 0xF28D0C)
+    }()
 }
 
 extension UIImage {

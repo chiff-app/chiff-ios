@@ -801,7 +801,6 @@
         <!--View Controller-->
         <scene sceneID="kyW-4Y-Yv8">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kRr-cI-qxN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="vKQ-PU-y17" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bYT-oF-mE0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -881,6 +880,9 @@
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="pyf-tg-8Bl" kind="show" id="Oeg-Zm-fvB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -907,13 +909,13 @@
                         <viewLayoutGuide key="safeArea" id="gxG-vJ-7lf"/>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kRr-cI-qxN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-134" y="1712"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ZD1-fd-gcc">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="edq-d8-Hl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="NKs-7g-OpF" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lAC-zJ-sxV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
@@ -1022,17 +1024,17 @@
                             <constraint firstItem="Rtg-PY-R18" firstAttribute="leading" secondItem="lAC-zJ-sxV" secondAttribute="leading" id="rtq-KB-vEv"/>
                             <constraint firstAttribute="trailing" secondItem="Rtg-PY-R18" secondAttribute="trailing" id="wjB-lc-e47"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="MaA-qX-iot"/>
                     </view>
                     <navigationItem key="navigationItem" id="pXd-mF-cD4"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="edq-d8-Hl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="622" y="2342"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="GpQ-i2-0Bt">
             <objects>
-                <exit id="uC0-6X-VME" userLabel="Exit" sceneMemberID="exit"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7nX-R3-JdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="WCr-G8-miW" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yjo-0M-e6N">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
@@ -1144,6 +1146,8 @@
                     </view>
                     <size key="freeformSize" width="375" height="402"/>
                 </viewController>
+                <exit id="uC0-6X-VME" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7nX-R3-JdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="622" y="2853"/>
         </scene>
@@ -1163,6 +1167,299 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XX1-aC-uk5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-135" y="2342"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="eRY-12-Tba">
+            <objects>
+                <viewController id="pyf-tg-8Bl" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="16g-My-AD4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="LLJ-Au-4fr">
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="58" id="RCu-aU-cDa"/>
+                                    <constraint firstAttribute="width" constant="52" id="iW4-e4-cA8"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="xzg-Tk-ApN"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-7v-dBp" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="107.5" y="593" width="160" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="IYO-KS-4vH"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="LVW-Gc-i5N"/>
+                                    <constraint firstAttribute="width" constant="160" id="gYj-5h-mz3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Scan QR code"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE">
+                                <rect key="frame" x="16" y="115" width="343" height="59"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="You're ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="1 minute">
+                                        <attributes>
+                                            <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" away from TODO.">
+                                        <attributes>
+                                            <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="I6q-mQ-n4f">
+                                <rect key="frame" x="16" y="271" width="327" height="252"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="l8F-cZ-mXl">
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="118"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNq-lV-iDk" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="26" id="YpJ-l8-2kN"/>
+                                                    <constraint firstAttribute="width" constant="26" id="lPd-da-BaW"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="1">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="otk-Fb-gYc">
+                                                <rect key="frame" x="38" y="0.0" width="289" height="118"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyy-if-o49">
+                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="44"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="Go to ">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content="keyn.app/go">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content=" on your computer">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-vf-M2d">
+                                                        <rect key="frame" x="0.0" y="52" width="289" height="66"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="To start using Keyn, you also need to install Keyn in your browser. You do this by visiting ">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content="keyn.app/go">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.11372549019607843" green="0.21176470588235294" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content=" on your computer.">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="hxV-w4-8M1">
+                                        <rect key="frame" x="0.0" y="156" width="325.5" height="96"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Jw-rD-DhX" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="26" id="hoq-HO-UOa"/>
+                                                    <constraint firstAttribute="height" constant="26" id="wls-5q-Lvu"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="2">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ARB-Ke-IEF">
+                                                <rect key="frame" x="38" y="0.0" width="287.5" height="96"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydr-9E-s3b">
+                                                        <rect key="frame" x="0.0" y="0.0" width="287.5" height="22"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="Scan QR code">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops>
+                                                                            <textTab alignment="left" location="28">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="56">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="84">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="112">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="140">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="168">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="196">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="224">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="252">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="280">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="308">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="336">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                        </tabStops>
+                                                                    </paragraphStyle>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNg-up-Og4">
+                                                        <rect key="frame" x="0.0" y="30" width="287.5" height="66"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="After installing Keyn in your browser, you'll a QR code appear. Scan it to finish the setup!">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops>
+                                                                            <textTab alignment="left" location="28">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="56">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="84">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="112">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="140">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="168">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="196">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="224">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="252">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="280">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="308">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="336">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                        </tabStops>
+                                                                    </paragraphStyle>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="I6q-mQ-n4f" secondAttribute="trailing" constant="32" id="6IX-8e-g49"/>
+                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="O94-HQ-lRE" secondAttribute="trailing" constant="16" id="8cI-cU-sKA"/>
+                            <constraint firstItem="LLJ-Au-4fr" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="B8G-3i-ANV"/>
+                            <constraint firstItem="3w9-7v-dBp" firstAttribute="top" secondItem="I6q-mQ-n4f" secondAttribute="bottom" constant="70" id="Cyf-b1-TUe"/>
+                            <constraint firstItem="I6q-mQ-n4f" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="D5W-ii-76i"/>
+                            <constraint firstItem="LLJ-Au-4fr" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="35" id="EEv-tV-3cS"/>
+                            <constraint firstItem="3w9-7v-dBp" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="FPU-TV-EGA"/>
+                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="bottom" secondItem="3w9-7v-dBp" secondAttribute="bottom" constant="30" id="Jxy-Lw-Dew"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="115" id="Zwp-vD-GBg"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="n4m-XJ-WMR"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aSv-Bf-0hp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="621.60000000000002" y="1710.4947526236883"/>
         </scene>
     </scenes>
     <resources>
