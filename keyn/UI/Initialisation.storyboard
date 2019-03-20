@@ -513,12 +513,12 @@
                                     <segue destination="vKQ-PU-y17" kind="show" id="Y9R-XK-IMG"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
                                 <rect key="frame" x="28" y="223.5" width="319" height="70.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Keyn allows you to log into any website using your phone, making logging in safer and simpler">
                                         <attributes>
-                                            <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.80348351883561642" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="16" name="Montserrat-Medium"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -798,10 +798,10 @@
             </objects>
             <point key="canvasLocation" x="-1964" y="1712.2938530734634"/>
         </scene>
-        <!--View Controller-->
+        <!-- -->
         <scene sceneID="kyW-4Y-Yv8">
             <objects>
-                <viewController id="vKQ-PU-y17" sceneMemberID="viewController">
+                <viewController title=" " id="vKQ-PU-y17" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bYT-oF-mE0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -845,12 +845,6 @@
                                     <constraint firstAttribute="height" constant="179" id="Q06-iX-hX6"/>
                                 </constraints>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g28-8G-bJf">
-                                <rect key="frame" x="0.0" y="179" width="375" height="402"/>
-                                <connections>
-                                    <segue destination="vrY-4p-tgl" kind="embed" id="WhT-ed-hFi"/>
-                                </connections>
-                            </containerView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="xeG-Zd-YR3">
                                 <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -860,6 +854,12 @@
                                     <constraint firstAttribute="width" constant="52" id="sbz-re-1El"/>
                                 </constraints>
                             </imageView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g28-8G-bJf">
+                                <rect key="frame" x="0.0" y="179" width="375" height="402"/>
+                                <connections>
+                                    <segue destination="vrY-4p-tgl" kind="embed" id="WhT-ed-hFi"/>
+                                </connections>
+                            </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dCu-v8-lMJ">
                                 <rect key="frame" x="40" y="593" width="295" height="44"/>
                                 <subviews>
@@ -1168,10 +1168,10 @@
             </objects>
             <point key="canvasLocation" x="-135" y="2342"/>
         </scene>
-        <!--View Controller-->
+        <!-- -->
         <scene sceneID="eRY-12-Tba">
             <objects>
-                <viewController id="pyf-tg-8Bl" sceneMemberID="viewController">
+                <viewController title=" " id="pyf-tg-8Bl" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="16g-My-AD4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1198,6 +1198,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="Zak-ws-iqN" kind="show" id="9Sb-e9-Z3E"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE">
                                 <rect key="frame" x="16" y="115" width="343" height="59"/>
@@ -1277,26 +1280,12 @@
                                                         </attributedString>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-vf-M2d">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-vf-M2d">
                                                         <rect key="frame" x="0.0" y="52" width="289" height="66"/>
                                                         <attributedString key="attributedText">
-                                                            <fragment content="To start using Keyn, you also need to install Keyn in your browser. You do this by visiting ">
+                                                            <fragment content="To start using Keyn, you also need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.">
                                                                 <attributes>
-                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                            <fragment content="keyn.app/go">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.11372549019607843" green="0.21176470588235294" blue="0.41176470588235292" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                            <fragment content=" on your computer.">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.8026273544520548" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
@@ -1381,12 +1370,12 @@
                                                         </attributedString>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNg-up-Og4">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNg-up-Og4">
                                                         <rect key="frame" x="0.0" y="30" width="287.5" height="66"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="After installing Keyn in your browser, you'll a QR code appear. Scan it to finish the setup!">
                                                                 <attributes>
-                                                                    <color key="NSColor" red="0.11366999999999999" green="0.21143000000000001" blue="0.41325000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.80340325342465757" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
                                                                     <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
                                                                         <tabStops>
@@ -1461,8 +1450,250 @@
             </objects>
             <point key="canvasLocation" x="621.60000000000002" y="1710.4947526236883"/>
         </scene>
+        <!--Pair View Controller-->
+        <scene sceneID="Tel-6Y-A0A">
+            <objects>
+                <viewController storyboardIdentifier="Pair Controller" id="Zak-ws-iqN" customClass="PairViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HUa-JV-NuI">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMt-mr-8Ra">
+                                <rect key="frame" x="0.0" y="263" width="375" height="300"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="Rzz-hq-DXU"/>
+                                </constraints>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="6Ta-yP-qoh">
+                                <rect key="frame" x="107" y="263" width="160" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="6Ta-yP-qoh" secondAttribute="height" multiplier="8:15" id="72F-eC-kfx"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="w2k-kb-ifW">
+                                <rect key="frame" x="40" y="593" width="295" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aN9-Pu-JSU" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Help  me"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fo9-YI-YeD" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="155" y="0.0" width="140" height="44"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Try later"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="GeV-wP-at1"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jtf-uE-EPa">
+                                <rect key="frame" x="16" y="124" width="343" height="27"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6OE-DA-jNN">
+                                <rect key="frame" x="24" y="171" width="327" height="72"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Scan the QR code that appears in the top right corner of your browser after installing our extention on">
+                                        <attributes>
+                                            <color key="NSColor" red="0.10877000000000001" green="0.067330000000000001" blue="0.23094000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="56">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="84">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="112">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="140">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="168">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="196">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="224">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="252">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="280">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="308">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="336">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.11762" green="0.11766" blue="0.11389000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="56">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="84">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="112">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="140">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="168">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="196">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="224">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="252">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="280">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="308">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="336">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="keyn.app/go">
+                                        <attributes>
+                                            <color key="NSColor" red="0.26136999999999999" green="0.13081999999999999" blue="0.75090999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="14" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                <tabStops>
+                                                    <textTab alignment="left" location="28">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="56">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="84">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="112">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="140">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="168">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="196">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="224">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="252">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="280">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="308">
+                                                        <options/>
+                                                    </textTab>
+                                                    <textTab alignment="left" location="336">
+                                                        <options/>
+                                                    </textTab>
+                                                </tabStops>
+                                            </paragraphStyle>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="EyK-z2-Rox"/>
+                                    <constraint firstAttribute="height" constant="58" id="XlO-Uf-5Sz"/>
+                                    <constraint firstAttribute="width" constant="52" id="szr-AU-WSm"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="pMt-mr-8Ra" secondAttribute="trailing" id="09L-DX-aOg"/>
+                            <constraint firstItem="6Ta-yP-qoh" firstAttribute="leading" secondItem="pMt-mr-8Ra" secondAttribute="leading" constant="107" id="4Zf-gt-Ru2"/>
+                            <constraint firstItem="pMt-mr-8Ra" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" id="8iP-xt-yTu"/>
+                            <constraint firstItem="6Ta-yP-qoh" firstAttribute="top" secondItem="pMt-mr-8Ra" secondAttribute="top" id="9Xz-7U-6cO"/>
+                            <constraint firstItem="6OE-DA-jNN" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="24" id="ETu-pE-dIG"/>
+                            <constraint firstItem="w2k-kb-ifW" firstAttribute="top" secondItem="pMt-mr-8Ra" secondAttribute="bottom" constant="30" id="J9w-aw-Pw5"/>
+                            <constraint firstItem="pMt-mr-8Ra" firstAttribute="trailing" secondItem="6Ta-yP-qoh" secondAttribute="trailing" constant="108" id="L6j-Hm-5to"/>
+                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="w2k-kb-ifW" secondAttribute="trailing" constant="40" id="Ou6-aK-xmw"/>
+                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="bottom" secondItem="w2k-kb-ifW" secondAttribute="bottom" constant="30" id="aAE-kF-yxJ"/>
+                            <constraint firstItem="6OE-DA-jNN" firstAttribute="top" secondItem="jtf-uE-EPa" secondAttribute="bottom" constant="20" id="dMS-vH-SNr"/>
+                            <constraint firstItem="6Ta-yP-qoh" firstAttribute="bottom" secondItem="pMt-mr-8Ra" secondAttribute="bottom" id="dPC-D3-nEZ"/>
+                            <constraint firstItem="6r2-z2-GmB" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="jsx-LY-QgP"/>
+                            <constraint firstItem="6r2-z2-GmB" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" constant="35" id="nx5-DB-rhi"/>
+                            <constraint firstItem="jtf-uE-EPa" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="16" id="r3K-ys-eDz"/>
+                            <constraint firstItem="w2k-kb-ifW" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="40" id="wTP-OK-jT3"/>
+                            <constraint firstItem="pMt-mr-8Ra" firstAttribute="top" secondItem="6OE-DA-jNN" secondAttribute="bottom" constant="20" id="xqg-sY-6N0"/>
+                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="jtf-uE-EPa" secondAttribute="trailing" constant="16" id="ycW-W9-1aO"/>
+                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="6OE-DA-jNN" secondAttribute="trailing" constant="24" id="zNd-7G-FM2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xGT-Ng-yLJ"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="BQp-XR-qrk">
+                        <barButtonItem key="backBarButtonItem" title=" " id="IXd-GT-YmX"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="videoView" destination="pMt-mr-8Ra" id="FLB-4o-z7a"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JD4-BJ-yGq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1472.8" y="1709.5952023988007"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Scan_overlay" width="108" height="108"/>
         <image name="desk" width="375" height="213"/>
         <image name="desktop_popup" width="98" height="70"/>
         <image name="lock_login" width="107" height="72"/>

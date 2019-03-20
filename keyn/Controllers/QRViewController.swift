@@ -104,7 +104,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        previewLayer?.frame = view.layer.bounds
+        previewLayer?.frame = videoView.layer.bounds
         videoView.layer.addSublayer(previewLayer!)
         
         captureSession.startRunning()
