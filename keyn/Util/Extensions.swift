@@ -176,6 +176,16 @@ extension UIStoryboard {
     
 }
 
+struct System {
+
+    static func clearNavigationBar(forBar navBar: UINavigationBar) {
+        navBar.setBackgroundImage(UIImage(), for: .default)
+        navBar.shadowImage = UIImage()
+        navBar.isTranslucent = true
+    }
+    
+}
+
 extension UIApplication {
     var visibleViewController: UIViewController? {
         guard let rootViewController = keyWindow?.rootViewController else {
@@ -239,6 +249,13 @@ extension UIColor {
             blue: rgb & 0xFF
         )
     }
+
+    static var primary: UIColor = {
+        return UIColor(rgb: 0x4722C3)
+    }()
+    static var secondary: UIColor = {
+        return UIColor(rgb: 0xE5E1F5)
+    }()
 }
 
 extension UIImage {
