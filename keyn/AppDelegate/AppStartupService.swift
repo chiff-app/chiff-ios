@@ -31,9 +31,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         Questionnaire.fetch()
 
-        // Set purple line under NavigationBar
-        UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-
         return true
     }
 

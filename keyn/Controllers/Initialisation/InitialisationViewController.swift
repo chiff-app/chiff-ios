@@ -5,7 +5,12 @@
 import UIKit
 
 class InitialisationViewController: UIViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
+
+    override func viewDidLoad() {
+        if let navController = navigationController {
+            System.clearNavigationBar(forBar: navController.navigationBar)
+            navController.view.backgroundColor = .clear
+        }
     }
+    
 }
