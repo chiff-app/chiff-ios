@@ -384,12 +384,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mwL-cz-Fnd">
-                                <rect key="frame" x="136.66666666666666" y="200" width="140.99999999999997" height="23.666666666666657"/>
-                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
-                                <color key="textColor" red="1" green="0.71764705882352942" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
                                 <rect key="frame" x="16" y="100" width="382" height="80"/>
                                 <constraints>
@@ -397,34 +391,28 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PF9-Mk-y1i">
-                                <rect key="frame" x="167" y="560" width="80" height="116"/>
+                                <rect key="frame" x="182" y="649" width="50" height="55"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="Y3c-UV-bHh"/>
+                                    <constraint firstAttribute="width" constant="50" id="Y3c-UV-bHh"/>
                                 </constraints>
                                 <state key="normal" image="fingerprint">
                                     <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="touchID:" destination="gHc-rU-sGC" eventType="touchUpInside" id="8d0-Ms-JMJ"/>
-                                    <action selector="touchID:" destination="Pqc-6s-Pnr" eventType="touchUpInside" id="YLD-jc-rDY"/>
+                                    <action selector="touchID:" destination="Pqc-6s-Pnr" eventType="touchUpInside" id="wQv-1I-uhw"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.28627450980392155" green="0.19607843137254902" blue="0.63529411764705879" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="mwL-cz-Fnd" firstAttribute="top" secondItem="xGc-jF-fzx" secondAttribute="bottom" constant="20" id="D5T-uy-9st"/>
-                            <constraint firstItem="low-6y-hba" firstAttribute="bottom" secondItem="PF9-Mk-y1i" secondAttribute="bottom" constant="60" id="O2q-Yd-Q9f"/>
+                            <constraint firstItem="low-6y-hba" firstAttribute="bottom" secondItem="PF9-Mk-y1i" secondAttribute="bottom" constant="32" id="O2q-Yd-Q9f"/>
                             <constraint firstItem="xGc-jF-fzx" firstAttribute="top" secondItem="low-6y-hba" secondAttribute="top" constant="80" id="Xxt-Qp-pi5"/>
                             <constraint firstItem="low-6y-hba" firstAttribute="trailing" secondItem="xGc-jF-fzx" secondAttribute="trailing" constant="16" id="eqj-FC-64O"/>
-                            <constraint firstItem="mwL-cz-Fnd" firstAttribute="centerX" secondItem="M7J-Ow-gEZ" secondAttribute="centerX" id="lun-7f-9Ft"/>
                             <constraint firstItem="PF9-Mk-y1i" firstAttribute="centerX" secondItem="M7J-Ow-gEZ" secondAttribute="centerX" id="uHo-eZ-tUY"/>
                             <constraint firstItem="xGc-jF-fzx" firstAttribute="leading" secondItem="low-6y-hba" secondAttribute="leading" constant="16" id="xYX-iw-gig"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="low-6y-hba"/>
                     </view>
-                    <connections>
-                        <outlet property="touchIDButton" destination="PF9-Mk-y1i" id="cZl-px-1he"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaW-Ua-YRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1681,7 +1669,7 @@ Reproduction steps:
         <image name="device-icon" width="34" height="23"/>
         <image name="device_icon_selected" width="34" height="23"/>
         <image name="eye_logo" width="20" height="14"/>
-        <image name="fingerprint" width="104" height="116"/>
+        <image name="fingerprint" width="50" height="55"/>
         <image name="logo" width="384" height="428"/>
         <image name="logo_white" width="384" height="428"/>
         <image name="settings-icon" width="26" height="27"/>

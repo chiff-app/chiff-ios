@@ -5,76 +5,88 @@
 import UIKit
 import LocalAuthentication
 
-class RequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class RequestViewController: UIViewController {
 
-    @IBOutlet weak var siteLabel: UILabel!
-    @IBOutlet weak var accountPicker: UIPickerView!
-    @IBOutlet weak var pickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var spaceBetweenPickerAndStackview: NSLayoutConstraint!
+    @IBOutlet weak var requestLabel: UILabel!
+    @IBOutlet weak var successView: UIStackView!
+    @IBOutlet weak var successTextLabel: UILabel!
+    @IBOutlet weak var successTextDetailLabel: UILabel!
 
     var authorizationGuard: AuthorizationGuard!
 
     private var accounts = [Account]()
-    private let PICKER_HEIGHT: CGFloat = 120.0
-    private let SPACE_PICKER_STACK: CGFloat = 10.0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        siteLabel.text = authorizationGuard.authenticationReason
-        if (authorizationGuard.type == .login || authorizationGuard.type == .change || authorizationGuard.type == .fill) {
-            try? authorizationGuard.acceptRequest {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
-                }
+        switch authorizationGuard.type {
+        case .login:
+            requestLabel.text = "Confirm login"
+        case .add:
+            requestLabel.text = "Add account"
+        case .change:
+            requestLabel.text = "Change password"
+        case .fill:
+            requestLabel.text = "Fill password"
+        default:
+            requestLabel.text = "Unknown request"
+        }
+        try? authorizationGuard.acceptRequest {
+            DispatchQueue.main.async {
+                self.success()
             }
         }
-        accountPicker.dataSource = self
-        accountPicker.delegate = self
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-    
-    // MARK: - UIPickerView functions
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return accounts.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return accounts[row].username
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let username = NSAttributedString(string: accounts[row].username, attributes: [.foregroundColor : UIColor.white])
-        return username
+
+    // MARK: - Private functions
+
+    private func success() {
+        switch authorizationGuard.type {
+            case .login:
+                successTextLabel.text = "Login successful"
+                successTextDetailLabel.text = "Return to your computer"
+            case .add:
+                successTextLabel.text = "Account added"
+                successTextDetailLabel.text = "Next time you can login with Keyn"
+            case .change:
+                successTextLabel.text = "New password generated"
+                successTextDetailLabel.text = "Return to your computer to complete the process"
+            case .fill:
+                successTextLabel.text = "Fill password successful"
+                successTextDetailLabel.text = "Return to your computer"
+            default:
+            requestLabel.text = "Unknown request"
+        }
+        self.successView.alpha = 0.0
+        self.successView.isHidden = false
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     // MARK: - Actions
 
-    @IBAction func accept(_ sender: UIButton) {
+    @IBAction func authenticate(_ sender: UIButton) {
         do {
             try authorizationGuard.acceptRequest {
                 DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
+                    self.success()
                 }
             }
         } catch {
             #warning("TODO: SHow error")
         }
     }
-    
-    @IBAction func reject(_ sender: UIButton) {
+
+    @IBAction func close(_ sender: UIButton) {
         authorizationGuard.rejectRequest() {
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }
         }
     }
-
 }
