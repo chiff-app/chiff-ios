@@ -14,7 +14,9 @@ enum CameraError: KeynError {
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
     @IBOutlet weak var videoView: UIView!
-    
+    @IBOutlet weak var qrIconImageView: UIImageView!
+    @IBOutlet weak var qrIconImageViewHeight: NSLayoutConstraint!
+
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
@@ -31,6 +33,11 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             Logger.shared.warning("Camera not available.", error: error)
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseOut], animations: { self.qrIconImageView.alpha = 0.0 })
+    }
     
     func handleURL(url: URL) throws {
         preconditionFailure("This method must be overridden")
@@ -44,13 +51,17 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true
                     do {
-                        guard !recentlyScannedUrls.contains(urlString) else {
+                        guard !self.recentlyScannedUrls.contains(urlString) else {
                             throw SessionError.exists
                         }
                         guard let url = URL(string: urlString) else {
                             throw SessionError.invalid
                         }
-                        try handleURL(url: url)
+                        self.qrIconImageView.image = UIImage(named: "scan_checkmark")
+                        qrIconImageViewHeight.constant = 96
+                        updateViewConstraints()
+                        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.qrIconImageView.alpha = 1.0 })
+                        try self.handleURL(url: url)
                     } catch {
                         switch error {
                         case SessionError.exists:
@@ -62,7 +73,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         default:
                             Logger.shared.error("Unhandled QR code error.", error: error)
                         }
-                        qrFound = false
+                        self.qrFound = false
                     }
                 }
             }
@@ -70,7 +81,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             return
         }
     }
-    
+
     func displayError(message: String) {
         let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
         errorLabel.backgroundColor = UIColor.white
@@ -105,8 +116,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         previewLayer?.frame = videoView.layer.bounds
-        videoView.layer.addSublayer(previewLayer!)
-        
+        videoView.layer.insertSublayer(previewLayer!, at: 0)
+
         captureSession.startRunning()
     }
 
