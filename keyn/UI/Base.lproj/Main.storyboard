@@ -390,7 +390,7 @@
                                 <color key="textColor" red="1" green="0.71764705882352942" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
                                 <rect key="frame" x="16" y="100" width="382" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="crx-Uc-kTB"/>
@@ -1683,6 +1683,7 @@ Reproduction steps:
         <image name="eye_logo" width="20" height="14"/>
         <image name="fingerprint" width="104" height="116"/>
         <image name="logo" width="384" height="428"/>
+        <image name="logo_white" width="384" height="428"/>
         <image name="settings-icon" width="26" height="27"/>
         <image name="settings_icon_selected" width="26" height="27"/>
     </resources>

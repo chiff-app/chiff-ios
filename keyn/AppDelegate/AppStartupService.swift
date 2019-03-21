@@ -36,20 +36,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // Open app from URL (e.g. QR code)
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        do {
-            try AuthorizationGuard.authorizePairing(url: url) { (session, error) in
-                DispatchQueue.main.async {
-                    if let session = session {
-                        NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                    } else if let error = error {
-                        Logger.shared.error("Error creating session.", error: error)
-                    } else {
-                        Logger.shared.error("Error opening app from URL.")
-                    }
+        AuthorizationGuard.authorizePairing(url: url) { (session, error) in
+            DispatchQueue.main.async {
+                if let session = session {
+                    NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
+                } else if let error = error {
+                    Logger.shared.error("Error creating session.", error: error)
+                } else {
+                    Logger.shared.error("Error opening app from URL.")
                 }
             }
-        } catch {
-            Logger.shared.error("Error creating session.", error: error)
         }
 
         return true
@@ -130,6 +126,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.createQuestionnaireDirectory()
             AWS.shared.isFirstLaunch = true
         }
+        print(Seed.hasKeys)
+        print(BackupManager.shared.hasKeys)
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
