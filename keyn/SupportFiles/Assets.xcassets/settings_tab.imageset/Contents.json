@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "logo_blue.pdf",
+      "filename" : "settings_tab_selected.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "settings_tab_selected@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "settings_tab_selected@3x.png",
       "scale" : "3x"
     }
   ],
