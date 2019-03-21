@@ -31,6 +31,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         Questionnaire.fetch()
 
+        UIFixes()
+
         return true
     }
 
@@ -158,6 +160,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             self.window?.rootViewController = viewController
             self.window?.makeKeyAndVisible()
         }
+    }
+
+    private func UIFixes() {
+        let tabBar = UITabBar.appearance()
+        tabBar.barTintColor = UIColor.clear
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().isTranslucent = true
     }
 
 }
