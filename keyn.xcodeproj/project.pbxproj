@@ -46,6 +46,9 @@
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
+		495E09EE22453BD500BDFBB1 /* KeynTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynTableViewController.swift */; };
+		495E09EF22453BD500BDFBB1 /* KeynTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynTableViewController.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
@@ -235,6 +238,8 @@
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
+		495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
+		495E09ED22453BD500BDFBB1 /* KeynTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTableViewController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -441,6 +446,7 @@
 				0153C8B122119276001B6853 /* ErrorViewController.swift */,
 				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				495E09ED22453BD500BDFBB1 /* KeynTableViewController.swift */,
 				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
@@ -610,6 +616,7 @@
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
+				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1102,6 +1109,7 @@
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
+				495E09EE22453BD500BDFBB1 /* KeynTableViewController.swift in Sources */,
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
@@ -1109,6 +1117,7 @@
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
+				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
@@ -1206,6 +1215,7 @@
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
+				495E09EF22453BD500BDFBB1 /* KeynTableViewController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,

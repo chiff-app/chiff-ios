@@ -54,6 +54,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Hoi")
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
@@ -174,6 +175,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().titleTextAttributes =
+            [.foregroundColor: UIColor.primary,
+             .font: UIFont(name: "Montserrat-Bold", size: 22)!]
     }
 
 }

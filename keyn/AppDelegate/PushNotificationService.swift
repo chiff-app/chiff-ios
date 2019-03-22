@@ -68,7 +68,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
 
         var content: UNNotificationContent = notification.request.content
-
+        print(notification)
         if !content.isProcessed() {
             Logger.shared.warning("It seems we need to manually call NotificationProcessor.process().")
             content = reprocess(content: notification.request.content)

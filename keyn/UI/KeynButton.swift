@@ -12,6 +12,7 @@ import UIKit
 enum KeynButtonType: String {
     case primary
     case secondary
+    case tertiary
     case accent
 }
 
@@ -33,10 +34,14 @@ enum KeynButtonType: String {
                 backgroundColor = UIColor.primary
                 tintColor = UIColor.white
             case .secondary:
-                backgroundColor = UIColor.secondary
+                backgroundColor = UIColor.primaryLight
                 tintColor = UIColor.primary
+            case .tertiary:
+                backgroundColor = UIColor.white
+                layer.borderColor = UIColor.primaryLight.cgColor
+                layer.borderWidth = 1.0
             case .accent:
-                backgroundColor = UIColor.primaryAccent
+                backgroundColor = UIColor.secondary
                 tintColor = UIColor.white
             }
         }
