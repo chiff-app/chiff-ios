@@ -467,15 +467,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="gLU-oX-GlE">
-                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
-                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="58" id="vK1-vS-ZhE"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33">
-                                <rect key="frame" x="20" y="133" width="335" height="72"/>
+                                <rect key="frame" x="20" y="133" width="335" height="75.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Bye bye forgetting passwords, ">
                                         <attributes>
@@ -514,7 +507,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
-                                <rect key="frame" x="28" y="220" width="319" height="67.5"/>
+                                <rect key="frame" x="28" y="223.5" width="319" height="70.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Keyn allows you to log into any website using your phone, making logging in safer and simpler">
                                         <attributes>
@@ -529,24 +522,35 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="gLU-oX-GlE" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="3YX-lM-EtI"/>
                             <constraint firstItem="VKc-Ti-Ljr" firstAttribute="top" secondItem="cYH-an-f33" secondAttribute="bottom" constant="15" id="8pM-tk-y9Y"/>
                             <constraint firstItem="4ye-iw-xa2" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" id="EN5-xk-wvL"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="bottom" secondItem="MHS-Ka-Tah" secondAttribute="bottom" constant="30" id="EbN-ND-SWk"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="bottom" secondItem="4ye-iw-xa2" secondAttribute="bottom" constant="120" id="H9B-NY-oYx"/>
+                            <constraint firstItem="cYH-an-f33" firstAttribute="top" secondItem="gPL-Py-BTd" secondAttribute="top" constant="69" id="TdB-9w-jav"/>
                             <constraint firstItem="cYH-an-f33" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" constant="20" id="TyL-7j-I8D"/>
                             <constraint firstItem="VKc-Ti-Ljr" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" constant="28" id="ZlW-3j-e2H"/>
-                            <constraint firstItem="gLU-oX-GlE" firstAttribute="top" secondItem="gEp-N2-gPp" secondAttribute="top" constant="35" id="cwZ-OJ-vSp"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="4ye-iw-xa2" secondAttribute="trailing" id="dHE-gb-Qd3"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="VKc-Ti-Ljr" secondAttribute="trailing" constant="28" id="dHk-wJ-W4h"/>
                             <constraint firstItem="MHS-Ka-Tah" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="nu9-iy-dc1"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="cYH-an-f33" secondAttribute="trailing" constant="20" id="wy1-ma-gqS"/>
-                            <constraint firstItem="cYH-an-f33" firstAttribute="top" secondItem="gLU-oX-GlE" secondAttribute="bottom" constant="40" id="zpJ-cg-2ZQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gPL-Py-BTd"/>
                     </view>
                     <navigationItem key="navigationItem" id="haY-Vk-nsJ">
+                        <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="QTX-v4-9EU"/>
+                        <view key="titleView" contentMode="scaleToFill" id="80c-aG-yHq">
+                            <rect key="frame" x="187.5" y="22" width="0.0" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="gLU-oX-GlE">
+                                    <rect key="frame" x="-26" y="-7" width="52" height="58"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="klm-ph-NoA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1442,7 +1446,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jtf-uE-EPa">
-                                <rect key="frame" x="16" y="125" width="343" height="26"/>
+                                <rect key="frame" x="16" y="124" width="343" height="27"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1515,6 +1519,101 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JD4-BJ-yGq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1472.8" y="1709.5952023988007"/>
+        </scene>
+        <!--Initialisation View Controller-->
+        <scene sceneID="rfe-bY-kQi">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lRL-qi-9gt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="W9i-CB-6ud" customClass="InitialisationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ufS-NH-uJb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgN-sY-bG3">
+                                <rect key="frame" x="20" y="89" width="335" height="75.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Bye bye forgetting passwords, ">
+                                        <attributes>
+                                            <color key="NSColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="28" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="hello Keyn">
+                                        <attributes>
+                                            <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="28" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="2eB-Or-UH4">
+                                <rect key="frame" x="0.0" y="334" width="375" height="213"/>
+                            </imageView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQa-6o-sUO" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="96.5" y="593" width="182" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="182" id="A8l-zH-y5c"/>
+                                    <constraint firstAttribute="height" constant="44" id="SWL-Yh-P5A"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Let's get started"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5dx-Yy-790">
+                                <rect key="frame" x="28" y="179.5" width="319" height="70.5"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Keyn allows you to log into any website using your phone, making logging in safer and simpler">
+                                        <attributes>
+                                            <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.80348351883561642" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="16" name="Montserrat-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="KgN-sY-bG3" firstAttribute="top" secondItem="iP0-1a-2wa" secondAttribute="top" constant="69" id="181-0V-Qbz"/>
+                            <constraint firstItem="iP0-1a-2wa" firstAttribute="trailing" secondItem="5dx-Yy-790" secondAttribute="trailing" constant="28" id="5uN-fZ-vg7"/>
+                            <constraint firstItem="iP0-1a-2wa" firstAttribute="trailing" secondItem="KgN-sY-bG3" secondAttribute="trailing" constant="20" id="8Oa-sq-joh"/>
+                            <constraint firstItem="iP0-1a-2wa" firstAttribute="trailing" secondItem="2eB-Or-UH4" secondAttribute="trailing" id="GkZ-mG-jAQ"/>
+                            <constraint firstItem="5dx-Yy-790" firstAttribute="leading" secondItem="iP0-1a-2wa" secondAttribute="leading" constant="28" id="LMq-xw-tHH"/>
+                            <constraint firstItem="iP0-1a-2wa" firstAttribute="bottom" secondItem="2eB-Or-UH4" secondAttribute="bottom" constant="120" id="V0R-Xi-3Z8"/>
+                            <constraint firstItem="5dx-Yy-790" firstAttribute="top" secondItem="KgN-sY-bG3" secondAttribute="bottom" constant="15" id="WMW-hZ-Pyo"/>
+                            <constraint firstItem="KgN-sY-bG3" firstAttribute="leading" secondItem="iP0-1a-2wa" secondAttribute="leading" constant="20" id="cPr-76-Tz0"/>
+                            <constraint firstItem="iP0-1a-2wa" firstAttribute="bottom" secondItem="tQa-6o-sUO" secondAttribute="bottom" constant="30" id="gkI-7y-gWP"/>
+                            <constraint firstItem="tQa-6o-sUO" firstAttribute="centerX" secondItem="ufS-NH-uJb" secondAttribute="centerX" id="iLF-O7-UPm"/>
+                            <constraint firstItem="2eB-Or-UH4" firstAttribute="leading" secondItem="iP0-1a-2wa" secondAttribute="leading" id="llB-AU-Zkj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="iP0-1a-2wa"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="cnn-XG-0li">
+                        <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="AKl-E5-zAU"/>
+                        <view key="titleView" contentMode="scaleToFill" id="ocv-UG-83D">
+                            <rect key="frame" x="187.5" y="22" width="0.0" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="0VT-R0-T3g">
+                                    <rect key="frame" x="-26" y="-7" width="52" height="58"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </navigationItem>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-1265" y="2552"/>
         </scene>
     </scenes>
     <resources>

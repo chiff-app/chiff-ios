@@ -4,10 +4,14 @@
  */
 import UIKit
 
-class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
+class AccountsTableViewController: KeynTableViewController, UISearchResultsUpdating {
+
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
-    let searchController = UISearchController(searchResultsController: nil)
+//    let searchController = UISearchController(searchResultsController: nil)
+    @IBOutlet weak var addAccountContainer: UIView!
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var howToAddAccountButton: KeynButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,16 +23,44 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         filteredAccounts = unfilteredAccounts
 
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.dimsBackgroundDuringPresentation = false
+        tableView.backgroundColor = UIColor.primaryVeryLight
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.searchBarStyle = .minimal
+//        searchController.hidesNavigationBarDuringPresentation = true
+//        searchController.dimsBackgroundDuringPresentation = false
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-        navigationItem.searchController = searchController
-
+//        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+        updateUi()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        if let navigationView = navigationController?.view {
+//            fixShadowImage(inView: navigationView)
+//        }
+    }
+
+    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
+    func fixShadowImage(inView view: UIView) {
+        if let imageView = view as? UIImageView {
+            let size = imageView.bounds.size.height
+            if size <= 1 && size > 0 &&
+                imageView.subviews.count == 0,
+                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
+            {
+                imageView.backgroundColor? = UIColor.clear
+//                let forcedBackground = UIView(frame: imageView.bounds)
+//                forcedBackground.backgroundColor = UIColor.
+//                imageView.addSubview(forcedBackground)
+//                forcedBackground.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            }
+        }
+        for subview in view.subviews {
+            fixShadowImage(inView: subview)
+        }
     }
 
     private func loadAccounts(notification: Notification) {
@@ -38,6 +70,24 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
             }
+            self.updateUi()
+        }
+    }
+
+    private func updateUi() {
+        if let accounts = unfilteredAccounts, !accounts.isEmpty {
+            titleView.frame.size.height = 34
+            addAccountContainer.frame.size.height = 0
+            howToAddAccountButton.isHidden = true
+            titleView.isHidden = false
+            tableView.backgroundColor = UIColor.primaryVeryLight
+        } else {
+            titleView.frame.size.height = 0
+            titleView.isHidden = true
+            navigationItem.rightBarButtonItem = nil
+            addAccountContainer.frame.size.height = 450
+            howToAddAccountButton.isHidden = false
+            tableView.backgroundColor = UIColor.white
         }
     }
 
@@ -78,10 +128,18 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
         let account = filteredAccounts[indexPath.row]
-        cell.textLabel?.text = account.site.name
-        cell.detailTextLabel?.text = account.username
+        cell.titleLabel.text = account.site.name
+        if (indexPath.row == 0 && filteredAccounts.count == 1) {
+            cell.type = .single
+        } else if indexPath.row == 0 {
+            cell.type = .first
+        } else if indexPath.row == filteredAccounts.count - 1 {
+            cell.type = .last
+        } else {
+            cell.type = .middle
+        }
         return cell
     }
 
@@ -122,9 +180,10 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         filteredAccounts.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
+            self.updateUi()
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         }
-        updateSearchResults(for: searchController)
+//        updateSearchResults(for: searchController)
     }
 
     // MARK: - Actions
@@ -151,6 +210,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             DispatchQueue.main.async {
                 self.filteredAccounts.remove(at: filteredIndexPath.row)
                 self.tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+                self.updateUi()
             }
         })
     }

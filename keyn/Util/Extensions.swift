@@ -262,11 +262,23 @@ extension UIColor {
     static var primary: UIColor = {
         return UIColor(rgb: 0x4722C3)
     }()
-    static var secondary: UIColor = {
+    static var primaryTransparant: UIColor = {
+        return UIColor(rgb: 0xC7BCEE)
+    }()
+    static var primaryDark: UIColor = {
+        return UIColor(rgb: 0x4722C3)
+    }()
+    static var primaryLight: UIColor = {
         return UIColor(rgb: 0xE5E1F5)
     }()
-    static var primaryAccent: UIColor = {
-        return UIColor(rgb: 0xF28D0C)
+    static var primaryVeryLight: UIColor = {
+        return UIColor(rgb: 0xF2F0FA)
+    }()
+    static var textColor: UIColor = {
+        return UIColor(rgb: 0x4C5698)
+    }()
+    static var secondary: UIColor = {
+        return UIColor(rgb: 0xEE8C00)
     }()
 }
 

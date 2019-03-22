@@ -56,9 +56,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             #warning("TODO: Show the user that there was an error retrieving the OTP token.")
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
-        navigationItem.title = account.site.name
-        navigationItem.largeTitleDisplayMode = .never
-        
+
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
     
