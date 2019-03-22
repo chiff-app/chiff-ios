@@ -494,11 +494,14 @@
             </objects>
             <point key="canvasLocation" x="-575" y="0.0"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Accounts-->
         <scene sceneID="dOy-5w-acO">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="accounts_tab" selectedImage="accounts_tab" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Accounts" image="accounts_tab" selectedImage="accounts_tab" id="acW-dT-cKf">
+                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="NkV-Bq-4Iq">
                         <rect key="frame" x="0.0" y="20" width="414" height="96"/>
@@ -813,12 +816,14 @@
             </objects>
             <point key="canvasLocation" x="2371" y="-1787"/>
         </scene>
-        <!--Devices Navigation Controller-->
+        <!--Devices-->
         <scene sceneID="eQc-NM-rWF">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="DevicesNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="devices_tab" selectedImage="devices_tab" id="GWP-vo-zZa">
+                    <tabBarItem key="tabBarItem" title="Devices" image="devices_tab" selectedImage="devices_tab" id="GWP-vo-zZa">
+                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
                         <color key="badgeColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="e0j-3u-woH">
@@ -1228,7 +1233,10 @@ Reproduction steps:
         <scene sceneID="zrt-ki-pMI">
             <objects>
                 <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="b4Q-ze-Q2f" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="settings_tab" selectedImage="settings_tab" id="u7q-tf-p2Q"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings_tab" selectedImage="settings_tab" id="u7q-tf-p2Q">
+                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="uga-m1-Yel">
                         <rect key="frame" x="0.0" y="20" width="414" height="96"/>

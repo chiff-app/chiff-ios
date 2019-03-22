@@ -167,6 +167,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         tabBar.barTintColor = UIColor.clear
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage()
+        UITabBarItem.appearance().setTitleTextAttributes([
+            .font: UIFont(name: "Montserrat-Bold", size: 15)!,
+            .foregroundColor: UIColor.primary
+        ], for: .normal)
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
