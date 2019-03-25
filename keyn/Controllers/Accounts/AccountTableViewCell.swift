@@ -24,7 +24,7 @@ class AccountTableViewCell: UITableViewCell {
             switch type {
             case .first:
                 layer.cornerRadius = 6
-                layer.maskedCorners = []
+                layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             case .last:
                 layer.cornerRadius = 6
                 layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -55,6 +55,7 @@ class AccountTableViewCell: UITableViewCell {
         super.awakeFromNib()
         layer.borderColor = UIColor.primaryTransparant.cgColor
         layer.borderWidth = 1.0
+        
     }
 
 }

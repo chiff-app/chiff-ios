@@ -4,7 +4,7 @@
  */
 import UIKit
 
-class AccountsTableViewController: KeynTableViewController, UISearchResultsUpdating {
+class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
 
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
@@ -34,6 +34,10 @@ class AccountsTableViewController: KeynTableViewController, UISearchResultsUpdat
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         updateUi()
+    }
+
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -131,7 +135,7 @@ class AccountsTableViewController: KeynTableViewController, UISearchResultsUpdat
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
-        if (indexPath.row == 0 && filteredAccounts.count == 1) {
+        if indexPath.row == 0 && filteredAccounts.count == 1 {
             cell.type = .single
         } else if indexPath.row == 0 {
             cell.type = .first
@@ -180,8 +184,8 @@ class AccountsTableViewController: KeynTableViewController, UISearchResultsUpdat
         filteredAccounts.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
-            self.updateUi()
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+            self.updateUi()
         }
 //        updateSearchResults(for: searchController)
     }
