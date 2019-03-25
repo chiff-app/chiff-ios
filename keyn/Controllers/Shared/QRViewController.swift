@@ -9,6 +9,8 @@ import LocalAuthentication
 enum CameraError: KeynError {
     case noCamera
     case videoInputInitFailed
+    case exists
+    case invalid
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
@@ -52,10 +54,10 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     qrFound = true
                     do {
                         guard !self.recentlyScannedUrls.contains(urlString) else {
-                            throw SessionError.exists
+                            throw CameraError.exists
                         }
                         guard let url = URL(string: urlString) else {
-                            throw SessionError.invalid
+                            throw CameraError.invalid
                         }
                         self.qrIconImageView.image = UIImage(named: "scan_checkmark")
                         qrIconImageViewHeight.constant = 96

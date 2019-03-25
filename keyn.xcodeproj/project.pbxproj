@@ -41,6 +41,9 @@
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		492EC841224907FA0088F73D /* RoundedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* RoundedTableViewCell.swift */; };
+		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
+		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
 		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
 		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
@@ -235,6 +238,9 @@
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
+		492EC840224907FA0088F73D /* RoundedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTableViewCell.swift; sourceTree = "<group>"; };
+		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
+		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
@@ -416,6 +422,19 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		492EC84822492C560088F73D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0153C8B122119276001B6853 /* ErrorViewController.swift */,
+				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
+				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
+				492EC840224907FA0088F73D /* RoundedTableViewCell.swift */,
+				61F938C31FF4161300AF0880 /* PairViewController.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		495E72B9221186DA003132ED /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,10 +462,7 @@
 		499BE4F31FC0929C001038DF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0153C8B122119276001B6853 /* ErrorViewController.swift */,
-				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
-				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
-				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
+				492EC84822492C560088F73D /* Shared */,
 				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
@@ -604,6 +620,7 @@
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
+				492EC842224919A10088F73D /* PairingViewController.swift */,
 			);
 			path = Initialisation;
 			sourceTree = "<group>";
@@ -649,7 +666,7 @@
 				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
 				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
 				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
-				61F938C31FF4161300AF0880 /* PairViewController.swift */,
+				492EC8442249214E0088F73D /* PairContainerViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -1126,6 +1143,7 @@
 				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
+				492EC843224919A10088F73D /* PairingViewController.swift in Sources */,
 				49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
@@ -1148,8 +1166,10 @@
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
+				492EC841224907FA0088F73D /* RoundedTableViewCell.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
+				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,

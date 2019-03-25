@@ -24,6 +24,8 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         filteredAccounts = unfilteredAccounts
 
         tableView.backgroundColor = UIColor.primaryVeryLight
+//        tableView.separatorColor = UIColor.red
+        tableView.separatorStyle = .none
 //        searchController.searchResultsUpdater = self
 //        searchController.searchBar.searchBarStyle = .minimal
 //        searchController.hidesNavigationBarDuringPresentation = true
@@ -40,59 +42,31 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        if let navigationView = navigationController?.view {
-//            fixShadowImage(inView: navigationView)
-//        }
-    }
-
-    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
-    func fixShadowImage(inView view: UIView) {
-        if let imageView = view as? UIImageView {
-            let size = imageView.bounds.size.height
-            if size <= 1 && size > 0 &&
-                imageView.subviews.count == 0,
-                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
-            {
-                imageView.backgroundColor? = UIColor.clear
-//                let forcedBackground = UIView(frame: imageView.bounds)
-//                forcedBackground.backgroundColor = UIColor.
-//                imageView.addSubview(forcedBackground)
-//                forcedBackground.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            }
-        }
-        for subview in view.subviews {
-            fixShadowImage(inView: subview)
-        }
-    }
-
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
             if let accounts = notification.userInfo as? [String: Account] {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
+                self.updateUi()
             }
-            self.updateUi()
         }
     }
 
     private func updateUi() {
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
-            titleView.frame.size.height = 34
+            titleView.frame.size.height = 40
             addAccountContainer.frame.size.height = 0
             howToAddAccountButton.isHidden = true
-            titleView.isHidden = false
             tableView.backgroundColor = UIColor.primaryVeryLight
         } else {
             titleView.frame.size.height = 0
-            titleView.isHidden = true
             navigationItem.rightBarButtonItem = nil
             addAccountContainer.frame.size.height = 450
             howToAddAccountButton.isHidden = false
             tableView.backgroundColor = UIColor.white
         }
+        tableView.reloadData()
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -180,6 +154,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     func addAccount(account: Account) {
+        unfilteredAccounts.append(account)
         filteredAccounts.append(account)
         filteredAccounts.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
@@ -213,6 +188,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }
             DispatchQueue.main.async {
                 self.filteredAccounts.remove(at: filteredIndexPath.row)
+                self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
                 self.tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
                 self.updateUi()
             }
