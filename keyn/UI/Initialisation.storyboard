@@ -33,13 +33,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="1000" text="To recover your credentials if your phone gets lost or broken, you can use a paper backup." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5q-V0-CZv">
-                                <rect key="frame" x="35" y="180" width="305" height="63"/>
+                                <rect key="frame" x="35" y="164.5" width="305" height="94"/>
                                 <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="1000" text="Keyn will show you 12 words. Write them down and store them in a safe place." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXi-Nf-TWa">
-                                <rect key="frame" x="35" y="278" width="305" height="63"/>
+                                <rect key="frame" x="35" y="293.5" width="305" height="70.5"/>
                                 <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -95,16 +95,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1H9-Y9-g8k" userLabel="Word stack">
-                                <rect key="frame" x="139" y="227.5" width="97" height="68.5"/>
+                                <rect key="frame" x="121.5" y="224" width="132" height="75"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mDt-2b-hOE">
-                                        <rect key="frame" x="0.0" y="0.0" width="97" height="35"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="132" height="39"/>
                                         <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word i of n" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1H7-t5-gEY">
-                                        <rect key="frame" x="0.0" y="45" width="97" height="23.5"/>
+                                        <rect key="frame" x="0.0" y="49" width="132" height="26"/>
                                         <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="20"/>
                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                         <nil key="highlightedColor"/>
@@ -197,19 +197,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="cKi-gS-Qsd">
-                                                <rect key="frame" x="30" y="165" width="315" height="160"/>
+                                                <rect key="frame" x="30" y="165" width="315" height="165"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7Y1-qQ-Pa5">
-                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="62.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="65"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word x" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vG9-Jz-rXQ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="315" height="22.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="315" height="25"/>
                                                                 <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="19"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gMA-8X-iAl">
-                                                                <rect key="frame" x="0.0" y="27.5" width="315" height="35"/>
+                                                                <rect key="frame" x="0.0" y="30" width="315" height="35"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="textColor"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -223,16 +223,16 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="14q-ML-fAu">
-                                                        <rect key="frame" x="0.0" y="97.5" width="315" height="62.5"/>
+                                                        <rect key="frame" x="0.0" y="100" width="315" height="65"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word y" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPx-CR-2lP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="315" height="22.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="315" height="25"/>
                                                                 <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="19"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sCZ-Hi-d7d">
-                                                                <rect key="frame" x="0.0" y="27.5" width="315" height="35"/>
+                                                                <rect key="frame" x="0.0" y="30" width="315" height="35"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="35" id="q7I-a1-IlH"/>
@@ -340,16 +340,16 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="hHh-b8-TKU" userLabel="Text Stack">
-                                <rect key="frame" x="35" y="231.5" width="305" height="140"/>
+                                <rect key="frame" x="35" y="225.5" width="305" height="152.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If this is the first time you use Keyn, choose 'New'. " textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="82O-lq-N8B">
-                                        <rect key="frame" x="0.0" y="0.0" width="305" height="42"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="305" height="47"/>
                                         <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you want to recover your passwords from a paper backup, choose 'Recover'." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9Q-qK-Ttg">
-                                        <rect key="frame" x="0.0" y="77" width="305" height="63"/>
+                                        <rect key="frame" x="0.0" y="82" width="305" height="70.5"/>
                                         <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -814,7 +814,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFy-QE-aSD">
-                                        <rect key="frame" x="16" y="115" width="343" height="28.5"/>
+                                        <rect key="frame" x="16" y="115" width="343" height="29.5"/>
                                         <attributedString key="attributedText">
                                             <fragment content="How ">
                                                 <attributes>
@@ -969,7 +969,7 @@
                                                 <rect key="frame" x="0.0" y="7" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn asks you in your browser if you want to login." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaK-8B-jSe">
-                                                <rect key="frame" x="126" y="24" width="205" height="33"/>
+                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="oVj-lu-3oJ"/>
                                                 </constraints>
@@ -986,7 +986,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="96" height="81"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You receive a notification on your phone that asks you to authorize the request." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-YB-fQe">
-                                                <rect key="frame" x="126" y="16" width="205" height="49"/>
+                                                <rect key="frame" x="126" y="15" width="205" height="51.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1000,7 +1000,7 @@
                                                 <rect key="frame" x="0.0" y="6.5" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn fills your credentials in the right fields." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-0Q-aRX">
-                                                <rect key="frame" x="126" y="23.5" width="205" height="33"/>
+                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1087,7 +1087,7 @@
                                                 <rect key="frame" x="0.0" y="7" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn asks you in your browser if you want to login." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpH-Mu-G6O">
-                                                <rect key="frame" x="126" y="24" width="205" height="33"/>
+                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="9ZG-HC-UJ1"/>
                                                 </constraints>
@@ -1104,7 +1104,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="96" height="81"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You receive a notification on your phone that asks you to authorize the request." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sak-tq-M9C">
-                                                <rect key="frame" x="126" y="16" width="205" height="49"/>
+                                                <rect key="frame" x="126" y="15" width="205" height="51.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1118,7 +1118,7 @@
                                                 <rect key="frame" x="0.0" y="6.5" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn fills your credentials in the right fields." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-DT-gcI">
-                                                <rect key="frame" x="126" y="23.5" width="205" height="33"/>
+                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1247,140 +1247,28 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="38" translatesAutoresizingMaskIntoConstraints="NO" id="I6q-mQ-n4f">
-                                <rect key="frame" x="16" y="257.5" width="327" height="252"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="l8F-cZ-mXl">
-                                        <rect key="frame" x="0.0" y="0.0" width="327" height="118"/>
-                                        <subviews>
-                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNq-lV-iDk" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="26" id="YpJ-l8-2kN"/>
-                                                    <constraint firstAttribute="width" constant="26" id="lPd-da-BaW"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" title="1">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="otk-Fb-gYc">
-                                                <rect key="frame" x="38" y="0.0" width="289" height="118"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nyy-if-o49">
-                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="44"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Go to ">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                            <fragment content="keyn.app/go">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                            <fragment content=" on your computer">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tuf-vf-M2d">
-                                                        <rect key="frame" x="0.0" y="52" width="289" height="66"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="To start using Keyn, you also need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.8026273544520548" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="hxV-w4-8M1">
-                                        <rect key="frame" x="0.0" y="156" width="325.5" height="96"/>
-                                        <subviews>
-                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Jw-rD-DhX" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="26" id="hoq-HO-UOa"/>
-                                                    <constraint firstAttribute="height" constant="26" id="wls-5q-Lvu"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" title="2">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ARB-Ke-IEF">
-                                                <rect key="frame" x="38" y="0.0" width="287.5" height="96"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydr-9E-s3b">
-                                                        <rect key="frame" x="0.0" y="0.0" width="287.5" height="22"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="Scan QR code">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <font key="NSFont" size="16" name="Montserrat-Bold"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jNg-up-Og4">
-                                                        <rect key="frame" x="0.0" y="30" width="287.5" height="66"/>
-                                                        <attributedString key="attributedText">
-                                                            <fragment content="After installing Keyn in your browser, you'll a QR code appear. Scan it to finish the setup!">
-                                                                <attributes>
-                                                                    <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.80340325342465757" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                                </attributes>
-                                                            </fragment>
-                                                        </attributedString>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-gi-JQD">
+                                <rect key="frame" x="16" y="258" width="343" height="252"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="252" id="Lpb-kW-0Nm"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="sCf-FB-PX2" kind="embed" id="U14-7v-pJr"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="I6q-mQ-n4f" firstAttribute="centerY" secondItem="16g-My-AD4" secondAttribute="centerY" constant="50" id="3Wf-nK-VrC"/>
-                            <constraint firstAttribute="trailing" secondItem="I6q-mQ-n4f" secondAttribute="trailing" constant="32" id="6IX-8e-g49"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="O94-HQ-lRE" secondAttribute="trailing" constant="16" id="8cI-cU-sKA"/>
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="B8G-3i-ANV"/>
-                            <constraint firstItem="I6q-mQ-n4f" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="D5W-ii-76i"/>
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="35" id="EEv-tV-3cS"/>
                             <constraint firstItem="3w9-7v-dBp" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="FPU-TV-EGA"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="bottom" secondItem="3w9-7v-dBp" secondAttribute="bottom" constant="30" id="Jxy-Lw-Dew"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="115" id="Zwp-vD-GBg"/>
+                            <constraint firstItem="Lat-gi-JQD" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="cBd-XG-hLg"/>
+                            <constraint firstItem="Lat-gi-JQD" firstAttribute="centerY" secondItem="16g-My-AD4" secondAttribute="centerY" constant="50" id="jkD-KZ-fjK"/>
+                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="Lat-gi-JQD" secondAttribute="trailing" constant="16" id="rDC-tI-flZ"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n4m-XJ-WMR"/>
@@ -1390,6 +1278,22 @@
             </objects>
             <point key="canvasLocation" x="621.60000000000002" y="1710.4947526236883"/>
         </scene>
+        <!--PairingExplanation-->
+        <scene sceneID="NSZ-v2-93r">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="PairingExplanation" id="sCf-FB-PX2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yxF-76-YC1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1499" y="2181"/>
+        </scene>
+        <!--PairController-->
+        <scene sceneID="4Qw-A3-hiJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="PairController" id="Lp7-Hn-Yem" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v9W-Rn-tf7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2281" y="1712"/>
+        </scene>
         <!--Pair View Controller-->
         <scene sceneID="Tel-6Y-A0A">
             <objects>
@@ -1398,24 +1302,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMt-mr-8Ra">
-                                <rect key="frame" x="0.0" y="263" width="375" height="300"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="6Ta-yP-qoh">
-                                        <rect key="frame" x="99.5" y="62" width="176" height="176"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="176" id="401-OK-Fbm"/>
-                                            <constraint firstAttribute="width" secondItem="6Ta-yP-qoh" secondAttribute="height" multiplier="1:1" id="4N1-jT-Xf1"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="6Ta-yP-qoh" firstAttribute="centerX" secondItem="pMt-mr-8Ra" secondAttribute="centerX" id="O6r-3x-i4I"/>
-                                    <constraint firstAttribute="height" constant="300" id="Rzz-hq-DXU"/>
-                                    <constraint firstItem="6Ta-yP-qoh" firstAttribute="centerY" secondItem="pMt-mr-8Ra" secondAttribute="centerY" id="lZ3-ip-mgP"/>
-                                </constraints>
-                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
+                                <rect key="frame" x="0.0" y="124" width="375" height="461"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="Lp7-Hn-Yem" kind="embed" id="PRF-kk-uoI"/>
+                                </connections>
+                            </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="w2k-kb-ifW">
                                 <rect key="frame" x="40" y="593" width="295" height="44"/>
                                 <subviews>
@@ -1445,39 +1338,6 @@
                                     <constraint firstAttribute="height" constant="44" id="GeV-wP-at1"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jtf-uE-EPa">
-                                <rect key="frame" x="16" y="124" width="343" height="27"/>
-                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
-                                <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6OE-DA-jNN">
-                                <rect key="frame" x="24" y="171" width="327" height="72"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Scan the QR code that appears in the top right corner of your browser after installing our extension via">
-                                        <attributes>
-                                            <color key="NSColor" red="0.10877000000000001" green="0.067330000000000001" blue="0.23094000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.11762" green="0.11766" blue="0.11389000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="keyn.app/go">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26136999999999999" green="0.13081999999999999" blue="0.75090999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="14" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="24" maximumLineHeight="24" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
                                 <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -1490,31 +1350,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="pMt-mr-8Ra" secondAttribute="trailing" id="09L-DX-aOg"/>
-                            <constraint firstItem="pMt-mr-8Ra" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" id="8iP-xt-yTu"/>
-                            <constraint firstItem="6OE-DA-jNN" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="24" id="ETu-pE-dIG"/>
-                            <constraint firstItem="w2k-kb-ifW" firstAttribute="top" secondItem="pMt-mr-8Ra" secondAttribute="bottom" constant="30" id="J9w-aw-Pw5"/>
                             <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="w2k-kb-ifW" secondAttribute="trailing" constant="40" id="Ou6-aK-xmw"/>
                             <constraint firstItem="xGT-Ng-yLJ" firstAttribute="bottom" secondItem="w2k-kb-ifW" secondAttribute="bottom" constant="30" id="aAE-kF-yxJ"/>
-                            <constraint firstItem="6OE-DA-jNN" firstAttribute="top" secondItem="jtf-uE-EPa" secondAttribute="bottom" constant="20" id="dMS-vH-SNr"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="jsx-LY-QgP"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" constant="35" id="nx5-DB-rhi"/>
-                            <constraint firstItem="jtf-uE-EPa" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="16" id="r3K-ys-eDz"/>
                             <constraint firstItem="w2k-kb-ifW" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="40" id="wTP-OK-jT3"/>
-                            <constraint firstItem="pMt-mr-8Ra" firstAttribute="top" secondItem="6OE-DA-jNN" secondAttribute="bottom" constant="20" id="xqg-sY-6N0"/>
-                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="jtf-uE-EPa" secondAttribute="trailing" constant="16" id="ycW-W9-1aO"/>
-                            <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="6OE-DA-jNN" secondAttribute="trailing" constant="24" id="zNd-7G-FM2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xGT-Ng-yLJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="BQp-XR-qrk">
                         <barButtonItem key="backBarButtonItem" title=" " id="IXd-GT-YmX"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="qrIconImageView" destination="6Ta-yP-qoh" id="hN5-zl-bJC"/>
-                        <outlet property="qrIconImageViewHeight" destination="401-OK-Fbm" id="Rw4-ao-Tf7"/>
-                        <outlet property="videoView" destination="pMt-mr-8Ra" id="FLB-4o-z7a"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JD4-BJ-yGq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1523,7 +1369,6 @@
         <!--Initialisation View Controller-->
         <scene sceneID="rfe-bY-kQi">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lRL-qi-9gt" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="W9i-CB-6ud" customClass="InitialisationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ufS-NH-uJb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1612,8 +1457,16 @@
                         </view>
                     </navigationItem>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lRL-qi-9gt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1265" y="2552"/>
+        </scene>
+        <!--PairController-->
+        <scene sceneID="EJS-kx-vbd">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="PairController" id="F5q-AS-sS7" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XmU-gp-XHO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
@@ -1623,7 +1476,6 @@
         <image name="logo" width="384" height="428"/>
         <image name="logo_purple" width="52" height="58"/>
         <image name="phone_checkmark" width="71" height="86"/>
-        <image name="scan_overlay" width="176" height="171"/>
     </resources>
     <color key="tintColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>
