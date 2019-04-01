@@ -5,11 +5,14 @@
 import UIKit
 
 class RootViewController: UITabBarController {
-    
+
+//    private lazy var defaultTabBarHeight = { tabBar.frame.size.height }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
     }
+
     
     func handleQuestionnaireNotification(notification: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -49,5 +52,22 @@ class RootViewController: UITabBarController {
         modalViewController.questionnaire = questionnaire
         modalViewController.modalPresentationStyle = .fullScreen
         self.present(modalViewController, animated: true, completion: nil)
+    }
+}
+
+extension UITabBar {
+    static let height: CGFloat = 90
+
+    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+        guard let window = UIApplication.shared.keyWindow else {
+            return super.sizeThatFits(size)
+        }
+        var sizeThatFits = super.sizeThatFits(size)
+        if #available(iOS 11.0, *) {
+            sizeThatFits.height = UITabBar.height + window.safeAreaInsets.bottom
+        } else {
+            sizeThatFits.height = UITabBar.height
+        }
+        return sizeThatFits
     }
 }
