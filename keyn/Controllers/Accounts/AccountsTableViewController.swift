@@ -27,12 +27,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         scrollView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
-        tableView.layer.borderWidth = 1.0
-        tableView.layer.cornerRadius = 6.0
-
-        tableView.separatorColor = UIColor.primaryTransparant
-        tableView.separatorStyle = .singleLine
 
 //        searchController.searchResultsUpdater = self
 //        searchController.searchBar.searchBarStyle = .minimal
@@ -114,7 +108,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+//        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
         return cell

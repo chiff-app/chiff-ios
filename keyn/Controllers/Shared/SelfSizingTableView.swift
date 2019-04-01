@@ -20,4 +20,13 @@ class SelfSizingTableView: UITableView {
         layoutIfNeeded()
         return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
+
+    override func awakeFromNib() {
+        layer.borderColor = UIColor.primaryTransparant.cgColor
+        layer.borderWidth = 1.0
+        layer.cornerRadius = 6.0
+
+        separatorColor = UIColor.primaryTransparant
+        separatorStyle = .singleLine
+    }
 }

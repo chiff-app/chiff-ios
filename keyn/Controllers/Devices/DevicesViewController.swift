@@ -4,12 +4,12 @@
  */
 import UIKit
 
-class DevicesViewController: UITableViewController, PairControllerDelegate {
+class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, PairControllerDelegate {
 
-    private let DEVICE_ROW_HEIGHT: CGFloat = 90
-    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: SelfSizingTableView!
     @IBOutlet weak var addSessionContainer: UIView!
-    @IBOutlet weak var scanQRCodeButton: KeynButton!
+    @IBOutlet weak var tableViewContainer: UIView!
 
     var sessions = [Session]()
 
@@ -20,7 +20,10 @@ class DevicesViewController: UITableViewController, PairControllerDelegate {
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
 
-        tableView.separatorStyle = .none
+        scrollView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
+        self.definesPresentationContext = true
 
         do {
             sessions = try Session.all()
@@ -29,32 +32,24 @@ class DevicesViewController: UITableViewController, PairControllerDelegate {
         }
         updateUi()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedIndexPath, animated: true)
-        }
-    }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
     private func updateUi() {
         if !sessions.isEmpty {
-            titleView.frame.size.height = 40
-            addSessionContainer.frame.size.height = 0
-            tableView.backgroundColor = UIColor.primaryVeryLight
+            addSessionContainer.isHidden = true
+            tableViewContainer.isHidden = false
+            view.backgroundColor = UIColor.primaryVeryLight
         } else {
-            titleView.frame.size.height = 0
-            navigationItem.rightBarButtonItem = nil
-            addSessionContainer.frame.size.height = 450
-            tableView.backgroundColor = UIColor.white
+            addSessionContainer.isHidden = false
+            tableViewContainer.isHidden = true
+            view.backgroundColor = UIColor.white
         }
     }
 
-    @objc func deleteDevice(_ sender: UIButton) {
+    @IBAction func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
@@ -96,30 +91,26 @@ class DevicesViewController: UITableViewController, PairControllerDelegate {
     }
 
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sessions.count
     }
 
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
         if let cell = cell as? DevicesViewCell {
             let session = sessions[indexPath.row]
             cell.titleLabel.text = "\(session.browser) on \(session.os)"
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
             cell.deviceLogo.image = UIImage(named: session.browser)
-            cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
-            if indexPath.row == 0 && sessions.count == 1 {
-                cell.type = .single
-            } else if indexPath.row == 0 {
-                cell.type = .first
-            } else if indexPath.row == sessions.count - 1 {
-                cell.type = .last
-            } else {
-                cell.type = .middle
-            }
+//            cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
         return cell
+    }
+
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
     }
     
     // MARK: - Navigation
