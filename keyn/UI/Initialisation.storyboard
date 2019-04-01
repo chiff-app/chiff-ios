@@ -1248,7 +1248,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-gi-JQD">
-                                <rect key="frame" x="16" y="258" width="343" height="252"/>
+                                <rect key="frame" x="16" y="257.5" width="343" height="252"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="252" id="Lpb-kW-0Nm"/>
                                 </constraints>
@@ -1294,21 +1294,14 @@
             </objects>
             <point key="canvasLocation" x="2281" y="1712"/>
         </scene>
-        <!--Pair View Controller-->
+        <!--Pairing View Controller-->
         <scene sceneID="Tel-6Y-A0A">
             <objects>
-                <viewController storyboardIdentifier="Pair Controller" id="Zak-ws-iqN" customClass="PairViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Pair Controller" id="Zak-ws-iqN" customClass="PairingViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HUa-JV-NuI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
-                                <rect key="frame" x="0.0" y="124" width="375" height="461"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <connections>
-                                    <segue destination="Lp7-Hn-Yem" kind="embed" id="PRF-kk-uoI"/>
-                                </connections>
-                            </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="w2k-kb-ifW">
                                 <rect key="frame" x="40" y="593" width="295" height="44"/>
                                 <subviews>
@@ -1347,12 +1340,22 @@
                                     <constraint firstAttribute="width" constant="52" id="szr-AU-WSm"/>
                                 </constraints>
                             </imageView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
+                                <rect key="frame" x="0.0" y="103" width="375" height="460"/>
+                                <connections>
+                                    <segue destination="Lp7-Hn-Yem" kind="embed" identifier="EmbeddedPairing" id="PRF-kk-uoI"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="aAD-g0-bY7" firstAttribute="trailing" secondItem="xGT-Ng-yLJ" secondAttribute="trailing" id="2mz-7j-R4K"/>
+                            <constraint firstItem="w2k-kb-ifW" firstAttribute="top" secondItem="aAD-g0-bY7" secondAttribute="bottom" constant="30" id="M83-bZ-wL9"/>
                             <constraint firstItem="xGT-Ng-yLJ" firstAttribute="trailing" secondItem="w2k-kb-ifW" secondAttribute="trailing" constant="40" id="Ou6-aK-xmw"/>
                             <constraint firstItem="xGT-Ng-yLJ" firstAttribute="bottom" secondItem="w2k-kb-ifW" secondAttribute="bottom" constant="30" id="aAE-kF-yxJ"/>
+                            <constraint firstItem="aAD-g0-bY7" firstAttribute="top" secondItem="6r2-z2-GmB" secondAttribute="bottom" constant="10" id="e5y-sF-gDS"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="jsx-LY-QgP"/>
+                            <constraint firstItem="aAD-g0-bY7" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" id="lcp-5I-OIA"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" constant="35" id="nx5-DB-rhi"/>
                             <constraint firstItem="w2k-kb-ifW" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" constant="40" id="wTP-OK-jT3"/>
                         </constraints>

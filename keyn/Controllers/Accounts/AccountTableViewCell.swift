@@ -8,7 +8,7 @@
 //
 
 import UIKit
-class AccountTableViewCell: RoundedTableViewCell {
+class AccountTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
 
