@@ -324,7 +324,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAD-fx-Eo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ibN-3J-G1l" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2371.0144927536235" y="-863.31521739130437"/>
+            <point key="canvasLocation" x="1848" y="-907"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SgE-Op-oyl">
@@ -450,7 +450,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="swI-XK-cqa" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Accounts" image="accounts_tab" selectedImage="accounts_tab" id="acW-dT-cKf">
-                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
+                        <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -758,7 +758,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SV6-MR-Wzp">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="656"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="646"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="273"/>
@@ -849,6 +849,13 @@
                                     <segue destination="yEQ-dB-DTP" kind="embed" id="WBG-W5-Esd"/>
                                 </connections>
                             </containerView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fuD-1S-vqd" customClass="TabBarGradient" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="586" width="414" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="f2U-rw-4LY"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -857,9 +864,12 @@
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="leading" secondItem="bph-BZ-NAM" secondAttribute="leading" id="DWq-Jt-k5Q"/>
                             <constraint firstAttribute="trailing" secondItem="bXc-UM-bJU" secondAttribute="trailing" id="G1K-zh-7ny"/>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="trailing" secondItem="bph-BZ-NAM" secondAttribute="trailing" id="Lgq-TN-QEs"/>
-                            <constraint firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" constant="80" id="NDy-jP-9r5"/>
+                            <constraint firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" constant="90" id="NDy-jP-9r5"/>
                             <constraint firstItem="bXc-UM-bJU" firstAttribute="top" secondItem="cDG-1D-ad2" secondAttribute="top" constant="90" id="U2C-2c-Zye"/>
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="bottom" secondItem="bXc-UM-bJU" secondAttribute="bottom" constant="100" id="WNa-cB-kIM"/>
+                            <constraint firstItem="cDG-1D-ad2" firstAttribute="trailing" secondItem="fuD-1S-vqd" secondAttribute="trailing" id="XfD-L5-I2y"/>
+                            <constraint firstItem="fuD-1S-vqd" firstAttribute="leading" secondItem="cDG-1D-ad2" secondAttribute="leading" id="hx2-iy-4dH"/>
+                            <constraint firstItem="fuD-1S-vqd" firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" id="k6s-ph-HCc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cDG-1D-ad2"/>
                     </view>
@@ -875,7 +885,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWw-9J-QyK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="755" y="-907"/>
+            <point key="canvasLocation" x="753.62318840579712" y="-907.33695652173924"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="85X-Xm-p3i">
@@ -900,7 +910,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="U10-Wh-Tjm" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Devices" image="devices_tab" selectedImage="devices_tab" id="GWP-vo-zZa">
-                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
+                        <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <color key="badgeColor" red="0.28703126309999999" green="0.1939949393" blue="0.63632434609999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
                     </tabBarItem>
@@ -1132,7 +1142,7 @@ Reproduction steps:
             <objects>
                 <navigationController title="Settings" automaticallyAdjustsScrollViewInsets="NO" id="b4Q-ze-Q2f" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="settings_tab" selectedImage="settings_tab" id="u7q-tf-p2Q">
-                        <inset key="imageInsets" minX="0.0" minY="-25" maxX="0.0" maxY="25"/>
+                        <inset key="imageInsets" minX="0.0" minY="-5" maxX="0.0" maxY="5"/>
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -1770,15 +1780,25 @@ Reproduction steps:
                                     <constraint firstAttribute="bottom" secondItem="9Yz-CS-DB7" secondAttribute="bottom" constant="10" id="rCJ-Cc-j7A"/>
                                 </constraints>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PW9-SL-sxb" customClass="TabBarGradient" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="596" width="414" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="gKl-4m-KYx"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="PW9-SL-sxb" firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" id="3xW-KW-AD8"/>
                             <constraint firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" constant="80" id="Dfc-V1-DWb"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="top" secondItem="dyP-1C-yZa" secondAttribute="top" id="JC7-Me-gbc"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="trailing" secondItem="dyP-1C-yZa" secondAttribute="trailing" id="MIn-s1-pnD"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="dqp-Nz-uf8"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="centerY" secondItem="dyP-1C-yZa" secondAttribute="centerY" id="eX8-3p-iSe"/>
+                            <constraint firstItem="PW9-SL-sxb" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="fTK-zr-c0N"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="trailing" secondItem="GuM-HI-Y53" secondAttribute="trailing" id="fZQ-A7-4uv"/>
+                            <constraint firstAttribute="trailing" secondItem="PW9-SL-sxb" secondAttribute="trailing" id="nJU-tF-5hH"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="uRx-8n-wWb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GuM-HI-Y53"/>

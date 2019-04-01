@@ -40,7 +40,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         updateUi()
     }
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+    }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
