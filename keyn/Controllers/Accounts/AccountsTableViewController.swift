@@ -4,14 +4,15 @@
  */
 import UIKit
 
-class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
-
+class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
 //    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var addAccountContainer: UIView!
-    @IBOutlet weak var titleView: UIView!
-    @IBOutlet weak var howToAddAccountButton: KeynButton!
+    @IBOutlet weak var tableViewContainer: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +24,16 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         filteredAccounts = unfilteredAccounts
 
-        tableView.backgroundColor = UIColor.primaryVeryLight
-//        tableView.separatorColor = UIColor.red
-        tableView.separatorStyle = .none
+        scrollView.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
+        tableView.layer.cornerRadius = 6.0
+
+        tableView.separatorColor = UIColor.primaryTransparant
+        tableView.separatorStyle = .singleLine
+
 //        searchController.searchResultsUpdater = self
 //        searchController.searchBar.searchBarStyle = .minimal
 //        searchController.hidesNavigationBarDuringPresentation = true
@@ -38,7 +46,9 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         updateUi()
     }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
@@ -55,18 +65,15 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     private func updateUi() {
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
-            titleView.frame.size.height = 40
-            addAccountContainer.frame.size.height = 0
-            howToAddAccountButton.isHidden = true
-            tableView.backgroundColor = UIColor.primaryVeryLight
+            tableViewContainer.isHidden = false
+            addAccountContainer.isHidden = true
+            view.backgroundColor = UIColor.primaryVeryLight
         } else {
-            titleView.frame.size.height = 0
             navigationItem.rightBarButtonItem = nil
-            addAccountContainer.frame.size.height = 450
-            howToAddAccountButton.isHidden = false
-            tableView.backgroundColor = UIColor.white
+            tableViewContainer.isHidden = true
+            addAccountContainer.isHidden = false
+            view.backgroundColor = UIColor.white
         }
-        tableView.reloadData()
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -82,18 +89,18 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let accounts = filteredAccounts else {
             return 0
         }
         return accounts.count
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -105,19 +112,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
-        if indexPath.row == 0 && filteredAccounts.count == 1 {
-            cell.type = .single
-        } else if indexPath.row == 0 {
-            cell.type = .first
-        } else if indexPath.row == filteredAccounts.count - 1 {
-            cell.type = .last
-        } else {
-            cell.type = .middle
-        }
         return cell
     }
 
@@ -189,7 +188,7 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             DispatchQueue.main.async {
                 self.filteredAccounts.remove(at: filteredIndexPath.row)
                 self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
-                self.tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+                self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
                 self.updateUi()
             }
         })
