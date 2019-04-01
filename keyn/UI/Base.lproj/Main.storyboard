@@ -844,7 +844,7 @@
                                 </constraints>
                             </scrollView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bXc-UM-bJU">
-                                <rect key="frame" x="0.0" y="206" width="414" height="381"/>
+                                <rect key="frame" x="0.0" y="206" width="414" height="337"/>
                                 <connections>
                                     <segue destination="yEQ-dB-DTP" kind="embed" id="WBG-W5-Esd"/>
                                 </connections>
@@ -860,6 +860,7 @@
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="top" secondItem="bph-BZ-NAM" secondAttribute="top" id="1hA-eS-id5"/>
+                            <constraint firstItem="fuD-1S-vqd" firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" id="4z2-XG-vcd"/>
                             <constraint firstItem="bXc-UM-bJU" firstAttribute="leading" secondItem="cDG-1D-ad2" secondAttribute="leading" id="ACM-nv-dS2"/>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="leading" secondItem="bph-BZ-NAM" secondAttribute="leading" id="DWq-Jt-k5Q"/>
                             <constraint firstAttribute="trailing" secondItem="bXc-UM-bJU" secondAttribute="trailing" id="G1K-zh-7ny"/>
@@ -869,18 +870,20 @@
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="bottom" secondItem="bXc-UM-bJU" secondAttribute="bottom" constant="100" id="WNa-cB-kIM"/>
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="trailing" secondItem="fuD-1S-vqd" secondAttribute="trailing" id="XfD-L5-I2y"/>
                             <constraint firstItem="fuD-1S-vqd" firstAttribute="leading" secondItem="cDG-1D-ad2" secondAttribute="leading" id="hx2-iy-4dH"/>
-                            <constraint firstItem="fuD-1S-vqd" firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" id="k6s-ph-HCc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cDG-1D-ad2"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tuW-C2-0ha">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="sHi-VQ-m4g"/>
-                    </navigationItem>
+                    <toolbarItems>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="5no-DG-6UM"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="tuW-C2-0ha"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addAccountContainer" destination="bXc-UM-bJU" id="enQ-WF-96m"/>
                         <outlet property="scrollView" destination="SV6-MR-Wzp" id="ogx-mk-bir"/>
                         <outlet property="tableView" destination="gr4-VD-pHi" id="dpo-qR-onP"/>
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
+                        <segue destination="QBn-BQ-Jis" kind="presentation" identifier="ShowAddAccount" id="3VT-CT-bmu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWw-9J-QyK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1196,7 +1199,7 @@ Reproduction steps:
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXJ-Si-lcK">
-                                <rect key="frame" x="0.0" y="196" width="414" height="491"/>
+                                <rect key="frame" x="0.0" y="196" width="414" height="447"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -1781,7 +1784,7 @@ Reproduction steps:
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PW9-SL-sxb" customClass="TabBarGradient" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="596" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="338" width="414" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="gKl-4m-KYx"/>
@@ -1790,21 +1793,21 @@ Reproduction steps:
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="PW9-SL-sxb" firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" id="3xW-KW-AD8"/>
+                            <constraint firstItem="PW9-SL-sxb" firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" id="AIj-mQ-qnS"/>
                             <constraint firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" constant="80" id="Dfc-V1-DWb"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="top" secondItem="dyP-1C-yZa" secondAttribute="top" id="JC7-Me-gbc"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="trailing" secondItem="dyP-1C-yZa" secondAttribute="trailing" id="MIn-s1-pnD"/>
+                            <constraint firstItem="PW9-SL-sxb" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="buL-Kq-zKS"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="dqp-Nz-uf8"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="centerY" secondItem="dyP-1C-yZa" secondAttribute="centerY" id="eX8-3p-iSe"/>
-                            <constraint firstItem="PW9-SL-sxb" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="fTK-zr-c0N"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="trailing" secondItem="GuM-HI-Y53" secondAttribute="trailing" id="fZQ-A7-4uv"/>
-                            <constraint firstAttribute="trailing" secondItem="PW9-SL-sxb" secondAttribute="trailing" id="nJU-tF-5hH"/>
+                            <constraint firstItem="PW9-SL-sxb" firstAttribute="trailing" secondItem="GuM-HI-Y53" secondAttribute="trailing" id="gNz-Gk-aee"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="uRx-8n-wWb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GuM-HI-Y53"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZXd-Ls-skB">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="aNO-du-s3D">
+                        <barButtonItem key="rightBarButtonItem" image="add_button" id="aNO-du-s3D">
                             <connections>
                                 <segue destination="MFW-eN-Fb7" kind="presentation" id="kDk-qc-keq"/>
                             </connections>
@@ -1826,7 +1829,7 @@ Reproduction steps:
             <objects>
                 <viewController id="yEQ-dB-DTP" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hxD-DE-Aqf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="381"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="337"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szR-bg-VMn" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
@@ -1899,6 +1902,7 @@ Reproduction steps:
     </scenes>
     <resources>
         <image name="accounts_tab" width="20" height="25"/>
+        <image name="add_button" width="38" height="38"/>
         <image name="chevron_right" width="7" height="11"/>
         <image name="close-icon" width="16" height="16"/>
         <image name="devices_tab" width="30" height="23"/>

@@ -49,6 +49,28 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
+    func addAddButton(){
+        guard self.navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: 0, y: 0, width: 38, height: 38)
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+
+        let menuBarItem = UIBarButtonItem(customView: button)
+        NSLayoutConstraint.activate([
+            menuBarItem.customView!.widthAnchor.constraint(equalToConstant: 38),
+            menuBarItem.customView!.heightAnchor.constraint(equalToConstant: 38)
+            ])
+
+        self.navigationItem.rightBarButtonItem = menuBarItem
+    }
+
+    @objc func showAddAccount() {
+        performSegue(withIdentifier: "ShowAddAccount", sender: self)
+    }
+
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
             if let accounts = notification.userInfo as? [String: Account] {
@@ -65,6 +87,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             tableViewContainer.isHidden = false
             addAccountContainer.isHidden = true
             view.backgroundColor = UIColor.primaryVeryLight
+            addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
