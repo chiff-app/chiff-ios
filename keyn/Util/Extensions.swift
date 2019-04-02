@@ -262,6 +262,9 @@ extension UIColor {
     static var primary: UIColor = {
         return UIColor(rgb: 0x4722C3)
     }()
+    static var primaryHalfOpacity: UIColor = {
+        return UIColor(rgb: 0x9B88DD)
+    }()
     static var primaryTransparant: UIColor = {
         return UIColor(rgb: 0xC7BCEE)
     }()
