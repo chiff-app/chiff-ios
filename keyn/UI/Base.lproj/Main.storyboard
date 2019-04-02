@@ -372,7 +372,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eaW-Ua-YRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1818" y="0.0"/>
+            <point key="canvasLocation" x="-1439" y="0.0"/>
         </scene>
         <!--Error View Controller-->
         <scene sceneID="807-pr-mGw">
@@ -422,7 +422,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bXc-Mo-HZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1827.5362318840582" y="874.72826086956525"/>
+            <point key="canvasLocation" x="-1439" y="872"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -449,7 +449,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-575" y="0.0"/>
+            <point key="canvasLocation" x="-413" y="0.0"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="dOy-5w-acO">
@@ -1418,15 +1418,35 @@ Reproduction steps:
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tV5-Dj-vX9">
-                                <rect key="frame" x="0.0" y="191" width="414" height="470"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tV5-Dj-vX9">
+                                <rect key="frame" x="0.0" y="130" width="414" height="502"/>
                                 <connections>
                                     <segue destination="cKd-wq-Wsv" kind="embed" identifier="EmbeddedPairing" id="rhj-pt-HzT"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVy-tV-F9z" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="136.66666666666666" y="662" width="140.99999999999997" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="141" id="0X7-c5-aRA"/>
+                                    <constraint firstAttribute="height" constant="44" id="2FV-6x-oNy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Help  me"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="tV5-Dj-vX9" firstAttribute="top" secondItem="mgR-W4-VU7" secondAttribute="top" constant="130" id="AH1-QW-fhM"/>
+                            <constraint firstAttribute="bottom" secondItem="pVy-tV-F9z" secondAttribute="bottom" constant="30" id="NaG-nr-o5v"/>
+                            <constraint firstItem="pVy-tV-F9z" firstAttribute="top" secondItem="tV5-Dj-vX9" secondAttribute="bottom" constant="30" id="Sb2-NN-q0b"/>
+                            <constraint firstItem="tV5-Dj-vX9" firstAttribute="leading" secondItem="mgR-W4-VU7" secondAttribute="leading" id="YS2-f0-yQG"/>
+                            <constraint firstItem="tV5-Dj-vX9" firstAttribute="trailing" secondItem="mgR-W4-VU7" secondAttribute="trailing" id="qJa-2p-tjL"/>
+                            <constraint firstItem="pVy-tV-F9z" firstAttribute="centerX" secondItem="mgR-W4-VU7" secondAttribute="centerX" id="zuV-39-iX2"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Krp-BY-Ppc"/>
                     </view>
                     <navigationItem key="navigationItem" id="VTM-jH-arZ">
@@ -1591,17 +1611,17 @@ Reproduction steps:
             <objects>
                 <viewController storyboardIdentifier="PairController" id="cKd-wq-Wsv" customClass="PairViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kLW-Ki-aCj">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="470"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqO-8h-OgS">
-                                <rect key="frame" x="20" y="22" width="374" height="27"/>
+                                <rect key="frame" x="20" y="42" width="374" height="27"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r95-U4-jiJ">
-                                <rect key="frame" x="44" y="69" width="326" height="72"/>
+                                <rect key="frame" x="44" y="89" width="326" height="72"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Scan the QR code that appears in the top right corner of your browser after installing our extension via">
                                         <attributes>
@@ -1628,10 +1648,10 @@ Reproduction steps:
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uC-YB-Cmv">
-                                <rect key="frame" x="0.0" y="161" width="414" height="309"/>
+                                <rect key="frame" x="0.0" y="181" width="414" height="321"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-7d-Dfy">
-                                        <rect key="frame" x="119" y="66.666666666666657" width="176" height="176"/>
+                                        <rect key="frame" x="119" y="72.666666666666657" width="176" height="176"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="nHP-7d-Dfy" secondAttribute="height" multiplier="1:1" id="9Ka-vI-1ih"/>
                                             <constraint firstAttribute="height" constant="176" id="W9C-Bq-VC6"/>
