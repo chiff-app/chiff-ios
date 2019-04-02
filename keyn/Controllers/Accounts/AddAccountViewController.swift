@@ -32,9 +32,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
 
-        requirementLabels.sort(by: { (first, second) -> Bool in
-            return first.tag < second.tag
-        })
+        requirementLabels.sort(by: { $0.tag < $1.tag })
         
         updateSaveButtonState()
     }
@@ -47,6 +45,21 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - UITableView
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard section < 2 else {
+            return
+        }
+
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.primaryHalfOpacity
+        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.textAlignment = NSTextAlignment.left
+        header.textLabel?.frame = header.frame
+        header.textLabel?.text = section == 0 ? "Account details" : "User details"
     }
     
     // MARK: UITextFieldDelegate
