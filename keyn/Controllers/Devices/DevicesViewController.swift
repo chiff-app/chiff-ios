@@ -139,7 +139,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - PairControllerDelegate
 
     func sessionCreated(session: Session) {
-        navigationController?.popToRootViewController(animated: true)
+        dismiss(animated: true, completion: nil)
         let newIndexPath = IndexPath(row: sessions.count, section: 0)
         sessions.append(session)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
