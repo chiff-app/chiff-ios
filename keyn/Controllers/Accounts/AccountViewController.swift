@@ -65,9 +65,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
 
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+//    }
+//
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+//    }
 
     // MARK: - UITableView
 

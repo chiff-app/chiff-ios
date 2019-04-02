@@ -11,8 +11,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
 //    let searchController = UISearchController(searchResultsController: nil)
-    @IBOutlet weak var addAccountContainer: UIView!
     @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var tabBarGradient: TabBarGradient!
+    @IBOutlet weak var addAccountContainerView: UIView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,13 +87,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     private func updateUi() {
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
-            addAccountContainer.isHidden = true
+            view.bringSubviewToFront(scrollView)
+            addAccountContainerView.isHidden = true
+            tabBarGradient.isHidden = false
             view.backgroundColor = UIColor.primaryVeryLight
             addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
+            view.bringSubviewToFront(addAccountContainerView)
             tableViewContainer.isHidden = true
-            addAccountContainer.isHidden = false
+            addAccountContainerView.isHidden = false
+            tabBarGradient.isHidden = true
             view.backgroundColor = UIColor.white
         }
     }
