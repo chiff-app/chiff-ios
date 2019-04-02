@@ -940,11 +940,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cDG-1D-ad2"/>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="5no-DG-6UM"/>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="tuW-C2-0ha">
                         <barButtonItem key="backBarButtonItem" title=" " id="3l8-lS-VvP"/>
+                        <barButtonItem key="rightBarButtonItem" image="add_button" id="5Qj-vF-SBC"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -1705,13 +1704,13 @@ Reproduction steps:
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="540"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My paired devices" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kAk-h2-8eD">
-                                                <rect key="frame" x="29" y="20" width="365" height="18.333333333333329"/>
+                                                <rect key="frame" x="29" y="20" width="365" height="17.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MeN-TK-t2q" customClass="SelfSizingTableView" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="46.333333333333343" width="374" height="417.66666666666663"/>
+                                                <rect key="frame" x="20" y="45.333333333333343" width="374" height="418.66666666666663"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" id="8KO-Uj-dit" customClass="DevicesViewCell" customModule="keyn" customModuleProvider="target">

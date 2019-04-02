@@ -51,24 +51,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
-    func addAddButton(){
-        guard self.navigationItem.rightBarButtonItem == nil else {
-            return
-        }
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: 0, y: 0, width: 38, height: 38)
-        button.setImage(UIImage(named:"add_button"), for: .normal)
-        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
-
-        let menuBarItem = UIBarButtonItem(customView: button)
-        NSLayoutConstraint.activate([
-            menuBarItem.customView!.widthAnchor.constraint(equalToConstant: 38),
-            menuBarItem.customView!.heightAnchor.constraint(equalToConstant: 38)
-            ])
-
-        self.navigationItem.rightBarButtonItem = menuBarItem
-    }
-
     @objc func showAddAccount() {
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
@@ -218,5 +200,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 self.updateUi()
             }
         })
+    }
+
+    private func addAddButton(){
+        guard self.navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        let menuBarItem = button.barButtonItem
+        self.navigationItem.rightBarButtonItem = menuBarItem
     }
 }
