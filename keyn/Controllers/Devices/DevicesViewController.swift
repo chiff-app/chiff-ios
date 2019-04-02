@@ -10,6 +10,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: SelfSizingTableView!
     @IBOutlet weak var addSessionContainer: UIView!
     @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var tabBarGradient: TabBarGradient!
 
     var sessions = [Session]()
 
@@ -41,10 +42,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if !sessions.isEmpty {
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false
+            tabBarGradient.isHidden = false
             view.backgroundColor = UIColor.primaryVeryLight
         } else {
             addSessionContainer.isHidden = false
             tableViewContainer.isHidden = true
+            tabBarGradient.isHidden = true
             view.backgroundColor = UIColor.white
         }
     }

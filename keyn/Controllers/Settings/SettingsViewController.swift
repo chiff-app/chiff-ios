@@ -5,7 +5,6 @@
 import UIKit
 
 class SettingsViewController: UITableViewController {
-    @IBOutlet weak var newSiteNotficationSwitch: UISwitch!
 
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
@@ -13,7 +12,9 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setFooterText()
-        newSiteNotficationSwitch.isOn = AWS.shared.isSubscribed()
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
+        tableView.separatorColor = UIColor.primaryTransparant
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -23,19 +24,33 @@ class SettingsViewController: UITableViewController {
         } else { justLoaded = false }
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return securityFooterText
-        case 1:
-            return "settings.feedback_description".localized
-        case 2:
-            return "settings.reset_warning".localized
-        default:
-            return nil
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard section == 0 else {
+            return
         }
+
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.primaryHalfOpacity
+        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.textAlignment = NSTextAlignment.left
+        header.textLabel?.frame = header.frame
+        header.textLabel?.text = "Settings"
     }
 
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as! UITableViewHeaderFooterView
+        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
+        footer.textLabel?.font = UIFont(name: "Montserrat-Medium", size: 12)
+        footer.textLabel?.textAlignment = NSTextAlignment.left
+        footer.textLabel?.frame = footer.frame
+        footer.textLabel?.text = section == 0 ? securityFooterText : "settings.reset_warning".localized
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
+        }
+    }
     // MARK: - Actions
 
     @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {

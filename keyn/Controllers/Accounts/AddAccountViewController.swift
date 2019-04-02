@@ -32,6 +32,11 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
 
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
+
+        tableView.separatorColor = UIColor.primaryTransparant
+
         requirementLabels.sort(by: { $0.tag < $1.tag })
         
         updateSaveButtonState()

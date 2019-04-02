@@ -156,10 +156,18 @@ extension UIViewController {
     }
 
     @IBAction func dismiss(sender: UIStoryboardSegue) {
+        doDismiss(animated: false)
+    }
+
+    @IBAction func dismissAnimated(sender: UIStoryboardSegue) {
+        doDismiss(animated: true)
+    }
+
+    private func doDismiss(animated: Bool) {
         if let navCon = navigationController {
-            navCon.popViewController(animated: false)
+            navCon.popViewController(animated: animated)
         } else {
-            dismiss(animated: false, completion: nil)
+            dismiss(animated: animated, completion: nil)
         }
     }
 
@@ -279,6 +287,9 @@ extension UIColor {
     }()
     static var textColor: UIColor = {
         return UIColor(rgb: 0x4C5698)
+    }()
+    static var textColorHalfOpacity: UIColor = {
+        return UIColor(rgb: 0x9FA3C9)
     }()
     static var secondary: UIColor = {
         return UIColor(rgb: 0xEE8C00)
