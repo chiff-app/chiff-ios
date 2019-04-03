@@ -34,6 +34,10 @@ class BackupWizardViewController: UIViewController {
         super.viewDidLayoutSubviews()
         backupCircle.addCircles()
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     // MARK: - Actions
 
