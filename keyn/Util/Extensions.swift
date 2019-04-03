@@ -163,6 +163,10 @@ extension UIViewController {
         doDismiss(animated: true)
     }
 
+    @IBAction func dismissModallyAnimated(sender: UIStoryboardSegue) {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func doDismiss(animated: Bool) {
         if let navCon = navigationController {
             navCon.popViewController(animated: animated)
@@ -317,5 +321,11 @@ extension UITableViewCell {
 extension UNNotificationContent {
     func isProcessed() -> Bool {
         return self.userInfo[NotificationContentKey.type] != nil
+    }
+}
+
+extension UINavigationController {
+    open override var childForStatusBarStyle: UIViewController? {
+        return visibleViewController
     }
 }

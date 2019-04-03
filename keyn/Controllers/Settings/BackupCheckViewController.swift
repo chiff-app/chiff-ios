@@ -28,18 +28,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        firstWordIndex = Int(arc4random_uniform(5))
-        secondWordIndex = Int(arc4random_uniform(5)) + 6
+        firstWordIndex = Int(arc4random_uniform(6))
+        secondWordIndex = Int(arc4random_uniform(6)) + 6
 
-        firstWordLabel.text = "\("backup.word".localized.capitalized) #\(firstWordIndex+1)"
-        secondWordLabel.text = "\("backup.word".localized.capitalized) #\(secondWordIndex+1)"
-        firstWordTextField.placeholder = "\(mnemonic[firstWordIndex].prefix(3))..."
-        secondWordTextField.placeholder = "\(mnemonic[secondWordIndex].prefix(3))..."
-
-        firstWordTextField.delegate = self
-        secondWordTextField.delegate = self
-        firstWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        secondWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        initialize(textfield: firstWordTextField, label: firstWordLabel, index: firstWordIndex)
+        initialize(textfield: secondWordTextField, label: secondWordLabel, index: secondWordIndex)
 
         // Observe keyboard change
         let nc = NotificationCenter.default
@@ -47,6 +40,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     // MARK: - UITextFieldDelegate
@@ -68,11 +65,11 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        checkWords()
+        checkWords(for: textField)
     }
 
     @objc func textFieldDidChange(textField: UITextField){
-        checkWords()
+        checkWords(for: textField)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -92,7 +89,6 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
                 })
             }
         }
-//        (navigationController! as? KeynNavigationController)?.moveAndResizeImage()
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -113,29 +109,56 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func finish(_ sender: UIBarButtonItem) {
-        Logger.shared.analytics("Backup completed.", code: .backupCompleted)
+    @IBAction func finish(_ sender: UIButton) {
         do {
             try Seed.setPaperBackupCompleted()
+            Logger.shared.analytics("Backup completed.", code: .backupCompleted)
         } catch {
             Logger.shared.warning("Could not set seed to backed up.", error: error)
         }
-        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private
 
-    private func checkWords() {
-        if (firstWordTextField.text == mnemonic[firstWordIndex] && secondWordTextField.text == mnemonic[secondWordIndex]) {
-            finishButton.isEnabled = true
-        } else {
-            finishButton.isEnabled = false
+    private func checkWords(for textField: UITextField) {
+        let index = textField == firstWordTextField ? firstWordIndex : secondWordIndex
+        if textField.text == mnemonic[index] {
+            UIView.animate(withDuration: 0.1) {
+                textField.rightView?.alpha = 1.0
+            }
+        } else if let alpha = textField.rightView?.alpha, alpha > 0.0 {
+            UIView.animate(withDuration: 0.1) {
+                textField.rightView?.alpha = 0.0
+            }
         }
+        finishButton.isEnabled = firstWordTextField.text == mnemonic[firstWordIndex] && secondWordTextField.text == mnemonic[secondWordIndex]
     }
 
     private func loadRootController() {
         let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
         rootController.selectedIndex = 1
         UIApplication.shared.keyWindow?.rootViewController = rootController
+    }
+
+    private func initialize(textfield: UITextField, label: UILabel, index: Int) {
+        let checkMarkImageView = UIImageView(image: UIImage(named: "checkmark_small"))
+        checkMarkImageView.contentMode = UIView.ContentMode.center
+        if let size = checkMarkImageView.image?.size {
+            checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
+        }
+
+        textfield.placeholder = "\(mnemonic[index].prefix(1))..."
+        textfield.rightViewMode = .always
+        textfield.rightView = checkMarkImageView
+        textfield.rightView?.alpha = 0.0
+        textfield.delegate = self
+        textfield.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+
+        let ordinalFormatter = NumberFormatter()
+        ordinalFormatter.numberStyle = .ordinal
+        let attributedText = NSMutableAttributedString(string: "The ", attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Medium", size: 14)!])
+        attributedText.append(NSMutableAttributedString(string: ordinalFormatter.string(from: NSNumber(value: index + 1))!, attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Bold", size: 14)!]))
+        attributedText.append(NSMutableAttributedString(string: " word is", attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Medium", size: 14)!]))
+        label.attributedText = attributedText
     }
 }
