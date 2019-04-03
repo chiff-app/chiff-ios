@@ -10,7 +10,7 @@ import UIKit
 
 class KeynBarButton: UIButton {
 
-    static let offset: CGFloat = 40
+    static let offset: CGFloat = 22
 
     var barButtonItem: UIBarButtonItem {
         self.transform = CGAffineTransform(translationX: 0, y: KeynBarButton.offset)
@@ -21,6 +21,7 @@ class KeynBarButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.imageView?.clipsToBounds = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -57,4 +58,5 @@ extension UINavigationBar {
         }
         return self
     }
+    
 }

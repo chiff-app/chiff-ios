@@ -38,20 +38,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
-    private func updateUi() {
-        if !sessions.isEmpty {
-            addSessionContainer.isHidden = true
-            tableViewContainer.isHidden = false
-            tabBarGradient.isHidden = false
-            view.backgroundColor = UIColor.primaryVeryLight
-        } else {
-            addSessionContainer.isHidden = false
-            tableViewContainer.isHidden = true
-            tabBarGradient.isHidden = true
-            view.backgroundColor = UIColor.white
-        }
-    }
-
     @IBAction func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
@@ -148,5 +134,38 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func prepareForPairing(completionHandler: @escaping (Bool) -> Void) {
         completionHandler(true)
+    }
+
+    // MARK: - Private functions
+
+    private func updateUi() {
+        if !sessions.isEmpty {
+            addSessionContainer.isHidden = true
+            tableViewContainer.isHidden = false
+            tabBarGradient.isHidden = false
+            view.backgroundColor = UIColor.primaryVeryLight
+            addAddButton()
+        } else {
+            addSessionContainer.isHidden = false
+            tableViewContainer.isHidden = true
+            tabBarGradient.isHidden = true
+            view.backgroundColor = UIColor.white
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    private func addAddButton(){
+        guard self.navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddSession), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = button.barButtonItem
+    }
+
+    @objc private func showAddSession() {
+        performSegue(withIdentifier: "ShowAddSession", sender: self)
     }
 }

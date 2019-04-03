@@ -277,7 +277,7 @@ extension UIColor {
         return UIColor(rgb: 0xC7BCEE)
     }()
     static var primaryDark: UIColor = {
-        return UIColor(rgb: 0x4722C3)
+        return UIColor(rgb: 0x120050)
     }()
     static var primaryLight: UIColor = {
         return UIColor(rgb: 0xE5E1F5)
