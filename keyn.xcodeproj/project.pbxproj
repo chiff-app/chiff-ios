@@ -43,6 +43,7 @@
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
+		4927D8192254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
 		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
@@ -243,6 +244,7 @@
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
 		4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynBarButton.swift; sourceTree = "<group>"; };
+		4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PatrickHandSC-Regular.ttf"; sourceTree = "<group>"; };
 		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
 		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
@@ -465,6 +467,8 @@
 			children = (
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
 				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
+				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
+				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -619,6 +623,7 @@
 				49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */,
 				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
 				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
+				4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */,
 			);
 			path = SupportFiles;
 			sourceTree = "<group>";
@@ -628,8 +633,6 @@
 			children = (
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
 				497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */,
-				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
-				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 				492EC842224919A10088F73D /* PairingViewController.swift */,
 			);
@@ -913,6 +916,7 @@
 				496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				49F9BDD222427A8400440C86 /* Montserrat-Regular.ttf in Resources */,
+				4927D8192254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,

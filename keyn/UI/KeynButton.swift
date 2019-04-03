@@ -14,6 +14,8 @@ enum KeynButtonType: String {
     case secondary
     case tertiary
     case accent
+    case dark
+    case darkSecondary
 }
 
 @IBDesignable class KeynButton: UIButton {
@@ -43,6 +45,13 @@ enum KeynButtonType: String {
             case .accent:
                 backgroundColor = UIColor.secondary
                 tintColor = UIColor.white
+            case .dark:
+                backgroundColor = UIColor.primaryDark
+                tintColor = UIColor.white
+            case .darkSecondary:
+                backgroundColor = UIColor.primaryLight.withAlphaComponent(0.3)
+                tintColor = UIColor.white
+
             }
         }
     }

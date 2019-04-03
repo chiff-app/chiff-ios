@@ -12,15 +12,15 @@ class KeynNavigationController: UINavigationController {
 
     private let heightForLargeState: CGFloat = 58
     private let widthForLargeState: CGFloat = 52
-    private let imageBottomMarginForLargeState: CGFloat = 7
+    private let imageBottomMarginForLargeState: CGFloat = 23
     private let navBarHeightLargeState: CGFloat = 96.5
 
     private let heightForSmallState: CGFloat = 34.8
     private let widthForSmallState: CGFloat = 31.2
-    private let imageBottomMarginForSmallState: CGFloat = 4.2
+    private let imageBottomMarginForSmallState: CGFloat = 14
     private let navBarHeightSmallState: CGFloat = 44
 
-    private let logoImageView = UIImageView(image: UIImage(named: "logo_purple"))
+    let logoImageView = UIImageView(image: UIImage(named: "logo_purple"))
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -11,19 +11,18 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var firstWordTextField: UITextField!
     @IBOutlet weak var secondWordTextField: UITextField!
     @IBOutlet weak var wordFieldStack: UIStackView!
-    @IBOutlet weak var finishButton: UIBarButtonItem!
+    @IBOutlet weak var finishButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+
     private var textFieldOffset: CGPoint!
     private var textFieldHeight: CGFloat!
     private var keyboardHeight: CGFloat!
-    private let lowerBoundaryOffset: CGFloat = 15
-    private let keyboardHeightOffset: CGFloat = 40
+    private let lowerBoundaryOffset: CGFloat = 109
 
     var mnemonic: [String]!
-    var isInitialSetup = true
     private var firstWordIndex = 0
     private var secondWordIndex = 0
 
@@ -41,17 +40,13 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         secondWordTextField.delegate = self
         firstWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         secondWordTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        
+
         // Observe keyboard change
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
     }
 
     // MARK: - UITextFieldDelegate
@@ -87,9 +82,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let lowerBoundary = (wordFieldStack.frame.origin.y + wordFieldStack.frame.size.height) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
             if lowerBoundary > 0 {
-                keyboardHeight = keyboardSize.height - keyboardHeightOffset
+                keyboardHeight = keyboardSize.height
                 UIView.animate(withDuration: 0.3, animations: {
-                    self.constraintContentHeight.constant += (self.keyboardHeight)
+                    self.bottomConstraint.constant += (self.keyboardHeight)
                 })
                 
                 UIView.animate(withDuration: 0.3, animations: {
@@ -97,6 +92,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
                 })
             }
         }
+//        (navigationController! as? KeynNavigationController)?.moveAndResizeImage()
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -104,7 +100,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             return
         }
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight)
+            self.bottomConstraint.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         }
         
@@ -114,11 +110,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        if isInitialSetup {
-            loadRootController()
-        } else {
-            dismiss(animated: true, completion: nil)
-        }
+        dismiss(animated: true, completion: nil)
     }
 
     @IBAction func finish(_ sender: UIBarButtonItem) {
@@ -128,11 +120,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         } catch {
             Logger.shared.warning("Could not set seed to backed up.", error: error)
         }
-        if isInitialSetup {
-            loadRootController()
-        } else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private

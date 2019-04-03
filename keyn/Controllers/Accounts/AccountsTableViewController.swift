@@ -45,6 +45,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+        updateUi()
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -203,14 +204,13 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     private func addAddButton(){
-        guard self.navigationItem.rightBarButtonItem == nil else {
-            return
-        }
+//        guard self.navigationItem.rightBarButtonItem == nil else {
+//            return
+//        }
 
         let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.setImage(UIImage(named:"add_button"), for: .normal)
         button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
-        let menuBarItem = button.barButtonItem
-        self.navigationItem.rightBarButtonItem = menuBarItem
+        self.navigationItem.rightBarButtonItem = button.barButtonItem
     }
 }
