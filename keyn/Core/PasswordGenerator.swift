@@ -112,7 +112,7 @@ class PasswordGenerator {
     #warning("TODO: Kunnen we die Crypto errors niet opvangen hier?")
     private func generateKey(index passwordIndex: Int) throws -> Data {
         guard let usernameData = username.data(using: .utf8),
-            let siteData = self.siteId.prefix(8).data(using: .utf8) else {
+            let siteData = self.siteId.data(using: .utf8) else {
                 throw CodingError.stringDecoding
         }
         
