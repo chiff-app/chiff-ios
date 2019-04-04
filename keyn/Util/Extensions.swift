@@ -39,7 +39,9 @@ extension String {
             return String(self[start..<end])
         }
     }
-    
+
+
+    // TODO: Make functional
     func pad(toSize: Int) -> String {
         var padded = self
         for _ in 0..<(toSize - self.count) {
@@ -93,15 +95,15 @@ extension Data {
     }
     
     var bitstring: String {
-        var string = ""
-        for byte in self {
-            string += String(byte, radix: 2).pad(toSize: 8)
-        }
-        return string
+        return self.reduce("", { $0 + String($1, radix: 2).pad(toSize: 8) })
     }
     
     var hash: Data {
         return try! Crypto.shared.hash(self)
+    }
+
+    var sha256: Data {
+        return Crypto.shared.sha256(from: self)
     }
 
     var base64: String {

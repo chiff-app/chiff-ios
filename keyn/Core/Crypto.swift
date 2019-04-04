@@ -243,12 +243,16 @@ class Crypto {
     }
     
     func sha256(from string: String) -> String {
-        let data = string.data(using: String.Encoding.utf8)!
+        let digest = sha256(from: string.data(using: String.Encoding.utf8)!)
+        let hexBytes = digest.map { String(format: "%02hhx", $0) }
+        return hexBytes.joined()
+    }
+
+    func sha256(from data: Data) -> Data {
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
         data.withUnsafeBytes {
             _ = CC_SHA256($0, CC_LONG(data.count), &digest)
         }
-        let hexBytes = digest.map { String(format: "%02hhx", $0) }
-        return hexBytes.joined()
+        return digest.data
     }
 }

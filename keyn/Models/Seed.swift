@@ -38,9 +38,8 @@ struct Seed {
 
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
-        let seedHash = try Crypto.shared.hash(seed).first!
         let checksumSize = seed.count / 4
-        let bitstring = seed.bitstring + String(seedHash, radix: 2).prefix(checksumSize).pad(toSize: checksumSize)
+        let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
         let wordlist = try self.wordlist()
 
         return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
@@ -50,21 +49,15 @@ struct Seed {
         guard let (checksum, seed) = try? generateSeedFromMnemonic(mnemonic: mnemonic) else {
             return false
         }
-        
-        guard let seedHash = try? Crypto.shared.hash(seed).first! else {
-            return false
-        }
-        if checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) {
-            return true
-        }
-        return false
+
+        let checksumSize = seed.count / 4
+        return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
     static func recover(mnemonic: [String]) throws -> Bool {
         let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
-
-        let seedHash = try Crypto.shared.hash(seed).first!
-        guard checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) else {
+        let checksumSize = seed.count / 4
+        guard checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed) else {
             return false
         }
 
@@ -115,7 +108,7 @@ struct Seed {
         return wordlistData.components(separatedBy: .newlines)
     }
     
-    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
+    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
         let wordlist = try self.wordlist()
 
         let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
@@ -134,6 +127,12 @@ struct Seed {
             return byte
         }
         
-        return (String(checksum), seed.data)
+        return (checksum, seed.data)
+    }
+
+    // MARK: - temporary
+
+    static private func oldChecksum(seed: Data) -> String {
+        return String(seed.hash.first!, radix: 2).prefix(seed.count / 4).pad(toSize: seed.count / 4)
     }
 }
