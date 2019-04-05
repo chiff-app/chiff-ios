@@ -270,7 +270,7 @@ class Session: Codable {
         }
 
         // The creation of volatile and persistent queues as well as the pushmessage endpoint is one atomic operation.
-        apiRequestForCreatingQueues(endpoint: .message, method: .put, keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
+        apiRequestForCreatingQueues(    keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
             }
@@ -337,7 +337,7 @@ class Session: Codable {
     private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
-        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
+        message["   "] = String(Int(Date().timeIntervalSince1970))
 
         do {
             let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
@@ -355,9 +355,9 @@ class Session: Codable {
         }
     }
 
-    private func apiRequestForCreatingQueues(endpoint: APIEndpoint, method: APIMethod, keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    private func apiRequestForCreatingQueues(keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = [
-            "httpMethod": method.rawValue,
+            "httpMethod": APIMethod.put.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "pubkey": keyPair.pubKey.base64,
             "deviceEndpoint": deviceEndpoint
@@ -375,7 +375,7 @@ class Session: Codable {
                 "s": try Crypto.shared.convertToBase64(from: signature)
             ]
 
-            API.shared.request(endpoint: endpoint, path: nil, parameters: parameters, method: method, completionHandler: completionHandler)
+            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
