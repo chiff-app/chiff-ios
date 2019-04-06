@@ -234,7 +234,7 @@ struct Account: Codable {
      */
     static func all(context: LAContext?) throws -> [String: Account] {
         guard let dataArray = try Keychain.shared.all(service: .account, context: context) else {
-            return [:];#warning("sync")
+            return [:]
         }
 
         let decoder = PropertyListDecoder()

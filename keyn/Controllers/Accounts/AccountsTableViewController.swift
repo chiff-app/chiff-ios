@@ -4,10 +4,17 @@
  */
 import UIKit
 
-class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
+class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
-    let searchController = UISearchController(searchResultsController: nil)
+//    let searchController = UISearchController(searchResultsController: nil)
+    @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var tabBarGradient: TabBarGradient!
+    @IBOutlet weak var addAccountContainerView: UIView!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,16 +26,34 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
         filteredAccounts = unfilteredAccounts
 
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.dimsBackgroundDuringPresentation = false
+        scrollView.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.searchBarStyle = .minimal
+//        searchController.hidesNavigationBarDuringPresentation = true
+//        searchController.dimsBackgroundDuringPresentation = false
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-        navigationItem.searchController = searchController
-
+//        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+        updateUi()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+        updateUi()
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+    }
+
+    @objc func showAddAccount() {
+        performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
 
     private func loadAccounts(notification: Notification) {
@@ -37,33 +62,26 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
+                self.updateUi()
             }
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if let navigationView = navigationController?.view {
-            fixShadowImage(inView: navigationView)
-        }
-    }
-
-    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
-    func fixShadowImage(inView view: UIView) {
-        if let imageView = view as? UIImageView {
-            let size = imageView.bounds.size.height
-            if size <= 1 && size > 0 &&
-                imageView.subviews.count == 0,
-                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
-            {
-                let line = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 2))
-                line.backgroundColor = UIColor(rgb: 0x4932A2)
-                imageView.addSubview(line)
-                line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            }
-        }
-        for subview in view.subviews {
-            fixShadowImage(inView: subview)
+    private func updateUi() {
+        if let accounts = unfilteredAccounts, !accounts.isEmpty {
+            tableViewContainer.isHidden = false
+            view.bringSubviewToFront(scrollView)
+            addAccountContainerView.isHidden = true
+            tabBarGradient.isHidden = false
+            view.backgroundColor = UIColor.primaryVeryLight
+            addAddButton()
+        } else {
+            navigationItem.rightBarButtonItem = nil
+            view.bringSubviewToFront(addAccountContainerView)
+            tableViewContainer.isHidden = true
+            addAccountContainerView.isHidden = false
+            tabBarGradient.isHidden = true
+            view.backgroundColor = UIColor.white
         }
     }
 
@@ -80,18 +98,18 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
 
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let accounts = filteredAccounts else {
             return 0
         }
         return accounts.count
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -103,11 +121,11 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+//        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
-        cell.textLabel?.text = account.site.name
-        cell.detailTextLabel?.text = account.username
+        cell.titleLabel.text = account.site.name
         return cell
     }
 
@@ -144,13 +162,15 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
     }
 
     func addAccount(account: Account) {
+        unfilteredAccounts.append(account)
         filteredAccounts.append(account)
         filteredAccounts.sort(by: { $0.site.name < $1.site.name })
         if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+            self.updateUi()
         }
-        updateSearchResults(for: searchController)
+//        updateSearchResults(for: searchController)
     }
 
     // MARK: - Actions
@@ -176,8 +196,21 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             }
             DispatchQueue.main.async {
                 self.filteredAccounts.remove(at: filteredIndexPath.row)
-                self.tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
+                self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
+                self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
+                self.updateUi()
             }
         })
+    }
+
+    private func addAddButton(){
+//        guard self.navigationItem.rightBarButtonItem == nil else {
+//            return
+//        }
+
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = button.barButtonItem
     }
 }

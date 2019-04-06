@@ -156,6 +156,27 @@ extension UIViewController {
             return self
         }
     }
+
+    @IBAction func dismiss(sender: UIStoryboardSegue) {
+        doDismiss(animated: false)
+    }
+
+    @IBAction func dismissAnimated(sender: UIStoryboardSegue) {
+        doDismiss(animated: true)
+    }
+
+    @IBAction func dismissModallyAnimated(sender: UIStoryboardSegue) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    private func doDismiss(animated: Bool) {
+        if let navCon = navigationController {
+            navCon.popViewController(animated: animated)
+        } else {
+            dismiss(animated: animated, completion: nil)
+        }
+    }
+
 }
 
 extension UIStoryboard {
@@ -174,6 +195,16 @@ extension UIStoryboard {
     
     static func get(_ type: StoryboardType) -> UIStoryboard {
         return UIStoryboard(name: type.rawValue, bundle: nil)
+    }
+    
+}
+
+struct System {
+
+    static func clearNavigationBar(forBar navBar: UINavigationBar) {
+        navBar.setBackgroundImage(UIImage(), for: .default)
+        navBar.shadowImage = UIImage()
+        navBar.isTranslucent = true
     }
     
 }
@@ -241,6 +272,34 @@ extension UIColor {
             blue: rgb & 0xFF
         )
     }
+
+    static var primary: UIColor = {
+        return UIColor(rgb: 0x4722C3)
+    }()
+    static var primaryHalfOpacity: UIColor = {
+        return UIColor(rgb: 0x9B88DD)
+    }()
+    static var primaryTransparant: UIColor = {
+        return UIColor(rgb: 0xC7BCEE)
+    }()
+    static var primaryDark: UIColor = {
+        return UIColor(rgb: 0x120050)
+    }()
+    static var primaryLight: UIColor = {
+        return UIColor(rgb: 0xE5E1F5)
+    }()
+    static var primaryVeryLight: UIColor = {
+        return UIColor(rgb: 0xF2F0FA)
+    }()
+    static var textColor: UIColor = {
+        return UIColor(rgb: 0x4C5698)
+    }()
+    static var textColorHalfOpacity: UIColor = {
+        return UIColor(rgb: 0x9FA3C9)
+    }()
+    static var secondary: UIColor = {
+        return UIColor(rgb: 0xEE8C00)
+    }()
 }
 
 extension UIImage {
@@ -264,5 +323,11 @@ extension UITableViewCell {
 extension UNNotificationContent {
     func isProcessed() -> Bool {
         return self.userInfo[NotificationContentKey.type] != nil
+    }
+}
+
+extension UINavigationController {
+    open override var childForStatusBarStyle: UIViewController? {
+        return visibleViewController
     }
 }

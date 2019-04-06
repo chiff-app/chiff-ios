@@ -71,7 +71,7 @@ class Keychain {
             query[kSecAttrLabel as String] = label
         }
         
-        query[kSecAttrAccessGroup as String] = service.classification
+        query[kSecAttrAccessGroup as String] = service.classification.rawValue
 
         switch service.classification {
         case .restricted:
@@ -90,7 +90,7 @@ class Keychain {
 
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw KeychainError.storeKey
+            throw KeychainError.unhandledError(status)
         }
     }
 

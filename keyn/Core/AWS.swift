@@ -31,6 +31,7 @@ class AWS {
             do  {
                 let endpointData = try Keychain.shared.get(id: endpointKeychainIdentifier, service: .aws)
                 snsDeviceEndpointArn = String(data: endpointData, encoding: .utf8)
+                print(snsDeviceEndpointArn)
                 checkIfUpdateIsNeeded(token: token)
             } catch {
                 Logger.shared.warning("Error getting endpoint from Keychain. Creating new endpoint", error: error)

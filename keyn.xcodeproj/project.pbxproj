@@ -41,11 +41,20 @@
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
+		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
+		4927D8192254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */; };
+		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
+		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
+		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
 		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
 		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
+		495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
+		495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
 		495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */; };
 		495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B571FAC8F49002E6AC6 /* RootViewController.swift */; };
 		495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E5B591FAC9887002E6AC6 /* AccountViewController.swift */; };
@@ -55,6 +64,7 @@
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
 		496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
+		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
 		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
 		49721F9D2128EED00090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
 		497D21B7205A80800040E0C0 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
@@ -66,10 +76,12 @@
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
+		49A3176C22525F7B004E0D86 /* TabBarGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3176B22525F7B004E0D86 /* TabBarGradient.swift */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		49C8B896225383D300639663 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C8B895225383D300639663 /* StoreKit.framework */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
@@ -77,6 +89,10 @@
 		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
+		49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */; };
+		49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */; };
+		49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
+		49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */; };
 		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
 		49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */; };
@@ -100,6 +116,10 @@
 		49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
+		49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
+		49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
+		49F9BDD222427A8400440C86 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */; };
+		49F9BDD322427A8400440C86 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
@@ -223,9 +243,16 @@
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		491C485A2024AB2F00397071 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
+		4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynBarButton.swift; sourceTree = "<group>"; };
+		4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PatrickHandSC-Regular.ttf"; sourceTree = "<group>"; };
+		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
+		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
+		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
+		495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
+		495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynNavigationController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +260,7 @@
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
 		496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
+		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
 		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
@@ -241,14 +269,18 @@
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
+		49A3176B22525F7B004E0D86 /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
+		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
+		49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
 		49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedback.storyboard; sourceTree = "<group>"; };
 		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
 		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +302,8 @@
 		49F2A0F622142F0400429875 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
+		49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
@@ -314,6 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C8B896225383D300639663 /* StoreKit.framework in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 				C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */,
 			);
@@ -361,6 +396,7 @@
 		2A4E92B609DDA515653F86DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49C8B895225383D300639663 /* StoreKit.framework */,
 				1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */,
 				936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */,
 				07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */,
@@ -397,6 +433,20 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		492EC84822492C560088F73D /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0153C8B122119276001B6853 /* ErrorViewController.swift */,
+				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
+				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
+				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
+				61F938C31FF4161300AF0880 /* PairViewController.swift */,
+				49A3176B22525F7B004E0D86 /* TabBarGradient.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		495E72B9221186DA003132ED /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +467,8 @@
 			children = (
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
 				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
+				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
+				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -424,9 +476,7 @@
 		499BE4F31FC0929C001038DF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0153C8B122119276001B6853 /* ErrorViewController.swift */,
-				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
-				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
+				492EC84822492C560088F73D /* Shared */,
 				491C48592024AB0200397071 /* Authentication */,
 				610C63BC1FAE1E6900A00FB0 /* Accounts */,
 				61D0BE991FF2A26F0072631D /* Devices */,
@@ -446,6 +496,9 @@
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
 				6105598B1FDC41C30030F871 /* Initialisation.storyboard */,
 				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
+				49E4A1E622425904005E8EBF /* KeynButton.swift */,
+				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
+				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -565,8 +618,12 @@
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
 				4905772D2215BA5C006D98C0 /* wordlist.txt */,
+				49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */,
+				49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */,
+				49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */,
 				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
 				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
+				4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */,
 			);
 			path = SupportFiles;
 			sourceTree = "<group>";
@@ -576,9 +633,8 @@
 			children = (
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
 				497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */,
-				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
-				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
+				492EC842224919A10088F73D /* PairingViewController.swift */,
 			);
 			path = Initialisation;
 			sourceTree = "<group>";
@@ -591,6 +647,7 @@
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
+				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -623,7 +680,7 @@
 				61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */,
 				61D0BE9A1FF2A2980072631D /* DevicesViewController.swift */,
 				61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */,
-				61F938C31FF4161300AF0880 /* PairViewController.swift */,
+				492EC8442249214E0088F73D /* PairContainerViewController.swift */,
 			);
 			path = Devices;
 			sourceTree = "<group>";
@@ -782,6 +839,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -855,9 +915,13 @@
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
+				49F9BDD222427A8400440C86 /* Montserrat-Regular.ttf in Resources */,
+				4927D8192254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
+				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
+				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
 				496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -880,8 +944,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49F9BDD322427A8400440C86 /* Montserrat-Regular.ttf in Resources */,
 				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
 				611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */,
+				49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */,
+				49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
 				611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
@@ -1077,12 +1144,15 @@
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
+				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
+				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
+				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
@@ -1091,9 +1161,11 @@
 				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
+				492EC843224919A10088F73D /* PairingViewController.swift in Sources */,
 				49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
+				496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */,
 				611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */,
 				0153C8B222119276001B6853 /* ErrorViewController.swift in Sources */,
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
@@ -1111,9 +1183,13 @@
 				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
+				49A3176C22525F7B004E0D86 /* TabBarGradient.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
+				492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
+				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
+				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,
@@ -1165,11 +1241,13 @@
 				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
 				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
 				49F2A0FF2214322700429875 /* DataStructures.swift in Sources */,
+				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
 				493A35B42215660E002EB043 /* Constants.swift in Sources */,
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
+				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49F2A1012214337300429875 /* AWS.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,
 				49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */,
@@ -1178,6 +1256,7 @@
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
+				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
