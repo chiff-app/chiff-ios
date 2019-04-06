@@ -72,7 +72,6 @@
 		497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
-		497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
@@ -265,7 +264,6 @@
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
-		497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupStartViewController.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
@@ -632,7 +630,6 @@
 			isa = PBXGroup;
 			children = (
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
-				497FDD8F1FFBDD0D00AAB0DA /* BackupStartViewController.swift */,
 				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 				492EC842224919A10088F73D /* PairingViewController.swift */,
 			);
@@ -1180,7 +1177,6 @@
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
 				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
-				497FDD901FFBDD0D00AAB0DA /* BackupStartViewController.swift in Sources */,
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				49A3176C22525F7B004E0D86 /* TabBarGradient.swift in Sources */,

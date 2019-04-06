@@ -17,7 +17,6 @@ class BackupWizardViewController: UIViewController {
             backupCircle.animateCircle(from: CGFloat(oldValue + 1), to: CGFloat(counter + 1))
         }
     }
-    var isInitialSetup = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +70,7 @@ class BackupWizardViewController: UIViewController {
         let alert = UIAlertController(title: "\("popups.questions.cancel_backup".localized.capitalized)", message: "popups.questions.cancel_backup_description".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.continue".localized.capitalized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalized, style: .destructive, handler: { action in
-            if self.isInitialSetup {
-                let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-                rootController.selectedIndex = 1
-                UIApplication.shared.keyWindow?.rootViewController = rootController
-            } else {
-                self.dismiss(animated: true, completion: nil)
-            }
+            self.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
     }
