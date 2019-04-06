@@ -65,9 +65,9 @@
 	<string>Unlocking Keyn and authorizing requests.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Amiko-Regular.ttf</string>
-		<string>Amiko-Bold.ttf</string>
-		<string>Amiko-SemiBold.ttf</string>
+		<string>Montserrat-Medium.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

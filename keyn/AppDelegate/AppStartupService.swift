@@ -31,34 +31,30 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         Questionnaire.fetch()
 
-        // Set purple line under NavigationBar
-        UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
+        UIFixes()
 
         return true
     }
 
     // Open app from URL (e.g. QR code)
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        do {
-            try AuthorizationGuard.authorizePairing(url: url) { (session, error) in
-                DispatchQueue.main.async {
-                    if let session = session {
-                        NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                    } else if let error = error {
-                        Logger.shared.error("Error creating session.", error: error)
-                    } else {
-                        Logger.shared.error("Error opening app from URL.")
-                    }
+        AuthorizationGuard.authorizePairing(url: url) { (session, error) in
+            DispatchQueue.main.async {
+                if let session = session {
+                    NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
+                } else if let error = error {
+                    Logger.shared.error("Error creating session.", error: error)
+                } else {
+                    Logger.shared.error("Error opening app from URL.")
                 }
             }
-        } catch {
-            Logger.shared.error("Error creating session.", error: error)
         }
 
         return true
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Hoi")
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
@@ -133,6 +129,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.createQuestionnaireDirectory()
             AWS.shared.isFirstLaunch = true
         }
+        print(Seed.hasKeys)
+        print(BackupManager.shared.hasKeys)
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
@@ -163,6 +161,23 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             self.window?.rootViewController = viewController
             self.window?.makeKeyAndVisible()
         }
+    }
+
+    private func UIFixes() {
+        let tabBar = UITabBar.appearance()
+        tabBar.barTintColor = UIColor.clear
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
+        UITabBarItem.appearance().setTitleTextAttributes([
+            .font: UIFont(name: "Montserrat-Bold", size: 15)!,
+            .foregroundColor: UIColor.primary
+        ], for: .normal)
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().isTranslucent = true
+        UINavigationBar.appearance().titleTextAttributes =
+            [.foregroundColor: UIColor.primary,
+             .font: UIFont(name: "Montserrat-Bold", size: 22)!]
     }
 
 }

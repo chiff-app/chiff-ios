@@ -41,6 +41,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
         navigationItem.rightBarButtonItem = editButton
 
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
+
+        tableView.separatorColor = UIColor.primaryTransparant
+
         do {
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.url
@@ -56,13 +61,33 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             #warning("TODO: Show the user that there was an error retrieving the OTP token.")
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
-        navigationItem.title = account.site.name
-        navigationItem.largeTitleDisplayMode = .never
-        
+
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
-    
+
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+//    }
+//
+//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
+//    }
+
     // MARK: - UITableView
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard section < 2 else {
+            return
+        }
+
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.primaryHalfOpacity
+        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.textAlignment = NSTextAlignment.left
+        header.textLabel?.frame = header.frame
+        header.textLabel?.text = section == 0 ? "Account details" : "User details"
+    }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing

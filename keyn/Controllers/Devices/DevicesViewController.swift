@@ -4,15 +4,14 @@
  */
 import UIKit
 
-protocol canReceiveSession {
-    func addSession(session: Session)
-}
+class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, PairControllerDelegate {
 
-class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, canReceiveSession {
-    @IBOutlet weak var tableView: UITableView!
-    
-    private let DEVICE_ROW_HEIGHT: CGFloat = 90
-    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: SelfSizingTableView!
+    @IBOutlet weak var addSessionContainer: UIView!
+    @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var tabBarGradient: TabBarGradient!
+
     var sessions = [Session]()
 
     override func viewDidLoad() {
@@ -22,76 +21,24 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
 
+        scrollView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
+        self.definesPresentationContext = true
+
         do {
             sessions = try Session.all()
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedIndexPath, animated: true)
-        }
+        updateUi()
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0:
-            return DEVICE_ROW_HEIGHT
-        case 1:
-            return UITableViewCell.defaultHeight
-        default:
-            assert(false, "section \(indexPath.section)")
-            // Dummy code for archive compiler
-            return UITableViewCell.defaultHeight
-        }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
     }
 
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return nil
-        case 1:
-            return "devices.pairing_instruction".localized
-        default:
-            assert(false, "section \(section)")
-            return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "devices.devices".localized
-        case 1:
-            return nil
-        default:
-            assert(false, "section \(section)")
-            // Dummy code for archive compiler
-            return nil
-        }
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return sessions.count
-        case 1:
-            return 1
-        default:
-            assert(false, "section \(section)")
-            // Dummy code for archive compiler
-            return 1
-        }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    @objc func deleteDevice(_ sender: UIButton) {
+    @IBAction func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
@@ -100,12 +47,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 do {
                     try self.sessions[indexPath.row].delete(notifyExtension: true)
-                    self.sessions.remove(at: indexPath.row)
-                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    if self.sessions.isEmpty {
-                        DispatchQueue.main.async {
-                            let pairViewController = self.storyboard?.instantiateViewController(withIdentifier: "Pair Controller")
-                            self.navigationController?.setViewControllers([pairViewController!], animated: false)
+                    DispatchQueue.main.async {
+                        self.sessions.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if self.sessions.isEmpty {
+                            self.updateUi()
                         }
                     }
                 } catch {
@@ -123,46 +69,44 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
 
         if let index = sessions.index(where: { sessionID == $0.id }) {
-            sessions.remove(at: index)
-            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-            if self.sessions.isEmpty {
-                DispatchQueue.main.async {
-                    let pairViewController = self.storyboard?.instantiateViewController(withIdentifier: "Pair Controller")
-                    self.navigationController?.setViewControllers([pairViewController!], animated: false)
+            DispatchQueue.main.async {
+                self.sessions.remove(at: index)
+                self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                if self.sessions.isEmpty {
+                    self.updateUi()
                 }
             }
         }
     }
 
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sessions.count
+    }
+
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
-            if let cell = cell as? DevicesViewCell {
-                let session = sessions[indexPath.row]
-                cell.titleLabel.text = "\(session.browser) on \(session.os)"
-                cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-                cell.deviceLogo.image = UIImage(named: session.browser)
-                cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
-            }
-            return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Scan QR", for: indexPath)
-            cell.textLabel?.text = "devices.scan_qr".localized
-            return cell
-        default:
-            assert(false, "section \(indexPath.section)")
-            // Dummy code for archive compiler
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Device Cell", for: indexPath)
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
+        if let cell = cell as? DevicesViewCell {
+            let session = sessions[indexPath.row]
+            cell.titleLabel.text = "\(session.browser) on \(session.os)"
+            cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
+            cell.deviceLogo.image = UIImage(named: session.browser)
+//            cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
         }
+        return cell
+    }
+
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
     }
     
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Add Session", let destination = segue.destination.contents as? PairViewController {
-            destination.devicesDelegate = self
+        if let destination = segue.destination.contents as? PairContainerViewController {
+            destination.pairControllerDelegate = self
         }
     }
 
@@ -173,12 +117,55 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             Logger.shared.warning("Session was nil when trying to add it to the devices view.")
             return
         }
-        addSession(session: session)
+        DispatchQueue.main.async {
+            self.sessionCreated(session: session)
+        }
     }
 
-    func addSession(session: Session) {
+    // MARK: - PairControllerDelegate
+
+    func sessionCreated(session: Session) {
+        dismiss(animated: true, completion: nil)
         let newIndexPath = IndexPath(row: sessions.count, section: 0)
         sessions.append(session)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
+        updateUi()
+    }
+
+    func prepareForPairing(completionHandler: @escaping (Bool) -> Void) {
+        completionHandler(true)
+    }
+
+    // MARK: - Private functions
+
+    private func updateUi() {
+        if !sessions.isEmpty {
+            addSessionContainer.isHidden = true
+            tableViewContainer.isHidden = false
+            tabBarGradient.isHidden = false
+            view.backgroundColor = UIColor.primaryVeryLight
+            addAddButton()
+        } else {
+            addSessionContainer.isHidden = false
+            tableViewContainer.isHidden = true
+            tabBarGradient.isHidden = true
+            view.backgroundColor = UIColor.white
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+
+    private func addAddButton(){
+        guard self.navigationItem.rightBarButtonItem == nil else {
+            return
+        }
+
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddSession), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = button.barButtonItem
+    }
+
+    @objc private func showAddSession() {
+        performSegue(withIdentifier: "ShowAddSession", sender: self)
     }
 }

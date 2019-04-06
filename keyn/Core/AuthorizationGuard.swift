@@ -195,24 +195,22 @@ class AuthorizationGuard {
         }
     }
 
-    static func authorizePairing(url: URL, completionHandler: @escaping (_: Session?, _: Error?) -> ()) throws {
+    static func authorizePairing(url: URL, completionHandler: @escaping (_: Session?, _: Error?) -> ()) {
         guard !authorizationInProgress else {
             Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
         }
+        defer {
+            authorizationInProgress = false
+        }
         authorizationInProgress = true
-
-        if let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] {
-            do {
-                guard try !Session.exists(id: browserPubKey.hash) else {
-                    authorizationInProgress = false
-                    throw SessionError.exists
-                }
-            } catch {
-                authorizationInProgress = false
+        do {
+            guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] else {
                 throw SessionError.invalid
             }
-
+            guard try !Session.exists(id: browserPubKey.hash) else {
+                throw SessionError.exists
+            }
             authorizeWithoutKeychain(reason: "Pair with \(browser) on \(os).") { (success, error) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
@@ -228,9 +226,11 @@ class AuthorizationGuard {
                     completionHandler(nil, error)
                 }
             }
-        } else {
-            authorizationInProgress = false
-            throw SessionError.invalid
+        } catch let error as KeychainError {
+            Logger.shared.error("Keychain error retrieving session", error: error)
+            completionHandler(nil, SessionError.invalid)
+        } catch {
+            completionHandler(nil, error)
         }
     }
 
