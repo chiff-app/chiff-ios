@@ -78,15 +78,7 @@ class SettingsViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Backup", let destination = segue.destination as? BackupStartViewController {
-            destination.isInitialSetup = false
-        }
-    }
-    
-    // MARK: - Private
+        // MARK: - Private
 
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
