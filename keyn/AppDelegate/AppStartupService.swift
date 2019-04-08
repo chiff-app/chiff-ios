@@ -54,7 +54,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("Hoi")
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
@@ -129,8 +128,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.createQuestionnaireDirectory()
             AWS.shared.isFirstLaunch = true
         }
-        print(Seed.hasKeys)
-        print(BackupManager.shared.hasKeys)
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
@@ -180,4 +177,4 @@ class AppStartupService: NSObject, UIApplicationDelegate {
              .font: UIFont(name: "Montserrat-Bold", size: 22)!]
     }
 
-}
+}   
