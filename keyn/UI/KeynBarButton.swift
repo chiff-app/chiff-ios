@@ -10,7 +10,7 @@ import UIKit
 
 class KeynBarButton: UIButton {
 
-    static let offset: CGFloat = 22
+    static let offset: CGFloat = 3
 
     var barButtonItem: UIBarButtonItem {
         self.transform = CGAffineTransform(translationX: 0, y: KeynBarButton.offset)
@@ -27,36 +27,4 @@ class KeynBarButton: UIButton {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let lowerPoint = point.applying(CGAffineTransform.identity.translatedBy(x: 0, y: KeynBarButton.offset))
-        return super.point(inside: lowerPoint, with: event)
-    }
-
-}
-
-extension UINavigationBar {
-    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard isUserInteractionEnabled && !isHidden && alpha >= 0.01 else {
-            return nil
-        }
-
-        guard self.point(inside: point, with: event) else {
-            return nil
-        }
-
-        for subview in subviews.reversed() {
-            let convertedPoint = subview.convert(point, from: self)
-            if let candidate = subview.hitTest(convertedPoint, with: event) {
-                return candidate
-            } else if "\(type(of: subview))" == "_UINavigationBarContentView" {
-                let higherPoint = convertedPoint.applying(CGAffineTransform.identity.translatedBy(x: 0, y: -KeynBarButton.offset))
-                if let secondCandidate = subview.hitTest(higherPoint, with: event), secondCandidate is KeynBarButton {
-                    return secondCandidate
-                }
-            }
-        }
-        return self
-    }
-    
 }
