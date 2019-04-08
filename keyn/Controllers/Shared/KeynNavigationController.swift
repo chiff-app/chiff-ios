@@ -10,56 +10,22 @@ import UIKit
 
 class KeynNavigationController: UINavigationController {
 
-    private let heightForLargeState: CGFloat = 58
-    private let widthForLargeState: CGFloat = 52
-    private let imageBottomMarginForLargeState: CGFloat = 23
-    private let navBarHeightLargeState: CGFloat = 96.5
-
-    private let heightForSmallState: CGFloat = 34.8
-    private let widthForSmallState: CGFloat = 31.2
-    private let imageBottomMarginForSmallState: CGFloat = 14
-    private let navBarHeightSmallState: CGFloat = 44
+    private let height: CGFloat = 38
+    private let imageBottomMargin: CGFloat = 0
+    private let navBarHeight: CGFloat = 44
 
     let logoImageView = UIImageView(image: UIImage(named: "logo_purple"))
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        logoImageView.contentMode = .scaleAspectFit
         navigationBar.addSubview(logoImageView)
-        logoImageView.clipsToBounds = true
+        logoImageView.clipsToBounds = false
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: navigationBar.centerXAnchor),
-            logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageBottomMarginForLargeState),
-            logoImageView.heightAnchor.constraint(equalToConstant: heightForLargeState),
-            logoImageView.widthAnchor.constraint(equalToConstant: widthForLargeState)
+            logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageBottomMargin),
+            logoImageView.heightAnchor.constraint(equalToConstant: height),
         ])
     }
-
-    func moveAndResizeImage() {
-        let height = navigationBar.frame.height
-        let coeff: CGFloat = {
-            let delta = height - heightForSmallState
-            let heightDifferenceBetweenStates = (navBarHeightLargeState - navBarHeightSmallState)
-            return delta / heightDifferenceBetweenStates
-        }()
-
-        let factor = heightForSmallState / heightForLargeState
-
-        let scale: CGFloat = {
-            let sizeAddendumFactor = coeff * (1.0 - factor)
-            return min(1.0, sizeAddendumFactor + factor)
-        }()
-
-        let sizeDiff = heightForLargeState * (1.0 - factor) // 8.0
-        let yTranslation: CGFloat = {
-            let maxYTranslation = imageBottomMarginForLargeState - imageBottomMarginForSmallState + sizeDiff
-            return max(0, min(maxYTranslation, (maxYTranslation - coeff * (imageBottomMarginForSmallState + sizeDiff))))
-        }()
-
-        logoImageView.transform = CGAffineTransform.identity
-            .scaledBy(x: scale, y: scale)
-            .translatedBy(x: 0, y: yTranslation)
-    }
-
 }
