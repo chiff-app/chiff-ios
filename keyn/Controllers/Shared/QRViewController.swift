@@ -17,16 +17,14 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
 
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var qrIconImageView: UIImageView!
-    @IBOutlet weak var qrIconImageViewHeight: NSLayoutConstraint!
 
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var qrFound = false
     var errorLabel: UILabel?
     var recentlyScannedUrls = [String]()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewDidLayoutSubviews() {
         qrFound = false
         do {
             try scanQR()
@@ -60,8 +58,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                             throw CameraError.invalid
                         }
                         self.qrIconImageView.image = UIImage(named: "scan_checkmark")
-                        qrIconImageViewHeight.constant = 96
-                        updateViewConstraints()
                         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.qrIconImageView.alpha = 1.0 })
                         try self.handleURL(url: url)
                     } catch {
