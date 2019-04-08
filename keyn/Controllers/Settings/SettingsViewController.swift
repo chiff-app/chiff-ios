@@ -44,6 +44,7 @@ class SettingsViewController: UITableViewController {
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = section == 0 ? securityFooterText : "settings.reset_warning".localized
+        footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

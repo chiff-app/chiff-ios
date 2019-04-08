@@ -190,15 +190,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
         account.delete(completionHandler: { (error) in
-            guard error == nil else {
-                #warning("TODO: Present error")
-                return
-            }
             DispatchQueue.main.async {
-                self.filteredAccounts.remove(at: filteredIndexPath.row)
-                self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
-                self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
-                self.updateUi()
+                if let error = error {
+                    self.showError(message: "Error deleting account: \(error.localizedDescription)")
+                    return
+                } else {
+                    self.filteredAccounts.remove(at: filteredIndexPath.row)
+                    self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
+                    self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
+                    self.updateUi()
+                }
             }
         })
     }

@@ -149,7 +149,7 @@ struct Account: Codable {
         }
 
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil, context: context);#warning("sync")
+        try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil, context: context)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
     }
@@ -176,7 +176,7 @@ struct Account: Codable {
 
         let accountData = try PropertyListEncoder().encode(self)
 
-        try Keychain.shared.update(id: id, service: .account, secretData: passwordData, objectData: accountData, label: nil);#warning("sync")
+        try Keychain.shared.update(id: id, service: .account, secretData: passwordData, objectData: accountData, label: nil)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
         Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: ["siteName": site.name, "siteID": site.id])
@@ -298,7 +298,7 @@ struct Account: Codable {
 
     static func get(accountID: String, context: LAContext?) throws -> Account? {
         guard let dict = try Keychain.shared.attributes(id: accountID, service: .account, context: context) else {
-            return nil;#warning("sync")
+            return nil
         }
 
         let decoder = PropertyListDecoder()
@@ -340,7 +340,7 @@ struct Account: Codable {
         }
 
         #warning("TODO: check if this needs to be authenticated. Used when restoring accounts. Probably not...")
-        try Keychain.shared.save(id: account.id, service: .account, secretData: passwordData, objectData: data);#warning("sync")
+        try Keychain.shared.save(id: account.id, service: .account, secretData: passwordData, objectData: data)
     }
 
     static func accountList(context: LAContext? = nil) throws -> AccountList {
@@ -349,8 +349,8 @@ struct Account: Codable {
 
     static func deleteAll() {
         #warning("TODO: check if this needs to be authenticated")
-        Keychain.shared.deleteAll(service: .account);#warning("sync")
-        Keychain.shared.deleteAll(service: .otp);#warning("sync")
+        Keychain.shared.deleteAll(service: .account)
+        Keychain.shared.deleteAll(service: .otp)
     }
 
     // MARK: - Private
