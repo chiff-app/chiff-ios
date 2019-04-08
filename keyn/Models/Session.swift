@@ -315,15 +315,6 @@ class Session: Codable {
         }
     }
 
-    private func deleteQueuesAtAWS() {
-        #warning("TODO: Add pubkey to request otherwise it doesn't work")
-        apiRequest(endpoint: .message, method: .delete) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-            }
-        }
-    }
-
     private func sharedKey() throws -> Data {
         return try Keychain.shared.get(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
     }
@@ -378,6 +369,32 @@ class Session: Codable {
             API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
+        }
+    }
+
+    private func deleteQueuesAtAWS() {
+        let message = [
+            "httpMethod": APIMethod.delete.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
+            "pubkey": signingPubKey
+        ]
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.sign(message: jsonData, privKey: Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey))
+
+            let parameters = [
+                "m": try Crypto.shared.convertToBase64(from: jsonData),
+                "s": try Crypto.shared.convertToBase64(from: signature)
+            ]
+
+            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .delete) { _, error in
+                if let error = error {
+                    Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
+                }
+            }
+        } catch {
+            Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
         }
     }
 
