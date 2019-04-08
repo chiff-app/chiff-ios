@@ -6,15 +6,16 @@ import UIKit
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet var wordTextFields: Array<UITextField>?
+    @IBOutlet var wordTextFields: Array<UITextField>!
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
-    
+    @IBOutlet weak var activityViewContainer: UIView!
+
     private let lowerBoundaryOffset: CGFloat = 15
-    private let keyboardHeightOffset: CGFloat = 40
+    private let keyboardHeightOffset: CGFloat = 20
     
     private var textFieldOffset: CGPoint!
     private var textFieldHeight: CGFloat!
@@ -32,15 +33,15 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     var isInitialSetup = true
+    let wordlist = try! Seed.wordlist()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         wordTextFields?.sort(by: { $0.tag < $1.tag })
         for textField in wordTextFields! {
-            textField.delegate = self
-            textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+            initialize(textfield: textField)
         }
-        
+
         // Observe keyboard change
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -72,15 +73,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let index = wordTextFields?.index(of: textField) {
-            mnemonic[index] = textField.text ?? ""
-        }
+        checkWord(for: textField)
     }
 
     @objc func textFieldDidChange(textField: UITextField){
-        if let index = wordTextFields?.index(of: textField) {
-            mnemonic[index] = textField.text ?? ""
-        }
+        checkWord(for: textField)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -115,22 +112,20 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Actions
     
-    #warning("TODO: Show a progress bar while data is being fetched remotely")
     @IBAction func finish(_ sender: UIBarButtonItem) {
+        activityViewContainer.isHidden = false
         do {
             guard try Seed.recover(mnemonic: mnemonic) else {
+                activityViewContainer.isHidden = true
                 return
             }
             try BackupManager.shared.getBackupData() {
                 DispatchQueue.main.async {
-                    if self.isInitialSetup {
-                        self.loadRootController()
-                    } else {
-                        self.dismiss(animated: true, completion: nil)
-                    }
+                    self.loadRootController()
                 }
             }
         } catch {
+            activityViewContainer.isHidden = true
             Logger.shared.error("Seed could not be recovered", error: error)
         }
     }
@@ -148,6 +143,36 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             if word == "" { return false }
         }
         return Seed.validate(mnemonic: mnemonic)
+    }
+
+    private func checkWord(for textField: UITextField) {
+        if let word = textField.text, word != "", wordlist.contains(word) {
+            mnemonic[textField.tag] = word
+            UIView.animate(withDuration: 0.1) {
+                textField.rightView?.alpha = 1.0
+            }
+        } else {
+            mnemonic[textField.tag] = ""
+            if let alpha = textField.rightView?.alpha, alpha > 0.0 {
+                UIView.animate(withDuration: 0.1) {
+                    textField.rightView?.alpha = 0.0
+                }
+            }
+        }
+    }
+
+    private func initialize(textfield: UITextField) {
+        let checkMarkImageView = UIImageView(image: UIImage(named: "checkmark_small"))
+        checkMarkImageView.contentMode = UIView.ContentMode.center
+        if let size = checkMarkImageView.image?.size {
+            checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
+        }
+
+        textfield.rightViewMode = .always
+        textfield.rightView = checkMarkImageView
+        textfield.rightView?.alpha = 0.0
+        textfield.delegate = self
+        textfield.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
     }
 
 }

@@ -102,8 +102,8 @@ struct Seed {
     }
     
     // MARK: - Private
-    
-    static private func wordlist() throws -> [String] {
+
+    static func wordlist() throws -> [String] {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "wordlist", ofType: "txt")!, encoding: .utf8)
         return wordlistData.components(separatedBy: .newlines)
     }
