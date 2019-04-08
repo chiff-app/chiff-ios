@@ -337,7 +337,7 @@ class Session: Codable {
     private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
-        message["   "] = String(Int(Date().timeIntervalSince1970))
+        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
 
         do {
             let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
