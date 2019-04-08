@@ -26,27 +26,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33">
-                                <rect key="frame" x="20" y="119" width="335" height="75.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="24" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33">
+                                <rect key="frame" x="20" y="119" width="335" height="65"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="65" id="wFq-E5-qbT"/>
+                                </constraints>
                                 <attributedString key="attributedText">
                                     <fragment content="Bye bye forgetting passwords, ">
                                         <attributes>
                                             <color key="NSColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="28" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="hello Keyn">
                                         <attributes>
                                             <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="28" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="4ye-iw-xa2">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="4ye-iw-xa2">
                                 <rect key="frame" x="0.0" y="314" width="375" height="213"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-Ka-Tah" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
@@ -65,21 +68,21 @@
                                     <segue destination="vKQ-PU-y17" kind="show" id="Y9R-XK-IMG"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
-                                <rect key="frame" x="28" y="209.5" width="319" height="70.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
+                                <rect key="frame" x="28" y="203.5" width="319" height="70.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Keyn allows you to log into any website using your phone, making logging in safer and simpler">
                                         <attributes>
                                             <color key="NSColor" red="0.11764705882352941" green="0.066666666666666666" blue="0.23529411764705882" alpha="0.80348351883561642" colorSpace="custom" customColorSpace="sRGB"/>
                                             <font key="NSFont" size="16" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB">
-                                <rect key="frame" x="80" y="627" width="215" height="20"/>
+                                <rect key="frame" x="88" y="627" width="199" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="b0G-uf-Vuz"/>
                                 </constraints>
@@ -103,27 +106,30 @@
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="0lL-cQ-Fdv"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="gF0-dt-dYe"/>
+                                    <constraint firstAttribute="height" constant="58" id="gF0-dt-dYe"/>
                                     <constraint firstAttribute="width" constant="52" id="llq-8T-G2j"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="VKc-Ti-Ljr" firstAttribute="top" secondItem="cYH-an-f33" secondAttribute="bottom" constant="15" id="8pM-tk-y9Y"/>
+                            <constraint firstItem="MHS-Ka-Tah" firstAttribute="top" secondItem="4ye-iw-xa2" secondAttribute="bottom" constant="36" id="8K7-Gh-3GQ"/>
+                            <constraint firstItem="VKc-Ti-Ljr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cYH-an-f33" secondAttribute="bottom" constant="10" id="8pM-tk-y9Y"/>
+                            <constraint firstItem="4ye-iw-xa2" firstAttribute="top" secondItem="VKc-Ti-Ljr" secondAttribute="bottom" priority="700" constant="40" id="9G9-pH-dpE"/>
+                            <constraint firstItem="cYH-an-f33" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8Ug-bV-7y1" secondAttribute="bottom" constant="10" id="9kA-w2-3e9"/>
                             <constraint firstItem="4ye-iw-xa2" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" id="EN5-xk-wvL"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="bottom" secondItem="MHS-Ka-Tah" secondAttribute="bottom" constant="60" id="EbN-ND-SWk"/>
-                            <constraint firstItem="gPL-Py-BTd" firstAttribute="bottom" secondItem="4ye-iw-xa2" secondAttribute="bottom" constant="140" id="H9B-NY-oYx"/>
+                            <constraint firstItem="VKc-Ti-Ljr" firstAttribute="top" secondItem="cYH-an-f33" secondAttribute="bottom" priority="650" constant="40" id="Fju-Zi-aj3"/>
+                            <constraint firstItem="4ye-iw-xa2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VKc-Ti-Ljr" secondAttribute="bottom" constant="10" id="O7D-jr-kfY"/>
                             <constraint firstItem="8Ug-bV-7y1" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="SI0-5g-kun"/>
-                            <constraint firstItem="cYH-an-f33" firstAttribute="top" secondItem="gPL-Py-BTd" secondAttribute="top" constant="55" id="TdB-9w-jav"/>
+                            <constraint firstItem="cYH-an-f33" firstAttribute="top" secondItem="gPL-Py-BTd" secondAttribute="top" priority="700" constant="55" id="TdB-9w-jav"/>
                             <constraint firstItem="cYH-an-f33" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" constant="20" id="TyL-7j-I8D"/>
                             <constraint firstItem="8Ug-bV-7y1" firstAttribute="top" secondItem="gEp-N2-gPp" secondAttribute="top" constant="35" id="Xag-l3-DHr"/>
-                            <constraint firstItem="GvP-ft-ZSB" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" constant="80" id="YSh-9I-Hcw"/>
                             <constraint firstItem="VKc-Ti-Ljr" firstAttribute="leading" secondItem="gPL-Py-BTd" secondAttribute="leading" constant="28" id="ZlW-3j-e2H"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="bottom" secondItem="GvP-ft-ZSB" secondAttribute="bottom" constant="20" id="bw9-u1-rfq"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="4ye-iw-xa2" secondAttribute="trailing" id="dHE-gb-Qd3"/>
+                            <constraint firstItem="GvP-ft-ZSB" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="dHg-N4-tNR"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="VKc-Ti-Ljr" secondAttribute="trailing" constant="28" id="dHk-wJ-W4h"/>
-                            <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="GvP-ft-ZSB" secondAttribute="trailing" constant="80" id="dmn-RV-22W"/>
                             <constraint firstItem="MHS-Ka-Tah" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="nu9-iy-dc1"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="cYH-an-f33" secondAttribute="trailing" constant="20" id="wy1-ma-gqS"/>
                         </constraints>
@@ -136,7 +142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="klm-ph-NoA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1024.8" y="1712.2938530734634"/>
+            <point key="canvasLocation" x="-1025.625" y="1711.2676056338028"/>
         </scene>
         <!--Recovery-->
         <scene sceneID="ibH-hp-7wT">
@@ -570,17 +576,17 @@
                                     <constraint firstAttribute="height" constant="52" id="BkA-II-g57"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Sqd-OW-esD">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Sqd-OW-esD">
                                 <rect key="frame" x="22" y="76" width="331" height="302"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uvv-ym-y52">
-                                        <rect key="frame" x="0.0" y="0.0" width="331" height="80.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="87.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="AiG-RV-ot6">
-                                                <rect key="frame" x="0.0" y="7" width="96" height="67"/>
+                                                <rect key="frame" x="0.0" y="10" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn asks you in your browser if you want to login." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaK-8B-jSe">
-                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
+                                                <rect key="frame" x="126" y="26.5" width="205" height="34.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="oVj-lu-3oJ"/>
                                                 </constraints>
@@ -591,13 +597,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-MO-mgq">
-                                        <rect key="frame" x="0.0" y="110.5" width="331" height="81"/>
+                                        <rect key="frame" x="0.0" y="107.5" width="331" height="87"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="YmP-xR-cl1">
-                                                <rect key="frame" x="0.0" y="0.0" width="96" height="81"/>
+                                                <rect key="frame" x="0.0" y="3" width="96" height="81"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="81" id="x0y-Uj-lCk"/>
+                                                </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You receive a notification on your phone that asks you to authorize the request." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-YB-fQe">
-                                                <rect key="frame" x="126" y="15" width="205" height="51.5"/>
+                                                <rect key="frame" x="126" y="18" width="205" height="51.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -605,13 +614,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="9kU-iV-dCe">
-                                        <rect key="frame" x="0.0" y="221.5" width="331" height="80.5"/>
+                                        <rect key="frame" x="0.0" y="214.5" width="331" height="87.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="y3j-BT-tLP">
-                                                <rect key="frame" x="0.0" y="6.5" width="96" height="67"/>
+                                                <rect key="frame" x="0.0" y="10.5" width="96" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn fills your credentials in the right fields." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-0Q-aRX">
-                                                <rect key="frame" x="126" y="23" width="205" height="34.5"/>
+                                                <rect key="frame" x="126" y="26.5" width="205" height="34.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.1176470588" green="0.066666666669999999" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -759,12 +768,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Heu-Qs-vGt"/>
                     </view>
-                    <size key="freeformSize" width="375" height="402"/>
                 </viewController>
                 <exit id="uC0-6X-VME" userLabel="Exit" sceneMemberID="exit"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7nX-R3-JdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="622" y="2818"/>
+            <point key="canvasLocation" x="622" y="2913"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WKp-7w-Pux">
@@ -946,9 +954,7 @@
                                 <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="EyK-z2-Rox"/>
                                     <constraint firstAttribute="height" constant="58" id="XlO-Uf-5Sz"/>
-                                    <constraint firstAttribute="width" constant="52" id="szr-AU-WSm"/>
                                 </constraints>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
@@ -986,7 +992,7 @@
         <image name="desktop_login" width="105" height="67"/>
         <image name="desktop_popup" width="105" height="67"/>
         <image name="logo_purple" width="52" height="58"/>
-        <image name="logo_white" width="384" height="428"/>
+        <image name="logo_white" width="52" height="58"/>
         <image name="phone_checkmark" width="71" height="86"/>
     </resources>
     <color key="tintColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>

@@ -18,14 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="oyM-6e-d2o">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white_big" translatesAutoresizingMaskIntoConstraints="NO" id="oyM-6e-d2o">
                                 <rect key="frame" x="0.0" y="324" width="414" height="88"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="88" id="HF2-AP-6wE"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="oyM-6e-d2o" firstAttribute="centerY" secondItem="esK-xY-q7E" secondAttribute="centerY" id="KGK-fn-jyW"/>
                             <constraint firstItem="oyM-6e-d2o" firstAttribute="width" secondItem="esK-xY-q7E" secondAttribute="width" id="LUf-8b-yHy"/>
@@ -40,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo_white" width="384" height="428"/>
+        <image name="logo_white_big" width="80" height="88"/>
     </resources>
 </document>
