@@ -14,54 +14,31 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(rgb: 0x4932A2), size: CGSize(width: UIScreen.main.bounds.width, height: 1))
-        #warning("TODO: Check if this needs to use async")
-        if let accounts = try? Account.all(context: Extension.localAuthenticationContext) {
-            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
-            filteredAccounts = unfilteredAccounts
+        let accounts = try! Account.all(context: nil)
+//        #warning("TODO: Check if this needs to use async")
+//        if let accounts = try? Account.all(context: ) {
+//            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+//            filteredAccounts = unfilteredAccounts
+//        } else {
+//            unfilteredAccounts = []
+//            filteredAccounts = []
+//        }
+        if let accountDict = try? Account.all(context: nil) {
+            unfilteredAccounts = Array(accountDict.values)
         } else {
-            unfilteredAccounts = []
-            filteredAccounts = []
+            unfilteredAccounts = [Account]()
         }
+        filteredAccounts = unfilteredAccounts
 
         tableView.delegate = self
         tableView.dataSource = self
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.dimsBackgroundDuringPresentation = false
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.searchBarStyle = .minimal
+//        searchController.hidesNavigationBarDuringPresentation = true
+//        searchController.dimsBackgroundDuringPresentation = false
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-        navigationItem.searchController = searchController
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if let navigationView = navigationController?.view {
-            fixShadowImage(inView: navigationView)
-        }
-    }
-    
-    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
-    func fixShadowImage(inView view: UIView) {
-        if let imageView = view as? UIImageView {
-            let size = imageView.bounds.size.height
-            if size <= 1 && size > 0 &&
-                imageView.subviews.count == 0,
-                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
-            {
-                let line = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 2))
-                line.backgroundColor = UIColor(rgb: 0x4932A2)
-                imageView.addSubview(line)
-                line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            }
-        }
-
-        for subview in view.subviews {
-            fixShadowImage(inView: subview)
-        }
+//        navigationItem.searchController = searchController
     }
     
     // MARK: - Actions
@@ -99,14 +76,10 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
-        
-        if let accounts = filteredAccounts {
-            let account = accounts[indexPath.row]
-            cell.textLabel?.text = account.site.name
-            cell.detailTextLabel?.text = account.username
-        }
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+        //        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        let account = filteredAccounts[indexPath.row]
+        cell.titleLabel.text = account.site.name
         return cell
     }
     
@@ -115,8 +88,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
             do {
-                #warning("TODO: Check if this needs to be async")
-                let password = try account.password(context: Extension.localAuthenticationContext)
+                let password = try account.password(context: nil)
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 Extension.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } catch {

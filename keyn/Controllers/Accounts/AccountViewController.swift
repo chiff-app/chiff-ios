@@ -58,7 +58,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             userNameTextField.delegate = self
             userPasswordTextField.delegate = self
         } catch {
-            #warning("TODO: Show the user that there was an error retrieving the OTP token.")
+            showError(message: "errors.otp_fetch".localized)
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
 

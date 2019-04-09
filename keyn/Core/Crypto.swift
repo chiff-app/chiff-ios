@@ -219,11 +219,7 @@ class Crypto {
     }
 
     func hash(_ message: String) throws -> String {
-        guard let messageData = message.data(using: .utf8) else {
-            throw CodingError.stringDecoding
-        }
-
-        let hashData = try hash(messageData)
+        let hashData = try hash(message.data)
 
         guard let hash = sodium.utils.bin2hex(hashData.bytes) else {
             throw CryptoError.convertToHex
@@ -233,10 +229,9 @@ class Crypto {
     }
     
     func sha1(from string: String) -> String {
-        let data = string.data(using: String.Encoding.utf8)!
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA1($0, CC_LONG(data.count), &digest)
+        string.data.withUnsafeBytes {
+            _ = CC_SHA1($0, CC_LONG(string.data.count), &digest)
         }
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         return hexBytes.joined()

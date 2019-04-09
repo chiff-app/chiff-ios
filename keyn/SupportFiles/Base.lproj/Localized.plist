@@ -62,10 +62,17 @@
 	</dict>
 	<key>errors</key>
 	<dict>
+		<key>authentication_error</key>
+		<dict>
+			<key>comment</key>
+			<string>Error in the authentication process to the phone, e.g. TouchID</string>
+			<key>value</key>
+			<string>Authentication error</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
-			<string>A generic errpr description</string>
+			<string>A generic error description</string>
 			<key>value</key>
 			<string>An error occured.</string>
 		</dict>
@@ -92,6 +99,13 @@
 
 Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
 		</dict>
+		<key>otp_fetch</key>
+		<dict>
+			<key>comment</key>
+			<string>Error retrieving the OTP-code</string>
+			<key>value</key>
+			<string>Error retrieving the OTP-code</string>
+		</dict>
 		<key>password_error</key>
 		<dict>
 			<key>comment</key>
@@ -112,6 +126,20 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>This QR-code was already scanned.</string>
 			<key>value</key>
 			<string>This QR-code was already scanned.</string>
+		</dict>
+		<key>save_account</key>
+		<dict>
+			<key>comment</key>
+			<string>Error saving account</string>
+			<key>value</key>
+			<string>Error saving account</string>
+		</dict>
+		<key>seed_creation</key>
+		<dict>
+			<key>comment</key>
+			<string>This may occur during the initialisation process</string>
+			<key>value</key>
+			<string>Error generating seed</string>
 		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
@@ -288,6 +316,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask to the user to login to a site, e.g. Login to Amazon.com?</string>
 			<key>value</key>
 			<string>Login to</string>
+		</dict>
+		<key>unlock_accounts</key>
+		<dict>
+			<key>comment</key>
+			<string>Unlock accounts</string>
+			<key>value</key>
+			<string>Unlock accounts</string>
 		</dict>
 	</dict>
 	<key>settings</key>

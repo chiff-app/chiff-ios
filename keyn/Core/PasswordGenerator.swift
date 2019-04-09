@@ -109,16 +109,9 @@ class PasswordGenerator {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
 
-    #warning("TODO: Kunnen we die Crypto errors niet opvangen hier?")
     private func generateKey(index passwordIndex: Int) throws -> Data {
-        guard let usernameData = username.data(using: .utf8),
-            let siteData = self.siteId.data(using: .utf8) else {
-                throw CodingError.stringDecoding
-        }
-        
-        #warning("TODO: SiteData is now a constant. Should we use a variable (besides the siteID as index?)")
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: siteData, index: 0)
-        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: usernameData, index: passwordIndex)
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: self.siteId.data, index: 0)
+        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: username.data, index: passwordIndex)
 
         return key
     }

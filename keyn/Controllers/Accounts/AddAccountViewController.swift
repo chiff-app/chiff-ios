@@ -76,21 +76,12 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Override copy functionality
+        // IMPORTANT: Override copy functionality
     }
 
     @IBAction func saveAccount(_ sender: Any) {
         createAccount()
     }
-
-    // MARK: - Navigation
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        super.prepare(for: segue, sender: sender)
-//        if let button = sender as? UIBarButtonItem, button === saveButton {
-//            createAccount()
-//        }
-//    }
 
     // MARK: - Private
 
@@ -144,14 +135,14 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             do {
                 self.account = try Account(username: username, sites: [site], password: password, type: .ifNeeded, context: nil) { (account, _, error) in
                     if let error = error {
-                        self.showError(message: "The account could not be saved")
+                        self.showError(message: "errors.save_account: \(error)".localized)
                         Logger.shared.error("Account could not be saved", error: error)
                     } else {
                         self.dismiss(animated: true, completion: nil)
                     }
                 }
             } catch {
-                showError(message: "The account could not be saved: \(error.localizedDescription)")
+                showError(message: "errors.save_account: \(error)".localized)
                 Logger.shared.error("Account could not be saved", error: error)
             }
 

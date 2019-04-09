@@ -25,7 +25,7 @@ struct PPD: Codable {
         }
     }
     
-    static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) throws {
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
         API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
             if let error = error {
                 Logger.shared.error("PPD retrieval problem.", error: error)
@@ -124,8 +124,6 @@ struct PPDRequirementRule: Codable {
         self.characterSet = characterSet
     }
 }
-
-#warning("TODO: Do we have to complete the Service part?")
 
 struct PPDService: Codable {
     let login: PPDLogin

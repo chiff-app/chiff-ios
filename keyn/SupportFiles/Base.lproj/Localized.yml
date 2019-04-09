@@ -21,15 +21,27 @@ errors:
   qr_scanned_twice:
     value: This QR-code was already scanned.
     comment: This QR-code was already scanned.
+  save_account:
+    value: Error saving account
+    comment: Error saving account
   undecodable_qr:
     value: This QR-code could not be decoded.
     comment: The QR-code could not be decoded.
+  authentication_error:
+    value: Authentication error
+    comment: Error in the authentication process to the phone, e.g. TouchID
+  otp_fetch:
+    value: Error retrieving the OTP-code
+    comment: Error retrieving the OTP-code
   password_error:
     comment: Error fetching password
     value: Error fetching password
   session_error_no_endpoint:
-    comment: There was no endpoint found
     value: There is no AWS endpoint in the session data.
+    comment: There was no endpoint found
+  seed_creation:
+    value: Error generating seed
+    comment: This may occur during the initialisation process
 popups:
   questions:
     cancel_backup:
@@ -128,6 +140,12 @@ requests:
   add_site:
     comment: Ask the user to add a site, e.g. Add Amazon.com?
     value: Add
+  unlock_accounts:
+    value: Unlock accounts
+    comment: Unlock accounts
+  unlock_keyn:
+    value: Unlock Keyn
+    comment: Unlock Keyn
 registration:
   change_password_footer:
     comment: Description for enabling changing a password

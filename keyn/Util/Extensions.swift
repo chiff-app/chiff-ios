@@ -32,6 +32,10 @@ extension String {
         return try? Crypto.shared.convertFromBase64(from: self)
     }
 
+    var data: Data {
+        return self.data(using: .utf8)!
+    }
+
     func components(withLength length: Int) -> [String] {
         return stride(from: 0, to: self.count, by: length).map {
             let start = self.index(self.startIndex, offsetBy: $0)

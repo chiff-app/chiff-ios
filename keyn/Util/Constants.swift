@@ -4,7 +4,6 @@
  */
 import Foundation
 
-#warning("TODO: Bas take a look at update and iosUpdate.")
 enum AnalyticsMessage: String {
     case install = "INSTALL"
     case seedCreated = "SEED_CREATED"

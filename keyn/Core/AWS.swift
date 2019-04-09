@@ -64,12 +64,12 @@ class AWS {
 
         sns.subscribe(subscribeRequest).continueOnSuccessWith { (task) -> Any? in
             if let result = task.result {
-                if let subscriptionArn = result.subscriptionArn, let subscriptionArnData = subscriptionArn.data(using: .utf8) {
+                if let subscriptionArn = result.subscriptionArn {
                     do {
-                        try Keychain.shared.save(id: self.subscriptionKeychainIdentifier, service: .aws, secretData: subscriptionArnData)
+                        try Keychain.shared.save(id: self.subscriptionKeychainIdentifier, service: .aws, secretData: subscriptionArn.data)
                     } catch {
                         Logger.shared.error("Error saving Keyn subscription identifier.", error: error)
-                        try? Keychain.shared.update(id: self.subscriptionKeychainIdentifier, service: .aws, secretData: subscriptionArnData)
+                        try? Keychain.shared.update(id: self.subscriptionKeychainIdentifier, service: .aws, secretData: subscriptionArn.data)
                     }
                 } else {
                     Logger.shared.error("Error subscribing to Keyn notifications.")
@@ -193,11 +193,11 @@ class AWS {
                 Logger.shared.error("Result was empty.")
                 return nil
             }
-            if let endpointArn = response.endpointArn, let endpointData = endpointArn.data(using: .utf8) {
+            if let endpointArn = response.endpointArn {
                 do {
                     // Try to remove anything from Keychain to avoid conflicts
                     try? Keychain.shared.delete(id: self.endpointKeychainIdentifier, service: .aws)
-                    try Keychain.shared.save(id: self.endpointKeychainIdentifier, service: .aws, secretData: endpointData)
+                    try Keychain.shared.save(id: self.endpointKeychainIdentifier, service: .aws, secretData: endpointArn.data)
                     self.snsDeviceEndpointArn = endpointArn
                     self.checkIfUpdateIsNeeded(token: token)
                     if self.isFirstLaunch {

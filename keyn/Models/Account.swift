@@ -33,7 +33,7 @@ struct Account: Codable {
     private var tokenURL: URL? // Only for backup
     private var tokenSecret: Data? // Only for backup
 
-    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ account: Account, _ context: LAContext?, _ error: Error?) -> Void) throws {
+    init?(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ account: Account, _ context: LAContext?, _ error: Error?) -> Void) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -97,10 +97,7 @@ struct Account: Codable {
 
     mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
-
-        guard let tokenData = try token.toURL().absoluteString.data(using: .utf8) else {
-            throw CodingError.stringEncoding
-        }
+        let tokenData = try token.toURL().absoluteString.data
 
         if self.hasOtp() {
             try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData, label: nil)
@@ -149,7 +146,7 @@ struct Account: Codable {
         }
 
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data(using: .utf8), objectData: accountData, label: nil, context: context)
+        try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data, objectData: accountData, label: nil, context: context)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
     }
@@ -168,15 +165,11 @@ struct Account: Codable {
         self.passwordIndex = newIndex
         self.lastPasswordUpdateTryIndex = newIndex
         passwordOffset = offset
-
-        guard let passwordData = newPassword.data(using: .utf8) else {
-            throw CodingError.stringEncoding
-        }
         askToChange = false
 
         let accountData = try PropertyListEncoder().encode(self)
 
-        try Keychain.shared.update(id: id, service: .account, secretData: passwordData, objectData: accountData, label: nil)
+        try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData, label: nil)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
         Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: ["siteName": site.name, "siteID": site.id])
@@ -248,8 +241,8 @@ struct Account: Codable {
         })
     }
 
-    static func all(reason: String, type: AuthenticationType, completionHandler: @escaping (_ accounts: [String: Account]?, _ error: Error?) -> Void) {
-        Keychain.shared.all(service: .account, reason: reason, authenticationType: type) { (dataArray, error) in
+    static func all(reason: String, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ accounts: [String: Account]?, _ error: Error?) -> Void) {
+        Keychain.shared.all(service: .account, reason: reason, authenticationType: type, with: context) { (dataArray, error) in
             do {
                 if let error = error {
                     throw error
@@ -321,18 +314,12 @@ struct Account: Codable {
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
         
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
-        
-        guard let passwordData = password.data(using: .utf8) else {
-            throw CodingError.stringEncoding
-        }
-    
+
         // Remove token and save seperately in Keychain
         if let tokenSecret = account.tokenSecret, let tokenURL = account.tokenURL {
             account.tokenSecret = nil
             account.tokenURL = nil
-            guard let tokenData = tokenURL.absoluteString.data(using: .utf8) else {
-                throw CodingError.stringEncoding
-            }
+            let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
             data = try PropertyListEncoder().encode(account)
         } else {
@@ -340,7 +327,7 @@ struct Account: Codable {
         }
 
         #warning("TODO: check if this needs to be authenticated. Used when restoring accounts. Probably not...")
-        try Keychain.shared.save(id: account.id, service: .account, secretData: passwordData, objectData: data)
+        try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
     }
 
     static func accountList(context: LAContext? = nil) throws -> AccountList {
@@ -359,11 +346,7 @@ struct Account: Codable {
         do {
             let accountData = try PropertyListEncoder().encode(self)
 
-            guard let passwordData = password.data(using: .utf8) else {
-                throw KeychainError.stringEncoding
-            }
-
-            Keychain.shared.save(id: id, service: .account, secretData: passwordData, objectData: accountData, label: nil, reason: "Save \(site.name)", authenticationType: type, with: context) { (context, error) in
+            Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData, label: nil, reason: "Save \(site.name)", authenticationType: type, with: context) { (context, error) in
                 do {
                     if let error = error {
                         throw error

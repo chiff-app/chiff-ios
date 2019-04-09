@@ -38,7 +38,6 @@ struct Properties {
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
     )
 
-    #warning("TODO: Should this be an editable settings?")
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
     static func isFirstLaunch() -> Bool {
