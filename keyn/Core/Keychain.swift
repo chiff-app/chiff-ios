@@ -110,6 +110,7 @@ class Keychain {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
 
+        guard status != errSecInteractionNotAllowed else { throw KeychainError.interactionNotAllowed }
         guard status != errSecItemNotFound else { throw KeychainError.notFound }
         guard status == noErr else { throw KeychainError.unhandledError(status) }
 
@@ -220,6 +221,10 @@ class Keychain {
 
         if status == errSecItemNotFound {
             return nil
+        }
+
+        guard status != errSecInteractionNotAllowed else {
+            throw KeychainError.interactionNotAllowed
         }
 
         guard status == noErr else {

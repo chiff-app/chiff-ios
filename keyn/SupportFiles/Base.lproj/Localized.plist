@@ -317,6 +317,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Login to</string>
 		</dict>
+		<key>login_with</key>
+		<dict>
+			<key>comment</key>
+			<string>Ask to the user to login with an account, e.g. Login with demo@keyn.io?</string>
+			<key>value</key>
+			<string>Login with</string>
+		</dict>
 		<key>unlock_accounts</key>
 		<dict>
 			<key>comment</key>
