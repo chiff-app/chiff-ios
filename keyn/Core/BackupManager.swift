@@ -34,32 +34,37 @@ struct BackupManager {
     
     private init() {}
 
-    func initialize(completionHandler: @escaping (_ success: Bool) -> Void) throws {
-        guard !hasKeys else {
-            Logger.shared.warning("Tried to create backup keys while they already existed")
-            return
-        }
-        try createEncryptionKey()
-        let pubKey = try createSigningKeypair()
-        
-        let message = [
-            MessageIdentifier.httpMethod: APIMethod.put.rawValue,
-            MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
-        ]
-        
-        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        let parameters = [
-            "m": try Crypto.shared.convertToBase64(from: jsonData),
-            "s": try signMessage(message: jsonData)
-        ]
-        
-        API.shared.request(endpoint: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                completionHandler(false)
-            } else {
-                completionHandler(true)
+    func initialize(completionHandler: @escaping (_ error: Error?) -> Void) {
+        do {
+            guard !hasKeys else {
+                Logger.shared.warning("Tried to create backup keys while they already existed")
+                return
             }
+            try createEncryptionKey()
+            let pubKey = try createSigningKeypair()
+
+            let message = [
+                MessageIdentifier.httpMethod: APIMethod.put.rawValue,
+                MessageIdentifier.timestamp: String(Int(Date().timeIntervalSince1970))
+            ]
+
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let parameters = [
+                "m": try Crypto.shared.convertToBase64(from: jsonData),
+                "s": try signMessage(message: jsonData)
+            ]
+
+            API.shared.request(endpoint: .backup, path: pubKey, parameters: parameters, method: .put) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("Cannot initialize BackupManager.", error: error)
+                    completionHandler(error)
+                } else {
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            Logger.shared.error("Cannot initialize BackupManager.", error: error)
+            completionHandler(error)
         }
     }
     
@@ -190,11 +195,7 @@ struct BackupManager {
     }
     
     private func createEncryptionKey() throws {
-        guard let contextData = "backup".data(using: .utf8) else {
-            throw CodingError.stringDecoding
-        }
-        
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: contextData)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: "backup".data)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
     }
 

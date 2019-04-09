@@ -30,11 +30,7 @@ class RequestViewController: UIViewController {
         default:
             requestLabel.text = "Unknown request"
         }
-        try? authorizationGuard.acceptRequest {
-            DispatchQueue.main.async {
-                self.success()
-            }
-        }
+        acceptRequest()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -42,6 +38,18 @@ class RequestViewController: UIViewController {
     }
 
     // MARK: - Private functions
+
+    private func acceptRequest() {
+        authorizationGuard.acceptRequest { error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.showError(message: "\("errors.authentication_error".localized): \(error)")
+                } else {
+                    self.success()
+                }
+            }
+        }
+    }
 
     private func success() {
         switch authorizationGuard.type {
@@ -71,15 +79,7 @@ class RequestViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
-        do {
-            try authorizationGuard.acceptRequest {
-                DispatchQueue.main.async {
-                    self.success()
-                }
-            }
-        } catch {
-            #warning("TODO: SHow error")
-        }
+        acceptRequest()
     }
 
     @IBAction func close(_ sender: UIButton) {

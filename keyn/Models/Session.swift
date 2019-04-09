@@ -238,28 +238,32 @@ class Session: Codable {
         purgeSessionDataFromKeychain()
     }
 
-    #warning("TODO: Call this function with succes and error handlers. Remove throws.")
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String) throws -> Session {
-        let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
-        let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
-        let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
-        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
-
-        let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
-
-        let session = Session(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os)
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completion: (_ session: Session?, _ error: Error?) -> Void) {
         do {
-            try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
-        } catch is KeychainError {
-            throw SessionError.exists
-        } catch is CryptoError {
-            throw SessionError.invalid
+            let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
+            let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
+            let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
+            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
+
+            let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
+
+            let session = Session(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os)
+            do {
+                try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
+            } catch is KeychainError {
+                throw SessionError.exists
+            } catch is CryptoError {
+                throw SessionError.invalid
+            }
+
+            try session.createQueues(signingKeyPair: signingKeyPair)
+            try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
+
+            completion(session, nil)
+        } catch {
+            Logger.shared.error("Error initiating session", error: error)
+            completion(nil, error)
         }
-
-        try session.createQueues(signingKeyPair: signingKeyPair)
-        try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
-
-        return session
     }
 
     // MARK: - Private

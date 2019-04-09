@@ -47,7 +47,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         if metadataObjects.count > 0 {
             let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
-                #warning("TODO: Check if this can be exploited with specially crafted QR codes?")
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true
                     do {

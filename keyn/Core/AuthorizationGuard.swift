@@ -52,10 +52,10 @@ class AuthorizationGuard {
 
     // MARK: - Handle request responses
 
-    func acceptRequest(completionHandler: @escaping () -> Void) throws {
+    func acceptRequest(completionHandler: @escaping (_ error: Error?) -> Void) {
         switch type {
         case .add, .register:
-            try addSite(completionHandler: completionHandler)
+            addSite(completionHandler: completionHandler)
         case .login, .change, .fill:
             authorizeForKeychain(completionHandler: completionHandler)
         default:
@@ -79,8 +79,8 @@ class AuthorizationGuard {
 
     // MARK: - Private functions
 
-    private func authorizeForKeychain(completionHandler: @escaping () -> Void) {
-        Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { [weak self] (account, context, error) in
+    private func authorizeForKeychain(completionHandler: @escaping (_ error: Error?) -> Void) {
+        Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { (account, context, error) in
             do {
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
@@ -88,28 +88,23 @@ class AuthorizationGuard {
                 if let error = error {
                     throw error
                 }
-                guard let self = self else {
-                    return
-                }
                 try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
-                completionHandler()
+                completionHandler(nil)
             } catch {
                 Logger.shared.error("Error authorizing request", error: error)
+                completionHandler(error)
             }
         }
     }
 
-    private func addSite(completionHandler: @escaping () -> Void) throws {
-        try PPD.get(id: siteId, completionHandler: { (ppd) in
+    private func addSite(completionHandler: @escaping (_ error: Error?) -> Void) {
+        PPD.get(id: siteId, completionHandler: { (ppd) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             do {
                 let _ = try Account(username: self.username, sites: [site], password: self.password, type: .override) { (account, context, error) in
-                    defer {
-                        completionHandler()
-                    }
                     do {
                         if let error = error {
                             throw error
@@ -118,11 +113,12 @@ class AuthorizationGuard {
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
                     } catch {
                         Logger.shared.error("Add account response could not be sent", error: error)
+                        completionHandler(error)
                     }
                 }
             } catch {
-                #warning("TODO: Show the user that the account could not be added.")
                 Logger.shared.error("Account could not be saved.", error: error)
+                completionHandler(error)
             }
         })
     }
@@ -216,12 +212,7 @@ class AuthorizationGuard {
                     AuthorizationGuard.authorizationInProgress = false
                 }
                 if success {
-                    do  {
-                        let session = try Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os)
-                        completionHandler(session, nil)
-                    } catch {
-                        completionHandler(nil, error)
-                    }
+                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completion: completionHandler)
                 } else if let error = error {
                     completionHandler(nil, error)
                 }

@@ -408,7 +408,7 @@ class Keychain {
                                     kSecUseOperationPrompt as String: reason]
 
         do {
-            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
+            try LocalAuthenticationManager.shared.execute(query: query, type: type, with: context) { (query, _) in
                 var queryResult: AnyObject?
                 let status = withUnsafeMutablePointer(to: &queryResult) {
                     SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))

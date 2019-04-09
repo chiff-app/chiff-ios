@@ -7,7 +7,6 @@ import Foundation
 class PasswordValidator {
 
     static let FALLBACK_PASSWORD_LENGTH = 22
-    #warning("TODO: Find a value for the default minimum password length.")
     static let MIN_PASSWORD_LENGTH_BOUND = 8
     static let MAX_PASSWORD_LENGTH_BOUND = 50
     static let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
@@ -27,7 +26,6 @@ class PasswordValidator {
                 characterSetDictionary[characterSet.name] = characterSet.characters
             }
         } else {
-            #warning("TODO: PPD doesn't contain characterSets. That shouldn't be right. Check with XSD if characterSet can be null.")
             characters += PasswordValidator.OPTIMAL_CHARACTER_SET
         }
     }
@@ -71,7 +69,6 @@ class PasswordValidator {
         return password.count >= minLength
     }
 
-    #warning("TODO: To what characterSet should we validate a custom password without a PPD? Now optimal characterSet (see init)")
     func validateCharacters(password: String) -> Bool {
         for char in password {
             guard characters.contains(char) else {

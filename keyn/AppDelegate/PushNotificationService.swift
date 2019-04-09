@@ -62,13 +62,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
         if (notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION) {
-            #warning("TODO: Make alert banner to show user a general keyn message.")
-            Logger.shared.debug("TODO: Make alert banner to show user a general keyn message.")
             return [.alert]
         }
 
         var content: UNNotificationContent = notification.request.content
-        print(notification)
         if !content.isProcessed() {
             Logger.shared.warning("It seems we need to manually call NotificationProcessor.process().")
             content = reprocess(content: notification.request.content)

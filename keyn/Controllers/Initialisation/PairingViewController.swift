@@ -10,12 +10,6 @@ import UIKit
 
 class PairingViewController: UIViewController, PairControllerDelegate {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
     func sessionCreated(session: Session) {
         DispatchQueue.main.async {
             // TODO: - check if notification is still needed if delegate is
@@ -24,19 +18,27 @@ class PairingViewController: UIViewController, PairControllerDelegate {
     }
 
     func prepareForPairing(completionHandler: @escaping (_ result: Bool) -> Void) {
-        do {
-            try initializeSeed(completionHandler: completionHandler)
-        } catch {
-            print(error)
-            completionHandler(false)
+        initializeSeed { (error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.showError(message: "\("errors.seed_creation".localized): \(error)")
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
         }
     }
 
     // MARK: - Private functions
 
-    private func initializeSeed(completionHandler: @escaping (_: Bool) -> Void) throws {
-        try Seed.create()
-        try BackupManager.shared.initialize(completionHandler: completionHandler)
+    private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
+        do {
+            try Seed.create()
+        } catch {
+            completionHandler(error)
+        }
+        BackupManager.shared.initialize(completionHandler: completionHandler)
     }
 
     private func showRootController() {
@@ -57,18 +59,14 @@ class PairingViewController: UIViewController, PairControllerDelegate {
     // MARK: - Actions
 
     @IBAction func tryLater(_ sender: UIButton) {
-        do {
-            try initializeSeed { (result) in
-                DispatchQueue.main.async {
-                    guard result else {
-                        print("Error creating backup entry") // TODO: show error
-                        return
-                    }
+        initializeSeed { (error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.showError(message: "\("errors.seed_creation".localized): \(error)")
+                } else {
                     self.showRootController()
                 }
             }
-        } catch {
-            print(error)
         }
     }
 

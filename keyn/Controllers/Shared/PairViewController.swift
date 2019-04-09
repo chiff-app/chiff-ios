@@ -28,13 +28,6 @@ class PairViewController: QRViewController {
         }
     }
 
-    // MARK: - Private functions
-
-    private func initializeSeed(completionHandler: @escaping (_: Bool) -> Void) throws {
-        try Seed.create()
-        try BackupManager.shared.initialize(completionHandler: completionHandler)
-    }
-
     private func pair(url: URL) {
         AuthorizationGuard.authorizePairing(url: url) { [weak self] (session, error) in
             DispatchQueue.main.async {

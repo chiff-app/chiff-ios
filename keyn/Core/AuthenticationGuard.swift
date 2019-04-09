@@ -81,8 +81,8 @@ class AuthenticationGuard {
     // MARK: - Private functions
     
     private func authenticateUser() {
-        let unlocalizedReason = "Unlock Keyn"
-        Account.all(reason: unlocalizedReason, type: .ifNeeded) { (accounts, error) in
+        let localizedReason = "requests.unlock_keyn".localized
+        Account.all(reason: localizedReason, type: .ifNeeded) { (accounts, error) in
             do {
                 if let error = error {
                     throw error
@@ -96,7 +96,7 @@ class AuthenticationGuard {
                         self?.hideLockWindow()
                     }
                 } else {
-                    LocalAuthenticationManager.shared.unlock(reason: unlocalizedReason, completion: { (result, error) in
+                    LocalAuthenticationManager.shared.unlock(reason: localizedReason, completion: { (result, error) in
                         DispatchQueue.main.async { [weak self] in
                             if let error = error {
                                 print("TODO: handle authentication error")

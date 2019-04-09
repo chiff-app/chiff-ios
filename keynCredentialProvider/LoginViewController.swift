@@ -12,24 +12,23 @@ struct Extension {
 }
 
 class LoginViewController: ASCredentialProviderViewController {
-    @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var touchIDButton: UIButton!
     var credentialProviderViewController: CredentialProviderViewController?
     var shouldAsk: Bool = false
     var credentialIdentity: ASPasswordCredentialIdentity?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        navigationBar.shadowImage = UIImage()
-        touchIDButton.imageView!.contentMode = .scaleAspectFit
-        touchIDButton.imageEdgeInsets = UIEdgeInsets.init(top: 13, left: 13, bottom: 13, right: 13)
-
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        loadUsers()
+        LocalAuthenticationManager.shared.unlock(reason: "requests.unlock_accounts".localized) { (result, error) in
+            DispatchQueue.main.async {
+                if result {
+                    self.performSegue(withIdentifier: "showAccounts", sender: self)
+                } else {
+                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                }
+            }
+        }
+//        loadUsers()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -38,7 +37,7 @@ class LoginViewController: ASCredentialProviderViewController {
 
     // MARK: - Actions
 
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
+    @IBAction func cancel(_ sender: UIButton) {
         extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
     }
 
@@ -86,13 +85,14 @@ class LoginViewController: ASCredentialProviderViewController {
                 self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } else {
                 Extension.localAuthenticationContext = LAContext()
-                let accounts = try Account.all(context: Extension.localAuthenticationContext)
-                if !accounts.isEmpty {
+                Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded, context: Extension.localAuthenticationContext) { (accounts, error) in
                     DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "showAccounts", sender: self)
+                        if let accounts = accounts, !accounts.isEmpty {
+                                self.performSegue(withIdentifier: "showAccounts", sender: self)
+                        } else {
+                            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                        }
                     }
-                } else {
-                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                 }
             }
         } catch {
