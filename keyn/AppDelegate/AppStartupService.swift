@@ -57,9 +57,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
-    #warning("TODO: Show an error to the user: This app cannot register for push notifications.")
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // The token is not currently available.
+        launchErrorView("\("errors.push_notifications_error".localized): \(error)")
         Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
     }
 

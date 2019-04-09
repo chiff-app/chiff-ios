@@ -5,12 +5,15 @@ errors:
     comment: A generic problem description
   generic_error:
     value: An error occured.
-    comment: A generic errpr description
+    comment: A generic error description
   no_push_notifications:
     value: |-
       Unfortunately, Keyn doesn't work without push notifications :(
 
       Turn them on if you want to use Keyn. You can do this in Settings > Keyn > Notifications.
+    comment: Error when push notifications are not available
+  push_notifications_error:
+    value: There was an error registering for push notifications.
     comment: Error when push notifications are not available
   no_camera:
     value: Camera not available

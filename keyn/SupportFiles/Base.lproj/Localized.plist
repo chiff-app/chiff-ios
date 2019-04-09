@@ -99,6 +99,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Error fetching password</string>
 		</dict>
+		<key>push_notifications_error</key>
+		<dict>
+			<key>comment</key>
+			<string>Error when push notifications are not available</string>
+			<key>value</key>
+			<string>There was an error registering for push notifications.</string>
+		</dict>
 		<key>qr_scanned_twice</key>
 		<dict>
 			<key>comment</key>
