@@ -63,6 +63,7 @@
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		4967F426225CC7110069330D /* Localized.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4967F424225CC7100069330D /* Localized.yml */; };
 		4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
+		4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
 		496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
@@ -1280,6 +1281,7 @@
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,
+				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
 				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
 			);

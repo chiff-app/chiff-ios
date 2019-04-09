@@ -324,6 +324,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Unlock accounts</string>
 		</dict>
+		<key>unlock_keyn</key>
+		<dict>
+			<key>comment</key>
+			<string>Unlock Keyn</string>
+			<key>value</key>
+			<string>Unlock Keyn</string>
+		</dict>
 	</dict>
 	<key>settings</key>
 	<dict>
