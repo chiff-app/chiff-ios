@@ -61,6 +61,7 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
+		4967F426225CC7110069330D /* Localized.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4967F424225CC7100069330D /* Localized.yml */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
 		496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
@@ -256,6 +257,7 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4967F425225CC7100069330D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/Localized.yml; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
 		496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
@@ -611,6 +613,7 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				4967F424225CC7100069330D /* Localized.yml */,
 				49062C7C22146D8700A30669 /* Localized.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
@@ -725,6 +728,7 @@
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
+				4967F423225CBF950069330D /* ShellScript */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
@@ -920,6 +924,7 @@
 				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
 				496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */,
+				4967F426225CC7110069330D /* Localized.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,6 +995,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		4967F423225CBF950069330D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/keyn/SupportFiles/Base.lproj/Localized.yml",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cat ${SCRIPT_INPUT_FILE_0} | yq . | plutil -convert xml1 - -o ${SRCROOT}/keyn/SupportFiles/Base.lproj/Localized.plist   \n";
 		};
 		50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1300,6 +1323,14 @@
 				49062C7B22146D8700A30669 /* Base */,
 			);
 			name = Localized.plist;
+			sourceTree = "<group>";
+		};
+		4967F424225CC7100069330D /* Localized.yml */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4967F425225CC7100069330D /* Base */,
+			);
+			name = Localized.yml;
 			sourceTree = "<group>";
 		};
 		49E766591F7E6F420022C042 /* Main.storyboard */ = {
