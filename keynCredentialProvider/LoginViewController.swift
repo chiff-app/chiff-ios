@@ -8,10 +8,20 @@ import AuthenticationServices
 
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var touchIDButton: UIButton!
+    @IBOutlet weak var requestLabel: UILabel!
     var credentialProviderViewController: CredentialProviderViewController?
     var shouldAsk: Bool = false
     var credentialIdentity: ASPasswordCredentialIdentity?
     var accounts: [String: Account]!
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let username = credentialIdentity?.user {
+            requestLabel.text = "\("requests.login_with".localized) \(username)"
+        } else {
+            requestLabel.text = "requests.unlock_accounts".localized
+        }
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -42,15 +52,13 @@ class LoginViewController: ASCredentialProviderViewController {
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
             guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
-                return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
+                return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
-
-            guard let password = try? account.password(context: nil) else {
-                return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
-            }
-
-            let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+            
+            let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: nil))
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+        } catch KeychainError.interactionNotAllowed {
+            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
         } catch {
             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
@@ -58,35 +66,34 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func prepareInterfaceToProvideCredential(for credentialIdentity: ASPasswordCredentialIdentity) {
         self.credentialIdentity = credentialIdentity
-        #warning("TODO: Change 'Unlock Keyn' in UI to 'Login to website x'")
     }
 
     // MARK: - Private functions
 
     private func loadUsers() {
-        do {
-            if let credentialIdentity = self.credentialIdentity {
-                #warning("TODO: Check if this needs to be async")
-                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
-                    return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
+        if let credentialIdentity = self.credentialIdentity {
+            Account.get(accountID: credentialIdentity.recordIdentifier!, reason: "\("requests.login_with".localized) \(credentialIdentity.user)", type: .ifNeeded) { (account, context, error) in
+                if let error = error {
+                    Logger.shared.error("Error getting account", error: error)
+                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                } else if let account = account, let password = try? account.password(context: nil) {
+                    let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+                    self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+                } else {
+                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
                 }
-                let password = try account.password(context: nil)
-                let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-                self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-            } else {
-                Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded) { (accounts, error) in
-                    DispatchQueue.main.async {
-                        if let accounts = accounts, !accounts.isEmpty {
-                            self.accounts = accounts
-                            self.performSegue(withIdentifier: "showAccounts", sender: self)
-                        } else {
-                            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                        }
+            }
+        } else {
+            Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded) { (accounts, error) in
+                DispatchQueue.main.async {
+                    if let accounts = accounts, !accounts.isEmpty {
+                        self.accounts = accounts
+                        self.performSegue(withIdentifier: "showAccounts", sender: self)
+                    } else {
+                        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                     }
                 }
             }
-        } catch {
-            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
 }

@@ -128,6 +128,9 @@ backup:
     comment: The word for word
     value: word
 requests:
+  login_with:
+    comment: Ask to the user to login with an account, e.g. Login with demo@keyn.io?
+    value: Login with
   login_to:
     comment: Ask to the user to login to a site, e.g. Login to Amazon.com?
     value: Login to

@@ -105,7 +105,6 @@ struct Account: Codable {
             try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
         }
         try backup()
-//        Account.all[id] = self
     }
 
     mutating func deleteOtp() throws {
@@ -149,6 +148,7 @@ struct Account: Codable {
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data, objectData: accountData, label: nil, context: context)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+        Account.saveToIdentityStore(account: self)
     }
 
     /*
@@ -183,6 +183,7 @@ struct Account: Codable {
                 }
                 try BackupManager.shared.deleteAccount(accountId: self.id)
                 try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+                Account.deleteFromToIdentityStore(account: self)
                 Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": self.site.name, "siteID": self.site.id])
                 completionHandler(nil)
             } catch {
@@ -328,6 +329,7 @@ struct Account: Codable {
 
         #warning("TODO: check if this needs to be authenticated. Used when restoring accounts. Probably not...")
         try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
+        saveToIdentityStore(account: account)
     }
 
     static func accountList(context: LAContext? = nil) throws -> AccountList {
@@ -338,6 +340,9 @@ struct Account: Codable {
         #warning("TODO: check if this needs to be authenticated")
         Keychain.shared.deleteAll(service: .account)
         Keychain.shared.deleteAll(service: .otp)
+        if #available(iOS 12.0, *) {
+            ASCredentialIdentityStore.shared.removeAllCredentialIdentities(nil)
+        }
     }
 
     // MARK: - Private
@@ -356,6 +361,7 @@ struct Account: Codable {
                     }
                     try BackupManager.shared.backup(id: self.id, accountData: accountData)
                     try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+                    Account.saveToIdentityStore(account: self)
                     completionHandler(self, context, nil)
                 } catch {
                     completionHandler(self, nil, error)
@@ -363,6 +369,54 @@ struct Account: Codable {
             }
         } catch {
             completionHandler(self, nil, error)
+        }
+    }
+
+    // MARK: - AuthenticationServices
+
+    private static func saveToIdentityStore(account: Account) {
+        if #available(iOS 12.0, *) {
+            ASCredentialIdentityStore.shared.getState { (state) in
+                if !state.isEnabled {
+                    return
+                } else if state.supportsIncrementalUpdates {
+                    let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                    let identity = ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
+                    ASCredentialIdentityStore.shared.saveCredentialIdentities([identity], completion: nil)
+                } else if let accounts = try? Account.all(context: nil) {
+                    let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
+                        let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                        return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
+                    }
+                    ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
+                }
+            }
+        }
+    }
+
+    private static func deleteFromToIdentityStore(account: Account) {
+        if #available(iOS 12.0, *) {
+            ASCredentialIdentityStore.shared.getState { (state) in
+                if !state.isEnabled {
+                    return
+                } else if state.supportsIncrementalUpdates {
+                    let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                    let identity = ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
+                    ASCredentialIdentityStore.shared.removeCredentialIdentities([identity], completion: nil)
+                } else {
+                    ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
+                        if let error = error {
+                            Logger.shared.error("Error deleting credentials from identity store", error: error)
+                        } else if result, let accounts = try? Account.all(context: nil) {
+                            let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
+                                let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                                return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
+                            }
+                            ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
+                        }
+                    })
+                }
+            }
         }
     }
 
