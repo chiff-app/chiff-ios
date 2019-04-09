@@ -6,29 +6,16 @@ import UIKit
 import LocalAuthentication
 import AuthenticationServices
 
-struct Extension {
-    static var localAuthenticationContext = LAContext()
-    static var extensionContext: ASCredentialProviderExtensionContext!
-}
-
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var touchIDButton: UIButton!
     var credentialProviderViewController: CredentialProviderViewController?
     var shouldAsk: Bool = false
     var credentialIdentity: ASPasswordCredentialIdentity?
+    var accounts: [String: Account]!
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        LocalAuthenticationManager.shared.unlock(reason: "requests.unlock_accounts".localized) { (result, error) in
-            DispatchQueue.main.async {
-                if result {
-                    self.performSegue(withIdentifier: "showAccounts", sender: self)
-                } else {
-                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                }
-            }
-        }
-//        loadUsers()
+        loadUsers()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -44,18 +31,21 @@ class LoginViewController: ASCredentialProviderViewController {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        Extension.extensionContext = extensionContext
+        if let destination = segue.destination.contents as? CredentialProviderViewController {
+            destination.unfilteredAccounts = Array(accounts.values)
+            destination.credentialExtensionContext = extensionContext
+        }
     }
 
     // MARK: - AuthenicationServices
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
-            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext) else {
+            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
             }
 
-            guard let password = try? account.password(context: Extension.localAuthenticationContext) else {
+            guard let password = try? account.password(context: nil) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
             }
 
@@ -77,18 +67,18 @@ class LoginViewController: ASCredentialProviderViewController {
         do {
             if let credentialIdentity = self.credentialIdentity {
                 #warning("TODO: Check if this needs to be async")
-                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: Extension.localAuthenticationContext) else {
+                guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
                     return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
                 }
-                let password = try account.password(context: Extension.localAuthenticationContext)
+                let password = try account.password(context: nil)
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } else {
-                Extension.localAuthenticationContext = LAContext()
-                Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded, context: Extension.localAuthenticationContext) { (accounts, error) in
+                Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded) { (accounts, error) in
                     DispatchQueue.main.async {
                         if let accounts = accounts, !accounts.isEmpty {
-                                self.performSegue(withIdentifier: "showAccounts", sender: self)
+                            self.accounts = accounts
+                            self.performSegue(withIdentifier: "showAccounts", sender: self)
                         } else {
                             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                         }

@@ -10,26 +10,12 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
-    let searchController = UISearchController(searchResultsController: nil)
-    
+    var credentialExtensionContext: ASCredentialProviderExtensionContext!
+//    let searchController = UISearchController(searchResultsController: nil)
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let accounts = try! Account.all(context: nil)
-//        #warning("TODO: Check if this needs to use async")
-//        if let accounts = try? Account.all(context: ) {
-//            unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
-//            filteredAccounts = unfilteredAccounts
-//        } else {
-//            unfilteredAccounts = []
-//            filteredAccounts = []
-//        }
-        if let accountDict = try? Account.all(context: nil) {
-            unfilteredAccounts = Array(accountDict.values)
-        } else {
-            unfilteredAccounts = [Account]()
-        }
         filteredAccounts = unfilteredAccounts
-
         tableView.delegate = self
         tableView.dataSource = self
 //        searchController.searchResultsUpdater = self
@@ -44,7 +30,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     // MARK: - Actions
     
     @IBAction func cancel(_ sender: AnyObject?) {
-        Extension.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
+        credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
     }
     
     // MARK: - SearchController
@@ -90,11 +76,10 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
             do {
                 let password = try account.password(context: nil)
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-                Extension.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+                credentialExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } catch {
-                Extension.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
             }
-
         }
     }
 

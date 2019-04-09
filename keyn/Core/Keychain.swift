@@ -62,6 +62,7 @@ class Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
+                                    kSecAttrAccessGroup as String: service.classification.rawValue,
                                     kSecValueData as String: secretData]
         if objectData != nil {
             query[kSecAttrGeneric as String] = objectData
@@ -70,8 +71,6 @@ class Keychain {
         if label != nil {
             query[kSecAttrLabel as String] = label
         }
-        
-        query[kSecAttrAccessGroup as String] = service.classification.rawValue
 
         switch service.classification {
         case .restricted:
@@ -291,6 +290,7 @@ class Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
+                                    kSecAttrAccessGroup as String: service.classification.rawValue,
                                     kSecValueData as String: secretData,
                                     kSecUseOperationPrompt as String: reason]
         if objectData != nil {
