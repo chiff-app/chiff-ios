@@ -35,7 +35,6 @@ class PairViewController: QRViewController {
                     return
                 }
                 if let session = session {
-                    print("call delegate")
                     self.pairControllerDelegate.sessionCreated(session: session)
                 } else if let error = error {
                     switch error {

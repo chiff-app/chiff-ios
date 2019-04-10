@@ -7,11 +7,7 @@ import MBProgressHUD
 import OneTimePassword
 import QuartzCore
 
-protocol canAddOTPCode {
-    func addOTPCode(token: Token)
-}
-
-class AccountViewController: UITableViewController, UITextFieldDelegate, canAddOTPCode {
+class AccountViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -79,7 +75,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
 
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
         header.textLabel?.text = section == 0 ? "Account details" : "User details"
@@ -326,6 +322,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     }
 
     // MARK: - Navigation
+
+    @IBAction func unwindToAccountViewController(sender: UIStoryboardSegue) {
+        // TODO: This could also be used instead of canAddOtp delegate
+        if let source = sender.source as? TokenController {
+            if editingMode {
+                endEditing()
+            }
+            self.token = source.token
+            updateOTPUI()
+        }
+    }
+
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -336,20 +345,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeAnimations()
-            destination.accountViewDelegate = self
             destination.account = account
         }
     }
-    
-    func addOTPCode(token: Token) {
-        if editingMode {
-            endEditing()
-        }
-
-        self.token = token
-        updateOTPUI()
-    }
-
 }
 
 class LoadingCircle: UIView {

@@ -23,12 +23,32 @@
 			<key>value</key>
 			<string>Copied</string>
 		</dict>
+		<key>mode</key>
+		<dict>
+			<key>value</key>
+			<string>Mode</string>
+		</dict>
+		<key>mode_description</key>
+		<dict>
+			<key>value</key>
+			<string>Codes can either be time-based or counter-based</string>
+		</dict>
+		<key>secret</key>
+		<dict>
+			<key>value</key>
+			<string>Secret</string>
+		</dict>
+		<key>secret_description</key>
+		<dict>
+			<key>value</key>
+			<string>The secret that was shared by the website</string>
+		</dict>
 		<key>two_fa_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruct the user to scan a 2FA-code</string>
 			<key>value</key>
-			<string>Scan the 2FA-code for</string>
+			<string>Scan the QR-code to add the 2FA-code for</string>
 		</dict>
 		<key>update_2fa_code</key>
 		<dict>
@@ -72,6 +92,11 @@
 	</dict>
 	<key>errors</key>
 	<dict>
+		<key>add_otp</key>
+		<dict>
+			<key>value</key>
+			<string>Error adding OTP token</string>
+		</dict>
 		<key>authentication_error</key>
 		<dict>
 			<key>comment</key>
@@ -180,6 +205,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>There was no endpoint found</string>
 			<key>value</key>
 			<string>There is no AWS endpoint in the session data.</string>
+		</dict>
+		<key>token_creation</key>
+		<dict>
+			<key>value</key>
+			<string>Error creating OTP token</string>
 		</dict>
 		<key>undecodable_qr</key>
 		<dict>

@@ -31,7 +31,7 @@ class SettingsViewController: UITableViewController {
 
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
         header.textLabel?.text = "Settings"
@@ -40,7 +40,7 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         let footer = view as! UITableViewHeaderFooterView
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
-        footer.textLabel?.font = UIFont(name: "Montserrat-Medium", size: 12)
+        footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = section == 0 ? securityFooterText : "settings.reset_warning".localized

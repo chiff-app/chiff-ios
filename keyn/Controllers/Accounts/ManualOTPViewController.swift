@@ -12,21 +12,46 @@ enum OTPError: KeynError {
     case empty
 }
 
-class ManualOTPViewController: UITableViewController {
+class ManualOTPViewController: UITableViewController, TokenController {
 
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!
 
-    var qrNavCon: UINavigationController?
-    var accountViewDelegate: canAddOTPCode?
     var account: Account!
+    var token: Token?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = account.site.name
-        
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
+
+        tableView.separatorColor = UIColor.primaryTransparant
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+
+    // MARK: - UITableView
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard section < 2 else {
+            return
+        }
+
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.primaryHalfOpacity
+        header.textLabel?.font = UIFont.primaryBold
+        header.textLabel?.textAlignment = NSTextAlignment.left
+        header.textLabel?.frame = header.frame
+        header.textLabel?.text = section == 0 ? "accounts.secret".localized : "accounts.mode".localized
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let footer = view as! UITableViewHeaderFooterView
+        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
+        footer.textLabel?.font = UIFont.primaryMediumSmall
+        footer.textLabel?.textAlignment = NSTextAlignment.left
+        footer.textLabel?.frame = footer.frame
+        footer.textLabel?.text = section == 0 ? "accounts.secret_description".localized : "accounts.mode_description".localized
     }
 
     func add(secret: String, timeBased: Bool) throws {
@@ -42,24 +67,19 @@ class ManualOTPViewController: UITableViewController {
             digits: 6) else {
             throw OTPError.invalidSecret
         }
+        self.token = Token(generator: generator)
 
-        let token = Token(generator: generator)
-
-        try AuthorizationGuard.addOTP(token: token, account: account) { (error) in
+        try AuthorizationGuard.addOTP(token: token!, account: account) { (error) in
             DispatchQueue.main.async {
-                guard error == nil else {
-                    Logger.shared.error("Error authorizing OTP", error: error)
-                    return
-                }
                 do {
-                    try self.account.setOtp(token: token)
-                    if let delegate = self.accountViewDelegate {
-                        delegate.addOTPCode(token: token)
+                    if let error = error {
+                        throw error
                     }
-                    _ = self.qrNavCon?.popViewController(animated: true)
-                    self.dismiss(animated: true, completion: nil)
+                    try self.account.setOtp(token: self.token!)
+                    self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
+                    self.showError(message: "errors.add_otp".localized)
                 }
             }
         }

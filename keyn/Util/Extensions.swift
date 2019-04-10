@@ -312,6 +312,20 @@ extension UIColor {
     }()
 }
 
+extension UIFont {
+    static var primaryMediumNormal: UIFont? = {
+        return UIFont(name: "Montserrat-Medium", size: 14)
+    }()
+
+    static var primaryMediumSmall: UIFont? = {
+        return UIFont(name: "Montserrat-Medium", size: 12)
+    }()
+
+    static var primaryBold: UIFont? = {
+        return UIFont(name: "Montserrat-Bold", size: 14)
+    }()
+}
+
 extension UIImage {
     convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)

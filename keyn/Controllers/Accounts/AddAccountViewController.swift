@@ -61,7 +61,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont(name: "Montserrat-Bold", size: 14)
+        header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
         header.textLabel?.text = section == 0 ? "Account details" : "User details"

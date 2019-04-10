@@ -51,6 +51,10 @@ errors:
   seed_creation:
     value: Error generating seed
     comment: This may occur during the initialisation process
+  token_creation:
+    value: Error creating OTP token
+  add_otp:
+    value: Error adding OTP token
 popups:
   questions:
     cancel_backup:
@@ -109,7 +113,15 @@ accounts:
     value: Copied
   two_fa_instruction:
     comment: Instruct the user to scan a 2FA-code
-    value: Scan the 2FA-code for
+    value: Scan the QR-code to add the 2FA-code for
+  secret:
+    value: Secret
+  mode:
+    value: Mode
+  secret_description:
+    value: The secret that was shared by the website
+  mode_description:
+    value: Codes can either be time-based or counter-based
 devices:
   devices:
     comment: Section title for devices

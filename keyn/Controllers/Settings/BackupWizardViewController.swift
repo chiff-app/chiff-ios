@@ -32,7 +32,7 @@ class BackupWizardViewController: UIViewController {
         } catch {
             Logger.shared.error("Error getting mnemonic.", error: error)
         }
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.normal)
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
     }
 
     override func viewDidLayoutSubviews() {
