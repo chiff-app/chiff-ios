@@ -940,7 +940,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN" customClass="KeynNavigationBar" customModule="keyn" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -1160,7 +1160,7 @@ Reproduction steps:
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-17"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uga-m1-Yel" customClass="KeynNavigationBar" customModule="keyn" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uga-m1-Yel">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.28582200410000003" green="0.19759389760000001" blue="0.63343566659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1190,39 +1190,45 @@ Reproduction steps:
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5kA-4z-Z0m">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXJ-Si-lcK">
+                                <rect key="frame" x="0.0" y="133.5" width="375" height="376.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgA-iw-b2J">
-                                        <rect key="frame" x="8" y="8" width="359" height="64"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="Scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="Zae-Q7-6CG">
+                                        <rect key="frame" x="99.5" y="103" width="176" height="171"/>
+                                    </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="bgA-iw-b2J" firstAttribute="leading" secondItem="5kA-4z-Z0m" secondAttribute="leading" constant="8" id="FtU-aj-w6P"/>
-                                    <constraint firstAttribute="bottom" secondItem="bgA-iw-b2J" secondAttribute="bottom" constant="8" id="WbS-7g-fZE"/>
-                                    <constraint firstAttribute="trailing" secondItem="bgA-iw-b2J" secondAttribute="trailing" constant="8" id="eUq-Wt-SOp"/>
-                                    <constraint firstItem="bgA-iw-b2J" firstAttribute="top" secondItem="5kA-4z-Z0m" secondAttribute="top" constant="8" id="hmS-Q3-vjZ"/>
-                                    <constraint firstAttribute="height" constant="80" id="lJy-A1-xen"/>
+                                    <constraint firstItem="Zae-Q7-6CG" firstAttribute="centerY" secondItem="hXJ-Si-lcK" secondAttribute="centerY" id="aPD-H7-0Bl"/>
+                                    <constraint firstItem="Zae-Q7-6CG" firstAttribute="centerX" secondItem="hXJ-Si-lcK" secondAttribute="centerX" id="buz-LI-Jev"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXJ-Si-lcK">
-                                <rect key="frame" x="0.0" y="80" width="375" height="430"/>
-                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Add 2FA code" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2eC-LB-IQr">
+                                <rect key="frame" x="16" y="30" width="343" height="27"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="Scan the QR code to add the 2FA code for" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIp-Rp-5pm">
+                                <rect key="frame" x="40" y="77" width="295" height="34.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                <color key="textColor" red="0.10877000000000001" green="0.067330000000000001" blue="0.23094000000000001" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hXJ-Si-lcK" firstAttribute="top" secondItem="5kA-4z-Z0m" secondAttribute="bottom" id="QCu-bf-l9X"/>
+                            <constraint firstItem="2eC-LB-IQr" firstAttribute="top" secondItem="HvE-Ku-vhY" secondAttribute="top" constant="30" id="29E-S0-xbW"/>
+                            <constraint firstItem="HvE-Ku-vhY" firstAttribute="trailing" secondItem="VIp-Rp-5pm" secondAttribute="trailing" constant="40" id="8bV-gF-UgK"/>
+                            <constraint firstItem="VIp-Rp-5pm" firstAttribute="top" secondItem="2eC-LB-IQr" secondAttribute="bottom" priority="500" constant="20" id="Ina-XT-XAO"/>
+                            <constraint firstItem="hXJ-Si-lcK" firstAttribute="top" secondItem="VIp-Rp-5pm" secondAttribute="bottom" constant="22" id="LD9-ky-62w"/>
+                            <constraint firstItem="VIp-Rp-5pm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2eC-LB-IQr" secondAttribute="bottom" id="aTS-6o-rUe"/>
                             <constraint firstItem="hXJ-Si-lcK" firstAttribute="trailing" secondItem="HvE-Ku-vhY" secondAttribute="trailing" id="fg8-dq-z3i"/>
                             <constraint firstItem="HvE-Ku-vhY" firstAttribute="bottom" secondItem="hXJ-Si-lcK" secondAttribute="bottom" id="jSL-0T-YEa"/>
-                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="top" secondItem="HvE-Ku-vhY" secondAttribute="top" id="kfM-UW-Nzk"/>
-                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" id="oSh-Lv-9d0"/>
+                            <constraint firstItem="2eC-LB-IQr" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" constant="16" id="mdB-Be-SdW"/>
+                            <constraint firstItem="HvE-Ku-vhY" firstAttribute="trailing" secondItem="2eC-LB-IQr" secondAttribute="trailing" constant="16" id="mqm-Jc-YNt"/>
+                            <constraint firstItem="VIp-Rp-5pm" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" constant="40" id="ngZ-VI-pqQ"/>
                             <constraint firstItem="hXJ-Si-lcK" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" id="qwJ-dY-ro7"/>
-                            <constraint firstItem="5kA-4z-Z0m" firstAttribute="trailing" secondItem="HvE-Ku-vhY" secondAttribute="trailing" id="tZK-lU-uFr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HvE-Ku-vhY"/>
                     </view>
@@ -1235,13 +1241,16 @@ Reproduction steps:
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="instructionLabel" destination="bgA-iw-b2J" id="wFi-3K-DaB"/>
+                        <outlet property="instructionLabel" destination="VIp-Rp-5pm" id="HXJ-fr-CVK"/>
+                        <outlet property="qrIconImageView" destination="Zae-Q7-6CG" id="6fo-Nt-K2y"/>
                         <outlet property="videoView" destination="hXJ-Si-lcK" id="AYc-lY-evK"/>
+                        <segue destination="gnR-ED-PTq" kind="unwind" identifier="UnwindFromOTP" unwindAction="unwindToAccountViewControllerWithSender:" id="lbw-cF-1Eu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRI-xO-cE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="gnR-ED-PTq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3145" y="-907"/>
+            <point key="canvasLocation" x="3144.8000000000002" y="-907.1964017991005"/>
         </scene>
         <!--ManualOTP View Controller-->
         <scene sceneID="Jxr-Hx-wrr">
@@ -1282,8 +1291,8 @@ Reproduction steps:
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="secret" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tC1-Hz-I18">
                                                     <rect key="frame" x="16" y="0.0" width="359" height="43.5"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="15"/>
+                                                    <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                 </textField>
                                             </subviews>
@@ -1308,8 +1317,8 @@ Reproduction steps:
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Time-based" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJo-1D-PPV">
                                                     <rect key="frame" x="16" y="0.0" width="290" height="43.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="thy-vQ-hOn">
@@ -1354,18 +1363,20 @@ Reproduction steps:
                         <outlet property="errorLabel" destination="Niw-uM-jIv" id="Ld5-e0-vuW"/>
                         <outlet property="keyTextField" destination="tC1-Hz-I18" id="JKw-DO-byq"/>
                         <outlet property="timeBasedSwitch" destination="thy-vQ-hOn" id="Ua3-zO-NPb"/>
+                        <segue destination="dnO-in-GRP" kind="unwind" identifier="UnwindFromManualOTP" unwindAction="unwindToAccountViewControllerWithSender:" id="kh1-Kj-4ti"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OYs-R4-1et" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="dnO-in-GRP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="5010" y="-907"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Keyn Navigation Controller-->
         <scene sceneID="Fms-F8-WYy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KOU-AZ-ldj" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KOU-AZ-ldj" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="35T-wf-HP5" customClass="KeynNavigationBar" customModule="keyn" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="35T-wf-HP5">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.28582200410000003" green="0.19759389760000001" blue="0.63343566659999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2083,7 +2094,7 @@ Reproduction steps:
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MFW-eN-Fb7" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rar-cj-hMh" customClass="KeynNavigationBar" customModule="keyn" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="rar-cj-hMh">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2102,7 +2113,7 @@ Reproduction steps:
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="R8G-2M-pGS" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="c56-fr-BBb" customClass="KeynNavigationBar" customModule="keyn" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="c56-fr-BBb">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2680,6 +2691,6 @@ Reproduction steps:
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="H1z-FM-r4q"/>
+        <segue reference="fQN-eu-7O6"/>
     </inferredMetricsTieBreakers>
 </document>

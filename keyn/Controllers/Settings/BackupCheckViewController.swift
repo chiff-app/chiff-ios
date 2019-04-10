@@ -45,7 +45,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
 
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.normal)
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
     }
 
     // MARK: - UITextFieldDelegate
@@ -154,9 +154,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         let ordinalFormatter = NumberFormatter()
         ordinalFormatter.numberStyle = .ordinal
-        let attributedText = NSMutableAttributedString(string: "The ", attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Medium", size: 14)!])
-        attributedText.append(NSMutableAttributedString(string: ordinalFormatter.string(from: NSNumber(value: index + 1))!, attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Bold", size: 14)!]))
-        attributedText.append(NSMutableAttributedString(string: " word is", attributes: [NSAttributedString.Key.font: UIFont(name: "Montserrat-Medium", size: 14)!]))
+        let attributedText = NSMutableAttributedString(string: "The ", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
+        attributedText.append(NSMutableAttributedString(string: ordinalFormatter.string(from: NSNumber(value: index + 1))!, attributes: [NSAttributedString.Key.font: UIFont.primaryBold!]))
+        attributedText.append(NSMutableAttributedString(string: " word is", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!]))
         label.attributedText = attributedText
     }
 }
