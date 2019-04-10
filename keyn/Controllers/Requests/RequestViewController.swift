@@ -44,6 +44,7 @@ class RequestViewController: UIViewController {
     // MARK: - Private functions
 
     private func success() {
+        #warning("TODO: localize this")
         switch authorizationGuard.type {
             case .login:
                 successTextLabel.text = "Login successful"
