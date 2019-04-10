@@ -88,20 +88,18 @@ class AuthenticationGuard {
                     throw error
                 }
                 if !accounts!.isEmpty {
-                    DispatchQueue.main.async { [weak self] in
+                    DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts!)
-                        self?.hideLockWindow()
+                        self.hideLockWindow()
                     }
                 } else {
                     LocalAuthenticationManager.shared.unlock(reason: localizedReason, completion: { (result, error) in
-                        DispatchQueue.main.async { [weak self] in
+                        DispatchQueue.main.async {
                             if let error = error {
-                                self?.handleError(error: error)
+                                self.handleError(error: error)
                                 return
                             } else if result {
-                                DispatchQueue.main.async { [weak self] in
-                                    self?.hideLockWindow()
-                                }
+                                self.hideLockWindow()
                             }
                         }
                     })
