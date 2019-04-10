@@ -8,7 +8,7 @@ class SettingsViewController: UITableViewController {
 
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setFooterText()
@@ -60,6 +60,11 @@ class SettingsViewController: UITableViewController {
         } else {
             AWS.shared.unsubscribe()
         }
+    }
+
+    @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
+        setNeedsStatusBarAppearanceUpdate()
+        // TODO: this doesn't seem to be working...
     }
     
     @IBAction func resetKeyn(_ sender: UIButton) {

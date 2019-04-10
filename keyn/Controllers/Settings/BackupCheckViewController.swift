@@ -26,6 +26,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     private var firstWordIndex = 0
     private var secondWordIndex = 0
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         firstWordIndex = Int(arc4random_uniform(6))
@@ -40,10 +44,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-    }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.normal)
     }
 
     // MARK: - UITextFieldDelegate
@@ -104,10 +106,6 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - Actions
-
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
 
     @IBAction func finish(_ sender: UIButton) {
         do {
