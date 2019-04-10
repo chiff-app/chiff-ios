@@ -172,9 +172,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
-        UINavigationBar.appearance().titleTextAttributes =
-            [.foregroundColor: UIColor.primary,
-             .font: UIFont(name: "Montserrat-Bold", size: 22)!]
+        UINavigationBar.appearance().backIndicatorImage =  UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage =  UIImage(named: "chevron_left")?.withInsets(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                       .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                       .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.disabled)
     }
 
 }   

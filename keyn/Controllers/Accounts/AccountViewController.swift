@@ -58,23 +58,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             userNameTextField.delegate = self
             userPasswordTextField.delegate = self
         } catch {
-            #warning("TODO: Show the user that there was an error retrieving the OTP token.")
+            showError(message: "retrieve_otp"); #warning("TODO: Localize")
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
-//    }
-//
-//    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
-//    }
 
     // MARK: - UITableView
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return editingMode ? 3 : 2
+    }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section < 2 else {
@@ -116,9 +112,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == websiteNameTextField {
-             navigationItem.title = textField.text
-        }
         view.removeGestureRecognizer(tap)
     }
     
@@ -172,11 +165,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     
     @objc func edit() {
         tableView.setEditing(true, animated: true)
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(update))
         doneButton.style = .done
         
-        navigationItem.setLeftBarButton(cancelButton, animated: true)
         navigationItem.setRightBarButton(doneButton, animated: true)
         
         userNameTextField.isEnabled = true
@@ -186,12 +177,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         totpLoader?.isHidden = true
 
         editingMode = true
+        tableView.reloadData()
     }
     
     @objc func cancel() {
         endEditing()
         userPasswordTextField.text = password ?? "22characterplaceholder"
-        navigationItem.title = account?.site.name
         userNameTextField.text = account?.username
         websiteNameTextField.text = account?.site.name
         websiteURLTextField.text = account?.site.url
@@ -229,7 +220,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
     private func endEditing() {
         tableView.setEditing(false, animated: true)
         userPasswordTextField.isSecureTextEntry = true
-        navigationItem.setLeftBarButton(nil, animated: true)
         navigationItem.setRightBarButton(editButton, animated: true)
         userNameTextField.isEnabled = false
         userPasswordTextField.isEnabled = false
@@ -238,6 +228,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
         totpLoader?.isHidden = false
         
         editingMode = false
+        tableView.reloadData()
     }
     
     private func showHiddenPasswordPopup(password: String) {
@@ -342,11 +333,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, canAddO
             guard let account = account else {
                 return
             }
-            destination.navigationItem.title = account.site.name
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeAnimations()
-            destination.navigationItem.title = account?.site.name
             destination.accountViewDelegate = self
             destination.account = account
         }
