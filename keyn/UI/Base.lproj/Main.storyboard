@@ -887,7 +887,7 @@
                                 </constraints>
                             </scrollView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hjK-VU-J4E">
-                                <rect key="frame" x="0.0" y="83" width="375" height="427"/>
+                                <rect key="frame" x="0.0" y="100" width="375" height="410"/>
                                 <connections>
                                     <segue destination="yEQ-dB-DTP" kind="embed" identifier="EmbedAddAccount" id="XX4-ez-aRm"/>
                                 </connections>
@@ -909,7 +909,7 @@
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="trailing" secondItem="bph-BZ-NAM" secondAttribute="trailing" id="Lgq-TN-QEs"/>
                             <constraint firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" constant="90" id="NDy-jP-9r5"/>
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="trailing" secondItem="fuD-1S-vqd" secondAttribute="trailing" id="XfD-L5-I2y"/>
-                            <constraint firstItem="hjK-VU-J4E" firstAttribute="top" secondItem="cDG-1D-ad2" secondAttribute="top" constant="83" id="Ydd-9p-gmM"/>
+                            <constraint firstItem="hjK-VU-J4E" firstAttribute="top" secondItem="cDG-1D-ad2" secondAttribute="top" constant="100" id="Ydd-9p-gmM"/>
                             <constraint firstItem="fuD-1S-vqd" firstAttribute="leading" secondItem="cDG-1D-ad2" secondAttribute="leading" id="hx2-iy-4dH"/>
                             <constraint firstItem="hjK-VU-J4E" firstAttribute="trailing" secondItem="cDG-1D-ad2" secondAttribute="trailing" id="juV-HC-uEv"/>
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="bottom" secondItem="hjK-VU-J4E" secondAttribute="bottom" id="na7-Gz-Yoy"/>
@@ -1888,7 +1888,7 @@ Reproduction steps:
             <objects>
                 <viewController id="yEQ-dB-DTP" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hxD-DE-Aqf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="427"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="410"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szR-bg-VMn" customClass="KeynButton" customModule="keyn" customModuleProvider="target">

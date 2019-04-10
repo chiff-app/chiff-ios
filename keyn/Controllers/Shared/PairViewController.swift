@@ -29,11 +29,8 @@ class PairViewController: QRViewController {
     }
 
     private func pair(url: URL) {
-        AuthorizationGuard.authorizePairing(url: url) { [weak self] (session, error) in
+        AuthorizationGuard.authorizePairing(url: url) { (session, error) in
             DispatchQueue.main.async {
-                guard let self = self else {
-                    return
-                }
                 if let session = session {
                     self.pairControllerDelegate.sessionCreated(session: session)
                 } else if let error = error {
