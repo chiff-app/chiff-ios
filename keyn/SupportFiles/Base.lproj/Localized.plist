@@ -4,6 +4,11 @@
 <dict>
 	<key>accounts</key>
 	<dict>
+		<key>add_2fa_code</key>
+		<dict>
+			<key>value</key>
+			<string>Add 2FA-code to</string>
+		</dict>
 		<key>add_otp_code</key>
 		<dict>
 			<key>comment</key>
@@ -24,6 +29,11 @@
 			<string>Instruct the user to scan a 2FA-code</string>
 			<key>value</key>
 			<string>Scan the 2FA-code for</string>
+		</dict>
+		<key>update_2fa_code</key>
+		<dict>
+			<key>value</key>
+			<string>Update 2FA-code for</string>
 		</dict>
 	</dict>
 	<key>backup</key>
@@ -325,6 +335,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask the user to change a password, e.g. Change password for Amazon.com?</string>
 			<key>value</key>
 			<string>Change password for</string>
+		</dict>
+		<key>expired</key>
+		<dict>
+			<key>value</key>
+			<string>The request that was received expired. This means it was sent more than three minutes ago.</string>
 		</dict>
 		<key>fill_for</key>
 		<dict>

@@ -51,7 +51,7 @@ struct KeynRequest: Codable {
             return false
         }
         switch type {
-        case .add:
+        case .add, .addAndLogin:
             guard siteID != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no site ID.")
                 return false
@@ -70,6 +70,7 @@ struct KeynRequest: Codable {
                 return false
             }
         default:
+            Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
         }
         

@@ -24,7 +24,7 @@ class AuthorizationGuard {
         switch type {
         case .login:
             return "\("requests.login_to".localized.capitalized) \(siteName!)"
-        case .add, .register:
+        case .add, .register, .addAndLogin:
             return "\("requests.add_site".localized.capitalized) \(siteName!)"
         case .change:
             return "\("requests.change_for".localized.capitalized) \(siteName!)"
@@ -111,6 +111,7 @@ class AuthorizationGuard {
                         }
                         try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                        completionHandler(nil)
                     } catch {
                         Logger.shared.error("Add account response could not be sent", error: error)
                         completionHandler(error)
@@ -127,7 +128,6 @@ class AuthorizationGuard {
     // MARK: - Static launch request view functions
 
     static func launchRequestView(with request: KeynRequest) {
-        print("LaunchRequestViewCalled")
         guard !authorizationInProgress else {
             Logger.shared.debug("AuthorizationGuard.launchRequestView() called while already in the process of authorizing.")
             return
@@ -168,18 +168,18 @@ class AuthorizationGuard {
                     Logger.shared.error("Error rejecting request", error: error)
                 }
             }
-            #warning("TODO: Show the generic error viewController here with message that the request expired")
+            showError(errorMessage: "requests.expired".localized)
         } catch {
             AuthorizationGuard.authorizationInProgress = true
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
 
-    // MARK: - Static authorization functions
+    // MARK: - Static authorization functionss
 
     static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
-        authorizeWithoutKeychain(reason: account.hasOtp() ? "Add 2FA-code to \(account.site.name)" : "Update 2FA-code for \(account.site.name)") { (success, error) in
+        authorizeWithoutKeychain(reason: account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)") { (success, error) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
@@ -240,6 +240,18 @@ class AuthorizationGuard {
             localizedReason: reason,
             reply: completion
         )
+    }
+
+    private static func showError(errorMessage: String) {
+        DispatchQueue.main.async {
+            guard let viewController = UIStoryboard.main.instantiateViewController(withIdentifier: "ErrorViewController") as? ErrorViewController else {
+                Logger.shared.error("Can't create ErrorViewController so we have no way to start the app.")
+                return
+            }
+
+            viewController.errorMessage = errorMessage
+            UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
+        }
     }
 
 }

@@ -392,26 +392,37 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An unknown problem occured." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
-                                <rect key="frame" x="20" y="311.5" width="335" height="21"/>
-                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="16"/>
-                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="20" y="307" width="335" height="17.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There was a problem" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2r-bc-5ef">
-                                <rect key="frame" x="20" y="230" width="335" height="31.5"/>
-                                <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="24"/>
-                                <color key="textColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <rect key="frame" x="20" y="230" width="335" height="27"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KlO-jE-kDb">
+                                <rect key="frame" x="320" y="45" width="39" height="39"/>
+                                <state key="normal" image="close_button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <segue destination="KSX-0f-aeO" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="YI1-gs-3ab"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iNK-us-ipI" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="20" id="9iO-kV-0yn"/>
                             <constraint firstItem="vag-ph-8Fe" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="16" id="Gx2-Dd-twn"/>
                             <constraint firstItem="c2r-bc-5ef" firstAttribute="leading" secondItem="WLr-35-Emx" secondAttribute="leading" constant="20" id="LH2-dn-dgV"/>
+                            <constraint firstItem="KlO-jE-kDb" firstAttribute="top" secondItem="WLr-35-Emx" secondAttribute="top" constant="25" id="Lkn-Fl-UB5"/>
                             <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="vag-ph-8Fe" secondAttribute="trailing" constant="16" id="OqB-YO-ty8"/>
                             <constraint firstItem="c2r-bc-5ef" firstAttribute="top" secondItem="vag-ph-8Fe" secondAttribute="bottom" constant="50" id="PBI-ZQ-sdC"/>
                             <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="c2r-bc-5ef" secondAttribute="trailing" constant="20" id="Qu4-IQ-zh4"/>
+                            <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="KlO-jE-kDb" secondAttribute="trailing" constant="16" id="nxa-uh-W6c"/>
                             <constraint firstItem="WLr-35-Emx" firstAttribute="trailing" secondItem="iNK-us-ipI" secondAttribute="trailing" constant="20" id="vC4-mY-nKJ"/>
                             <constraint firstItem="iNK-us-ipI" firstAttribute="top" secondItem="c2r-bc-5ef" secondAttribute="bottom" constant="50" id="w6m-cb-FBR"/>
                             <constraint firstItem="vag-ph-8Fe" firstAttribute="top" secondItem="WLr-35-Emx" secondAttribute="top" constant="80" id="zbW-Gq-lB5"/>
@@ -424,6 +435,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bXc-Mo-HZO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="KSX-0f-aeO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1439" y="872"/>
         </scene>
@@ -2374,7 +2386,7 @@ Reproduction steps:
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="75x-El-3XL">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="598"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="Mmw-t7-nQS">
                                                 <rect key="frame" x="161.5" y="-26" width="52" height="58"/>
@@ -2387,7 +2399,7 @@ Reproduction steps:
                                                 <rect key="frame" x="132.5" y="72" width="110" height="90"/>
                                             </imageView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7v-Uf-nZb" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="116" y="521" width="143" height="44"/>
+                                                <rect key="frame" x="116" y="524" width="143" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="DoD-Fy-Iqh"/>
                                                     <constraint firstAttribute="width" constant="143" id="cap-Xe-EvX"/>
@@ -2404,16 +2416,16 @@ Reproduction steps:
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qIe-zm-Hqa">
-                                                <rect key="frame" x="30" y="197" width="315" height="100"/>
+                                                <rect key="frame" x="30" y="197" width="315" height="101"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One final check" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCi-lF-JyN">
-                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="26"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="27"/>
                                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nUH-YH-x4F">
-                                                        <rect key="frame" x="11.5" y="34" width="292" height="66"/>
+                                                        <rect key="frame" x="2.5" y="35" width="310" height="66"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="To make sure everything was written down correctly, please enter te following words from your paper to continue">
                                                                 <attributes>
@@ -2432,19 +2444,19 @@ Reproduction steps:
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="F87-c9-69G">
-                                                <rect key="frame" x="20" y="329" width="335" height="157"/>
+                                                <rect key="frame" x="20" y="330" width="335" height="159"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zB1-Lg-ZuZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="68.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="69.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The nth word was" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDM-k6-RaV">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="16.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3yj-Ku-kq8">
-                                                                <rect key="frame" x="0.0" y="24.5" width="335" height="44"/>
+                                                                <rect key="frame" x="0.0" y="25.5" width="335" height="44"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -2458,16 +2470,16 @@ Reproduction steps:
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nwm-PB-BKy">
-                                                        <rect key="frame" x="0.0" y="88.5" width="335" height="68.5"/>
+                                                        <rect key="frame" x="0.0" y="89.5" width="335" height="69.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The mth word was" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJQ-yv-IUX">
-                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="16.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="335" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RMh-gH-cAa">
-                                                                <rect key="frame" x="0.0" y="24.5" width="335" height="44"/>
+                                                                <rect key="frame" x="0.0" y="25.5" width="335" height="44"/>
                                                                 <color key="tintColor" red="0.28627450980000002" green="0.1960784314" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="wD4-AX-shC"/>
@@ -2644,6 +2656,7 @@ Reproduction steps:
         <image name="book_pen" width="97" height="100"/>
         <image name="chevron_right" width="7" height="11"/>
         <image name="close-icon" width="16" height="16"/>
+        <image name="close_button" width="39" height="39"/>
         <image name="desktop_form" width="105" height="67"/>
         <image name="desktop_login" width="105" height="67"/>
         <image name="desktop_popup" width="105" height="67"/>

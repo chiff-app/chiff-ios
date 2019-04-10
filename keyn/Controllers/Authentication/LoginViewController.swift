@@ -12,7 +12,6 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func touchID(_ sender: UIButton) {
-        Logger.shared.debug("Manual authenticate in viewDidAppear called.")
         AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
     }
 

@@ -134,7 +134,7 @@ class AuthenticationGuard {
                 Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
             }
         default:
-            showError(errorMessage: "\("errors.local_authentication.generic".localized): \(error)")
+            Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
         }
     }
     

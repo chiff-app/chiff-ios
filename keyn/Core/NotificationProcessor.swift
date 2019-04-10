@@ -34,7 +34,7 @@ class NotificationProcessor {
         let siteName = keynRequest.siteName ?? "Unknown"
 
         switch keynRequest.type {
-        case .add:
+        case .add, .addAndLogin:
             content.title = "Add site request"
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .end:
