@@ -18,6 +18,11 @@ class BackupWizardViewController: UIViewController {
         }
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
@@ -27,6 +32,7 @@ class BackupWizardViewController: UIViewController {
         } catch {
             Logger.shared.error("Error getting mnemonic.", error: error)
         }
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont(name: "Montserrat-Bold", size: 14)!], for: UIControl.State.normal)
     }
 
     override func viewDidLayoutSubviews() {
@@ -34,10 +40,6 @@ class BackupWizardViewController: UIViewController {
         backupCircle.addCircles()
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
     // MARK: - Actions
 
     @IBAction func next(_ sender: UIButton) {

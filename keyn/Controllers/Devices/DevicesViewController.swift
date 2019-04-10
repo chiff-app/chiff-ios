@@ -34,9 +34,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         updateUi()
     }
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        (navigationController as? KeynNavigationController)?.moveAndResizeImage()
-    }
 
     @IBAction func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
