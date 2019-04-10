@@ -108,9 +108,8 @@ class Session: Codable {
             response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add:
-            #warning("TODO: is it really n  ecessary to send the password back after adding a site?")
-            response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .add)
-        case .login:
+            response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .add)
+        case .login, .addAndLogin:
             response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
         case .fill:

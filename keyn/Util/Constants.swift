@@ -55,3 +55,25 @@ enum NotificationContentKey {
     static let type = "type"
     static let username = "username"
 }
+
+/*
+ * Keyn messages go app <-> browser
+ *
+ * They always have a type so the app/browser can determine course of action.
+ * There is one struct for requests, there are multiple for responses.
+ */
+enum KeynMessageType: Int, Codable {
+    case pair = 0
+    case login = 1
+    case register = 2
+    case change = 3
+    case reset = 4          // Unused
+    case add = 5
+    case addAndLogin = 6
+    case end = 7
+    case confirm = 8
+    case fill = 9
+    case reject = 10
+    case expired = 11
+    case preferences = 12
+}

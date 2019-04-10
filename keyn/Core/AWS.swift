@@ -18,7 +18,6 @@ class AWS {
     private let sns = AWSSNS.default()
     private let endpointKeychainIdentifier = "snsDeviceEndpointArn"
     private let subscriptionKeychainIdentifier = "snsSubscriptionArn"
-    #warning("TODO: Minor improvement to only save identifier here instead of complete URL")
     var snsDeviceEndpointArn: String?
     var isFirstLaunch = false
 

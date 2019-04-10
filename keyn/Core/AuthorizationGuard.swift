@@ -54,7 +54,7 @@ class AuthorizationGuard {
 
     func acceptRequest(completionHandler: @escaping (_ error: Error?) -> Void) {
         switch type {
-        case .add, .register:
+        case .add, .register, .addAndLogin:
             addSite(completionHandler: completionHandler)
         case .login, .change, .fill:
             authorizeForKeychain(completionHandler: completionHandler)

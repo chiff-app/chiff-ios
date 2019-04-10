@@ -1,5 +1,14 @@
 ---
 errors:
+  local_authentication:
+    biometry_not_available:
+      value: Authentication could not start, because biometry is not available on the device.
+    biometry_not_enrolled:
+      value: Authentication could not start, because biometry has no enrolled identities.
+    passcode_not_set:
+      value: Authentication could not start, because passcode is not set on the device.
+    generic:
+      value: An authentication error occurred.
   generic_problem:
     value: There was a problem
     comment: A generic problem description
