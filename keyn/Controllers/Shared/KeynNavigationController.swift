@@ -16,6 +16,10 @@ class KeynNavigationController: UINavigationController {
 
     let logoImageView = UIImageView(image: UIImage(named: "logo_purple"))
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .default
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         logoImageView.contentMode = .scaleAspectFit

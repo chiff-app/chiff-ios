@@ -143,11 +143,13 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
                 self.account = try Account(username: username, sites: [site], password: password, type: .ifNeeded, context: nil) { (account, _, error) in
-                    if let error = error {
-                        self.showError(message: "The account could not be saved")
-                        Logger.shared.error("Account could not be saved", error: error)
-                    } else {
-                        self.dismiss(animated: true, completion: nil)
+                    DispatchQueue.main.async {
+                        if let error = error {
+                            self.showError(message: "The account could not be saved")
+                            Logger.shared.error("Account could not be saved", error: error)
+                        } else {
+                            self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
+                        }
                     }
                 }
             } catch {

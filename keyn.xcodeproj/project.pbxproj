@@ -61,9 +61,8 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
+		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
-		496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
-		496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
 		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
 		49721F9D2128EED00090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
@@ -117,8 +116,6 @@
 		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
 		49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
-		49F9BDD222427A8400440C86 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */; };
-		49F9BDD322427A8400440C86 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
@@ -145,8 +142,6 @@
 		611F4B642146B66400B35A89 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
 		611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
-		611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */; };
-		611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */; };
 		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
@@ -256,9 +251,8 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
-		496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Regular.ttf"; sourceTree = "<group>"; };
-		496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IBMPlexMono-Medium.ttf"; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
 		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
@@ -301,7 +295,6 @@
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
 		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
-		49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
@@ -467,6 +460,7 @@
 				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
+				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -618,9 +612,6 @@
 				4905772D2215BA5C006D98C0 /* wordlist.txt */,
 				49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */,
 				49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */,
-				49F9BDD122427A8400440C86 /* Montserrat-Regular.ttf */,
-				496972B12129D2D100DD554C /* IBMPlexMono-Medium.ttf */,
-				496972AE2129CF2100DD554C /* IBMPlexMono-Regular.ttf */,
 				4927D8182254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf */,
 			);
 			path = SupportFiles;
@@ -910,16 +901,13 @@
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
-				496972B02129CF2100DD554C /* IBMPlexMono-Regular.ttf in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
-				49F9BDD222427A8400440C86 /* Montserrat-Regular.ttf in Resources */,
 				4927D8192254AF5A00BFEDD1 /* PatrickHandSC-Regular.ttf in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
-				496972B22129D2D100DD554C /* IBMPlexMono-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -941,12 +929,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49F9BDD322427A8400440C86 /* Montserrat-Regular.ttf in Resources */,
 				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
-				611F4B6C2147E05D00B35A89 /* IBMPlexMono-Regular.ttf in Resources */,
 				49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
-				611F4B6B2147E05D00B35A89 /* IBMPlexMono-Medium.ttf in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
 			);
@@ -1152,6 +1137,7 @@
 				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
+				4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
