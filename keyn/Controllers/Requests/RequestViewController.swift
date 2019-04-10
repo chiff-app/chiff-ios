@@ -21,7 +21,7 @@ class RequestViewController: UIViewController {
         switch authorizationGuard.type {
         case .login:
             requestLabel.text = "Confirm login"
-        case .add:
+        case .add, .addAndLogin:
             requestLabel.text = "Add account"
         case .change:
             requestLabel.text = "Change password"
@@ -55,6 +55,9 @@ class RequestViewController: UIViewController {
         switch authorizationGuard.type {
             case .login:
                 successTextLabel.text = "Login successful"
+                successTextDetailLabel.text = "Return to your computer"
+            case .addAndLogin:
+                successTextLabel.text = "Account added"
                 successTextDetailLabel.text = "Return to your computer"
             case .add:
                 successTextLabel.text = "Account added"

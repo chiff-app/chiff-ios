@@ -18,4 +18,8 @@ class ErrorViewController: UIViewController {
         errorMessageLabel.text = errorMessage
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
 }

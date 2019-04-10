@@ -97,6 +97,10 @@ popups:
       comment: Deny the questionnaire
       value: No, thanks
 accounts:
+  add_2fa_code:
+    value: Add 2FA-code to
+  update_2fa_code:
+    value: Update 2FA-code for
   add_otp_code:
     value: Add code
     comment: Add a one-time-password code
@@ -137,6 +141,8 @@ backup:
     comment: The word for word
     value: word
 requests:
+  expired:
+    value: The request that was received expired. This means it was sent more than three minutes ago.
   login_with:
     comment: Ask to the user to login with an account, e.g. Login with demo@keyn.io?
     value: Login with
