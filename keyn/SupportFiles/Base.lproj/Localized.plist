@@ -83,6 +83,29 @@
 			<key>value</key>
 			<string>There was a problem</string>
 		</dict>
+		<key>local_authentication</key>
+		<dict>
+			<key>biometry_not_available</key>
+			<dict>
+				<key>value</key>
+				<string>Authentication could not start, because biometry is not available on the device.</string>
+			</dict>
+			<key>biometry_not_enrolled</key>
+			<dict>
+				<key>value</key>
+				<string>Authentication could not start, because biometry has no enrolled identities.</string>
+			</dict>
+			<key>generic</key>
+			<dict>
+				<key>value</key>
+				<string>An authentication error occurred.</string>
+			</dict>
+			<key>passcode_not_set</key>
+			<dict>
+				<key>value</key>
+				<string>Authentication could not start, because passcode is not set on the device.</string>
+			</dict>
+		</dict>
 		<key>no_camera</key>
 		<dict>
 			<key>comment</key>
