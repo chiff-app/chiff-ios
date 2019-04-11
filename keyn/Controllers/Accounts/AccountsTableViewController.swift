@@ -39,11 +39,15 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
-        updateUi()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateUi()
     }
 
@@ -65,14 +69,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     private func updateUi() {
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
-            view.bringSubviewToFront(scrollView)
             addAccountContainerView.isHidden = true
             tabBarGradient.isHidden = false
             view.backgroundColor = UIColor.primaryVeryLight
             addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
-            view.bringSubviewToFront(addAccountContainerView)
             tableViewContainer.isHidden = true
             addAccountContainerView.isHidden = false
             tabBarGradient.isHidden = true
