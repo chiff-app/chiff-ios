@@ -2354,10 +2354,10 @@ Reproduction steps:
             </objects>
             <point key="canvasLocation" x="3988.4057971014495" y="1072.8260869565217"/>
         </scene>
-        <!--Backup Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="oIm-u6-eqq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="q8d-pP-FMR" customClass="BackupNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="q8d-pP-FMR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vg4-ov-LS5">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
