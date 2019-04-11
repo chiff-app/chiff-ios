@@ -4,6 +4,10 @@
  */
 import UIKit
 
+enum RecoveryError: KeynError {
+    case unauthenticated
+}
+
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet var wordTextFields: Array<UITextField>!
@@ -48,6 +52,9 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -113,20 +120,29 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
+        view.endEditing(false)
         activityViewContainer.isHidden = false
-        do {
-            guard try Seed.recover(mnemonic: mnemonic) else {
-                activityViewContainer.isHidden = true
-                return
-            }
-            try BackupManager.shared.getBackupData() {
-                DispatchQueue.main.async {
-                    self.loadRootController()
+        LocalAuthenticationManager.shared.unlock(reason: "popups.questions.restore_accounts".localized) { (result, error) in
+            do {
+                if let error = error {
+                    throw error
+                } else if result {
+                    try Seed.recover(mnemonic: self.mnemonic)
+                    try BackupManager.shared.getBackupData() {
+                        DispatchQueue.main.async {
+                            self.loadRootController()
+                        }
+                    }
+                } else {
+                    throw RecoveryError.unauthenticated
                 }
+            } catch {
+                DispatchQueue.main.async {
+                    self.activityViewContainer.isHidden = true
+                }
+                Logger.shared.error("Seed could not be recovered", error: error)
             }
-        } catch {
-            activityViewContainer.isHidden = true
-            Logger.shared.error("Seed could not be recovered", error: error)
+
         }
     }
     

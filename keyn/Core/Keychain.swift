@@ -76,8 +76,6 @@ class Keychain {
         case .restricted:
             query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
         case .confidential:
-            Logger.shared.warning("Confidential Keychain items shouldn't be stored with the Keychain.save sync operation.")
-            // This will fail if the context is not already authenticated. Use async version of this function to present LocalAuthentication if context is not yet authenticated.
             let access = SecAccessControlCreateWithFlags(nil, // Use the default allocator.
                 kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
                 .userPresence,

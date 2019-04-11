@@ -57,6 +57,8 @@ errors:
     value: Error adding OTP token
 popups:
   questions:
+    restore_accounts:
+      value: Restore accounts
     cancel_backup:
       value: Cancel backup?
       comment: Ask the user to cancel the backup
@@ -138,7 +140,7 @@ settings:
     value: Use this form to provide feedback :)
   reset_warning:
     comment: Description under reset Keyn
-    value: Resetting Keyn will delete the seed and all accounts.
+    value: This will delete all data on your phone.
   backup_not_finished:
     comment: Warning that the user did not finish paper backup yet
     value: Paper backup not finished
