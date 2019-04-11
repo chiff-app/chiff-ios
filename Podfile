@@ -12,7 +12,7 @@ def shared_pods
   pod 'Sodium', '~> 0.7'
   pod 'AWSCognito'
   pod 'AWSSNS'
-  pod "JustLog"
+  pod 'JustLog'
   pod 'OneTimePassword', '~> 3.1'
 end
 

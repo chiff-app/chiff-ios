@@ -11,16 +11,12 @@ class CryptoTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        do {
-            let exp = expectation(description: "Waiting for getting site.")
-            try PPD.get(id: TestHelper.linkedInPPDHandle) { (ppd) in
-                self.site = Site(name: ppd?.name ?? "Example", id: TestHelper.linkedInPPDHandle, url: ppd?.url ?? "https://example.com", ppd: ppd)
-                exp.fulfill()
-            }
-            waitForExpectations(timeout: 10, handler: nil)
-        } catch {
-            XCTFail("An error occured during setup: \(error)")
+        let exp = expectation(description: "Waiting for getting site.")
+        PPD.get(id: TestHelper.linkedInPPDHandle) { (ppd) in
+            self.site = Site(name: ppd?.name ?? "Example", id: TestHelper.linkedInPPDHandle, url: ppd?.url ?? "https://example.com", ppd: ppd)
+            exp.fulfill()
         }
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     override func tearDown() {
