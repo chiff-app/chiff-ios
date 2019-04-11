@@ -18,7 +18,7 @@ struct Seed {
     }
 
     static var paperBackupCompleted: Bool {
-        guard let dataArray = try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) else {
+        guard let dataArray = ((try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)) as [String : Any]??) else {
             return false
         }
 
@@ -111,7 +111,7 @@ struct Seed {
         let wordlist = try self.wordlist()
 
         let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
-            guard let index: Int = wordlist.index(of: word) else {
+            guard let index: Int = wordlist.firstIndex(of: word) else {
                 throw SeedError.mnemonicConversion
             }
             return result + String(index, radix: 2).pad(toSize: 11)
