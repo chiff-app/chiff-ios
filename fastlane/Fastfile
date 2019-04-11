@@ -19,6 +19,8 @@ fastlane_require 'json'
 
 default_platform(:ios)
 
+project = 'keyn.xcodeproj'
+
 def analytics(message)
     uri = URI.parse("https://api.keyn.io/logging/analytics")
     header = {'Content-Type': 'application/json; charset=utf-8'}
