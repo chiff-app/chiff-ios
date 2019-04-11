@@ -17,6 +17,10 @@ class QuestionViewController: UIViewController {
         self.navigationItem.hidesBackButton = isFirst
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if self.isMovingFromParent, let navCon = self.navigationController as? QuestionnaireController {

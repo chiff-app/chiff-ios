@@ -12,6 +12,10 @@ class FinishQuestionnaireViewController: UIViewController {
             navCon.finish()
         }
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         if let navCon = self.navigationController as? QuestionnaireController {

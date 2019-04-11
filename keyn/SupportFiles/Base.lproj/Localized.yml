@@ -135,6 +135,9 @@ devices:
     comment: Cell title for scanning qr code
     value: Scan QR
 settings:
+  settings:
+    value: Settings
+    comment: The word for settings
   feedback_description:
     comment: Description under feedback form
     value: Use this form to provide feedback :)

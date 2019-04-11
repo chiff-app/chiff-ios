@@ -449,6 +449,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>This will delete all data on your phone.</string>
 		</dict>
+		<key>settings</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for settings</string>
+			<key>value</key>
+			<string>Settings</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

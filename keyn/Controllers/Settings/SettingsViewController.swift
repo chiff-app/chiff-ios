@@ -24,6 +24,11 @@ class SettingsViewController: UITableViewController {
         } else { justLoaded = false }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section == 0 else {
             return
@@ -34,7 +39,7 @@ class SettingsViewController: UITableViewController {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = "Settings"
+        header.textLabel?.text = "settings.settings".localized
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -62,10 +67,7 @@ class SettingsViewController: UITableViewController {
         }
     }
 
-    @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
-        setNeedsStatusBarAppearanceUpdate()
-        // TODO: this doesn't seem to be working...
-    }
+    @IBAction func unwindToSettings(sender: UIStoryboardSegue) { }
     
     @IBAction func resetKeyn(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "popups.questions.reset_keyn_description".localized, preferredStyle: .actionSheet)

@@ -30,7 +30,7 @@ enum KeynButtonType: String {
     }
 
     var type: KeynButtonType = .primary {
-        didSet {
+        didSet {    
             switch type {
             case .primary:
                 backgroundColor = UIColor.primary
