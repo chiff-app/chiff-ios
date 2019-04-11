@@ -32,6 +32,12 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
 
         // Do any additional setup after loading the view.
         contentView.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
