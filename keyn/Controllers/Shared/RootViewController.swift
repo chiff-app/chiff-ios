@@ -16,7 +16,9 @@ class RootViewController: UITabBarController {
     
     func handleQuestionnaireNotification(notification: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() })
+//            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() })
+//            { self.presentQuestionAlert(questionnaire: questionnaire) }
+            if let questionnaire = Questionnaire.all().first
             { self.presentQuestionAlert(questionnaire: questionnaire) }
         }
     }

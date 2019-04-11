@@ -71,14 +71,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             tabBarGradient.isHidden = false
-            view.backgroundColor = UIColor.primaryVeryLight
             addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
             addAccountContainerView.isHidden = false
             tabBarGradient.isHidden = true
-            view.backgroundColor = UIColor.white
         }
     }
 
