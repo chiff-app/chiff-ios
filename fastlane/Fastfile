@@ -41,7 +41,7 @@ end
 
 platform :ios do
     desc 'Build app'
-    lane :build_keyn do
+    lane :build do
         scan
         cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
@@ -56,28 +56,31 @@ platform :ios do
     desc 'Start minor release'
     lane :start_minor_release do
         version = increment_version_number(bump_type: 'minor')
-        `git stash;git flow release start #{version};git stash pop`
-        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
+        `git stash;git flow release start #{version};git stash pop; git add ..`
+        commit_version_bump(xcodeproj: project)
     end
 
     desc 'Start patch version'
     lane :start_patch_release do
         version = increment_version_number(bump_type: 'patch')
-        `git stash;git flow release start #{version};git stash pop`
-        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
+        `git stash;git flow release start #{version};git stash pop;git add ..`
+        commit_version_bump(xcodeproj: project)
     end
 
     desc 'Start major version'
     lane :start_major_release do
         version = increment_version_number(bump_type: 'major')
-        `git stash;git flow release start #{version};git stash pop`
-        commit_version_bump(xcodeproj: 'keyn.xcodeproj')
+        `git stash;git flow release start #{version};git stash pop; git add ..`
+        commit_version_bump(xcodeproj: project)
     end
 
     desc 'Beta release'
     lane :beta_release do
         version = get_version_number()
-        build_keyn
+        build
+        upload_to_testflight(
+            skip_waiting_for_build_processing: true
+        )
         upload_to_testflight
         slack(message: "New version of Keyn released! #{version}")
     end
