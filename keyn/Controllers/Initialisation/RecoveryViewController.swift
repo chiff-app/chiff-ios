@@ -130,7 +130,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                     try Seed.recover(mnemonic: self.mnemonic)
                     try BackupManager.shared.getBackupData() {
                         DispatchQueue.main.async {
-                            self.loadRootController()
+                            self.showRootController()
                         }
                     }
                 } else {
@@ -148,10 +148,19 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Private
 
-    private func loadRootController() {
-        let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-        rootController.selectedIndex = 0
-        UIApplication.shared.keyWindow?.rootViewController = rootController
+    private func showRootController() {
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+            Logger.shared.error("Unexpected root view controller type")
+            fatalError("Unexpected root view controller type")
+        }
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            DispatchQueue.main.async {
+                window.rootViewController = vc
+            }
+        })
     }
 
     private func checkMnemonic() -> Bool {
