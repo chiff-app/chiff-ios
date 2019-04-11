@@ -272,6 +272,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>value</key>
 				<string>This will delete the seed and all passwords.</string>
 			</dict>
+			<key>restore_accounts</key>
+			<dict>
+				<key>value</key>
+				<string>Restore accounts</string>
+			</dict>
 		</dict>
 		<key>responses</key>
 		<dict>
@@ -442,7 +447,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>Resetting Keyn will delete the seed and all accounts.</string>
+			<string>This will delete all data on your phone.</string>
 		</dict>
 	</dict>
 </dict>

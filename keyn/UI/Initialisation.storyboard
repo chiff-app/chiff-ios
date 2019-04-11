@@ -348,7 +348,7 @@
                     <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="h3D-cu-V96">
                         <barButtonItem key="backBarButtonItem" title=" " id="MR8-mB-0Df"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Finish" id="UoD-yA-iY4">
-                            <color key="tintColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="finish:" destination="wDe-lR-s6k" id="sX4-Rd-hPZ"/>
                             </connections>

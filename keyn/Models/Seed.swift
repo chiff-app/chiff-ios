@@ -6,6 +6,7 @@ import Foundation
 
 enum SeedError: KeynError {
     case mnemonicConversion
+    case checksumFailed
 }
 
 struct Seed {
@@ -54,11 +55,11 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(mnemonic: [String]) throws -> Bool {
+    static func recover(mnemonic: [String]) throws {
         let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
         let checksumSize = seed.count / 4
         guard checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed) else {
-            return false
+            throw SeedError.checksumFailed
         }
 
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
@@ -67,8 +68,6 @@ struct Seed {
         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed, label: "true")
         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
         try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-        
-        return true
     }
 
     static func getPasswordSeed() throws -> Data {

@@ -149,12 +149,12 @@ struct BackupManager {
                         let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
                         try Account.save(accountData: accountData, id: id)
                     } catch {
-                        print(error)
                         Logger.shared.error("Could not restore account.", error: error)
                     }
                 }
             }
             Logger.shared.analytics("Accunts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
+
             completionHandler()
         })
     }

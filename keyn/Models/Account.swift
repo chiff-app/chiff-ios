@@ -30,8 +30,8 @@ struct Account: Codable {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
-    private var tokenURL: URL? // Only for backup
-    private var tokenSecret: Data? // Only for backup
+    fileprivate var tokenURL: URL? // Only for backup
+    fileprivate var tokenSecret: Data? // Only for backup
 
     init?(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ account: Account, _ context: LAContext?, _ error: Error?) -> Void) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -62,7 +62,7 @@ struct Account: Codable {
             tokenURL = try token.toURL()
         }
 
-        let accountData = try PropertyListEncoder().encode(self)
+        let accountData = try JSONEncoder().encode(self)
         try BackupManager.shared.backup(id: id, accountData: accountData)
     }
 
@@ -305,10 +305,19 @@ struct Account: Codable {
     }
 
     static func save(accountData: Data, id: String) throws {
-        let decoder = PropertyListDecoder()
-        var account = try decoder.decode(Account.self, from: accountData)
-        let data: Data
-        
+        let decoder = JSONDecoder()
+        var account: Account!
+        do {
+            account = try decoder.decode(Account.self, from: accountData)
+            print("Account restored from JSON")
+        } catch is DecodingError {
+            let legacyDecoder = PropertyListDecoder()
+            let legacyAccount = try legacyDecoder.decode(LegacyAccount.self, from: accountData)
+            account = Account(legacyAccount: legacyAccount)
+            print(account)
+            print("Account restored from plist")
+        }
+
         assert(account.id == id, "Account restoring went wrong. Different id")
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd)
@@ -322,12 +331,10 @@ struct Account: Codable {
             account.tokenURL = nil
             let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
-            data = try PropertyListEncoder().encode(account)
-        } else {
-            data = accountData
         }
 
-        #warning("TODO: check if this needs to be authenticated. Used when restoring accounts. Probably not...")
+        let data = try PropertyListEncoder().encode(account)
+
         try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
         saveToIdentityStore(account: account)
     }
@@ -337,7 +344,6 @@ struct Account: Codable {
     }
 
     static func deleteAll() {
-        #warning("TODO: check if this needs to be authenticated")
         Keychain.shared.deleteAll(service: .account)
         Keychain.shared.deleteAll(service: .otp)
         if #available(iOS 12.0, *) {
@@ -420,4 +426,33 @@ struct Account: Codable {
         }
     }
 
+}
+
+// MARK: - For legacy backups
+
+extension Account {
+
+    init(legacyAccount: LegacyAccount) {
+        self.id = legacyAccount.id
+        self.username = legacyAccount.username
+        self.sites = [legacyAccount.site]
+        self.passwordIndex = legacyAccount.passwordIndex
+        self.lastPasswordUpdateTryIndex = legacyAccount.lastPasswordUpdateTryIndex ?? legacyAccount.passwordIndex
+        self.tokenURL = legacyAccount.tokenURL
+        self.tokenSecret = legacyAccount.tokenSecret
+    }
+
+}
+
+struct LegacyAccount: Codable {
+    let id: String
+    var username: String
+    var site: Site
+    var passwordIndex: Int
+    var lastPasswordUpdateTryIndex: Int?
+    var passwordOffset: [Int]?
+    var askToLogin: Bool?
+    var askToChange: Bool?
+    fileprivate var tokenURL: URL?
+    fileprivate var tokenSecret: Data?
 }
