@@ -110,7 +110,8 @@ class PasswordGenerator {
     }
 
     private func generateKey(index passwordIndex: Int) throws -> Data {
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: self.siteId.data, index: 0)
+        #warning("TODO: write migration script to get rid of prefix")
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: String(self.siteId.prefix(8)).data, index: 0)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: username.data, index: passwordIndex)
 
         return key
