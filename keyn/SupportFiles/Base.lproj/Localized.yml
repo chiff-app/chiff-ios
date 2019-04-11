@@ -191,3 +191,18 @@ registration:
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: This password has been found in
+intialisation:
+  mobile_instruction_iOS12:
+    first:
+      value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.
+    second:
+      value: When you want to login, iOS will automatically ask Keyn for your password.
+    third:
+      value: You can login by authorizing the request.
+  mobile_instruction_<iOS12:
+    first:
+      value: To login on your phone, open Keyn.
+    second:
+      value: Copy your password by simply tapping it.
+    third:
+      value: Return to the login fields and paste your password.
