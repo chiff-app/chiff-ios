@@ -990,25 +990,43 @@
                         <sections>
                             <tableViewSection headerTitle="General" footerTitle="[Generated in ViewController] [Generated in ViewController] " id="zsO-ju-Qwo">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="3FV-SZ-jCa" imageView="Qib-ye-hCq" style="IBUITableViewCellStyleDefault" id="oyn-RN-Wtn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="oyn-RN-Wtn">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oyn-RN-Wtn" id="VeV-CE-y5A">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Paper backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3FV-SZ-jCa">
-                                                    <rect key="frame" x="15" y="0.0" width="344" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Qib-ye-hCq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </imageView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-jC-4eY">
+                                                    <rect key="frame" x="16" y="8" width="315" height="27.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Paper backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afT-jz-a0z">
+                                                            <rect key="frame" x="0.0" y="0.0" width="297" height="27.5"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2nL-eC-bgn">
+                                                            <rect key="frame" x="297" y="0.0" width="18" height="27.5"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="2nL-eC-bgn" secondAttribute="trailing" id="3Zq-GI-pUT"/>
+                                                        <constraint firstItem="afT-jz-a0z" firstAttribute="top" secondItem="DfA-jC-4eY" secondAttribute="top" id="B1Y-1Z-J86"/>
+                                                        <constraint firstAttribute="bottom" secondItem="2nL-eC-bgn" secondAttribute="bottom" id="MS7-Qn-egD"/>
+                                                        <constraint firstItem="2nL-eC-bgn" firstAttribute="leading" secondItem="afT-jz-a0z" secondAttribute="trailing" id="W8a-mR-oni"/>
+                                                        <constraint firstItem="afT-jz-a0z" firstAttribute="leading" secondItem="DfA-jC-4eY" secondAttribute="leading" id="Y56-XS-bS8"/>
+                                                        <constraint firstAttribute="bottom" secondItem="afT-jz-a0z" secondAttribute="bottom" id="YaE-QT-muj"/>
+                                                        <constraint firstItem="2nL-eC-bgn" firstAttribute="top" secondItem="DfA-jC-4eY" secondAttribute="top" id="lNG-YP-iYy"/>
+                                                    </constraints>
+                                                </stackView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="DfA-jC-4eY" firstAttribute="top" secondItem="VeV-CE-y5A" secondAttribute="top" constant="8" id="3DY-f9-YhI"/>
+                                                <constraint firstAttribute="trailing" secondItem="DfA-jC-4eY" secondAttribute="trailing" constant="10" id="6Na-US-aKy"/>
+                                                <constraint firstItem="DfA-jC-4eY" firstAttribute="leading" secondItem="VeV-CE-y5A" secondAttribute="leading" constant="16" id="6RD-eu-gqW"/>
+                                                <constraint firstAttribute="bottom" secondItem="DfA-jC-4eY" secondAttribute="bottom" constant="8" id="FYh-EZ-TPa"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
@@ -1032,9 +1050,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <segue destination="Tsr-Ep-FMV" kind="show" id="yb0-x5-Mxz"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1078,10 +1093,13 @@
                     <navigationItem key="navigationItem" id="3dr-aU-u8m">
                         <barButtonItem key="backBarButtonItem" title=" " id="gKl-BS-uBy"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="paperBackupAlertIcon" destination="2nL-eC-bgn" id="dvl-YY-kLA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YP6-gr-Ko2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1472" y="1074"/>
+            <point key="canvasLocation" x="1471.2" y="1073.6131934032985"/>
         </scene>
         <!--Feedback View Controller-->
         <scene sceneID="Pdd-sj-TAu">
@@ -1092,7 +1110,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BXV-cG-Utc">
-                                <rect key="frame" x="20" y="139" width="335" height="459"/>
+                                <rect key="frame" x="20" y="95" width="335" height="552"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">Description issue:
 
@@ -1107,7 +1125,7 @@ Reproduction steps:
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="skh-C2-3qN" customClass="FormTextField" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="84" width="335" height="35"/>
+                                <rect key="frame" x="20" y="40" width="335" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="6ny-wr-oza"/>
@@ -2661,6 +2679,7 @@ Reproduction steps:
         <image name="Scan_overlay" width="176" height="171"/>
         <image name="accounts_tab" width="20" height="25"/>
         <image name="add_button" width="38" height="38"/>
+        <image name="alert_icon" width="18" height="18"/>
         <image name="book_pen" width="97" height="100"/>
         <image name="chevron_right" width="7" height="11"/>
         <image name="close-icon" width="16" height="16"/>
