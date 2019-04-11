@@ -19,8 +19,8 @@
         <array key="Montserrat-Medium.ttf">
             <string>Montserrat-Medium</string>
         </array>
-        <array key="PatrickHandSC-Regular.ttf">
-            <string>PatrickHandSC-Regular</string>
+        <array key="PatrickHand-Regular.ttf">
+            <string>PatrickHand-Regular</string>
         </array>
     </customFonts>
     <scenes>
@@ -199,18 +199,18 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="0.0" id="wil-ge-7VV">
-                                        <rect key="frame" x="0.0" y="287.5" width="375" height="0.0"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="wil-ge-7VV">
+                                        <rect key="frame" x="0.0" y="287.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wil-ge-7VV" id="5TX-6f-AVg">
-                                            <rect key="frame" x="0.0" y="-0.5" width="375" height="0.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="jxc-ac-6M5">
-                                                    <rect key="frame" x="16" y="0.0" width="315" height="0.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="315" height="43.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2FA Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-fa-pXv">
-                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="0.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2FA code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRg-fa-pXv">
+                                                            <rect key="frame" x="0.0" y="0.0" width="75" height="43.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="i1M-yX-Yt9"/>
                                                             </constraints>
@@ -219,7 +219,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Code" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="gRZ-KH-74z">
-                                                            <rect key="frame" x="112" y="0.0" width="203" height="0.5"/>
+                                                            <rect key="frame" x="112" y="0.0" width="203" height="43.5"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" textContentType="one-time-code"/>
@@ -227,7 +227,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lql-km-Qfu">
-                                                    <rect key="frame" x="331" y="0.0" width="44" height="0.5"/>
+                                                    <rect key="frame" x="331" y="0.0" width="44" height="43.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="bJ1-yd-KjI"/>
@@ -251,7 +251,7 @@
                             <tableViewSection id="Xtc-o6-09S">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
-                                        <rect key="frame" x="0.0" y="323.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="367.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KXD-8V-vma" id="99P-am-w3J">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -279,7 +279,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="zon-vV-iH2">
-                                        <rect key="frame" x="0.0" y="367.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="411.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -1185,16 +1185,16 @@ Reproduction steps:
         <!--View Controller-->
         <scene sceneID="3wm-x5-OvS">
             <objects>
-                <viewController storyboardIdentifier="OTP Controller" id="kL3-Yo-Ehz" customClass="OTPViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="OTP Controller" hidesBottomBarWhenPushed="YES" id="kL3-Yo-Ehz" customClass="OTPViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1rc-Xm-7Jy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hXJ-Si-lcK">
-                                <rect key="frame" x="0.0" y="133.5" width="375" height="376.5"/>
+                                <rect key="frame" x="0.0" y="133.5" width="375" height="365.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="Scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="Zae-Q7-6CG">
-                                        <rect key="frame" x="99.5" y="103" width="176" height="171"/>
+                                        <rect key="frame" x="99.5" y="97.5" width="176" height="171"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -1216,7 +1216,7 @@ Reproduction steps:
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="2eC-LB-IQr" firstAttribute="top" secondItem="HvE-Ku-vhY" secondAttribute="top" constant="30" id="29E-S0-xbW"/>
                             <constraint firstItem="HvE-Ku-vhY" firstAttribute="trailing" secondItem="VIp-Rp-5pm" secondAttribute="trailing" constant="40" id="8bV-gF-UgK"/>
@@ -1224,7 +1224,7 @@ Reproduction steps:
                             <constraint firstItem="hXJ-Si-lcK" firstAttribute="top" secondItem="VIp-Rp-5pm" secondAttribute="bottom" constant="22" id="LD9-ky-62w"/>
                             <constraint firstItem="VIp-Rp-5pm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2eC-LB-IQr" secondAttribute="bottom" id="aTS-6o-rUe"/>
                             <constraint firstItem="hXJ-Si-lcK" firstAttribute="trailing" secondItem="HvE-Ku-vhY" secondAttribute="trailing" id="fg8-dq-z3i"/>
-                            <constraint firstItem="HvE-Ku-vhY" firstAttribute="bottom" secondItem="hXJ-Si-lcK" secondAttribute="bottom" id="jSL-0T-YEa"/>
+                            <constraint firstItem="HvE-Ku-vhY" firstAttribute="bottom" secondItem="hXJ-Si-lcK" secondAttribute="bottom" constant="60" id="jSL-0T-YEa"/>
                             <constraint firstItem="2eC-LB-IQr" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" constant="16" id="mdB-Be-SdW"/>
                             <constraint firstItem="HvE-Ku-vhY" firstAttribute="trailing" secondItem="2eC-LB-IQr" secondAttribute="trailing" constant="16" id="mqm-Jc-YNt"/>
                             <constraint firstItem="VIp-Rp-5pm" firstAttribute="leading" secondItem="HvE-Ku-vhY" secondAttribute="leading" constant="40" id="ngZ-VI-pqQ"/>
@@ -1399,33 +1399,18 @@ Reproduction steps:
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tV5-Dj-vX9">
-                                <rect key="frame" x="0.0" y="90" width="375" height="473"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="517"/>
                                 <connections>
                                     <segue destination="cKd-wq-Wsv" kind="embed" identifier="EmbeddedPairing" id="rhj-pt-HzT"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVy-tV-F9z" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="117" y="593" width="141" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="141" id="0X7-c5-aRA"/>
-                                    <constraint firstAttribute="height" constant="44" id="2FV-6x-oNy"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Help  me"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="tV5-Dj-vX9" firstAttribute="top" secondItem="Krp-BY-Ppc" secondAttribute="top" constant="26" id="AH1-QW-fhM"/>
-                            <constraint firstAttribute="bottom" secondItem="pVy-tV-F9z" secondAttribute="bottom" constant="30" id="NaG-nr-o5v"/>
-                            <constraint firstItem="pVy-tV-F9z" firstAttribute="top" secondItem="tV5-Dj-vX9" secondAttribute="bottom" constant="30" id="Sb2-NN-q0b"/>
                             <constraint firstItem="tV5-Dj-vX9" firstAttribute="leading" secondItem="mgR-W4-VU7" secondAttribute="leading" id="YS2-f0-yQG"/>
                             <constraint firstItem="tV5-Dj-vX9" firstAttribute="trailing" secondItem="mgR-W4-VU7" secondAttribute="trailing" id="qJa-2p-tjL"/>
-                            <constraint firstItem="pVy-tV-F9z" firstAttribute="centerX" secondItem="mgR-W4-VU7" secondAttribute="centerX" id="zuV-39-iX2"/>
+                            <constraint firstItem="Krp-BY-Ppc" firstAttribute="bottom" secondItem="tV5-Dj-vX9" secondAttribute="bottom" constant="60" id="rTQ-ok-HH4"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Krp-BY-Ppc"/>
                     </view>
@@ -1440,7 +1425,7 @@ Reproduction steps:
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PfC-J7-bKH" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="elM-3d-hsv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3144.9275362318845" y="0.0"/>
+            <point key="canvasLocation" x="3144.8000000000002" y="-0.44977511244377816"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="fhl-q6-z9V">
@@ -1592,17 +1577,17 @@ Reproduction steps:
             <objects>
                 <viewController storyboardIdentifier="PairController" id="cKd-wq-Wsv" customClass="PairViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kLW-Ki-aCj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="473"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="517"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqO-8h-OgS">
-                                <rect key="frame" x="16" y="22" width="343" height="27"/>
+                                <rect key="frame" x="16" y="42" width="343" height="27"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r95-U4-jiJ">
-                                <rect key="frame" x="40" y="69" width="295" height="72"/>
+                                <rect key="frame" x="40" y="89" width="295" height="72"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Scan the QR code that appears in the top right corner of your browser after installing our extension via">
                                         <attributes>
@@ -1629,10 +1614,10 @@ Reproduction steps:
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uC-YB-Cmv">
-                                <rect key="frame" x="0.0" y="161" width="375" height="312"/>
+                                <rect key="frame" x="0.0" y="181" width="375" height="336"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="Scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-7d-Dfy">
-                                        <rect key="frame" x="99.5" y="70.5" width="176" height="171"/>
+                                        <rect key="frame" x="99.5" y="82.5" width="176" height="171"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -1643,7 +1628,7 @@ Reproduction steps:
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="r95-U4-jiJ" secondAttribute="trailing" constant="24" id="6Bv-lm-drN"/>
                             <constraint firstItem="9uC-YB-Cmv" firstAttribute="leading" secondItem="kLW-Ki-aCj" secondAttribute="leading" id="7Sd-a1-Fow"/>
@@ -2222,7 +2207,7 @@ Reproduction steps:
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="vVP-N1-u9d" firstAttribute="width" secondItem="KGm-lF-7dp" secondAttribute="width" id="1ag-kW-su5"/>
                             <constraint firstItem="VKF-fP-axV" firstAttribute="leading" secondItem="Rzu-ZE-ozG" secondAttribute="leading" constant="20" id="4sF-3d-lK4"/>
@@ -2262,9 +2247,9 @@ Reproduction steps:
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7l-1Y-DJ5" customClass="BackupCircle" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="21" y="187" width="333" height="333"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Word" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfX-9C-xGX">
-                                        <rect key="frame" x="107.5" y="124.5" width="118.5" height="84"/>
-                                        <fontDescription key="fontDescription" name="PatrickHandSC-Regular" family="Patrick Hand SC" pointSize="62"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="word" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfX-9C-xGX">
+                                        <rect key="frame" x="115.5" y="124.5" width="102" height="84"/>
+                                        <fontDescription key="fontDescription" name="PatrickHand-Regular" family="Patrick Hand" pointSize="62"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -2592,21 +2577,20 @@ Reproduction steps:
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="FUQ-zr-X1l">
-                                <rect key="frame" x="40" y="258" width="295" height="180"/>
+                                <rect key="frame" x="40" y="258" width="295" height="162.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Great! Your back-up has been saved succesfully" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5j-4b-hvw">
-                                        <rect key="frame" x="0.0" y="0.0" width="295" height="54"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Great! Now store your paper backup in a safe place" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5j-4b-hvw">
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="80.5"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2X4-VH-y9f">
-                                        <rect key="frame" x="0.0" y="70" width="295" height="110"/>
+                                        <rect key="frame" x="0.5" y="96.5" width="294" height="66"/>
                                         <attributedString key="attributedText">
-                                            <fragment>
-                                                <string key="content">Make sure you safely store the paper back-up note that you just made. With this you can always restore access to your Keyn account. Even when you lose your device. </string>
+                                            <fragment content="If your phone gets lost or stolen, you can recover all your accounts by entering the words on your new phone.">
                                                 <attributes>
-                                                    <color key="NSColor" red="1" green="0.99997999999999998" blue="1" alpha="0.80211226851851847" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>

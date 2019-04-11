@@ -65,6 +65,7 @@
 	<string>Unlocking Keyn and authorizing requests.</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>PatrickHand-Regular.ttf</string>
 		<string>Montserrat-Medium.ttf</string>
 		<string>Montserrat-Bold.ttf</string>
 	</array>

@@ -64,6 +64,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - UITableView
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 && indexPath.row == 2 {
+            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
+        }
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return editingMode ? 3 : 2
     }
