@@ -219,6 +219,45 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>This QR-code could not be decoded.</string>
 		</dict>
 	</dict>
+	<key>intialisation</key>
+	<dict>
+		<key>mobile_instruction_&lt;iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>To login on your phone, open Keyn.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Copy your password by simply tapping it.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Return to the login fields and paste your password.</string>
+			</dict>
+		</dict>
+		<key>mobile_instruction_iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>When you want to login, iOS will automatically ask Keyn for your password.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>You can login by authorizing the request.</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>popups</key>
 	<dict>
 		<key>questions</key>
