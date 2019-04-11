@@ -8,6 +8,7 @@ class SettingsViewController: UITableViewController {
 
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
+    @IBOutlet weak var paperBackupAlertIcon: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,6 +16,7 @@ class SettingsViewController: UITableViewController {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
+        paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +69,13 @@ class SettingsViewController: UITableViewController {
         }
     }
 
-    @IBAction func unwindToSettings(sender: UIStoryboardSegue) { }
+    @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
+        let completed = Seed.paperBackupCompleted
+        paperBackupAlertIcon.isHidden = completed
+        if let rootController = tabBarController as? RootViewController {
+            rootController.setBadge(completed: completed)
+        }
+    }
     
     @IBAction func resetKeyn(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "popups.questions.reset_keyn_description".localized, preferredStyle: .actionSheet)
@@ -90,10 +98,6 @@ class SettingsViewController: UITableViewController {
 
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        do {
-            securityFooterText = try Seed.isPaperBackupCompleted() ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
-        } catch {
-            Logger.shared.warning("Could determine if seed is backed up.", error: error)
-        }
+        securityFooterText = true ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
     }
 }

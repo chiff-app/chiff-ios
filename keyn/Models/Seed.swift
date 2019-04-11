@@ -17,6 +17,18 @@ struct Seed {
         Keychain.shared.has(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
 
+    static var paperBackupCompleted: Bool {
+        guard let dataArray = try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) else {
+            return false
+        }
+
+        guard let label = dataArray?[kSecAttrLabel as String] as? String else {
+            return false
+        }
+
+        return label == "true"
+    }
+
     private enum KeyIdentifier: String, Codable {
         case password = "password"
         case backup = "backup"
@@ -86,18 +98,6 @@ struct Seed {
 
     static func setPaperBackupCompleted() throws {
         try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, label: "true")
-    }
-
-    static func isPaperBackupCompleted() throws -> Bool {
-        guard let dataArray = try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) else {
-            return false
-        }
-
-        guard let label = dataArray[kSecAttrLabel as String] as? String else {
-            return false
-        }
-
-        return label == "true"
     }
     
     // MARK: - Private

@@ -11,14 +11,19 @@ class RootViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
+        setBadge(completed: Seed.paperBackupCompleted)
     }
 
-    
+    func setBadge(completed: Bool) {
+        if let settingsItem = tabBar.items?[2] {
+            settingsItem.badgeColor = UIColor.secondary
+            settingsItem.badgeValue = completed ? nil : "!"
+        }
+    }
+
     func handleQuestionnaireNotification(notification: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-//            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() })
-//            { self.presentQuestionAlert(questionnaire: questionnaire) }
-            if let questionnaire = Questionnaire.all().first
+            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() })
             { self.presentQuestionAlert(questionnaire: questionnaire) }
         }
     }
@@ -72,4 +77,6 @@ extension UITabBar {
         }
         return sizeThatFits
     }
+
+
 }
