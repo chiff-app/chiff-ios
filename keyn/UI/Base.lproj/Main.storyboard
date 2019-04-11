@@ -888,6 +888,7 @@
                             </scrollView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hjK-VU-J4E">
                                 <rect key="frame" x="0.0" y="100" width="375" height="410"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="yEQ-dB-DTP" kind="embed" identifier="EmbedAddAccount" id="XX4-ez-aRm"/>
                                 </connections>
@@ -1400,6 +1401,7 @@ Reproduction steps:
                         <subviews>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tV5-Dj-vX9">
                                 <rect key="frame" x="0.0" y="90" width="375" height="517"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="cKd-wq-Wsv" kind="embed" identifier="EmbeddedPairing" id="rhj-pt-HzT"/>
                                 </connections>
@@ -1557,7 +1559,7 @@ Reproduction steps:
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Kgl-qT-hsr" firstAttribute="top" secondItem="USz-Lq-3ee" secondAttribute="top" id="8k3-ih-wGg"/>
                             <constraint firstItem="USz-Lq-3ee" firstAttribute="bottom" secondItem="Kgl-qT-hsr" secondAttribute="bottom" id="KRU-F5-QtZ"/>
@@ -1628,7 +1630,7 @@ Reproduction steps:
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="r95-U4-jiJ" secondAttribute="trailing" constant="24" id="6Bv-lm-drN"/>
                             <constraint firstItem="9uC-YB-Cmv" firstAttribute="leading" secondItem="kLW-Ki-aCj" secondAttribute="leading" id="7Sd-a1-Fow"/>
@@ -1795,6 +1797,7 @@ Reproduction steps:
                                     </label>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEd-N5-4b3">
                                         <rect key="frame" x="16" y="90" width="343" height="256"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <segue destination="bOR-h2-vHE" kind="embed" id="nqp-SK-9dR"/>
                                         </connections>
@@ -1818,7 +1821,7 @@ Reproduction steps:
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="CEd-N5-4b3" firstAttribute="top" secondItem="TUs-d5-ogn" secondAttribute="bottom" constant="50" id="7PY-KK-W3x"/>
                                     <constraint firstAttribute="height" constant="450" id="Brd-hA-lSW"/>
@@ -1840,7 +1843,7 @@ Reproduction steps:
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="PW9-SL-sxb" firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" id="AIj-mQ-qnS"/>
                             <constraint firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" constant="80" id="Dfc-V1-DWb"/>
@@ -1911,7 +1914,7 @@ Reproduction steps:
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="szR-bg-VMn" firstAttribute="top" secondItem="6ZQ-ul-e5r" secondAttribute="bottom" constant="28" id="2nk-vy-dkG"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="leading" secondItem="hxD-DE-Aqf" secondAttribute="leadingMargin" constant="31" id="8eG-hz-jOS"/>
@@ -2042,7 +2045,7 @@ Reproduction steps:
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="lIj-jV-k3b" secondAttribute="trailing" constant="20" id="4Dd-Nf-mgF"/>
                             <constraint firstItem="csT-mb-C3g" firstAttribute="trailing" secondItem="R9O-0N-DlN" secondAttribute="trailing" constant="20" id="6Hd-rz-iGi"/>
@@ -2090,7 +2093,7 @@ Reproduction steps:
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M56-Tn-sZ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2237.68115942029" y="0.0"/>
+            <point key="canvasLocation" x="2314" y="0.0"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="XCC-Je-edD">
@@ -2348,16 +2351,18 @@ Reproduction steps:
                         <outlet property="previousButton" destination="dD1-yq-ZbA" id="f3c-bG-cUf"/>
                         <outlet property="wordLabel" destination="SfX-9C-xGX" id="hoR-2n-CsS"/>
                         <segue destination="EvN-my-LiB" kind="show" identifier="MnemonicCheck" id="VYE-B9-XIX"/>
+                        <segue destination="dK7-6s-jch" kind="unwind" identifier="UnwindToSettings" unwindAction="unwindToSettingsWithSender:" id="bgS-iH-rdY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5nx-5j-Qll" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="dK7-6s-jch" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3988.4057971014495" y="1072.8260869565217"/>
         </scene>
-        <!--Backup Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="oIm-u6-eqq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="q8d-pP-FMR" customClass="BackupNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="q8d-pP-FMR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vg4-ov-LS5">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -2590,7 +2595,7 @@ Reproduction steps:
                                         <attributedString key="attributedText">
                                             <fragment content="If your phone gets lost or stolen, you can recover all your accounts by entering the words on your new phone.">
                                                 <attributes>
-                                                    <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                 </attributes>
@@ -2675,6 +2680,6 @@ Reproduction steps:
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fQN-eu-7O6"/>
+        <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>
 </document>

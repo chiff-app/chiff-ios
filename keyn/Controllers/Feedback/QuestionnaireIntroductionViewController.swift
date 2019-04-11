@@ -14,6 +14,11 @@ class QuestionnaireIntroductionViewController: UIViewController {
         introductionLabel.text = introduction
     }
 
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     // MARK: - Actions
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {

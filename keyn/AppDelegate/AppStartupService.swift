@@ -164,7 +164,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         tabBar.barTintColor = UIColor.clear
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage()
-        UITabBarItem.appearance().setTitleTextAttributes([
+            UITabBarItem.appearance().setTitleTextAttributes([
             .font: UIFont(name: "Montserrat-Bold", size: 15)!,
             .foregroundColor: UIColor.primary
         ], for: .normal)

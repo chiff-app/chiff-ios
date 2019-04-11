@@ -140,13 +140,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false
             tabBarGradient.isHidden = false
-            view.backgroundColor = UIColor.primaryVeryLight
             addAddButton()
         } else {
             addSessionContainer.isHidden = false
             tableViewContainer.isHidden = true
             tabBarGradient.isHidden = true
-            view.backgroundColor = UIColor.white
             navigationItem.rightBarButtonItem = nil
         }
     }
