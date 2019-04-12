@@ -1052,7 +1052,7 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <segue destination="Tsr-Ep-FMV" kind="show" id="Lhz-Ae-LNV"/>
+                                            <segue destination="edD-lG-IvQ" kind="show" id="GuR-bU-weO"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1104,75 +1104,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YP6-gr-Ko2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1471.2" y="1073.6131934032985"/>
-        </scene>
-        <!--Feedback View Controller-->
-        <scene sceneID="Pdd-sj-TAu">
-            <objects>
-                <viewController id="Tsr-Ep-FMV" customClass="FeedbackViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="2Ui-ap-R7C">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="interactive" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BXV-cG-Utc">
-                                <rect key="frame" x="20" y="139" width="335" height="459"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <string key="text">Description issue:
-
-
-Functionality:
-
-
-Reproduction steps:
-</string>
-                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="skh-C2-3qN" customClass="FormTextField" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="84" width="335" height="34"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="6ny-wr-oza"/>
-                                </constraints>
-                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="inset">
-                                        <real key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="e4K-AZ-VaB" firstAttribute="trailing" secondItem="BXV-cG-Utc" secondAttribute="trailing" constant="20" id="8RM-Ee-OZL"/>
-                            <constraint firstItem="skh-C2-3qN" firstAttribute="top" secondItem="e4K-AZ-VaB" secondAttribute="top" constant="20" id="Gyn-XE-Frt"/>
-                            <constraint firstItem="BXV-cG-Utc" firstAttribute="top" secondItem="skh-C2-3qN" secondAttribute="bottom" constant="20" id="UB6-bl-prO"/>
-                            <constraint firstItem="e4K-AZ-VaB" firstAttribute="bottom" secondItem="BXV-cG-Utc" secondAttribute="bottom" constant="20" id="ZEJ-ax-58l"/>
-                            <constraint firstItem="skh-C2-3qN" firstAttribute="leading" secondItem="BXV-cG-Utc" secondAttribute="leading" id="eF0-db-Hme"/>
-                            <constraint firstItem="BXV-cG-Utc" firstAttribute="leading" secondItem="e4K-AZ-VaB" secondAttribute="leading" constant="20" id="jwk-tX-T8O"/>
-                            <constraint firstItem="skh-C2-3qN" firstAttribute="trailing" secondItem="BXV-cG-Utc" secondAttribute="trailing" id="s0s-8M-g7x"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="e4K-AZ-VaB"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="dBS-SZ-HGM">
-                        <barButtonItem key="backBarButtonItem" title=" " id="SEH-Yc-gr3"/>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send!" id="Jv6-6U-WVf">
-                            <connections>
-                                <action selector="sendFeedback:" destination="Tsr-Ep-FMV" id="M6e-97-ORp"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="nameTextField" destination="skh-C2-3qN" id="I6w-tK-CGi"/>
-                        <outlet property="sendButton" destination="Jv6-6U-WVf" id="p0o-F9-hDi"/>
-                        <outlet property="textView" destination="BXV-cG-Utc" id="QeC-mC-AL9"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="joH-JE-z6J" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1471" y="1842"/>
         </scene>
         <!--Settings-->
         <scene sceneID="zrt-ki-pMI">
@@ -2872,6 +2803,14 @@ Reproduction steps:
                 <exit id="yjq-8D-UZ3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="5591.304347826087" y="1074.4565217391305"/>
+        </scene>
+        <!--Feedback-->
+        <scene sceneID="8ZZ-tg-kfI">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Feedback" referencedIdentifier="Feedback" id="edD-lG-IvQ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1471" y="1521"/>
         </scene>
     </scenes>
     <resources>

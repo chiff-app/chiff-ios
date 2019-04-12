@@ -469,7 +469,6 @@
 			isa = PBXGroup;
 			children = (
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
-				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
@@ -510,6 +509,7 @@
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
 				49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */,
 				611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */,
 				49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */,
