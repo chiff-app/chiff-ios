@@ -86,6 +86,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         header.textLabel?.frame = header.frame
         header.textLabel?.text = section == 0 ? "Account details" : "User details"
     }
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard section == 1 else {
+            return
+        }
+        let footer = view as! UITableViewHeaderFooterView
+        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
+        footer.textLabel?.font = UIFont.primaryMediumSmall
+        footer.textLabel?.textAlignment = NSTextAlignment.left
+        footer.textLabel?.frame = footer.frame
+        footer.textLabel?.text = "accounts.2fa_description".localized
+        footer.textLabel?.numberOfLines = 3
+    }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing
