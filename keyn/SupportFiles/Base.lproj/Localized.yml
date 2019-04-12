@@ -124,6 +124,8 @@ accounts:
     value: The secret that was shared by the website
   mode_description:
     value: Codes can either be time-based or counter-based
+  2fa_description:
+    value: The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor. 
 devices:
   devices:
     comment: Section title for devices
@@ -143,7 +145,7 @@ settings:
     value: Use this form to provide feedback :)
   reset_warning:
     comment: Description under reset Keyn
-    value: This will delete all data on your phone.
+    value: This will delete all Keyn's data from your phone.
   backup_not_finished:
     comment: Warning that the user did not finish paper backup yet
     value: Paper backup not finished
