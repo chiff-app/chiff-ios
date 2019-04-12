@@ -98,6 +98,6 @@ class SettingsViewController: UITableViewController {
 
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
-        securityFooterText = true ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
+        securityFooterText = "settings.backup_completed_footer".localized
     }
 }
