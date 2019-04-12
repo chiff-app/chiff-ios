@@ -18,6 +18,7 @@ enum CryptoError: KeynError {
     case hashing
     case signing
     case indexOutOfRange
+    case contextOverflow
 }
 
 class Crypto {
@@ -46,9 +47,13 @@ class Crypto {
         guard let seedHash = sodium.genericHash.hash(message: seed.bytes) else {
             throw CryptoError.hashing
         }
+
+        guard context.count <= 8 else {
+            throw CryptoError.contextOverflow
+        }
         
         // This derives a subkey from the seed for a given index and context.
-        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: KEY_SIZE, context: String(context.prefix(CONTEXT_SIZE))) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: KEY_SIZE, context: context) else {
             throw CryptoError.keyDerivation
         }
 
@@ -86,33 +91,15 @@ class Crypto {
         
         return keyData.data
     }
-
-    func deriveKey(keyData: Data, context: Data, index: Int = 0) throws ->  Data {
+    
+    func deriveKey(keyData: Data, context: String, index: UInt64 = 0) throws ->  Data {
         guard index >= 0 && index < UInt64.max else {
             throw CryptoError.indexOutOfRange
         }
-        guard let contextHash = sodium.genericHash.hash(message: context.bytes, outputLength: CONTEXT_SIZE) else {
-            throw CryptoError.hashing
+        guard context.count <= 8 else {
+            throw CryptoError.contextOverflow
         }
-        guard let context = sodium.utils.bin2base64(contextHash, variant: .ORIGINAL_NO_PADDING) else {
-            throw CryptoError.base64Encoding
-        }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: UInt64(index), length: KEY_SIZE, context: String(context.prefix(CONTEXT_SIZE))) else {
-            throw CryptoError.keyDerivation
-        }
-
-        return key.data
-    }
-    
-    
-    func deriveKey(key: String, context: String, index: Int = 0) throws ->  Data {
-        guard index >= 0 && index < UInt64.max else {
-            throw CryptoError.indexOutOfRange
-        }
-        guard let keyData = sodium.utils.base642bin(key, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
-            throw CryptoError.base64Decoding
-        }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData, index: UInt64(index), length: sodium.sign.SeedBytes, context: context) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: index, length: KEY_SIZE, context: context) else {
             throw CryptoError.keyDerivation
         }
         
@@ -227,12 +214,13 @@ class Crypto {
 
         return hash
     }
-    
+
     func sha1(from string: String) -> String {
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
-        string.data.withUnsafeBytes {
-            _ = CC_SHA1($0, CC_LONG(string.data.count), &digest)
+        _ = digest.withUnsafeMutableBytes { digestBytes in
+            string.data.withUnsafeBytes { CC_SHA1($0.baseAddress, CC_LONG(string.data.count), digestBytes.bindMemory(to: UInt8.self).baseAddress) }
         }
+
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         return hexBytes.joined()
     }
@@ -245,8 +233,8 @@ class Crypto {
 
     func sha256(from data: Data) -> Data {
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA256($0, CC_LONG(data.count), &digest)
+        _ = digest.withUnsafeMutableBytes { digestBytes in
+            data.withUnsafeBytes { CC_SHA256($0.baseAddress, CC_LONG(data.count), digestBytes.bindMemory(to: UInt8.self).baseAddress) }
         }
         return digest.data
     }

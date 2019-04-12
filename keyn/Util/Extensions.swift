@@ -88,6 +88,7 @@ extension URL {
 }
 
 extension Data {
+
     struct HexEncodingOptions: OptionSet {
         let rawValue: Int
         static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
@@ -115,11 +116,12 @@ extension Data {
     }
 
     var bytes: Bytes { return Bytes(self) }
+
 }
 
 extension Array where Element == UInt8 {
     public var data: Data {
-        return Data(bytes: self)
+        return Data(self)
     }
 }
 
@@ -135,7 +137,7 @@ extension Date {
 }
 
 extension TimeInterval {
-    static let ONE_DAY: TimeInterval = 3600*24
+    static let ONE_DAY: TimeInterval = 3600 * 24
 }
 
 
