@@ -1,5 +1,8 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UserNotifications
-import JustLog
 
 class NotificationService: UNNotificationServiceExtension {
 
@@ -8,26 +11,25 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        
-        guard let content = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
-            contentHandler(request.content)
-            return
+        content = (request.content.mutableCopy() as? UNMutableNotificationContent)
+
+        if var content = content {
+            do {
+                content = try NotificationProcessor.process(content: content)
+            } catch {
+                print(error)
+            }
+            contentHandler(content)
         }
-        do {
-            let processContent = try NotificationProcessor.process(content: content)
-            contentHandler(processContent)
-        } catch {
-            content.userInfo["error"] = error.localizedDescription
-        }
-        contentHandler(content)
+
+        contentHandler(request.content)
     }
-    
 
     // Called just before the extension will be terminated by the system.
     // Use this as an opportunity to deliver your "best attempt" at modified content,
     // otherwise the original push payload will be used.
     override func serviceExtensionTimeWillExpire() {
-        if let contentHandler = contentHandler, let content = (content?.mutableCopy() as? UNMutableNotificationContent) {
+        if let contentHandler = contentHandler, let content =  content {
             content.userInfo["expried"] = true
             contentHandler(content)
         }

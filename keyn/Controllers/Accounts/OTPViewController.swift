@@ -1,65 +1,69 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 import AVFoundation
 import LocalAuthentication
-import JustLog
 import OneTimePassword
 
-class OTPViewController: QRViewController {
+protocol TokenController {
+    var token: Token? { get }
+}
+
+class OTPViewController: QRViewController, TokenController {
     
-    var account: Account!
-    var accountViewDelegate: canAddOTPCode?
+    private let OTP_URL_SCHEME = "otpauth"
+    
     @IBOutlet weak var instructionLabel: UILabel!
-    
+
+    var account: Account!
+    var token: Token?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        instructionLabel.text = "Scan the 2FA-code for \(account.site.name)."
+        let attributedText = NSMutableAttributedString(string: "accounts.two_fa_instruction".localized, attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.textColor,
+            NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
+        attributedText.append(NSMutableAttributedString(string: " \(account.site.name)", attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.primary,
+            NSAttributedString.Key.font: UIFont.primaryBold!]))
+        instructionLabel.attributedText = attributedText
     }
     
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme, scheme == "otpauth" else {
+        guard let scheme = url.scheme, scheme == OTP_URL_SCHEME else {
             return
         }
-        guard let token = Token(url: url) else {
+        self.token = Token(url: url)
+        guard token != nil else {
+            Logger.shared.error("Error creating OTP token")
+            showError(message: "errors.token_creation".localized)
             return
         }
-        try AuthenticationGuard.sharedInstance.addOTP(token: token, account: account, completion: { (error) in
+
+        try AuthorizationGuard.addOTP(token: token!, account: account) { (error) in
             DispatchQueue.main.async {
-                guard error == nil else {
-                    Logger.shared.error("Error authorizing OTP", error: error! as NSError)
-                    return
-                }
                 do {
-                    if self.account.hasOtp() {
-                        try self.account.updateOtp(token: token)
+                    if let error = error {
+                        throw error
                     } else {
-                        try self.account.addOtp(token: token)
+                        try self.account.setOtp(token: self.token!)
+                        self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
                     }
-                    self.add(token: token)
                 } catch {
-                    Logger.shared.error("Error adding OTP", error: error as NSError)
+                    Logger.shared.error("Error adding OTP", error: error)
+                    self.showError(message: "errors.add_otp".localized)
                 }
             }
-        })
-    }
-    
-    func add(token: Token) {
-        if let delegate = accountViewDelegate {
-            delegate.addOTPCode(token: token)
         }
-        _ = navigationController?.popViewController(animated: true)
     }
     
-    
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ManualEntry", let destination = segue.destination.contents as? ManualOTPViewController {
-            destination.accountViewDelegate = accountViewDelegate
-            destination.qrNavCon = navigationController
             destination.account = account
         }
-     }
-    
-    
+    }
 }

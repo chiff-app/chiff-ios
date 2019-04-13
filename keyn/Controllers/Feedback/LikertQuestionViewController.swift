@@ -1,4 +1,7 @@
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
 
 class LikertQuestionViewController: QuestionViewController {
@@ -9,8 +12,7 @@ class LikertQuestionViewController: QuestionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let font = UIFont.systemFont(ofSize: 20)
-        likertValue.setTitleTextAttributes([NSAttributedStringKey.font: font],
-                                                for: .normal)
+        likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -25,7 +27,9 @@ class LikertQuestionViewController: QuestionViewController {
             maxLabel.text = maxText
         }
     }
-    
+
+    // MARK: - Actions
+
     @IBAction func likertValue(_ sender: ExtendedUISegmentedControl) {
         question?.response = String(sender.selectedSegmentIndex+1)
         if let navCon = self.navigationController as? QuestionnaireController {
@@ -38,6 +42,6 @@ class LikertQuestionViewController: QuestionViewController {
 class ExtendedUISegmentedControl: UISegmentedControl {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        self.selectedSegmentIndex = UISegmentedControlNoSegment
+        self.selectedSegmentIndex = UISegmentedControl.noSegment
     }
 }

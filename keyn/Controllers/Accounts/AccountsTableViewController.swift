@@ -1,57 +1,82 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
-import JustLog
 
-class AccountsTableViewController: UITableViewController, UISearchResultsUpdating {
+class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var tableView: UITableView!
+    var unfilteredAccounts: [Account]!
+    var filteredAccounts: [Account]!
+//    let searchController = UISearchController(searchResultsController: nil)
+    @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var tabBarGradient: TabBarGradient!
+    @IBOutlet weak var addAccountContainerView: UIView!
 
-    var unfilteredAccounts = [Account]()
-    var filteredAccounts: [Account]?
-    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        do {
-            let savedAccounts = try Account.all()
-            unfilteredAccounts.append(contentsOf: savedAccounts)
-        } catch {
-            Logger.shared.error("Could not get accounts from Keychain", error: error as NSError)
+        if let accountDict = try? Account.all(context: nil) {
+            unfilteredAccounts = Array(accountDict.values)
+        } else {
+            unfilteredAccounts = [Account]()
         }
+        filteredAccounts = unfilteredAccounts
 
-        filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-            first.site.name < second.site.name
-        })
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = true
-        searchController.dimsBackgroundDuringPresentation = false
+        scrollView.delegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
+
+//        searchController.searchResultsUpdater = self
+//        searchController.searchBar.searchBarStyle = .minimal
+//        searchController.hidesNavigationBarDuringPresentation = true
+//        searchController.dimsBackgroundDuringPresentation = false
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-        navigationItem.searchController = searchController
+//        navigationItem.searchController = searchController
+        NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
+        NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if let navigationView = navigationController?.view {
-            fixShadowImage(inView: navigationView)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
     }
 
-    // This fixes the navigationBar.shadowImage bug: https://forums.developer.apple.com/message/259206#259206
-    func fixShadowImage(inView view: UIView) {
-        if let imageView = view as? UIImageView {
-            let size = imageView.bounds.size.height
-            if size <= 1 && size > 0 &&
-                imageView.subviews.count == 0,
-                let components = imageView.backgroundColor?.cgColor.components, components == [0.0, 0.0, 0.0, 0.3]
-            {
-                let line = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 2))
-                line.backgroundColor = UIColor(rgb: 0x4932A2)
-                imageView.addSubview(line)
-                line.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateUi()
+    }
+
+    @objc func showAddAccount() {
+        performSegue(withIdentifier: "ShowAddAccount", sender: self)
+    }
+
+    private func loadAccounts(notification: Notification) {
+        DispatchQueue.main.async {
+            if let accounts = notification.userInfo as? [String: Account] {
+                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+                self.filteredAccounts = self.unfilteredAccounts
+                self.tableView.reloadData()
+                self.updateUi()
             }
         }
-        for subview in view.subviews {
-            fixShadowImage(inView: subview)
+    }
+
+    private func updateUi() {
+        if let accounts = unfilteredAccounts, !accounts.isEmpty {
+            tableViewContainer.isHidden = false
+            addAccountContainerView.isHidden = true
+            tabBarGradient.isHidden = false
+            addAddButton()
+        } else {
+            navigationItem.rightBarButtonItem = nil
+            tableViewContainer.isHidden = true
+            addAccountContainerView.isHidden = false
+            tabBarGradient.isHidden = true
         }
     }
 
@@ -59,39 +84,31 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { (first, second) -> Bool in
-                first.site.name < second.site.name
-            })
+            }).sorted(by: { $0.site.name < $1.site.name })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { (first, second) -> Bool in
-                first.site.name < second.site.name
-            })
+            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
         }
         tableView.reloadData()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     // MARK: - Table view data source
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let accounts = filteredAccounts else {
             return 0
         }
         return accounts.count
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.delete {
-            let alert = UIAlertController(title: "Delete account?", message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 let account = self.filteredAccounts![indexPath.row]
                 self.deleteAccount(account: account, filteredIndexPath: indexPath)
             }))
@@ -99,17 +116,13 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
         }
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath)
-
-        if let accounts = filteredAccounts {
-            let account = accounts[indexPath.row]
-            cell.textLabel?.text = account.site.name
-            cell.detailTextLabel?.text = account.username
-        }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+//        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        let account = filteredAccounts[indexPath.row]
+        cell.titleLabel.text = account.site.name
         return cell
     }
-
 
     // MARK: - Navigation
 
@@ -120,69 +133,80 @@ class AccountsTableViewController: UITableViewController, UISearchResultsUpdatin
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = filteredAccounts![indexPath.row]
+                 controller.account = filteredAccounts[indexPath.row]
             }
         }
     }
     
     func updateAccount(account: Account) {
-        if let unfilteredIndex = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
-            return account.id == unfilteredAccount.id
-        }) {
-            unfilteredAccounts[unfilteredIndex] = account
-            if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
-                return account.id == filteredAccount.id
-            }) {
-                filteredAccounts?[filteredIndex] = account
-                let indexPath = IndexPath(row: filteredIndex, section: 0)
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
+        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
+            filteredAccounts[filteredIndex] = account
+            let indexPath = IndexPath(row: filteredIndex, section: 0)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+
+    func addAccount(notification: Notification) {
+        guard let account = notification.userInfo?["account"] as? Account else {
+            Logger.shared.warning("Account was nil when trying to add it to the view.")
+            return
+        }
+        DispatchQueue.main.async {
+            self.addAccount(account: account)
         }
     }
 
     func addAccount(account: Account) {
         unfilteredAccounts.append(account)
-        filteredAccounts?.append(account)
-        filteredAccounts?.sort(by: { (first, second) -> Bool in
-            return first.site.name < second.site.name
-        })
-        if let filteredIndex = filteredAccounts?.index(where: { (filteredAccount) -> Bool in
-            return account.id == filteredAccount.id
-        }) {
+        filteredAccounts.append(account)
+        filteredAccounts.sort(by: { $0.site.name < $1.site.name })
+        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
+            self.updateUi()
         }
-        updateSearchResults(for: searchController)
+//        updateSearchResults(for: searchController)
     }
 
-    //MARK: Actions
+    // MARK: - Actions
     
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? NewAccountViewController, let account = sourceViewController.account {
+        if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts!.index(where: { (filteredAccount) -> Bool in
-                return account.id == filteredAccount.id
-            }) {
+            if let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
                 let indexPath = IndexPath(row: index, section: 0)
                 deleteAccount(account: account, filteredIndexPath: indexPath)
             }
         }
     }
-    
+
+    // MARK: - Private
+
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        if let index = unfilteredAccounts.index(where: { (unfilteredAccount) -> Bool in
-            return account.id == unfilteredAccount.id
-        }) {
-            do {
-                try account.delete()
-                unfilteredAccounts.remove(at: index)
-                filteredAccounts?.remove(at: filteredIndexPath.row)
-                tableView.deleteRows(at: [filteredIndexPath], with: .automatic)
-            } catch {
-                Logger.shared.error("Could not delete account.", error: error as NSError)
+        account.delete(completionHandler: { (error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.showError(message: "Error deleting account: \(error.localizedDescription)")
+                    return
+                } else {
+                    self.filteredAccounts.remove(at: filteredIndexPath.row)
+                    self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
+                    self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
+                    self.updateUi()
+                }
             }
-        }
+        })
     }
 
+    private func addAddButton(){
+//        guard self.navigationItem.rightBarButtonItem == nil else {
+//            return
+//        }
+
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = button.barButtonItem
+    }
 }

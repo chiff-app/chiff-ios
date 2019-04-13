@@ -1,13 +1,8 @@
-//
-//  PPD.swift
-//  keyn
-//
-//  Created by bas on 14/03/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
-import JustLog
 
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
@@ -26,22 +21,35 @@ struct PPD: Codable {
                 print(jsonString)
             }
         } catch {
-            Logger.shared.warning("PPD could not be decoded", error: error as NSError)
+            Logger.shared.warning("PPD could not be decoded", error: error)
         }
     }
     
-    static func get(id: String, completionHandler: @escaping (_ ppd: PPD) -> Void) throws {
-        try API.sharedInstance.get(type: .ppd, path: id, parameters: nil) { (dict) in
+    static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
+        API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
+            if let error = error {
+                Logger.shared.error("PPD retrieval problem.", error: error)
+                return
+            }
+
+            guard let dict = dict else {
+                Logger.shared.warning("PPD not found")
+                completionHandler(nil)
+                return
+            }
+
             if let ppd = dict["ppds"] as? [Any] {
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
                     let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
                     completionHandler(ppd)
                 } catch {
-                    Logger.shared.error("Failed to deocde PPD", error: error as NSError)
+                    Logger.shared.error("Failed to decode PPD", error: error)
+                    completionHandler(nil)
                 }
             } else {
                 Logger.shared.error("Failed to decode PPD")
+                completionHandler(nil)
             }
         }
     }
@@ -104,9 +112,9 @@ struct PPDRequirementGroup: Codable {
 }
 
 struct PPDRequirementRule: Codable {
+    let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
     let minOccurs: Int // Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
     let maxOccurs: Int? // Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
-    let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
     let characterSet: String
 
     init(positions: String?, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
@@ -115,10 +123,7 @@ struct PPDRequirementRule: Codable {
         self.maxOccurs = maxOccurs
         self.characterSet = characterSet
     }
-
 }
-
-// TODO: Complete Service part.
 
 struct PPDService: Codable {
     let login: PPDLogin
@@ -128,7 +133,6 @@ struct PPDService: Codable {
 struct PPDLogin: Codable {
     let url: String?
 }
-
 
 struct PPDPasswordChange: Codable {
     let url: String?
