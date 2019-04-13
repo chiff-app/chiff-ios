@@ -13,11 +13,11 @@ class TabBarGradient: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         let mGradient = CAGradientLayer()
-        mGradient.frame = self.bounds
+        mGradient.frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
         var colors = [CGColor]()
-        colors.append(UIColor(red: 242 / 255, green: 240 / 255, blue: 250 / 255, alpha: 0).cgColor)
-        colors.append(UIColor(red: 242 / 255, green: 240 / 255, blue: 250 / 255, alpha: 1).cgColor)
-
+        colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
+        colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
+        mGradient.locations = [NSNumber(value: 0.0),NSNumber(value: 0.6)]
         mGradient.colors = colors
         layer.addSublayer(mGradient)
     }

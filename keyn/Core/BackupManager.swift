@@ -6,6 +6,7 @@ import Foundation
 
 struct BackupManager {
 
+    private let CRYPTO_CONTEXT = "keynback"
     private let endpoint = "backup"
     static let shared = BackupManager()
     
@@ -195,7 +196,7 @@ struct BackupManager {
     }
     
     private func createEncryptionKey() throws {
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: "backup".data)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: CRYPTO_CONTEXT)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
     }
 

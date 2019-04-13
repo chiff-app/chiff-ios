@@ -10,6 +10,8 @@ enum SeedError: KeynError {
 }
 
 struct Seed {
+
+    static let CRYPTO_CONTEXT = "keynseed"
     
     static var hasKeys: Bool {
         return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
@@ -18,7 +20,7 @@ struct Seed {
     }
 
     static var paperBackupCompleted: Bool {
-        guard let dataArray = try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) else {
+        guard let dataArray = ((try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)) as [String : Any]??) else {
             return false
         }
 
@@ -39,10 +41,15 @@ struct Seed {
         }
     }
 
+    enum KeyType: UInt64 {
+        case passwordSeed = 0
+        case backupSeed = 1
+    }
+
     static func create() throws {
         let seed = try Crypto.shared.generateSeed()
-        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
@@ -74,8 +81,8 @@ struct Seed {
             throw SeedError.checksumFailed
         }
 
-        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed, label: "true")
         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
@@ -111,7 +118,7 @@ struct Seed {
         let wordlist = try self.wordlist()
 
         let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
-            guard let index: Int = wordlist.index(of: word) else {
+            guard let index: Int = wordlist.firstIndex(of: word) else {
                 throw SeedError.mnemonicConversion
             }
             return result + String(index, radix: 2).pad(toSize: 11)

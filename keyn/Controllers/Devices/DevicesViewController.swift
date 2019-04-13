@@ -65,7 +65,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
 
-        if let index = sessions.index(where: { sessionID == $0.id }) {
+        if let index = sessions.firstIndex(where: { sessionID == $0.id }) {
             DispatchQueue.main.async {
                 self.sessions.remove(at: index)
                 self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)

@@ -30,6 +30,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
         }
 
         view.layoutIfNeeded()
+        textView.layer.cornerRadius = 4.0
         
         // Observe keyboard change
         let nc = NotificationCenter.default

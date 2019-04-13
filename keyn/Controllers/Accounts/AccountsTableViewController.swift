@@ -139,7 +139,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func updateAccount(account: Account) {
-        if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
+        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             filteredAccounts[filteredIndex] = account
             let indexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -160,7 +160,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         unfilteredAccounts.append(account)
         filteredAccounts.append(account)
         filteredAccounts.sort(by: { $0.site.name < $1.site.name })
-        if let filteredIndex = filteredAccounts.index(where: { account.id == $0.id }) {
+        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
             self.updateUi()
@@ -174,7 +174,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
         } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts.index(where: { account.id == $0.id }) {
+            if let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
                 let indexPath = IndexPath(row: index, section: 0)
                 deleteAccount(account: account, filteredIndexPath: indexPath)
             }

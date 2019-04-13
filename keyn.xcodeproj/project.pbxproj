@@ -77,6 +77,7 @@
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
+		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49A3176C22525F7B004E0D86 /* TabBarGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3176B22525F7B004E0D86 /* TabBarGradient.swift */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
@@ -267,6 +268,7 @@
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
+		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49A3176B22525F7B004E0D86 /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */,
 				49C8B896225383D300639663 /* StoreKit.framework in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 				C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */,
@@ -395,6 +398,7 @@
 		2A4E92B609DDA515653F86DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49A01CD922609C5E001794B8 /* WebKit.framework */,
 				49C8B895225383D300639663 /* StoreKit.framework */,
 				1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */,
 				936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */,
@@ -465,7 +469,6 @@
 			isa = PBXGroup;
 			children = (
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
-				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
@@ -506,6 +509,7 @@
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				49E236582073C873002CC9A4 /* FeedbackViewController.swift */,
 				49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */,
 				611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */,
 				49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */,
@@ -811,7 +815,7 @@
 				TargetAttributes = {
 					4919DAE320123FE50048B060 = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -827,7 +831,7 @@
 					};
 					49E7664F1F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -852,19 +856,19 @@
 					};
 					49E766651F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49E7664F1F7E6F420022C042;
 					};
 					49E766701F7E6F420022C042 = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 49E7664F1F7E6F420022C042;
 					};
 					611F4B442146B47300B35A89 = {
 						CreatedOnToolsVersion = 10.0;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -1376,7 +1380,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
@@ -1399,7 +1403,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
@@ -1530,7 +1534,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1539,7 +1543,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1556,7 +1560,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1565,7 +1569,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1587,7 +1591,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
 			};
@@ -1607,7 +1611,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
 			};
@@ -1626,7 +1630,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
 			};
@@ -1645,7 +1649,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = keyn;
 			};
@@ -1672,7 +1676,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1697,7 +1701,7 @@
 				SKIP_INSTALL = YES;
 				STRIP_SWIFT_SYMBOLS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

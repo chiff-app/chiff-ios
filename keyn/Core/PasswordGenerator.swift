@@ -13,6 +13,8 @@ enum PasswordGenerationError: KeynError {
 
 class PasswordGenerator {
 
+    static let CRYPTO_CONTEXT = "keynpass"
+
     let username: String
     let siteId: String
     let ppd: PPD?
@@ -73,8 +75,8 @@ class PasswordGenerator {
         
         let characters = Array(password)
         return (0..<length).map({ (index) -> Int in
-            // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is check in guard statement above.
-            let charIndex = index < characters.count ? chars.index(of: characters[index]) ?? chars.count : chars.count 
+            // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is checked in guard statement above.
+            let charIndex = index < characters.count ? chars.firstIndex(of: characters[index]) ?? chars.count : chars.count 
             return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(chars.count + 1) }).mod(chars.count + 1)
         })
     }
@@ -110,10 +112,14 @@ class PasswordGenerator {
     }
 
     private func generateKey(index passwordIndex: Int) throws -> Data {
-        #warning("TODO: write migration script to get rid of prefix")
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: String(self.siteId.prefix(8)).data, index: 0)
-        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: username.data, index: passwordIndex)
+        var value: UInt64 = 0
+        let bytesCopied = withUnsafeMutableBytes(of: &value, { siteId.sha256.data.copyBytes(to: $0, from: 0..<8) } )
+        assert(bytesCopied == MemoryLayout.size(ofValue: value))
+
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
+        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(username.sha256.prefix(8)), index: UInt64(passwordIndex))
 
         return key
     }
+
 }
