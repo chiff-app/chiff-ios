@@ -279,7 +279,7 @@ class Session: Codable {
         }
 
         // The creation of volatile and persistent queues as well as the pushmessage endpoint is one atomic operation.
-        apiRequestForCreatingQueues(    keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
+        createQueuesAtAWS(keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
             if let error = error {
                 Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
             }
@@ -355,7 +355,7 @@ class Session: Codable {
         }
     }
 
-    private func apiRequestForCreatingQueues(keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    private func createQueuesAtAWS(keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = [
             "httpMethod": APIMethod.put.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),

@@ -129,10 +129,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         updateUi()
     }
 
-    func prepareForPairing(completionHandler: @escaping (_ result: Bool) -> Void) {
-        completionHandler(true)
-    }
-
     // MARK: - Private functions
 
     private func updateUi() {

@@ -19,19 +19,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // Open app normally
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        // AuthenticationGuard and Logger must be initialized first
         let _ = Logger.shared
-        
-        fetchAWSIdentification()
-        registerForPushNotifications()
-
-        // AuthenticationGuard must be initialized first
         let _ = AuthenticationGuard.shared
-        // Fixes some LocalAuthentication bug
-        let _: LAError? = nil
 
+        fetchAWSIdentification()
         Questionnaire.fetch()
-
         UIFixes()
+
+        launchInitialView()
 
         return true
     }
@@ -54,6 +51,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        guard Seed.hasKeys else {
+            Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
+            return
+        }
         AWS.shared.snsRegistration(deviceToken: deviceToken)
     }
 
@@ -71,16 +72,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
-    // MARK: - Private
-
-    private func fetchAWSIdentification() {
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
-                                                                identityPoolId: Properties.AWSIdentityPoolId)
-        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-    }
-
-    private func registerForPushNotifications() {
+    func registerForPushNotifications(completionHandler: @escaping (_ result: Bool) -> Void) {
         let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
                                                      actions: [],
                                                      intentIdentifiers: [],
@@ -101,24 +93,31 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         center.delegate = pushNotificationService
         center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            if granted {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if granted {
                     UIApplication.shared.registerForRemoteNotifications()
-                    self.launchInitialView()
+                    completionHandler(true)
+                } else {
+                    Logger.shared.warning("User denied remote notifications.")
+                    self.deniedPushNotifications = true
+                    self.launchErrorView("errors.no_push_notifications".localized)
+                    completionHandler(false)
                 }
-            } else {
-                Logger.shared.warning("User denied remote notifications.")
-                self.deniedPushNotifications = true
-                self.launchErrorView("errors.no_push_notifications".localized)
             }
         }
     }
 
-    // If there is no seed in the keychain (first run or if deleteSeed() has been called,
-    // a new seed will be generated and stored in the Keychain. Otherwise LoginController is launched.
+    // MARK: - Private
+
+    private func fetchAWSIdentification() {
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
+                                                                identityPoolId: Properties.AWSIdentityPoolId)
+        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
+        AWSServiceManager.default().defaultServiceConfiguration = configuration
+    }
+
     private func launchInitialView() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        let viewController: UIViewController?
 
         if Properties.isFirstLaunch() {
             Logger.shared.analytics("App was installed", code: .install)
@@ -129,20 +128,21 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
-            guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-                Logger.shared.error("Unexpected root view controller type")
-                fatalError("Unexpected root view controller type")
+            registerForPushNotifications { result in
+                if result {
+                    guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+                        Logger.shared.error("Unexpected root view controller type")
+                        fatalError("Unexpected root view controller type")
+                    }
+                    self.window?.rootViewController = vc
+                    self.window?.makeKeyAndVisible()
+                }
             }
-            viewController = vc
-            
         } else {
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-            viewController = rootController
+            self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            self.window?.makeKeyAndVisible()
         }
-
-        self.window?.rootViewController = viewController
-        self.window?.makeKeyAndVisible()
     }
 
     private func launchErrorView(_ message: String) {

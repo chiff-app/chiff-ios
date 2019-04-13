@@ -159,7 +159,7 @@ struct BackupManager {
             completionHandler()
         })
     }
-    
+
     func signMessage(message: Data) throws -> String {
         let signature = try Crypto.shared.sign(message: message, privKey: try privateKey())
         let base64Signature = try Crypto.shared.convertToBase64(from: signature)
