@@ -1,20 +1,14 @@
-//
-//  AlternativeNavCon.swift
-//  keyn
-//
-//  Created by Bas Doorn on 27/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
-import JustLog
 
 class DevicesNavigationController: UINavigationController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         do {
-            if try Session.all() != nil {
+            if try !Session.all().isEmpty  {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
             } else {
@@ -22,29 +16,7 @@ class DevicesNavigationController: UINavigationController {
                 pushViewController(pairViewController, animated: false)
             }
         } catch {
-            Logger.shared.error("Could not get sessions.", error: error as NSError)
+            Logger.shared.error("Could not get sessions.", error: error)
         }
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

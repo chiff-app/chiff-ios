@@ -1,149 +1,144 @@
-//
-//  Seed.swift
-//  keyn
-//
-//  Created by bas on 29/11/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
+enum SeedError: KeynError {
+    case mnemonicConversion
+    case checksumFailed
+}
+
 struct Seed {
-    static let keychainService = "io.keyn.seed"
+
+    static let CRYPTO_CONTEXT = "keynseed"
+    
+    static var hasKeys: Bool {
+        return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
+        Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed) &&
+        Keychain.shared.has(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
+    }
+
+    static var paperBackupCompleted: Bool {
+        guard let dataArray = ((try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)) as [String : Any]??) else {
+            return false
+        }
+
+        guard let label = dataArray?[kSecAttrLabel as String] as? String else {
+            return false
+        }
+
+        return label == "true"
+    }
+
     private enum KeyIdentifier: String, Codable {
         case password = "password"
         case backup = "backup"
         case master = "master"
 
-        func identifier(for keychainService: String) -> String {
-            return "\(keychainService).\(self.rawValue)"
+        func identifier(for keychainService: KeychainService) -> String {
+            return "\(keychainService.rawValue).\(self.rawValue)"
         }
+    }
+
+    enum KeyType: UInt64 {
+        case passwordSeed = 0
+        case backupSeed = 1
     }
 
     static func create() throws {
-        let seed = try Crypto.sharedInstance.generateSeed()
-        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
+        let seed = try Crypto.shared.generateSeed()
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
+        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
     }
 
-
     static func mnemonic() throws -> [String] {
-        let seed = try Keychain.sharedInstance.get(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        let seedHash = try Crypto.sharedInstance.hash(seed).first!
-        var bitstring = ""
-        for byte in Array<UInt8>(seed) {
-            bitstring += String(byte, radix: 2).pad(toSize: 8)
-        }
-        bitstring += String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4)
+        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
+        let checksumSize = seed.count / 4
+        let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
+        let wordlist = try self.wordlist()
 
-        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = wordlistData.components(separatedBy: .newlines)
-
-        var mnemonic = [String]()
-        for word in bitstring.components(withLength: 11) {
-            guard let index = Int(word, radix: 2) else {
-                throw CryptoError.mnemonicConversion
-            }
-            mnemonic.append(wordlist[index])
-        }
-
-        return mnemonic
+        return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
     }
     
     static func validate(mnemonic: [String]) -> Bool {
         guard let (checksum, seed) = try? generateSeedFromMnemonic(mnemonic: mnemonic) else {
             return false
         }
-        
-        guard let seedHash = try? Crypto.sharedInstance.hash(seed).first! else {
-            return false
-        }
-        if checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) {
-            return true
-        }
-        return false
+
+        let checksumSize = seed.count / 4
+        return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (String, Data) {
-        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "english_wordlist", ofType: "txt")!, encoding: .utf8)
-        let wordlist = wordlistData.components(separatedBy: .newlines)
-        
-        var bitstring = ""
-        for word in mnemonic {
-            guard let index: Int = wordlist.index(of: word) else {
-                throw CryptoError.mnemonicConversion
+    static func recover(mnemonic: [String]) throws {
+        let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
+        let checksumSize = seed.count / 4
+        guard checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed) else {
+            throw SeedError.checksumFailed
+        }
+
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+
+        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed, label: "true")
+        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+    }
+
+    static func getPasswordSeed() throws -> Data {
+        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
+    }
+
+    static func getBackupSeed() throws -> Data {
+        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+    }
+
+    static func delete() throws {
+        try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
+        try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+        try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
+    }
+
+    static func setPaperBackupCompleted() throws {
+        try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, label: "true")
+    }
+    
+    // MARK: - Private
+
+    static func wordlist() throws -> [String] {
+        let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "wordlist", ofType: "txt")!, encoding: .utf8)
+        return wordlistData.components(separatedBy: .newlines)
+    }
+    
+    static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
+        let wordlist = try self.wordlist()
+
+        let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
+            guard let index: Int = wordlist.firstIndex(of: word) else {
+                throw SeedError.mnemonicConversion
             }
-            bitstring += String(index, radix: 2).pad(toSize: 11)
+            return result + String(index, radix: 2).pad(toSize: 11)
         }
         
         let checksum = bitstring.suffix(mnemonic.count / 3)
         let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
-        var seed = Data(capacity: seedString.count)
-        for byteString in seedString.components(withLength: 8) {
+        let seed = try seedString.components(withLength: 8).map { (byteString) throws -> UInt8 in
             guard let byte = UInt8(byteString, radix: 2) else {
-                throw CryptoError.mnemonicConversion
+                throw SeedError.mnemonicConversion
             }
-            seed.append(byte)
+            return byte
         }
         
-        return (String(checksum), seed)
+        return (checksum, seed.data)
     }
 
-    static func recover(mnemonic: [String]) throws -> Bool {
-        let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
+    // MARK: - temporary
 
-        let seedHash = try Crypto.sharedInstance.hash(seed).first!
-        guard checksum == String(String(seedHash, radix: 2).prefix(seed.count / 4)).pad(toSize: seed.count / 4) else {
-            return false
-        }
-
-
-        let passwordSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: KeyIdentifier.password.rawValue)
-        let backupSeed = try Crypto.sharedInstance.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: KeyIdentifier.backup.rawValue)
-
-        try Keychain.sharedInstance.save(secretData: seed, id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true", classification: .secret)
-        try Keychain.sharedInstance.save(secretData: passwordSeed, id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService, classification: .secret)
-        try Keychain.sharedInstance.save(secretData: backupSeed, id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService, classification: .secret)
-        
-        return true
+    static private func oldChecksum(seed: Data) -> String {
+        return String(seed.hash.first!, radix: 2).prefix(seed.count / 4).pad(toSize: seed.count / 4)
     }
-
-    static func getPasswordSeed() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
-    }
-
-    static func getBackupSeed() throws -> Data {
-        return try Keychain.sharedInstance.get(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
-    }
-
-    static func exists() -> Bool {
-        return Keychain.sharedInstance.has(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-    }
-
-    static func delete() throws {
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.backup.identifier(for: keychainService), service: keychainService)
-        try Keychain.sharedInstance.delete(id: KeyIdentifier.password.identifier(for: keychainService), service: keychainService)
-    }
-
-    static func setBackedUp() throws {
-        try Keychain.sharedInstance.update(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService, label: "true")
-    }
-
-    static func isBackedUp() throws -> Bool {
-        guard let dataArray = try Keychain.sharedInstance.attributes(id: KeyIdentifier.master.identifier(for: keychainService), service: keychainService) else {
-            return false
-        }
-
-        guard let label = dataArray[kSecAttrLabel as String] as? String else {
-            return false
-        }
-
-        return label == "true"
-    }
-    
 }

@@ -1,16 +1,12 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
 
 struct Site: Codable {
-
     var name: String
     var id: String
     var url: String
     var ppd: PPD?
-
-    static func get(id: String, completion: @escaping (_ site: Site) -> Void) throws {
-        try PPD.get(id: id) { (ppd) in
-            completion(Site(name: ppd.name, id: id, url: ppd.url, ppd: ppd))
-        }
-    }
-
 }

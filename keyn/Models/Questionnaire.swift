@@ -1,13 +1,8 @@
-//
-//  Question.swift
-//  keyn
-//
-//  Created by bas on 18/07/2018.
-//  Copyright © 2018 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import Foundation
-import JustLog
 
 enum QuestionType: String, Codable {
     case likert = "likert"
@@ -46,8 +41,8 @@ struct Question: Codable {
     }
 }
 
-
 class Questionnaire: Codable {
+    
     static let suite = "keynQuestionnaire"
     
     let id: String
@@ -101,14 +96,6 @@ class Questionnaire: Codable {
         self.questions = try values.decode([Question].self, forKey: .questions)
         self.compulsory = try values.decode(Bool.self, forKey: .compulsory)
     }
-
-    func add(question: Question) {
-        questions.append(question)
-    }
-    
-    func setFinished() {
-        isFinished = true
-    }
     
     func askAgainAt(date: Date) {
         askAgain = date
@@ -133,7 +120,7 @@ class Questionnaire: Codable {
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(id).path
             filemgr.createFile(atPath: questionnairePath, contents: data, attributes: nil)
         } catch {
-            Logger.shared.warning("Could not write questionnaire", error: error as NSError)
+            Logger.shared.warning("Could not write questionnaire", error: error)
         }
     }
     
@@ -151,7 +138,7 @@ class Questionnaire: Codable {
         save()
     }
     
-    // MARK: Static functions
+    // MARK: - Static functions
     
     static func get(id: String) -> Questionnaire? {
         let filemgr = FileManager.default
@@ -179,31 +166,49 @@ class Questionnaire: Codable {
                 }
             }
         } catch {
-            Logger.shared.warning("No questionnaires not found.", error: error as NSError)
+            Logger.shared.warning("No questionnaires not found.", error: error)
         }
         return questionnaires
     }
     
     static func fetch() {
-        do {
-            try API.sharedInstance.get(type: .questionnaire, path: nil, parameters: nil) { (dict) in
-                if let questionnaires = dict["questionnaires"] as? [Any] {
-                    for object in questionnaires {
-                        do {
-                            let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
-                            let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
-                            if !exists(id: questionnaire.id) {
-                                questionnaire.save()
-                            }
-                        } catch {
-                            Logger.shared.error("Failed to decode questionnaire", error: error as NSError)
+        API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get) { (dict, error) in
+            if let error = error {
+                Logger.shared.error("Could not get questionnaire.", error: error)
+                return
+            }
+
+            guard let dict = dict else {
+                Logger.shared.warning("Could not get questionnaires")
+                return
+            }
+
+            if let questionnaires = dict["questionnaires"] as? [Any] {
+                for object in questionnaires {
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
+                        let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
+                        if !exists(id: questionnaire.id) {
+                            questionnaire.save()
                         }
-                        
+                    } catch {
+                        Logger.shared.error("Failed to decode questionnaire", error: error)
                     }
+
                 }
             }
+        }
+    }
+    
+    static func createQuestionnaireDirectory() {
+        let filemgr = FileManager.default
+        let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
+        let newDir = libraryURL.appendingPathComponent("questionnaires").path
+        do {
+            try filemgr.createDirectory(atPath: newDir,
+                                        withIntermediateDirectories: true, attributes: nil)
         } catch {
-            Logger.shared.warning("Could not get questionnaires", error: error as NSError)
+            Logger.shared.error("Error creating questionnaire directory", error: error)
         }
     }
     
@@ -214,7 +219,7 @@ class Questionnaire: Codable {
             let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(questionnaire.id).path
             filemgr.createFile(atPath: questionnairePath, contents: data, attributes: nil)
-        } catch let error as NSError {
+        } catch {
             Logger.shared.warning("Could not write questionnaire", error: error)
         }
     }
@@ -227,22 +232,10 @@ class Questionnaire: Codable {
         do {
             return try PropertyListDecoder().decode(Questionnaire.self, from: data)
         } catch {
-            Logger.shared.warning("Questionnaire not found.", error: error as NSError)
+            Logger.shared.warning("Questionnaire not found.", error: error)
             try? filemgr.removeItem(atPath: path) // Remove legacy questionnaire
         }
         return nil
-    }
-    
-    static func createQuestionnaireDirectory() {
-        let filemgr = FileManager.default
-        let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
-        let newDir = libraryURL.appendingPathComponent("questionnaires").path
-        do {
-            try filemgr.createDirectory(atPath: newDir,
-                                        withIntermediateDirectories: true, attributes: nil)
-        } catch let error as NSError {
-            Logger.shared.error("Error creating questionnaire directory", error: error)
-        }
     }
     
     // DEBUGGING
@@ -255,8 +248,7 @@ class Questionnaire: Codable {
                 try filemgr.removeItem(atPath: questionnaireDirUrl.appendingPathComponent(filename).path)
             }
         } catch {
-            Logger.shared.warning("Could not delete questionnaires", error: error as NSError)
+            Logger.shared.warning("Could not delete questionnaires", error: error)
         }
-    }
-    
+    }    
 }

@@ -1,19 +1,19 @@
 PODS:
-  - AWSCognito (2.6.13):
-    - AWSCore (= 2.6.13)
-  - AWSCore (2.6.13)
-  - AWSSNS (2.6.13):
-    - AWSCore (= 2.6.13)
+  - AWSCognito (2.9.4):
+    - AWSCore (= 2.9.4)
+  - AWSCore (2.9.4)
+  - AWSSNS (2.9.4):
+    - AWSCore (= 2.9.4)
   - Base32 (1.1.2)
   - CocoaAsyncSocket (7.6.3)
-  - JustLog (2.3.0):
+  - JustLog (2.6.0):
     - CocoaAsyncSocket (~> 7.6.3)
-    - SwiftyBeaver (~> 1.5.2)
+    - SwiftyBeaver (~> 1.7.0)
   - MBProgressHUD (1.0.0)
-  - OneTimePassword (3.1.3):
+  - OneTimePassword (3.1.4):
     - Base32 (~> 1.1.2)
-  - Sodium (0.6)
-  - SwiftyBeaver (1.5.2)
+  - Sodium (0.8.0)
+  - SwiftyBeaver (1.7.0)
 
 DEPENDENCIES:
   - AWSCognito
@@ -21,7 +21,7 @@ DEPENDENCIES:
   - JustLog
   - MBProgressHUD (~> 1.0.0)
   - OneTimePassword (~> 3.1)
-  - Sodium (from `https://github.com/jedisct1/swift-sodium.git`)
+  - Sodium (~> 0.7)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -33,29 +33,21 @@ SPEC REPOS:
     - JustLog
     - MBProgressHUD
     - OneTimePassword
+    - Sodium
     - SwiftyBeaver
 
-EXTERNAL SOURCES:
-  Sodium:
-    :git: https://github.com/jedisct1/swift-sodium.git
-
-CHECKOUT OPTIONS:
-  Sodium:
-    :commit: d918fdbfe95879b1a7c78a9607bc1a03a45fcf22
-    :git: https://github.com/jedisct1/swift-sodium.git
-
 SPEC CHECKSUMS:
-  AWSCognito: 26f1263726ddc4c16b2a9876402b4bc5c25199b7
-  AWSCore: 5da797bc476188fdaf00dec134fa18d84708eca9
-  AWSSNS: 7d31d84d5b6d92b165c056d100732cfbe8c4fb45
+  AWSCognito: cc1bcbea1383e54764e67688a04af5895cf78625
+  AWSCore: 8539eaa1d687d50b6b127db5cb600e4c6b37cd4e
+  AWSSNS: 301cd06d4d2dc703901f6296e6f99b63dc7027a9
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
-  JustLog: f45d7e84353e34742b177f0156fcfa1b65b7bd4e
+  JustLog: 192079e8550c1a241ece39c6ce30fc90cd664999
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  OneTimePassword: 155d3c0cffbf22b39fb0def99d9e0facf6a37a7c
-  Sodium: 3cd000dc8d21be5d448fbb4366a7b1c9392b1ae6
-  SwiftyBeaver: 85daaaa2b3ae6e31b7b55c99430e8b91dac088af
+  OneTimePassword: 2fcf5d0e393a8e630a6bfeed1b250fb008aad487
+  Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
+  SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
 
-PODFILE CHECKSUM: b626f31e58ed8c65388bb90a9ead8e1bd66df643
+PODFILE CHECKSUM: f3f0842e967b62b581534e4d66f92d8da474243f
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0

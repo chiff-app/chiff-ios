@@ -1,23 +1,29 @@
-//
-//  RecoveryViewController.swift
-//  keyn
-//
-//  Created by bas on 22/12/2017.
-//  Copyright © 2017 keyn. All rights reserved.
-//
-
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
 import UIKit
-import JustLog
+
+enum RecoveryError: KeynError {
+    case unauthenticated
+}
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
-    
-    var isInitialSetup = true // TODO: Implement calling recovery from settings?
-    @IBOutlet var wordTextFields: Array<UITextField>?
+
+    @IBOutlet var wordTextFields: Array<UITextField>!
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
+    @IBOutlet weak var activityViewContainer: UIView!
+
+    private let lowerBoundaryOffset: CGFloat = 15
+    private let keyboardHeightOffset: CGFloat = 20
+    
+    private var textFieldOffset: CGPoint!
+    private var textFieldHeight: CGFloat!
+    private var keyboardHeight: CGFloat!
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
@@ -29,36 +35,33 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             finishButton.isEnabled = mnemonicIsValid
         }
     }
-    
-    var textFieldOffset: CGPoint!
-    var textFieldHeight: CGFloat!
-    var keyboardHeight: CGFloat!
+
+    var isInitialSetup = true
+    let wordlist = try! Seed.wordlist()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        wordTextFields?.sort(by: { (first, second) -> Bool in
-            return first.tag < second.tag
-        })
+        wordTextFields?.sort(by: { $0.tag < $1.tag })
         for textField in wordTextFields! {
-            textField.delegate = self
-            textField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+            initialize(textfield: textField)
         }
-        
+
         // Observe keyboard change
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        
-        // Do any additional setup after loading the view.
+
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
     }
-    
 
-    //MARK: UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
@@ -77,28 +80,25 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let index = wordTextFields?.index(of: textField) {
-            mnemonic[index] = textField.text ?? ""
-        }
+        checkWord(for: textField)
     }
 
     @objc func textFieldDidChange(textField: UITextField){
-        if let index = wordTextFields?.index(of: textField) {
-            mnemonic[index] = textField.text ?? ""
-        }
+        checkWord(for: textField)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
         guard keyboardHeight == nil else {
             return
         }
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height
+
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = keyboardSize.height - keyboardHeightOffset
             UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += (self.keyboardHeight - 40)
+                self.constraintContentHeight.constant += (self.keyboardHeight)
             })
 
-            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + 15
+            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
             if distanceToKeyboard > 0 {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: distanceToKeyboard)
@@ -110,49 +110,94 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight - 40)
+            self.constraintContentHeight.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         }
         
         keyboardHeight = nil
     }
 
-    // MARK: Actions
+    // MARK: - Actions
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
-        // TODO: Show some progress bar or something will data is being fetched remotely
-        do {
-            if try Seed.recover(mnemonic: mnemonic)  {
-                try BackupManager.sharedInstance.getBackupData(completionHandler: {
-                    DispatchQueue.main.async {
-                        if self.isInitialSetup {
-                            self.loadRootController()
-                        } else {
-                            self.dismiss(animated: true, completion: nil)
+        view.endEditing(false)
+        activityViewContainer.isHidden = false
+        LocalAuthenticationManager.shared.unlock(reason: "popups.questions.restore_accounts".localized) { (result, error) in
+            do {
+                if let error = error {
+                    throw error
+                } else if result {
+                    try Seed.recover(mnemonic: self.mnemonic)
+                    try BackupManager.shared.getBackupData() {
+                        DispatchQueue.main.async {
+                            self.showRootController()
                         }
                     }
-                })
-
+                } else {
+                    throw RecoveryError.unauthenticated
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.activityViewContainer.isHidden = true
+                }
+                Logger.shared.error("Seed could not be recovered", error: error)
             }
-        } catch {
-            Logger.shared.error("Seed could not be recovered", error: error as NSError)
+
         }
     }
     
-    private func loadRootController() {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let rootController = storyboard.instantiateViewController(withIdentifier: "RootController") as! RootViewController
-        rootController.selectedIndex = 0
-        UIApplication.shared.keyWindow?.rootViewController = rootController
-    }
+    // MARK: - Private
 
-    // MARK: Private functions
+    private func showRootController() {
+        guard let window = UIApplication.shared.keyWindow else {
+            return
+        }
+        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+            Logger.shared.error("Unexpected root view controller type")
+            fatalError("Unexpected root view controller type")
+        }
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            DispatchQueue.main.async {
+                window.rootViewController = vc
+            }
+        })
+    }
 
     private func checkMnemonic() -> Bool {
         for word in mnemonic {
             if word == "" { return false }
         }
         return Seed.validate(mnemonic: mnemonic)
+    }
+
+    private func checkWord(for textField: UITextField) {
+        if let word = textField.text, word != "", wordlist.contains(word) {
+            mnemonic[textField.tag] = word
+            UIView.animate(withDuration: 0.1) {
+                textField.rightView?.alpha = 1.0
+            }
+        } else {
+            mnemonic[textField.tag] = ""
+            if let alpha = textField.rightView?.alpha, alpha > 0.0 {
+                UIView.animate(withDuration: 0.1) {
+                    textField.rightView?.alpha = 0.0
+                }
+            }
+        }
+    }
+
+    private func initialize(textfield: UITextField) {
+        let checkMarkImageView = UIImageView(image: UIImage(named: "checkmark_small"))
+        checkMarkImageView.contentMode = UIView.ContentMode.center
+        if let size = checkMarkImageView.image?.size {
+            checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
+        }
+
+        textfield.rightViewMode = .always
+        textfield.rightView = checkMarkImageView
+        textfield.rightView?.alpha = 0.0
+        textfield.delegate = self
+        textfield.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
     }
 
 }
