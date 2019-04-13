@@ -21,7 +21,7 @@ class PasswordGeneratorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
         let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd)
         let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
-        XCTAssertEqual("$}?)5/{OGa5wj9%H%4]8(O1yDn:}dRPs", password)
+        XCTAssertEqual("RMMbQu1QVLIAchpgm7!.<CcL9EM[KFJ(", password)
         XCTAssertEqual(index, 0)
     }
     

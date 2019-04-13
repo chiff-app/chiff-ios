@@ -117,7 +117,6 @@ class Session: Codable {
             response = KeynCredentialsResponse(u: nil, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
-            #warning("TODO: Implement registering for account. This case is probably never reached now.")
             response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
@@ -196,13 +195,20 @@ class Session: Codable {
             guard let sessionData = dict[kSecAttrGeneric as String] as? Data else {
                 throw CodingError.unexpectedData
             }
-            #warning("TODO: Instead of deleting all the sessions when one session can not be decoded, we should just remove this session.")
             do {
                 let session = try decoder.decode(Session.self, from: sessionData)
                 sessions.append(session)
             } catch {
-                Logger.shared.error("Can not decode session, deleting all session data from keychain.", error: error)
-                purgeSessionDataFromKeychain()
+                Logger.shared.error("Can not decode session", error: error)
+                do {
+                    if let sessionId = dict[kSecAttrAccount as String] as? String {
+                        try Keychain.shared.delete(id: sessionId, service: .sharedSessionKey)
+                    } else {
+                        purgeSessionDataFromKeychain()
+                    }
+                } catch {
+                    purgeSessionDataFromKeychain()
+                }
             }
         }
 

@@ -4,6 +4,11 @@
 <dict>
 	<key>accounts</key>
 	<dict>
+		<key>2fa_description</key>
+		<dict>
+			<key>value</key>
+			<string>The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor.</string>
+		</dict>
 		<key>add_2fa_code</key>
 		<dict>
 			<key>value</key>
@@ -486,7 +491,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>This will delete all data on your phone.</string>
+			<string>This will delete all Keyn's data from your phone.</string>
 		</dict>
 		<key>settings</key>
 		<dict>

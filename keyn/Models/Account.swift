@@ -303,20 +303,10 @@ struct Account: Codable {
 
         return try decoder.decode(Account.self, from: accountData)
     }
-
+    
     static func save(accountData: Data, id: String) throws {
         let decoder = JSONDecoder()
-        var account: Account!
-        do {
-            account = try decoder.decode(Account.self, from: accountData)
-            print("Account restored from JSON")
-        } catch is DecodingError {
-            let legacyDecoder = PropertyListDecoder()
-            let legacyAccount = try legacyDecoder.decode(LegacyAccount.self, from: accountData)
-            account = Account(legacyAccount: legacyAccount)
-            print(account)
-            print("Account restored from plist")
-        }
+        var account = try decoder.decode(Account.self, from: accountData)
 
         assert(account.id == id, "Account restoring went wrong. Different id")
 
@@ -426,33 +416,4 @@ struct Account: Codable {
         }
     }
 
-}
-
-// MARK: - For legacy backups
-
-extension Account {
-
-    init(legacyAccount: LegacyAccount) {
-        self.id = legacyAccount.id
-        self.username = legacyAccount.username
-        self.sites = [legacyAccount.site]
-        self.passwordIndex = legacyAccount.passwordIndex
-        self.lastPasswordUpdateTryIndex = legacyAccount.lastPasswordUpdateTryIndex ?? legacyAccount.passwordIndex
-        self.tokenURL = legacyAccount.tokenURL
-        self.tokenSecret = legacyAccount.tokenSecret
-    }
-
-}
-
-struct LegacyAccount: Codable {
-    let id: String
-    var username: String
-    var site: Site
-    var passwordIndex: Int
-    var lastPasswordUpdateTryIndex: Int?
-    var passwordOffset: [Int]?
-    var askToLogin: Bool?
-    var askToChange: Bool?
-    fileprivate var tokenURL: URL?
-    fileprivate var tokenSecret: Data?
 }

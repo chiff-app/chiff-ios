@@ -19,6 +19,8 @@ fastlane_require 'json'
 
 default_platform(:ios)
 
+project = 'keyn.xcodeproj'
+
 def analytics(message)
     uri = URI.parse("https://api.keyn.io/logging/analytics")
     header = {'Content-Type': 'application/json; charset=utf-8'}
@@ -81,7 +83,6 @@ platform :ios do
         upload_to_testflight(
             skip_waiting_for_build_processing: true
         )
-        upload_to_testflight
         slack(message: "New version of Keyn released! #{version}")
     end
 
