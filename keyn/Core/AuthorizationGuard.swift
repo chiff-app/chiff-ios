@@ -12,13 +12,14 @@ class AuthorizationGuard {
 
     let session: Session
     let type: KeynMessageType
-    let browserTab: Int!    // Should be present for all requests
-    let siteName: String!   // Should be present for all requests
-    let siteURL: String!    // Should be present for all requests
-    let accountId: String!  // Should be present for login, change and fill requests
-    let siteId: String!     // Should be present for add site requests
-    let password: String!   // Should be present for add site requests
-    let username: String!   // Should be present for add site requests
+    let browserTab: Int!        // Should be present for all requests
+    let siteName: String!       // Should be present for all requests
+    let siteURL: String!        // Should be present for all requests
+    let accountId: String!      // Should be present for login, change and fill requests
+    let siteId: String!         // Should be present for add site requests
+    let password: String!       // Should be present for add site requests
+    let username: String!       // Should be present for add site requests
+    let accounts: [BulkAccount]!// Should be present for bulk add site requests
 
     var authenticationReason: String {
         switch type {
@@ -48,6 +49,7 @@ class AuthorizationGuard {
         self.password = request.password
         self.username = request.username
         self.accountId = request.accountID
+        self.accounts = request.accounts
     }
 
     // MARK: - Handle request responses
@@ -56,6 +58,8 @@ class AuthorizationGuard {
         switch type {
         case .add, .register, .addAndLogin:
             addSite(completionHandler: completionHandler)
+        case .addBulk:
+            addBulkSites(completionHandler: completionHandler)
         case .login, .change, .fill:
             authorizeForKeychain(completionHandler: completionHandler)
         default:
@@ -122,6 +126,32 @@ class AuthorizationGuard {
                 completionHandler(error)
             }
         })
+    }
+
+    private func addBulkSites(completionHandler: @escaping (_ error: Error?) -> Void) {
+        defer {
+            AuthorizationGuard.authorizationInProgress = false
+        }
+        LocalAuthenticationManager.shared.evaluatePolicy(reason: "Add \(accounts.count) accounts") { (context, error) in
+            for account in self.accounts {
+                let site = Site(name: account.siteName, id: account.siteId, url: account.siteURL, ppd: nil)
+                do {
+                    let _ = try Account(username: account.username, sites: [site], password: account.password, type: .ifNeeded, context: context) { (account, context, error) in
+                        do {
+                            if let error = error {
+                                throw error
+                            }
+                            NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
+                        } catch {
+                            Logger.shared.error("Add account response could not be sent", error: error)
+                        }
+                    }
+                } catch {
+                    Logger.shared.error("Account could not be saved.", error: error)
+                }
+            }
+            completionHandler(nil)
+        }
     }
 
 
