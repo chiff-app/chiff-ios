@@ -24,7 +24,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             unfilteredAccounts = [Account]()
         }
-        filteredAccounts = unfilteredAccounts
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
 
         scrollView.delegate = self
         tableView.delegate = self
@@ -147,12 +147,14 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func addAccount(notification: Notification) {
-        guard let account = notification.userInfo?["account"] as? Account else {
+        guard let accounts = notification.userInfo?["accounts"] as? [Account] else {
             Logger.shared.warning("Account was nil when trying to add it to the view.")
             return
         }
         DispatchQueue.main.async {
-            self.addAccount(account: account)
+            for account in accounts {
+                self.addAccount(account: account)
+            }
         }
     }
 

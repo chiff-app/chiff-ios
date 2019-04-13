@@ -71,28 +71,28 @@ class LoginViewController: ASCredentialProviderViewController {
     // MARK: - Private functions
 
     private func loadUsers() {
-        if let credentialIdentity = self.credentialIdentity {
-            Account.get(accountID: credentialIdentity.recordIdentifier!, reason: "\("requests.login_with".localized) \(credentialIdentity.user)", type: .ifNeeded) { (account, context, error) in
+        let reason = credentialIdentity != nil ? "\("requests.login_with".localized) \(credentialIdentity!.user)" : "requests.unlock_accounts".localized
+        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true) { (context, error) in
+            do {
                 if let error = error {
-                    Logger.shared.error("Error getting account", error: error)
-                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                } else if let account = account, let password = try? account.password(context: nil) {
-                    let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+                    throw error
+                }
+                if let accountID = self.credentialIdentity?.recordIdentifier, let account = try Account.get(accountID: accountID, context: context) {
+                    let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: context))
                     self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
                 } else {
-                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
-                }
-            }
-        } else {
-            Account.all(reason: "requests.unlock_accounts".localized, type: .ifNeeded) { (accounts, error) in
-                DispatchQueue.main.async {
-                    if let accounts = accounts, !accounts.isEmpty {
+                    let accounts = try Account.all(context: context)
+                    guard !accounts.isEmpty else {
+                        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                        return
+                    }
+                    DispatchQueue.main.async {
                         self.accounts = accounts
                         self.performSegue(withIdentifier: "showAccounts", sender: self)
-                    } else {
-                        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                     }
                 }
+            } catch {
+                self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
             }
         }
     }

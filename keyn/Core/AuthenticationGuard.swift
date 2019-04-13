@@ -79,33 +79,22 @@ class AuthenticationGuard {
 //    }
 
     // MARK: - Private functions
-    
+
     private func authenticateUser() {
         let localizedReason = "requests.unlock_keyn".localized
-        Account.all(reason: localizedReason, type: .ifNeeded) { (accounts, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true) { (context, error) in
             do {
                 if let error = error {
                     throw error
                 }
-                if !accounts!.isEmpty {
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts!)
-                        self.hideLockWindow()
-                    }
-                } else {
-                    LocalAuthenticationManager.shared.unlock(reason: localizedReason, completion: { (result, error) in
-                        DispatchQueue.main.async {
-                            if let error = error {
-                                self.handleError(error: error)
-                                return
-                            } else if result {
-                                self.hideLockWindow()
-                            }
-                        }
-                    })
+                let accounts = try Account.all(context: context)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
+                    self.hideLockWindow()
                 }
             } catch {
                 self.handleError(error: error)
+                return
             }
         }
     }

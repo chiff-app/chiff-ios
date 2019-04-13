@@ -45,29 +45,25 @@ class LocalAuthenticationManager {
         }
     }
 
-    func evaluatePolicy(reason: String, with context: LAContext? = nil, completion: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
-        let usedContext = context ?? LAContext()
-        usedContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (result, error) in
-            if let error = error {
-                return completion(nil, error)
+    func authenticate(reason: String, withMainContext: Bool, completion: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
+        do {
+            let context = withMainContext ? mainContext : LAContext()
+            if withMainContext {
+                try checkMainContext()
             }
-            return completion(result ? usedContext : nil, nil)
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (result, error) in
+                if let error = error {
+                    return completion(nil, error)
+                }
+                return completion(result ? context : nil, nil)
+            }
+        } catch {
+            Logger.shared.warning("Localauthentication failed")
+            completion(nil, error)
         }
     }
 
-    func unlock(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
-        do {
-            try checkMainContext()
-            mainContext.evaluatePolicy(
-                .deviceOwnerAuthenticationWithBiometrics,
-                localizedReason: reason,
-                reply: completion
-            )
-        } catch {
-            Logger.shared.warning("Localauthentication failed")
-            completion(false, error)
-        }
-    }
+    // MARK: - Private functions
 
     private func checkMainContext() throws {
         var authError: NSError?

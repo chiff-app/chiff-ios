@@ -61,7 +61,7 @@ class AuthorizationGuard {
         case .addBulk:
             addBulkSites(completionHandler: completionHandler)
         case .login, .change, .fill:
-            authorizeForKeychain(completionHandler: completionHandler)
+            authorize(completionHandler: completionHandler)
         default:
             AuthorizationGuard.authorizationInProgress = false
             return
@@ -83,8 +83,8 @@ class AuthorizationGuard {
 
     // MARK: - Private functions
 
-    private func authorizeForKeychain(completionHandler: @escaping (_ error: Error?) -> Void) {
-        Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { (account, context, error) in
+    private func authorize(completionHandler: @escaping (_ error: Error?) -> Void) {
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
             do {
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
@@ -92,7 +92,10 @@ class AuthorizationGuard {
                 if let error = error {
                     throw error
                 }
-                try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
+                guard let account = try Account.get(accountID: self.accountId, context: context) else {
+                    throw AccountError.notFound
+                }
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(nil)
             } catch {
                 Logger.shared.error("Error authorizing request", error: error)
@@ -107,24 +110,23 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            do {
-                let _ = try Account(username: self.username, sites: [site], password: self.password, type: .override) { (account, context, error) in
-                    do {
-                        if let error = error {
-                            throw error
-                        }
-                        try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
-                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                        completionHandler(nil)
-                    } catch {
-                        Logger.shared.error("Add account response could not be sent", error: error)
-                        completionHandler(error)
+            LocalAuthenticationManager.shared.authenticate(reason: "Save \(site.name)", withMainContext: false) { (context, error) in
+                do {
+                    if let error = error {
+                        throw error
                     }
+                    let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
+                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
+                    completionHandler(nil)
+                } catch {
+                    Logger.shared.error("Account could not be saved.", error: error)
+                    completionHandler(error)
                 }
-            } catch {
-                Logger.shared.error("Account could not be saved.", error: error)
-                completionHandler(error)
+
             }
+
+
         })
     }
 
@@ -132,25 +134,18 @@ class AuthorizationGuard {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
-        LocalAuthenticationManager.shared.evaluatePolicy(reason: "Add \(accounts.count) accounts") { (context, error) in
-            for account in self.accounts {
-                let site = Site(name: account.siteName, id: account.siteId, url: account.siteURL, ppd: nil)
-                do {
-                    let _ = try Account(username: account.username, sites: [site], password: account.password, type: .ifNeeded, context: context) { (account, context, error) in
-                        do {
-                            if let error = error {
-                                throw error
-                            }
-                            NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                        } catch {
-                            Logger.shared.error("Add account response could not be sent", error: error)
-                        }
-                    }
-                } catch {
-                    Logger.shared.error("Account could not be saved.", error: error)
-                }
+        LocalAuthenticationManager.shared.authenticate(reason: "Add \(accounts.count) accounts", withMainContext: false) { (context, error) in
+            do {
+                let accounts = try self.accounts.map({ (bulkAccount: BulkAccount) -> Account in
+                    let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
+                    return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
+                })
+                NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
+                completionHandler(nil)
+            } catch {
+                Logger.shared.error("Accounts could not be saved.", error: error)
+                completionHandler(error)
             }
-            completionHandler(nil)
         }
     }
 
@@ -209,11 +204,12 @@ class AuthorizationGuard {
 
     static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
-        authorizeWithoutKeychain(reason: account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)") { (success, error) in
+        let reason = account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
+        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (context, error) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
-            if success {
+            if context != nil {
                 completionHandler(nil)
             } else if let error = error {
                 completionHandler(error)
@@ -237,11 +233,12 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
-            authorizeWithoutKeychain(reason: "Pair with \(browser) on \(os).") { (success, error) in
+            #warning("TODO: Localize this")
+            LocalAuthenticationManager.shared.authenticate(reason: "Pair with \(browser) on \(os).", withMainContext: false) { (context, error) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }
-                if success {
+                if context != nil {
                     Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completion: completionHandler)
                 } else if let error = error {
                     completionHandler(nil, error)
@@ -253,23 +250,6 @@ class AuthorizationGuard {
         } catch {
             completionHandler(nil, error)
         }
-    }
-
-    private static func authorizeWithoutKeychain(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
-        var error: NSError?
-        let context = LAContext()
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            #warning("TODO: Handle fingerprint absence in authorize function")
-            Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
-            completion(false, error)
-            return
-        }
-
-        context.evaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: reason,
-            reply: completion
-        )
     }
 
     private static func showError(errorMessage: String) {
