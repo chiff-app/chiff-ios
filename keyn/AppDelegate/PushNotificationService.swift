@@ -109,18 +109,20 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .addBulk {
             do {
-                if let sessionID = keynRequest.sessionID, let session = try Session.get(id: sessionID) {
-                    self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil) { accounts in
-                        DispatchQueue.main.async {
-                            var request = keynRequest
-                            request.accounts = accounts
-                            AuthorizationGuard.launchRequestView(with: request)
-                        }
-                    }
-                    return [.sound]
+                guard let sessionID = keynRequest.sessionID, let session = try Session.get(id: sessionID) else {
+                    throw CodingError.missingData
                 }
+                #warning("TODO: Improve this by using background fetching in notification processor.")
+                self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil) { accounts in
+                    DispatchQueue.main.async {
+                        var request = keynRequest
+                        request.accounts = accounts
+                        AuthorizationGuard.launchRequestView(with: request)
+                    }
+                }
+                return [.sound]
             } catch {
-                Logger.shared.error("Could not get sessions.", error: error)
+                Logger.shared.error("Could not get session.", error: error)
                 return []
             }
         } else {
@@ -208,6 +210,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
+        var result: [BulkAccount]?
         switch keynMessage.type {
         case .confirm:
             guard let accountId = keynMessage.accountID else  {
@@ -233,12 +236,12 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
         case .addBulk:
-            return keynMessage.accounts!
+            result = keynMessage.accounts!
         default:
             Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
         session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
-        return nil
+        return result
     }
 
     // DEBUG

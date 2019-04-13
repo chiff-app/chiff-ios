@@ -122,11 +122,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBAction func finish(_ sender: UIBarButtonItem) {
         view.endEditing(false)
         activityViewContainer.isHidden = false
-        LocalAuthenticationManager.shared.unlock(reason: "popups.questions.restore_accounts".localized) { (result, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (context, error) in
             do {
                 if let error = error {
                     throw error
-                } else if result {
+                } else if context != nil {
                     try Seed.recover(mnemonic: self.mnemonic)
                     try BackupManager.shared.getBackupData() {
                         DispatchQueue.main.async {
