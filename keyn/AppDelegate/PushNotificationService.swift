@@ -107,8 +107,26 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return []
         }
 
-        DispatchQueue.main.async {
-            AuthorizationGuard.launchRequestView(with: keynRequest)
+        if keynRequest.type == .addBulk {
+            do {
+                if let sessionID = keynRequest.sessionID, let session = try Session.get(id: sessionID) {
+                    self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil) { accounts in
+                        DispatchQueue.main.async {
+                            var request = keynRequest
+                            request.accounts = accounts
+                            AuthorizationGuard.launchRequestView(with: request)
+                        }
+                    }
+                    return [.sound]
+                }
+            } catch {
+                Logger.shared.error("Could not get sessions.", error: error)
+                return []
+            }
+        } else {
+            DispatchQueue.main.async {
+                AuthorizationGuard.launchRequestView(with: keynRequest)
+            }
         }
 
         return [.sound]
@@ -138,7 +156,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         }).rawValue
 
-        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext, completionHandler: {
+        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext, completionHandler: { _ in
             if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
                 let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
                 UIApplication.shared.endBackgroundTask(id)
@@ -156,7 +174,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: (() -> Void)?) {
+    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
         session.getPersistentQueueMessages(shortPolling: shortPolling) { (messages, error) in
             if let error = error {
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
@@ -167,30 +185,38 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     if (attempts > 1) {
                         self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context, completionHandler: completionHandler)
                     } else if let handler = completionHandler {
-                        handler()
+                        handler(nil)
                     }
                     return
                 }
-                try messages.forEach({ try self.handlePersistenQueueMessage(keynMessage: $0, session: session, context: context) })
+                var accounts: [BulkAccount]?
+                for message in messages {
+                    if let bulkAccounts = try self.handlePersistenQueueMessage(keynMessage: message, session: session, context: context) {
+                        accounts = bulkAccounts
+                    }
+                }
+                if let handler = completionHandler {
+                    handler(accounts)
+                }
             } catch {
                 Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
-            }
-            if let handler = completionHandler {
-                handler()
             }
         }
     }
 
-    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws {
-        guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
+    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws -> [BulkAccount]? {
+        guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
-        }
-        var account = try Account.get(accountID: accountId, context: context)
-        guard account != nil else {
-            throw AccountError.notFound
         }
         switch keynMessage.type {
         case .confirm:
+            guard let accountId = keynMessage.accountID else  {
+                throw CodingError.missingData
+            }
+            var account = try Account.get(accountID: accountId, context: context)
+            guard account != nil else {
+                throw AccountError.notFound
+            }
             guard let result = keynMessage.passwordSuccessfullyChanged else {
                 throw CodingError.missingData
             }
@@ -198,11 +224,21 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 try account!.updatePasswordAfterConfirmation()
             }
         case .preferences:
+            guard let accountId = keynMessage.accountID else  {
+                throw CodingError.missingData
+            }
+            var account = try Account.get(accountID: accountId, context: context)
+            guard account != nil else {
+                throw AccountError.notFound
+            }
             try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
+        case .addBulk:
+            return keynMessage.accounts!
         default:
             Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
         session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
+        return nil
     }
 
     // DEBUG
