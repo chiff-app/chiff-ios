@@ -23,6 +23,10 @@ struct Properties {
         production: "arn:aws:sns:eu-central-1:589716660077:app/APNS/Keyn"
     )
 
+    static var environment: String {
+        return isDebug ? "ios_sandbox" : "ios_production"
+    }
+
     static let AWSSQSBaseUrl = "https://sqs.eu-central-1.amazonaws.com/589716660077/"
     
     static let keynApi = "api.keyn.io"

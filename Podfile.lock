@@ -1,9 +1,4 @@
 PODS:
-  - AWSCognito (2.9.4):
-    - AWSCore (= 2.9.4)
-  - AWSCore (2.9.4)
-  - AWSSNS (2.9.4):
-    - AWSCore (= 2.9.4)
   - Base32 (1.1.2)
   - CocoaAsyncSocket (7.6.3)
   - JustLog (2.6.0):
@@ -16,8 +11,6 @@ PODS:
   - SwiftyBeaver (1.7.0)
 
 DEPENDENCIES:
-  - AWSCognito
-  - AWSSNS
   - JustLog
   - MBProgressHUD (~> 1.0.0)
   - OneTimePassword (~> 3.1)
@@ -25,9 +18,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AWSCognito
-    - AWSCore
-    - AWSSNS
     - Base32
     - CocoaAsyncSocket
     - JustLog
@@ -37,9 +27,6 @@ SPEC REPOS:
     - SwiftyBeaver
 
 SPEC CHECKSUMS:
-  AWSCognito: cc1bcbea1383e54764e67688a04af5895cf78625
-  AWSCore: 8539eaa1d687d50b6b127db5cb600e4c6b37cd4e
-  AWSSNS: 301cd06d4d2dc703901f6296e6f99b63dc7027a9
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   JustLog: 192079e8550c1a241ece39c6ce30fc90cd664999
@@ -48,6 +35,6 @@ SPEC CHECKSUMS:
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
 
-PODFILE CHECKSUM: f3f0842e967b62b581534e4d66f92d8da474243f
+PODFILE CHECKSUM: 38b46df1d13f2bf627a6d0ea1de455f99b63511f
 
 COCOAPODS: 1.6.0

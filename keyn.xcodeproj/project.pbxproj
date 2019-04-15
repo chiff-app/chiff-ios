@@ -116,10 +116,8 @@
 		49F2A0FB2214321A00429875 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F422142EB900429875 /* Extensions.swift */; };
 		49F2A0FE2214322600429875 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F8221431C700429875 /* DataStructures.swift */; };
 		49F2A0FF2214322700429875 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F8221431C700429875 /* DataStructures.swift */; };
-		49F2A1012214337300429875 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
-		49F448291FD1652C00643C4D /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
 		49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
@@ -148,7 +146,6 @@
 		611F4B642146B66400B35A89 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
 		611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
-		613CFB0220135DF200460CC6 /* AWS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F448281FD1652C00643C4D /* AWS.swift */; };
 		613CFB07201360B300460CC6 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		613CFB09201360D200460CC6 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		613CFB0A201360D800460CC6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
@@ -303,7 +300,6 @@
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		49F2A0F622142F0400429875 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
-		49F448281FD1652C00643C4D /* AWS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWS.swift; sourceTree = "<group>"; };
 		49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -602,7 +598,6 @@
 				49721F9B2128E5830090AF48 /* API.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				49057730221AE04B006D98C0 /* AuthorizationGuard.swift */,
-				49F448281FD1652C00643C4D /* AWS.swift */,
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
@@ -964,9 +959,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
-				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
-				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
 				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
@@ -977,9 +969,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
@@ -1054,9 +1043,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AWSCognito/AWSCognito.framework",
-				"${BUILT_PRODUCTS_DIR}/AWSCore/AWSCore.framework",
-				"${BUILT_PRODUCTS_DIR}/AWSSNS/AWSSNS.framework",
 				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
@@ -1067,9 +1053,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCognito.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSSNS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
@@ -1127,7 +1110,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
-				613CFB0220135DF200460CC6 /* AWS.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
@@ -1192,7 +1174,6 @@
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49062C6D2214679400A30669 /* Localizer.swift in Sources */,
-				49F448291FD1652C00643C4D /* AWS.swift in Sources */,
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
@@ -1267,7 +1248,6 @@
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
-				49F2A1012214337300429875 /* AWS.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,
 				49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				49062C6F2214679400A30669 /* Localizer.swift in Sources */,
