@@ -171,7 +171,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     }
                     return
                 }
-                try messages.forEach({ try self.handlePersistenQueueMessage(keynMessage: $0, session: session, context: context) })
+                try messages.forEach({ try self.handlePersistentQueueMessage(keynMessage: $0, session: session, context: context) })
             } catch {
                 Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
             }
@@ -181,7 +181,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func handlePersistenQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws {
+    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws {
         guard let accountId = keynMessage.accountID, let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }

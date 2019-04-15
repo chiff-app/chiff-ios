@@ -61,14 +61,6 @@ class SettingsViewController: UITableViewController {
     }
     // MARK: - Actions
 
-    @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {
-        if sender.isOn {
-            AWS.shared.subscribe()
-        } else {
-            AWS.shared.unsubscribe()
-        }
-    }
-
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
         let completed = Seed.paperBackupCompleted
         paperBackupAlertIcon.isHidden = completed
@@ -84,10 +76,9 @@ class SettingsViewController: UITableViewController {
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
+            BackupManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            AWS.shared.deleteEndpointArn()
             Logger.shared.analytics("Keyn reset.", code: .keynReset)
-            UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))

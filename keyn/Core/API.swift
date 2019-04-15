@@ -18,6 +18,7 @@ enum APIError: KeynError {
 enum APIEndpoint: String {
     case accounts = "accounts"
     case backup = "backup"
+    case device = "device"
     case ppd = "ppd"
     case analytics = "analytics"
     case message = "message"
