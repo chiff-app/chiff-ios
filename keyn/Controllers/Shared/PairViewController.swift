@@ -9,7 +9,6 @@ import OneTimePassword
 
 protocol PairControllerDelegate {
     func sessionCreated(session: Session)
-    func prepareForPairing(completionHandler: @escaping (_ result: Bool) -> Void)
 }
 
 class PairViewController: QRViewController {
@@ -21,11 +20,7 @@ class PairViewController: QRViewController {
             return
         }
 
-        pairControllerDelegate.prepareForPairing { (result) in
-            if result {
-                self.pair(url: url)
-            }
-        }
+        self.pair(url: url)
     }
 
     private func pair(url: URL) {
