@@ -23,6 +23,8 @@ class RequestViewController: UIViewController {
             requestLabel.text = "Confirm login"
         case .add, .addAndLogin:
             requestLabel.text = "Add account"
+        case .addBulk:
+            requestLabel.text = "Add accounts"
         case .change:
             requestLabel.text = "Change password"
         case .fill:
@@ -62,6 +64,9 @@ class RequestViewController: UIViewController {
                 successTextDetailLabel.text = "Return to your computer"
             case .add:
                 successTextLabel.text = "Account added"
+                successTextDetailLabel.text = "Next time you can login with Keyn"
+            case .addBulk:
+                successTextLabel.text = "\(authorizationGuard.accounts.count) accounts added"
                 successTextDetailLabel.text = "Next time you can login with Keyn"
             case .change:
                 successTextLabel.text = "New password generated"

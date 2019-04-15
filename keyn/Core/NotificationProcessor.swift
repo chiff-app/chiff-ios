@@ -35,8 +35,11 @@ class NotificationProcessor {
 
         switch keynRequest.type {
         case .add, .addAndLogin:
-            content.title = "Add site request"
+            content.title = "Add account"
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
+        case .addBulk:
+            content.title = "Add accounts"
+            content.body = "\(keynRequest.count!) accounts from \(session.browser) on \(session.os)."
         case .end:
             content.title = "Session ended"
             content.body = "\(session.browser) on \(session.os)."
