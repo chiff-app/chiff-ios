@@ -167,10 +167,11 @@ struct BackupManager {
     }
 
     func deleteEndpoint() {
-        let message: [String: Any] = [
-            MessageIdentifier.endpoint: endpoint
-        ]
-        apiRequest(endpoint: .device, method: .delete, message: message) { (dict, error) in
+        guard let endpoint = endpoint else {
+            Logger.shared.warning("Tried to delete endpoint without endpoint present")
+            return
+        }
+        apiRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint]) { (dict, error) in
             if let error = error {
                 Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
             }
