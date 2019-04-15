@@ -169,7 +169,9 @@ class Crypto {
     }
 
     func encrypt(_ plaintext: Data, key: Data) throws -> Data {
-        guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, beforenm: key.bytes) else {
+        var data = plaintext.bytes
+        sodium.utils.pad(bytes: &data, blockSize: 200)
+        guard let ciphertext: Bytes = sodium.box.seal(message: data, beforenm: key.bytes) else {
             throw CryptoError.encryption
         }
 
