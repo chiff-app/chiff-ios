@@ -10,7 +10,7 @@ class PasswordValidator {
     static let MIN_PASSWORD_LENGTH_BOUND = 8
     static let MAX_PASSWORD_LENGTH_BOUND = 50
     static let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
-    static let MAXIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|-_+= "
+    static let MAXIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321)(*&^%$#@!{}[]:;\"'?/,.<>`~|-_+= \\"
     let ppd: PPD?
     var characterSetDictionary = [String:String]()
     var characters = ""
