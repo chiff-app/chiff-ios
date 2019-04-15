@@ -274,7 +274,7 @@ class Session: Codable {
     // MARK: - Private
 
     private func createQueues(signingKeyPair: KeyPair) throws {
-        guard let deviceEndpoint = AWS.shared.snsDeviceEndpointArn else {
+        guard let deviceEndpoint = BackupManager.shared.endpoint else {
             throw SessionError.noEndpoint
         }
 

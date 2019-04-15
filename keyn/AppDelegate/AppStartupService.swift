@@ -2,7 +2,6 @@
  * Copyright © 2019 Keyn B.V.
  * All rights reserved.
  */
-import AWSCore
 
 import LocalAuthentication
 import UIKit
@@ -24,7 +23,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
-        fetchAWSIdentification()
         Questionnaire.fetch()
         UIFixes()
 
@@ -55,7 +53,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
-        AWS.shared.snsRegistration(deviceToken: deviceToken)
+        BackupManager.shared.snsRegistration(deviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -109,13 +107,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // MARK: - Private
 
-    private func fetchAWSIdentification() {
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:. EUCentral1,
-                                                                identityPoolId: Properties.AWSIdentityPoolId)
-        let configuration = AWSServiceConfiguration(region: .EUCentral1, credentialsProvider: credentialsProvider)
-        AWSServiceManager.default().defaultServiceConfiguration = configuration
-    }
-
     private func launchInitialView() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
@@ -124,7 +115,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             let _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
-            AWS.shared.isFirstLaunch = true
         }
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
