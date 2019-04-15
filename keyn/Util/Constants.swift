@@ -67,8 +67,8 @@ enum KeynMessageType: Int, Codable {
     case login = 1
     case register = 2
     case change = 3
-    case reset = 4          // Unused
-    case add = 5
+    case add = 4
+    case addBulk = 5
     case addAndLogin = 6
     case end = 7
     case confirm = 8
