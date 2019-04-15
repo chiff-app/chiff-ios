@@ -17,7 +17,6 @@ class AuthenticationGuard {
         }
     }
 
-    var localAuthenticationContext = LAContext()
     var authenticationInProgress = false
 
     private init() {
@@ -93,6 +92,7 @@ class AuthenticationGuard {
                     self.hideLockWindow()
                 }
             } catch {
+                Logger.shared.error("AuthenticateUser error", error: error)
                 self.handleError(error: error)
                 return
             }
