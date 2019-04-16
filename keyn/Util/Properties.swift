@@ -7,6 +7,21 @@ import Foundation
 struct Properties {
 
     init() {}
+
+    enum Environment: String {
+        case dev = "dev"
+        case beta = "beta"
+        case prod = "v1"
+
+        var apns: String {
+            switch self {
+            case .dev, .beta:
+                return "ios_sandbox"
+            case .prod:
+                return "ios_production"
+            }
+        }
+    }
     
     static let isDebug: Bool = {
         var debug = false
@@ -16,24 +31,19 @@ struct Properties {
         return debug
     }()
 
-    static let AWSIdentityPoolId = "eu-central-1:7ab4f662-00ed-4a86-a03e-533c43a44dbe"
+    static let isTestFlight = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
 
-    static let AWSPlaformApplicationArn = (
-        sandbox: "arn:aws:sns:eu-central-1:589716660077:app/APNS_SANDBOX/Keyn",
-        production: "arn:aws:sns:eu-central-1:589716660077:app/APNS/Keyn"
-    )
+    static let environment: Environment = {
+        if Properties.isDebug {
+            return .dev
+        } else if isTestFlight {
+            return .beta
+        } else {
+            return .prod
+        }
+    }()
 
-    static var environment: String {
-        return isDebug ? "ios_sandbox" : "ios_production"
-    }
-
-    static let AWSSQSBaseUrl = "https://sqs.eu-central-1.amazonaws.com/589716660077/"
-    
-    static let keynApi = "api.keyn.io"
-    static let keynApiVersion = (
-        production: "v1",
-        development: "dev"
-    )
+    static let keynApi = "api.keyn.app"
     
     static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
     

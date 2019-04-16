@@ -143,7 +143,7 @@ struct BackupManager {
     func updateEndpoint(token: String, pubKey: String, endpoint: String?) throws {
         var message = [
             MessageIdentifier.token: token,
-            MessageIdentifier.environment: Properties.environment
+            MessageIdentifier.environment: Properties.environment.apns
         ]
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint

@@ -14,6 +14,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var tabBarGradient: TabBarGradient!
     @IBOutlet weak var addAccountContainerView: UIView!
+    @IBOutlet weak var tableViewFooter: UILabel!
 
 
     override func viewDidLoad() {
@@ -39,6 +40,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+
+        tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
     }
 
     override func viewWillAppear(_ animated: Bool) {
