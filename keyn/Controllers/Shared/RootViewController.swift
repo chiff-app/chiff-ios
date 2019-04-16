@@ -69,12 +69,6 @@ class KeynTabBar: UITabBar {
     let height: CGFloat = 90
     var gradientView: UIView!
 
-    override func awakeFromNib() {
-        let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
-        gradientView = UIView(frame: frame)
-        self.insertSubview(gradientView, at: 0)
-    }
-
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         guard let window = UIApplication.shared.keyWindow else {
             return super.sizeThatFits(size)
@@ -90,6 +84,13 @@ class KeynTabBar: UITabBar {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        if gradientView == nil {
+            let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
+            gradientView = UIView(frame: frame)
+//            gradientView.backgroundColor = UIColor.red
+            self.insertSubview(gradientView, at: 0)
+        }
+
         addBackgroundLayer()
     }
 
