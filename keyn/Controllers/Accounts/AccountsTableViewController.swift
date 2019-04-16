@@ -49,6 +49,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         updateUi()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (tabBarController as? RootViewController)?.showGradient(!unfilteredAccounts.isEmpty)
+    }
+
+
     @objc func showAddAccount() {
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
