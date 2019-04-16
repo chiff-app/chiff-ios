@@ -21,6 +21,7 @@ class SettingsViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        (tabBarController as! RootViewController).showGradient(false)
         if !justLoaded {
             setFooterText()
         } else { justLoaded = false }

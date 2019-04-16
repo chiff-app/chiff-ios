@@ -27,8 +27,7 @@ class RootViewController: UITabBarController {
     }
 
     func showGradient(_ value: Bool) {
-        let bar = tabBar as! KeynTabBar
-        bar.gradientLayer.isHidden = !value
+        (tabBar as! KeynTabBar).gradientView.isHidden = !value
     }
     
     // MARK: - Private functions
@@ -68,7 +67,13 @@ class RootViewController: UITabBarController {
 class KeynTabBar: UITabBar {
 
     let height: CGFloat = 90
-    var gradientLayer: CAGradientLayer!
+    var gradientView: UIView!
+
+    override func awakeFromNib() {
+        let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
+        gradientView = UIView(frame: frame)
+        self.insertSubview(gradientView, at: 0)
+    }
 
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         guard let window = UIApplication.shared.keyWindow else {
@@ -89,13 +94,16 @@ class KeynTabBar: UITabBar {
     }
 
     private func addBackgroundLayer() {
-        gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
+//        let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
+//        gradientView = UIView(frame: frame)
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = gradientView.bounds
         var colors = [CGColor]()
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
         gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.6)]
         gradientLayer.colors = colors
-        layer.insertSublayer(gradientLayer, at: 0)
+        gradientView.layer.insertSublayer(gradientLayer, at: 0)
+//        self.insertSubview(gradientView, at: 0)
     }
 }
