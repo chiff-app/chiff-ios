@@ -60,12 +60,14 @@ class PasswordGenerator {
     }
 
     func calculateOffset(index passwordIndex: Int, password: String) throws -> [Int] {
-        #warning("TODO: Check if this is OK. Not validating custom passwords.")
         let chars = PasswordValidator.MAXIMAL_CHARACTER_SET.sorted()
         let length = self.length(isCustomPassword: true)
         let validator = PasswordValidator(ppd: ppd)
         guard validator.validateMaxLength(password: password) else {
             throw PasswordGenerationError.invalidPassword
+        }
+        guard validator.validateCharacters(password: password, characters: String(chars)) else {
+            throw PasswordGenerationError.characterNotAllowed
         }
 
         let key = try generateKey(index: passwordIndex)
