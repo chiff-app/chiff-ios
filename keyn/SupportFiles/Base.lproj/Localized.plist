@@ -28,6 +28,16 @@
 			<key>value</key>
 			<string>Copied</string>
 		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.</string>
+		</dict>
+		<key>footer_unlimited</key>
+		<dict>
+			<key>value</key>
+			<string>You can save as many accounts as you want.</string>
+		</dict>
 		<key>mode</key>
 		<dict>
 			<key>value</key>
