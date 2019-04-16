@@ -24,7 +24,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             unfilteredAccounts = [Account]()
         }
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
 
         scrollView.delegate = self
         tableView.delegate = self
@@ -58,7 +58,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
             if let accounts = notification.userInfo as? [String: Account] {
-                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
                 self.updateUi()
@@ -84,9 +84,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { $0.site.name < $1.site.name })
+            }).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         }
         tableView.reloadData()
     }
