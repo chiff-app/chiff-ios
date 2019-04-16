@@ -47,6 +47,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (tabBarController as? RootViewController)?.showGradient(true)
+    }
+
     private func loadAccountData() {
         do {
             websiteNameTextField.text = account.site.name

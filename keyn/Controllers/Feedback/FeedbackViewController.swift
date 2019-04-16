@@ -133,7 +133,6 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
     // MARK: - Actions
 
-    #warning("TODO: Figure out if this still works.")
     @IBAction func sendFeedback(_ sender: UIBarButtonItem) {
         // Data
         if let name = nameTextField.text {
