@@ -411,12 +411,32 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>requests</key>
 	<dict>
+		<key>account_added</key>
+		<dict>
+			<key>value</key>
+			<string>Account added</string>
+		</dict>
 		<key>accounts</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for 'accounts'</string>
 			<key>value</key>
 			<string>accounts</string>
+		</dict>
+		<key>accounts_added</key>
+		<dict>
+			<key>value</key>
+			<string>accounts added</string>
+		</dict>
+		<key>add_account</key>
+		<dict>
+			<key>value</key>
+			<string>Add account</string>
+		</dict>
+		<key>add_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Add accounts</string>
 		</dict>
 		<key>add_site</key>
 		<dict>
@@ -432,6 +452,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Change password for</string>
 		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Change password</string>
+		</dict>
+		<key>confirm_login</key>
+		<dict>
+			<key>value</key>
+			<string>Confirm login</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -443,6 +473,26 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask the user to fill a password, e.g. Fill password for Amazon.com?</string>
 			<key>value</key>
 			<string>Fill password for</string>
+		</dict>
+		<key>fill_password</key>
+		<dict>
+			<key>value</key>
+			<string>Fill password</string>
+		</dict>
+		<key>fill_password_succesful</key>
+		<dict>
+			<key>value</key>
+			<string>Fill password successful</string>
+		</dict>
+		<key>login_keyn_next_time</key>
+		<dict>
+			<key>value</key>
+			<string>Next time you can login with Keyn</string>
+		</dict>
+		<key>login_succesful</key>
+		<dict>
+			<key>value</key>
+			<string>Login successful</string>
 		</dict>
 		<key>login_to</key>
 		<dict>
@@ -458,6 +508,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Login with</string>
 		</dict>
+		<key>new_password_generated</key>
+		<dict>
+			<key>value</key>
+			<string>New password generated</string>
+		</dict>
 		<key>on</key>
 		<dict>
 			<key>comment</key>
@@ -470,6 +525,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Pair with</string>
 		</dict>
+		<key>return_to_computer</key>
+		<dict>
+			<key>value</key>
+			<string>Return to your computer</string>
+		</dict>
 		<key>save</key>
 		<dict>
 			<key>comment</key>
@@ -477,10 +537,15 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Save</string>
 		</dict>
+		<key>to_complete_process</key>
+		<dict>
+			<key>value</key>
+			<string>to complete the process</string>
+		</dict>
 		<key>unknown_request</key>
 		<dict>
 			<key>value</key>
-			<string>Unknown request type</string>
+			<string>Unknown request</string>
 		</dict>
 		<key>unlock_accounts</key>
 		<dict>

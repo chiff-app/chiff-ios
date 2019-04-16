@@ -199,7 +199,35 @@ requests:
   pair_with:
     value: Pair with
   unknown_request:
-    value: Unknown request type
+    value: Unknown request
+  confirm_login:
+    value: Confirm login
+  add_account:
+    value: Add account
+  add_accounts:
+    value: Add accounts
+  change_password:
+    value: Change password
+  fill_password:
+    value: Fill password
+  unknown_request:
+    value: Unknown request
+  login_succesful:
+    value: Login successful
+  account_added:
+    value: Account added
+  accounts_added:
+    value: accounts added
+  new_password_generated:
+    value: New password generated
+  fill_password_succesful:
+    value: Fill password successful
+  return_to_computer:
+    value: Return to your computer
+  login_keyn_next_time:
+    value: Next time you can login with Keyn
+  to_complete_process:
+    value: to complete the process
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
