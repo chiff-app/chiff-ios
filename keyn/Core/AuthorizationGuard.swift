@@ -98,7 +98,6 @@ class AuthorizationGuard {
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(nil)
             } catch {
-                Logger.shared.error("Error authorizing request", error: error)
                 completionHandler(error)
             }
         }
@@ -122,7 +121,6 @@ class AuthorizationGuard {
                     }
                     completionHandler(nil)
                 } catch {
-                    Logger.shared.error("Account could not be saved.", error: error)
                     completionHandler(error)
                 }
 
@@ -151,7 +149,6 @@ class AuthorizationGuard {
                 }
                 completionHandler(nil)
             } catch {
-                Logger.shared.error("Accounts could not be saved.", error: error)
                 completionHandler(error)
             }
         }
