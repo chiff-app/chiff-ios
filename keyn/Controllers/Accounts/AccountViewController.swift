@@ -84,11 +84,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "Account details" : "User details"
+        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == 1 else {
+        guard section <= 1 else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
@@ -96,8 +96,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = "accounts.2fa_description".localized
-        footer.textLabel?.numberOfLines = 3
+        if section == 0 {
+            footer.textLabel?.text = "accounts.url_warning".localized.capitalizedFirstLetter
+            footer.textLabel?.isHidden = !tableView.isEditing
+        } else {
+            footer.textLabel?.isHidden = false
+            footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
+            footer.textLabel?.numberOfLines = 3
+        }
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -192,7 +198,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         totpLoader?.isHidden = true
 
         editingMode = true
-        tableView.reloadData()
+        UIView.transition(with: tableView,
+                          duration: 0.1,
+                          options: .transitionCrossDissolve,
+                          animations: { self.tableView.reloadData() })
     }
     
     @objc func cancel() {
@@ -243,7 +252,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         totpLoader?.isHidden = false
         
         editingMode = false
-        tableView.reloadData()
+        UIView.transition(with: tableView,
+                          duration: 0.1,
+                          options: .transitionCrossDissolve,
+                          animations: { self.tableView.reloadData() })
     }
     
     private func showHiddenPasswordPopup(password: String) {

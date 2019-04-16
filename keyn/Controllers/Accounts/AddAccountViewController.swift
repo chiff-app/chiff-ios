@@ -64,7 +64,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "Account details" : "User details"
+        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
     }
     
     // MARK: UITextFieldDelegate
