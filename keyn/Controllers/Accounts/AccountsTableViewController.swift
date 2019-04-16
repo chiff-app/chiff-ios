@@ -51,7 +51,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        (tabBarController as? RootViewController)?.showGradient(!unfilteredAccounts.isEmpty)
+        (tabBarController as? RootViewController)?.showGradient(!unfilteredAccounts.isEmpty)
     }
 
 
