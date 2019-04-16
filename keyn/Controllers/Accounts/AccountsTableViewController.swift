@@ -12,7 +12,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     var filteredAccounts: [Account]!
 //    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableViewContainer: UIView!
-    @IBOutlet weak var tabBarGradient: TabBarGradient!
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
 
@@ -73,13 +72,13 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            tabBarGradient.isHidden = false
+            (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
+            (tabBarController as! RootViewController).showGradient(false)
             addAccountContainerView.isHidden = false
-            tabBarGradient.isHidden = true
         }
     }
 

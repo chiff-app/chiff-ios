@@ -24,15 +24,15 @@ class AuthorizationGuard {
     var authenticationReason: String {
         switch type {
         case .login:
-            return "\("requests.login_to".localized.capitalized) \(siteName!)"
+            return "\("requests.login_to".localized.capitalizedFirstLetter) \(siteName!)"
         case .add, .register, .addAndLogin:
-            return "\("requests.add_site".localized.capitalized) \(siteName!)"
+            return "\("requests.add_site".localized.capitalizedFirstLetter) \(siteName!)"
         case .change:
-            return "\("requests.change_for".localized.capitalized) \(siteName!)"
+            return "\("requests.change_for".localized.capitalizedFirstLetter) \(siteName!)"
         case .fill:
-            return "\("requests.fill_for".localized.capitalized) \(siteName!)"
+            return "\("requests.fill_for".localized.capitalizedFirstLetter) \(siteName!)"
         default:
-            return "requests.unknown_request".localized.capitalized
+            return "requests.unknown_request".localized.capitalizedFirstLetter
         }
     }
 
@@ -110,7 +110,7 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalized) \(site.name)", withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(site.name)", withMainContext: false) { (context, error) in
                 do {
                     if let error = error {
                         throw error
@@ -136,7 +136,7 @@ class AuthorizationGuard {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
-        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalized) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
             do {
                 if let error = error {
                     throw error

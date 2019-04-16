@@ -103,6 +103,12 @@ popups:
       comment: Deny the questionnaire
       value: No, thanks
 accounts:
+  website_details:
+    value: Website details
+  user_details:
+    value: User details
+  url_warning:
+    value: ⚠️ Keyn doesn't work if the URL is incorrect.
   footer:
     value: You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.
   footer_unlimited:

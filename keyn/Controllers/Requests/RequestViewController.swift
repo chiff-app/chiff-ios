@@ -20,17 +20,17 @@ class RequestViewController: UIViewController {
         super.viewDidLoad()
         switch authorizationGuard.type {
         case .login:
-            requestLabel.text = "requests.confirm_login".localized.capitalized
+            requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
         case .add, .addAndLogin:
-            requestLabel.text = "requests.add_account".localized.capitalized
+            requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
         case .addBulk:
-            requestLabel.text = "requests.add_accounts".localized.capitalized
+            requestLabel.text = "requests.add_accounts".localized.capitalizedFirstLetter
         case .change:
-            requestLabel.text = "requests.change_password".localized.capitalized
+            requestLabel.text = "requests.change_password".localized.capitalizedFirstLetter
         case .fill:
-            requestLabel.text = "requests.fill_password".localized.capitalized
+            requestLabel.text = "requests.fill_password".localized.capitalizedFirstLetter
         default:
-            requestLabel.text = "requests.unknown_request".localized.capitalized
+            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         acceptRequest()
     }
@@ -56,25 +56,25 @@ class RequestViewController: UIViewController {
     private func success() {
         switch authorizationGuard.type {
             case .login:
-                successTextLabel.text = "requests.login_succesful".localized.capitalized
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
+                successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             case .addAndLogin:
-                successTextLabel.text = "requests.account_added".localized.capitalized
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
+                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             case .add:
-                successTextLabel.text = "requests.account_added".localized.capitalized
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalized
+                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             case .addBulk:
                 successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalized
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             case .change:
-                successTextLabel.text = "requests.new_password_generated".localized.capitalized
-                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalized) \("requests.to_complete_process".localized)"
+                successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
             case .fill:
-                successTextLabel.text = "requests.fill_password_successful".localized.capitalized
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
+                successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             default:
-                requestLabel.text = "requests.unknown_request".localized.capitalized
+                requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         self.successView.alpha = 0.0
         self.successView.isHidden = false

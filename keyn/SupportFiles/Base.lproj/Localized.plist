@@ -70,6 +70,21 @@
 			<key>value</key>
 			<string>Update 2FA-code for</string>
 		</dict>
+		<key>url_warning</key>
+		<dict>
+			<key>value</key>
+			<string>⚠️ Keyn doesn't work if the URL is incorrect.</string>
+		</dict>
+		<key>user_details</key>
+		<dict>
+			<key>value</key>
+			<string>User details</string>
+		</dict>
+		<key>website_details</key>
+		<dict>
+			<key>value</key>
+			<string>Website details</string>
+		</dict>
 	</dict>
 	<key>backup</key>
 	<dict>
