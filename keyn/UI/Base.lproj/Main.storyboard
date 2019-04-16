@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="Accounts details" id="Yaa-8Q-3K0">
+                            <tableViewSection headerTitle="Accounts details" footerTitle=" " id="Yaa-8Q-3K0">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="lmx-0O-8aF">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -110,10 +110,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="User details" footerTitle="[Generated in ViewController][Generated in ViewController][Generated in ViewController][Generated in ViewController]" id="pkM-Zd-Upy">
+                            <tableViewSection headerTitle="User details" footerTitle="The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor." id="pkM-Zd-Upy">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="s8n-kE-Et3">
-                                        <rect key="frame" x="0.0" y="207" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="219" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="s8n-kE-Et3" id="Mjc-gE-W7T">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -150,7 +150,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="BFF-CR-nDK">
-                                        <rect key="frame" x="0.0" y="251" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="263" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BFF-CR-nDK" id="6Dx-Hw-fRi">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -200,7 +200,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="wil-ge-7VV">
-                                        <rect key="frame" x="0.0" y="295" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="307" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wil-ge-7VV" id="5TX-6f-AVg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -251,7 +251,7 @@
                             <tableViewSection id="Xtc-o6-09S">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
-                                        <rect key="frame" x="0.0" y="419" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="431" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KXD-8V-vma" id="99P-am-w3J">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -279,7 +279,7 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="zon-vV-iH2">
-                                        <rect key="frame" x="0.0" y="463" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="475" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -328,12 +328,13 @@
                         <outlet property="websiteURLTextField" destination="Pvp-cj-ASL" id="w3m-fi-lzJ"/>
                         <segue destination="ibN-3J-G1l" kind="unwind" identifier="DeleteAccount" unwindAction="unwindToAccountOverviewWithSender:" id="b7Y-kV-lyj"/>
                         <segue destination="kL3-Yo-Ehz" kind="show" identifier="showQR" id="xrO-JS-RqG"/>
+                        <segue destination="TIy-U7-kcu" kind="show" identifier="ShowSiteOverview" id="VVV-gB-F3x"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAD-fx-Eo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ibN-3J-G1l" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1887" y="-907"/>
+            <point key="canvasLocation" x="1884" y="-939"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SgE-Op-oyl">
@@ -444,7 +445,7 @@
             <objects>
                 <tabBarController storyboardIdentifier="RootController" id="49e-Tb-3d3" customClass="RootViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <tabBar key="tabBar" opaque="NO" contentMode="scaleToFill" id="W28-zg-YXA">
+                    <tabBar key="tabBar" opaque="NO" contentMode="scaleToFill" id="W28-zg-YXA" customClass="KeynTabBar" customModule="keyn" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -788,7 +789,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="365.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="349.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUK-ag-3dM">
                                                 <rect key="frame" x="29" y="20" width="326" height="17.5"/>
@@ -849,17 +850,10 @@
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ne-4j-Ux3">
-                                                <rect key="frame" x="22" y="255.5" width="333" height="60"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="12" name="Montserrat-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ne-4j-Ux3">
+                                                <rect key="frame" x="22" y="255.5" width="333" height="44"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                                <color key="textColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -894,25 +888,15 @@
                                     <segue destination="yEQ-dB-DTP" kind="embed" identifier="EmbedAddAccount" id="XX4-ez-aRm"/>
                                 </connections>
                             </containerView>
-                            <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fuD-1S-vqd" customClass="TabBarGradient" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="513" width="375" height="90"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="f2U-rw-4LY"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="top" secondItem="bph-BZ-NAM" secondAttribute="top" id="1hA-eS-id5"/>
-                            <constraint firstAttribute="bottom" secondItem="fuD-1S-vqd" secondAttribute="bottom" id="4z2-XG-vcd"/>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="leading" secondItem="bph-BZ-NAM" secondAttribute="leading" id="DWq-Jt-k5Q"/>
                             <constraint firstItem="hjK-VU-J4E" firstAttribute="leading" secondItem="cDG-1D-ad2" secondAttribute="leading" id="JqI-PB-634"/>
                             <constraint firstItem="SV6-MR-Wzp" firstAttribute="trailing" secondItem="bph-BZ-NAM" secondAttribute="trailing" id="Lgq-TN-QEs"/>
                             <constraint firstAttribute="bottom" secondItem="SV6-MR-Wzp" secondAttribute="bottom" id="NDy-jP-9r5"/>
-                            <constraint firstAttribute="trailing" secondItem="fuD-1S-vqd" secondAttribute="trailing" id="XfD-L5-I2y"/>
                             <constraint firstItem="hjK-VU-J4E" firstAttribute="top" secondItem="cDG-1D-ad2" secondAttribute="top" constant="100" id="Ydd-9p-gmM"/>
-                            <constraint firstItem="fuD-1S-vqd" firstAttribute="leading" secondItem="bph-BZ-NAM" secondAttribute="leading" id="hx2-iy-4dH"/>
                             <constraint firstItem="hjK-VU-J4E" firstAttribute="trailing" secondItem="cDG-1D-ad2" secondAttribute="trailing" id="juV-HC-uEv"/>
                             <constraint firstItem="cDG-1D-ad2" firstAttribute="bottom" secondItem="hjK-VU-J4E" secondAttribute="bottom" id="na7-Gz-Yoy"/>
                         </constraints>
@@ -927,9 +911,9 @@
                     <connections>
                         <outlet property="addAccountContainerView" destination="hjK-VU-J4E" id="PsJ-cq-QVX"/>
                         <outlet property="scrollView" destination="SV6-MR-Wzp" id="ogx-mk-bir"/>
-                        <outlet property="tabBarGradient" destination="fuD-1S-vqd" id="atN-Ro-gwS"/>
                         <outlet property="tableView" destination="gr4-VD-pHi" id="dpo-qR-onP"/>
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
+                        <outlet property="tableViewFooter" destination="4Ne-4j-Ux3" id="ZnT-4M-06T"/>
                         <segue destination="QBn-BQ-Jis" kind="presentation" identifier="ShowAddAccount" id="3VT-CT-bmu"/>
                     </connections>
                 </viewController>
@@ -989,7 +973,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="General" footerTitle="[Generated in ViewController] [Generated in ViewController] " id="zsO-ju-Qwo">
+                            <tableViewSection headerTitle="General" footerTitle="[Generated in ViewController] " id="zsO-ju-Qwo">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="oyn-RN-Wtn">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -1060,7 +1044,7 @@
                             <tableViewSection footerTitle="[Generated in ViewController] " id="skm-3B-40e">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="1Ju-IM-JL6">
-                                        <rect key="frame" x="0.0" y="207.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="191.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Ju-IM-JL6" id="RiC-Jl-bgn">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -1448,46 +1432,7 @@
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                                        <tabStops>
-                                                                            <textTab alignment="left" location="28">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="56">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="84">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="112">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="140">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="168">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="196">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="224">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="252">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="280">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="308">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="336">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                        </tabStops>
-                                                                    </paragraphStyle>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
@@ -1538,46 +1483,7 @@
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="15" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                                        <tabStops>
-                                                                            <textTab alignment="left" location="28">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="56">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="84">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="112">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="140">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="168">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="196">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="224">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="252">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="280">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="308">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="336">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                        </tabStops>
-                                                                    </paragraphStyle>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="15" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
@@ -1626,138 +1532,21 @@
                                         <attributes>
                                             <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                <tabStops>
-                                                    <textTab alignment="left" location="28">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="56">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="84">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="112">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="140">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="168">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="196">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="224">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="252">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="280">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="308">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="336">
-                                                        <options/>
-                                                    </textTab>
-                                                </tabStops>
-                                            </paragraphStyle>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.36725000000000002" green="0.45501999999999998" blue="0.59460000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                <tabStops>
-                                                    <textTab alignment="left" location="28">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="56">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="84">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="112">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="140">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="168">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="196">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="224">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="252">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="280">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="308">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="336">
-                                                        <options/>
-                                                    </textTab>
-                                                </tabStops>
-                                            </paragraphStyle>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="keyn.app/go ">
                                         <attributes>
                                             <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="14" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                <tabStops>
-                                                    <textTab alignment="left" location="28">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="56">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="84">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="112">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="140">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="168">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="196">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="224">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="252">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="280">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="308">
-                                                        <options/>
-                                                    </textTab>
-                                                    <textTab alignment="left" location="336">
-                                                        <options/>
-                                                    </textTab>
-                                                </tabStops>
-                                            </paragraphStyle>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="20" maximumLineHeight="20" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -1983,25 +1772,15 @@
                                     <constraint firstAttribute="bottom" secondItem="9Yz-CS-DB7" secondAttribute="bottom" constant="10" id="rCJ-Cc-j7A"/>
                                 </constraints>
                             </view>
-                            <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PW9-SL-sxb" customClass="TabBarGradient" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="513" width="375" height="90"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="gKl-4m-KYx"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="PW9-SL-sxb" secondAttribute="bottom" id="AIj-mQ-qnS"/>
                             <constraint firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" constant="80" id="Dfc-V1-DWb"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="top" secondItem="dyP-1C-yZa" secondAttribute="top" id="JC7-Me-gbc"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="trailing" secondItem="dyP-1C-yZa" secondAttribute="trailing" id="MIn-s1-pnD"/>
-                            <constraint firstItem="PW9-SL-sxb" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="buL-Kq-zKS"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="dqp-Nz-uf8"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="centerY" secondItem="dyP-1C-yZa" secondAttribute="centerY" id="eX8-3p-iSe"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="trailing" secondItem="GuM-HI-Y53" secondAttribute="trailing" id="fZQ-A7-4uv"/>
-                            <constraint firstItem="PW9-SL-sxb" firstAttribute="trailing" secondItem="dyP-1C-yZa" secondAttribute="trailing" id="gNz-Gk-aee"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="uRx-8n-wWb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="GuM-HI-Y53"/>
@@ -2010,7 +1789,6 @@
                     <connections>
                         <outlet property="addSessionContainer" destination="3aq-4W-jNG" id="xVo-aG-QsH"/>
                         <outlet property="scrollView" destination="ppS-qu-IpB" id="g3d-V8-xsr"/>
-                        <outlet property="tabBarGradient" destination="PW9-SL-sxb" id="daj-4r-AjS"/>
                         <outlet property="tableView" destination="MeN-TK-t2q" id="HZO-sr-Ujn"/>
                         <outlet property="tableViewContainer" destination="WbX-9s-csq" id="Etu-kf-RoQ"/>
                     </connections>
@@ -2811,6 +2589,74 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1471" y="1521"/>
+        </scene>
+        <!--Site Table View Controller-->
+        <scene sceneID="64j-9P-sYY">
+            <objects>
+                <tableViewController id="TIy-U7-kcu" customClass="SiteTableViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" separatorInsetReference="fromAutomaticInsets" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="DwX-d4-xp5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="URLCell" id="1oc-LA-GnI" customClass="SiteTableViewCell" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1oc-LA-GnI" id="u7Z-Ur-SB3">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="CTT-os-XEk">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTV-XS-CyI">
+                                                    <rect key="frame" x="0.0" y="0.0" width="75" height="43.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="myi-8w-ezg"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="quk-fZ-e0s">
+                                                    <rect key="frame" x="112" y="0.0" width="231" height="43.5"/>
+                                                    <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" textContentType="organization"/>
+                                                </textField>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="CTT-os-XEk" firstAttribute="top" secondItem="u7Z-Ur-SB3" secondAttribute="top" id="1bP-UM-bpA"/>
+                                        <constraint firstAttribute="bottom" secondItem="CTT-os-XEk" secondAttribute="bottom" id="3nP-eP-2cZ"/>
+                                        <constraint firstItem="CTT-os-XEk" firstAttribute="leading" secondItem="u7Z-Ur-SB3" secondAttribute="leadingMargin" id="7uK-CV-QzH"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="CTT-os-XEk" secondAttribute="trailing" id="GqO-ZA-srl"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="websiteURLTextField" destination="quk-fZ-e0s" id="D6g-49-MJL"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="TIy-U7-kcu" id="7gI-Hh-lTG"/>
+                            <outlet property="delegate" destination="TIy-U7-kcu" id="wGI-Xt-f9q"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="SZa-KV-Lgw">
+                        <barButtonItem key="backBarButtonItem" title=" " id="5Fz-qe-6rZ"/>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="ZGm-6e-iFv" kind="unwind" identifier="DeleteAccount" unwindAction="unwindToAccountOverviewWithSender:" id="rfr-Qa-Eur"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IIw-lp-IRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ZGm-6e-iFv" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="5914" y="-907"/>
         </scene>
     </scenes>
     <resources>

@@ -36,6 +36,14 @@ extension String {
         return self.data(using: .utf8)!
     }
 
+    var capitalizedFirstLetter: String {
+        return prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizedFirstLetter
+    }
+
     func components(withLength length: Int) -> [String] {
         return stride(from: 0, to: self.count, by: length).map {
             let start = self.index(self.startIndex, offsetBy: $0)
@@ -149,6 +157,7 @@ extension Notification.Name {
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountAdded = Notification.Name("AccountAdded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
+    static let accountUpdated = Notification.Name("AccountUpdated")
 }
 
 // MARK: - UIExtensions

@@ -14,13 +14,15 @@ struct KeynRequest: Codable {
     let browserTab: Int?
     let password: String?
     let passwordSuccessfullyChanged: Bool?
-    var sessionID: String?
     let siteID: String?
     let siteName: String?
     let siteURL: String?
     let type: KeynMessageType
     let username: String?
     let sentTimestamp: TimeInterval
+    let count: Int?
+    var sessionID: String?
+    var accounts: [BulkAccount]?
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
@@ -34,22 +36,12 @@ struct KeynRequest: Codable {
         case type = "r"
         case username = "u"
         case sentTimestamp = "z"
+        case count = "x"
+        case accounts = "c"
     }
 
     /// This checks if the appropriate variables are set for the type of of this request
     func verifyIntegrity() -> Bool {
-        guard browserTab != nil else {
-            Logger.shared.warning("VerifyIntegrity failed because there is no browserTab to send the reply back to.")
-            return false
-        }
-        guard siteName != nil else {
-            Logger.shared.error("VerifyIntegrity failed because there is no siteName.")
-            return false
-        }
-        guard siteURL != nil else {
-            Logger.shared.error("VerifyIntegrity failed because there is no siteURL.")
-            return false
-        }
         switch type {
         case .add, .addAndLogin:
             guard siteID != nil else {
@@ -66,15 +58,51 @@ struct KeynRequest: Codable {
             }
         case .login, .change, .fill:
             guard accountID != nil else {
-                Logger.shared.error("VerifyIntegrity failed because there is no username.")
+                Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
                 return false
             }
+        case .addBulk:
+            guard count != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no account count.")
+                return false
+            }
+            return true // Return here because subsequent don't apply to addBulk request
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
         }
+
+        // These checks apply to all accept addBulk
+        guard browserTab != nil else {
+            Logger.shared.warning("VerifyIntegrity failed because there is no browserTab to send the reply back to.")
+            return false
+        }
+        guard siteName != nil else {
+            Logger.shared.error("VerifyIntegrity failed because there is no siteName.")
+            return false
+        }
+        guard siteURL != nil else {
+            Logger.shared.error("VerifyIntegrity failed because there is no siteURL.")
+            return false
+        }
         
         return true
+    }
+}
+
+struct BulkAccount: Codable {
+    let username: String
+    let password: String
+    let siteId: String
+    let siteURL: String
+    let siteName: String
+
+    enum CodingKeys: String, CodingKey {
+        case username = "u"
+        case password = "p"
+        case siteId = "s"
+        case siteName = "n"
+        case siteURL = "l"
     }
 }
 
@@ -84,6 +112,7 @@ struct KeynPersistentQueueMessage: Codable {
     let type: KeynMessageType
     let askToLogin: Bool?
     let askToChange: Bool?
+    let accounts: [BulkAccount]?
     var receiptHandle: String?
 
     enum CodingKeys: String, CodingKey {
@@ -93,6 +122,7 @@ struct KeynPersistentQueueMessage: Codable {
         case receiptHandle = "r"
         case askToLogin = "l"
         case askToChange = "c"
+        case accounts = "b"
     }
 }
 

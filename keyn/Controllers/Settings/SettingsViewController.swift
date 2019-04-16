@@ -31,6 +31,15 @@ class SettingsViewController: UITableViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
 
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "settings.settings".localized : nil
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return section == 0 ? securityFooterText : "settings.reset_warning".localized
+    }
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section == 0 else {
             return
@@ -61,14 +70,6 @@ class SettingsViewController: UITableViewController {
     }
     // MARK: - Actions
 
-    @IBAction func newSiteNotificationSwitch(_ sender: UISwitch) {
-        if sender.isOn {
-            AWS.shared.subscribe()
-        } else {
-            AWS.shared.unsubscribe()
-        }
-    }
-
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
         let completed = Seed.paperBackupCompleted
         paperBackupAlertIcon.isHidden = completed
@@ -84,10 +85,9 @@ class SettingsViewController: UITableViewController {
             Session.deleteAll()
             Account.deleteAll()
             try? Seed.delete()
+            BackupManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            AWS.shared.deleteEndpointArn()
             Logger.shared.analytics("Keyn reset.", code: .keynReset)
-            UIApplication.shared.registerForRemoteNotifications()
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))

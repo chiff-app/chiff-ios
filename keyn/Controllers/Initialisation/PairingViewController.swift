@@ -17,19 +17,6 @@ class PairingViewController: UIViewController, PairControllerDelegate {
         }
     }
 
-    func prepareForPairing(completionHandler: @escaping (_ result: Bool) -> Void) {
-        initializeSeed { (error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.showError(message: "\("errors.seed_creation".localized): \(error)")
-                    completionHandler(false)
-                } else {
-                    completionHandler(true)
-                }
-            }
-        }
-    }
-
     // MARK: - Private functions
 
     private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
@@ -59,15 +46,7 @@ class PairingViewController: UIViewController, PairControllerDelegate {
     // MARK: - Actions
 
     @IBAction func tryLater(_ sender: UIButton) {
-        initializeSeed { (error) in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.showError(message: "\("errors.seed_creation".localized): \(error)")
-                } else {
-                    self.showRootController()
-                }
-            }
-        }
+        self.showRootController()
     }
 
     // MARK: - Navigation
