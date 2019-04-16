@@ -92,29 +92,31 @@ class AuthenticationGuard {
                     self.hideLockWindow()
                 }
             } catch {
-                self.handleError(error: error)
+                if let errorMessage = self.handleError(error: error) {
+                    self.showError(errorMessage: errorMessage)
+                }
                 return
             }
         }
     }
 
-    private func handleError(error: Error) {
+    func handleError(error: Error) -> String? {
         switch error {
         case KeychainError.authenticationCancelled, LAError.systemCancel:
-            Logger.shared.debug("Authentication was cancelled by an incoming request")
+            Logger.shared.debug("Authentication was cancelled")
         case LAError.appCancel, LAError.invalidContext, LAError.notInteractive:
             Logger.shared.error("AuthenticateUser error", error: error)
-            showError(errorMessage: "errors.local_authentication.generic".localized)
+            return "errors.local_authentication.generic".localized
         case LAError.passcodeNotSet:
             Logger.shared.error("AuthenticateUser error", error: error)
-            showError(errorMessage: "errors.local_authentication.passcode_not_set".localized)
+            return "errors.local_authentication.passcode_not_set".localized
         case let error as LAError:
             if #available(iOS 11.0, *) {
                 switch error {
                 case LAError.biometryNotAvailable:
-                    showError(errorMessage: "errors.local_authentication.biometry_not_available".localized)
+                    return "errors.local_authentication.biometry_not_available".localized
                 case LAError.biometryNotEnrolled:
-                    showError(errorMessage: "errors.local_authentication.biometry_not_enrolled".localized)
+                    return "errors.local_authentication.biometry_not_enrolled".localized
                 default:
                     Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
                 }
@@ -124,6 +126,7 @@ class AuthenticationGuard {
         default:
             Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
         }
+        return nil
     }
     
     // MARK: - UIApplication Notification Handlers

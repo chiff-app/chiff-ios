@@ -45,7 +45,10 @@ class RequestViewController: UIViewController {
         authorizationGuard.acceptRequest { error in
             DispatchQueue.main.async {
                 if let error = error {
-                    self.showError(message: "\("errors.authentication_error".localized): \(error)")
+                    if let errorMessage = AuthenticationGuard.shared.handleError(error: error) {
+                        self.showError(message: errorMessage)
+                        Logger.shared.error("Error authorizing request", error: error)
+                    }
                 } else {
                     self.success()
                 }
