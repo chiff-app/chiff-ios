@@ -20,17 +20,17 @@ class RequestViewController: UIViewController {
         super.viewDidLoad()
         switch authorizationGuard.type {
         case .login:
-            requestLabel.text = "Confirm login"
+            requestLabel.text = "requests.confirm_login".localized.capitalized
         case .add, .addAndLogin:
-            requestLabel.text = "Add account"
+            requestLabel.text = "requests.add_account".localized.capitalized
         case .addBulk:
-            requestLabel.text = "Add accounts"
+            requestLabel.text = "requests.add_accounts".localized.capitalized
         case .change:
-            requestLabel.text = "Change password"
+            requestLabel.text = "requests.change_password".localized.capitalized
         case .fill:
-            requestLabel.text = "Fill password"
+            requestLabel.text = "requests.fill_password".localized.capitalized
         default:
-            requestLabel.text = "Unknown request"
+            requestLabel.text = "requests.unknown_request".localized.capitalized
         }
         acceptRequest()
     }
@@ -54,28 +54,27 @@ class RequestViewController: UIViewController {
     }
 
     private func success() {
-        #warning("TODO: localize this")
         switch authorizationGuard.type {
             case .login:
-                successTextLabel.text = "Login successful"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.login_succesful".localized.capitalized
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
             case .addAndLogin:
-                successTextLabel.text = "Account added"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.account_added".localized.capitalized
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
             case .add:
-                successTextLabel.text = "Account added"
-                successTextDetailLabel.text = "Next time you can login with Keyn"
+                successTextLabel.text = "requests.account_added".localized.capitalized
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalized
             case .addBulk:
-                successTextLabel.text = "\(authorizationGuard.accounts.count) accounts added"
-                successTextDetailLabel.text = "Next time you can login with Keyn"
+                successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalized
             case .change:
-                successTextLabel.text = "New password generated"
-                successTextDetailLabel.text = "Return to your computer to complete the process"
+                successTextLabel.text = "requests.new_password_generated".localized.capitalized
+                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalized) \("requests.to_complete_process".localized)"
             case .fill:
-                successTextLabel.text = "Fill password successful"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.fill_password_successful".localized.capitalized
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalized
             default:
-            requestLabel.text = "Unknown request"
+                requestLabel.text = "requests.unknown_request".localized.capitalized
         }
         self.successView.alpha = 0.0
         self.successView.isHidden = false
