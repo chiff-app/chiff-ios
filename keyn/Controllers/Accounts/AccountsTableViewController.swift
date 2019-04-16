@@ -39,13 +39,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+        NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
 
         tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
     }
 
     override func viewDidLayoutSubviews() {
@@ -120,7 +116,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-//        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
         return cell
@@ -140,7 +135,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    func updateAccount(account: Account) {
+    func updateAccount(notification: Notification) {
+        guard let account = notification.userInfo?["account"] as? Account else {
+            return
+        }
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             filteredAccounts[filteredIndex] = account
             let indexPath = IndexPath(row: filteredIndex, section: 0)

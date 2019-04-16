@@ -7,7 +7,7 @@ import MBProgressHUD
 import OneTimePassword
 import QuartzCore
 
-class AccountViewController: UITableViewController, UITextFieldDelegate {
+class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDelegate {
 
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -42,6 +42,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
 
         tableView.separatorColor = UIColor.primaryTransparant
 
+        loadAccountData()
+
+        tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+    }
+
+    private func loadAccountData() {
         do {
             websiteNameTextField.text = account.site.name
             websiteURLTextField.text = account.site.url
@@ -57,21 +63,40 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             showError(message: "errors.otp_fetch".localized)
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
-
-        tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
     }
-
 
     // MARK: - UITableView
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 2 {
+        if (indexPath.section == 1 && indexPath.row == 2 && token == nil) || (indexPath.section == 0 && indexPath.row == 1 && account.sites.count > 1) {
             cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
         }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return editingMode ? 3 : 2
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.website_details".localized.capitalizedFirstLetter
+        case 1:
+            return "accounts.user_details".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.url_warning".localized.capitalizedFirstLetter
+        case 1:
+            return "accounts.2fa_description".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -88,7 +113,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section <= 1 else {
+        guard section < 2 else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
@@ -176,11 +201,16 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 1 else { return }
-        if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
-            copyToPasteboard(indexPath)
-        } else if indexPath.row == 2 && qrEnabled {
-            performSegue(withIdentifier: "showQR", sender: self)
+        if indexPath.section == 0 {
+            if indexPath.row == 1 && account.sites.count > 1 {
+                performSegue(withIdentifier: "ShowSiteOverview", sender: self)
+            }
+        } else if indexPath.section == 1 {
+            if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
+                copyToPasteboard(indexPath)
+            } else if indexPath.row == 2 && qrEnabled {
+                performSegue(withIdentifier: "showQR", sender: self)
+            }
         }
     }
     
@@ -212,7 +242,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         websiteURLTextField.text = account?.site.url
     }
 
-    #warning("TODO: Adjust the interface so sites can also be added to an account.")
     @objc func update() {
         endEditing()
         do {
@@ -226,10 +255,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account?.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
-            if let accountsTableViewController = navigationController?.viewControllers[0] as? AccountsTableViewController {
-                accountsTableViewController.updateAccount(account: account!)
-            }
+            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
+            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
         } catch {
             Logger.shared.warning("Could not change username", error: error)
             userNameTextField.text = account?.username
@@ -237,7 +264,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             websiteURLTextField.text = account?.site.url
         }
     }
-    
+
+    func updateAccount(account: Account) {
+        self.account = account
+        loadAccountData()
+        NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+    }
     
     // MARK: - Private
     
@@ -306,7 +338,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             qrEnabled = false
             totpLoaderWidthConstraint.constant = UITableViewCell.defaultHeight
             userCodeCell.updateConstraints()
-            userCodeCell.accessoryType = .none
+            userCodeCell.accessoryView = nil
             userCodeTextField.text = token.currentPassword
             switch token.generator.factor {
             case .counter(_):
@@ -335,8 +367,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             totpLoader.subviews.forEach { $0.removeFromSuperview() }
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
-            userCodeCell.accessoryType = .disclosureIndicator
-            userCodeTextField.placeholder = "accounts.add_otp_code".localized
+            userCodeCell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
+            userCodeTextField.placeholder = "accounts.scan_qr".localized
         }
     }
     
@@ -364,8 +396,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
             updateOTPUI()
         }
     }
-
-
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -377,6 +407,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate {
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeAnimations()
             destination.account = account
+        } else if segue.identifier == "ShowSiteOverview", let destination = segue.destination as? SiteTableViewController {
+            destination.account = account
+            destination.delegate = self
         }
     }
 }

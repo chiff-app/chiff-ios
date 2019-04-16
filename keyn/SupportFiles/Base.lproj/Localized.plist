@@ -14,13 +14,6 @@
 			<key>value</key>
 			<string>Add 2FA-code to</string>
 		</dict>
-		<key>add_otp_code</key>
-		<dict>
-			<key>comment</key>
-			<string>Add a one-time-password code</string>
-			<key>value</key>
-			<string>Add code</string>
-		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
@@ -48,6 +41,13 @@
 			<key>value</key>
 			<string>Codes can either be time-based or counter-based</string>
 		</dict>
+		<key>scan_qr</key>
+		<dict>
+			<key>comment</key>
+			<string>Cell title for scanning qr code for OTP</string>
+			<key>value</key>
+			<string>Scan QR</string>
+		</dict>
 		<key>secret</key>
 		<dict>
 			<key>value</key>
@@ -57,6 +57,11 @@
 		<dict>
 			<key>value</key>
 			<string>The secret that was shared by the website</string>
+		</dict>
+		<key>sites_header</key>
+		<dict>
+			<key>value</key>
+			<string>Websites</string>
 		</dict>
 		<key>two_fa_instruction</key>
 		<dict>
@@ -133,6 +138,13 @@
 			<string>Error in the authentication process to the phone, e.g. TouchID</string>
 			<key>value</key>
 			<string>Authentication error</string>
+		</dict>
+		<key>delete_url</key>
+		<dict>
+			<key>comment</key>
+			<string>Error deleting url</string>
+			<key>value</key>
+			<string>Error deleting URL</string>
 		</dict>
 		<key>generic_error</key>
 		<dict>
