@@ -47,14 +47,15 @@ class LocalAuthenticationManager {
 
     func authenticate(reason: String, withMainContext: Bool, completion: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
         do {
-            let context = withMainContext ? mainContext : LAContext()
             if withMainContext {
                 try checkMainContext()
             }
+            let context = withMainContext ? mainContext : LAContext()
             context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (result, error) in
                 if let error = error {
                     return completion(nil, error)
                 }
+                self.mainContext = context
                 return completion(result ? context : nil, nil)
             }
         } catch {
@@ -68,11 +69,12 @@ class LocalAuthenticationManager {
     private func checkMainContext() throws {
         var authError: NSError?
         if !mainContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
-            guard authError!.code != LAError.invalidContext.rawValue && authError!.code != NSXPCConnectionInvalid else {
+            if authError!.code == LAError.invalidContext.rawValue || authError!.code == NSXPCConnectionInvalid {
                 mainContext = LAContext()
                 return
+            } else {
+                throw authError!
             }
-            throw authError!
         }
     }
 

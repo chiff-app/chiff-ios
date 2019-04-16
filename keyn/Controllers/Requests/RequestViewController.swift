@@ -82,6 +82,7 @@ class RequestViewController: UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.dismiss(animated: true, completion: nil)
+            AuthenticationGuard.shared.hideLockWindow()
         }
     }
 

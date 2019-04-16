@@ -411,6 +411,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>requests</key>
 	<dict>
+		<key>accounts</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for 'accounts'</string>
+			<key>value</key>
+			<string>accounts</string>
+		</dict>
 		<key>add_site</key>
 		<dict>
 			<key>comment</key>
@@ -450,6 +457,30 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask to the user to login with an account, e.g. Login with demo@keyn.io?</string>
 			<key>value</key>
 			<string>Login with</string>
+		</dict>
+		<key>on</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for on</string>
+			<key>value</key>
+			<string>on</string>
+		</dict>
+		<key>pair_with</key>
+		<dict>
+			<key>value</key>
+			<string>Pair with</string>
+		</dict>
+		<key>save</key>
+		<dict>
+			<key>comment</key>
+			<string>Ask the user to save a site, e.g. Save Amazon.com?</string>
+			<key>value</key>
+			<string>Save</string>
+		</dict>
+		<key>unknown_request</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown request type</string>
 		</dict>
 		<key>unlock_accounts</key>
 		<dict>

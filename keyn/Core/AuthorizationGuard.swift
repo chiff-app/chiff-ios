@@ -32,7 +32,7 @@ class AuthorizationGuard {
         case .fill:
             return "\("requests.fill_for".localized.capitalized) \(siteName!)"
         default:
-            return "Unknown request type"
+            return "requests.unknown_request".localized.capitalized
         }
     }
 
@@ -110,14 +110,16 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            LocalAuthenticationManager.shared.authenticate(reason: "Save \(site.name)", withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalized) \(site.name)", withMainContext: false) { (context, error) in
                 do {
                     if let error = error {
                         throw error
                     }
                     let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
-                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
+                    }
                     completionHandler(nil)
                 } catch {
                     Logger.shared.error("Account could not be saved.", error: error)
@@ -134,13 +136,19 @@ class AuthorizationGuard {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
-        LocalAuthenticationManager.shared.authenticate(reason: "Add \(accounts.count) accounts", withMainContext: false) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalized) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
             do {
+                if let error = error {
+                    throw error
+                }
+                #warning("TODO: Fetch PPD for each site")
                 let accounts = try self.accounts.map({ (bulkAccount: BulkAccount) -> Account in
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
                     return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
                 })
-                NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
+                }
                 completionHandler(nil)
             } catch {
                 Logger.shared.error("Accounts could not be saved.", error: error)
@@ -233,8 +241,7 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
-            #warning("TODO: Localize this")
-            LocalAuthenticationManager.shared.authenticate(reason: "Pair with \(browser) on \(os).", withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: false) { (context, error) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }

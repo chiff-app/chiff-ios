@@ -164,6 +164,9 @@ backup:
     comment: The word for word
     value: word
 requests:
+  accounts:
+    value: accounts
+    comment: The word for 'accounts'
   expired:
     value: The request that was received expired. This means it was sent more than three minutes ago.
   login_with:
@@ -181,12 +184,22 @@ requests:
   add_site:
     comment: Ask the user to add a site, e.g. Add Amazon.com?
     value: Add
+  save:
+    comment: Ask the user to save a site, e.g. Save Amazon.com?
+    value: Save
   unlock_accounts:
     value: Unlock accounts
     comment: Unlock accounts
   unlock_keyn:
     value: Unlock Keyn
     comment: Unlock Keyn
+  'on':
+    value: 'on'
+    comment: The word for on
+  pair_with:
+    value: Pair with
+  unknown_request:
+    value: Unknown request type
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
