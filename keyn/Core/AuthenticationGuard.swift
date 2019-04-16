@@ -92,7 +92,6 @@ class AuthenticationGuard {
                     self.hideLockWindow()
                 }
             } catch {
-                Logger.shared.error("AuthenticateUser error", error: error)
                 self.handleError(error: error)
                 return
             }
@@ -101,11 +100,13 @@ class AuthenticationGuard {
 
     private func handleError(error: Error) {
         switch error {
-        case KeychainError.authenticationCancelled:
+        case KeychainError.authenticationCancelled, LAError.systemCancel:
             Logger.shared.debug("Authentication was cancelled by an incoming request")
         case LAError.appCancel, LAError.invalidContext, LAError.notInteractive:
+            Logger.shared.error("AuthenticateUser error", error: error)
             showError(errorMessage: "errors.local_authentication.generic".localized)
         case LAError.passcodeNotSet:
+            Logger.shared.error("AuthenticateUser error", error: error)
             showError(errorMessage: "errors.local_authentication.passcode_not_set".localized)
         case let error as LAError:
             if #available(iOS 11.0, *) {
