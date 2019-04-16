@@ -33,7 +33,7 @@ struct Account: Codable {
     fileprivate var tokenURL: URL? // Only for backup
     fileprivate var tokenSecret: Data? // Only for backup
 
-    init?(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ account: Account, _ context: LAContext?, _ error: Error?) -> Void) throws {
+    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -53,7 +53,7 @@ struct Account: Codable {
             assert(generatedPassword == password, "Password offset wasn't properly generated.")
         }
 
-        save(password: generatedPassword, type: type, context: context, completionHandler: completionHandler)
+        try save(password: generatedPassword, context: context)
     }
 
     mutating func backup() throws {
@@ -111,12 +111,29 @@ struct Account: Codable {
         try Keychain.shared.delete(id: id, service: .otp)
         try backup()
     }
+
+    mutating func removeSite(forIndex index: Int) throws {
+        self.sites.remove(at: index)
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        Account.saveToIdentityStore(account: self)
+    }
+
+    mutating func updateSite(url: String, forIndex index: Int) throws {
+        self.sites[index].url = url
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        Account.saveToIdentityStore(account: self)
+    }
     
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
-        #warning("TODO: Update accounts with multiple sites")
         if let siteName = siteName {
             self.sites[0].name = siteName
         }
@@ -242,54 +259,6 @@ struct Account: Codable {
         })
     }
 
-    static func all(reason: String, type: AuthenticationType, context: LAContext? = nil, completionHandler: @escaping (_ accounts: [String: Account]?, _ error: Error?) -> Void) {
-        Keychain.shared.all(service: .account, reason: reason, authenticationType: type, with: context) { (dataArray, error) in
-            do {
-                if let error = error {
-                    throw error
-                }
-                guard let dataArray = dataArray else {
-                    return completionHandler([:], nil)
-                }
-                let decoder = PropertyListDecoder()
-                let accounts: [String: Account] = Dictionary(uniqueKeysWithValues: try dataArray.map { (dict) in
-                    guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                        throw CodingError.unexpectedData
-                    }
-                    let account = try decoder.decode(Account.self, from: accountData)
-                    return (account.id, account)
-                })
-
-                completionHandler(accounts, nil)
-            } catch {
-                return completionHandler(nil, error)
-            }
-        }
-    }
-
-    static func get(accountID: String, reason: String, type: AuthenticationType, completionHandler: @escaping (_ account: Account?, _ context: LAContext?, _ error: Error?) -> Void) {
-        Keychain.shared.attributes(id: accountID, service: .account, reason: reason, authenticationType: type) { (dict, context, error) in
-            do {
-                if let error = error {
-                    throw error
-                }
-                guard let dict = dict, let context = context else {
-                    throw CodingError.missingData
-                }
-                let decoder = PropertyListDecoder()
-
-                guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                    return completionHandler(nil, nil, CodingError.unexpectedData)
-                }
-
-                let account = try decoder.decode(Account.self, from: accountData)
-                completionHandler(account, context, nil)
-            } catch {
-                return completionHandler(nil, nil, error)
-            }
-        }
-    }
-
     static func get(accountID: String, context: LAContext?) throws -> Account? {
         guard let dict = try Keychain.shared.attributes(id: accountID, service: .account, context: context) else {
             return nil
@@ -343,29 +312,12 @@ struct Account: Codable {
 
     // MARK: - Private
 
-    private func save(password: String, type: AuthenticationType, context: LAContext?, completionHandler: @escaping (_ account: Account, _ context: LAContext?, _ error: Error?) -> Void) {
-        do {
-            let accountData = try PropertyListEncoder().encode(self)
-
-            Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData, label: nil, reason: "Save \(site.name)", authenticationType: type, with: context) { (context, error) in
-                do {
-                    if let error = error {
-                        throw error
-                    }
-                    guard let context = context else {
-                        throw AccountError.missingContext
-                    }
-                    try BackupManager.shared.backup(id: self.id, accountData: accountData)
-                    try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
-                    Account.saveToIdentityStore(account: self)
-                    completionHandler(self, context, nil)
-                } catch {
-                    completionHandler(self, nil, error)
-                }
-            }
-        } catch {
-            completionHandler(self, nil, error)
-        }
+    private func save(password: String, context: LAContext?) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData, label: nil)
+        try BackupManager.shared.backup(id: self.id, accountData: accountData)
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+        Account.saveToIdentityStore(account: self)
     }
 
     // MARK: - AuthenticationServices

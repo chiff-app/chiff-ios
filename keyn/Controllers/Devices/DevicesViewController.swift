@@ -10,7 +10,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: SelfSizingTableView!
     @IBOutlet weak var addSessionContainer: UIView!
     @IBOutlet weak var tableViewContainer: UIView!
-    @IBOutlet weak var tabBarGradient: TabBarGradient!
 
     var sessions = [Session]()
 
@@ -129,22 +128,18 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         updateUi()
     }
 
-    func prepareForPairing(completionHandler: @escaping (_ result: Bool) -> Void) {
-        completionHandler(true)
-    }
-
     // MARK: - Private functions
 
     private func updateUi() {
         if !sessions.isEmpty {
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false
-            tabBarGradient.isHidden = false
+            (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
         } else {
             addSessionContainer.isHidden = false
             tableViewContainer.isHidden = true
-            tabBarGradient.isHidden = true
+            (tabBarController as! RootViewController).showGradient(false)
             navigationItem.rightBarButtonItem = nil
         }
     }

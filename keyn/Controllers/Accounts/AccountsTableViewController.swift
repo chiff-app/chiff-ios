@@ -12,8 +12,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     var filteredAccounts: [Account]!
 //    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableViewContainer: UIView!
-    @IBOutlet weak var tabBarGradient: TabBarGradient!
     @IBOutlet weak var addAccountContainerView: UIView!
+    @IBOutlet weak var tableViewFooter: UILabel!
 
 
     override func viewDidLoad() {
@@ -24,7 +24,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             unfilteredAccounts = [Account]()
         }
-        filteredAccounts = unfilteredAccounts
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
 
         scrollView.delegate = self
         tableView.delegate = self
@@ -39,11 +39,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
-    }
+        NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
+        tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
     }
 
     override func viewDidLayoutSubviews() {
@@ -58,7 +56,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
             if let accounts = notification.userInfo as? [String: Account] {
-                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name < $1.site.name })
+                self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
                 self.updateUi()
@@ -70,13 +68,13 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            tabBarGradient.isHidden = false
+            (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
+            (tabBarController as! RootViewController).showGradient(false)
             addAccountContainerView.isHidden = false
-            tabBarGradient.isHidden = true
         }
     }
 
@@ -84,9 +82,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
                 return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { $0.site.name < $1.site.name })
+            }).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         }
         tableView.reloadData()
     }
@@ -118,7 +116,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-//        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
         return cell
@@ -138,7 +135,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    func updateAccount(account: Account) {
+    func updateAccount(notification: Notification) {
+        guard let account = notification.userInfo?["account"] as? Account else {
+            return
+        }
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             filteredAccounts[filteredIndex] = account
             let indexPath = IndexPath(row: filteredIndex, section: 0)
@@ -147,12 +147,14 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func addAccount(notification: Notification) {
-        guard let account = notification.userInfo?["account"] as? Account else {
+        guard let accounts = notification.userInfo?["accounts"] as? [Account] else {
             Logger.shared.warning("Account was nil when trying to add it to the view.")
             return
         }
         DispatchQueue.main.async {
-            self.addAccount(account: account)
+            for account in accounts {
+                self.addAccount(account: account)
+            }
         }
     }
 

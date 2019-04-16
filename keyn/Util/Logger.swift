@@ -31,22 +31,37 @@ struct Logger {
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
         logger.verbose(message, error: getNSError(error), userInfo: userInfo)
+        if let error = error {
+            print(error)
+        }
     }
     
     func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
         logger.debug(message, error: getNSError(error), userInfo: userInfo)
+        if let error = error {
+            print(error)
+        }
     }
     
     func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
         logger.info(message, error: getNSError(error), userInfo: userInfo)
+        if let error = error {
+            print(error)
+        }
     }
     
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
         logger.warning(message, error: getNSError(error), userInfo: userInfo)
+        if let error = error {
+            print(error)
+        }
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
         logger.error(message, error: getNSError(error), userInfo: userInfo)
+        if let error = error {
+            print(error)
+        }
     }
     
     func analytics(_ message: String, code: AnalyticsMessage, userInfo providedUserInfo: [String: Any]? = nil, error: Error? = nil) {
@@ -62,6 +77,7 @@ struct Logger {
         if let error = error as? KeynError {
             return error.nsError
         } else  {
+            print(error as NSError)
             return error as NSError
         }
     }

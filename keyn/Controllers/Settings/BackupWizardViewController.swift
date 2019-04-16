@@ -69,9 +69,9 @@ class BackupWizardViewController: UIViewController {
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "\("popups.questions.cancel_backup".localized.capitalized)", message: "popups.questions.cancel_backup_description".localized, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "popups.responses.continue".localized.capitalized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalized, style: .destructive, handler: { action in
+        let alert = UIAlertController(title: "\("popups.questions.cancel_backup".localized.capitalizedFirstLetter)", message: "popups.questions.cancel_backup_description".localized, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.continue".localized.capitalizedFirstLetter, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalizedFirstLetter, style: .destructive, handler: { action in
             self.performSegue(withIdentifier: "UnwindToSettings", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)

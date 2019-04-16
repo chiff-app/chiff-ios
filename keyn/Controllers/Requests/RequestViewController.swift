@@ -20,15 +20,17 @@ class RequestViewController: UIViewController {
         super.viewDidLoad()
         switch authorizationGuard.type {
         case .login:
-            requestLabel.text = "Confirm login"
+            requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
         case .add, .addAndLogin:
-            requestLabel.text = "Add account"
+            requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
+        case .addBulk:
+            requestLabel.text = "requests.add_accounts".localized.capitalizedFirstLetter
         case .change:
-            requestLabel.text = "Change password"
+            requestLabel.text = "requests.change_password".localized.capitalizedFirstLetter
         case .fill:
-            requestLabel.text = "Fill password"
+            requestLabel.text = "requests.fill_password".localized.capitalizedFirstLetter
         default:
-            requestLabel.text = "Unknown request"
+            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         acceptRequest()
     }
@@ -43,7 +45,10 @@ class RequestViewController: UIViewController {
         authorizationGuard.acceptRequest { error in
             DispatchQueue.main.async {
                 if let error = error {
-                    self.showError(message: "\("errors.authentication_error".localized): \(error)")
+                    if let errorMessage = AuthenticationGuard.shared.handleError(error: error) {
+                        self.showError(message: errorMessage)
+                        Logger.shared.error("Error authorizing request", error: error)
+                    }
                 } else {
                     self.success()
                 }
@@ -52,31 +57,34 @@ class RequestViewController: UIViewController {
     }
 
     private func success() {
-        #warning("TODO: localize this")
         switch authorizationGuard.type {
             case .login:
-                successTextLabel.text = "Login successful"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             case .addAndLogin:
-                successTextLabel.text = "Account added"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             case .add:
-                successTextLabel.text = "Account added"
-                successTextDetailLabel.text = "Next time you can login with Keyn"
+                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
+            case .addBulk:
+                successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
+                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             case .change:
-                successTextLabel.text = "New password generated"
-                successTextDetailLabel.text = "Return to your computer to complete the process"
+                successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
             case .fill:
-                successTextLabel.text = "Fill password successful"
-                successTextDetailLabel.text = "Return to your computer"
+                successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
+                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
             default:
-            requestLabel.text = "Unknown request"
+                requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         self.successView.alpha = 0.0
         self.successView.isHidden = false
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.dismiss(animated: true, completion: nil)
+            AuthenticationGuard.shared.hideLockWindow()
         }
     }
 

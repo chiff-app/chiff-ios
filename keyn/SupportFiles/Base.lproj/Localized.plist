@@ -14,19 +14,22 @@
 			<key>value</key>
 			<string>Add 2FA-code to</string>
 		</dict>
-		<key>add_otp_code</key>
-		<dict>
-			<key>comment</key>
-			<string>Add a one-time-password code</string>
-			<key>value</key>
-			<string>Add code</string>
-		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
 			<string>Show the user that a value has been copied</string>
 			<key>value</key>
 			<string>Copied</string>
+		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.</string>
+		</dict>
+		<key>footer_unlimited</key>
+		<dict>
+			<key>value</key>
+			<string>You can save as many accounts as you want.</string>
 		</dict>
 		<key>mode</key>
 		<dict>
@@ -38,6 +41,13 @@
 			<key>value</key>
 			<string>Codes can either be time-based or counter-based</string>
 		</dict>
+		<key>scan_qr</key>
+		<dict>
+			<key>comment</key>
+			<string>Cell title for scanning qr code for OTP</string>
+			<key>value</key>
+			<string>Scan QR</string>
+		</dict>
 		<key>secret</key>
 		<dict>
 			<key>value</key>
@@ -47,6 +57,11 @@
 		<dict>
 			<key>value</key>
 			<string>The secret that was shared by the website</string>
+		</dict>
+		<key>sites_header</key>
+		<dict>
+			<key>value</key>
+			<string>Websites</string>
 		</dict>
 		<key>two_fa_instruction</key>
 		<dict>
@@ -59,6 +74,21 @@
 		<dict>
 			<key>value</key>
 			<string>Update 2FA-code for</string>
+		</dict>
+		<key>url_warning</key>
+		<dict>
+			<key>value</key>
+			<string>⚠️ Keyn doesn't work if the URL is incorrect.</string>
+		</dict>
+		<key>user_details</key>
+		<dict>
+			<key>value</key>
+			<string>User details</string>
+		</dict>
+		<key>website_details</key>
+		<dict>
+			<key>value</key>
+			<string>Website details</string>
 		</dict>
 	</dict>
 	<key>backup</key>
@@ -108,6 +138,13 @@
 			<string>Error in the authentication process to the phone, e.g. TouchID</string>
 			<key>value</key>
 			<string>Authentication error</string>
+		</dict>
+		<key>delete_url</key>
+		<dict>
+			<key>comment</key>
+			<string>Error deleting url</string>
+			<key>value</key>
+			<string>Error deleting URL</string>
 		</dict>
 		<key>generic_error</key>
 		<dict>
@@ -401,6 +438,33 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>requests</key>
 	<dict>
+		<key>account_added</key>
+		<dict>
+			<key>value</key>
+			<string>Account added</string>
+		</dict>
+		<key>accounts</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for 'accounts'</string>
+			<key>value</key>
+			<string>accounts</string>
+		</dict>
+		<key>accounts_added</key>
+		<dict>
+			<key>value</key>
+			<string>accounts added</string>
+		</dict>
+		<key>add_account</key>
+		<dict>
+			<key>value</key>
+			<string>Add account</string>
+		</dict>
+		<key>add_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Add accounts</string>
+		</dict>
 		<key>add_site</key>
 		<dict>
 			<key>comment</key>
@@ -415,6 +479,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Change password for</string>
 		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Change password</string>
+		</dict>
+		<key>confirm_login</key>
+		<dict>
+			<key>value</key>
+			<string>Confirm login</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -426,6 +500,26 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask the user to fill a password, e.g. Fill password for Amazon.com?</string>
 			<key>value</key>
 			<string>Fill password for</string>
+		</dict>
+		<key>fill_password</key>
+		<dict>
+			<key>value</key>
+			<string>Fill password</string>
+		</dict>
+		<key>fill_password_successful</key>
+		<dict>
+			<key>value</key>
+			<string>Fill password successful</string>
+		</dict>
+		<key>login_keyn_next_time</key>
+		<dict>
+			<key>value</key>
+			<string>Next time you can login with Keyn</string>
+		</dict>
+		<key>login_succesful</key>
+		<dict>
+			<key>value</key>
+			<string>Login successful</string>
 		</dict>
 		<key>login_to</key>
 		<dict>
@@ -440,6 +534,45 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask to the user to login with an account, e.g. Login with demo@keyn.io?</string>
 			<key>value</key>
 			<string>Login with</string>
+		</dict>
+		<key>new_password_generated</key>
+		<dict>
+			<key>value</key>
+			<string>New password generated</string>
+		</dict>
+		<key>on</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for on</string>
+			<key>value</key>
+			<string>on</string>
+		</dict>
+		<key>pair_with</key>
+		<dict>
+			<key>value</key>
+			<string>Pair with</string>
+		</dict>
+		<key>return_to_computer</key>
+		<dict>
+			<key>value</key>
+			<string>Return to your computer</string>
+		</dict>
+		<key>save</key>
+		<dict>
+			<key>comment</key>
+			<string>Ask the user to save a site, e.g. Save Amazon.com?</string>
+			<key>value</key>
+			<string>Save</string>
+		</dict>
+		<key>to_complete_process</key>
+		<dict>
+			<key>value</key>
+			<string>to complete the process</string>
+		</dict>
+		<key>unknown_request</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown request</string>
 		</dict>
 		<key>unlock_accounts</key>
 		<dict>

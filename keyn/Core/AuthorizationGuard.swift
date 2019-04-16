@@ -12,26 +12,27 @@ class AuthorizationGuard {
 
     let session: Session
     let type: KeynMessageType
-    let browserTab: Int!    // Should be present for all requests
-    let siteName: String!   // Should be present for all requests
-    let siteURL: String!    // Should be present for all requests
-    let accountId: String!  // Should be present for login, change and fill requests
-    let siteId: String!     // Should be present for add site requests
-    let password: String!   // Should be present for add site requests
-    let username: String!   // Should be present for add site requests
+    let browserTab: Int!        // Should be present for all requests
+    let siteName: String!       // Should be present for all requests
+    let siteURL: String!        // Should be present for all requests
+    let accountId: String!      // Should be present for login, change and fill requests
+    let siteId: String!         // Should be present for add site requests
+    let password: String!       // Should be present for add site requests
+    let username: String!       // Should be present for add site requests
+    let accounts: [BulkAccount]!// Should be present for bulk add site requests
 
     var authenticationReason: String {
         switch type {
         case .login:
-            return "\("requests.login_to".localized.capitalized) \(siteName!)"
+            return "\("requests.login_to".localized.capitalizedFirstLetter) \(siteName!)"
         case .add, .register, .addAndLogin:
-            return "\("requests.add_site".localized.capitalized) \(siteName!)"
+            return "\("requests.add_site".localized.capitalizedFirstLetter) \(siteName!)"
         case .change:
-            return "\("requests.change_for".localized.capitalized) \(siteName!)"
+            return "\("requests.change_for".localized.capitalizedFirstLetter) \(siteName!)"
         case .fill:
-            return "\("requests.fill_for".localized.capitalized) \(siteName!)"
+            return "\("requests.fill_for".localized.capitalizedFirstLetter) \(siteName!)"
         default:
-            return "Unknown request type"
+            return "requests.unknown_request".localized.capitalizedFirstLetter
         }
     }
 
@@ -48,6 +49,7 @@ class AuthorizationGuard {
         self.password = request.password
         self.username = request.username
         self.accountId = request.accountID
+        self.accounts = request.accounts
     }
 
     // MARK: - Handle request responses
@@ -56,8 +58,10 @@ class AuthorizationGuard {
         switch type {
         case .add, .register, .addAndLogin:
             addSite(completionHandler: completionHandler)
+        case .addBulk:
+            addBulkSites(completionHandler: completionHandler)
         case .login, .change, .fill:
-            authorizeForKeychain(completionHandler: completionHandler)
+            authorize(completionHandler: completionHandler)
         default:
             AuthorizationGuard.authorizationInProgress = false
             return
@@ -79,8 +83,8 @@ class AuthorizationGuard {
 
     // MARK: - Private functions
 
-    private func authorizeForKeychain(completionHandler: @escaping (_ error: Error?) -> Void) {
-        Account.get(accountID: self.accountId, reason: self.authenticationReason, type: .override) { (account, context, error) in
+    private func authorize(completionHandler: @escaping (_ error: Error?) -> Void) {
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
             do {
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
@@ -88,10 +92,12 @@ class AuthorizationGuard {
                 if let error = error {
                     throw error
                 }
-                try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
+                guard let account = try Account.get(accountID: self.accountId, context: context) else {
+                    throw AccountError.notFound
+                }
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(nil)
             } catch {
-                Logger.shared.error("Error authorizing request", error: error)
                 completionHandler(error)
             }
         }
@@ -103,25 +109,49 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            do {
-                let _ = try Account(username: self.username, sites: [site], password: self.password, type: .override) { (account, context, error) in
-                    do {
-                        if let error = error {
-                            throw error
-                        }
-                        try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
-                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["account": account])
-                        completionHandler(nil)
-                    } catch {
-                        Logger.shared.error("Add account response could not be sent", error: error)
-                        completionHandler(error)
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(site.name)", withMainContext: false) { (context, error) in
+                do {
+                    if let error = error {
+                        throw error
                     }
+                    let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
+                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
+                    }
+                    completionHandler(nil)
+                } catch {
+                    completionHandler(error)
                 }
+
+            }
+
+
+        })
+    }
+
+    private func addBulkSites(completionHandler: @escaping (_ error: Error?) -> Void) {
+        defer {
+            AuthorizationGuard.authorizationInProgress = false
+        }
+        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
+            do {
+                if let error = error {
+                    throw error
+                }
+                #warning("TODO: Fetch PPD for each site")
+                let accounts = try self.accounts.map({ (bulkAccount: BulkAccount) -> Account in
+                    let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
+                    return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
+                })
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
+                }
+                completionHandler(nil)
             } catch {
-                Logger.shared.error("Account could not be saved.", error: error)
                 completionHandler(error)
             }
-        })
+        }
     }
 
 
@@ -179,11 +209,12 @@ class AuthorizationGuard {
 
     static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
         authorizationInProgress = true
-        authorizeWithoutKeychain(reason: account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)") { (success, error) in
+        let reason = account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
+        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (context, error) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
-            if success {
+            if context != nil {
                 completionHandler(nil)
             } else if let error = error {
                 completionHandler(error)
@@ -207,11 +238,11 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
-            authorizeWithoutKeychain(reason: "Pair with \(browser) on \(os).") { (success, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: false) { (context, error) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }
-                if success {
+                if context != nil {
                     Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completion: completionHandler)
                 } else if let error = error {
                     completionHandler(nil, error)
@@ -223,23 +254,6 @@ class AuthorizationGuard {
         } catch {
             completionHandler(nil, error)
         }
-    }
-
-    private static func authorizeWithoutKeychain(reason: String, completion: @escaping (_: Bool, _: Error?) -> ()) {
-        var error: NSError?
-        let context = LAContext()
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            #warning("TODO: Handle fingerprint absence in authorize function")
-            Logger.shared.error("TODO: Handle fingerprint absence.", error: error)
-            completion(false, error)
-            return
-        }
-
-        context.evaluatePolicy(
-            .deviceOwnerAuthenticationWithBiometrics,
-            localizedReason: reason,
-            reply: completion
-        )
     }
 
     private static func showError(errorMessage: String) {

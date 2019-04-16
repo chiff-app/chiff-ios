@@ -18,6 +18,7 @@ enum APIError: KeynError {
 enum APIEndpoint: String {
     case accounts = "accounts"
     case backup = "backup"
+    case device = "device"
     case ppd = "ppd"
     case analytics = "analytics"
     case message = "message"
@@ -90,7 +91,7 @@ class API {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.isDebug ? Properties.keynApiVersion.development : Properties.keynApiVersion.production)/\(endpoint.rawValue)"
+        components.path = "/\(Properties.environment.rawValue)/\(endpoint.rawValue)"
 
         if let path = path {
             components.path += "/\(path)"

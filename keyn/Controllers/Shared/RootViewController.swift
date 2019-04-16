@@ -6,8 +6,6 @@ import UIKit
 
 class RootViewController: UITabBarController {
 
-//    private lazy var defaultTabBarHeight = { tabBar.frame.size.height }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
@@ -27,12 +25,17 @@ class RootViewController: UITabBarController {
             { self.presentQuestionAlert(questionnaire: questionnaire) }
         }
     }
+
+    func showGradient(_ value: Bool) {
+        let bar = tabBar as! KeynTabBar
+        bar.gradientLayer.isHidden = !value
+    }
     
     // MARK: - Private functions
 
     private func presentQuestionAlert(questionnaire: Questionnaire) {
         let alert = UIAlertController(title: "popups.questions.questionnaire_popup_title".localized, message: "popups.questions.questionnaire_permission".localized, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "\("popups.responses.yes".localized.capitalized)!", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "\("popups.responses.yes".localized.capitalizedFirstLetter)!", style: .default, handler: { _ in
             self.launchQuestionnaire(questionnaire: questionnaire)
         }))
         if !questionnaire.compulsory {
@@ -62,20 +65,37 @@ class RootViewController: UITabBarController {
     }
 }
 
-extension UITabBar {
-    static let height: CGFloat = 90
+class KeynTabBar: UITabBar {
 
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
+    let height: CGFloat = 90
+    var gradientLayer: CAGradientLayer!
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
         guard let window = UIApplication.shared.keyWindow else {
             return super.sizeThatFits(size)
         }
         var sizeThatFits = super.sizeThatFits(size)
         if #available(iOS 11.0, *) {
-            sizeThatFits.height = UITabBar.height + window.safeAreaInsets.bottom
+            sizeThatFits.height = height + window.safeAreaInsets.bottom
         } else {
-            sizeThatFits.height = UITabBar.height
+            sizeThatFits.height = height
         }
         return sizeThatFits
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addBackgroundLayer()
+    }
+
+    private func addBackgroundLayer() {
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
+        var colors = [CGColor]()
+        colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
+        colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
+        gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.6)]
+        gradientLayer.colors = colors
+        layer.insertSublayer(gradientLayer, at: 0)
+    }
 }

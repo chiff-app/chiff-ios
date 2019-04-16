@@ -54,6 +54,26 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - UITableView
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.website_details".localized.capitalizedFirstLetter
+        case 1:
+            return "accounts.user_details".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.url_warning".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
+    }
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section < 2 else {
             return
@@ -64,7 +84,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "Account details" : "User details"
+        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
     }
     
     // MARK: UITextFieldDelegate
@@ -133,16 +153,8 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let id = url!.absoluteString.sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
-                self.account = try Account(username: username, sites: [site], password: password, type: .ifNeeded, context: nil) { (account, _, error) in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            self.showError(message: "errors.save_account: \(error)".localized)
-                            Logger.shared.error("Account could not be saved", error: error)
-                        } else {
-                            self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
-                        }
-                    }
-                }
+                self.account = try Account(username: username, sites: [site], password: password, context: nil)
+                self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
             } catch {
                 showError(message: "errors.save_account: \(error)".localized)
                 Logger.shared.error("Account could not be saved", error: error)
