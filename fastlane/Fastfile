@@ -20,6 +20,7 @@ fastlane_require 'json'
 default_platform(:ios)
 
 project = 'keyn.xcodeproj'
+scheme = 'keyn'
 
 def analytics(message)
     uri = URI.parse("https://api.keyn.io/logging/analytics")
@@ -44,15 +45,15 @@ end
 platform :ios do
     desc 'Build app'
     lane :build do
-        scan
-        cert
+        scan(scheme: scheme)
+        cert(scheme: scheme)
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
         sigh(app_identifier: 'io.keyn.keyn.keynCredentialProvider')
         sigh(app_identifier: 'io.keyn.keyn')
         increment_build_number({
           build_number: latest_testflight_build_number + 1
         })
-        gym
+        gym(scheme: scheme)
     end
 
     desc 'Start minor release'
