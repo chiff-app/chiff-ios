@@ -58,7 +58,7 @@ struct KeynRequest: Codable {
             }
         case .login, .change, .fill:
             guard accountID != nil else {
-                Logger.shared.error("VerifyIntegrity failed because there is no username.")
+                Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
                 return false
             }
         case .addBulk:

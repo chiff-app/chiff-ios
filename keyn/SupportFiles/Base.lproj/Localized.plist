@@ -494,7 +494,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Fill password</string>
 		</dict>
-		<key>fill_password_succesful</key>
+		<key>fill_password_successful</key>
 		<dict>
 			<key>value</key>
 			<string>Fill password successful</string>

@@ -226,7 +226,7 @@ requests:
     value: accounts added
   new_password_generated:
     value: New password generated
-  fill_password_succesful:
+  fill_password_successful:
     value: Fill password successful
   return_to_computer:
     value: Return to your computer
