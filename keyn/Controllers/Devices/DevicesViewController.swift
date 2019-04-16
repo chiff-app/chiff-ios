@@ -30,9 +30,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-        updateUi()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUi()
+    }
 
     @IBAction func deleteDevice(_ sender: UIButton) {
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
