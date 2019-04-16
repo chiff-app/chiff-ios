@@ -111,12 +111,29 @@ struct Account: Codable {
         try Keychain.shared.delete(id: id, service: .otp)
         try backup()
     }
+
+    mutating func removeSite(forIndex index: Int) throws {
+        self.sites.remove(at: index)
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        Account.saveToIdentityStore(account: self)
+    }
+
+    mutating func updateSite(url: String, forIndex index: Int) throws {
+        self.sites[index].url = url
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        Account.saveToIdentityStore(account: self)
+    }
     
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
-        #warning("TODO: Update accounts with multiple sites")
         if let siteName = siteName {
             self.sites[0].name = siteName
         }

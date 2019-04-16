@@ -102,9 +102,9 @@ class AuthenticationGuard {
 
     func handleError(error: Error) -> String? {
         switch error {
-        case KeychainError.authenticationCancelled, LAError.systemCancel:
+        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel:
             Logger.shared.debug("Authentication was cancelled")
-        case LAError.appCancel, LAError.invalidContext, LAError.notInteractive:
+        case LAError.invalidContext, LAError.notInteractive:
             Logger.shared.error("AuthenticateUser error", error: error)
             return "errors.local_authentication.generic".localized
         case LAError.passcodeNotSet:

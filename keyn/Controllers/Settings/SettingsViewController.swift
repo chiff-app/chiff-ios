@@ -31,6 +31,15 @@ class SettingsViewController: UITableViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
 
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "settings.settings".localized : nil
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return section == 0 ? securityFooterText : "settings.reset_warning".localized
+    }
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section == 0 else {
             return

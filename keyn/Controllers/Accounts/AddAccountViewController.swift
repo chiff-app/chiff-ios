@@ -54,6 +54,26 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: - UITableView
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.website_details".localized.capitalizedFirstLetter
+        case 1:
+            return "accounts.user_details".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "accounts.url_warning".localized.capitalizedFirstLetter
+        default:
+            return nil
+        }
+    }
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section < 2 else {
             return

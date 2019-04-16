@@ -33,6 +33,9 @@ errors:
   save_account:
     value: Error saving account
     comment: Error saving account
+  delete_url:
+    value: Error deleting URL
+    comment: Error deleting url
   undecodable_qr:
     value: This QR-code could not be decoded.
     comment: The QR-code could not be decoded.
@@ -117,9 +120,9 @@ accounts:
     value: Add 2FA-code to
   update_2fa_code:
     value: Update 2FA-code for
-  add_otp_code:
-    value: Add code
-    comment: Add a one-time-password code
+  scan_qr:
+    comment: Cell title for scanning qr code for OTP
+    value: Scan QR
   copied:
     comment: Show the user that a value has been copied
     value: Copied
@@ -136,6 +139,8 @@ accounts:
     value: Codes can either be time-based or counter-based
   2fa_description:
     value: The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor. 
+  sites_header:
+    value: Websites
 devices:
   devices:
     comment: Section title for devices
