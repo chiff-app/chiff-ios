@@ -100,24 +100,24 @@ class Session: Codable {
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
     func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
+        print("SendCredentials called")
         var account = account
-        let password = try account.password(context: context)
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add, .addToExisting:
             response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .add)
         case .login, .addAndLogin:
-            response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
             Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
         case .fill:
             Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: nil, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .fill)
+            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
             Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
-            response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: nil, t: .register)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
         }
