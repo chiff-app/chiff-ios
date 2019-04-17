@@ -217,21 +217,21 @@ class AuthorizationGuard {
         guard !authorizationInProgress else {
             return
         }
+        defer {
+            AuthorizationGuard.authorizationInProgress = false
+        }
         AuthorizationGuard.authorizationInProgress = true
         do {
             guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
-                AuthorizationGuard.authorizationInProgress = true
                 throw SessionError.doesntExist
             }
             session.cancelRequest(reason: .expired, browserTab: browserTab) { (_, error) in
-                AuthorizationGuard.authorizationInProgress = true
                 if let error = error {
                     Logger.shared.error("Error rejecting request", error: error)
                 }
             }
             showError(errorMessage: "requests.expired".localized)
         } catch {
-            AuthorizationGuard.authorizationInProgress = true
             Logger.shared.error("Could not decode session.", error: error)
         }
     }
