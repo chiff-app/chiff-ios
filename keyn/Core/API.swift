@@ -58,6 +58,7 @@ class API {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 Logger.shared.warning("Error querying Keyn API", error: error!)
+                completionHandler(nil, error)
                 return
             }
             if let httpStatus = response as? HTTPURLResponse {
