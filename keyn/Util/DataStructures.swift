@@ -61,6 +61,15 @@ struct KeynRequest: Codable {
                 Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
                 return false
             }
+        case .addToExisting:
+            guard siteID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no site ID.")
+                return false
+            }
+            guard accountID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
+                return false
+            }
         case .addBulk:
             guard count != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no account count.")

@@ -112,6 +112,15 @@ struct Account: Codable {
         try backup()
     }
 
+    mutating func addSite(site: Site) throws {
+        self.sites.append(site)
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        Account.saveToIdentityStore(account: self)
+    }
+
     mutating func removeSite(forIndex index: Int) throws {
         self.sites.remove(at: index)
         let accountData = try PropertyListEncoder().encode(self)

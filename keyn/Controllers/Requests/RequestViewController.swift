@@ -21,7 +21,7 @@ class RequestViewController: UIViewController {
         switch authorizationGuard.type {
         case .login:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .addToExisting:
             requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
         case .addBulk:
             requestLabel.text = "requests.add_accounts".localized.capitalizedFirstLetter
@@ -64,7 +64,7 @@ class RequestViewController: UIViewController {
             case .addAndLogin:
                 successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .add:
+            case .add, .addToExisting:
                 successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             case .addBulk:
