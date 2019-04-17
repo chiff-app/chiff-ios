@@ -107,7 +107,7 @@ class Session: Codable {
         case .change:
             response = KeynCredentialsResponse(u: account.username, p: password, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
-        case .add:
+        case .add, .addToExisting:
             response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .add)
         case .login, .addAndLogin:
             response = KeynCredentialsResponse(u: account.username, p: password, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
