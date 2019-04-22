@@ -19,6 +19,11 @@ class KeynNavigationController: UINavigationController {
         return .default
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         logoImageView.contentMode = .scaleAspectFit

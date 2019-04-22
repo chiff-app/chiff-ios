@@ -27,12 +27,6 @@ class SettingsViewController: UITableViewController {
         } else { justLoaded = false }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
-    }
-
-
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "settings.settings".localized : nil
     }
