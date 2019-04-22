@@ -46,7 +46,7 @@ platform :ios do
     desc 'Build app'
     lane :build do
         scan(scheme: scheme)
-        cert(scheme: scheme)
+        cert
         sigh(app_identifier: 'io.keyn.keyn.keynNotificationExtension')
         sigh(app_identifier: 'io.keyn.keyn.keynCredentialProvider')
         sigh(app_identifier: 'io.keyn.keyn')
@@ -79,7 +79,7 @@ platform :ios do
 
     desc 'Beta release'
     lane :beta_release do
-        version = get_version_number()
+        version = get_version_number(target: scheme)
         build
         upload_to_testflight(
             skip_waiting_for_build_processing: true
