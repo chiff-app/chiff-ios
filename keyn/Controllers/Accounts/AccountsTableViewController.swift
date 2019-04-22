@@ -21,6 +21,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
         if let accountDict = try? Account.all(context: nil) {
             unfilteredAccounts = Array(accountDict.values)
+            updateUi()
         } else {
             unfilteredAccounts = [Account]()
         }
@@ -55,8 +56,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     private func loadAccounts(notification: Notification) {
+        guard self.unfilteredAccounts.isEmpty else {
+            self.updateUi()
+            return
+        }
         DispatchQueue.main.async {
-            if let accounts = notification.userInfo as? [String: Account] {
+            if let accounts = try? notification.userInfo as? [String: Account] ?? Account.all(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()

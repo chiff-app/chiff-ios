@@ -97,6 +97,7 @@ class AuthorizationGuard {
                 guard let account = try Account.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
+                NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(nil)
             } catch {
@@ -126,6 +127,7 @@ class AuthorizationGuard {
                     try account!.addSite(site: site)
                     try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                         NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account!])
                     }
                     completionHandler(nil)
@@ -151,6 +153,7 @@ class AuthorizationGuard {
                     let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
                     }
                     completionHandler(nil)
@@ -176,6 +179,7 @@ class AuthorizationGuard {
                     return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
                 })
                 DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
                 }
                 completionHandler(nil)
