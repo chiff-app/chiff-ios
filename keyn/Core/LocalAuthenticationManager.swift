@@ -55,8 +55,12 @@ class LocalAuthenticationManager {
                 if let error = error {
                     return completion(nil, error)
                 }
-                self.mainContext = context
-                return completion(result ? context : nil, nil)
+                if result {
+                    self.mainContext = context
+                    return completion(context, nil)
+                } else {
+                    return completion(nil, nil)
+                }
             }
         } catch {
             Logger.shared.warning("Localauthentication failed")
