@@ -217,6 +217,7 @@ class AuthorizationGuard {
         }
     }
 
+    // UNUSED. If we don't miss it, we can delete it.
     static func launchExpiredRequestView(with request: KeynRequest) {
         guard !authorizationInProgress else {
             return
