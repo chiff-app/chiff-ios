@@ -33,8 +33,9 @@ class NotificationProcessor {
 
         let siteName = keynRequest.siteName ?? "Unknown"
 
+        #warning("TODO: Localize this")
         switch keynRequest.type {
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .addToExisting:
             content.title = "Add account"
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .addBulk:

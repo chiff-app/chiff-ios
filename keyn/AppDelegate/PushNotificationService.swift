@@ -101,9 +101,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
             Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
-            DispatchQueue.main.async {
-                AuthorizationGuard.launchExpiredRequestView(with: keynRequest)
-            }
             return []
         }
 

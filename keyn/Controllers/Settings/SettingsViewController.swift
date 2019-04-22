@@ -27,12 +27,6 @@ class SettingsViewController: UITableViewController {
         } else { justLoaded = false }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
-    }
-
-
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "settings.settings".localized : nil
     }
@@ -80,17 +74,21 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func resetKeyn(_ sender: UIButton) {
-        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "popups.questions.reset_keyn_description".localized, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
-            Session.deleteAll()
-            Account.deleteAll()
-            try? Seed.delete()
-            BackupManager.shared.deleteEndpoint()
-            BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics("Keyn reset.", code: .keynReset)
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            do {
+                Session.deleteAll()
+                Account.deleteAll()
+                try Seed.delete()
+                BackupManager.shared.deleteEndpoint()
+                BackupManager.shared.deleteAllKeys()
+                Logger.shared.analytics("Keyn reset.", code: .keynReset)
+                let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+                UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            } catch {
+
+            }
         }))
         self.present(alert, animated: true, completion: nil)
     }
