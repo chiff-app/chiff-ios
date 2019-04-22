@@ -142,8 +142,7 @@ struct BackupManager {
 
     func updateEndpoint(token: String, pubKey: String, endpoint: String?) throws {
         var message = [
-            MessageIdentifier.token: token,
-            MessageIdentifier.environment: Properties.environment.apns
+            MessageIdentifier.token: token
         ]
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint
@@ -157,7 +156,11 @@ struct BackupManager {
                     throw CodingError.missingData
                 }
                 if let endpoint = dict["arn"] as? String {
-                    try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+                    if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
+                        try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+                    } else {
+                        try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+                    }
                 }
             } catch {
                 Logger.shared.error("AWS cannot get arn.", error: error)

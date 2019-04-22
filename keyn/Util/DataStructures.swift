@@ -61,6 +61,15 @@ struct KeynRequest: Codable {
                 Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
                 return false
             }
+        case .addToExisting:
+            guard siteID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no site ID.")
+                return false
+            }
+            guard accountID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
+                return false
+            }
         case .addBulk:
             guard count != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no account count.")
@@ -135,7 +144,7 @@ struct KeynPairingResponse: Codable {
     let sessionID: String
     let pubKey: String
     let userID: String
-    let sandboxed: Bool
+    let environment: String
     let accounts: AccountList
     let type: KeynMessageType
 }
@@ -150,11 +159,13 @@ typealias AccountList = [String:JSONAccount]
 struct JSONAccount: Codable {
     let askToLogin: Bool?
     let askToChange: Bool?
+    let username: String
     let sites: [JSONSite]
 
     init(account: Account) {
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
+        self.username = account.username
         self.sites = account.sites.map({ JSONSite(site: $0) })
     }
 }

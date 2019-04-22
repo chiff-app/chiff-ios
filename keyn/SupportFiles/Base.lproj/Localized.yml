@@ -70,7 +70,7 @@ popups:
       comment: Ask the user to delete the account
     reset_keyn:
       comment: Resets Keyn and deletes all data
-      value: Reset Keyn?
+      value: Delete data?
     cancel_backup_description:
       comment: Tell the user he can complete the backup process later
       value: You can complete the backup sequence later.

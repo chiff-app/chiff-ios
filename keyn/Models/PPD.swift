@@ -29,6 +29,7 @@ struct PPD: Codable {
         API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
             if let error = error {
                 Logger.shared.error("PPD retrieval problem.", error: error)
+                completionHandler(nil)
                 return
             }
 

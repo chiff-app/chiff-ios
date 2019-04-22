@@ -14,13 +14,14 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
-
+    @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if let accountDict = try? Account.all(context: nil) {
             unfilteredAccounts = Array(accountDict.values)
+            updateUi()
         } else {
             unfilteredAccounts = [Account]()
         }
@@ -44,11 +45,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateUi()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (tabBarController as? RootViewController)?.showGradient(!unfilteredAccounts.isEmpty)
@@ -60,8 +56,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     private func loadAccounts(notification: Notification) {
+        guard self.unfilteredAccounts.isEmpty else {
+            self.updateUi()
+            return
+        }
         DispatchQueue.main.async {
-            if let accounts = notification.userInfo as? [String: Account] {
+            if let accounts = try? notification.userInfo as? [String: Account] ?? Account.all(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
@@ -71,6 +71,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     private func updateUi() {
+        loadingSpinner.stopAnimating()
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true

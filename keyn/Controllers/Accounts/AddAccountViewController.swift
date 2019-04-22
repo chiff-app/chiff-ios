@@ -87,6 +87,18 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         header.textLabel?.frame = header.frame
         header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
     }
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard section < 2 else {
+            return
+        }
+        let footer = view as! UITableViewHeaderFooterView
+        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
+        footer.textLabel?.font = UIFont.primaryMediumSmall
+        footer.textLabel?.textAlignment = NSTextAlignment.left
+        footer.textLabel?.frame = footer.frame
+        footer.textLabel?.text = "accounts.url_warning".localized.capitalizedFirstLetter
+    }
     
     // MARK: UITextFieldDelegate
 

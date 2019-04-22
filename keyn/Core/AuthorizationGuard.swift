@@ -12,20 +12,20 @@ class AuthorizationGuard {
 
     let session: Session
     let type: KeynMessageType
-    let browserTab: Int!        // Should be present for all requests
-    let siteName: String!       // Should be present for all requests
-    let siteURL: String!        // Should be present for all requests
-    let accountId: String!      // Should be present for login, change and fill requests
-    let siteId: String!         // Should be present for add site requests
-    let password: String!       // Should be present for add site requests
-    let username: String!       // Should be present for add site requests
     let accounts: [BulkAccount]!// Should be present for bulk add site requests
+    private let browserTab: Int!        // Should be present for all requests
+    private let siteName: String!       // Should be present for all requests
+    private let siteURL: String!        // Should be present for all requests
+    private let accountId: String!      // Should be present for login, change and fill requests
+    private let siteId: String!         // Should be present for add site requests
+    private let password: String!       // Should be present for add site requests
+    private let username: String!       // Should be present for add site requests
 
-    var authenticationReason: String {
+    private var authenticationReason: String {
         switch type {
         case .login:
             return "\("requests.login_to".localized.capitalizedFirstLetter) \(siteName!)"
-        case .add, .register, .addAndLogin:
+        case .add, .register, .addAndLogin, .addToExisting:
             return "\("requests.add_site".localized.capitalizedFirstLetter) \(siteName!)"
         case .change:
             return "\("requests.change_for".localized.capitalizedFirstLetter) \(siteName!)"
@@ -58,6 +58,8 @@ class AuthorizationGuard {
         switch type {
         case .add, .register, .addAndLogin:
             addSite(completionHandler: completionHandler)
+        case .addToExisting:
+            addToExistingAccount(completionHandler: completionHandler)
         case .addBulk:
             addBulkSites(completionHandler: completionHandler)
         case .login, .change, .fill:
@@ -95,12 +97,46 @@ class AuthorizationGuard {
                 guard let account = try Account.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
+                NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(nil)
             } catch {
                 completionHandler(error)
             }
         }
+    }
+
+    private func addToExistingAccount(completionHandler: @escaping (_ error: Error?) -> Void) {
+        PPD.get(id: siteId, completionHandler: { (ppd) in
+            defer {
+                AuthorizationGuard.authorizationInProgress = false
+            }
+            let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+                do {
+                    defer {
+                        AuthorizationGuard.authorizationInProgress = false
+                    }
+                    if let error = error {
+                        throw error
+                    }
+                    var account = try Account.get(accountID: self.accountId, context: context)
+                    guard account != nil  else {
+                        throw AccountError.notFound
+                    }
+                    try account!.addSite(site: site)
+                    try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                        NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account!])
+                    }
+                    completionHandler(nil)
+                } catch {
+                    completionHandler(error)
+                }
+            }
+        })
+
     }
 
     private func addSite(completionHandler: @escaping (_ error: Error?) -> Void) {
@@ -117,16 +153,14 @@ class AuthorizationGuard {
                     let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                         NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
                     }
                     completionHandler(nil)
                 } catch {
                     completionHandler(error)
                 }
-
             }
-
-
         })
     }
 
@@ -145,6 +179,7 @@ class AuthorizationGuard {
                     return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
                 })
                 DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
                 }
                 completionHandler(nil)
@@ -182,25 +217,26 @@ class AuthorizationGuard {
         }
     }
 
+    // UNUSED. If we don't miss it, we can delete it.
     static func launchExpiredRequestView(with request: KeynRequest) {
         guard !authorizationInProgress else {
             return
         }
+        defer {
+            AuthorizationGuard.authorizationInProgress = false
+        }
         AuthorizationGuard.authorizationInProgress = true
         do {
             guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
-                AuthorizationGuard.authorizationInProgress = true
                 throw SessionError.doesntExist
             }
             session.cancelRequest(reason: .expired, browserTab: browserTab) { (_, error) in
-                AuthorizationGuard.authorizationInProgress = true
                 if let error = error {
                     Logger.shared.error("Error rejecting request", error: error)
                 }
             }
             showError(errorMessage: "requests.expired".localized)
         } catch {
-            AuthorizationGuard.authorizationInProgress = true
             Logger.shared.error("Could not decode session.", error: error)
         }
     }

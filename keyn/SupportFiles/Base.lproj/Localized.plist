@@ -344,7 +344,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>comment</key>
 				<string>Resets Keyn and deletes all data</string>
 				<key>value</key>
-				<string>Reset Keyn?</string>
+				<string>Delete data?</string>
 			</dict>
 			<key>reset_keyn_description</key>
 			<dict>

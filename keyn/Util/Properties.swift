@@ -12,15 +12,6 @@ struct Properties {
         case dev = "dev"
         case beta = "beta"
         case prod = "v1"
-
-        var apns: String {
-            switch self {
-            case .dev, .beta:
-                return "ios_sandbox"
-            case .prod:
-                return "ios_production"
-            }
-        }
     }
     
     static let isDebug: Bool = {

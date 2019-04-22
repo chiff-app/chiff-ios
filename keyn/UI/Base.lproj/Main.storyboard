@@ -788,7 +788,11 @@
                             <scrollView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SV6-MR-Wzp">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <subviews>
-                                    <view opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="pzB-Jb-04f">
+                                        <rect key="frame" x="169" y="233" width="37" height="37"/>
+                                        <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </activityIndicatorView>
+                                    <view hidden="YES" opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="349.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUK-ag-3dM">
@@ -875,6 +879,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="n1D-Fz-RNq" secondAttribute="trailing" id="4hc-NL-4xy"/>
+                                    <constraint firstItem="pzB-Jb-04f" firstAttribute="centerY" secondItem="SV6-MR-Wzp" secondAttribute="centerY" constant="-50" id="E6A-oK-kk9"/>
+                                    <constraint firstItem="pzB-Jb-04f" firstAttribute="centerX" secondItem="SV6-MR-Wzp" secondAttribute="centerX" id="HwU-jT-Xgc"/>
                                     <constraint firstItem="n1D-Fz-RNq" firstAttribute="top" secondItem="SV6-MR-Wzp" secondAttribute="top" id="IRB-6s-Ft3"/>
                                     <constraint firstAttribute="width" secondItem="n1D-Fz-RNq" secondAttribute="width" id="ceT-IL-7OM"/>
                                     <constraint firstItem="n1D-Fz-RNq" firstAttribute="leading" secondItem="SV6-MR-Wzp" secondAttribute="leading" id="tzY-1W-ATU"/>
@@ -910,6 +916,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addAccountContainerView" destination="hjK-VU-J4E" id="PsJ-cq-QVX"/>
+                        <outlet property="loadingSpinner" destination="pzB-Jb-04f" id="L2c-CU-a7u"/>
                         <outlet property="scrollView" destination="SV6-MR-Wzp" id="ogx-mk-bir"/>
                         <outlet property="tableView" destination="gr4-VD-pHi" id="dpo-qR-onP"/>
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
@@ -1036,7 +1043,7 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <segue destination="edD-lG-IvQ" kind="show" id="GuR-bU-weO"/>
+                                            <segue destination="edD-lG-IvQ" kind="presentation" modalPresentationStyle="fullScreen" id="GuR-bU-weO"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -2609,17 +2616,8 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="CTT-os-XEk">
                                             <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTV-XS-CyI">
-                                                    <rect key="frame" x="0.0" y="0.0" width="75" height="43.5"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="myi-8w-ezg"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="URL" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="quk-fZ-e0s">
-                                                    <rect key="frame" x="112" y="0.0" width="231" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
                                                     <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" textContentType="organization"/>
