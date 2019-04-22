@@ -80,9 +80,9 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func resetKeyn(_ sender: UIButton) {
-        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "popups.questions.reset_keyn_description".localized, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "settings.reset_warning".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             do {
                 Session.deleteAll()
                 Account.deleteAll()
