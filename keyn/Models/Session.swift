@@ -170,10 +170,14 @@ class Session: Codable {
         }
     }
 
-    func updateAccountList(with accountList: AccountList) throws {
-        let message = try JSONEncoder().encode(accountList)
-        let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        apiRequest(endpoint: .accounts, method: .post, message: ["data": ciphertext.base64]) { (_, error) in
+    func updateAccountList(account: Account) throws {
+        let accountData = try JSONEncoder().encode(JSONAccount(account: account))
+        let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
+        let message = [
+            "id": account.id,
+            "data": ciphertext.base64
+        ]
+        apiRequest(endpoint: .accounts, method: .post, message: message) { (_, error) in
             if let error = error {
                 Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
             }
@@ -356,7 +360,7 @@ class Session: Codable {
     }
 
     private func createQueuesAtAWS(keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
-        var message = [
+        var message: [String: Any] = [
             "httpMethod": APIMethod.put.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "pubkey": keyPair.pubKey.base64,
@@ -364,18 +368,19 @@ class Session: Codable {
         ]
 
         do {
-            let accountData = try JSONEncoder().encode(Account.accountList())
-            let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
-            message["accountList"] = ciphertext.base64
+            let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
+                let accountData = try JSONEncoder().encode(account)
+                return try Crypto.shared.encrypt(accountData, key: sharedKey()).base64
+            }
+            message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
 
             let parameters = [
-                "m": try Crypto.shared.convertToBase64(from: jsonData),
                 "s": try Crypto.shared.convertToBase64(from: signature)
             ]
 
-            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, completionHandler: completionHandler)
+            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, body: jsonData, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }

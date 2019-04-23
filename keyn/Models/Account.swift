@@ -117,7 +117,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 
@@ -126,7 +126,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 
@@ -135,7 +135,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, label: nil, context: nil)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
     
@@ -173,7 +173,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data, objectData: accountData, label: nil, context: context)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 
@@ -197,7 +197,7 @@ struct Account: Codable {
 
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData, label: nil)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: nil)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: ["siteName": site.name, "siteID": site.id])
     }
 
@@ -208,7 +208,7 @@ struct Account: Codable {
                     throw error
                 }
                 try BackupManager.shared.deleteAccount(accountId: self.id)
-                try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+                try Session.all().forEach({ try $0.updateAccountList(account: self) })
                 Account.deleteFromToIdentityStore(account: self)
                 Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": self.site.name, "siteID": self.site.id])
                 completionHandler(nil)
@@ -325,7 +325,7 @@ struct Account: Codable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData, label: nil)
         try BackupManager.shared.backup(id: self.id, accountData: accountData)
-        try Session.all().forEach({ try $0.updateAccountList(with: Account.accountList(context: context)) })
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 

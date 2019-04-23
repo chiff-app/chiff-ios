@@ -43,9 +43,9 @@ class API {
 
     private init() {}
 
-    func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, method: method)
+            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, method: method, body: body)
             send(request, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
@@ -88,7 +88,7 @@ class API {
         task.resume()
     }
 
-    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod) throws -> URLRequest {
+    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
@@ -113,6 +113,9 @@ class API {
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        if let body = body {
+            request.httpBody = body
+        }
 
         return request
     }
