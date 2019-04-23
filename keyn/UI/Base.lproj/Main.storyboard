@@ -1195,7 +1195,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRI-xO-cE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="gnR-ED-PTq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3144.8000000000002" y="-907.1964017991005"/>
+            <point key="canvasLocation" x="3145" y="-940"/>
         </scene>
         <!--ManualOTP View Controller-->
         <scene sceneID="Jxr-Hx-wrr">
@@ -1314,7 +1314,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OYs-R4-1et" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="dnO-in-GRP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5010" y="-907"/>
+            <point key="canvasLocation" x="5009" y="-940"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="Fms-F8-WYy">
@@ -1333,7 +1333,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dgX-2c-CZN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4080" y="-907"/>
+            <point key="canvasLocation" x="4079" y="-940"/>
         </scene>
         <!--Pair Container View Controller-->
         <scene sceneID="cMq-pr-axd">
@@ -1535,7 +1535,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r95-U4-jiJ">
                                 <rect key="frame" x="40" y="89" width="295" height="60"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Scan the QR code that appears in the top right corner of your browser after installing our extension on">
+                                    <fragment content="Scan the QR code that appears in the top right corner of your browser after installing the extension on">
                                         <attributes>
                                             <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="14" name="Montserrat-Medium"/>
@@ -2654,7 +2654,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IIw-lp-IRe" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ZGm-6e-iFv" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5914" y="-907"/>
+            <point key="canvasLocation" x="5895" y="-940"/>
         </scene>
     </scenes>
     <resources>
