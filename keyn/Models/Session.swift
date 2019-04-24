@@ -260,7 +260,7 @@ class Session: Codable {
             let group = DispatchGroup()
             var groupError: Error?
             group.enter()
-            try session.createQueues(signingKeyPair: signingKeyPair) { error in
+            try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { error in
                 if groupError == nil {
                     groupError = error
                 }
@@ -296,19 +296,41 @@ class Session: Codable {
 
     // MARK: - Private
 
-    private func createQueues(signingKeyPair: KeyPair, completion: @escaping (_ error: Error?) -> Void) throws {
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
         guard let deviceEndpoint = BackupManager.shared.endpoint else {
             throw SessionError.noEndpoint
         }
 
-        // The creation of volatile and persistent queues as well as the pushmessage endpoint is one atomic operation.
-        createQueuesAtAWS(keyPair: signingKeyPair, deviceEndpoint: deviceEndpoint) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
-                completion(error)
-            } else {
-                completion(nil)
+        var message: [String: Any] = [
+            "httpMethod": APIMethod.put.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
+            "pubkey": keyPair.pubKey.base64,
+            "deviceEndpoint": deviceEndpoint
+        ]
+
+        do {
+            let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
+                let accountData = try JSONEncoder().encode(account)
+                return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
+            message["accountList"] = encryptedAccounts
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
+
+            let parameters = [
+                "s": try Crypto.shared.convertToBase64(from: signature)
+            ]
+
+            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, body: jsonData) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
+                    completion(error)
+                } else {
+                    completion(nil)
+                }
+            }
+        } catch {
+            completion(error)
         }
     }
 
@@ -379,33 +401,6 @@ class Session: Codable {
             ]
 
             API.shared.request(endpoint: endpoint, path: pubKey ?? signingPubKey, parameters: parameters, method: method, completionHandler: completionHandler)
-        } catch {
-            completionHandler(nil, error)
-        }
-    }
-
-    private func createQueuesAtAWS(keyPair: KeyPair, deviceEndpoint: String, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
-        var message: [String: Any] = [
-            "httpMethod": APIMethod.put.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "pubkey": keyPair.pubKey.base64,
-            "deviceEndpoint": deviceEndpoint
-        ]
-
-        do {
-            let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
-                let accountData = try JSONEncoder().encode(account)
-                return try Crypto.shared.encrypt(accountData, key: sharedKey()).base64
-            }
-            message["accountList"] = encryptedAccounts
-            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
-
-            let parameters = [
-                "s": try Crypto.shared.convertToBase64(from: signature)
-            ]
-
-            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, body: jsonData, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
