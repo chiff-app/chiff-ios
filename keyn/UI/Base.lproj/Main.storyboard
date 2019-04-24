@@ -10,9 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="IBMPlexMono-Regular.ttf">
-            <string>IBMPlexMono</string>
-        </array>
         <array key="Montserrat-Bold.ttf">
             <string>Montserrat-Bold</string>
         </array>
@@ -911,7 +908,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="tuW-C2-0ha">
                         <barButtonItem key="backBarButtonItem" title=" " id="3l8-lS-VvP"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="5Qj-vF-SBC"/>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="5Qj-vF-SBC"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -989,35 +986,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-jC-4eY">
-                                                    <rect key="frame" x="16" y="8" width="315" height="27.5"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Paper backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afT-jz-a0z">
-                                                            <rect key="frame" x="0.0" y="0.0" width="297" height="27.5"/>
-                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                            <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2nL-eC-bgn">
-                                                            <rect key="frame" x="297" y="0.0" width="18" height="27.5"/>
-                                                        </imageView>
-                                                    </subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Paper backup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afT-jz-a0z">
+                                                    <rect key="frame" x="16" y="0.0" width="285" height="43.5"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2nL-eC-bgn">
+                                                    <rect key="frame" x="301" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="trailing" secondItem="2nL-eC-bgn" secondAttribute="trailing" id="3Zq-GI-pUT"/>
-                                                        <constraint firstItem="afT-jz-a0z" firstAttribute="top" secondItem="DfA-jC-4eY" secondAttribute="top" id="B1Y-1Z-J86"/>
-                                                        <constraint firstAttribute="bottom" secondItem="2nL-eC-bgn" secondAttribute="bottom" id="MS7-Qn-egD"/>
-                                                        <constraint firstItem="2nL-eC-bgn" firstAttribute="leading" secondItem="afT-jz-a0z" secondAttribute="trailing" id="W8a-mR-oni"/>
-                                                        <constraint firstItem="afT-jz-a0z" firstAttribute="leading" secondItem="DfA-jC-4eY" secondAttribute="leading" id="Y56-XS-bS8"/>
-                                                        <constraint firstAttribute="bottom" secondItem="afT-jz-a0z" secondAttribute="bottom" id="YaE-QT-muj"/>
-                                                        <constraint firstItem="2nL-eC-bgn" firstAttribute="top" secondItem="DfA-jC-4eY" secondAttribute="top" id="lNG-YP-iYy"/>
+                                                        <constraint firstAttribute="width" constant="40" id="8wo-In-h4M"/>
                                                     </constraints>
-                                                </stackView>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="DfA-jC-4eY" firstAttribute="top" secondItem="VeV-CE-y5A" secondAttribute="top" constant="8" id="3DY-f9-YhI"/>
-                                                <constraint firstAttribute="trailing" secondItem="DfA-jC-4eY" secondAttribute="trailing" constant="10" id="6Na-US-aKy"/>
-                                                <constraint firstItem="DfA-jC-4eY" firstAttribute="leading" secondItem="VeV-CE-y5A" secondAttribute="leading" constant="16" id="6RD-eu-gqW"/>
-                                                <constraint firstAttribute="bottom" secondItem="DfA-jC-4eY" secondAttribute="bottom" constant="8" id="FYh-EZ-TPa"/>
+                                                <constraint firstItem="2nL-eC-bgn" firstAttribute="leading" secondItem="afT-jz-a0z" secondAttribute="trailing" id="INh-Ne-klr"/>
+                                                <constraint firstItem="afT-jz-a0z" firstAttribute="top" secondItem="VeV-CE-y5A" secondAttribute="top" id="QM5-6O-m8P"/>
+                                                <constraint firstItem="afT-jz-a0z" firstAttribute="leading" secondItem="VeV-CE-y5A" secondAttribute="leadingMargin" id="YuU-H0-GsR"/>
+                                                <constraint firstAttribute="bottom" secondItem="afT-jz-a0z" secondAttribute="bottom" id="Zo0-PA-Od4"/>
+                                                <constraint firstAttribute="trailing" secondItem="2nL-eC-bgn" secondAttribute="trailing" id="kGk-DF-eWp"/>
+                                                <constraint firstItem="2nL-eC-bgn" firstAttribute="top" secondItem="VeV-CE-y5A" secondAttribute="top" id="n3Y-R0-gId"/>
+                                                <constraint firstAttribute="bottom" secondItem="2nL-eC-bgn" secondAttribute="bottom" id="pqT-DG-xgg"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1058,9 +1047,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZ7-fv-mHs">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="Delete data">
                                                         <color key="titleColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
@@ -1070,8 +1058,8 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="qZ7-fv-mHs" firstAttribute="leading" secondItem="RiC-Jl-bgn" secondAttribute="leading" id="Iza-LM-diQ"/>
-                                                <constraint firstAttribute="trailing" secondItem="qZ7-fv-mHs" secondAttribute="trailing" id="WOq-q6-f3j"/>
+                                                <constraint firstItem="qZ7-fv-mHs" firstAttribute="leading" secondItem="RiC-Jl-bgn" secondAttribute="leadingMargin" id="Iza-LM-diQ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="qZ7-fv-mHs" secondAttribute="trailing" id="WOq-q6-f3j"/>
                                                 <constraint firstItem="qZ7-fv-mHs" firstAttribute="top" secondItem="RiC-Jl-bgn" secondAttribute="top" id="bd8-Ln-4PG"/>
                                                 <constraint firstAttribute="bottom" secondItem="qZ7-fv-mHs" secondAttribute="bottom" id="boG-mZ-zvN"/>
                                             </constraints>
@@ -1205,25 +1193,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="mTN-zR-iAo">
-                            <rect key="frame" x="0.0" y="249" width="375" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Niw-uM-jIv">
-                                    <rect key="frame" x="16" y="0.0" width="343" height="0.0"/>
-                                    <fontDescription key="fontDescription" name="IBMPlexMono" family="IBM Plex Mono" pointSize="14"/>
-                                    <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="Niw-uM-jIv" firstAttribute="leading" secondItem="mTN-zR-iAo" secondAttribute="leading" constant="16" id="6Wv-ae-lrv"/>
-                                <constraint firstItem="Niw-uM-jIv" firstAttribute="top" secondItem="mTN-zR-iAo" secondAttribute="top" id="K4E-Re-Dbs"/>
-                                <constraint firstAttribute="bottom" secondItem="Niw-uM-jIv" secondAttribute="bottom" id="NOv-fJ-QmM"/>
-                                <constraint firstAttribute="trailing" secondItem="Niw-uM-jIv" secondAttribute="trailing" constant="16" id="QcQ-fT-l6O"/>
-                            </constraints>
-                        </view>
                         <sections>
                             <tableViewSection headerTitle="secret" footerTitle="The secret that was shared by the website." id="NAo-Uf-bOY">
                                 <cells>
@@ -1305,7 +1274,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="errorLabel" destination="Niw-uM-jIv" id="Ld5-e0-vuW"/>
                         <outlet property="keyTextField" destination="tC1-Hz-I18" id="JKw-DO-byq"/>
                         <outlet property="timeBasedSwitch" destination="thy-vQ-hOn" id="Ua3-zO-NPb"/>
                         <segue destination="dnO-in-GRP" kind="unwind" identifier="UnwindFromManualOTP" unwindAction="unwindToAccountViewControllerWithSender:" id="kh1-Kj-4ti"/>
@@ -1378,14 +1346,14 @@
             <objects>
                 <viewController storyboardIdentifier="PairingExplanation" id="bOR-h2-vHE" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ymd-Nf-x3y">
-                        <rect key="frame" x="0.0" y="0.0" width="343" height="256"/>
+                        <rect key="frame" x="0.0" y="0.0" width="343" height="291"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kgl-qT-hsr">
-                                <rect key="frame" x="0.0" y="0.0" width="327" height="256"/>
+                                <rect key="frame" x="0.0" y="0.0" width="327" height="291"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ebT-JC-q6Y">
-                                        <rect key="frame" x="0.0" y="0.0" width="316" height="118"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="319.5" height="135.5"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8FY-tv-c3O" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
@@ -1403,10 +1371,10 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="okK-X1-Xxw">
-                                                <rect key="frame" x="38" y="0.0" width="278" height="118"/>
+                                                <rect key="frame" x="38" y="0.0" width="281.5" height="118"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opu-7h-rWq">
-                                                        <rect key="frame" x="0.0" y="0.0" width="278" height="44"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="281.5" height="44"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="Go to ">
                                                                 <attributes>
@@ -1433,13 +1401,144 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTq-b7-ziV">
-                                                        <rect key="frame" x="0.0" y="52" width="278" height="66"/>
+                                                        <rect key="frame" x="0.0" y="52" width="281.5" height="66"/>
                                                         <attributedString key="attributedText">
-                                                            <fragment content="To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.">
+                                                            <fragment content="To start using Keyn, you need to install Keyn in your browser. You do this by visiting ">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops>
+                                                                            <textTab alignment="left" location="28">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="56">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="84">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="112">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="140">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="168">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="196">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="224">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="252">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="280">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="308">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="336">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                        </tabStops>
+                                                                    </paragraphStyle>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content="keyn.app/go">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Bold"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops>
+                                                                            <textTab alignment="left" location="28">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="56">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="84">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="112">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="140">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="168">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="196">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="224">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="252">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="280">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="308">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="336">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                        </tabStops>
+                                                                    </paragraphStyle>
+                                                                </attributes>
+                                                            </fragment>
+                                                            <fragment content=" on your computer.">
+                                                                <attributes>
+                                                                    <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                    <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
+                                                                        <tabStops>
+                                                                            <textTab alignment="left" location="28">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="56">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="84">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="112">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="140">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="168">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="196">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="224">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="252">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="280">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="308">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                            <textTab alignment="left" location="336">
+                                                                                <options/>
+                                                                            </textTab>
+                                                                        </tabStops>
+                                                                    </paragraphStyle>
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
@@ -1450,7 +1549,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jgS-nQ-Uea">
-                                        <rect key="frame" x="0.0" y="138" width="310" height="118"/>
+                                        <rect key="frame" x="0.0" y="155.5" width="310" height="135.5"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URn-UY-1ll" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
@@ -1501,6 +1600,9 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="WZ5-X6-QCX"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1740,14 +1842,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEd-N5-4b3">
-                                        <rect key="frame" x="16" y="90" width="343" height="256"/>
+                                        <rect key="frame" x="16" y="90" width="343" height="291"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <segue destination="bOR-h2-vHE" kind="embed" id="nqp-SK-9dR"/>
                                         </connections>
                                     </containerView>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yz-CS-DB7" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="77.5" y="396" width="220" height="44"/>
+                                        <rect key="frame" x="77.5" y="406" width="220" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="220" id="GMg-4y-HUA"/>
@@ -1769,14 +1871,14 @@
                                 <constraints>
                                     <constraint firstItem="CEd-N5-4b3" firstAttribute="top" secondItem="TUs-d5-ogn" secondAttribute="bottom" constant="50" id="7PY-KK-W3x"/>
                                     <constraint firstAttribute="height" constant="450" id="Brd-hA-lSW"/>
-                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="CEd-N5-4b3" secondAttribute="bottom" constant="50" id="ECN-4J-c5n"/>
+                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="CEd-N5-4b3" secondAttribute="bottom" constant="25" id="ECN-4J-c5n"/>
                                     <constraint firstAttribute="trailing" secondItem="CEd-N5-4b3" secondAttribute="trailing" constant="16" id="KTo-uI-RcB"/>
                                     <constraint firstItem="TUs-d5-ogn" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="32" id="NOL-b1-bXC"/>
                                     <constraint firstItem="TUs-d5-ogn" firstAttribute="top" secondItem="3aq-4W-jNG" secondAttribute="top" constant="12" id="YlF-5A-cO0"/>
                                     <constraint firstAttribute="trailing" secondItem="TUs-d5-ogn" secondAttribute="trailing" constant="32" id="fBc-VL-ql6"/>
                                     <constraint firstItem="CEd-N5-4b3" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="16" id="goM-lN-MtH"/>
                                     <constraint firstItem="9Yz-CS-DB7" firstAttribute="centerX" secondItem="3aq-4W-jNG" secondAttribute="centerX" id="jjl-8i-BUX"/>
-                                    <constraint firstAttribute="bottom" secondItem="9Yz-CS-DB7" secondAttribute="bottom" constant="10" id="rCJ-Cc-j7A"/>
+                                    <constraint firstAttribute="bottom" secondItem="9Yz-CS-DB7" secondAttribute="bottom" id="rCJ-Cc-j7A"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1873,16 +1975,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="lIj-jV-k3b">
-                                <rect key="frame" x="20" y="149" width="335" height="429"/>
+                                <rect key="frame" x="20" y="157" width="335" height="384"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="mOD-6G-Agp">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="123"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_form" translatesAutoresizingMaskIntoConstraints="NO" id="l7c-bA-Mh1">
-                                                <rect key="frame" x="0.0" y="28" width="125" height="67"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="125" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Go to a website on your computer and login as you’d normally do." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUt-Vv-asn">
-                                                <rect key="frame" x="155" y="36" width="180" height="51.5"/>
+                                                <rect key="frame" x="155" y="28.5" width="180" height="51.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="180" id="1mE-BK-MR4"/>
                                                 </constraints>
@@ -1893,13 +1995,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Qdj-Eb-efL">
-                                        <rect key="frame" x="0.0" y="153" width="335" height="123"/>
+                                        <rect key="frame" x="0.0" y="138" width="335" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="DQ0-gF-aQZ">
-                                                <rect key="frame" x="0.0" y="28" width="125" height="67"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="125" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn will automatically ask you to save the password. This will securely send the password to this phone. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fil-0g-fNO">
-                                                <rect key="frame" x="155" y="19" width="180" height="85.5"/>
+                                                <rect key="frame" x="155" y="11.5" width="180" height="85.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -1907,13 +2009,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TGs-0c-M1t">
-                                        <rect key="frame" x="0.0" y="306" width="335" height="123"/>
+                                        <rect key="frame" x="0.0" y="276" width="335" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="ESE-BG-Ccx">
-                                                <rect key="frame" x="0.0" y="28" width="125" height="67"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="125" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn will store the password on your phone. Next time you want to login, you can use Keyn." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ML-a9-Tg7">
-                                                <rect key="frame" x="155" y="27.5" width="180" height="68.5"/>
+                                                <rect key="frame" x="155" y="20" width="180" height="68.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -1927,7 +2029,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R9O-0N-DlN">
-                                <rect key="frame" x="20" y="89" width="335" height="28"/>
+                                <rect key="frame" x="20" y="109" width="335" height="28"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Adding an account">
                                         <attributes>
@@ -1982,17 +2084,16 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="lIj-jV-k3b" secondAttribute="trailing" constant="20" id="4Dd-Nf-mgF"/>
                             <constraint firstItem="csT-mb-C3g" firstAttribute="trailing" secondItem="R9O-0N-DlN" secondAttribute="trailing" constant="20" id="6Hd-rz-iGi"/>
-                            <constraint firstItem="74p-yn-CGA" firstAttribute="top" relation="lessThanOrEqual" secondItem="lIj-jV-k3b" secondAttribute="bottom" constant="55" id="7CL-6k-c3Z"/>
                             <constraint firstItem="csT-mb-C3g" firstAttribute="bottom" secondItem="QTV-Mw-hof" secondAttribute="bottom" constant="18" id="8Si-iy-7sl"/>
                             <constraint firstItem="QTV-Mw-hof" firstAttribute="top" secondItem="74p-yn-CGA" secondAttribute="bottom" constant="7" id="Ayf-n7-Yb9"/>
                             <constraint firstItem="QTV-Mw-hof" firstAttribute="leading" secondItem="csT-mb-C3g" secondAttribute="leading" constant="22" id="EBn-b9-3xd"/>
-                            <constraint firstItem="lIj-jV-k3b" firstAttribute="top" relation="lessThanOrEqual" secondItem="R9O-0N-DlN" secondAttribute="bottom" constant="32" id="JHT-Ji-m12"/>
+                            <constraint firstItem="lIj-jV-k3b" firstAttribute="top" relation="lessThanOrEqual" secondItem="R9O-0N-DlN" secondAttribute="bottom" constant="20" id="JHT-Ji-m12"/>
                             <constraint firstItem="lIj-jV-k3b" firstAttribute="leading" secondItem="csT-mb-C3g" secondAttribute="leading" constant="20" id="M7G-zm-6yR"/>
                             <constraint firstItem="74p-yn-CGA" firstAttribute="trailing" secondItem="QTV-Mw-hof" secondAttribute="trailing" id="Mpb-8K-TEt"/>
-                            <constraint firstItem="R9O-0N-DlN" firstAttribute="top" secondItem="csT-mb-C3g" secondAttribute="top" constant="25" id="TyS-xG-Vkz"/>
+                            <constraint firstItem="R9O-0N-DlN" firstAttribute="top" secondItem="csT-mb-C3g" secondAttribute="top" constant="45" id="TyS-xG-Vkz"/>
                             <constraint firstItem="74p-yn-CGA" firstAttribute="leading" secondItem="QTV-Mw-hof" secondAttribute="leading" id="Ub7-y6-zbT"/>
                             <constraint firstAttribute="trailing" secondItem="QTV-Mw-hof" secondAttribute="trailing" constant="20" id="fYI-gU-yKd"/>
-                            <constraint firstItem="lIj-jV-k3b" firstAttribute="centerY" secondItem="KNv-vZ-4gz" secondAttribute="centerY" constant="30" id="fch-tG-YZv"/>
+                            <constraint firstItem="74p-yn-CGA" firstAttribute="top" secondItem="lIj-jV-k3b" secondAttribute="bottom" constant="40" id="hCt-yL-O9c"/>
                             <constraint firstItem="R9O-0N-DlN" firstAttribute="leading" secondItem="csT-mb-C3g" secondAttribute="leading" constant="20" id="o4Z-tU-ja0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="csT-mb-C3g"/>
@@ -2117,7 +2218,7 @@
                                 <rect key="frame" x="20" y="378" width="335" height="102.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="book_pen" translatesAutoresizingMaskIntoConstraints="NO" id="blZ-kF-xBC">
-                                        <rect key="frame" x="0.0" y="1.5" width="115" height="100"/>
+                                        <rect key="frame" x="0.0" y="9.5" width="115" height="83.5"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="acF-tx-ze9">
                                         <rect key="frame" x="130" y="0.0" width="205" height="102.5"/>
@@ -2153,6 +2254,7 @@
                             <constraint firstItem="urq-A1-3ev" firstAttribute="top" secondItem="lor-U0-AT1" secondAttribute="bottom" constant="30" id="EIV-F3-wAN"/>
                             <constraint firstItem="a4L-dd-zPx" firstAttribute="top" secondItem="urq-A1-3ev" secondAttribute="bottom" constant="36" id="EgZ-ey-gu8"/>
                             <constraint firstItem="a4L-dd-zPx" firstAttribute="centerX" secondItem="Rzu-ZE-ozG" secondAttribute="centerX" id="S4x-1q-iZv"/>
+                            <constraint firstItem="blZ-kF-xBC" firstAttribute="height" secondItem="fQR-vQ-uFF" secondAttribute="height" constant="15" id="VfP-xt-tal"/>
                             <constraint firstItem="acF-tx-ze9" firstAttribute="width" secondItem="vVP-N1-u9d" secondAttribute="width" id="VvQ-Cb-xvL"/>
                             <constraint firstItem="lor-U0-AT1" firstAttribute="leading" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="20" id="WNt-11-a4D"/>
                             <constraint firstAttribute="trailing" secondItem="urq-A1-3ev" secondAttribute="trailing" constant="20" id="Ydr-He-gcc"/>

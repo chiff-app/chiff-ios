@@ -4,7 +4,6 @@
  */
 import UIKit
 
-#warning("TODO: Make the feedback system prettier and more user friendly.")
 class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
 
     @IBOutlet weak var textView: UITextView!
@@ -32,7 +31,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         nameTextField.delegate = self
         textView.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        
+
         if let name = UserDefaults.standard.object(forKey: "name") as? String, !name.isEmpty {
             nameTextField.text = name
             sendButton.isEnabled = true
@@ -69,7 +68,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         }
     }
 
-    @objc func textFieldDidChange(textField: UITextField){
+    @objc private func textFieldDidChange(textField: UITextField){
         let name = textField.text ?? "anonymous"
         if !name.isEmpty {
             sendButton.isEnabled = true
