@@ -91,7 +91,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
             "loginError": loginReport.isOn,
             "changeError": changeReport.isOn,
             "addError": addReport.isOn,
-            "remarks": textView.text
+            "remarks": textView.text ?? ""
         ])
 
         dismiss(animated: true, completion: nil)
