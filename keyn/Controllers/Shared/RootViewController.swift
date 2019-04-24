@@ -87,7 +87,6 @@ class KeynTabBar: UITabBar {
         if gradientView == nil {
             let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
             gradientView = UIView(frame: frame)
-//            gradientView.backgroundColor = UIColor.red
             self.insertSubview(gradientView, at: 0)
         }
 
@@ -95,8 +94,6 @@ class KeynTabBar: UITabBar {
     }
 
     private func addBackgroundLayer() {
-//        let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
-//        gradientView = UIView(frame: frame)
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = gradientView.bounds
         var colors = [CGColor]()
@@ -105,6 +102,5 @@ class KeynTabBar: UITabBar {
         gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.6)]
         gradientLayer.colors = colors
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
-//        self.insertSubview(gradientView, at: 0)
     }
 }

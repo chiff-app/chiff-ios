@@ -15,6 +15,9 @@ errors:
   generic_error:
     value: An error occured.
     comment: A generic error description
+  api_error:
+    value: A network error occured
+    comment: An error thrown by the API
   no_push_notifications:
     value: |-
       Unfortunately, Keyn doesn't work without push notifications :(

@@ -95,11 +95,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return cell
     }
-
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
-    }
     
     // MARK: - Navigation
 
