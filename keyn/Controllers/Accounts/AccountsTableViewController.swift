@@ -167,8 +167,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     func addAccount(account: Account) {
         unfilteredAccounts.append(account)
-        filteredAccounts.append(account)
-        filteredAccounts.sort(by: { $0.site.name < $1.site.name })
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)

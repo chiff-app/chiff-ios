@@ -5,7 +5,7 @@ PODS:
     - CocoaAsyncSocket (~> 7.6.3)
     - SwiftyBeaver (~> 1.7.0)
   - MBProgressHUD (1.0.0)
-  - OneTimePassword (3.1.4):
+  - OneTimePassword (3.1.5):
     - Base32 (~> 1.1.2)
   - Sodium (0.8.0)
   - SwiftyBeaver (1.7.0)
@@ -31,10 +31,10 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   JustLog: 192079e8550c1a241ece39c6ce30fc90cd664999
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  OneTimePassword: 2fcf5d0e393a8e630a6bfeed1b250fb008aad487
+  OneTimePassword: 247500f67ab074f10501bb1c46bd1596c57bdb2a
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
 
-PODFILE CHECKSUM: 38b46df1d13f2bf627a6d0ea1de455f99b63511f
+PODFILE CHECKSUM: 21b461915a3a172617061dcac9f999a016347be0
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.6.1

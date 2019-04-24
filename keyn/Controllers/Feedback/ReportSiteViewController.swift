@@ -83,7 +83,6 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
     // MARK: - Actions
 
     @IBAction func send(_ sender: UIBarButtonItem) {
-
         Logger.shared.warning("Site reported.", userInfo: [
             "code": AnalyticsMessage.siteReported.rawValue,
             "siteID": account.site.id,
@@ -91,10 +90,33 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
             "loginError": loginReport.isOn,
             "changeError": changeReport.isOn,
             "addError": addReport.isOn,
-            "remarks": textView.text
+            "remarks": textView.text ?? ""
         ])
 
-        dismiss(animated: true, completion: nil)
+        let message = """
+        Hallo,
+
+        Er is iets mis de volgende website:
+
+        id:         \(account.site.id)
+        site:       \(account.site.name)
+        login werkt \(loginReport.isOn ? "niet" : "wel")
+        change werkt \(changeReport.isOn ? "niet" : "wel")
+        add werkt \(addReport.isOn ? "niet" : "wel")
+        toevingen:
+        \(textView.text ?? "")
+
+        Groetjes!
+        """
+        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Error posting feedback", error: error)
+            }
+            DispatchQueue.main.async {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {

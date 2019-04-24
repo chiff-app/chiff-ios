@@ -154,12 +154,12 @@ class AuthenticationGuard {
         LocalAuthenticationManager.shared.mainContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
-        let keynLogoView = UIImageView(image: UIImage(named: "logo"))
+        let keynLogoView = UIImageView(image: UIImage(named: "logo_white_big"))
         
         keynLogoView.frame = CGRect(x: 0, y: 289, width: 375, height: 88)
         keynLogoView.contentMode = .scaleAspectFit
         lockView.addSubview(keynLogoView)
-        lockView.backgroundColor = UIColor(rgb: 0x46319B)
+        lockView.backgroundColor = UIColor(rgb: 0x4722C3)
         lockView.tag = lockViewTag
         
         lockWindow.addSubview(lockView)
