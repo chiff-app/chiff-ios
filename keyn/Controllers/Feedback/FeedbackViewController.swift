@@ -141,15 +141,33 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         guard let userFeedback = textView.text else {
             return
         }
+        let message = """
+        Hallo met \(debugLogUser),
 
-        Logger.shared.analytics(userFeedback, code: .userFeedback, userInfo: [ "name": debugLogUser ])
+
+        Allereerst grote complimenten voor het ontwikkelen van deze fantastische app. Hulde! Ik kwam alleen het volgende tegen:
+
+        \(userFeedback)
+
         
-        self.nameTextField.text = ""
-        self.textView.text = "settings.feedback_submitted".localized
+        Groetjes,
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-            self.dismiss(animated: true, completion: nil)
-        })
+        \(debugLogUser)
+        """
+        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Error posting feedback", error: error)
+            } else {
+                DispatchQueue.main.async {
+                    self.nameTextField.text = ""
+                    self.textView.text = "settings.feedback_submitted".localized
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.dismiss(animated: true, completion: nil)
+            })
+        }
+
     }
 
 }
