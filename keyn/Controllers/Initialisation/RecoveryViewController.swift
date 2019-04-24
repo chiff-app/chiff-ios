@@ -52,7 +52,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
     }
@@ -118,6 +117,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - Actions
+    
+    @IBAction func back(_ sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     @IBAction func finish(_ sender: UIBarButtonItem) {
         view.endEditing(false)
