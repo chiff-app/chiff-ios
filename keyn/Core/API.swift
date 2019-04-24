@@ -113,6 +113,7 @@ class API {
 
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         if let body = body {
             request.httpBody = body
         }
