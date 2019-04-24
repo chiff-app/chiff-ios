@@ -132,6 +132,13 @@
 			<key>value</key>
 			<string>Error adding OTP token</string>
 		</dict>
+		<key>api_error</key>
+		<dict>
+			<key>comment</key>
+			<string>An error thrown by the API</string>
+			<key>value</key>
+			<string>A network error occured</string>
+		</dict>
 		<key>authentication_error</key>
 		<dict>
 			<key>comment</key>

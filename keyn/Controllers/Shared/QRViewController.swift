@@ -29,7 +29,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         do {
             try scanQR()
         } catch {
-            displayError(message: "errors.no_camera".localized)
+            showError(message: "errors.no_camera".localized)
             Logger.shared.warning("Camera not available.", error: error)
         }
     }
@@ -63,12 +63,13 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         switch error {
                         case SessionError.exists:
                             Logger.shared.debug("QR-code scanned twice.")
-                            displayError(message: "errors.qr_scanned_twice".localized)
+                            showError(message: "errors.qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)
-                            displayError(message: "errors.undecodable_qr".localized)
+                            showError(message: "errors.undecodable_qr".localized)
                         default:
-                            Logger.shared.error("Unhandled QR code error.", error: error)
+                            Logger.shared.error("Unhandled pairing error.", error: error)
+                            showError(message: "errors.generic_error".localized)
                         }
                         self.qrFound = false
                     }
@@ -79,17 +80,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         }
     }
 
-    func displayError(message: String) {
-        let errorLabel = UILabel(frame: CGRect(x: 0, y: 562, width: 375, height: 56))
-        errorLabel.backgroundColor = UIColor.white
-        errorLabel.textAlignment = .center
-        errorLabel.text = message
-        errorLabel.alpha = 0.85
-
-        view.addSubview(errorLabel)
-        view.bringSubviewToFront(errorLabel)
-
-        UIView.animate(withDuration: 3.0, delay: 1.0, options: [.curveLinear], animations: { errorLabel.alpha = 0.0 }, completion: { if $0 { errorLabel.removeFromSuperview() } })
+    func hideIcon() {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseOut], animations: { self.qrIconImageView.alpha = 0.0 })
     }
     
     func scanQR() throws {
