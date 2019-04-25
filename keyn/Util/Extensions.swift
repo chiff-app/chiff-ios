@@ -155,7 +155,6 @@ extension Notification.Name {
     static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
     static let sessionStarted = Notification.Name("SessionStarted")
     static let sessionEnded = Notification.Name("SessionEnded")
-    static let accountAdded = Notification.Name("AccountAdded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
 }

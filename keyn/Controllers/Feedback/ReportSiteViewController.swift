@@ -103,7 +103,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         login werkt \(loginReport.isOn ? "niet" : "wel")
         change werkt \(changeReport.isOn ? "niet" : "wel")
         add werkt \(addReport.isOn ? "niet" : "wel")
-        toevingen:
+        toevoegingen:
         \(textView.text ?? "")
 
         Groetjes!
