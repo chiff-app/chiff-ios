@@ -393,13 +393,13 @@ class Session: Codable {
         try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
     }
 
-    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
 
         do {
-            let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+            let privKey = try Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
 
@@ -408,7 +408,7 @@ class Session: Codable {
                 "s": try Crypto.shared.convertToBase64(from: signature)
             ]
 
-            API.shared.request(endpoint: endpoint, path: pubKey ?? signingPubKey, parameters: parameters, method: method, body: body, completionHandler: completionHandler)
+            API.shared.request(endpoint: endpoint, path: signingPubKey, parameters: parameters, method: method, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
