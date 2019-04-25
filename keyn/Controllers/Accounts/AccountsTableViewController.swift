@@ -38,9 +38,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
 //        navigationItem.searchController = searchController
-        NotificationCenter.default.addObserver(forName: .accountAdded, object: nil, queue: OperationQueue.main, using: addAccount)
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
-        NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
 
         tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
     }
@@ -56,10 +54,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     private func loadAccounts(notification: Notification) {
-        guard self.unfilteredAccounts.isEmpty else {
-            self.updateUi()
-            return
-        }
         DispatchQueue.main.async {
             if let accounts = try? notification.userInfo as? [String: Account] ?? Account.all(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
@@ -141,7 +135,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             }
         }
     }
-    
+
     func updateAccount(notification: Notification) {
         guard let account = notification.userInfo?["account"] as? Account else {
             return
@@ -153,17 +147,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
 
-    func addAccount(notification: Notification) {
-        guard let accounts = notification.userInfo?["accounts"] as? [Account] else {
-            Logger.shared.warning("Account was nil when trying to add it to the view.")
-            return
-        }
-        DispatchQueue.main.async {
-            for account in accounts {
-                self.addAccount(account: account)
-            }
-        }
-    }
 
     func addAccount(account: Account) {
         unfilteredAccounts.append(account)

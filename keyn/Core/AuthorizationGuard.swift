@@ -128,7 +128,6 @@ class AuthorizationGuard {
                     try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                        NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account!])
                     }
                     completionHandler(nil)
                 } catch {
@@ -154,7 +153,6 @@ class AuthorizationGuard {
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                        NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": [account]])
                     }
                     completionHandler(nil)
                 } catch {
@@ -174,13 +172,12 @@ class AuthorizationGuard {
                     throw error
                 }
                 #warning("TODO: Fetch PPD for each site")
-                let accounts = try self.accounts.map({ (bulkAccount: BulkAccount) -> Account in
+                for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
-                    return try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
-                })
+                    let _ = try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
+                }
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                    NotificationCenter.default.post(name: .accountAdded, object: nil, userInfo: ["accounts": accounts])
                 }
                 completionHandler(nil)
             } catch {
