@@ -125,8 +125,16 @@ class Crypto {
     }
     
     // MARK: - Signing functions
-    
+
     func sign(message: Data, privKey: Data) throws -> Data {
+        guard let signedMessage = sodium.sign.sign(message: message.bytes, secretKey: privKey.bytes) else {
+            throw CryptoError.signing
+        }
+
+        return signedMessage.data
+    }
+    
+    func signature(message: Data, privKey: Data) throws -> Data {
         guard let signature = sodium.sign.signature(message: message.bytes, secretKey: privKey.bytes) else {
             throw CryptoError.signing
         }
