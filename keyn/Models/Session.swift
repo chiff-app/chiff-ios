@@ -184,6 +184,14 @@ class Session: Codable {
         }
     }
 
+    func deleteAccount(accountId: String) {
+        apiRequest(endpoint: .accounts, method: .delete, message: ["id": accountId]) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
+            }
+        }
+    }
+
     // MARK: - Static
 
     static func all() throws -> [Session] {
