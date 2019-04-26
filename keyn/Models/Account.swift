@@ -208,7 +208,7 @@ struct Account: Codable {
                     throw error
                 }
                 try BackupManager.shared.deleteAccount(accountId: self.id)
-                try Session.all().forEach({ try $0.updateAccountList(account: self) })
+                try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
                 Account.deleteFromToIdentityStore(account: self)
                 Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: ["siteName": self.site.name, "siteID": self.site.id])
                 completionHandler(nil)

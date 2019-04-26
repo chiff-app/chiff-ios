@@ -184,6 +184,14 @@ class Session: Codable {
         }
     }
 
+    func deleteAccount(accountId: String) {
+        apiRequest(endpoint: .accounts, method: .delete, message: ["id": accountId]) { (_, error) in
+            if let error = error {
+                Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
+            }
+        }
+    }
+
     // MARK: - Static
 
     static func all() throws -> [Session] {
@@ -315,7 +323,7 @@ class Session: Codable {
             }
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.sign(message: jsonData, privKey: keyPair.privKey)
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey)
 
             let parameters = [
                 "s": try Crypto.shared.convertToBase64(from: signature)
@@ -335,15 +343,15 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, userID: Properties.userID(), environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userID(), environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
-        let ciphertextBase64 = try Crypto.shared.convertToBase64(from: ciphertext)
-
+        let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
         let message = [
-            "data": ciphertextBase64
+            "data": signedCiphertext.base64
         ]
-        apiRequest(endpoint: .pairing, method: .post, message: message, privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64) { (_, error) in
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        apiRequest(endpoint: .pairing, method: .post, privKey: pairingKeyPair.privKey, pubKey: pairingKeyPair.pubKey.base64, body: jsonData) { (_, error) in
             if let error = error {
                 Logger.shared.error("Error sending pairing response.", error: error)
                 completion(error)
@@ -385,7 +393,7 @@ class Session: Codable {
         try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
     }
 
-    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, privKey: Data? = nil, pubKey: String? = nil, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
@@ -393,14 +401,14 @@ class Session: Codable {
         do {
             let privKey = try privKey ?? Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.sign(message: jsonData, privKey: privKey)
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
 
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData),
                 "s": try Crypto.shared.convertToBase64(from: signature)
             ]
 
-            API.shared.request(endpoint: endpoint, path: pubKey ?? signingPubKey, parameters: parameters, method: method, completionHandler: completionHandler)
+            API.shared.request(endpoint: endpoint, path: pubKey ?? signingPubKey, parameters: parameters, method: method, body: body, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
@@ -415,7 +423,7 @@ class Session: Codable {
 
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.sign(message: jsonData, privKey: Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey))
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey))
 
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData),

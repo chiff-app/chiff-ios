@@ -931,7 +931,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
@@ -1407,138 +1407,21 @@
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                                        <tabStops>
-                                                                            <textTab alignment="left" location="28">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="56">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="84">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="112">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="140">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="168">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="196">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="224">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="252">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="280">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="308">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="336">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                        </tabStops>
-                                                                    </paragraphStyle>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content="keyn.app/go">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Bold"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                                        <tabStops>
-                                                                            <textTab alignment="left" location="28">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="56">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="84">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="112">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="140">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="168">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="196">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="224">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="252">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="280">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="308">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="336">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                        </tabStops>
-                                                                    </paragraphStyle>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
                                                             <fragment content=" on your computer.">
                                                                 <attributes>
                                                                     <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                     <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO">
-                                                                        <tabStops>
-                                                                            <textTab alignment="left" location="28">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="56">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="84">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="112">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="140">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="168">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="196">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="224">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="252">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="280">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="308">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                            <textTab alignment="left" location="336">
-                                                                                <options/>
-                                                                            </textTab>
-                                                                        </tabStops>
-                                                                    </paragraphStyle>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="10" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                                                 </attributes>
                                                             </fragment>
                                                         </attributedString>
@@ -1881,14 +1764,68 @@
                                     <constraint firstAttribute="bottom" secondItem="9Yz-CS-DB7" secondAttribute="bottom" id="rCJ-Cc-j7A"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="paY-RM-ytU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We don't want to push you..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OPH-6s-Zfx">
+                                        <rect key="frame" x="30" y="134.5" width="315" height="54"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                        <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M6E-B5-ZLy">
+                                        <rect key="frame" x="30" y="223.5" width="315" height="137"/>
+                                        <string key="text">But you can only use Keyn to log in to other devices if  you enable push notifications.
+
+You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notifications.  Choose 'Allow Notifications' under 'Notifications'.</string>
+                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                        <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ogi-NG-Nkr" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="77.5" y="395.5" width="220" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="220" id="4sd-Hg-g9x"/>
+                                            <constraint firstAttribute="height" constant="44" id="Qqi-17-3Io"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Open settings">
+                                            <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="howToAddAnAccount:" destination="yEQ-dB-DTP" eventType="touchUpInside" id="y1H-my-zyo"/>
+                                            <action selector="openSettings:" destination="dlt-f0-1c5" eventType="touchUpInside" id="oFQ-PY-kQp"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Ogi-NG-Nkr" firstAttribute="centerX" secondItem="paY-RM-ytU" secondAttribute="centerX" id="53w-F1-lDR"/>
+                                    <constraint firstItem="M6E-B5-ZLy" firstAttribute="leading" secondItem="paY-RM-ytU" secondAttribute="leading" constant="30" id="8S1-rL-yL0"/>
+                                    <constraint firstItem="M6E-B5-ZLy" firstAttribute="top" secondItem="OPH-6s-Zfx" secondAttribute="bottom" constant="35" id="C0f-Uj-ev1"/>
+                                    <constraint firstAttribute="trailing" secondItem="OPH-6s-Zfx" secondAttribute="trailing" constant="30" id="MiH-4f-tv5"/>
+                                    <constraint firstItem="M6E-B5-ZLy" firstAttribute="centerY" secondItem="paY-RM-ytU" secondAttribute="centerY" constant="15" id="NWC-ng-SPS"/>
+                                    <constraint firstAttribute="trailing" secondItem="M6E-B5-ZLy" secondAttribute="trailing" constant="30" id="r1A-n4-fii"/>
+                                    <constraint firstItem="OPH-6s-Zfx" firstAttribute="leading" secondItem="paY-RM-ytU" secondAttribute="leading" constant="30" id="sW4-zw-62h"/>
+                                    <constraint firstItem="Ogi-NG-Nkr" firstAttribute="top" secondItem="M6E-B5-ZLy" secondAttribute="bottom" constant="35" id="yGA-1e-wkY"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="paY-RM-ytU" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="3Vs-mE-67b"/>
                             <constraint firstAttribute="bottom" secondItem="ppS-qu-IpB" secondAttribute="bottom" constant="80" id="Dfc-V1-DWb"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="top" secondItem="dyP-1C-yZa" secondAttribute="top" id="JC7-Me-gbc"/>
+                            <constraint firstItem="GuM-HI-Y53" firstAttribute="bottom" secondItem="paY-RM-ytU" secondAttribute="bottom" id="KVU-dB-f1P"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="trailing" secondItem="dyP-1C-yZa" secondAttribute="trailing" id="MIn-s1-pnD"/>
+                            <constraint firstItem="GuM-HI-Y53" firstAttribute="trailing" secondItem="paY-RM-ytU" secondAttribute="trailing" id="Y7A-Xp-9Fz"/>
                             <constraint firstItem="ppS-qu-IpB" firstAttribute="leading" secondItem="dyP-1C-yZa" secondAttribute="leading" id="dqp-Nz-uf8"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="centerY" secondItem="dyP-1C-yZa" secondAttribute="centerY" id="eX8-3p-iSe"/>
+                            <constraint firstItem="paY-RM-ytU" firstAttribute="top" secondItem="GuM-HI-Y53" secondAttribute="top" id="fE9-eP-QR5"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="trailing" secondItem="GuM-HI-Y53" secondAttribute="trailing" id="fZQ-A7-4uv"/>
                             <constraint firstItem="3aq-4W-jNG" firstAttribute="leading" secondItem="GuM-HI-Y53" secondAttribute="leading" id="uRx-8n-wWb"/>
                         </constraints>
@@ -1897,6 +1834,7 @@
                     <navigationItem key="navigationItem" id="ZXd-Ls-skB"/>
                     <connections>
                         <outlet property="addSessionContainer" destination="3aq-4W-jNG" id="xVo-aG-QsH"/>
+                        <outlet property="pushNotificationWarning" destination="paY-RM-ytU" id="BL5-SE-o4c"/>
                         <outlet property="scrollView" destination="ppS-qu-IpB" id="g3d-V8-xsr"/>
                         <outlet property="tableView" destination="MeN-TK-t2q" id="HZO-sr-Ujn"/>
                         <outlet property="tableViewContainer" destination="WbX-9s-csq" id="Etu-kf-RoQ"/>
@@ -1904,12 +1842,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5c-yf-3wV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1406" y="0.0"/>
+            <point key="canvasLocation" x="1405.5999999999999" y="-0.44977511244377816"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Account Help View Controller-->
         <scene sceneID="YdY-31-OCf">
             <objects>
-                <viewController id="yEQ-dB-DTP" sceneMemberID="viewController">
+                <viewController id="yEQ-dB-DTP" customClass="AddAccountHelpViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hxD-DE-Aqf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="410"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1929,7 +1867,7 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="R8G-2M-pGS" kind="presentation" modalPresentationStyle="fullScreen" id="Jch-eR-9JW"/>
+                                    <action selector="howToAddAnAccount:" destination="yEQ-dB-DTP" eventType="touchUpInside" id="JVa-q0-gl7"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="yql-ng-dDJ">
@@ -1961,6 +1899,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Jx5-KB-eKG"/>
                     </view>
+                    <connections>
+                        <outlet property="howToAddAnAccountButton" destination="szR-bg-VMn" id="hU7-GD-hdN"/>
+                        <segue destination="R8G-2M-pGS" kind="presentation" identifier="AddAccountHelp" id="gWj-Ly-f4i"/>
+                        <segue destination="QBn-BQ-Jis" kind="presentation" identifier="AddAccount" id="RlN-hs-OcW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nvq-dx-u14" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2109,7 +2052,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fl6-5s-YLu" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="HpW-ZF-vW5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3145" y="-1793"/>
+            <point key="canvasLocation" x="3029.5999999999999" y="-1793.2533733133434"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="Glk-z8-IBA">
@@ -2783,6 +2726,7 @@
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="RlN-hs-OcW"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>
 </document>

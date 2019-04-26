@@ -190,7 +190,7 @@ struct BackupManager {
 
 
     private func signMessage(message: Data) throws -> String {
-        let signature = try Crypto.shared.sign(message: message, privKey: try privateKey())
+        let signature = try Crypto.shared.signature(message: message, privKey: try privateKey())
         let base64Signature = try Crypto.shared.convertToBase64(from: signature)
 
         return base64Signature
@@ -231,7 +231,7 @@ struct BackupManager {
         do {
             let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.sign(message: jsonData, privKey: privKey)
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
 
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData),

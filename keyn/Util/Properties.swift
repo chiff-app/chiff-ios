@@ -13,6 +13,8 @@ struct Properties {
         case beta = "beta"
         case prod = "v1"
     }
+
+    static var deniedPushNotifications = false
     
     static let isDebug: Bool = {
         var debug = false
