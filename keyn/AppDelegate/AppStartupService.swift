@@ -61,13 +61,25 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        if deniedPushNotifications {
-            exit(0)
-        } else {
-            let center = UNUserNotificationCenter.current()
-            center.removeAllDeliveredNotifications()
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            if settings.authorizationStatus == .denied {
+                if !Properties.deniedPushNotifications {
+                    Properties.deniedPushNotifications = true
+                    NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
+                }
+            } else if settings.authorizationStatus == .authorized {
+                if Properties.deniedPushNotifications {
+                    Properties.deniedPushNotifications = false
+                    NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
+                }
+            }
         }
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
     }
 
     func registerForPushNotifications(completionHandler: @escaping (_ result: Bool) -> Void) {
@@ -92,13 +104,13 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn])
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             DispatchQueue.main.async {
+                Properties.deniedPushNotifications = !granted
                 if granted {
                     UIApplication.shared.registerForRemoteNotifications()
                     completionHandler(true)
                 } else {
                     Logger.shared.warning("User denied remote notifications.")
                     self.deniedPushNotifications = true
-                    self.launchErrorView("errors.no_push_notifications".localized)
                     completionHandler(false)
                 }
             }
@@ -119,14 +131,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             registerForPushNotifications { result in
-                if result {
-                    guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-                        Logger.shared.error("Unexpected root view controller type")
-                        fatalError("Unexpected root view controller type")
-                    }
-                    self.window?.rootViewController = vc
-                    self.window?.makeKeyAndVisible()
+                guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+                    Logger.shared.error("Unexpected root view controller type")
+                    fatalError("Unexpected root view controller type")
                 }
+                self.window?.rootViewController = vc
+                self.window?.makeKeyAndVisible()
             }
         } else {
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
