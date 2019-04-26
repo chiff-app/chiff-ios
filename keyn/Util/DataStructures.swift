@@ -143,6 +143,7 @@ struct KeynPersistentQueueMessage: Codable {
 struct KeynPairingResponse: Codable {
     let sessionID: String
     let pubKey: String
+    let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
     let userID: String
     let environment: String
     let accounts: AccountList

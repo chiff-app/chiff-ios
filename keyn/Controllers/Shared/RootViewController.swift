@@ -10,6 +10,7 @@ class RootViewController: UITabBarController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
         setBadge(completed: Seed.paperBackupCompleted)
+        selectedIndex = Properties.deniedPushNotifications ? 1 : 0
     }
 
     func setBadge(completed: Bool) {

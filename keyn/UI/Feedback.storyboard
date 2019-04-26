@@ -435,7 +435,7 @@ Thank you!</string>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upc-ee-AFa">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGT-bz-Ij4">
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGT-bz-Ij4">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="603"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What didn't work?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-n3-5Bb">
@@ -508,7 +508,7 @@ Thank you!</string>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="bYa-ob-W6u" firstAttribute="top" secondItem="4rd-kh-kR9" secondAttribute="bottom" constant="70" id="0Ch-fL-Rd0"/>
                                             <constraint firstAttribute="trailing" secondItem="pGp-n3-5Bb" secondAttribute="trailing" constant="20" id="0bs-fX-Ino"/>
@@ -535,7 +535,7 @@ Thank you!</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UGT-bz-Ij4" firstAttribute="width" secondItem="PyX-nu-NCe" secondAttribute="width" id="9Y7-6x-JIr"/>
                             <constraint firstItem="kz8-Jl-FFj" firstAttribute="bottom" secondItem="upc-ee-AFa" secondAttribute="bottom" id="THM-fA-ger"/>

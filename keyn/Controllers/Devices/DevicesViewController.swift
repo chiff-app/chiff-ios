@@ -10,6 +10,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: SelfSizingTableView!
     @IBOutlet weak var addSessionContainer: UIView!
     @IBOutlet weak var tableViewContainer: UIView!
+    @IBOutlet weak var pushNotificationWarning: UIView!
 
     var sessions = [Session]()
 
@@ -19,6 +20,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let nc = NotificationCenter.default
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
+        nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (notification) in
+            DispatchQueue.main.async {
+                self.updateUi()
+            }
+        }
 
         scrollView.delegate = self
         tableView.dataSource = self
@@ -116,6 +122,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+    @IBAction func openSettings(_ sender: UIButton) {
+        if let url = URL.init(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+
     // MARK: - PairControllerDelegate
 
     func sessionCreated(session: Session) {
@@ -129,6 +141,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Private functions
 
     private func updateUi() {
+        guard !Properties.deniedPushNotifications else {
+            pushNotificationWarning.isHidden = false
+            navigationItem.rightBarButtonItem = nil
+            return
+        }
+        pushNotificationWarning.isHidden = true
         if !sessions.isEmpty {
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false

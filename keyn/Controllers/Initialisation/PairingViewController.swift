@@ -19,15 +19,6 @@ class PairingViewController: UIViewController, PairControllerDelegate {
 
     // MARK: - Private functions
 
-    private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
-        do {
-            try Seed.create()
-        } catch {
-            completionHandler(error)
-        }
-        BackupManager.shared.initialize(completionHandler: completionHandler)
-    }
-
     private func showRootController() {
         guard let window = UIApplication.shared.keyWindow else {
             return
