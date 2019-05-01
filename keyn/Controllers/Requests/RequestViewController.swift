@@ -14,6 +14,7 @@ class RequestViewController: UIViewController {
 
     var authorizationGuard: AuthorizationGuard!
 
+    private var authorized = false
     private var accounts = [Account]()
 
     override func viewDidLoad() {
@@ -81,6 +82,7 @@ class RequestViewController: UIViewController {
         }
         self.successView.alpha = 0.0
         self.successView.isHidden = false
+        self.authorized = true
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.dismiss(animated: true, completion: nil)
@@ -95,10 +97,16 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func close(_ sender: UIButton) {
-        authorizationGuard.rejectRequest() {
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
+        if !authorized {
+            authorizationGuard.rejectRequest() {
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
+        } else {
+            self.dismiss(animated: true, completion: nil)
         }
+
     }
+
 }

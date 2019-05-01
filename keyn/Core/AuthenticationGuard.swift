@@ -91,16 +91,22 @@ class AuthenticationGuard {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()
                 }
+            } catch let error as DecodingError {
+                DispatchQueue.main.async {
+                    (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
+                }
             } catch {
                 if let errorMessage = self.handleError(error: error) {
-                    self.showError(errorMessage: errorMessage)
+                    DispatchQueue.main.async {
+                        (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
+                    }
                 }
-                return
             }
         }
     }
 
     func handleError(error: Error) -> String? {
+
         switch error {
         case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel:
             Logger.shared.debug("Authentication was cancelled")
@@ -178,12 +184,6 @@ class AuthenticationGuard {
         }
         lockWindow.makeKeyAndVisible()
         lockWindowIsHidden = false
-    }
-
-    private func showError(errorMessage: String) {
-        DispatchQueue.main.async {
-            UIApplication.shared.visibleViewController?.showError(message: errorMessage)
-        }
     }
 
 }
