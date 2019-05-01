@@ -36,6 +36,11 @@ Start patch version
 fastlane ios start_major_release
 ```
 Start major version
+### ios start_hotfix
+```
+fastlane ios start_hotfix
+```
+Start hotfix version
 ### ios beta_release
 ```
 fastlane ios beta_release
