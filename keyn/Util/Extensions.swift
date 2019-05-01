@@ -245,7 +245,7 @@ extension UIApplication {
         }
         
         if let navigationController = rootViewController as? UINavigationController {
-            return navigationController.visibleViewController
+            return navigationController.contents
         }
         
         if let tabBarController = rootViewController as? UITabBarController {

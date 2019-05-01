@@ -146,6 +146,11 @@
 			<key>value</key>
 			<string>Authentication error</string>
 		</dict>
+		<key>corrupted_data</key>
+		<dict>
+			<key>value</key>
+			<string>Unreadable data error</string>
+		</dict>
 		<key>delete_url</key>
 		<dict>
 			<key>comment</key>
@@ -331,6 +336,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<string>Ask the user to delete the account</string>
 				<key>value</key>
 				<string>Delete account?</string>
+			</dict>
+			<key>delete_corrupted</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn couldn't read the data from the Keychain. Perhaps it's in an old format. You can probably fix this by deleting all data. Do you want to do this?</string>
 			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
