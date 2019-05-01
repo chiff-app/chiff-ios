@@ -340,7 +340,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>delete_corrupted</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn couldn't read the data from the Keychain. Perhaps it's in an old format. You can probably fix this by deleting all data. Do you want to do this?</string>
+				<string>Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.</string>
 			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
