@@ -62,8 +62,7 @@ struct Account: Codable {
             tokenURL = try token.toURL()
         }
 
-        let accountData = try JSONEncoder().encode(self)
-        try BackupManager.shared.backup(id: id, accountData: accountData)
+        try BackupManager.shared.backup(account: self)
     }
 
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
@@ -324,7 +323,7 @@ struct Account: Codable {
     private func save(password: String, context: LAContext?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData, label: nil)
-        try BackupManager.shared.backup(id: self.id, accountData: accountData)
+        try BackupManager.shared.backup(account: self)
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }

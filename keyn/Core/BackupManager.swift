@@ -68,11 +68,12 @@ struct BackupManager {
         }
     }
     
-    func backup(id: String, accountData: Data) throws {
+    func backup(account: Account) throws {
+        let accountData = try JSONEncoder().encode(account)
         let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
 
         let message = [
-            MessageIdentifier.id: id,
+            MessageIdentifier.id: account.id,
             MessageIdentifier.data: ciphertext.base64
         ]
         apiRequest(endpoint: .backup, method: .post, message: message) { (_, error) in
