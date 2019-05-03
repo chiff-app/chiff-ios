@@ -53,7 +53,6 @@ struct Properties {
 
         if (isFirstLaunch) {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
-            UserDefaults.standard.synchronize()
         }
 
         return isFirstLaunch
