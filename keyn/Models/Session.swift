@@ -302,6 +302,12 @@ class Session: Codable {
         }
     }
 
+    static func purgeSessionDataFromKeychain() {
+        Keychain.shared.deleteAll(service: .sharedSessionKey)
+        Keychain.shared.deleteAll(service: .signingSessionKey)
+    }
+
+
     // MARK: - Private
 
     private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
@@ -359,11 +365,6 @@ class Session: Codable {
                 completion(nil)
             }
         }
-    }
-
-    private static func purgeSessionDataFromKeychain() {
-        Keychain.shared.deleteAll(service: .sharedSessionKey)
-        Keychain.shared.deleteAll(service: .signingSessionKey)
     }
 
     private func sendToVolatileQueue(ciphertext: Data, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {

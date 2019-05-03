@@ -123,6 +123,13 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
         if Properties.isFirstLaunch() {
+            // Purge Keychain
+            Session.purgeSessionDataFromKeychain()
+            Account.deleteAll()
+            try? Seed.delete()
+            BackupManager.shared.deleteEndpoint()
+            BackupManager.shared.deleteAllKeys()
+
             Logger.shared.analytics("App was installed", code: .install)
             let _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
