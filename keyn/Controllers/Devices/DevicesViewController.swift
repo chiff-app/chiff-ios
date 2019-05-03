@@ -144,6 +144,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         guard !Properties.deniedPushNotifications else {
             pushNotificationWarning.isHidden = false
             navigationItem.rightBarButtonItem = nil
+            (tabBarController as! RootViewController).showGradient(false)
             return
         }
         pushNotificationWarning.isHidden = true
