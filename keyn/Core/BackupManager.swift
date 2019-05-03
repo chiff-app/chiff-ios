@@ -51,6 +51,7 @@ struct BackupManager {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
                 return
             }
+            deleteAllKeys()
             try createEncryptionKey()
             let pubKey = try createSigningKeypair()
 
