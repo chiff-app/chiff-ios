@@ -638,17 +638,17 @@
                                     <constraint firstAttribute="height" constant="52" id="BkA-II-g57"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Sqd-OW-esD">
-                                <rect key="frame" x="22" y="76" width="276" height="203"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Sqd-OW-esD">
+                                <rect key="frame" x="22" y="72" width="276" height="211"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uvv-ym-y52">
-                                        <rect key="frame" x="0.0" y="0.0" width="276" height="54.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="276" height="63.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="AiG-RV-ot6">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="41" height="63.5"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaK-8B-jSe">
-                                                <rect key="frame" x="71" y="6" width="205" height="42"/>
+                                                <rect key="frame" x="71" y="11" width="205" height="42"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="oVj-lu-3oJ"/>
                                                 </constraints>
@@ -666,16 +666,16 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-MO-mgq">
-                                        <rect key="frame" x="0.0" y="74.5" width="276" height="54"/>
+                                        <rect key="frame" x="0.0" y="73.5" width="276" height="64"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="YmP-xR-cl1">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="41" height="64"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="x0y-Uj-lCk"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-YB-fQe">
-                                                <rect key="frame" x="71" y="0.0" width="205" height="54"/>
+                                                <rect key="frame" x="71" y="0.5" width="205" height="63"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="You receive a notification on your phone that asks you to authorize the request.">
                                                         <attributes>
@@ -690,13 +690,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="9kU-iV-dCe">
-                                        <rect key="frame" x="0.0" y="148.5" width="276" height="54.5"/>
+                                        <rect key="frame" x="0.0" y="147.5" width="276" height="63.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="y3j-BT-tLP">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="41" height="63.5"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-0Q-aRX">
-                                                <rect key="frame" x="71" y="6.5" width="205" height="42"/>
+                                                <rect key="frame" x="71" y="10.5" width="205" height="42"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Keyn fills your credentials in the right fields.">
                                                         <attributes>
@@ -724,10 +724,10 @@
                             <constraint firstItem="Rtg-PY-R18" firstAttribute="top" secondItem="lAC-zJ-sxV" secondAttribute="top" id="AIi-Ag-iu7"/>
                             <constraint firstItem="qmH-qE-mgV" firstAttribute="height" secondItem="Rtg-PY-R18" secondAttribute="height" id="Cvj-PB-Rra"/>
                             <constraint firstAttribute="trailing" secondItem="qmH-qE-mgV" secondAttribute="trailing" id="GJK-Vb-9Iz"/>
-                            <constraint firstAttribute="bottom" secondItem="Sqd-OW-esD" secondAttribute="bottom" constant="24" id="Swg-Oi-KwX"/>
+                            <constraint firstAttribute="bottom" secondItem="Sqd-OW-esD" secondAttribute="bottom" constant="20" id="Swg-Oi-KwX"/>
                             <constraint firstItem="qmH-qE-mgV" firstAttribute="leading" secondItem="lAC-zJ-sxV" secondAttribute="leading" id="e3v-0N-vR9"/>
                             <constraint firstItem="Sqd-OW-esD" firstAttribute="leading" secondItem="lAC-zJ-sxV" secondAttribute="leading" constant="22" id="fn1-Hd-7Iw"/>
-                            <constraint firstItem="Sqd-OW-esD" firstAttribute="top" secondItem="Rtg-PY-R18" secondAttribute="bottom" constant="24" id="pfB-LX-IeX"/>
+                            <constraint firstItem="Sqd-OW-esD" firstAttribute="top" secondItem="Rtg-PY-R18" secondAttribute="bottom" constant="20" id="pfB-LX-IeX"/>
                             <constraint firstItem="Rtg-PY-R18" firstAttribute="leading" secondItem="lAC-zJ-sxV" secondAttribute="leading" id="rtq-KB-vEv"/>
                             <constraint firstAttribute="trailing" secondItem="Rtg-PY-R18" secondAttribute="trailing" id="wjB-lc-e47"/>
                         </constraints>
@@ -917,7 +917,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="RCu-aU-cDa"/>
                                     <constraint firstAttribute="width" constant="52" id="iW4-e4-cA8"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="xzg-Tk-ApN"/>
+                                    <constraint firstAttribute="height" constant="58" id="xzg-Tk-ApN"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-7v-dBp" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
@@ -937,51 +937,51 @@
                                     <segue destination="Zak-ws-iqN" kind="show" id="9Sb-e9-Z3E"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE">
-                                <rect key="frame" x="16" y="115" width="288" height="96"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE">
+                                <rect key="frame" x="16" y="109" width="288" height="96"/>
                                 <attributedString key="attributedText">
                                     <fragment content="You're">
                                         <attributes>
                                             <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.21201" green="0.36577999999999999" blue="0.69174000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="1 minute">
                                         <attributes>
                                             <color key="NSColor" red="0.85502999999999996" green="0.56596999999999997" blue="0.12123" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.21201" green="0.36577999999999999" blue="0.69174000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="away from forgetting your passwords.">
                                         <attributes>
                                             <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-gi-JQD">
-                                <rect key="frame" x="16" y="174" width="288" height="320"/>
+                                <rect key="frame" x="16" y="228" width="288" height="256"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="320" id="Lpb-kW-0Nm"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="7KI-Pi-Yst"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="sCf-FB-PX2" kind="embed" id="U14-7v-pJr"/>
@@ -995,10 +995,13 @@
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="B8G-3i-ANV"/>
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="35" id="EEv-tV-3cS"/>
                             <constraint firstItem="3w9-7v-dBp" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="FPU-TV-EGA"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="LLJ-Au-4fr" secondAttribute="bottom" priority="249" constant="40" id="GdD-vI-Ybl"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="bottom" secondItem="3w9-7v-dBp" secondAttribute="bottom" constant="30" id="Jxy-Lw-Dew"/>
-                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="115" id="Zwp-vD-GBg"/>
+                            <constraint firstItem="3w9-7v-dBp" firstAttribute="top" secondItem="Lat-gi-JQD" secondAttribute="bottom" constant="10" id="Vnp-d7-rnF"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LLJ-Au-4fr" secondAttribute="bottom" constant="16" id="X79-oX-U4s"/>
+                            <constraint firstItem="Lat-gi-JQD" firstAttribute="top" secondItem="O94-HQ-lRE" secondAttribute="bottom" priority="250" constant="60" id="amp-ai-oIK"/>
+                            <constraint firstItem="Lat-gi-JQD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O94-HQ-lRE" secondAttribute="bottom" constant="16" id="bEU-Mq-KiT"/>
                             <constraint firstItem="Lat-gi-JQD" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="cBd-XG-hLg"/>
-                            <constraint firstItem="Lat-gi-JQD" firstAttribute="centerY" secondItem="16g-My-AD4" secondAttribute="centerY" constant="50" id="jkD-KZ-fjK"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="Lat-gi-JQD" secondAttribute="trailing" constant="16" id="rDC-tI-flZ"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
                         </constraints>
@@ -1007,7 +1010,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSv-Bf-0hp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="621.60000000000002" y="1710.4947526236883"/>
+            <point key="canvasLocation" x="620" y="1709.8522167487686"/>
         </scene>
         <!--PairingExplanation-->
         <scene sceneID="NSZ-v2-93r">
