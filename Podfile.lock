@@ -14,7 +14,7 @@ DEPENDENCIES:
   - JustLog
   - MBProgressHUD (~> 1.0.0)
   - OneTimePassword (~> 3.1)
-  - Sodium (~> 0.7)
+  - Sodium (~> 0.8)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -35,6 +35,6 @@ SPEC CHECKSUMS:
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
 
-PODFILE CHECKSUM: 21b461915a3a172617061dcac9f999a016347be0
+PODFILE CHECKSUM: 86a8d35fb1256515645acab7aafa5090639c27fa
 
 COCOAPODS: 1.6.1
