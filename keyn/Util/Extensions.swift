@@ -8,9 +8,11 @@ import UserNotifications
 
 // MARK: - Primitive extensions
 
+infix operator %%: MultiplicationPrecedence
+
 extension Int {
-    func mod(_ n: Int) -> Int {
-        return (self % n + n) % n
+    static func %% (m: Int, n: Int) -> Int {
+        return (m % n + n) % n
     }
 }
 
@@ -33,6 +35,7 @@ extension String {
     }
 
     var data: Data {
+        let test: Bytes
         return self.data(using: .utf8)!
     }
 
