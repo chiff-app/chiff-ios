@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 enum PasswordGenerationError: KeynError {
     case characterNotAllowed
@@ -18,6 +19,7 @@ class PasswordGenerator {
     let username: String
     let siteId: String
     let ppd: PPD?
+    let authenticationContext: LAContext?
 
     var characters: [Character] {
         if let characterSets = ppd?.characterSets {
@@ -33,10 +35,11 @@ class PasswordGenerator {
         }
     }
 
-    init(username: String, siteId: String, ppd: PPD?) {
+    init(username: String, siteId: String, ppd: PPD?, context: LAContext?) {
         self.username = username
         self.siteId = siteId
         self.ppd = ppd
+        self.authenticationContext = context
     }
 
     func generate(index passwordIndex: Int, offset: [Int]?) throws -> (String, Int) {
@@ -118,7 +121,7 @@ class PasswordGenerator {
         let bytesCopied = withUnsafeMutableBytes(of: &value, { siteId.sha256.data.copyBytes(to: $0, from: 0..<8) } )
         assert(bytesCopied == MemoryLayout.size(ofValue: value))
 
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(context: authenticationContext), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(username.sha256.prefix(8)), index: UInt64(passwordIndex))
 
         return key
