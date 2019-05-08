@@ -96,43 +96,13 @@ class AuthenticationGuard {
                     (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
                 }
             } catch {
-                if let errorMessage = self.handleError(error: error) {
+                if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                     DispatchQueue.main.async {
                         (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
                     }
                 }
             }
         }
-    }
-
-    func handleError(error: Error) -> String? {
-
-        switch error {
-        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel:
-            Logger.shared.debug("Authentication was cancelled")
-        case LAError.invalidContext, LAError.notInteractive:
-            Logger.shared.error("AuthenticateUser error", error: error)
-            return "errors.local_authentication.generic".localized
-        case LAError.passcodeNotSet:
-            Logger.shared.error("AuthenticateUser error", error: error)
-            return "errors.local_authentication.passcode_not_set".localized
-        case let error as LAError:
-            if #available(iOS 11.0, *) {
-                switch error {
-                case LAError.biometryNotAvailable:
-                    return "errors.local_authentication.biometry_not_available".localized
-                case LAError.biometryNotEnrolled:
-                    return "errors.local_authentication.biometry_not_enrolled".localized
-                default:
-                    Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
-                }
-            } else {
-                Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
-            }
-        default:
-            Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
-        }
-        return nil
     }
     
     // MARK: - UIApplication Notification Handlers

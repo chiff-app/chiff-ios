@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 struct BackupManager {
 
@@ -45,17 +46,17 @@ struct BackupManager {
     
     private init() {}
 
-    func initialize(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
                 return
             }
             deleteAllKeys()
-            try createEncryptionKey()
-            let pubKey = try createSigningKeypair()
+            try createEncryptionKey(seed: seed)
+            let (privKey, pubKey) = try createSigningKeypair(seed: seed)
 
-            apiRequest(endpoint: .backup, method: .put, pubKey: pubKey) { (_, error) in
+            apiRequest(endpoint: .backup, method: .put, pubKey: pubKey, privKey: privKey) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Cannot initialize BackupManager.", error: error)
                     completionHandler(error)
@@ -92,22 +93,24 @@ struct BackupManager {
         }
     }
     
-    func getBackupData(completionHandler: @escaping () -> Void) throws {
+    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (_ error: Error?) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
-            try createEncryptionKey()
-            pubKey = try createSigningKeypair()
+            try createEncryptionKey(seed: seed)
+            (_, pubKey) = try createSigningKeypair(seed: seed)
         } else {
             pubKey = try publicKey()
         }
         apiRequest(endpoint: .backup, method: .get, pubKey: pubKey) { (dict, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot get backup data.", error: error)
+                completionHandler(error)
                 return
             }
 
             guard let dict = dict else {
+                completionHandler(CodingError.missingData)
                 return
             }
 
@@ -116,14 +119,14 @@ struct BackupManager {
                     do {
                         let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                         let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
-                        try Account.save(accountData: accountData, id: id)
+                        try Account.save(accountData: accountData, id: id, context: context)
                     } catch {
                         Logger.shared.error("Could not restore account.", error: error)
                     }
                 }
             }
-            Logger.shared.analytics("Accunts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
-            completionHandler()
+            Logger.shared.analytics("Accounts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
+            completionHandler(nil)
         }
     }
 
@@ -212,26 +215,26 @@ struct BackupManager {
         return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
     }
     
-    private func createSigningKeypair() throws -> String {
-        let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
+    private func createSigningKeypair(seed: Data) throws -> (Data, String) {
+        let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
-        return base64PubKey
+        return (keyPair.privKey, base64PubKey)
     }
     
-    private func createEncryptionKey() throws {
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: CRYPTO_CONTEXT)
+    private func createEncryptionKey(seed: Data) throws {
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
     }
 
-    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String? = nil, privKey privateKey: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
 
         do {
-            let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
+            let privKey = try privateKey ?? Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
 

@@ -253,6 +253,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Error generating seed</string>
 		</dict>
+		<key>seed_exists</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn already initialized</string>
+		</dict>
+		<key>seed_restore</key>
+		<dict>
+			<key>value</key>
+			<string>Error restoring backup</string>
+		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
 			<key>comment</key>
@@ -273,8 +283,15 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>This QR-code could not be decoded.</string>
 		</dict>
 	</dict>
-	<key>intialisation</key>
+	<key>initialization</key>
 	<dict>
+		<key>initialize_keyn</key>
+		<dict>
+			<key>comment</key>
+			<string>This is provided as a reason for authenticating the first time.</string>
+			<key>value</key>
+			<string>Initialize encrypted storage</string>
+		</dict>
 		<key>mobile_instruction_&lt;iOS12</key>
 		<dict>
 			<key>first</key>
@@ -341,6 +358,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<dict>
 				<key>value</key>
 				<string>Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.</string>
+			</dict>
+			<key>delete_existing</key>
+			<dict>
+				<key>value</key>
+				<string>You are trying to restore a backup while Keyn has already been initialized. Do you want to delete Keyn's current data?</string>
 			</dict>
 			<key>questionnaire_permission</key>
 			<dict>

@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
@@ -12,8 +13,12 @@ class InitialisationViewController: UIViewController {
         } else {
             initializeSeed { (error) in
                 DispatchQueue.main.async {
-                    if let error = error {
-                        self.showError(message: "Error creating seed: \(error)")
+                    if let error = error as? LAError {
+                        if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                            self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
+                        }
+                    } else if let error = error {
+                        self.showError(message:"\("errors.seed_creation".localized): \(error)")
                     } else {
                         self.registerForPushNotifications()
                     }
@@ -41,11 +46,12 @@ class InitialisationViewController: UIViewController {
     }
 
     private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
-        do {
-            try Seed.create()
-            BackupManager.shared.initialize(completionHandler: completionHandler)
-        } catch {
-            completionHandler(error)
+        LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true) { (context, error) in
+            if let error = error {
+                completionHandler(error)
+                return
+            }
+            Seed.create(context: context, completionHandler: completionHandler)
         }
     }
 
