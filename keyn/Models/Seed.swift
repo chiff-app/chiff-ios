@@ -3,32 +3,30 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 enum SeedError: KeynError {
     case mnemonicConversion
     case checksumFailed
+    case exists
 }
 
 struct Seed {
 
     static let CRYPTO_CONTEXT = "keynseed"
-    
     static var hasKeys: Bool {
         return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
         Keychain.shared.has(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed) &&
         Keychain.shared.has(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
-
+    private static let paperBackupCompletedFlag = "paperBackupCompleted"
     static var paperBackupCompleted: Bool {
-        guard let dataArray = ((try? Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)) as [String : Any]??) else {
-            return false
+        get {
+            return UserDefaults.standard.bool(forKey: paperBackupCompletedFlag)
         }
-
-        guard let label = dataArray?[kSecAttrLabel as String] as? String else {
-            return false
+        set {
+            UserDefaults.standard.set(true, forKey: paperBackupCompletedFlag)
         }
-
-        return label == "true"
     }
 
     private enum KeyIdentifier: String, Codable {
@@ -46,18 +44,30 @@ struct Seed {
         case backupSeed = 1
     }
 
-    static func create() throws {
-        let seed = try Crypto.shared.generateSeed()
-        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
-        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+    static func create(context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard !hasKeys && !BackupManager.shared.hasKeys else {
+            completionHandler(SeedError.exists)
+            return
+        }
+        do {
+            let seed = try Crypto.shared.generateSeed()
+            let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+            let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+            try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+            try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+
+            BackupManager.shared.initialize(seed: backupSeed, context: context, completionHandler: completionHandler)
+        } catch {
+            BackupManager.shared.deleteAllKeys()
+            try? delete()
+            completionHandler(error)
+        }
     }
 
     static func mnemonic() throws -> [String] {
-        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
+        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: nil)
         let checksumSize = seed.count / 4
         let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
         let wordlist = try self.wordlist()
@@ -74,27 +84,40 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(mnemonic: [String]) throws {
-        let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
-        let checksumSize = seed.count / 4
-        guard checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed) else {
-            throw SeedError.checksumFailed
+    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard !hasKeys && !BackupManager.shared.hasKeys else {
+            completionHandler(SeedError.exists)
+            return
         }
+        do {
+            let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
+            let checksumSize = seed.count / 4
+            guard checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed) else {
+                throw SeedError.checksumFailed
+            }
 
-        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
-        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+            let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+            let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed, label: "true")
-        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+            try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+            try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+            paperBackupCompleted = true
+
+            try BackupManager.shared.getBackupData(seed: backupSeed, context: context, completionHandler: completionHandler)
+        } catch {
+            BackupManager.shared.deleteAllKeys()
+            try? delete()
+            completionHandler(error)
+        }
     }
 
-    static func getPasswordSeed() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
+    static func getPasswordSeed(context: LAContext?) throws -> Data {
+        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context)
     }
 
-    static func getBackupSeed() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+    static func getBackupSeed(context: LAContext?) throws -> Data {
+        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context)
     }
 
     static func delete() throws {
@@ -103,10 +126,6 @@ struct Seed {
         try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
     }
 
-    static func setPaperBackupCompleted() throws {
-        try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, label: "true")
-    }
-    
     // MARK: - Private
 
     static func wordlist() throws -> [String] {

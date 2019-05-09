@@ -135,7 +135,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         }
-        checkKeychainInconsistencies()
         guard Seed.hasKeys == BackupManager.shared.hasKeys else {
             launchErrorView("Inconsistency between seed and backup keys.")
             return
@@ -188,17 +187,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                                                        .font: UIFont.primaryBold!], for: UIControl.State.normal)
         UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
                                                        .font: UIFont.primaryBold!], for: UIControl.State.disabled)
-    }
-
-    private func checkKeychainInconsistencies() {
-        if Seed.hasKeys && !BackupManager.shared.hasKeys {
-            Logger.shared.warning("There was a seed but no backup keys")
-            BackupManager.shared.initialize() { _ in }
-        } else if !Seed.hasKeys && BackupManager.shared.hasKeys {
-            Logger.shared.warning("There were backup keys but no seed")
-            BackupManager.shared.deleteEndpoint()
-            BackupManager.shared.deleteAllKeys()
-        }
     }
 
 }   
