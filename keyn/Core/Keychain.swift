@@ -29,23 +29,37 @@ enum KeychainService: String {
 
     var classification: Classification {
         switch self {
-        case .account:
-            return .confidential
-        case .otp, .seed, .aws, .backup:
-            return .secret
         case .sharedSessionKey, .signingSessionKey:
             return .restricted
+        case .account:
+            return .confidential
+        case .aws, .backup:
+            return .secret
+        case .seed, .otp:
+            return .topsecret
+        }
+    }
+
+    var accessGroup: String {
+        switch self.classification {
+        case .restricted:
+            return "35MFYY2JY5.io.keyn.restricted"
+        case .confidential:
+            return "35MFYY2JY5.io.keyn.confidential"
+        case .secret, .topsecret:
+            return "35MFYY2JY5.io.keyn.keyn"
         }
     }
 
     var defaultContext: LAContext? {
-        return self.classification == .confidential ? LocalAuthenticationManager.shared.mainContext : nil
+        return (self.classification == .confidential || self.classification == .topsecret) ? LocalAuthenticationManager.shared.mainContext : nil
     }
 
-    enum Classification: String {
-        case restricted = "35MFYY2JY5.io.keyn.restricted"
-        case confidential = "35MFYY2JY5.io.keyn.confidential"
-        case secret = "35MFYY2JY5.io.keyn.keyn"
+    enum Classification {
+        case restricted
+        case confidential
+        case secret
+        case topsecret
     }
 }
 
@@ -58,31 +72,27 @@ class Keychain {
     // MARK: - Unauthenticated Keychain operations
     // These can be synchronous because they never call LocalAuthentication
 
-    func save(id identifier: String, service: KeychainService, secretData: Data, objectData: Data? = nil, label: String? = nil) throws {
+    func save(id identifier: String, service: KeychainService, secretData: Data, objectData: Data? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
-                                    kSecAttrAccessGroup as String: service.classification.rawValue,
+                                    kSecAttrAccessGroup as String: service.accessGroup,
                                     kSecValueData as String: secretData]
         if objectData != nil {
             query[kSecAttrGeneric as String] = objectData
         }
     
-        if label != nil {
-            query[kSecAttrLabel as String] = label
-        }
-
         switch service.classification {
         case .restricted:
             query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
-        case .confidential:
+        case .secret:
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+        case .confidential, .topsecret:
             let access = SecAccessControlCreateWithFlags(nil, // Use the default allocator.
                 kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
                 .userPresence,
                 nil) // Ignore any error.
             query[kSecAttrAccessControl as String] = access
-        case .secret:
-            query[kSecAttrAccessible as String] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -135,7 +145,7 @@ class Keychain {
         return status != errSecItemNotFound
     }
 
-    func update(id identifier: String, service: KeychainService, secretData: Data? = nil, objectData: Data? = nil, label: String? = nil, context: LAContext? = nil) throws {
+    func update(id identifier: String, service: KeychainService, secretData: Data? = nil, objectData: Data? = nil, context: LAContext? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
@@ -145,7 +155,7 @@ class Keychain {
             query[kSecUseAuthenticationContext as String] = context ?? defaultContext
         }
 
-        guard (secretData != nil || label != nil || objectData != nil) else {
+        guard (secretData != nil || objectData != nil) else {
             throw KeychainError.noData
         }
 
@@ -157,10 +167,6 @@ class Keychain {
 
         if objectData != nil {
             attributes[kSecAttrGeneric as String] = objectData
-        }
-
-        if label != nil {
-            attributes[kSecAttrLabel as String] = label
         }
 
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
@@ -236,7 +242,6 @@ class Keychain {
         return dataArray
     }
 
-    #warning("TODO: Check if these need a context for sync operations")
     func delete(id identifier: String, service: KeychainService) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
@@ -248,7 +253,6 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    #warning("TODO: Check if these need a context for sync operations")
     func deleteAll(service: KeychainService) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service.rawValue]

@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 enum PasswordGenerationError: KeynError {
     case characterNotAllowed
@@ -18,6 +19,7 @@ class PasswordGenerator {
     let username: String
     let siteId: String
     let ppd: PPD?
+    let authenticationContext: LAContext?
 
     var characters: [Character] {
         if let characterSets = ppd?.characterSets {
@@ -33,10 +35,11 @@ class PasswordGenerator {
         }
     }
 
-    init(username: String, siteId: String, ppd: PPD?) {
+    init(username: String, siteId: String, ppd: PPD?, context: LAContext?) {
         self.username = username
         self.siteId = siteId
         self.ppd = ppd
+        self.authenticationContext = context
     }
 
     func generate(index passwordIndex: Int, offset: [Int]?) throws -> (String, Int) {
@@ -79,7 +82,7 @@ class PasswordGenerator {
         return (0..<length).map({ (index) -> Int in
             // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is checked in guard statement above.
             let charIndex = index < characters.count ? chars.firstIndex(of: characters[index]) ?? chars.count : chars.count 
-            return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(chars.count + 1) }).mod(chars.count + 1)
+            return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)) %% (chars.count + 1) }) %% (chars.count + 1)
         })
     }
 
@@ -104,7 +107,7 @@ class PasswordGenerator {
         let offset = offset ?? Array<Int>(repeatElement(0, count: length))
 
         return (0..<length).reduce("") { (pw, index) -> String in
-            let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)).mod(modulus) } + offset[index]).mod(modulus)
+            let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)) %% modulus } + offset[index]) %% modulus
             return charIndex == chars.count ? pw : pw + String(chars[charIndex])
         }
     }
@@ -118,7 +121,7 @@ class PasswordGenerator {
         let bytesCopied = withUnsafeMutableBytes(of: &value, { siteId.sha256.data.copyBytes(to: $0, from: 0..<8) } )
         assert(bytesCopied == MemoryLayout.size(ofValue: value))
 
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(context: authenticationContext), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(username.sha256.prefix(8)), index: UInt64(passwordIndex))
 
         return key
