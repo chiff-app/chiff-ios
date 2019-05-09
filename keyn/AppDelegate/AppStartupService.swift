@@ -134,6 +134,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             let _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
+        } else if !Properties.questionnaireDirPurged {
+            Questionnaire.cleanFolder()
+            Properties.questionnaireDirPurged = true
         }
         guard Seed.hasKeys == BackupManager.shared.hasKeys else {
             launchErrorView("Inconsistency between seed and backup keys.")

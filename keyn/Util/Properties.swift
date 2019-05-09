@@ -14,6 +14,16 @@ struct Properties {
         case prod = "v1"
     }
 
+    static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
+    static var questionnaireDirPurged: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag)
+        }
+        set {
+            UserDefaults.standard.set(true, forKey: questionnaireDirPurgedFlag)
+        }
+    }
+
     static var deniedPushNotifications = false
     
     static let isDebug: Bool = {
@@ -24,12 +34,10 @@ struct Properties {
         return debug
     }()
 
-    static let isTestFlight = Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-
     static let environment: Environment = {
         if Properties.isDebug {
             return .dev
-        } else if isTestFlight {
+        } else if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
             return .beta
         } else {
             return .prod
@@ -57,7 +65,7 @@ struct Properties {
 
         return isFirstLaunch
     }
-    
+
     static func installTimestamp() -> Date? {
         let installTimestamp = "installTimestamp"
 
