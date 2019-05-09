@@ -57,6 +57,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        guard (error as NSError).code != 3010 else {
+            return
+        }
         launchErrorView("\("errors.push_notifications_error".localized): \(error)")
         Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
     }
