@@ -71,8 +71,9 @@ class LocalAuthenticationManager {
     func handleError(error: Error) -> String? {
 
         switch error {
-        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel:
-            Logger.shared.debug("Authentication was cancelled")
+        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+            // Not interesting, do nothing.
+            break
         case LAError.invalidContext, LAError.notInteractive:
             Logger.shared.error("AuthenticateUser error", error: error)
             return "errors.local_authentication.generic".localized
