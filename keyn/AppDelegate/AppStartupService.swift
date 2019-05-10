@@ -53,7 +53,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
-        BackupManager.shared.snsRegistration(deviceToken: deviceToken)
+        NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -130,7 +130,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Session.purgeSessionDataFromKeychain()
             Account.deleteAll()
             try? Seed.delete()
-            BackupManager.shared.deleteEndpoint()
+            NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
 
             Logger.shared.analytics("App was installed", code: .install)

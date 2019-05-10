@@ -53,6 +53,15 @@ struct Properties {
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
     )
 
+    static var notificationTopic: String {
+        switch environment {
+        case .dev:
+            return AWSSNSNotificationArn.sandbox
+        case .beta, .prod:
+            return AWSSNSNotificationArn.production
+        }
+    }
+
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
     static func isFirstLaunch() -> Bool {

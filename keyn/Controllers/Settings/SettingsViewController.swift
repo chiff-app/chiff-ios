@@ -6,6 +6,7 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
+    @IBOutlet weak var notificationSettingSwitch: UISwitch!
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
@@ -17,6 +18,7 @@ class SettingsViewController: UITableViewController {
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
+        notificationSettingSwitch.isOn = NotificationManager.shared.isSubscribed
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,11 +61,36 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && indexPath.row >= 1 {
             cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
         }
     }
     // MARK: - Actions
+
+    @IBAction func updateNotificationSettings(_ sender: UISwitch) {
+        sender.isUserInteractionEnabled = false
+        if sender.isOn {
+            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        sender.isOn = NotificationManager.shared.isSubscribed
+                        self.showError(message: "\("errors.subscribing".localized): \(error)")
+                    }
+                    sender.isUserInteractionEnabled = true
+                }
+            }
+        } else {
+            NotificationManager.shared.unsubscribe() { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        sender.isOn = NotificationManager.shared.isSubscribed
+                        self.showError(message: "\("errors.unsubscribing".localized): \(error)")
+                    }
+                    sender.isUserInteractionEnabled = true
+                }
+            }
+        }
+    }
 
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
         let completed = Seed.paperBackupCompleted
@@ -77,23 +104,19 @@ class SettingsViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            do {
-                Session.deleteAll()
-                Account.deleteAll()
-                try Seed.delete()
-                BackupManager.shared.deleteEndpoint()
-                BackupManager.shared.deleteAllKeys()
-                Logger.shared.analytics("Keyn reset.", code: .keynReset)
-                let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-                UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-            } catch {
-
-            }
+            Session.deleteAll()
+            Account.deleteAll()
+            try? Seed.delete()
+            NotificationManager.shared.deleteEndpoint()
+            BackupManager.shared.deleteAllKeys()
+            Logger.shared.analytics("Keyn reset.", code: .keynReset)
+            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
         self.present(alert, animated: true, completion: nil)
     }
 
-        // MARK: - Private
+    // MARK: - Private
 
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
