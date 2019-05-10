@@ -36,6 +36,7 @@ class InitialisationViewController: UIViewController {
         startupService.registerForPushNotifications() { result in
             DispatchQueue.main.async {
                 if result {
+                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
                     self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
                 } else {
                     // TODO: Present warning vc, then continue to showRootVC

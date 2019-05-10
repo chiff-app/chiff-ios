@@ -270,6 +270,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>There is no AWS endpoint in the session data.</string>
 		</dict>
+		<key>subscribing</key>
+		<dict>
+			<key>value</key>
+			<string>Error subscribing to info notifications</string>
+		</dict>
 		<key>token_creation</key>
 		<dict>
 			<key>value</key>
@@ -281,6 +286,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>The QR-code could not be decoded.</string>
 			<key>value</key>
 			<string>This QR-code could not be decoded.</string>
+		</dict>
+		<key>unsubscribing</key>
+		<dict>
+			<key>value</key>
+			<string>Error unsubscribing to info notifications</string>
 		</dict>
 	</dict>
 	<key>initialization</key>

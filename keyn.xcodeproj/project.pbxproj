@@ -71,6 +71,7 @@
 		49774C122266035C0094D3ED /* SiteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C112266035C0094D3ED /* SiteTableViewController.swift */; };
 		49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C132266044D0094D3ED /* SiteTableViewCell.swift */; };
 		49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C1722664DC30094D3ED /* StartBackupViewController.swift */; };
+		497828862285712C00D30C42 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		497D21B7205A80800040E0C0 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
 		497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
@@ -263,6 +264,7 @@
 		49774C112266035C0094D3ED /* SiteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewController.swift; sourceTree = "<group>"; };
 		49774C132266044D0094D3ED /* SiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewCell.swift; sourceTree = "<group>"; };
 		49774C1722664DC30094D3ED /* StartBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBackupViewController.swift; sourceTree = "<group>"; };
+		497828852285712C00D30C42 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -605,6 +607,7 @@
 				491968041FC0DC6400206B75 /* Crypto.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 				49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */,
+				497828852285712C00D30C42 /* NotificationManager.swift */,
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
@@ -1215,6 +1218,7 @@
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
 				49F2A0F722142F0400429875 /* FormTextField.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
+				497828862285712C00D30C42 /* NotificationManager.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,
 			);

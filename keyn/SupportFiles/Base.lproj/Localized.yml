@@ -67,6 +67,10 @@ errors:
     value: Unreadable data error
   seed_exists:
     value: Keyn already initialized
+  subscribing:
+    value: Error subscribing to info notifications
+  unsubscribing:
+    value: Error unsubscribing to info notifications
 popups:
   questions:
     delete_corrupted:
