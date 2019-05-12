@@ -25,7 +25,7 @@ class LoginViewController: UIViewController {
                 Session.deleteAll()
                 Account.deleteAll()
                 try Seed.delete()
-                BackupManager.shared.deleteEndpoint()
+                NotificationManager.shared.deleteEndpoint()
                 BackupManager.shared.deleteAllKeys()
                 Logger.shared.warning("Keyn reset after corrupted data", error: error)
                 let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)

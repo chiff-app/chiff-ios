@@ -53,10 +53,13 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
-        BackupManager.shared.snsRegistration(deviceToken: deviceToken)
+        NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        guard (error as NSError).code != 3010 else {
+            return
+        }
         launchErrorView("\("errors.push_notifications_error".localized): \(error)")
         Logger.shared.error("Failed to register for remote notifications.", error: error, userInfo: nil)
     }
@@ -127,15 +130,18 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Session.purgeSessionDataFromKeychain()
             Account.deleteAll()
             try? Seed.delete()
-            BackupManager.shared.deleteEndpoint()
+            NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
 
             Logger.shared.analytics("App was installed", code: .install)
             let _ = Properties.installTimestamp()
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
+        } else if !Properties.questionnaireDirPurged {
+            Questionnaire.cleanFolder()
+            Properties.questionnaireDirPurged = true
+            Seed.paperBackupCompleted = migratePaperbackupCompletedStatus()
         }
-        checkKeychainInconsistencies()
         guard Seed.hasKeys == BackupManager.shared.hasKeys else {
             launchErrorView("Inconsistency between seed and backup keys.")
             return
@@ -190,15 +196,35 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                                                        .font: UIFont.primaryBold!], for: UIControl.State.disabled)
     }
 
-    private func checkKeychainInconsistencies() {
-        if Seed.hasKeys && !BackupManager.shared.hasKeys {
-            Logger.shared.warning("There was a seed but no backup keys")
-            BackupManager.shared.initialize() { _ in }
-        } else if !Seed.hasKeys && BackupManager.shared.hasKeys {
-            Logger.shared.warning("There were backup keys but no seed")
-            BackupManager.shared.deleteEndpoint()
-            BackupManager.shared.deleteAllKeys()
+    private func migratePaperbackupCompletedStatus() -> Bool {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrAccount as String: "io.keyn.seed.master",
+                                    kSecAttrService as String: "io.keyn.seed",
+                                    kSecMatchLimit as String: kSecMatchLimitOne,
+                                    kSecReturnAttributes as String: true,
+                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUISkip]
+
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
+
+        if status == errSecItemNotFound {
+            return false
+        }
+        guard status == noErr else {
+            return false
+        }
+
+        guard let dataArray = queryResult as? [String: Any] else {
+            return false
+        }
+
+        guard let label = dataArray[kSecAttrLabel as String] as? String else {
+            return false
+        }
+
+        return label == "true"
     }
 
 }   

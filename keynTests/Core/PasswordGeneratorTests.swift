@@ -3,10 +3,13 @@
  * All rights reserved.
  */
 import XCTest
+import LocalAuthentication
 
 @testable import keyn
 
 class PasswordGeneratorTests: XCTestCase {
+
+    var context: LAContext!
 
     override func setUp() {
         super.setUp()
@@ -19,7 +22,7 @@ class PasswordGeneratorTests: XCTestCase {
     
     func testGeneratePasswordShouldReturnPassword() throws {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
-        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
         let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
         XCTAssertEqual("RMMbQu1QVLIAchpgm7!.<CcL9EM[KFJ(", password)
         XCTAssertEqual(index, 0)
@@ -29,7 +32,7 @@ class PasswordGeneratorTests: XCTestCase {
         let site = TestHelper.sampleSite
         let randomIndex = Int(arc4random_uniform(100000000))
         let username = "test"
-        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: nil)
         let (randomPassword, index) = try passwordGenerator.generate(index: randomIndex, offset: nil)
         
         let offset = try passwordGenerator.calculateOffset(index: index, password: randomPassword)
@@ -42,7 +45,7 @@ class PasswordGeneratorTests: XCTestCase {
     func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLong() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
         let password = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
-        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
         XCTAssertThrowsError(
             try passwordGenerator.calculateOffset(index: 0, password: password)
         )
@@ -51,7 +54,7 @@ class PasswordGeneratorTests: XCTestCase {
     func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLongUsingFallback() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: nil)
         let password = String(repeating: "a", count: PasswordValidator.MAX_PASSWORD_LENGTH_BOUND + 1)
-        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
         XCTAssertThrowsError(
             try passwordGenerator.calculateOffset(index: 0, password: password)
         )

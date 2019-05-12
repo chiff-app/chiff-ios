@@ -108,12 +108,8 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
 
     @IBAction func finish(_ sender: UIButton) {
-        do {
-            try Seed.setPaperBackupCompleted()
-            Logger.shared.analytics("Backup completed.", code: .backupCompleted)
-        } catch {
-            Logger.shared.warning("Could not set seed to backed up.", error: error)
-        }
+        Seed.paperBackupCompleted = true
+        Logger.shared.analytics("Backup completed.", code: .backupCompleted)
     }
 
     // MARK: - Private

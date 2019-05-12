@@ -28,6 +28,11 @@ enum APIEndpoint: String {
     case persistentBrowserToApp = "message/persistent/browser-to-app"
     case push = "message/push"
     case questionnaire = "questionnaire"
+
+    // This construcs the endpoint for the subscription
+    static func subscription(for pubkey: String) -> String {
+        return "\(pubkey)/subscription"
+    }
 }
 
 enum APIMethod: String {
@@ -42,6 +47,26 @@ class API {
     static let shared = API()
 
     private init() {}
+
+    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+        var message = message ?? [:]
+        message["httpMethod"] = method.rawValue
+        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
+
+            let parameters = [
+                "m": try Crypto.shared.convertToBase64(from: jsonData),
+                "s": try Crypto.shared.convertToBase64(from: signature)
+            ]
+
+            request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, body: body, completionHandler: completionHandler)
+        } catch {
+            completionHandler(nil, error)
+        }
+    }
 
     func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {

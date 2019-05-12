@@ -57,16 +57,26 @@ errors:
   seed_creation:
     value: Error generating seed
     comment: This may occur during the initialisation process
+  seed_restore:
+    value: Error restoring backup
   token_creation:
     value: Error creating OTP token
   add_otp:
     value: Error adding OTP token
   corrupted_data:
     value: Unreadable data error
+  seed_exists:
+    value: Keyn already initialized
+  subscribing:
+    value: Error subscribing to info notifications
+  unsubscribing:
+    value: Error unsubscribing to info notifications
 popups:
   questions:
     delete_corrupted:
       value: Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.
+    delete_existing:
+      value: You are trying to restore a backup while Keyn has already been initialized. Do you want to delete Keyn's current data?
     restore_accounts:
       value: Restore accounts
     cancel_backup:
@@ -256,7 +266,10 @@ registration:
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: This password has been found in
-intialisation:
+initialization:
+  initialize_keyn:
+    value: Initialize encrypted storage
+    comment: This is provided as a reason for authenticating the first time.
   mobile_instruction_iOS12:
     first:
       value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.

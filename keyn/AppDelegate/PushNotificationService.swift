@@ -221,7 +221,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 throw CodingError.missingData
             }
             if result {
-                try account!.updatePasswordAfterConfirmation()
+                try account!.updatePasswordAfterConfirmation(context: context)
             }
         case .preferences:
             guard let accountId = keynMessage.accountID else  {
