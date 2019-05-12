@@ -85,6 +85,8 @@
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
+		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
+		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		49C8B896225383D300639663 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C8B895225383D300639663 /* StoreKit.framework */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
@@ -1122,6 +1124,7 @@
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
+				49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				495E72BC22118F9D003132ED /* Logger.swift in Sources */,
@@ -1265,6 +1268,7 @@
 				49062C6F2214679400A30669 /* Localizer.swift in Sources */,
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
+				49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,

@@ -16,19 +16,11 @@ struct BackupManager {
         Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
 
-    var endpoint: String? {
-        guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {
-            return nil
-        }
-        return String(data: endpointData, encoding: .utf8)
-    }
-
     private enum KeyIdentifier: String, Codable {
         case priv = "priv"
         case pub = "pub"
         case encryption = "encryption"
-        case endpoint = "endpoint"
-        
+
         func identifier(for keychainService: KeychainService) -> String {
             return "\(keychainService.rawValue).\(self.rawValue)"
         }

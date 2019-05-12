@@ -323,7 +323,7 @@ class Session: Codable {
     // MARK: - Private
 
     private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
-        guard let deviceEndpoint = BackupManager.shared.endpoint else {
+        guard let deviceEndpoint = NotificationManager.shared.endpoint else {
             throw SessionError.noEndpoint
         }
 
