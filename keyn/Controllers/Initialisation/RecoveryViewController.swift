@@ -27,12 +27,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
-            mnemonicIsValid = checkMnemonic()
-        }
-    }
-    var mnemonicIsValid = false {
-        didSet {
-            finishButton.isEnabled = mnemonicIsValid
+            finishButton.isEnabled = checkMnemonic()
         }
     }
 
@@ -54,6 +49,14 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard !Seed.hasKeys else {
+            seedExistsError()
+            return
+        }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -129,11 +132,15 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             do {
                 if let error = error {
                     throw error
-                } else if context != nil {
-                    try Seed.recover(mnemonic: self.mnemonic)
-                    try BackupManager.shared.getBackupData() {
+                } else if let context = context {
+                    Seed.recover(context: context, mnemonic: self.mnemonic) { error in
                         DispatchQueue.main.async {
-                            self.showRootController()
+                            if error != nil {
+                                self.showError(message: "errors.seed_restore".localized)
+                                self.activityViewContainer.isHidden = true
+                            } else {
+                                self.showRootController()
+                            }
                         }
                     }
                 } else {
@@ -201,6 +208,25 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         textfield.rightView?.alpha = 0.0
         textfield.delegate = self
         textfield.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+    }
+
+    private func seedExistsError() {
+        let alert = UIAlertController(title: "errors.seed_exists".localized, message: "popups.questions.delete_existing".localized, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { action in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            do {
+                Session.deleteAll()
+                Account.deleteAll()
+                try Seed.delete()
+                NotificationManager.shared.deleteEndpoint()
+                BackupManager.shared.deleteAllKeys()
+            } catch {
+                fatalError()
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

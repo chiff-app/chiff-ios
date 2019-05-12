@@ -29,36 +29,36 @@ struct Logger {
         logger.setup()
     }
     
-    func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.verbose(message, error: getNSError(error), userInfo: userInfo)
+    func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        logger.verbose(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
         }
     }
     
-    func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.debug(message, error: getNSError(error), userInfo: userInfo)
+    func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        logger.debug(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
         }
     }
     
-    func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.info(message, error: getNSError(error), userInfo: userInfo)
+    func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        logger.info(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
         }
     }
     
-    func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.warning(message, error: getNSError(error), userInfo: userInfo)
+    func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        logger.warning(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
         }
     }
     
-    func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil) {
-        logger.error(message, error: getNSError(error), userInfo: userInfo)
+    func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        logger.error(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
         }

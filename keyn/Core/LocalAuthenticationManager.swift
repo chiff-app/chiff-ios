@@ -68,6 +68,37 @@ class LocalAuthenticationManager {
         }
     }
 
+    func handleError(error: Error) -> String? {
+
+        switch error {
+        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+            // Not interesting, do nothing.
+            break
+        case LAError.invalidContext, LAError.notInteractive:
+            Logger.shared.error("AuthenticateUser error", error: error)
+            return "errors.local_authentication.generic".localized
+        case LAError.passcodeNotSet:
+            Logger.shared.error("AuthenticateUser error", error: error)
+            return "errors.local_authentication.passcode_not_set".localized
+        case let error as LAError:
+            if #available(iOS 11.0, *) {
+                switch error {
+                case LAError.biometryNotAvailable:
+                    return "errors.local_authentication.biometry_not_available".localized
+                case LAError.biometryNotEnrolled:
+                    return "errors.local_authentication.biometry_not_enrolled".localized
+                default:
+                    Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+                }
+            } else {
+                Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+            }
+        default:
+            Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+        }
+        return nil
+    }
+
     // MARK: - Private functions
 
     private func checkMainContext() throws {

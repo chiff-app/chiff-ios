@@ -4,6 +4,7 @@
  */
 import XCTest
 import OneTimePassword
+import LocalAuthentication
 
 @testable import keyn
 
@@ -18,6 +19,8 @@ import OneTimePassword
 class TestHelper {
 
     static let mnemonic = "wreck together kick tackle rely embrace enlist bright double happy group honey"
+    static let base64seed = "_jx16O6LVpESsOBBrR2btg"
+    static let CRYPTO_CONTEXT = "keynseed"
     static let pairingQueueSeed = "0F5l3RTX8f0TUpC9aBe-dgOwzMqaPrjPGTmh60LULFs"
     static let browserPublicKeyBase64 = "uQ-JTC6gejxrz2dNw1sXO6JAQP32wNpXFPnJ2PgksuM"
     static let sessionID = "9d710842c9cc6df1b2f4f3ca2074bc1408e525e7ce46635ce21579c9fe6f01e7"
@@ -53,11 +56,22 @@ class TestHelper {
 
     static func createSeed() {
         try? Seed.delete()
-        var mnemonicArray = [String]()
-        for word in mnemonic.split(separator: " ") {
-            mnemonicArray.append(String(word))
+        let seed = base64seed.fromBase64!
+        let passwordSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+        let backupSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+
+        try! Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+        try! Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+        try! Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+    }
+
+    private enum KeyIdentifier: String, Codable {
+        case password = "password"
+        case backup = "backup"
+        case master = "master"
+
+        func identifier(for keychainService: KeychainService) -> String {
+            return "\(keychainService.rawValue).\(self.rawValue)"
         }
-        let _ = try! Seed.recover(mnemonic: mnemonicArray)
-//        try! BackupManager.shared.initialize() { (res) in }
     }
 }

@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 struct BackupManager {
 
@@ -45,17 +46,17 @@ struct BackupManager {
     
     private init() {}
 
-    func initialize(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
                 return
             }
             deleteAllKeys()
-            try createEncryptionKey()
-            let pubKey = try createSigningKeypair()
+            try createEncryptionKey(seed: seed)
+            let (privKey, pubKey) = try createSigningKeypair(seed: seed)
 
-            apiRequest(endpoint: .backup, method: .put, pubKey: pubKey) { (_, error) in
+            API.shared.signedRequest(endpoint: .backup, method: .put, pubKey: pubKey, privKey: privKey) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Cannot initialize BackupManager.", error: error)
                     completionHandler(error)
@@ -71,13 +72,13 @@ struct BackupManager {
     
     func backup(account: Account) throws {
         let accountData = try JSONEncoder().encode(account)
-        let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try encryptionKey())
+        let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
 
         let message = [
             MessageIdentifier.id: account.id,
             MessageIdentifier.data: ciphertext.base64
         ]
-        apiRequest(endpoint: .backup, method: .post, message: message) { (_, error) in
+        API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot backup account data.", error: error)
             }
@@ -85,29 +86,31 @@ struct BackupManager {
     }
     
     func deleteAccount(accountId: String) throws {
-        apiRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId]) { (_, error) in
+        API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot delete account.", error: error)
             }
         }
     }
     
-    func getBackupData(completionHandler: @escaping () -> Void) throws {
+    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (_ error: Error?) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
-            try createEncryptionKey()
-            pubKey = try createSigningKeypair()
+            try createEncryptionKey(seed: seed)
+            (_, pubKey) = try createSigningKeypair(seed: seed)
         } else {
             pubKey = try publicKey()
         }
-        apiRequest(endpoint: .backup, method: .get, pubKey: pubKey) { (dict, error) in
+        API.shared.signedRequest(endpoint: .backup, method: .get, pubKey: pubKey, privKey: try privateKey()) { (dict, error) in
             if let error = error {
                 Logger.shared.error("BackupManager cannot get backup data.", error: error)
+                completionHandler(error)
                 return
             }
 
             guard let dict = dict else {
+                completionHandler(CodingError.missingData)
                 return
             }
 
@@ -115,135 +118,46 @@ struct BackupManager {
                 if let base64Data = data as? String {
                     do {
                         let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                        let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try self.encryptionKey())
-                        try Account.save(accountData: accountData, id: id)
+                        let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
+                        try Account.save(accountData: accountData, id: id, context: context)
                     } catch {
                         Logger.shared.error("Could not restore account.", error: error)
                     }
                 }
             }
-            Logger.shared.analytics("Accunts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
-            completionHandler()
+            Logger.shared.analytics("Accounts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
+            completionHandler(nil)
         }
     }
 
-    func snsRegistration(deviceToken: Data) {
-        do {
-            let token = deviceToken.hexEncodedString()
-            if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
-                // Get endpoint from Keychain
-                try updateEndpoint(token: token, pubKey: publicKey(), endpoint: endpoint)
-            } else {
-                // Create new endpoint if not found in storage
-                try updateEndpoint(token: token, pubKey: publicKey(), endpoint: nil)
-            }
-        } catch {
-            Logger.shared.error("Error updating endpoint", error: error)
-        }
-    }
-
-    func updateEndpoint(token: String, pubKey: String, endpoint: String?) throws {
-        var message = [
-            MessageIdentifier.token: token
-        ]
-        if let endpoint = endpoint {
-            message[MessageIdentifier.endpoint] = endpoint
-        }
-        apiRequest(endpoint: .device, method: .post, message: message) { (dict, error) in
-            do {
-                if let error = error {
-                    throw error
-                }
-                guard let dict = dict else {
-                    throw CodingError.missingData
-                }
-                if let endpoint = dict["arn"] as? String {
-                    if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
-                        try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
-                    } else {
-                        try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
-                    }
-                }
-            } catch {
-                Logger.shared.error("AWS cannot get arn.", error: error)
-                return
-            }
-        }
-    }
-
-    func deleteEndpoint() {
-        guard let endpoint = endpoint else {
-            Logger.shared.warning("Tried to delete endpoint without endpoint present")
-            return
-        }
-        apiRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint]) { (dict, error) in
-            if let error = error {
-                Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
-            }
-        }
-    }
-    
     func deleteAllKeys() {
         Keychain.shared.deleteAll(service: .aws)
         Keychain.shared.deleteAll(service: .backup)
     }
 
-    // MARK: - Private
-
-
-    private func signMessage(message: Data) throws -> String {
-        let signature = try Crypto.shared.signature(message: message, privKey: try privateKey())
-        let base64Signature = try Crypto.shared.convertToBase64(from: signature)
-
-        return base64Signature
-    }
-    
-    private func encryptionKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
-    }
-    
-    private func publicKey() throws -> String {
+    func publicKey() throws -> String {
         let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
         let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
-    private func privateKey() throws -> Data {
+    func privateKey() throws -> Data {
         return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
     }
+
+    // MARK: - Private
     
-    private func createSigningKeypair() throws -> String {
-        let keyPair = try Crypto.shared.createSigningKeyPair(seed: try Seed.getBackupSeed())
+    private func createSigningKeypair(seed: Data) throws -> (Data, String) {
+        let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
-        return base64PubKey
+        return (keyPair.privKey, base64PubKey)
     }
     
-    private func createEncryptionKey() throws {
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: try Seed.getBackupSeed(), context: CRYPTO_CONTEXT)
+    private func createEncryptionKey(seed: Data) throws {
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
-    }
-
-    private func apiRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
-        var message = message ?? [:]
-        message["httpMethod"] = method.rawValue
-        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
-
-        do {
-            let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
-            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
-
-            let parameters = [
-                "m": try Crypto.shared.convertToBase64(from: jsonData),
-                "s": try Crypto.shared.convertToBase64(from: signature)
-            ]
-
-            API.shared.request(endpoint: endpoint, path: try pubKey ?? publicKey(), parameters: parameters, method: method, completionHandler: completionHandler)
-        } catch {
-            completionHandler(nil, error)
-        }
     }
 
 }
