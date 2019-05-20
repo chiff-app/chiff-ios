@@ -73,12 +73,6 @@ class Session: Codable {
         return message
     }
 
-    func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
-        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
-        return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
-    }
-
     func cancelRequest(reason: KeynMessageType, browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
             let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason)
@@ -321,6 +315,12 @@ class Session: Codable {
 
 
     // MARK: - Private
+
+    private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
+        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
+        return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
+    }
 
     private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
         guard let deviceEndpoint = NotificationManager.shared.endpoint else {

@@ -56,15 +56,6 @@ struct Account: Codable {
         try save(password: generatedPassword)
     }
 
-    mutating func backup() throws {
-        if let token = try oneTimePasswordToken() {
-            tokenSecret = token.generator.secret
-            tokenURL = try token.toURL()
-        }
-
-        try BackupManager.shared.backup(account: self)
-    }
-
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
         let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context)
@@ -113,29 +104,17 @@ struct Account: Codable {
 
     mutating func addSite(site: Site) throws {
         self.sites.append(site)
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
-        try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Account.saveToIdentityStore(account: self)
+        try update(secret: nil)
     }
 
     mutating func removeSite(forIndex index: Int) throws {
         self.sites.remove(at: index)
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
-        try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Account.saveToIdentityStore(account: self)
+        try update(secret: nil)
     }
 
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
-        try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Account.saveToIdentityStore(account: self)
+        try update(secret: nil)
     }
     
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
@@ -169,11 +148,7 @@ struct Account: Codable {
             self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(context: context))
         }
 
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: newPassword?.data, objectData: accountData)
-        try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Account.saveToIdentityStore(account: self)
+        try update(secret: newPassword?.data)
     }
 
     /*
@@ -193,7 +168,6 @@ struct Account: Codable {
         askToChange = false
 
         let accountData = try PropertyListEncoder().encode(self)
-
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
@@ -320,12 +294,30 @@ struct Account: Codable {
 
     // MARK: - Private
 
+
+    private mutating func update(secret: Data?) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: secret, objectData: accountData, context: nil)
+        try backup()
+        try Session.all().forEach({ try $0.updateAccountList(account: self) })
+        Account.saveToIdentityStore(account: self)
+    }
+
     private func save(password: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData)
         try BackupManager.shared.backup(account: self)
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
+    }
+
+    private mutating func backup() throws {
+        if let token = try oneTimePasswordToken() {
+            tokenSecret = token.generator.secret
+            tokenURL = try token.toURL()
+        }
+
+        try BackupManager.shared.backup(account: self)
     }
 
     // MARK: - AuthenticationServices
