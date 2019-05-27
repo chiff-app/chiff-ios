@@ -264,8 +264,11 @@ class AuthorizationGuard {
         }
         authorizationInProgress = true
         do {
-            guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] else {
+            guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
                 throw SessionError.invalid
+            }
+            guard Properties.browsers.contains(browser), Properties.systems.contains(os) else {
+                throw SessionError.unknownType
             }
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists

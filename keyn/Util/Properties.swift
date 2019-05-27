@@ -44,6 +44,10 @@ struct Properties {
         }
     }()
 
+    static let browsers = ["Chrome", "Edge", "Firefox", "Tor"]
+
+    static let systems = ["Windows", "Mac OS", "Debian", "Ubuntu"]
+
     static let keynApi = "api.keyn.app"
     
     static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
