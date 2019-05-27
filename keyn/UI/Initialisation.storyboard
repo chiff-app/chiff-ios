@@ -1069,23 +1069,45 @@
                                     <segue destination="Lp7-Hn-Yem" kind="embed" identifier="EmbeddedPairing" id="PRF-kk-uoI"/>
                                 </connections>
                             </containerView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-id-QPJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5mj-pn-FKy">
+                                        <rect key="frame" x="141.5" y="265.5" width="37" height="37"/>
+                                        <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.4009548611" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="5mj-pn-FKy" firstAttribute="centerY" secondItem="PTF-id-QPJ" secondAttribute="centerY" id="Elf-D0-Pqf"/>
+                                    <constraint firstItem="5mj-pn-FKy" firstAttribute="centerX" secondItem="PTF-id-QPJ" secondAttribute="centerX" id="Qfo-wo-sD9"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="Kuh-EF-T0o"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Fo9-YI-YeD" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="1K9-iD-KT3"/>
                             <constraint firstItem="aAD-g0-bY7" firstAttribute="trailing" secondItem="xGT-Ng-yLJ" secondAttribute="trailing" id="2mz-7j-R4K"/>
+                            <constraint firstItem="PTF-id-QPJ" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" id="9UF-wA-0YM"/>
                             <constraint firstItem="Fo9-YI-YeD" firstAttribute="top" secondItem="aAD-g0-bY7" secondAttribute="bottom" constant="30" id="M83-bZ-wL9"/>
+                            <constraint firstItem="PTF-id-QPJ" firstAttribute="bottom" secondItem="xGT-Ng-yLJ" secondAttribute="bottom" id="RIm-o5-Mag"/>
                             <constraint firstItem="xGT-Ng-yLJ" firstAttribute="bottom" secondItem="Fo9-YI-YeD" secondAttribute="bottom" constant="30" id="aAE-kF-yxJ"/>
                             <constraint firstItem="aAD-g0-bY7" firstAttribute="top" secondItem="6r2-z2-GmB" secondAttribute="bottom" constant="10" id="e5y-sF-gDS"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="jsx-LY-QgP"/>
+                            <constraint firstItem="PTF-id-QPJ" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" id="lKi-Xo-gAh"/>
                             <constraint firstItem="aAD-g0-bY7" firstAttribute="leading" secondItem="xGT-Ng-yLJ" secondAttribute="leading" id="lcp-5I-OIA"/>
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" constant="35" id="nx5-DB-rhi"/>
+                            <constraint firstItem="PTF-id-QPJ" firstAttribute="trailing" secondItem="xGT-Ng-yLJ" secondAttribute="trailing" id="xAy-no-e5X"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xGT-Ng-yLJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="BQp-XR-qrk">
                         <barButtonItem key="backBarButtonItem" title=" " id="IXd-GT-YmX"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="activityView" destination="PTF-id-QPJ" id="xEI-Ab-NJ9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JD4-BJ-yGq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

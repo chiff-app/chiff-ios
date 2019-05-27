@@ -33,7 +33,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     // Open app from URL (e.g. QR code)
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        AuthorizationGuard.authorizePairing(url: url) { (session, error) in
+        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: nil) { (session, error) in
             DispatchQueue.main.async {
                 if let session = session {
                     NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
