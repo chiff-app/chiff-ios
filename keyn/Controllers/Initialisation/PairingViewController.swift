@@ -8,12 +8,28 @@
 
 import UIKit
 
-class PairingViewController: UIViewController, PairControllerDelegate {
+class PairingViewController: UIViewController, PairControllerDelegate, PairContainerDelegate {
+
+    @IBOutlet weak var activityView: UIView!
 
     func sessionCreated(session: Session) {
         DispatchQueue.main.async {
             // TODO: - check if notification is still needed if delegate is
             self.showRootController()
+        }
+    }
+
+    func startLoading() {
+        DispatchQueue.main.async {
+            self.activityView.isHidden = false
+        }
+    }
+
+    func finishLoading() {
+        func startLoading() {
+            DispatchQueue.main.async {
+                self.activityView.isHidden = true
+            }
         }
     }
 
@@ -45,6 +61,7 @@ class PairingViewController: UIViewController, PairControllerDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let identifier = segue.identifier, identifier == "EmbeddedPairing", let destination = segue.destination as? PairViewController {
             destination.pairControllerDelegate = self
+            destination.pairContainerDelegate = self
         }
     }
 
