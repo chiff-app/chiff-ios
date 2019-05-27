@@ -69,7 +69,7 @@ enum KeynMessageType: Int, Codable {
     case change = 3
     case add = 4
     case addBulk = 5
-    case addAndLogin = 6
+    case addAndLogin = 6 // Can be used for something else in time, does the same as add.
     case end = 7
     case confirm = 8
     case fill = 9
