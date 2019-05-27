@@ -41,9 +41,8 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
         self.constraintContentHeight.constant = self.view.frame.size.height - HEIGHT_OFFSET
 
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
-        navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        navigationItem.leftBarButtonItem?.setColor(color: .white)
+        navigationItem.rightBarButtonItem?.setColor(color: .white)
 
         view.layoutIfNeeded()
         textView.layer.cornerRadius = 4.0

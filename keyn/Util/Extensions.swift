@@ -384,3 +384,18 @@ extension UINavigationController {
         return visibleViewController
     }
 }
+
+extension UIBarButtonItem {
+    func setColor(color: UIColor) {
+        setTitleTextAttributes([.foregroundColor: color, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        setTitleTextAttributes([.foregroundColor: color, .font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+        setTitleTextAttributes([.foregroundColor: color, .font: UIFont.primaryBold!], for: UIControl.State.selected)
+        setTitleTextAttributes([.foregroundColor: color, .font: UIFont.primaryBold!], for: UIControl.State.focused)
+        switch color {
+        case .white:
+            setTitleTextAttributes([.foregroundColor: UIColor.init(white: 1, alpha: 0.5), .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        default:
+            setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity, .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        }
+    }
+}
