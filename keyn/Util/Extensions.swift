@@ -35,7 +35,6 @@ extension String {
     }
 
     var data: Data {
-        let test: Bytes
         return self.data(using: .utf8)!
     }
 
