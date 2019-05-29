@@ -369,6 +369,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>value</key>
 				<string>Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.</string>
 			</dict>
+			<key>delete_data</key>
+			<dict>
+				<key>comment</key>
+				<string>Delete local and remote data</string>
+				<key>value</key>
+				<string>Delete data?</string>
+			</dict>
 			<key>delete_existing</key>
 			<dict>
 				<key>value</key>
@@ -393,7 +400,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>comment</key>
 				<string>Resets Keyn and deletes all data</string>
 				<key>value</key>
-				<string>Delete data?</string>
+				<string>Reset Keyn?</string>
 			</dict>
 			<key>reset_keyn_description</key>
 			<dict>
@@ -654,6 +661,13 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Paper backup not finished</string>
 		</dict>
+		<key>delete_data_warning</key>
+		<dict>
+			<key>comment</key>
+			<string>Alert before deleting all data</string>
+			<key>value</key>
+			<string>⚠️ This will permanently delete all local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+		</dict>
 		<key>feedback_description</key>
 		<dict>
 			<key>comment</key>
@@ -668,12 +682,32 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Feedback sent, thanks!</string>
 		</dict>
+		<key>privacy</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for privacy</string>
+			<key>value</key>
+			<string>Privacy</string>
+		</dict>
+		<key>privacy_explanation</key>
+		<dict>
+			<key>value</key>
+			<string>Sharing error and analytical data will greatly help us improving Keyn. You can read what will be shared in our privacy policy.</string>
+		</dict>
+		<key>reset_keyn_warning</key>
+		<dict>
+			<key>comment</key>
+			<string>Alert before deleting local data</string>
+			<key>value</key>
+			<string>⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.</string>
+		</dict>
 		<key>reset_warning</key>
 		<dict>
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>This will delete all Keyn's data from your phone.</string>
+			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup. 
+Deleting data will be permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
 		</dict>
 		<key>settings</key>
 		<dict>
