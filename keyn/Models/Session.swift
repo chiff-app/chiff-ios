@@ -105,12 +105,12 @@ class Session: Codable {
             response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: .add)
         case .login:
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
-            Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: ["siteName": account.site.name])
+            Logger.shared.analytics("Login response sent.", code: .loginResponse, userInfo: nil)
         case .fill:
-            Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: ["siteName": account.site.name])
+            Logger.shared.analytics("Fill password response sent.", code: .fillResponse, userInfo: nil)
             response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
         case .register:
-            Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: ["siteName": account.site.name])
+            Logger.shared.analytics("Register response sent.", code: .registrationResponse, userInfo: nil)
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .register)
         default:
             throw SessionError.unknownType
@@ -360,7 +360,7 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userID(), environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userID(), environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

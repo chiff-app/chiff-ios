@@ -33,6 +33,11 @@ enum APIEndpoint: String {
     static func subscription(for pubkey: String) -> String {
         return "\(pubkey)/subscription"
     }
+
+    // This construcs the endpoint for deleting all backup data
+    static func deleteAll(for pubkey: String) -> String {
+        return "\(pubkey)/all"
+    }
 }
 
 enum APIMethod: String {
