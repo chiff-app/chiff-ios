@@ -15,7 +15,7 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
     func sessionCreated(session: Session) {
         DispatchQueue.main.async {
             // TODO: - check if notification is still needed if delegate is
-            self.showRootController()
+            self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
         }
     }
 
@@ -33,27 +33,10 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
         }
     }
 
-    // MARK: - Private functions
-
-    private func showRootController() {
-        guard let window = UIApplication.shared.keyWindow else {
-            return
-        }
-        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-            Logger.shared.error("Unexpected root view controller type")
-            fatalError("Unexpected root view controller type")
-        }
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            DispatchQueue.main.async {
-                window.rootViewController = vc
-            }
-        })
-    }
-
     // MARK: - Actions
 
     @IBAction func tryLater(_ sender: UIButton) {
-        self.showRootController()
+        self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
     }
 
     // MARK: - Navigation
