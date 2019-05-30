@@ -87,6 +87,7 @@
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
 		49B1733A229ED29A0029FD2B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */; };
+		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
 		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
@@ -282,6 +283,7 @@
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 				492EC842224919A10088F73D /* PairingViewController.swift */,
 				49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */,
 				4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */,
+				49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */,
 			);
 			path = Initialisation;
 			sourceTree = "<group>";
@@ -1212,6 +1215,7 @@
 				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
+				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,
