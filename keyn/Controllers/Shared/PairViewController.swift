@@ -11,9 +11,15 @@ protocol PairControllerDelegate {
     func sessionCreated(session: Session)
 }
 
+protocol PairContainerDelegate {
+    func startLoading()
+    func finishLoading()
+}
+
 class PairViewController: QRViewController {
 
     var pairControllerDelegate: PairControllerDelegate!
+    var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
         guard let scheme = url.scheme, scheme == "keyn" else {
@@ -24,16 +30,20 @@ class PairViewController: QRViewController {
     }
 
     private func pair(url: URL) {
-        AuthorizationGuard.authorizePairing(url: url) { (session, error) in
+        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: {
+            self.pairContainerDelegate.startLoading()
+        }) { (session, error) in
             DispatchQueue.main.async {
+                self.pairContainerDelegate.finishLoading()
                 if let session = session {
                     self.pairControllerDelegate.sessionCreated(session: session)
                 } else if let error = error {
                     self.hideIcon()
                     switch error {
-                    case KeychainError.storeKey:
-                        Logger.shared.warning("This QR code was already scanned. Shouldn't happen here.", error: error)
-                        self.showError(message: "errors.qr_scanned_twice".localized)
+                    case is LAError, is KeychainError:
+                        if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
+                             self.showError(message: authenticationError)
+                        }
                     case SessionError.noEndpoint:
                         Logger.shared.error("There is no endpoint in the session data.", error: error)
                         self.showError(message: "errors.session_error_no_endpoint".localized)

@@ -254,7 +254,7 @@ class AuthorizationGuard {
         }
     }
 
-    static func authorizePairing(url: URL, completionHandler: @escaping (_: Session?, _: Error?) -> ()) {
+    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (_: Session?, _: Error?) -> Void) {
         guard !authorizationInProgress else {
             Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
@@ -264,8 +264,11 @@ class AuthorizationGuard {
         }
         authorizationInProgress = true
         do {
-            guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"], let os = parameters["o"] else {
+            guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
                 throw SessionError.invalid
+            }
+            guard Properties.browsers.contains(browser), Properties.systems.contains(os) else {
+                throw SessionError.unknownType
             }
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
@@ -275,6 +278,7 @@ class AuthorizationGuard {
                     AuthorizationGuard.authorizationInProgress = false
                 }
                 if context != nil {
+                    authenticationCompletionHandler?()
                     Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completion: completionHandler)
                 } else if let error = error {
                     completionHandler(nil, error)

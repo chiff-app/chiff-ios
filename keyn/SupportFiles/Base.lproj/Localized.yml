@@ -71,6 +71,8 @@ errors:
     value: Error subscribing to info notifications
   unsubscribing:
     value: Error unsubscribing to info notifications
+  deleting:
+      value: Error deleting backup data
 popups:
   questions:
     delete_corrupted:
@@ -87,6 +89,9 @@ popups:
       comment: Ask the user to delete the account
     reset_keyn:
       comment: Resets Keyn and deletes all data
+      value: Reset Keyn?
+    delete_data:
+      comment: Delete local and remote data
       value: Delete data?
     cancel_backup_description:
       comment: Tell the user he can complete the backup process later
@@ -172,12 +177,25 @@ settings:
   settings:
     value: Settings
     comment: The word for settings
+  privacy:
+    value: Privacy
+    comment: The word for privacy
+  privacy_explanation:
+    value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   feedback_description:
     comment: Description under feedback form
     value: Use this form to provide feedback :)
   reset_warning:
     comment: Description under reset Keyn
-    value: This will delete all Keyn's data from your phone.
+    value: |- 
+      Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup. 
+      Deleting data will be permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
+  reset_keyn_warning:
+    comment: Alert before deleting local data
+    value: ⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.       
+  delete_data_warning:
+    comment: Alert before deleting all data
+    value: ⚠️ This will permanently delete all local and remote data. You will not be able to restore your accounts with your paper backup!
   backup_not_finished:
     comment: Warning that the user did not finish paper backup yet
     value: Paper backup not finished
