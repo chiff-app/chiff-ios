@@ -30,6 +30,9 @@ struct Logger {
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        guard Properties.errorLogging else {
+            return
+        }
         logger.verbose(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
@@ -37,6 +40,9 @@ struct Logger {
     }
     
     func debug(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        guard Properties.errorLogging else {
+            return
+        }
         logger.debug(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
@@ -44,6 +50,9 @@ struct Logger {
     }
     
     func info(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        guard Properties.errorLogging else {
+            return
+        }
         logger.info(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
@@ -51,6 +60,9 @@ struct Logger {
     }
     
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        guard Properties.errorLogging else {
+            return
+        }
         logger.warning(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
@@ -58,6 +70,9 @@ struct Logger {
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+        guard Properties.errorLogging else {
+            return
+        }
         logger.error(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
             print(error)
@@ -65,6 +80,9 @@ struct Logger {
     }
     
     func analytics(_ message: String, code: AnalyticsMessage, userInfo providedUserInfo: [String: Any]? = nil, error: Error? = nil) {
+        guard Properties.analyticsLogging else {
+            return
+        }
         var userInfo = providedUserInfo ?? [String:Any]()
         userInfo["code"] = code.rawValue
         logger.info(message, error: getNSError(error), userInfo: userInfo)

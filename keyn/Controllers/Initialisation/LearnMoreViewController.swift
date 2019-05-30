@@ -18,7 +18,7 @@ class LearnMoreViewController: UIViewController, WKUIDelegate, WKNavigationDeleg
         super.viewDidLoad()
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        let myURL = URL(string:"https://keyn.app/faq")
+        let myURL = URL(string:"https://keyn.app/faq_raw")
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
     }

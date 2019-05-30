@@ -2966,7 +2966,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYj-7s-omF">
-                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -2982,7 +2982,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <constraints>
                             <constraint firstItem="R4b-VZ-lJ3" firstAttribute="centerX" secondItem="WLE-3O-sGT" secondAttribute="centerX" id="3Rx-Kh-lwG"/>
                             <constraint firstItem="WYj-7s-omF" firstAttribute="leading" secondItem="tGb-El-Ylv" secondAttribute="leading" id="M6V-N5-zFK"/>
-                            <constraint firstItem="WYj-7s-omF" firstAttribute="bottom" secondItem="tGb-El-Ylv" secondAttribute="bottom" id="ULc-m7-Qme"/>
+                            <constraint firstItem="WYj-7s-omF" firstAttribute="bottom" secondItem="WLE-3O-sGT" secondAttribute="bottom" id="ULc-m7-Qme"/>
                             <constraint firstItem="WYj-7s-omF" firstAttribute="trailing" secondItem="tGb-El-Ylv" secondAttribute="trailing" id="c3W-9I-RBx"/>
                             <constraint firstItem="R4b-VZ-lJ3" firstAttribute="centerY" secondItem="WLE-3O-sGT" secondAttribute="centerY" id="dzk-ys-1b3"/>
                             <constraint firstItem="WYj-7s-omF" firstAttribute="top" secondItem="tGb-El-Ylv" secondAttribute="top" id="rdj-S2-7m6"/>
@@ -2997,7 +2997,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAu-gc-nNf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3144" y="1805"/>
+            <point key="canvasLocation" x="3142.5" y="1804.2253521126761"/>
         </scene>
     </scenes>
     <resources>
