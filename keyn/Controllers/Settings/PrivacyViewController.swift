@@ -14,6 +14,13 @@ class PrivacyViewController: UITableViewController {
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
+        shareErrorSwitch.isOn = Properties.errorLogging
+        shareAnalyticsSwitch.isOn = Properties.analyticsLogging
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (tabBarController as! RootViewController).showGradient(false)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -55,11 +62,11 @@ class PrivacyViewController: UITableViewController {
     // MARK: - Actions
 
     @IBAction func toggleShareErrors(_ sender: UISwitch) {
-        // Enable / disable in userdefaults
+        Properties.errorLogging = sender.isOn
     }
 
     @IBAction func toggleShareAnalytics(_ sender: UISwitch) {
-        // Enable / disable in userdefaults
+        Properties.analyticsLogging = sender.isOn
     }
 
     @IBAction func resetKeyn(_ sender: UIButton) {
