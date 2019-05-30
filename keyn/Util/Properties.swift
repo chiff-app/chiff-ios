@@ -20,15 +20,15 @@ struct Properties {
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
-        set { UserDefaults.standard.set(true, forKey: questionnaireDirPurgedFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: questionnaireDirPurgedFlag) }
     }
     static var errorLogging: Bool {
         get { return UserDefaults.standard.bool(forKey: errorLoggingFlag) }
-        set { UserDefaults.standard.set(true, forKey: errorLoggingFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: errorLoggingFlag) }
     }
     static var analyticsLogging: Bool {
         get { return UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
-        set { UserDefaults.standard.set(true, forKey: analyticsLoggingFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag) }
     }
 
     static var deniedPushNotifications = false

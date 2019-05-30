@@ -148,6 +148,8 @@ struct KeynPairingResponse: Codable {
     let environment: String
     let accounts: AccountList
     let type: KeynMessageType
+    let errorLogging: Bool
+    let analyticsLogging: Bool
 }
 
 /*
