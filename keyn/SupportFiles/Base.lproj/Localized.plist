@@ -158,6 +158,11 @@
 			<key>value</key>
 			<string>Error deleting URL</string>
 		</dict>
+		<key>deleting</key>
+		<dict>
+			<key>value</key>
+			<string>Error deleting backup data</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
@@ -692,7 +697,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>privacy_explanation</key>
 		<dict>
 			<key>value</key>
-			<string>Sharing error and analytical data will greatly help us improving Keyn. You can read what will be shared in our privacy policy.</string>
+			<string>Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.</string>
 		</dict>
 		<key>reset_keyn_warning</key>
 		<dict>

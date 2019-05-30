@@ -85,9 +85,16 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.delete_data".localized, message: "settings.delete_data_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            self.deleteLocalData()
-            // TODO: Delete data remotely
-            Logger.shared.analytics("Keyn reset.", code: .keynReset)
+            BackupManager.shared.deleteAllAccounts() { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self.showError(message: "\("errors.deleting".localized): \(error)")
+                    } else {
+                        self.deleteLocalData()
+                    }
+                }
+            }
+            Logger.shared.analytics("Keyn data deleted.", code: .keynDeleteAll)
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))

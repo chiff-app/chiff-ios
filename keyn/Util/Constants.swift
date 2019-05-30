@@ -20,6 +20,7 @@ enum AnalyticsMessage: String {
     case deleteAccount = "DELETE_ACCOUNT"
     case backupCompleted = "BACKUP_COMPLETED"
     case keynReset = "KEYN_RESET"
+    case keynDeleteAll = "DELETE_ALL"
     case passwordCopy = "PASSWORD_COPY"
     case requestDenied = "REQUEST_DENIED"
     case siteReported = "SITE_REPORTED"

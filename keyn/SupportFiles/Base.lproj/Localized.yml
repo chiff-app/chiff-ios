@@ -71,6 +71,8 @@ errors:
     value: Error subscribing to info notifications
   unsubscribing:
     value: Error unsubscribing to info notifications
+  deleting:
+      value: Error deleting backup data
 popups:
   questions:
     delete_corrupted:
@@ -179,7 +181,7 @@ settings:
     value: Privacy
     comment: The word for privacy
   privacy_explanation:
-    value: Sharing error and analytical data will greatly help us improving Keyn. You can read what will be shared in our privacy policy.
+    value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   feedback_description:
     comment: Description under feedback form
     value: Use this form to provide feedback :)
