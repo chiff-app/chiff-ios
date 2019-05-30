@@ -45,7 +45,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
 
-        navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.white, .font: UIFont.primaryBold!], for: UIControl.State.normal)
+        navigationItem.leftBarButtonItem?.setColor(color: .white)
     }
 
     // MARK: - UITextFieldDelegate

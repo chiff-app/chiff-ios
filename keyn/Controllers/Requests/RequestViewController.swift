@@ -62,10 +62,7 @@ class RequestViewController: UIViewController {
             case .login:
                 successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .addAndLogin:
-                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .add, .addToExisting:
+            case .add, .addToExisting, .addAndLogin:
                 successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             case .addBulk:

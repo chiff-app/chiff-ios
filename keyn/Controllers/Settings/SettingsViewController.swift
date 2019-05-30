@@ -34,29 +34,28 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 0 ? securityFooterText : "settings.reset_warning".localized
+        return section == 0 ? securityFooterText : nil
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section == 0 else {
-            return
-        }
-
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = "settings.settings".localized
+        header.textLabel?.text = section == 0 ? "settings.settings".localized : nil
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard section == 0 else {
+            return
+        }
         let footer = view as! UITableViewHeaderFooterView
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = section == 0 ? securityFooterText : "settings.reset_warning".localized
+        footer.textLabel?.text = section == 0 ? securityFooterText : nil
         footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
@@ -98,22 +97,6 @@ class SettingsViewController: UITableViewController {
         if let rootController = tabBarController as? RootViewController {
             rootController.setBadge(completed: completed)
         }
-    }
-    
-    @IBAction func resetKeyn(_ sender: UIButton) {
-        let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_warning".localized, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            Session.deleteAll()
-            Account.deleteAll()
-            try? Seed.delete()
-            NotificationManager.shared.deleteEndpoint()
-            BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics("Keyn reset.", code: .keynReset)
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-        }))
-        self.present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Private

@@ -94,10 +94,13 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
         if let cell = cell as? DevicesViewCell {
             let session = sessions[indexPath.row]
+            guard Properties.browsers.contains(session.browser) else {
+                Logger.shared.warning("Unknown browser")
+                return cell
+            }
             cell.titleLabel.text = "\(session.browser) on \(session.os)"
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-            cell.deviceLogo.image = UIImage(named: session.browser)
-//            cell.deleteButton.addTarget(self, action: #selector(deleteDevice(_:)), for: .touchUpInside)
+            cell.deviceLogo.image = UIImage(named: session.browser.lowercased())
         }
         return cell
     }
