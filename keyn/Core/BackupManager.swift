@@ -84,6 +84,21 @@ struct BackupManager {
             }
         }
     }
+
+    func deleteAllAccounts(completionHandler: @escaping (_ error: Error?) -> Void) {
+        do {
+            API.shared.signedRequest(endpoint: .backup, method: .delete, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey()) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("BackupManager cannot delete account.", error: error)
+                    completionHandler(error)
+                } else {
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            completionHandler(error)
+        }
+    }
     
     func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (_ error: Error?) -> Void) throws {
         var pubKey: String
