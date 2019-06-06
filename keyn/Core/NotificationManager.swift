@@ -13,6 +13,7 @@ struct NotificationManager {
         static let token = "token"
         static let endpoint = "endpoint"
         static let arn = "arn"
+        static let os = "os"
     }
 
 
@@ -53,7 +54,8 @@ struct NotificationManager {
 
     func updateEndpoint(token: String, pubKey: String, endpoint: String?) throws {
         var message = [
-            MessageIdentifier.token: token
+            MessageIdentifier.token: token,
+            MessageIdentifier.os: "ios"
         ]
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint
