@@ -18,6 +18,7 @@ class PasswordGeneratorTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        TestHelper.deleteLocalData()
     }
     
     func testGeneratePasswordShouldReturnPassword() throws {
