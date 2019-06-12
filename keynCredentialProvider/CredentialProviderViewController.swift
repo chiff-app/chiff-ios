@@ -73,7 +73,6 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-        //        cell.contentView.layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
         return cell
