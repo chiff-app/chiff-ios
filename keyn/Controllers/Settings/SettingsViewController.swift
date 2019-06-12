@@ -18,7 +18,7 @@ class SettingsViewController: UITableViewController {
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
-        notificationSettingSwitch.isOn = NotificationManager.shared.isSubscribed
+        notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,8 +71,10 @@ class SettingsViewController: UITableViewController {
         if sender.isOn {
             NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
                 DispatchQueue.main.async {
+                    let subscribed = NotificationManager.shared.isSubscribed
+                    Properties.infoNotifications = subscribed ? .yes : .no
                     if let error = error {
-                        sender.isOn = NotificationManager.shared.isSubscribed
+                        sender.isOn = subscribed
                         self.showError(message: "\("errors.subscribing".localized): \(error)")
                     }
                     sender.isUserInteractionEnabled = true
@@ -81,8 +83,10 @@ class SettingsViewController: UITableViewController {
         } else {
             NotificationManager.shared.unsubscribe() { error in
                 DispatchQueue.main.async {
+                    let subscribed = NotificationManager.shared.isSubscribed
+                    Properties.infoNotifications = subscribed ? .yes : .no
                     if let error = error {
-                        sender.isOn = NotificationManager.shared.isSubscribed
+                        sender.isOn = subscribed
                         self.showError(message: "\("errors.unsubscribing".localized): \(error)")
                     }
                     sender.isUserInteractionEnabled = true
