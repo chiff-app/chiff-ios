@@ -262,13 +262,16 @@ class PasswordValidator {
     }
 
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-        var occurences = 0
-        for character in password {
-            if characterSet.contains(character) {
-                occurences += 1
-            }
-        }
-        return occurences
+//        var occurences = 0
+//        for character in password {
+//            if characterSet.contains(character) {
+//                occurences += 1
+//            }
+//        }
+//        return occurences
+        return password.reduce(0, { (result, char) -> Int in
+            return characterSet.contains(char) ? result + 1 : result
+        })
     }
 
 }

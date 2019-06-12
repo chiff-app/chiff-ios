@@ -55,7 +55,7 @@ class TestHelper {
     }
 
     static func createSeed() {
-        try? Seed.delete()
+        deleteLocalData()
         let seed = base64seed.fromBase64!
         let passwordSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
         let backupSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
@@ -74,4 +74,13 @@ class TestHelper {
             return "\(keychainService.rawValue).\(self.rawValue)"
         }
     }
+
+    static func deleteLocalData() {
+        Session.deleteAll()
+        Account.deleteAll()
+        try? Seed.delete()
+        NotificationManager.shared.deleteEndpoint()
+        BackupManager.shared.deleteAllKeys()
+    }
+
 }
