@@ -54,6 +54,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
+        print(Properties.infoNotifications)
+        if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
+            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
+                Properties.infoNotifications = error == nil ? .yes : .no
+            }
+        }
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

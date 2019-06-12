@@ -107,6 +107,7 @@ class PrivacyViewController: UITableViewController {
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         BackupManager.shared.deleteAllKeys()
+        Properties.purgePreferences()
     }
 
 }

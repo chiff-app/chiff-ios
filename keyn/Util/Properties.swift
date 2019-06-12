@@ -4,6 +4,12 @@
  */
 import Foundation
 
+enum InfoNotificationStatus: Int {
+    case notDecided
+    case yes
+    case no
+}
+
 struct Properties {
 
     init() {}
@@ -17,6 +23,7 @@ struct Properties {
     static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
+    static private let infoNotificationsFlag = "infoNotifications"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -29,6 +36,16 @@ struct Properties {
     static var analyticsLogging: Bool {
         get { return UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
         set { UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag) }
+    }
+    static var infoNotifications: InfoNotificationStatus {
+        get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
+    }
+
+    static func purgePreferences() {
+        UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
+        UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
+        UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
     }
 
     static var deniedPushNotifications = false

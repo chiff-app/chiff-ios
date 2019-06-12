@@ -138,7 +138,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                 self.showError(message: "errors.seed_restore".localized)
                                 self.activityViewContainer.isHidden = true
                             } else {
-                                self.showRootController()
+                                self.registerForPushNotifications()
                             }
                         }
                     }
@@ -226,6 +226,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             }
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func registerForPushNotifications() {
+        AppDelegate.startupService.registerForPushNotifications() { result in
+            DispatchQueue.main.async {
+                if result {
+                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
+                }
+                self.showRootController()
+            }
+        }
     }
 
 }
