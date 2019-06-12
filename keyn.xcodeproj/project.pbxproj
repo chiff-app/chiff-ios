@@ -78,6 +78,7 @@
 		497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */; };
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
+		498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498FF17B22B0F3490072C3AE /* TabBarGradient.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
@@ -274,6 +275,7 @@
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
+		498FF17B22B0F3490072C3AE /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 			isa = PBXGroup;
 			children = (
 				611F4B4A2146B47300B35A89 /* MainInterface.storyboard */,
+				498FF17B22B0F3490072C3AE /* TabBarGradient.swift */,
 				611F4B4D2146B47300B35A89 /* Info.plist */,
 				611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */,
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
@@ -1289,6 +1292,7 @@
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
+				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
 				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
