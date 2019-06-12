@@ -60,7 +60,7 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row >= 1 {
+        if (indexPath.section == 0 && indexPath.row >= 1) || indexPath.section == 1 {
             cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
         }
     }
