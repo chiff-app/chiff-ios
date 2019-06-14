@@ -20,10 +20,15 @@ class PasswordGenerator {
     let siteId: String
     let ppd: PPD?
     let authenticationContext: LAContext?
+    let characters: [Character]
 
-    var characters: [Character] {
+    init(username: String, siteId: String, ppd: PPD?, context: LAContext?) {
+        self.username = username
+        self.siteId = siteId
+        self.ppd = ppd
+        self.authenticationContext = context
         if let characterSets = ppd?.characterSets {
-            return characterSets.reduce([Character](), { (result, characterSet) -> [Character] in
+            self.characters = characterSets.reduce([Character](), { (result, characterSet) -> [Character] in
                 if let characters = characterSet.characters {
                     return result + characters.sorted()
                 } else {
@@ -31,15 +36,8 @@ class PasswordGenerator {
                 }
             })
         } else {
-            return PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
+            self.characters = PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
         }
-    }
-
-    init(username: String, siteId: String, ppd: PPD?, context: LAContext?) {
-        self.username = username
-        self.siteId = siteId
-        self.ppd = ppd
-        self.authenticationContext = context
     }
 
     func generate(index passwordIndex: Int, offset: [Int]?) throws -> (String, Int) {
@@ -123,7 +121,6 @@ class PasswordGenerator {
 
         let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(context: authenticationContext), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(username.sha256.prefix(8)), index: UInt64(passwordIndex))
-
         return key
     }
 
