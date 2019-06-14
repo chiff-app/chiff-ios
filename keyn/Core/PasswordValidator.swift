@@ -174,7 +174,7 @@ class PasswordValidator {
         var counter = 1
 
         for value in password.utf8 {
-            if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) {
+            if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) { // TODO: Shouldn't this be characters instead of OPTIMAL_CHARACTER_SET?
                 counter += 1
             } else {
                 counter = 1
@@ -262,16 +262,7 @@ class PasswordValidator {
     }
 
     private func countCharacterOccurences(password: String, characterSet: String) -> Int {
-//        var occurences = 0
-//        for character in password {
-//            if characterSet.contains(character) {
-//                occurences += 1
-//            }
-//        }
-//        return occurences
-        return password.reduce(0, { (result, char) -> Int in
-            return characterSet.contains(char) ? result + 1 : result
-        })
+        return password.reduce(0, { characterSet.contains($1) ? $0 + 1 : $0 })
     }
 
 }
