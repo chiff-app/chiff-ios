@@ -51,6 +51,9 @@
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
+		4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262F22BBA2FC00545118 /* BackupCircle.swift */; };
+		4950263222BBA31200545118 /* FilledCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950263122BBA31200545118 /* FilledCircle.swift */; };
 		495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
 		495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
@@ -256,6 +259,9 @@
 		4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
+		4950262D22BBA2DC00545118 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		4950262F22BBA2FC00545118 /* BackupCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCircle.swift; sourceTree = "<group>"; };
+		4950263122BBA31200545118 /* FilledCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledCircle.swift; sourceTree = "<group>"; };
 		495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynNavigationController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
@@ -460,6 +466,19 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		4950262C22BBA29400545118 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				49E4A1E622425904005E8EBF /* KeynButton.swift */,
+				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
+				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
+				4950262D22BBA2DC00545118 /* CircleView.swift */,
+				4950262F22BBA2FC00545118 /* BackupCircle.swift */,
+				4950263122BBA31200545118 /* FilledCircle.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		495E72B9221186DA003132ED /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,9 +531,6 @@
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
 				6105598B1FDC41C30030F871 /* Initialisation.storyboard */,
 				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
-				49E4A1E622425904005E8EBF /* KeynButton.swift */,
-				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
-				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -573,6 +589,7 @@
 				49F2A106221434C600429875 /* SupportFiles */,
 				495E72B9221186DA003132ED /* Util */,
 				499BE4F91FC0953C001038DF /* UI */,
+				4950262C22BBA29400545118 /* Views */,
 			);
 			path = keyn;
 			sourceTree = "<group>";
@@ -1182,6 +1199,7 @@
 				4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
+				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
@@ -1203,6 +1221,7 @@
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */,
+				4950263222BBA31200545118 /* FilledCircle.swift in Sources */,
 				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
@@ -1230,6 +1249,7 @@
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
+				4950262E22BBA2DC00545118 /* CircleView.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,

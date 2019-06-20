@@ -10,11 +10,11 @@ class BackupWizardViewController: UIViewController {
     @IBOutlet weak var counterLabel: UILabel!
     @IBOutlet weak var backupCircle: BackupCircle!
 
-    var mnemonic: [String]?
+    var mnemonic: [String]!
     var counter: Int = 0 {
         didSet {
             counterLabel.text = "\(counter + 1) / \(mnemonic!.count)"
-            backupCircle.animateCircle(from: CGFloat(oldValue + 1), to: CGFloat(counter + 1))
+            backupCircle.animateCircle(from: CGFloat(oldValue + 1) / CGFloat(mnemonic.count), to: CGFloat(counter + 1) / CGFloat(mnemonic.count))
         }
     }
 
@@ -37,7 +37,7 @@ class BackupWizardViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        backupCircle.addCircles()
+        backupCircle.draw(color: UIColor.white.cgColor, backgroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor, initialPosition: 1.0 / 12)
     }
 
     // MARK: - Actions
@@ -87,63 +87,63 @@ class BackupWizardViewController: UIViewController {
 
 }
 
-class BackupCircle: UIView {
-
-    var circleLayer: CAShapeLayer!
-    var backgroundCircleLayer: CAShapeLayer!
-    var isInitialized: Bool {
-        return circleLayer != nil
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    func addCircles() {
-        guard circleLayer == nil else {
-            return
-        }
-        let radius = bounds.width
-        let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
-        let circlePath = UIBezierPath(arcCenter: center, radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle:CGFloat(3 * Double.pi / 2), clockwise: true)
-
-        circleLayer = CAShapeLayer()
-        circleLayer.path = circlePath.cgPath
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.white.cgColor
-        circleLayer.strokeStart = 0.0
-        circleLayer.strokeEnd = 1.0 / 12
-        circleLayer.lineWidth = 8
-
-        backgroundCircleLayer = CAShapeLayer()
-        backgroundCircleLayer.path = circlePath.cgPath
-        backgroundCircleLayer.fillColor = UIColor.clear.cgColor
-        backgroundCircleLayer.strokeColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor
-        backgroundCircleLayer.strokeStart = 0.0
-        backgroundCircleLayer.strokeEnd = 1.0
-        backgroundCircleLayer.lineWidth = 8
-
-        layer.addSublayer(backgroundCircleLayer)
-        layer.addSublayer(circleLayer)
-    }
-
-
-    func animateCircle(from origin: CGFloat, to destination: CGFloat) {
-        guard circleLayer != nil else {
-            print("Circlelayer not initialized yet")
-            return
-        }
-        CATransaction.begin()
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = 0.2
-        circleLayer.strokeStart = 0
-        circleLayer.strokeEnd = destination / 12
-        animation.fromValue = origin / 12
-        animation.toValue = destination / 12
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        animation.isRemovedOnCompletion = false
-        circleLayer.add(animation, forKey: "animateCircle")
-        CATransaction.commit()
-    }
-
-}
+//class BackupCirclez: UIView {
+//
+//    var circleLayer: CAShapeLayer!
+//    var backgroundCircleLayer: CAShapeLayer!
+//    var isInitialized: Bool {
+//        return circleLayer != nil
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
+//
+//    func addCircles(start: CGFloat? = nil) {
+//        guard circleLayer == nil else {
+//            return
+//        }
+//        let radius = bounds.width
+//        let center = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
+//        let circlePath = UIBezierPath(arcCenter: center, radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle:CGFloat(3 * Double.pi / 2), clockwise: true)
+//
+//        circleLayer = CAShapeLayer()
+//        circleLayer.path = circlePath.cgPath
+//        circleLayer.fillColor = UIColor.clear.cgColor
+//        circleLayer.strokeColor = UIColor.white.cgColor
+//        circleLayer.strokeStart = 0.0
+//        circleLayer.strokeEnd = start ?? 1.0 / 12
+//        circleLayer.lineWidth = 8
+//
+//        backgroundCircleLayer = CAShapeLayer()
+//        backgroundCircleLayer.path = circlePath.cgPath
+//        backgroundCircleLayer.fillColor = UIColor.clear.cgColor
+//        backgroundCircleLayer.strokeColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor
+//        backgroundCircleLayer.strokeStart = 0.0
+//        backgroundCircleLayer.strokeEnd = 1.0
+//        backgroundCircleLayer.lineWidth = 8
+//
+//        layer.addSublayer(backgroundCircleLayer)
+//        layer.addSublayer(circleLayer)
+//    }
+//
+//
+//    func animateCircle(from origin: CGFloat, to destination: CGFloat) {
+//        guard circleLayer != nil else {
+//            print("Circlelayer not initialized yet")
+//            return
+//        }
+//        CATransaction.begin()
+//        let animation = CABasicAnimation(keyPath: "strokeEnd")
+//        animation.duration = 0.2
+//        circleLayer.strokeStart = 0
+//        circleLayer.strokeEnd = destination / 12
+//        animation.fromValue = origin / 12
+//        animation.toValue = destination / 12
+//        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+//        animation.isRemovedOnCompletion = false
+//        circleLayer.add(animation, forKey: "animateCircle")
+//        CATransaction.commit()
+//    }
+//
+//}
