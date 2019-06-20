@@ -154,7 +154,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="3DF-Qg-YUb">
-                                                    <rect key="frame" x="16" y="0.0" width="260" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="264" height="43.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOU-TV-zuq">
                                                             <rect key="frame" x="0.0" y="0.0" width="75" height="43.5"/>
@@ -166,7 +166,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="Elj-VJ-Plw">
-                                                            <rect key="frame" x="112" y="0.0" width="148" height="43.5"/>
+                                                            <rect key="frame" x="112" y="0.0" width="152" height="43.5"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
@@ -174,12 +174,12 @@
                                                     </subviews>
                                                 </stackView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeR-JP-bY6">
-                                                    <rect key="frame" x="276" y="0.0" width="44" height="43.5"/>
+                                                    <rect key="frame" x="280" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="x5k-LQ-CFn"/>
+                                                        <constraint firstAttribute="width" constant="40" id="x5k-LQ-CFn"/>
                                                     </constraints>
                                                     <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <inset key="imageEdgeInsets" minX="10" minY="12" maxX="10" maxY="12"/>
+                                                    <inset key="imageEdgeInsets" minX="6" minY="12" maxX="10" maxY="12"/>
                                                     <state key="normal" image="eye_logo"/>
                                                     <connections>
                                                         <action selector="showPassword:" destination="UWD-YS-l0e" eventType="touchUpInside" id="Ozj-j1-nzD"/>
