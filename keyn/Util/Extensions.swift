@@ -5,6 +5,7 @@
 import UIKit
 import Sodium
 import UserNotifications
+import OneTimePassword
 
 // MARK: - Primitive extensions
 
@@ -160,6 +161,12 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
+}
+
+extension Token {
+    var currentPasswordSpaced: String? {
+        return self.currentPassword?.components(withLength: 3).joined(separator: " ")
+    }
 }
 
 // MARK: - UIExtensions
