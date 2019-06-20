@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "eye_logo_off.pdf",
+      "filename" : "eye_off.pdf",
       "scale" : "1x"
     },
     {
@@ -17,5 +17,9 @@
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template",
+    "preserves-vector-representation" : true
   }
 }

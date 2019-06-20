@@ -60,7 +60,7 @@ class CircleView: UIView, Circle {
     }
 
     func removeCircleAnimation() {
-        circleLayer.removeAllAnimations()
+        circleLayer?.removeAllAnimations()
     }
 
     func startCircleAnimation(duration: TimeInterval, start: TimeInterval) {

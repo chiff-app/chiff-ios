@@ -27,7 +27,7 @@ class FilledCircle: CircleView {
         circleLayer = CAShapeLayer()
         circleLayer.path = circlePath.cgPath
         circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.lightGray.cgColor
+        circleLayer.strokeColor = color
         circleLayer.strokeStart = 0.0
         circleLayer.strokeEnd = initialPosition
         circleLayer.lineWidth = CGFloat(radius)

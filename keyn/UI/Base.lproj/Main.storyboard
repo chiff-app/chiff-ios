@@ -178,6 +178,8 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="x5k-LQ-CFn"/>
                                                     </constraints>
+                                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <inset key="imageEdgeInsets" minX="10" minY="12" maxX="10" maxY="12"/>
                                                     <state key="normal" image="eye_logo"/>
                                                     <connections>
                                                         <action selector="showPassword:" destination="UWD-YS-l0e" eventType="touchUpInside" id="Ozj-j1-nzD"/>
@@ -226,6 +228,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lql-km-Qfu">
                                                     <rect key="frame" x="276" y="0.0" width="44" height="43.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="bJ1-yd-KjI"/>
                                                     </constraints>
@@ -3013,7 +3016,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="desktop_login" width="105" height="67"/>
         <image name="desktop_popup" width="105" height="67"/>
         <image name="devices_tab" width="30" height="23"/>
-        <image name="eye_logo" width="20" height="14"/>
+        <image name="eye_logo" width="50" height="43"/>
         <image name="fingerprint" width="50" height="55"/>
         <image name="key_lock" width="80" height="47"/>
         <image name="lock_small" width="10" height="13"/>

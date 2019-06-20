@@ -34,6 +34,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="pGa-XV-5IX"/>
                                 </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="fingerprint">
                                     <color key="titleColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -58,6 +59,9 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="wwh-dI-pS2">
                                                 <rect key="frame" x="38" y="0.0" width="80" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="hbI-90-4vC"/>
+                                                </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login succesful" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lj-bF-tr1">
                                                 <rect key="frame" x="4.5" y="88" width="147" height="22"/>
@@ -107,6 +111,8 @@
                         <viewLayoutGuide key="safeArea" id="qKc-Qi-ftw"/>
                     </view>
                     <connections>
+                        <outlet property="authenticateButton" destination="J0B-1e-Apk" id="Onl-y7-Lnr"/>
+                        <outlet property="checkmarkHeightContstraint" destination="hbI-90-4vC" id="bcd-zo-18U"/>
                         <outlet property="requestLabel" destination="qAm-BS-Rbr" id="91F-kb-EA0"/>
                         <outlet property="successTextDetailLabel" destination="JAm-QA-UvP" id="BIO-3y-DIb"/>
                         <outlet property="successTextLabel" destination="9Lj-bF-tr1" id="Dwm-B4-17R"/>
