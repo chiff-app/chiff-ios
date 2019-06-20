@@ -8,7 +8,7 @@ import LocalAuthentication
 class RequestViewController: UIViewController {
 
     @IBOutlet weak var requestLabel: UILabel!
-    @IBOutlet weak var successView: UIStackView!
+    @IBOutlet weak var successView: BackupCircle!
     @IBOutlet weak var successTextLabel: UILabel!
     @IBOutlet weak var successTextDetailLabel: UILabel!
 
@@ -43,18 +43,28 @@ class RequestViewController: UIViewController {
     // MARK: - Private functions
 
     private func acceptRequest() {
-        authorizationGuard.acceptRequest { error in
+        authorizationGuard.acceptRequest { account, error in
             DispatchQueue.main.async {
                 if let error = error {
                     if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                         self.showError(message: errorMessage)
                         Logger.shared.error("Error authorizing request", error: error)
                     }
+                } else if let account = account, account.hasOtp() {
+                    self.showOtp(for: account)
                 } else {
                     self.success()
                 }
             }
         }
+    }
+
+    private func showOtp(for account: Account) {
+        requestLabel.text = ""
+//        successView.add
+//        successView.addCircles(start: 0.3)
+        successTextDetailLabel.text = "Enter your one-time password"
+        self.showSuccessView()
     }
 
     private func success() {
@@ -77,14 +87,18 @@ class RequestViewController: UIViewController {
             default:
                 requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
-        self.successView.alpha = 0.0
-        self.successView.isHidden = false
-        self.authorized = true
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
+        self.showSuccessView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.dismiss(animated: true, completion: nil)
             AuthenticationGuard.shared.hideLockWindow()
         }
+    }
+
+    private func showSuccessView() {
+        self.successView.alpha = 0.0
+        self.successView.isHidden = false
+        self.authorized = true
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
     }
 
     // MARK: - Actions
