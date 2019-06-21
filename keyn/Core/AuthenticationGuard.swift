@@ -86,7 +86,7 @@ class AuthenticationGuard {
                 if let error = error {
                     throw error
                 }
-                let accounts = try Account.all(context: context)
+                let accounts = try Account.all(context: context, sync: true)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()

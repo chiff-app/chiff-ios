@@ -89,8 +89,7 @@ class CircleView: UIView, Circle {
         circleLayer.add(animation, forKey: "animateCircle")
     }
 
-    func draw(color: CGColor, backgroundColor: CGColor, radius: CGFloat? = nil, initialPosition: CGFloat = 0
-    ) {
+    func draw(color: CGColor, backgroundColor: CGColor, radius: CGFloat? = nil, initialPosition: CGFloat = 0) {
         drawBackground(radius: radius ?? bounds.width / 2, color: backgroundColor)
         drawCircle(radius: radius ?? bounds.width / 2, color: color, initialPosition: initialPosition)
     }

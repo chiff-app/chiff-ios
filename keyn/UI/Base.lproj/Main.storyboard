@@ -318,6 +318,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="w1v-8M-rha"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="showPasswordButton" destination="CeR-JP-bY6" id="PaS-Z2-H4U"/>
                         <outlet property="totpLoader" destination="Lql-km-Qfu" id="0GC-dm-QMU"/>
                         <outlet property="totpLoaderWidthConstraint" destination="bJ1-yd-KjI" id="Z11-RW-sRy"/>
                         <outlet property="userCodeCell" destination="wil-ge-7VV" id="Xfq-mB-Hkm"/>
@@ -325,7 +326,7 @@
                         <outlet property="userNameTextField" destination="n3L-Py-LkS" id="dsU-Vq-a5u"/>
                         <outlet property="userPasswordTextField" destination="Elj-VJ-Plw" id="CLY-7V-LzK"/>
                         <outlet property="websiteNameTextField" destination="xRz-I8-dK4" id="XH6-ya-cM0"/>
-                        <outlet property="websiteURLTextField" destination="Pvp-cj-ASL" id="w3m-fi-lzJ"/>
+                        <outlet property="websiteURLTextField" destination="Pvp-cj-ASL" id="ws8-1W-TeA"/>
                         <segue destination="ibN-3J-G1l" kind="unwind" identifier="DeleteAccount" unwindAction="unwindToAccountOverviewWithSender:" id="b7Y-kV-lyj"/>
                         <segue destination="kL3-Yo-Ehz" kind="show" identifier="showQR" id="xrO-JS-RqG"/>
                         <segue destination="TIy-U7-kcu" kind="show" identifier="ShowSiteOverview" id="VVV-gB-F3x"/>
@@ -689,7 +690,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="37" translatesAutoresizingMaskIntoConstraints="NO" id="wbk-vr-Inh">
-                                                    <rect key="frame" x="16" y="0.0" width="260" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="264" height="43.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzL-n9-IOh">
                                                             <rect key="frame" x="0.0" y="0.0" width="75" height="43.5"/>
@@ -701,7 +702,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6JE-Jy-rlX">
-                                                            <rect key="frame" x="112" y="0.0" width="148" height="43.5"/>
+                                                            <rect key="frame" x="112" y="0.0" width="152" height="43.5"/>
                                                             <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
@@ -709,10 +710,12 @@
                                                     </subviews>
                                                 </stackView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cS5-fw-3OX">
-                                                    <rect key="frame" x="276" y="0.0" width="44" height="43.5"/>
+                                                    <rect key="frame" x="280" y="0.0" width="40" height="43.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="44" id="ZAa-JO-bFl"/>
+                                                        <constraint firstAttribute="width" constant="40" id="ZAa-JO-bFl"/>
                                                     </constraints>
+                                                    <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <inset key="imageEdgeInsets" minX="6" minY="12" maxX="10" maxY="12"/>
                                                     <state key="normal" image="eye_logo"/>
                                                     <connections>
                                                         <action selector="showPassword:" destination="UWD-YS-l0e" eventType="touchUpInside" id="EO0-h6-0Qc"/>

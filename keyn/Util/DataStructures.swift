@@ -185,6 +185,32 @@ struct JSONSite: Codable {
     }
 }
 
+struct BackupAccount: Codable {
+    let id: String
+    var username: String
+    var sites: [Site]
+    var passwordIndex: Int
+    var lastPasswordUpdateTryIndex: Int
+    var passwordOffset: [Int]?
+    var askToLogin: Bool?
+    var askToChange: Bool?
+    var tokenURL: URL?
+    var tokenSecret: Data?
+
+    init(account: Account, tokenURL: URL?, tokenSecret: Data?) {
+        self.id = account.id
+        self.username = account.username
+        self.sites = account.sites
+        self.passwordIndex = account.passwordIndex
+        self.lastPasswordUpdateTryIndex = account.lastPasswordUpdateTryIndex
+        self.passwordOffset = account.passwordOffset
+        self.askToLogin = account.askToLogin
+        self.askToChange = account.askToChange
+        self.tokenURL = tokenURL
+        self.tokenSecret = tokenSecret
+    }
+}
+
 struct KeynCredentialsResponse: Codable {
     let u: String?          // Username
     let p: String?          // Password
