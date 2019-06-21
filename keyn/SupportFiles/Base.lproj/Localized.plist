@@ -694,6 +694,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Privacy</string>
 		</dict>
+		<key>privacy_beta_explanation</key>
+		<dict>
+			<key>value</key>
+			<string>Usage statistics are shared automatically if you join the public beta. You can read more about it in our privacy policy and the terms and conditions of Testflight.</string>
+		</dict>
 		<key>privacy_explanation</key>
 		<dict>
 			<key>value</key>

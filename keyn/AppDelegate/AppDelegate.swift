@@ -11,6 +11,13 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static let shared: AppDelegate = {
+        UIApplication.shared.delegate as! AppDelegate
+    }()
+    static let startupService: AppStartupService = {
+        shared.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
+    }()
+
     enum Service {
         case appStartup
         case migration

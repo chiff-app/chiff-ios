@@ -31,12 +31,9 @@ class InitialisationViewController: UIViewController {
     // MARK: - Private functions
 
     private func registerForPushNotifications() {
-        let appDelegate = UIApplication.shared.delegate! as! AppDelegate
-        let startupService = appDelegate.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
-        startupService.registerForPushNotifications() { result in
+        AppDelegate.startupService.registerForPushNotifications() { result in
             DispatchQueue.main.async {
                 if result {
-                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
                     self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
                 } else {
                     // TODO: Present warning vc, then continue to showRootVC

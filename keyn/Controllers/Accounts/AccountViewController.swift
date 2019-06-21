@@ -26,7 +26,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var editingMode: Bool = false
     var otpCodeTimer: Timer?
     var token: Token?
-    var loadingCircle: LoadingCircle?
+    var loadingCircle: FilledCircle?
 
     var password: String? {
         return try? account.password()
@@ -344,31 +344,33 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             totpLoaderWidthConstraint.constant = UITableViewCell.defaultHeight
             userCodeCell.updateConstraints()
             userCodeCell.accessoryView = nil
-            userCodeTextField.text = token.currentPassword
+            userCodeTextField.text = token.currentPasswordSpaced
             switch token.generator.factor {
             case .counter(_):
-                let button = UIButton(frame: CGRect(x: 10, y: 10, width: 24, height: 24))
+                let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+                button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
                 button.setImage(UIImage(named: "refresh"), for: .normal)
                 button.imageView?.contentMode = .scaleAspectFit
                 button.addTarget(self, action: #selector(self.updateHOTP), for: .touchUpInside)
                 totpLoader.addSubview(button)
             case .timer(let period):
                 let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
-                loadingCircle?.removeAnimations()
+                loadingCircle?.removeCircleAnimation()
                 totpLoader.subviews.forEach { $0.removeFromSuperview() }
-                self.loadingCircle = LoadingCircle()
+                self.loadingCircle = FilledCircle(frame: CGRect(x: 12, y: 12, width: 20, height: 20))
+                loadingCircle?.draw(color: UIColor.primary.cgColor, backgroundColor: UIColor.primary.cgColor)
                 totpLoader.addSubview(self.loadingCircle!)
                 self.otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
-                    self.userCodeTextField.text = token.currentPassword
+                    self.userCodeTextField.text = token.currentPasswordSpaced
                     self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
                 })
-                loadingCircle!.animateCircle(duration: period, start: start)
+                loadingCircle!.startCircleAnimation(duration: period, start: start)
             }
         } else {
             userCodeTextField.text = ""
             otpCodeTimer?.invalidate()
             qrEnabled = true
-            loadingCircle?.removeAnimations()
+            loadingCircle?.removeCircleAnimation()
             totpLoader.subviews.forEach { $0.removeFromSuperview() }
             totpLoaderWidthConstraint.constant = 0
             userCodeCell.updateConstraints()
@@ -381,12 +383,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         if let token = token?.updatedToken() {
             self.token = token
             try? account.setOtp(token: token)
-            userCodeTextField.text = token.currentPassword
+            userCodeTextField.text = token.currentPasswordSpaced
         }
     }
     
     @objc func updateTOTP() {
-        userCodeTextField.text = token?.currentPassword ?? ""
+        userCodeTextField.text = token?.currentPasswordSpaced ?? ""
     }
 
     // MARK: - Navigation
@@ -410,75 +412,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             }
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
-            self.loadingCircle?.removeAnimations()
+            self.loadingCircle?.removeCircleAnimation()
             destination.account = account
         } else if segue.identifier == "ShowSiteOverview", let destination = segue.destination as? SiteTableViewController {
             destination.account = account
             destination.delegate = self
         }
     }
-}
-
-class LoadingCircle: UIView {
-
-    var backgroundLayer: CAShapeLayer!
-    var circleLayer: CAShapeLayer!
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        let radius = 13
-        let backgroundPath = UIBezierPath(arcCenter: CGPoint(x: 22, y: 22), radius: CGFloat(radius - 1), startAngle: CGFloat(0), endAngle:CGFloat(Double.pi * 2), clockwise: true)
-        backgroundLayer = CAShapeLayer()
-        backgroundLayer.path = backgroundPath.cgPath
-        backgroundLayer.fillColor = UIColor.clear.cgColor
-        backgroundLayer.lineWidth = 2.0
-        backgroundLayer.strokeColor = UIColor.lightGray.cgColor
-        
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: 22, y: 22), radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle:CGFloat(3 * Double.pi / 2), clockwise: true)
-        circleLayer = CAShapeLayer()
-        circleLayer.path = circlePath.cgPath
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.strokeColor = UIColor.lightGray.cgColor
-        circleLayer.strokeStart = 0.0
-        circleLayer.strokeEnd = 1.0
-        circleLayer.lineWidth = CGFloat(radius)
-
-        layer.addSublayer(backgroundLayer)
-        layer.addSublayer(circleLayer)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func removeAnimations() {
-        circleLayer.removeAllAnimations()
-    }
-
-    func animateCircle(duration: TimeInterval, start: TimeInterval) {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock {
-            self.animate(duration: duration, start: 0.0, infinite: true)
-        }
-        self.animate(duration: duration, start: start, infinite: false)
-        CATransaction.commit()
-    }
-
-    private func animate(duration: TimeInterval, start: TimeInterval, infinite: Bool) {
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = duration - start
-        circleLayer.strokeStart = 0
-        circleLayer.strokeEnd = CGFloat(start / duration)
-        animation.fromValue = CGFloat(start / duration)
-        animation.toValue = 1
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-
-        if infinite {
-            animation.repeatCount = .infinity
-        }
-
-        animation.isRemovedOnCompletion = false
-        circleLayer.add(animation, forKey: "animateCircle")
-    }
-
 }
