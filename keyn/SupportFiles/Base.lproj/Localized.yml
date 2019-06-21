@@ -182,6 +182,8 @@ settings:
     comment: The word for privacy
   privacy_explanation:
     value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
+  privacy_beta_explanation:
+    value: Usage statistics are shared automatically if you join the public beta. You can read more about it in our privacy policy and the terms and conditions of Testflight.
   feedback_description:
     comment: Description under feedback form
     value: Use this form to provide feedback :)
