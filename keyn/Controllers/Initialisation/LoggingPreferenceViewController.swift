@@ -25,24 +25,7 @@ class LoggingPreferenceViewController: UIViewController {
     }
 
     @IBAction func finish(_ sender: UIButton) {
-        showRootController()
-    }
-
-    // MARK: - Private functions
-
-    private func showRootController() {
-        guard let window = UIApplication.shared.keyWindow else {
-            return
-        }
-        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-            Logger.shared.error("Unexpected root view controller type")
-            fatalError("Unexpected root view controller type")
-        }
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            DispatchQueue.main.async {
-                window.rootViewController = vc
-            }
-        })
+        UIApplication.shared.showRootController()
     }
 
 }
