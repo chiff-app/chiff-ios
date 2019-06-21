@@ -9,6 +9,10 @@ class PrivacyViewController: UITableViewController {
     @IBOutlet weak var shareErrorSwitch: UISwitch!
     @IBOutlet weak var shareAnalyticsSwitch: UISwitch!
 
+    var footerText: String {
+        return Properties.environment == .beta ? "settings.privacy_beta_explanation".localized : "settings.privacy_explanation".localized
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
@@ -16,6 +20,10 @@ class PrivacyViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         shareErrorSwitch.isOn = Properties.errorLogging
         shareAnalyticsSwitch.isOn = Properties.analyticsLogging
+        if Properties.environment == .beta {
+            shareErrorSwitch.isEnabled = false
+            shareAnalyticsSwitch.isEnabled = false
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -27,8 +35,9 @@ class PrivacyViewController: UITableViewController {
         return section == 0 ? "settings.privacy".localized : nil
     }
 
+    // This gets overrided by willDisplayFooterView, but this sets the correct height
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 0 ? "settings.privacy_explanation".localized : "settings.reset_warning".localized
+        return section == 0 ? footerText : "settings.reset_warning".localized
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -50,7 +59,7 @@ class PrivacyViewController: UITableViewController {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = section == 0 ? "settings.privacy_explanation".localized : "settings.reset_warning".localized
+        footer.textLabel?.text = section == 0 ? footerText : "settings.reset_warning".localized
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

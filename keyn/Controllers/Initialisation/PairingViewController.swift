@@ -15,7 +15,7 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
     func sessionCreated(session: Session) {
         DispatchQueue.main.async {
             // TODO: - check if notification is still needed if delegate is
-            self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
+            self.start()
         }
     }
 
@@ -36,7 +36,7 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
     // MARK: - Actions
 
     @IBAction func tryLater(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
+        start()
     }
 
     // MARK: - Navigation
@@ -45,6 +45,16 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
         if let identifier = segue.identifier, identifier == "EmbeddedPairing", let destination = segue.destination as? PairViewController {
             destination.pairControllerDelegate = self
             destination.pairContainerDelegate = self
+        }
+    }
+
+    private func start() {
+        if Properties.environment == .beta {
+            Properties.analyticsLogging = true
+            Properties.errorLogging = true
+            UIApplication.shared.showRootController()
+        } else {
+            self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
         }
     }
 
