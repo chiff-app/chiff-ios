@@ -54,14 +54,20 @@ class AuthorizationGuard {
 
     // MARK: - Handle request responses
 
-    func acceptRequest(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func acceptRequest(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         switch type {
         case .add, .register, .addAndLogin:
-            addSite(completionHandler: completionHandler)
+            addSite() { error in
+                completionHandler(nil, error)
+            }
         case .addToExisting:
-            addToExistingAccount(completionHandler: completionHandler)
+            addToExistingAccount() { error in
+                completionHandler(nil, error)
+            }
         case .addBulk:
-            addBulkSites(completionHandler: completionHandler)
+            addBulkSites() { error in
+                completionHandler(nil, error)
+            }
         case .login, .change, .fill:
             authorize(completionHandler: completionHandler)
         default:
@@ -85,7 +91,7 @@ class AuthorizationGuard {
 
     // MARK: - Private functions
 
-    private func authorize(completionHandler: @escaping (_ error: Error?) -> Void) {
+    private func authorize(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
             do {
                 defer {
@@ -99,9 +105,9 @@ class AuthorizationGuard {
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
-                completionHandler(nil)
+                completionHandler(account, nil)
             } catch {
-                completionHandler(error)
+                completionHandler(nil, error)
             }
         }
     }

@@ -30,8 +30,15 @@ struct Account: Codable {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
-    fileprivate var tokenURL: URL? // Only for backup
-    fileprivate var tokenSecret: Data? // Only for backup
+
+    var synced: Bool {
+        do {
+            return try Keychain.shared.isSynced(id: id, service: .account)
+        } catch {
+            Logger.shared.error("Error get account sync info", error: error)
+        }
+        return true // Defaults to true to prevent infinite cycles when an error occurs
+    }
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -54,6 +61,16 @@ struct Account: Codable {
         }
 
         try save(password: generatedPassword)
+    }
+
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, askToLogin: Bool?, askToChange: Bool?) {
+        self.id = id
+        self.username = username
+        self.sites = sites
+        self.passwordIndex = passwordIndex
+        self.lastPasswordUpdateTryIndex = lastPasswordTryIndex
+        self.askToLogin = askToLogin
+        self.askToChange = askToChange
     }
 
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
@@ -225,7 +242,7 @@ struct Account: Codable {
      * This function must always be called to load the accounts
      * but is delayed because it coincides with when touchID is asked.
      */
-    static func all(context: LAContext?) throws -> [String: Account] {
+    static func all(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
         guard let dataArray = try Keychain.shared.all(service: .account, context: context) else {
             return [:]
         }
@@ -237,6 +254,9 @@ struct Account: Codable {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(Account.self, from: accountData)
+            if sync && !account.synced {
+                try? account.backup()
+            }
             return (account.id, account)
         })
     }
@@ -257,8 +277,14 @@ struct Account: Codable {
     
     static func save(accountData: Data, id: String, context: LAContext?) throws {
         let decoder = JSONDecoder()
-        var account = try decoder.decode(Account.self, from: accountData)
-
+        let backupAccount = try decoder.decode(BackupAccount.self, from: accountData)
+        let account = Account(id: backupAccount.id,
+                              username: backupAccount.username,
+                              sites: backupAccount.sites,
+                              passwordIndex: backupAccount.passwordIndex,
+                              lastPasswordTryIndex: backupAccount.lastPasswordUpdateTryIndex,
+                              askToLogin: backupAccount.askToLogin,
+                              askToChange: backupAccount.askToChange)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, context: context)
@@ -267,9 +293,7 @@ struct Account: Codable {
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
 
         // Remove token and save seperately in Keychain
-        if let tokenSecret = account.tokenSecret, let tokenURL = account.tokenURL {
-            account.tokenSecret = nil
-            account.tokenURL = nil
+        if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
             let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
@@ -294,8 +318,7 @@ struct Account: Codable {
 
     // MARK: - Private
 
-
-    private mutating func update(secret: Data?) throws {
+    private func update(secret: Data?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: secret, objectData: accountData, context: nil)
         try backup()
@@ -306,18 +329,26 @@ struct Account: Codable {
     private func save(password: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData)
-        try BackupManager.shared.backup(account: self)
+        try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 
-    private mutating func backup() throws {
+    private func backup() throws {
+        var tokenURL: URL? = nil
+        var tokenSecret: Data? = nil
         if let token = try oneTimePasswordToken() {
-            tokenSecret = token.generator.secret
             tokenURL = try token.toURL()
+            tokenSecret = token.generator.secret
         }
-
-        try BackupManager.shared.backup(account: self)
+        let account = BackupAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
+        BackupManager.shared.backup(account: account) { result in
+            do {
+                try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
+            } catch {
+                Logger.shared.error("Error setting account sync info", error: error)
+            }
+        }
     }
 
     // MARK: - AuthenticationServices

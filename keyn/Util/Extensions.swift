@@ -5,6 +5,7 @@
 import UIKit
 import Sodium
 import UserNotifications
+import OneTimePassword
 
 // MARK: - Primitive extensions
 
@@ -162,6 +163,12 @@ extension Notification.Name {
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
 }
 
+extension Token {
+    var currentPasswordSpaced: String? {
+        return self.currentPassword?.components(withLength: 3).joined(separator: " ")
+    }
+}
+
 // MARK: - UIExtensions
 
 // Extension for UIViewController that return visible view controller if it is a navigationController
@@ -219,7 +226,6 @@ extension UIStoryboard {
     static func get(_ type: StoryboardType) -> UIStoryboard {
         return UIStoryboard(name: type.rawValue, bundle: nil)
     }
-    
 }
 
 struct System {
@@ -255,6 +261,18 @@ extension UIApplication {
         }
         
         return rootViewController
+    }
+
+    func showRootController() {
+        guard let window = keyWindow else {
+            return
+        }
+        let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController")
+        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            DispatchQueue.main.async {
+                window.rootViewController = vc
+            }
+        })
     }
 }
 

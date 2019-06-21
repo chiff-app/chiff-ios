@@ -62,18 +62,23 @@ struct BackupManager {
         }
     }
     
-    func backup(account: Account) throws {
-        let accountData = try JSONEncoder().encode(account)
-        let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
+    func backup(account: BackupAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
+        do {
+            let accountData = try JSONEncoder().encode(account)
+            let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
 
-        let message = [
-            MessageIdentifier.id: account.id,
-            MessageIdentifier.data: ciphertext.base64
-        ]
-        API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
-            if let error = error {
-                Logger.shared.error("BackupManager cannot backup account data.", error: error)
+            let message = [
+                MessageIdentifier.id: account.id,
+                MessageIdentifier.data: ciphertext.base64
+            ]
+            API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
+                if let error = error {
+                    Logger.shared.error("BackupManager cannot backup account data.", error: error)
+                }
+                completionHandler(error == nil)
             }
+        } catch {
+            completionHandler(false)
         }
     }
     

@@ -259,7 +259,57 @@ class Keychain {
         SecItemDelete(query as CFDictionary)
     }
 
-    
+    func isSynced(id identifier: String, service: KeychainService) throws -> Bool {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrAccount as String: identifier,
+                                    kSecAttrService as String: service.rawValue,
+                                    kSecMatchLimit as String: kSecMatchLimitOne,
+                                    kSecReturnAttributes as String: true,
+                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
+
+        if let defaultContext = service.defaultContext {
+            query[kSecUseAuthenticationContext as String] = defaultContext
+        }
+
+        var queryResult: AnyObject?
+        let status = withUnsafeMutablePointer(to: &queryResult) {
+            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        }
+
+        guard status != errSecInteractionNotAllowed else { throw KeychainError.interactionNotAllowed }
+        guard status != errSecItemNotFound else { throw KeychainError.notFound }
+        guard status == noErr else { throw KeychainError.unhandledError(status) }
+
+        guard let dataArray = queryResult as? [String: Any] else {
+            throw KeychainError.unexpectedData
+        }
+
+        if let label = dataArray[kSecAttrLabel as String] as? String {
+            return label == "true"
+        } else { // Not present, we'll assume it's synced
+            try setSynced(value: true, id: identifier, service: service)
+            return true
+        }
+    }
+
+    func setSynced(value: Bool, id identifier: String, service: KeychainService) throws {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                    kSecAttrAccount as String: identifier,
+                                    kSecAttrService as String: service.rawValue,
+                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
+
+        if let defaultContext = service.defaultContext {
+            query[kSecUseAuthenticationContext as String] = defaultContext
+        }
+
+        let attributes: [String: Any] = [kSecAttrLabel as String: value ? "true" : "false"]
+
+        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+
+        guard status != errSecItemNotFound else { throw KeychainError.notFound }
+        guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
+    }
+
     // MARK: - Authenticated Keychain operations
     // These operations ask the user to authenticate the operation if necessary. This is handled on a custom OperationQueue that is managed by LocalAuthenticationManager.shared
 
