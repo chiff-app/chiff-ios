@@ -76,7 +76,7 @@ class Questionnaire: Codable {
         }
         self.compulsory = compulsory
     }
-    
+
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
