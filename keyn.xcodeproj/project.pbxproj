@@ -32,6 +32,7 @@
 		49062C7922146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -244,6 +245,7 @@
 		49062C862214731700A30669 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
+		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -460,7 +462,6 @@
 				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
-				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 				61F938C31FF4161300AF0880 /* PairViewController.swift */,
 			);
 			path = Shared;
@@ -469,12 +470,14 @@
 		4950262C22BBA29400545118 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				49E4A1E622425904005E8EBF /* KeynButton.swift */,
-				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
-				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
-				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950262F22BBA2FC00545118 /* BackupCircle.swift */,
+				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950263122BBA31200545118 /* FilledCircle.swift */,
+				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
+				49E4A1E622425904005E8EBF /* KeynButton.swift */,
+				4914498622C0F3310021D081 /* KeynTabBar.swift */,
+				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
+				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1236,6 +1239,7 @@
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
 				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */,
+				4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
