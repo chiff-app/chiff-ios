@@ -63,12 +63,13 @@ struct Account: Codable {
         try save(password: generatedPassword)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, askToLogin: Bool?, askToChange: Bool?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?) {
         self.id = id
         self.username = username
         self.sites = sites
         self.passwordIndex = passwordIndex
         self.lastPasswordUpdateTryIndex = lastPasswordTryIndex
+        self.passwordOffset = passwordOffset
         self.askToLogin = askToLogin
         self.askToChange = askToChange
     }
@@ -283,6 +284,7 @@ struct Account: Codable {
                               sites: backupAccount.sites,
                               passwordIndex: backupAccount.passwordIndex,
                               lastPasswordTryIndex: backupAccount.lastPasswordUpdateTryIndex,
+                              passwordOffset: backupAccount.passwordOffset,
                               askToLogin: backupAccount.askToLogin,
                               askToChange: backupAccount.askToChange)
         assert(account.id == id, "Account restoring went wrong. Different id")
