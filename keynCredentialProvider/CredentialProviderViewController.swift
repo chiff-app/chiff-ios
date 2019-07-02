@@ -29,7 +29,7 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
                                                              .font: UIFont.primaryBold!], for: UIControl.State.disabled)
 
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name < $1.site.name })
+        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         tableView.delegate = self
         tableView.dataSource = self
 //        searchController.searchResultsUpdater = self
