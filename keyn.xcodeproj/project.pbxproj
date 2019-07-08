@@ -545,6 +545,15 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		49E2FE0822D361B8001AA622 /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				49E2FE0422D35A39001AA622 /* StoreManager.swift */,
+				49E2FE0222D347E1001AA622 /* StoreObserver.swift */,
+			);
+			path = StoreKit;
+			sourceTree = "<group>";
+		};
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
@@ -596,6 +605,7 @@
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
 				49E7D3401FC318CD0059D97E /* Models */,
+				49E2FE0822D361B8001AA622 /* StoreKit */,
 				49F2A106221434C600429875 /* SupportFiles */,
 				495E72B9221186DA003132ED /* Util */,
 				499BE4F91FC0953C001038DF /* UI */,
@@ -650,8 +660,6 @@
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
-				49E2FE0422D35A39001AA622 /* StoreManager.swift */,
-				49E2FE0222D347E1001AA622 /* StoreObserver.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";

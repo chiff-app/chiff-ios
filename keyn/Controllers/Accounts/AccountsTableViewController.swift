@@ -117,10 +117,14 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-        let account = filteredAccounts[indexPath.row]
-        cell.titleLabel.text = account.site.name
-        return cell
+        return tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? AccountTableViewCell {
+            let account = filteredAccounts[indexPath.row]
+            cell.titleLabel.text = account.site.name
+        }
     }
 
     // MARK: - Navigation

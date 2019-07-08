@@ -20,9 +20,7 @@ class UnlimitedViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         StoreManager.shared.delegate = self
-
         fetchProductInformation()
     }
 
