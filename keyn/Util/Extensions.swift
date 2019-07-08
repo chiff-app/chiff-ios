@@ -6,6 +6,7 @@ import UIKit
 import Sodium
 import UserNotifications
 import OneTimePassword
+import StoreKit
 
 // MARK: - Primitive extensions
 
@@ -161,6 +162,7 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
+    static let unlimitedUpdated = Notification.Name("UnlimitedUpdatetd")
 }
 
 extension Token {
@@ -415,5 +417,16 @@ extension UIBarButtonItem {
         default:
             setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity, .font: UIFont.primaryBold!], for: UIControl.State.disabled)
         }
+    }
+}
+
+// MARK: - SKProduct
+extension SKProduct {
+    /// - returns: The cost of the product formatted in the local currency.
+    var regularPrice: String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = self.priceLocale
+        return formatter.string(from: self.price)
     }
 }

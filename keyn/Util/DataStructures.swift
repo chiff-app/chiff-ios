@@ -239,27 +239,21 @@ struct KeyPair {
 
 // MARK: - StoreKit
 
-/// An enumeration of all the types of products or purchases.
-enum SectionType: String, CustomStringConvertible {
-    case availableProducts = "AVAILABLE PRODUCTS"
-    case invalidProductIdentifiers = "INVALID PRODUCT IDENTIFIERS"
-    case purchased = "PURCHASED"
-    case restored = "RESTORED"
-    case download = "DOWNLOAD"
-    case originalTransaction = "ORIGINAL TRANSACTION"
-    case productIdentifier = "PRODUCT IDENTIFIER"
-    case transactionDate = "TRANSACTION DATE"
-    case transactionIdentifier = "TRANSACTION ID"
+struct ProductIdentifiers {
+    private let name = "ProductIds"
+    private let fileExtension = "plist"
 
-    var description: String {
-        return self.rawValue
+    var isEmpty: String {
+        return "\(name).\(fileExtension) is empty. \("storekit.updateResource".localized)"
     }
-}
 
-/// A structure that is used to represent a list of products or purchases.
-struct Section {
-    /// Products/Purchases are organized by category.
-    var type: SectionType
-    /// List of products/purchases.
-    var elements = [Any]()
+    var wasNotFound: String {
+        return "\("storekit.couldNotFind".localized) \(name).\(fileExtension)."
+    }
+
+    /// - returns: An array with the product identifiers to be queried.
+    var identifiers: [String]? {
+        guard let path = Bundle.main.path(forResource: self.name, ofType: self.fileExtension) else { return nil }
+        return NSArray(contentsOfFile: path) as? [String]
+    }
 }
