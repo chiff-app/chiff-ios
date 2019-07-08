@@ -11,15 +11,11 @@ import StoreKit
 
 class UnlimitedViewController: UITableViewController {
 
-    fileprivate struct CellIdentifiers {
-        static let availableProduct = "available"
-        static let invalidIdentifier = "invalid"
-    }
-
-    private var data = [Section]()
+    private var products = [SKProduct]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        StoreObserver.shared.delegate = self    // TODO: Or should Root / App be observer? User could navigate away?
         StoreManager.shared.delegate = self
         fetchProductInformation()
     }
@@ -27,45 +23,34 @@ class UnlimitedViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].elements.count
+        return products.count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return data[section].type.description
+        return "TODO"
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = data[indexPath.section]
-
-        if section.type == .availableProducts {
-            return tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.availableProduct, for: indexPath)
-        } else {
-            return tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.invalidIdentifier, for: indexPath)
-        }
+        return tableView.dequeueReusableCell(withIdentifier: "available", for: indexPath)
     }
 
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let section = data[indexPath.section]
-
-        // If there are available products, show them.
-        if section.type == .availableProducts, let content = section.elements as? [SKProduct] {
-            let product = content[indexPath.row]
-
-            // Show the localized title of the product.
-            cell.textLabel!.text = product.localizedTitle
-
-            // Show the product's price in the locale and currency returned by the App Store.
-            cell.detailTextLabel?.text = "\(product.price)"
-        } else if section.type == .invalidProductIdentifiers, let content = section.elements as? [String] {
-            // if there are invalid product identifiers, show them.
-            cell.textLabel!.text = content[indexPath.row]
+        let product = products[indexPath.row]
+        cell.textLabel!.text = product.localizedTitle
+        if let price = product.regularPrice {
+            cell.detailTextLabel?.text = "\(price)"
         }
+    }
+
+    /// Starts a purchase when the user taps an available product row.
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        StoreObserver.shared.buy(products[indexPath.row])
     }
 
     /*
@@ -85,25 +70,31 @@ class UnlimitedViewController: UITableViewController {
     private func fetchProductInformation() {
         // First, let's check whether the user is allowed to make purchases. Proceed if they are allowed. Display an alert, otherwise.
         if StoreObserver.shared.isAuthorizedForPayments {
-            let identifiers = ["io.keyn.keyn", "io.keyn.keyn.yearly"]
-            StoreManager.shared.startProductRequest(with: identifiers)
+            StoreManager.shared.startProductRequest()
         } else {
             // Warn the user that they are not allowed to make purchases.
             showError(message: "Not authorized")
         }
     }
 
-    fileprivate func reload(with data: [Section]) {
-        self.data = data
+    fileprivate func reload(with data: [SKProduct]) {
+        self.products = data
         tableView.reloadData()
     }
 
+
+    // MARK: - Handle Restored Transactions
+
+    /// Handles successful restored transactions.
+    fileprivate func handleRestoredSucceededTransaction() {
+        print("TODO")
+    }
 
 }
 
 extension UnlimitedViewController: StoreManagerDelegate {
 
-    func storeManagerDidReceiveResponse(_ response: [Section]) {
+    func storeManagerDidReceiveResponse(_ response: [SKProduct]) {
         reload(with: response)
     }
 
@@ -111,4 +102,15 @@ extension UnlimitedViewController: StoreManagerDelegate {
         showError(message: message)
     }
 
+}
+
+/// Extends ParentViewController to conform to StoreObserverDelegate.
+extension UnlimitedViewController: StoreObserverDelegate {
+    func storeObserverDidReceiveMessage(_ message: String) {
+        showError(message: message)
+    }
+
+    func storeObserverRestoreDidSucceed() {
+        handleRestoredSucceededTransaction()
+    }
 }

@@ -24,6 +24,7 @@ struct Properties {
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
+    static private let isUnlimitedFlag = "unlimited"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -40,6 +41,13 @@ struct Properties {
     static var infoNotifications: InfoNotificationStatus {
         get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
+    }
+    static var isUnlimited: Bool  {
+        get { return UserDefaults.standard.bool(forKey: isUnlimitedFlag) }
+        set {
+            UserDefaults.standard.set(newValue, forKey: isUnlimitedFlag)
+            NotificationCenter.default.post(name: .unlimitedUpdated, object: nil)
+        }
     }
 
     static func purgePreferences() {

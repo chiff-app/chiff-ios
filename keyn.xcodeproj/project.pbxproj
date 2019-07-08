@@ -64,7 +64,6 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
-		4967F426225CC7110069330D /* Localized.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4967F424225CC7100069330D /* Localized.yml */; };
 		4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
@@ -104,6 +103,7 @@
 		49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
 		49E2FE0722D35CDD001AA622 /* UnlimitedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0622D35CDD001AA622 /* UnlimitedTableViewController.swift */; };
+		49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2FE0A22D390B3001AA622 /* ProductIds.plist */; };
 		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
@@ -305,6 +305,7 @@
 		49E2FE0222D347E1001AA622 /* StoreObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
 		49E2FE0422D35A39001AA622 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		49E2FE0622D35CDD001AA622 /* UnlimitedTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlimitedTableViewController.swift; sourceTree = "<group>"; };
+		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
 		49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
@@ -668,6 +669,7 @@
 			isa = PBXGroup;
 			children = (
 				4967F424225CC7100069330D /* Localized.yml */,
+				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
 				49062C7C22146D8700A30669 /* Localized.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
@@ -786,7 +788,7 @@
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
-				4967F423225CBF950069330D /* ShellScript */,
+				4967F423225CBF950069330D /* Run Script */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
@@ -974,12 +976,12 @@
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
+				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
-				4967F426225CC7110069330D /* Localized.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1042,7 +1044,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4967F423225CBF950069330D /* ShellScript */ = {
+		4967F423225CBF950069330D /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1052,6 +1054,7 @@
 			inputPaths = (
 				"$(SRCROOT)/keyn/SupportFiles/Base.lproj/Localized.yml",
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
