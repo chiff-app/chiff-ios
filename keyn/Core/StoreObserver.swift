@@ -12,6 +12,8 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver {
         return SKPaymentQueue.canMakePayments()
     }
 
+    private override init() {}
+
     func enable() {
         SKPaymentQueue.default().add(self)
     }
@@ -19,6 +21,12 @@ class StoreObserver: NSObject, SKPaymentTransactionObserver {
     func disable() {
         SKPaymentQueue.default().remove(self)
     }
+
+    func buy(_ product: SKProduct) {
+        let payment = SKMutablePayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+
 
     //Observe transaction updates.
     func paymentQueue(_ queue: SKPaymentQueue,updatedTransactions transactions: [SKPaymentTransaction]) {

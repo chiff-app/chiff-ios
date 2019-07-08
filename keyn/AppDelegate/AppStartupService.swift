@@ -6,6 +6,7 @@
 import LocalAuthentication
 import UIKit
 import UserNotifications
+import StoreKit
 
 /*
  * Code related to starting up the app in different ways.
@@ -23,6 +24,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
+        StoreObserver.shared.enable()
         Questionnaire.fetch()
         UIFixes()
 
@@ -59,6 +61,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 Properties.infoNotifications = error == nil ? .yes : .no
             }
         }
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        StoreObserver.shared.disable()
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
