@@ -14,6 +14,12 @@ protocol StoreObserverDelegate: AnyObject {
     func storeObserverDidReceiveMessage(_ message: String)
 }
 
+enum ValidationResult: String {
+    case success = "success"
+    case failed = "failed"
+    case error = "error"
+}
+
 class StoreObserver: NSObject {
 
     static let shared = StoreObserver()
@@ -54,10 +60,17 @@ class StoreObserver: NSObject {
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
         print("\("storekit.deliverContent".localized) \(transaction.payment.productIdentifier).")
-        // TODO: Here, Keyn should be unlocked and remain unlocked until further notice.
-        Properties.isUnlimited = true
-        // Finish the successful transaction.
-        SKPaymentQueue.default().finishTransaction(transaction)
+        validateReceipt { (result, error) in
+            switch result {
+            case .error:
+                print(error!)
+            case .success:
+                Properties.isUnlimited = true
+            case .failed:
+                print("TODO")
+            }
+            SKPaymentQueue.default().finishTransaction(transaction)
+        }
     }
 
     /// Handles failed purchase transactions.
@@ -91,6 +104,34 @@ class StoreObserver: NSObject {
         // Finishes the restored transaction.
         SKPaymentQueue.default().finishTransaction(transaction)
     }
+
+    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ error: Error?) -> Void) {
+        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
+            do {
+                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+                print(receiptData)
+                print(receiptData.base64EncodedString())
+                let message = [
+                    "data": receiptData.base64EncodedString()
+                ]
+                let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+                API.shared.signedRequest(endpoint: .validation, method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
+                    if let error = error {
+                        Logger.shared.error("Error verifying receipt", error: error)
+                        completionHandler(.error, error)
+                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status) {
+                        completionHandler(validationResult, nil)
+                    } else {
+                        completionHandler(.error, APIError.noResponse)
+                    }
+                }
+            } catch {
+                Logger.shared.error("Couldn't read receipt data", error: error)
+                completionHandler(.error, error)
+            }
+        }
+    }
+
 }
 
 extension StoreObserver: SKPaymentTransactionObserver {
