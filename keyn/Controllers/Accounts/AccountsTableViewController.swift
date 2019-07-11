@@ -40,8 +40,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
+        NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
-        tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
+        setFooter()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,11 +73,31 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
+            setFooter()
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
             (tabBarController as! RootViewController).showGradient(false)
             addAccountContainerView.isHidden = false
+        }
+    }
+
+    private func updateSubscriptionStatus(notification: Notification) {
+        DispatchQueue.main.async {
+            self.setFooter()
+            self.updateUi()
+        }
+    }
+
+    private func setFooter() {
+        if Properties.hasValidSubscription {
+            tableViewFooter.text = "accounts.footer_unlimited".localized
+        } else {
+            if unfilteredAccounts.count > Properties.accountCap {
+                tableViewFooter.text = "accounts.footer_account_overflow".localized
+            } else {
+                tableViewFooter.text = "accounts.footer".localized
+            }
         }
     }
 
