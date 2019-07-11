@@ -26,6 +26,11 @@
 			<key>value</key>
 			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.</string>
 		</dict>
+		<key>footer_account_enabled</key>
+		<dict>
+			<key>value</key>
+			<string>You can enable 8 accounts to use with your computer. Upgrade Keyn to log in with an unlimited number of accounts.</string>
+		</dict>
 		<key>footer_account_overflow</key>
 		<dict>
 			<key>value</key>

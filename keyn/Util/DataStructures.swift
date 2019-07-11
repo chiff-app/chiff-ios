@@ -194,8 +194,23 @@ struct BackupAccount: Codable {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
+    var enabled: Bool
     var tokenURL: URL?
     var tokenSecret: Data?
+
+    enum CodingKeys: CodingKey {
+        case id
+        case username
+        case sites
+        case passwordIndex
+        case lastPasswordUpdateTryIndex
+        case passwordOffset
+        case askToLogin
+        case askToChange
+        case enabled
+        case tokenURL
+        case tokenSecret
+    }
 
     init(account: Account, tokenURL: URL?, tokenSecret: Data?) {
         self.id = account.id
@@ -206,9 +221,26 @@ struct BackupAccount: Codable {
         self.passwordOffset = account.passwordOffset
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
+        self.enabled = account.enabled
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
     }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.username = try values.decode(String.self, forKey: .username)
+        self.sites = try values.decode([Site].self, forKey: .sites)
+        self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
+        self.lastPasswordUpdateTryIndex = try values.decode(Int.self, forKey: .lastPasswordUpdateTryIndex)
+        self.passwordOffset = try values.decode([Int].self, forKey: .passwordOffset)
+        self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
+        self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
+        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
+        self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
+        self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
+    }
+
 }
 
 struct KeynCredentialsResponse: Codable {

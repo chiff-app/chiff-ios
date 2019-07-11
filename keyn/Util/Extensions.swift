@@ -138,6 +138,11 @@ extension Array where Element == UInt8 {
 }
 
 extension Date {
+
+    static var now: TimeInterval {
+        return Date().timeIntervalSince1970 * 1000
+    }
+
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]

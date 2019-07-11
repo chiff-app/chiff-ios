@@ -11,5 +11,6 @@ import UIKit
 class AccountTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var icon: UIImageView!
 
 }

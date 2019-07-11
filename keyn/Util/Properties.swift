@@ -50,9 +50,8 @@ struct Properties {
         }
     }
     static var hasValidSubscription: Bool {
-        return subscriptionExiryDate > Date().timeIntervalSince1970
+        return subscriptionExiryDate > Date.now
     }
-
 
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
