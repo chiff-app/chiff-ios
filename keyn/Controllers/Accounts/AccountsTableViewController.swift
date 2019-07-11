@@ -20,12 +20,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
 
         if let accountDict = try? Account.all(context: nil) {
-            unfilteredAccounts = Array(accountDict.values)
+            unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
             updateUi()
         } else {
             unfilteredAccounts = [Account]()
         }
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+        filteredAccounts = unfilteredAccounts
 
         scrollView.delegate = self
         tableView.delegate = self
@@ -42,7 +42,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
-        setFooter()
+        setFooter(canAddAccounts: unfilteredAccounts.count < Properties.accountCap)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -69,11 +69,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     private func updateUi() {
         loadingSpinner.stopAnimating()
         if let accounts = unfilteredAccounts, !accounts.isEmpty {
+            let canAddAccounts = Properties.hasValidSubscription || unfilteredAccounts.count < Properties.accountCap
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
-            addAddButton()
-            setFooter()
+            addAddButton(enabled: canAddAccounts)
+            setFooter(canAddAccounts: canAddAccounts)
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
@@ -84,20 +85,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func updateSubscriptionStatus(notification: Notification) {
         DispatchQueue.main.async {
-            self.setFooter()
+            self.setFooter(canAddAccounts: self.unfilteredAccounts.count < Properties.accountCap)
             self.updateUi()
         }
     }
 
-    private func setFooter() {
+    private func setFooter(canAddAccounts: Bool) {
         if Properties.hasValidSubscription {
             tableViewFooter.text = "accounts.footer_unlimited".localized
         } else {
-            if unfilteredAccounts.count > Properties.accountCap {
-                tableViewFooter.text = "accounts.footer_account_overflow".localized
-            } else {
-                tableViewFooter.text = "accounts.footer".localized
-            }
+            tableViewFooter.text = canAddAccounts ? "accounts.footer".localized : "accounts.footer_account_overflow".localized
         }
     }
 
@@ -145,6 +142,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let cell = cell as? AccountTableViewCell {
             let account = filteredAccounts[indexPath.row]
             cell.titleLabel.text = account.site.name
+            cell.titleLabel.alpha = account.enabled ? 1 : 0.5
+            cell.icon.alpha = account.enabled ? 1 : 0.5
         }
     }
 
@@ -157,7 +156,11 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = filteredAccounts[indexPath.row]
+                let account = filteredAccounts[indexPath.row]
+                controller.account = account
+                controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count >= Properties.accountCap
+                print(filteredAccounts.filter({ $0.enabled }).count)
+                controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
         }
     }
@@ -216,7 +219,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         })
     }
 
-    private func addAddButton(){
+    private func addAddButton(enabled: Bool){
 //        guard self.navigationItem.rightBarButtonItem == nil else {
 //            return
 //        }
@@ -224,6 +227,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.setImage(UIImage(named:"add_button"), for: .normal)
         button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        button.isEnabled = enabled
         self.navigationItem.rightBarButtonItem = button.barButtonItem
     }
 }
