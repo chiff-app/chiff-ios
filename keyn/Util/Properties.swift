@@ -24,7 +24,7 @@ struct Properties {
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
-    static private let isUnlimitedFlag = "unlimited"
+    static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -42,13 +42,17 @@ struct Properties {
         get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
     }
-    static var isUnlimited: Bool  {
-        get { return UserDefaults.standard.bool(forKey: isUnlimitedFlag) }
+    static var subscriptionExiryDate: TimeInterval {
+        get { return UserDefaults.standard.double(forKey: subscriptionExiryDateFlag) }
         set {
-            UserDefaults.standard.set(newValue, forKey: isUnlimitedFlag)
-            NotificationCenter.default.post(name: .unlimitedUpdated, object: nil)
+            UserDefaults.standard.set(newValue, forKey: subscriptionExiryDateFlag)
+            NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
         }
     }
+    static var hasValidSubscription: Bool {
+        return subscriptionExiryDate > Date().timeIntervalSince1970
+    }
+
 
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
@@ -83,6 +87,8 @@ struct Properties {
     static let keynApi = "api.keyn.app"
     
     static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
+
+    static let accountCap = 8
     
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",

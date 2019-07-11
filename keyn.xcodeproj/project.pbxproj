@@ -123,6 +123,8 @@
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
+		49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
+		49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */; };
 		49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */; };
 		49F2A0F522142EB900429875 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F422142EB900429875 /* Extensions.swift */; };
@@ -1178,6 +1180,7 @@
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
+				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				495E72BC22118F9D003132ED /* Logger.swift in Sources */,
 				49062C6E2214679400A30669 /* Localizer.swift in Sources */,
@@ -1323,6 +1326,7 @@
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
+				49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,

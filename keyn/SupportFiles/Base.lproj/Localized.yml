@@ -138,6 +138,8 @@ accounts:
     value: You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.
   footer_unlimited:
     value: You can save as many accounts as you want.
+  footer_account_overflow:  
+    value: Only 8 accounts can be used to log in to your computer. Upgrade Keyn to log in with an unlimited number of accounts.
   add_2fa_code:
     value: Add 2FA-code to
   update_2fa_code:

@@ -54,18 +54,39 @@ class StoreObserver: NSObject {
         SKPaymentQueue.default().add(payment)
     }
 
+    func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
+        do {
+            API.shared.signedRequest(endpoint: .validation, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
+                if let error = error {
+                    completionHandler(error)
+                } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.values.max() {
+                    Properties.subscriptionExiryDate = longest
+                    completionHandler(nil)
+                    if subscriptions.count > 1 {
+                        Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
+                    }
+                } else {
+                    Properties.subscriptionExiryDate = 0
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            completionHandler(error)
+        }
+    }
+
     // MARK: - Handle Payment Transactions
 
     /// Handles successful purchase transactions.
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
         print("\("storekit.deliverContent".localized) \(transaction.payment.productIdentifier).")
-        validateReceipt { (result, error) in
+        validateReceipt { (result, expires, error) in
             switch result {
             case .error:
                 print(error!)
             case .success:
-                Properties.isUnlimited = true
+                Properties.subscriptionExiryDate = expires!
             case .failed:
                 print("TODO")
             }
@@ -97,7 +118,7 @@ class StoreObserver: NSObject {
         hasRestorablePurchases = true
         restored.append(transaction)
         print("\("storekit.restoreContent".localized) \(transaction.payment.productIdentifier).")
-        Properties.isUnlimited = true
+//        Properties.isUnlimited = true
         DispatchQueue.main.async {
             self.delegate?.storeObserverRestoreDidSucceed()
         }
@@ -105,12 +126,10 @@ class StoreObserver: NSObject {
         SKPaymentQueue.default().finishTransaction(transaction)
     }
 
-    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ error: Error?) -> Void) {
+    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ expires: TimeInterval?, _ error: Error?) -> Void) {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
-                print(receiptData)
-                print(receiptData.base64EncodedString())
                 let message = [
                     "data": receiptData.base64EncodedString()
                 ]
@@ -118,16 +137,16 @@ class StoreObserver: NSObject {
                 API.shared.signedRequest(endpoint: .validation, method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
                     if let error = error {
                         Logger.shared.error("Error verifying receipt", error: error)
-                        completionHandler(.error, error)
-                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status) {
-                        completionHandler(validationResult, nil)
+                        completionHandler(.error, nil, error)
+                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = result?["expires"] as? TimeInterval {
+                        completionHandler(validationResult, expires, nil)
                     } else {
-                        completionHandler(.error, APIError.noResponse)
+                        completionHandler(.error, nil, APIError.noResponse)
                     }
                 }
             } catch {
                 Logger.shared.error("Couldn't read receipt data", error: error)
-                completionHandler(.error, error)
+                completionHandler(.error, nil, error)
             }
         }
     }
