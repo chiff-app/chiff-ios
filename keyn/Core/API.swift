@@ -28,10 +28,11 @@ enum APIEndpoint: String {
     case persistentBrowserToApp = "message/persistent/browser-to-app"
     case push = "message/push"
     case questionnaire = "questionnaire"
-    case validation = "subscription/ios"
+    case subscription = "subscription"
+    case iosSubscription = "subscription/ios"
 
     // This construcs the endpoint for the subscription
-    static func subscription(for pubkey: String) -> String {
+    static func notificationSubscription(for pubkey: String) -> String {
         return "\(pubkey)/subscription"
     }
 
