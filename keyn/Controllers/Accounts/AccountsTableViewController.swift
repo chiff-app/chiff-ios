@@ -23,11 +23,11 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
         if let accountDict = try? Account.all(context: nil) {
             unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
-            updateUi()
         } else {
             unfilteredAccounts = [Account]()
         }
         filteredAccounts = unfilteredAccounts
+        updateUi()
 
         scrollView.delegate = self
         tableView.delegate = self
