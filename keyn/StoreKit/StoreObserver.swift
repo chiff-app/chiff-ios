@@ -59,7 +59,7 @@ class StoreObserver: NSObject {
 
     func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .validation, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
+            API.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
                 if let error = error {
                     completionHandler(error)
                 } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.values.max() {
@@ -138,7 +138,7 @@ class StoreObserver: NSObject {
                     "data": receiptData.base64EncodedString()
                 ]
                 let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-                API.shared.signedRequest(endpoint: .validation, method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
+                API.shared.signedRequest(endpoint: .iosSubscription , method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
                     if let error = error {
                         Logger.shared.error("Error verifying receipt", error: error)
                         completionHandler(.error, nil, error)
