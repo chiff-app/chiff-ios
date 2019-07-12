@@ -280,6 +280,10 @@ requests:
     value: Next time you can login with Keyn
   to_complete_process:
     value: to complete the process
+  account_disabled:
+    value: Account disabled
+  upgrade_keyn:
+    value: You can enable up to 8 accounts to use in your free Keyn plan. Upgrade Keyn to log in with all your accounts again
 registration:
   change_password_footer:
     comment: Description for enabling changing a password

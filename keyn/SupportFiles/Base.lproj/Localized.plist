@@ -514,6 +514,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Account added</string>
 		</dict>
+		<key>account_disabled</key>
+		<dict>
+			<key>value</key>
+			<string>Account disabled</string>
+		</dict>
 		<key>accounts</key>
 		<dict>
 			<key>comment</key>
@@ -658,6 +663,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Unlock Keyn</string>
 			<key>value</key>
 			<string>Unlock Keyn</string>
+		</dict>
+		<key>upgrade_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>You can enable up to 8 accounts to use in your free Keyn plan. Upgrade Keyn to log in with all your accounts again</string>
 		</dict>
 	</dict>
 	<key>settings</key>

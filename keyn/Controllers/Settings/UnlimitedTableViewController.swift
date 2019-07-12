@@ -12,12 +12,16 @@ import StoreKit
 class UnlimitedViewController: UITableViewController {
 
     private var products = [SKProduct]()
+    var presentedFromRequest = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         StoreObserver.shared.delegate = self    // TODO: Or should Root / App be observer? User could navigate away?
         StoreManager.shared.delegate = self
         fetchProductInformation()
+        if presentedFromRequest {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+        }
     }
 
     // MARK: - Table view data source
@@ -28,10 +32,6 @@ class UnlimitedViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
-    }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "TODO"
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -53,16 +53,11 @@ class UnlimitedViewController: UITableViewController {
         StoreObserver.shared.buy(products[indexPath.row])
     }
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func cancel() {
+        (presentingViewController as? RequestViewController)?.dismiss()
     }
-    */
-
 
     // MARK: - Fetch Product Information
 
@@ -90,6 +85,12 @@ class UnlimitedViewController: UITableViewController {
         print("TODO")
     }
 
+    fileprivate func finishPurchase() {
+        // If this purchase is done in the requestView flow, dismiss
+        guard presentedFromRequest else { return }
+        (presentingViewController as? RequestViewController)?.dismiss()
+    }
+
 }
 
 extension UnlimitedViewController: StoreManagerDelegate {
@@ -108,6 +109,10 @@ extension UnlimitedViewController: StoreManagerDelegate {
 extension UnlimitedViewController: StoreObserverDelegate {
     func storeObserverDidReceiveMessage(_ message: String) {
         showError(message: message)
+    }
+
+    func storeObserverPurchaseDidSucceed() {
+        finishPurchase()
     }
 
     func storeObserverRestoreDidSucceed() {

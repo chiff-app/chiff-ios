@@ -46,7 +46,7 @@ struct Account {
 
         self.sites = sites
         self.username = username
-        self.enabled = true
+        self.enabled = false
 
         let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, context: context)
         if let password = password {
@@ -208,6 +208,7 @@ struct Account {
                 try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
                 Account.deleteFromToIdentityStore(account: self)
                 Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: nil)
+                Properties.accountCount -= 1
                 completionHandler(nil)
             } catch {
                 Logger.shared.error("Error deleting accounts", error: error)
@@ -253,7 +254,7 @@ struct Account {
         guard let dataArray = try Keychain.shared.all(service: .account, context: context) else {
             return [:]
         }
-
+        Properties.accountCount = dataArray.count
         let decoder = PropertyListDecoder()
 
         return Dictionary(uniqueKeysWithValues: try dataArray.map { (dict) in
@@ -341,6 +342,7 @@ struct Account {
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
+        Properties.accountCount += 1
     }
 
     private func backup() throws {
@@ -434,7 +436,7 @@ extension Account: Codable {
         self.passwordOffset = try values.decode([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
-        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
+        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
     }
 
 }

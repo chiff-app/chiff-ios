@@ -52,10 +52,10 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dnn-31-QJY" customClass="BackupCircle" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="40" y="184" width="240" height="240"/>
+                                <rect key="frame" x="50" y="194" width="220" height="220"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jtk-5h-fdB">
-                                        <rect key="frame" x="42" y="53.5" width="156.5" height="133"/>
+                                        <rect key="frame" x="32" y="43.5" width="156.5" height="133"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="wwh-dI-pS2">
                                                 <rect key="frame" x="38" y="0.0" width="80" height="80"/>
@@ -69,8 +69,11 @@
                                                 <color key="textColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.44999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return to your computer" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAm-QA-UvP">
+                                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.44999998807907104" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return to your computer" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAm-QA-UvP">
                                                 <rect key="frame" x="0.0" y="118" width="156.5" height="15"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="240" id="GIy-5n-fjh"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="12"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -86,11 +89,27 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAm-BS-Rbr">
-                                <rect key="frame" x="16" y="142" width="288" height="22"/>
+                                <rect key="frame" x="16" y="152" width="288" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JC-fM-Crz" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="88.5" y="464" width="143" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fl9-gq-GEG"/>
+                                    <constraint firstAttribute="width" constant="143" id="sVa-Oz-eND"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Upgrade"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="dark"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="P3y-jh-lMf" kind="show" id="5GM-UN-GVa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -98,10 +117,12 @@
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="94D-re-oPz" secondAttribute="trailing" constant="16" id="1Xp-7h-O8U"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="15" id="8C7-AH-O92"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="top" secondItem="qAm-BS-Rbr" secondAttribute="bottom" constant="20" id="9nH-wY-6Uf"/>
+                            <constraint firstItem="5JC-fM-Crz" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="AFk-ch-dFl"/>
                             <constraint firstItem="J0B-1e-Apk" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="Iz1-Ka-LIg"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="qAm-BS-Rbr" secondAttribute="trailing" constant="16" id="KcC-aH-lvM"/>
-                            <constraint firstItem="Dnn-31-QJY" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="40" id="MlD-um-UHF"/>
-                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="Dnn-31-QJY" secondAttribute="trailing" constant="40" id="Xyn-Vi-8YG"/>
+                            <constraint firstItem="Dnn-31-QJY" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="50" id="MlD-um-UHF"/>
+                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="Dnn-31-QJY" secondAttribute="trailing" constant="50" id="Xyn-Vi-8YG"/>
+                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="5JC-fM-Crz" secondAttribute="bottom" constant="60" id="YjH-jd-iKF"/>
                             <constraint firstItem="VTZ-Sz-IhE" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="25" id="cCz-eg-KTW"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="J0B-1e-Apk" secondAttribute="bottom" constant="60" id="dwk-8s-tIy"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="fEo-uK-RmZ"/>
@@ -114,14 +135,44 @@
                         <outlet property="authenticateButton" destination="J0B-1e-Apk" id="Onl-y7-Lnr"/>
                         <outlet property="checkmarkHeightContstraint" destination="hbI-90-4vC" id="bcd-zo-18U"/>
                         <outlet property="requestLabel" destination="qAm-BS-Rbr" id="91F-kb-EA0"/>
+                        <outlet property="successImageView" destination="wwh-dI-pS2" id="jMv-Kd-cR3"/>
                         <outlet property="successTextDetailLabel" destination="JAm-QA-UvP" id="BIO-3y-DIb"/>
                         <outlet property="successTextLabel" destination="9Lj-bF-tr1" id="Dwm-B4-17R"/>
                         <outlet property="successView" destination="Dnn-31-QJY" id="lvA-eA-Z55"/>
+                        <outlet property="upgradeButton" destination="5JC-fM-Crz" id="OQt-Kh-hHH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wkr-E2-TeH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-821.25" y="-184.85915492957747"/>
+        </scene>
+        <!--SubscriptionController-->
+        <scene sceneID="RWN-eH-Oic">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="SubscriptionController" id="i0P-4b-0Cw" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Gyc-Xq-eQR"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qn3-zZ-0ro" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="909" y="-185"/>
+        </scene>
+        <!--Keyn Navigation Controller-->
+        <scene sceneID="vnO-yu-phC">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="P3y-jh-lMf" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FaU-BA-hIb">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="i0P-4b-0Cw" kind="relationship" relationship="rootViewController" id="jyU-Sa-bm7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Tw-Ux-W8J" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="120" y="-185"/>
         </scene>
     </scenes>
     <resources>
