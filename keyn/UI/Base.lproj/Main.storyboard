@@ -3031,10 +3031,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="2273" y="1805"/>
         </scene>
-        <!--Unlimited View Controller-->
+        <!--Subscription View Controller-->
         <scene sceneID="veZ-uH-EzO">
             <objects>
-                <tableViewController storyboardIdentifier="SubscriptionController" id="IYf-ce-RIH" customClass="UnlimitedViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SubscriptionController" id="IYf-ce-RIH" customClass="SubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="TGx-UD-0Ix">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

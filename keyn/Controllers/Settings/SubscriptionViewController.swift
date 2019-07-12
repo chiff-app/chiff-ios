@@ -9,14 +9,14 @@
 import UIKit
 import StoreKit
 
-class UnlimitedViewController: UITableViewController {
+class SubscriptionViewController: UITableViewController {
 
     private var products = [SKProduct]()
     var presentedFromRequest = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        StoreObserver.shared.delegate = self    // TODO: Or should Root / App be observer? User could navigate away?
+        StoreObserver.shared.delegate = self
         StoreManager.shared.delegate = self
         fetchProductInformation()
         if presentedFromRequest {
@@ -93,7 +93,7 @@ class UnlimitedViewController: UITableViewController {
 
 }
 
-extension UnlimitedViewController: StoreManagerDelegate {
+extension SubscriptionViewController: StoreManagerDelegate {
 
     func storeManagerDidReceiveResponse(_ response: [SKProduct]) {
         reload(with: response)
@@ -106,7 +106,7 @@ extension UnlimitedViewController: StoreManagerDelegate {
 }
 
 /// Extends ParentViewController to conform to StoreObserverDelegate.
-extension UnlimitedViewController: StoreObserverDelegate {
+extension SubscriptionViewController: StoreObserverDelegate {
     func storeObserverDidReceiveMessage(_ message: String) {
         showError(message: message)
     }

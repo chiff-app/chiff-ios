@@ -16,6 +16,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
 
+    var addAccountButton: KeynBarButton?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -68,13 +70,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func updateUi() {
         loadingSpinner.stopAnimating()
-        if let accounts = unfilteredAccounts, !accounts.isEmpty {
-            let canAddAccounts = Properties.hasValidSubscription || unfilteredAccounts.count < Properties.accountCap
+        if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
-            addAddButton(enabled: canAddAccounts)
-            setFooter(canAddAccounts: canAddAccounts)
+            addAddButton(enabled: Properties.hasValidSubscription || accounts.filter({ $0.enabled }).count < Properties.accountCap)
+            setFooter(canAddAccounts: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
@@ -85,7 +86,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func updateSubscriptionStatus(notification: Notification) {
         DispatchQueue.main.async {
-            self.setFooter(canAddAccounts: self.unfilteredAccounts.count < Properties.accountCap)
+            self.filteredAccounts = self.unfilteredAccounts
+            self.tableView.reloadData()
+            self.setFooter(canAddAccounts: self.filteredAccounts.count < Properties.accountCap)
             self.updateUi()
         }
     }
@@ -174,6 +177,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             let indexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+        if !Properties.hasValidSubscription && Properties.accountOverflow {
+            addAccountButton?.isEnabled = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
+        }
     }
 
 
@@ -224,10 +230,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //            return
 //        }
 
-        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        button.setImage(UIImage(named:"add_button"), for: .normal)
-        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
-        button.isEnabled = enabled
-        self.navigationItem.rightBarButtonItem = button.barButtonItem
+        addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+        addAccountButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+        addAccountButton!.isEnabled = enabled
+        self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
     }
 }
