@@ -138,7 +138,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                 self.showError(message: "errors.seed_restore".localized)
                                 self.activityViewContainer.isHidden = true
                             } else {
-                                self.registerForPushNotifications()
+                                StoreObserver.shared.updateSubscriptions() { error in
+                                    if let error = error {
+                                        Logger.shared.error("Error updating subscriptions", error: error)
+                                    }
+                                    self.registerForPushNotifications()
+                                }
                             }
                         }
                     }
@@ -229,8 +234,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func registerForPushNotifications() {
-        AppDelegate.startupService.registerForPushNotifications() { result in
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            AppDelegate.startupService.registerForPushNotifications() { result in
                 if result {
                     NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
                 }

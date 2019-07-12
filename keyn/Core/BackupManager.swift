@@ -137,6 +137,7 @@ struct BackupManager {
                     }
                 }
             }
+            Properties.accountCount = dict.count
             Logger.shared.analytics("Accounts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
             completionHandler(nil)
         }
