@@ -25,6 +25,7 @@ struct Properties {
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
+    static private let accountCountFlag = "accountCount"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -51,6 +52,13 @@ struct Properties {
     }
     static var hasValidSubscription: Bool {
         return subscriptionExiryDate > Date.now
+    }
+    static var accountCount: Int {
+        get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
+    }
+    static var accountOverflow: Bool {
+        return accountCount > accountCap
     }
 
     static func purgePreferences() {

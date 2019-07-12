@@ -142,8 +142,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let cell = cell as? AccountTableViewCell {
             let account = filteredAccounts[indexPath.row]
             cell.titleLabel.text = account.site.name
-            cell.titleLabel.alpha = account.enabled ? 1 : 0.5
-            cell.icon.alpha = account.enabled ? 1 : 0.5
+            let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
+            cell.titleLabel.alpha = showEnabled ? 1 : 0.5
+            cell.icon.alpha = showEnabled ? 1 : 0.5
         }
     }
 
@@ -159,7 +160,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 let account = filteredAccounts[indexPath.row]
                 controller.account = account
                 controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count >= Properties.accountCap
-                print(filteredAccounts.filter({ $0.enabled }).count)
                 controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
         }

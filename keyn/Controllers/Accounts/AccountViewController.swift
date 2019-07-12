@@ -167,6 +167,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 2 && showAccountEnableButton && indexPath.row > 0 {
             return editingMode ? tableView.rowHeight : 0
+        } else if indexPath.section == 2 && !showAccountEnableButton && indexPath.row == 0 {
+            return 0.5 // So we still have a border
         }
         return tableView.rowHeight
     }

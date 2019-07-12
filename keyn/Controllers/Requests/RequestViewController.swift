@@ -14,6 +14,8 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var successTextDetailLabel: UILabel!
     @IBOutlet weak var checkmarkHeightContstraint: NSLayoutConstraint!
     @IBOutlet weak var authenticateButton: UIButton!
+    @IBOutlet weak var successImageView: UIImageView!
+    @IBOutlet weak var upgradeButton: KeynButton!
 
     var authorizationGuard: AuthorizationGuard!
 
@@ -53,14 +55,19 @@ class RequestViewController: UIViewController {
         authorizationGuard.acceptRequest { account, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                    if error is AuthorizationError, case AuthorizationError.accountOverflow = error {
+                        AuthenticationGuard.shared.hideLockWindow()
+                        self.disabled()
+                    } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                         self.showError(message: errorMessage)
                         Logger.shared.error("Error authorizing request", error: error)
                     }
                 } else if let account = account, account.hasOtp() {
+                    AuthenticationGuard.shared.hideLockWindow()
                     self.account = account
                     self.showOtp()
                 } else {
+                    AuthenticationGuard.shared.hideLockWindow()
                     self.success()
                 }
             }
@@ -120,9 +127,17 @@ class RequestViewController: UIViewController {
         }
         self.showSuccessView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            self.dismiss(animated: true, completion: nil)
-            AuthenticationGuard.shared.hideLockWindow()
+            self.dismiss()
         }
+    }
+
+    private func disabled() {
+        authenticateButton.isHidden = true
+        upgradeButton.isHidden = false
+        successImageView.image = UIImage(named: "unhappy")
+        successTextLabel.text = "requests.account_disabled".localized.capitalizedFirstLetter
+        successTextDetailLabel.text = "requests.upgrade_keyn".localized.capitalizedFirstLetter
+        self.showSuccessView()
     }
 
     private func showSuccessView() {
@@ -152,9 +167,21 @@ class RequestViewController: UIViewController {
                 }
             }
         } else {
-            self.dismiss(animated: true, completion: nil)
+            dismiss()
         }
 
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination.contents as? UnlimitedViewController {
+            destination.presentedFromRequest = true
+        }
+    }
+
+    func dismiss() {
+        presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)
     }
 
 }

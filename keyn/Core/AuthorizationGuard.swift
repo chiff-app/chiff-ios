@@ -6,6 +6,10 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 
+enum AuthorizationError: KeynError {
+    case accountOverflow
+}
+
 class AuthorizationGuard {
 
     static var authorizationInProgress = false
@@ -104,6 +108,14 @@ class AuthorizationGuard {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
+                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (_, error) in // TODO: Change to .disabled after implemented in extension
+                        if let error = error {
+                            Logger.shared.error("Error rejecting request", error: error)
+                        }
+                    })
+                    throw AuthorizationError.accountOverflow
+                }
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 completionHandler(account, nil)
             } catch {

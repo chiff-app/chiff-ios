@@ -10,6 +10,9 @@ protocol StoreObserverDelegate: AnyObject {
     /// Tells the delegate that the restore operation was successful.
     func storeObserverRestoreDidSucceed()
 
+    /// Tells the delegate that the purchase operation was successful.
+    func storeObserverPurchaseDidSucceed()
+
     /// Provides the delegate with messages.
     func storeObserverDidReceiveMessage(_ message: String)
 }
@@ -87,6 +90,7 @@ class StoreObserver: NSObject {
                 print(error!)
             case .success:
                 Properties.subscriptionExiryDate = expires!
+                self.delegate?.storeObserverPurchaseDidSucceed()
             case .failed:
                 print("TODO")
             }
