@@ -3039,6 +3039,31 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="dyX-BD-MQk">
+                            <rect key="frame" x="0.0" y="186" width="375" height="113"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHh-X5-mpY" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                    <rect key="frame" x="117.66666666666669" y="34.666666666666664" width="140" height="43.999999999999993"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="140" id="UGY-hq-ERe"/>
+                                        <constraint firstAttribute="height" constant="44" id="yvO-JX-bVg"/>
+                                    </constraints>
+                                    <state key="normal" title="Restore"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="restore:" destination="IYf-ce-RIH" eventType="touchUpInside" id="No7-6D-uwE"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="MHh-X5-mpY" firstAttribute="centerX" secondItem="dyX-BD-MQk" secondAttribute="centerX" id="RCA-Mu-DC2"/>
+                                <constraint firstItem="MHh-X5-mpY" firstAttribute="centerY" secondItem="dyX-BD-MQk" secondAttribute="centerY" id="n2q-Ia-ovm"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="available" textLabel="Q6u-Ms-X8k" detailTextLabel="jrS-AP-xZc" rowHeight="79" style="IBUITableViewCellStyleSubtitle" id="284-N9-Pq5">
                                 <rect key="frame" x="0.0" y="28" width="375" height="79"/>
@@ -3097,7 +3122,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pt7-Hw-UKS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1470" y="1804"/>
+            <point key="canvasLocation" x="1469.5999999999999" y="1803.6945812807883"/>
         </scene>
         <!--Privacy Policy View Controller-->
         <scene sceneID="qnC-oJ-WXO">

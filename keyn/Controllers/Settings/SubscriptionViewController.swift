@@ -82,13 +82,19 @@ class SubscriptionViewController: UITableViewController {
 
     /// Handles successful restored transactions.
     fileprivate func handleRestoredSucceededTransaction() {
-        print("TODO")
+        print("Transactions successfully restored")
     }
 
     fileprivate func finishPurchase() {
         // If this purchase is done in the requestView flow, dismiss
         guard presentedFromRequest else { return }
         (presentingViewController as? RequestViewController)?.dismiss()
+    }
+
+    // MARK: - Actions
+
+    @IBAction func restore(_ sender: UIButton) {
+        StoreObserver.shared.restore()
     }
 
 }

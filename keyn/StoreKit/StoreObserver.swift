@@ -57,6 +57,12 @@ class StoreObserver: NSObject {
         SKPaymentQueue.default().add(payment)
     }
 
+    func restore() {
+        let request = SKReceiptRefreshRequest(receiptProperties: nil)
+        request.delegate = self
+        request.start()
+    }
+
     func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
             API.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
@@ -78,6 +84,22 @@ class StoreObserver: NSObject {
         }
     }
 
+    fileprivate func handleRefreshedReceipt(_ request: SKRequest) {
+        validateReceipt { (result, expires, error) in
+            switch result {
+            case .error:
+                print(error!)
+            case .success:
+                Properties.subscriptionExiryDate = expires!
+                DispatchQueue.main.async {
+                    self.delegate?.storeObserverRestoreDidSucceed()
+                }
+            case .failed:
+                print("TODO")
+            }
+        }
+    }
+
     // MARK: - Handle Payment Transactions
 
     /// Handles successful purchase transactions.
@@ -90,7 +112,9 @@ class StoreObserver: NSObject {
                 print(error!)
             case .success:
                 Properties.subscriptionExiryDate = expires!
-                self.delegate?.storeObserverPurchaseDidSucceed()
+                DispatchQueue.main.async {
+                    self.delegate?.storeObserverPurchaseDidSucceed()
+                }
             case .failed:
                 print("TODO")
             }
@@ -117,6 +141,7 @@ class StoreObserver: NSObject {
         SKPaymentQueue.default().finishTransaction(transaction)
     }
 
+    // UNUSED, restoring is done with refreshReceipt
     /// Handles restored purchase transactions.
     fileprivate func handleRestored(_ transaction: SKPaymentTransaction) {
         hasRestorablePurchases = true
@@ -155,6 +180,20 @@ class StoreObserver: NSObject {
         }
     }
 
+}
+
+extension StoreObserver: SKRequestDelegate {
+
+    func requestDidFinish(_ request: SKRequest) {
+        handleRefreshedReceipt(request)
+    }
+
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+        Logger.shared.error("Error refreshing receipt")
+        DispatchQueue.main.async {
+            self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
+        }
+    }
 }
 
 extension StoreObserver: SKPaymentTransactionObserver {
