@@ -14,6 +14,8 @@ def shared_pods
   pod 'OneTimePassword', '~> 3.1'
   pod 'Firebase/Core'
   pod 'Firebase/Analytics'
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 target 'keyn' do
