@@ -8,6 +8,7 @@
 
 import Foundation
 import JustLog
+import Firebase
 
 struct Logger {
     
@@ -86,6 +87,7 @@ struct Logger {
         var userInfo = providedUserInfo ?? [String:Any]()
         userInfo["code"] = code.rawValue
         logger.info(message, error: getNSError(error), userInfo: userInfo)
+        Analytics.logEvent(code.rawValue, parameters: providedUserInfo)
     }
     
     private func getNSError(_ error: Error?) -> NSError? {
