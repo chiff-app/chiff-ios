@@ -28,6 +28,7 @@ struct Logger {
             "userID": Properties.userID(),
             "debug": Properties.isDebug]
         logger.setup()
+        Analytics.setUserID(Properties.userID())
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
