@@ -1,6 +1,9 @@
 PODS:
   - Base32 (1.1.2)
   - CocoaAsyncSocket (7.6.3)
+  - Crashlytics (3.13.4):
+    - Fabric (~> 1.10.2)
+  - Fabric (1.10.2)
   - Firebase/Analytics (6.1.0):
     - Firebase/Core
   - Firebase/Core (6.1.0):
@@ -63,6 +66,8 @@ PODS:
   - SwiftyBeaver (1.7.0)
 
 DEPENDENCIES:
+  - Crashlytics (~> 3.13.4)
+  - Fabric (~> 1.10.2)
   - Firebase/Analytics
   - Firebase/Core
   - JustLog
@@ -74,6 +79,8 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Base32
     - CocoaAsyncSocket
+    - Crashlytics
+    - Fabric
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -90,6 +97,8 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 8d77bb33624ae9b62d745d82ec023de5f70f7e4f
   FirebaseAnalytics: 629301c2b9925f3537d4093a17a72751ae5b7084
   FirebaseCore: 66bdef3b310a026880e2a5bc8aa586ab62ce4543
@@ -103,6 +112,6 @@ SPEC CHECKSUMS:
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
 
-PODFILE CHECKSUM: 21d0193c2672acfc09b8b2edf7276d2984b4f41e
+PODFILE CHECKSUM: 1a4cfcf0e32f961051f3921b36d215bbd3cb1b8f
 
 COCOAPODS: 1.6.1
