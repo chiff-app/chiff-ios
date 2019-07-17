@@ -1,4 +1,5 @@
 PODS:
+  - Amplitude-iOS (4.6.0)
   - Base32 (1.1.2)
   - CocoaAsyncSocket (7.6.3)
   - Crashlytics (3.13.4):
@@ -67,6 +68,7 @@ PODS:
   - TrustKit (1.6.1)
 
 DEPENDENCIES:
+  - Amplitude-iOS (~> 4.5)
   - Crashlytics (~> 3.13.4)
   - Fabric (~> 1.10.2)
   - Firebase/Analytics
@@ -79,6 +81,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Amplitude-iOS
     - Base32
     - CocoaAsyncSocket
     - Crashlytics
@@ -98,6 +101,7 @@ SPEC REPOS:
     - TrustKit
 
 SPEC CHECKSUMS:
+  Amplitude-iOS: ac1715ae68104b7a51723209ad574f60ab22ae5f
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
@@ -116,6 +120,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
   TrustKit: 0660dd1ce827ae7c8f553f35502a8542e248188f
 
-PODFILE CHECKSUM: 33148f81411d917d0125ff9057429e7582665b97
+PODFILE CHECKSUM: 27506738450ad94aa34aa0404e80c4cb1d7d025f
 
 COCOAPODS: 1.6.1

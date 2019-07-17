@@ -17,6 +17,7 @@ def shared_pods
   pod 'Firebase/Analytics'
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.13.4'
+  pod 'Amplitude-iOS', '~> 4.5'
 end
 
 target 'keyn' do
@@ -41,7 +42,8 @@ post_install do |installer_representation|
     installer_representation.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+            # TODO: Enable for Amplitude SSL pinning
+            # config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AMPLITUDE_SSL_PINNING=1']
         end
     end
 end
-

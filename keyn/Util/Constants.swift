@@ -4,6 +4,57 @@
  */
 import Foundation
 
+enum UserProperty: String {
+    case accountCount = "Number of accounts"
+    case pairingCount = "Number of pairings"
+    case subscribed = "Has active subscription"
+    case infoNotifications = "Info notifications"
+    case backupCompleted = "Backup completed"
+    case installTime = "Installation time"
+    case requestCount = "Total number of requests"
+    case sessionCount = "Total number of app sessions" // = Amplitude sessions, as in: times the app was used
+}
+
+enum AnalyticsEvent: String {
+    // Onboarding
+    case appInstalled = "AppInstalled"
+    case restoreBackupOpened = "RecoverAccountOpened"
+    case backupRestored = "BackupRestored"
+    case learnMoreClicked = "LearnMoreClicked"
+    case seedCreated = "SeedCreated"
+    case notificationPermission = "NotificationPermission"
+    case cameraPersmission = "CameraPermission"
+    case tryLaterClicked = "Try later clicked"
+
+    // Requests
+    case loginRequestOpened = "LoginRequestOpened"
+    case loginRequestAuthorized = "LoginRequestAuthorized"
+    case addSiteRequestOpened = "AddSiteRequestOpened"
+    case addSiteRequeestAuthorized = "AddSiteRequestAuthorized"
+    case changePasswordRequeestOpened = "ChangePasswordRequestOpened"
+    case changePasswordRequeestAuthorized = "ChangePasswordRequestAuthorized"
+
+    // Local login
+    case accountCopied = "AccountCopied"
+    case localLogin = "LocalLogin"
+
+    // Local updates
+    case accountUpdated = "AccountUpdated"
+    case accountDeleted = "AccountDeleted"
+
+    // Backup
+    case backupExplanationOpened = "BackupExplanationOpened"
+    case backupProcessStarted = "BackupProcessStarted"
+    case backupCheckOpened = "BackupCheckOpened"
+    case backupCheckCompleted = "BackupCheckCompleted"
+
+    // Devices
+    case addSessionOpened = "AddSessionOpened"
+    case qrCodeScanned = "QRCodeScanned"
+    case paired = "Paired"
+    case sessionDeleted = "SessionDeleted"
+}
+
 enum AnalyticsMessage: String {
     case install = "INSTALL"
     case seedCreated = "SEED_CREATED"

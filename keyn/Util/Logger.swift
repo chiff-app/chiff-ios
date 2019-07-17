@@ -10,29 +10,52 @@ import Foundation
 import JustLog
 import Firebase
 import Crashlytics
+import Amplitude_iOS
 
 struct Logger {
     
     static let shared = Logger()
     private let logger = JustLog.Logger()
     private let crashlytics = Crashlytics.sharedInstance()
-    
+    private let amplitude = Amplitude.instance()!
+
     private init() {
-        let userId = Properties.userID()
+        // Firebase
+        FirebaseApp.configure()
+
+        // Ampltitude
+        amplitude.initializeApiKey(Properties.amplitudeToken)
+        amplitude.set(userProperties: [
+            .accountCount: 42,
+            .sessionCount: 32,
+            .subscribed: false,
+            .infoNotifications: Properties.infoNotifications,
+            .backupCompleted: Seed.paperBackupCompleted
+        ])
+
+        // Logz.io
         logger.enableFileLogging = false
         logger.logstashHost = "listener.logz.io"
         logger.logstashPort = 5052
         logger.logzioToken = Properties.logzioToken
         logger.logstashTimeout = 5
         logger.logLogstashSocketActivity = Properties.isDebug
-        logger.defaultUserInfo = [
+        var userInfo: [String: Any] = [
             "app": "Keyn",
             "device": "ios",
-            "userID": userId,
             "debug": Properties.isDebug]
+        if let userId = Properties.userId {
+            userInfo["userID"] = userId
+            setUserId(userId: userId)
+        }
+        logger.defaultUserInfo = userInfo
         logger.setup()
+    }
+
+    func setUserId(userId: String?) {
         Analytics.setUserID(userId)
         crashlytics.setUserIdentifier(userId)
+        amplitude.setUserId(userId)
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
@@ -100,6 +123,16 @@ struct Logger {
         userInfo["code"] = code.rawValue
         logger.info(message, error: getNSError(error), userInfo: userInfo)
         Analytics.logEvent(code.rawValue, parameters: providedUserInfo)
+    }
+
+    func analytics(_ event: AnalyticsEvent, properties: [String: Any]? = nil) {
+        guard Properties.analyticsLogging else {
+            return
+        }
+        amplitude.logEvent(event: event, properties: properties)
+        if Properties.environment == .dev {
+            amplitude.uploadEvents()
+        }
     }
     
     private func getNSError(_ error: Error?) -> NSError? {
