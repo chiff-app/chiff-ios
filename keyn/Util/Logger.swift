@@ -125,7 +125,7 @@ struct Logger {
         Analytics.logEvent(code.rawValue, parameters: providedUserInfo)
     }
 
-    func analytics(_ event: AnalyticsEvent, properties: [String: Any]? = nil) {
+    func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {
         guard Properties.analyticsLogging else {
             return
         }

@@ -275,6 +275,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>There is no AWS endpoint in the session data.</string>
 		</dict>
+		<key>session_invalid</key>
+		<dict>
+			<key>value</key>
+			<string>This QR-code is invalid</string>
+		</dict>
 		<key>subscribing</key>
 		<dict>
 			<key>value</key>

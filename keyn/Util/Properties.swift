@@ -111,6 +111,7 @@ struct Properties {
 
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
+    // IMPORTANT: If this flag is not present, all data will be deleted on App startup!
     static func isFirstLaunch() -> Bool {
         let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
@@ -122,7 +123,8 @@ struct Properties {
         return isFirstLaunch
     }
 
-    static func installTimestamp() -> Date? {
+    static func firstLaunchTimestamp() -> Date {
+        #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
 
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
@@ -130,7 +132,7 @@ struct Properties {
         } else {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
-            return nil
+            return date
         }
     }
 

@@ -189,7 +189,6 @@ struct Account: Codable {
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: nil)
     }
 
     func delete(completionHandler: @escaping (_ error: Error?) -> Void) {
@@ -201,7 +200,7 @@ struct Account: Codable {
                 try BackupManager.shared.deleteAccount(accountId: self.id)
                 try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
                 Account.deleteFromToIdentityStore(account: self)
-                Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: nil)
+                Logger.shared.analytics(.accountDeleted)
                 completionHandler(nil)
             } catch {
                 Logger.shared.error("Error deleting accounts", error: error)

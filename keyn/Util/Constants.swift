@@ -4,7 +4,7 @@
  */
 import Foundation
 
-enum UserProperty: String {
+enum AnalyticsUserProperty: String {
     case accountCount = "Number of accounts"
     case pairingCount = "Number of pairings"
     case subscribed = "Has active subscription"
@@ -23,7 +23,7 @@ enum AnalyticsEvent: String {
     case learnMoreClicked = "LearnMoreClicked"
     case seedCreated = "SeedCreated"
     case notificationPermission = "NotificationPermission"
-    case cameraPersmission = "CameraPermission"
+    case cameraPermission = "CameraPermission"
     case tryLaterClicked = "Try later clicked"
 
     // Requests
@@ -31,11 +31,16 @@ enum AnalyticsEvent: String {
     case loginRequestAuthorized = "LoginRequestAuthorized"
     case addSiteRequestOpened = "AddSiteRequestOpened"
     case addSiteRequeestAuthorized = "AddSiteRequestAuthorized"
-    case changePasswordRequeestOpened = "ChangePasswordRequestOpened"
-    case changePasswordRequeestAuthorized = "ChangePasswordRequestAuthorized"
+    case addBulkSitesRequestOpened = "AddBulkSiteRequestOpened"
+    case addBulkSitesRequeestAuthorized = "AddBulkSiteRequestAuthorized"
+    case changePasswordRequestOpened = "ChangePasswordRequestOpened"
+    case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
+    case fillPassworddRequestOpened = "FillPassworddRequestOpened"
+    case fillPassworddRequestAuthorized = "FillPassworddRequestAuthorized"
 
     // Local login
-    case accountCopied = "AccountCopied"
+    case passwordCopied = "PasswordCopied"
+    case otpCopied = "OneTimePasswordCopied"
     case localLogin = "LocalLogin"
 
     // Local updates
@@ -53,6 +58,16 @@ enum AnalyticsEvent: String {
     case qrCodeScanned = "QRCodeScanned"
     case paired = "Paired"
     case sessionDeleted = "SessionDeleted"
+}
+
+enum AnalyticsEventProperty: String {
+    case timestamp = "Timestamp"
+    case value = "Value" // True or false
+    case scheme = "Scheme" // Of QR-code
+    case username = "Username"
+    case password = "Password"
+    case url = "URL"
+    case siteName = "SiteName"
 }
 
 enum AnalyticsMessage: String {

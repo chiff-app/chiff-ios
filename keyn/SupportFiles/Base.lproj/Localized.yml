@@ -59,6 +59,8 @@ errors:
     comment: This may occur during the initialisation process
   seed_restore:
     value: Error restoring backup
+  session_invalid:
+    value: This QR-code is invalid
   token_creation:
     value: Error creating OTP token
   add_otp:
