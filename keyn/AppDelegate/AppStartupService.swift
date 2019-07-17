@@ -7,7 +7,6 @@ import LocalAuthentication
 import UIKit
 import UserNotifications
 import StoreKit
-import Firebase
 
 /*
  * Code related to starting up the app in different ways.
@@ -25,10 +24,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
-        // Storeobserver must be initialzed before firebase
         StoreObserver.shared.enable()
-
-        initializeFirebase()
         Questionnaire.fetch()
         UIFixes()
 
@@ -219,14 +215,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         UIBarButtonItem.appearance().setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
         UIBarButtonItem.appearance().setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
                                                        .font: UIFont.primaryBold!], for: UIControl.State.disabled)
-    }
-
-    private func initializeFirebase() {
-        guard let filePath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
-            let options = FirebaseOptions(contentsOfFile: filePath) else {
-            fatalError("Missing firebase config file")
-        }
-        FirebaseApp.configure(options: options)
     }
 
     private func migratePaperbackupCompletedStatus() -> Bool {
