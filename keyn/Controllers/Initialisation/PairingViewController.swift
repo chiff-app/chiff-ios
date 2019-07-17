@@ -37,6 +37,7 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
 
     @IBAction func tryLater(_ sender: UIButton) {
         start()
+        Logger.shared.analytics(.tryLaterClicked)
     }
 
     // MARK: - Navigation

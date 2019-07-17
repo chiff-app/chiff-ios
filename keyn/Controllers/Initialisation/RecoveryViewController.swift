@@ -48,6 +48,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
+        Logger.shared.analytics(.restoreBackupOpened)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -139,6 +140,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                 self.activityViewContainer.isHidden = true
                             } else {
                                 self.registerForPushNotifications()
+                                Logger.shared.analytics(.backupRestored)
                             }
                         }
                     }

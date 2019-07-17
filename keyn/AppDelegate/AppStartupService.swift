@@ -113,11 +113,11 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             DispatchQueue.main.async {
                 Properties.deniedPushNotifications = !granted
+                Logger.shared.analytics(.notificationPermission, properties: [.value: granted])
                 if granted {
                     UIApplication.shared.registerForRemoteNotifications()
                     completionHandler(true)
                 } else {
-                    Logger.shared.warning("User denied remote notifications.")
                     self.deniedPushNotifications = true
                     completionHandler(false)
                 }
@@ -137,9 +137,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-
-            Logger.shared.analytics("App was installed", code: .install)
-            let _ = Properties.installTimestamp()
+            Logger.shared.analytics(.appInstalled, properties: [.timestamp: Properties.firstLaunchTimestamp() ]) // TODO: Check date format
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {

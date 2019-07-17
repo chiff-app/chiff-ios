@@ -11,6 +11,7 @@ enum CameraError: KeynError {
     case videoInputInitFailed
     case exists
     case invalid
+    case unknown
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
@@ -27,7 +28,18 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     override func viewDidLayoutSubviews() {
         qrFound = false
         do {
-            try scanQR()
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized: try scanQR()
+            case .notDetermined:
+                #warning("TODO: Ask camera permission")
+            case .denied:
+                #warning("TODO: Handle camera permission denied situation")
+            case .restricted:
+                #warning("TODO: Handle camera permission restricted situation")
+            default:
+                throw CameraError.unknown
+            }
+            // TODO: Send permission status to analytics
         } catch {
             showError(message: "errors.no_camera".localized)
             Logger.shared.warning("Camera not available.", error: error)
