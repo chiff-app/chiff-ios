@@ -24,6 +24,7 @@ struct Properties {
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
+    static private let userIdFlag = "userID"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -40,6 +41,13 @@ struct Properties {
     static var infoNotifications: InfoNotificationStatus {
         get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
+    }
+    static var userId: String? {
+        get { return UserDefaults.standard.string(forKey: userIdFlag) }
+        set {
+            Logger.shared.setUserId(userId: newValue)
+            UserDefaults.standard.set(newValue, forKey: userIdFlag)
+        }
     }
 
     static func purgePreferences() {
@@ -90,6 +98,17 @@ struct Properties {
         }
     }
 
+    static var amplitudeToken: String {
+        switch environment {
+        case .dev:
+            return "a6c7cba5e56ef0084e4b61a930a13c84"
+        case .beta:
+            return "1d56fb0765c71d09e73b68119cfab32d"
+        case .prod:
+            return "081d54cf687bdf40799532a854b9a9b6"
+        }
+    }
+
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
     static func isFirstLaunch() -> Bool {
@@ -112,16 +131,6 @@ struct Properties {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
             return nil
-        }
-    }
-
-    static func userID() -> String {
-        if let userID = UserDefaults.standard.object(forKey: "userID") as? String {
-            return userID
-        } else {
-            let userID = NSUUID().uuidString
-            UserDefaults.standard.set(userID, forKey: "userID")
-            return userID
         }
     }
 
