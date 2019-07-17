@@ -8,13 +8,17 @@
 
 import Foundation
 import JustLog
+import Firebase
+import Crashlytics
 
 struct Logger {
     
     static let shared = Logger()
     private let logger = JustLog.Logger()
+    private let crashlytics = Crashlytics.sharedInstance()
     
     private init() {
+        let userId = Properties.userID()
         logger.enableFileLogging = false
         logger.logstashHost = "listener.logz.io"
         logger.logstashPort = 5052
@@ -24,9 +28,11 @@ struct Logger {
         logger.defaultUserInfo = [
             "app": "Keyn",
             "device": "ios",
-            "userID": Properties.userID(),
+            "userID": userId,
             "debug": Properties.isDebug]
         logger.setup()
+        Analytics.setUserID(userId)
+        crashlytics.setUserIdentifier(userId)
     }
     
     func verbose(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
@@ -65,6 +71,7 @@ struct Logger {
         }
         logger.warning(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
+            crashlytics.recordError(getNSError(error)!, withAdditionalUserInfo: userInfo)
             print(error)
         }
     }
@@ -75,6 +82,12 @@ struct Logger {
         }
         logger.error(message, error: getNSError(error), userInfo: userInfo, file, function, line)
         if let error = error {
+            crashlytics.setObjectValue(message, forKey: "message")
+            crashlytics.setObjectValue("error", forKey: "level")
+            crashlytics.setObjectValue(file, forKey: "file")
+            crashlytics.setObjectValue(function, forKey: "function")
+            crashlytics.setIntValue(Int32(line), forKey: "line")
+            crashlytics.recordError(getNSError(error)!, withAdditionalUserInfo: userInfo)
             print(error)
         }
     }
@@ -86,6 +99,7 @@ struct Logger {
         var userInfo = providedUserInfo ?? [String:Any]()
         userInfo["code"] = code.rawValue
         logger.info(message, error: getNSError(error), userInfo: userInfo)
+        Analytics.logEvent(code.rawValue, parameters: providedUserInfo)
     }
     
     private func getNSError(_ error: Error?) -> NSError? {
@@ -106,6 +120,7 @@ protocol KeynError: Error {
     var nsError: NSError { get }
 }
 
+// TODO: Differentiate this for Crashlytics. See https://firebase.google.com/docs/crashlytics/customize-crash-reports
 extension KeynError {
     private var KEYN_ERROR_CODE: Int {
         return 42
