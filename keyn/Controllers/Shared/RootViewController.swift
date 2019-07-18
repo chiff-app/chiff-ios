@@ -42,13 +42,13 @@ class RootViewController: UITabBarController {
             alert.addAction(UIAlertAction(title: "popups.responses.questionnaire_deny".localized, style: .cancel, handler: { _ in
                 questionnaire.isFinished = true
                 questionnaire.save()
-                Logger.shared.analytics("Declined questionnaire.", code: .declinedQuestionnaire)
+                Logger.shared.analytics(.questionnaireDeclined)
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
             questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
             questionnaire.save()
-            Logger.shared.analytics("Postponed questionnaire.", code: .postponedQuestionnaire)
+            Logger.shared.analytics(.questionnairePostponed)
         }))
         self.present(alert, animated: true, completion: nil)
     }    
