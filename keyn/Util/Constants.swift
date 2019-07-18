@@ -17,7 +17,7 @@ enum AnalyticsUserProperty: String {
 
 enum AnalyticsEvent: String {
     // Onboarding
-    case appInstalled = "AppInstalled"
+    case appFirstOpened = "AppFirstOpened"
     case restoreBackupOpened = "RecoverAccountOpened"
     case backupRestored = "BackupRestored"
     case learnMoreClicked = "LearnMoreClicked"
