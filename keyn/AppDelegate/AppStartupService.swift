@@ -137,7 +137,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics(.appInstalled, properties: [.timestamp: Properties.firstLaunchTimestamp() ]) // TODO: Check date format
+            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ]) // TODO: Check date format
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {
