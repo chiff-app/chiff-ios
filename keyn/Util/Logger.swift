@@ -27,7 +27,7 @@ struct Logger {
         amplitude.initializeApiKey(Properties.amplitudeToken)
         amplitude.set(userProperties: [
             .accountCount: 42,
-            .sessionCount: 32,
+            .pairingCount: 32,
             .subscribed: false,
             .infoNotifications: Properties.infoNotifications,
             .backupCompleted: Seed.paperBackupCompleted
@@ -113,16 +113,6 @@ struct Logger {
             crashlytics.recordError(getNSError(error)!, withAdditionalUserInfo: userInfo)
             print(error)
         }
-    }
-    
-    func analytics(_ message: String, code: AnalyticsMessage, userInfo providedUserInfo: [String: Any]? = nil, error: Error? = nil) {
-        guard Properties.analyticsLogging else {
-            return
-        }
-        var userInfo = providedUserInfo ?? [String:Any]()
-        userInfo["code"] = code.rawValue
-        logger.info(message, error: getNSError(error), userInfo: userInfo)
-        Analytics.logEvent(code.rawValue, parameters: providedUserInfo)
     }
 
     func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {

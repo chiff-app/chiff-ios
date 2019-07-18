@@ -177,5 +177,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @objc private func showAddSession() {
         performSegue(withIdentifier: "ShowAddSession", sender: self)
+        Logger.shared.analytics(.addSessionOpened)
     }
 }

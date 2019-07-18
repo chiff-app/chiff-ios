@@ -5,14 +5,14 @@
 import Foundation
 
 enum AnalyticsUserProperty: String {
-    case accountCount = "Number of accounts"
-    case pairingCount = "Number of pairings"
-    case subscribed = "Has active subscription"
-    case infoNotifications = "Info notifications"
+    case accountCount = "Account count"
+    case pairingCount = "Pairing count"
+    case subscribed = "Subscribed"
+    case infoNotifications = "Notifications enabled"
     case backupCompleted = "Backup completed"
-    case installTime = "Installation time"
-    case requestCount = "Total number of requests"
-    case sessionCount = "Total number of app sessions" // = Amplitude sessions, as in: times the app was used
+    case installTime = "Installed on"
+    case requestSum = "Request sum"
+    case sessionSum = "Session sum" // = Amplitude sessions, as in: times the app was used
 }
 
 enum AnalyticsEvent: String {
@@ -23,16 +23,17 @@ enum AnalyticsEvent: String {
     case learnMoreClicked = "LearnMoreClicked"
     case seedCreated = "SeedCreated"
     case notificationPermission = "NotificationPermission"
-    case cameraPermission = "CameraPermission"
+    case cameraPermission = "CameraPermission" // TODO
     case tryLaterClicked = "Try later clicked"
 
     // Requests
     case loginRequestOpened = "LoginRequestOpened"
     case loginRequestAuthorized = "LoginRequestAuthorized"
     case addSiteRequestOpened = "AddSiteRequestOpened"
-    case addSiteRequeestAuthorized = "AddSiteRequestAuthorized"
+    case addSiteRequstAuthorized = "AddSiteRequestAuthorized"
+    case addSiteToExistingRequestAuthorized = "AddSiteToExistingRequestAuthorized"
     case addBulkSitesRequestOpened = "AddBulkSiteRequestOpened"
-    case addBulkSitesRequeestAuthorized = "AddBulkSiteRequestAuthorized"
+    case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
     case changePasswordRequestOpened = "ChangePasswordRequestOpened"
     case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
     case fillPassworddRequestOpened = "FillPassworddRequestOpened"
@@ -41,23 +42,33 @@ enum AnalyticsEvent: String {
     // Local login
     case passwordCopied = "PasswordCopied"
     case otpCopied = "OneTimePasswordCopied"
-    case localLogin = "LocalLogin"
+    case localLogin = "LocalLogin" // TODO
 
     // Local updates
     case accountUpdated = "AccountUpdated"
     case accountDeleted = "AccountDeleted"
+    case accountAddedLocal = "AccountAddedLocal"
+    case addAccountOpened = "AddAccountOpened"
 
     // Backup
     case backupExplanationOpened = "BackupExplanationOpened"
     case backupProcessStarted = "BackupProcessStarted"
     case backupCheckOpened = "BackupCheckOpened"
-    case backupCheckCompleted = "BackupCheckCompleted"
+    case backupCompleted = "BackupCompleted"
 
     // Devices
     case addSessionOpened = "AddSessionOpened"
     case qrCodeScanned = "QRCodeScanned"
     case paired = "Paired"
     case sessionDeleted = "SessionDeleted"
+
+    // Settings
+    case resetKeyn = "ResetKeyn"
+    case deleteData = "DeleteData"
+
+    // Questionnaire
+    case questionnaireDeclined = "QuestionnaireDeclined"
+    case questionnairePostponed = "QuestionnairePostponed"
 }
 
 enum AnalyticsEventProperty: String {
@@ -68,34 +79,6 @@ enum AnalyticsEventProperty: String {
     case password = "Password"
     case url = "URL"
     case siteName = "SiteName"
-}
-
-enum AnalyticsMessage: String {
-    case install = "INSTALL"
-    case seedCreated = "SEED_CREATED"
-    case update = "UPDATE"
-    case iosUpdate = "IOS_UPDATE"
-    case pairResponse = "PAIR_RESPONSE"
-    case loginResponse = "LOGIN_RESPONSE"
-    case fillResponse = "FILL_PASSWORD_RESPONSE"
-    case addAndChange = "ADDANDCHANGE"
-    case passwordChange = "PASSWORD_CHANGE"
-    case addResponse = "ADD_RESPONSE"
-    case registrationResponse = "REGISTRATION_RESPONSE"
-    case sessionEnd = "SESSION_END"
-    case deleteAccount = "DELETE_ACCOUNT"
-    case backupCompleted = "BACKUP_COMPLETED"
-    case keynReset = "KEYN_RESET"
-    case keynDeleteAll = "DELETE_ALL"
-    case passwordCopy = "PASSWORD_COPY"
-    case requestDenied = "REQUEST_DENIED"
-    case siteReported = "SITE_REPORTED"
-    case siteAdded = "SITE_ADDED"
-    case accountsRestored = "ACCOUNTS_RESTORED"
-    case userFeedback = "USER_FEEDBACK"
-    case accountMigration = "ACCOUNT_MIGRATION"
-    case declinedQuestionnaire = "QUESTIONNAIRE_DECLINED"
-    case postponedQuestionnaire = "QUESTIONNAIRE_POSTPONED"
 }
 
 enum MessageParameter {
