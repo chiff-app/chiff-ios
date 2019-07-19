@@ -12,6 +12,7 @@ def shared_pods
   pod 'Sodium', '~> 0.8'
   pod 'JustLog'
   pod 'OneTimePassword', '~> 3.1'
+  pod 'TrustKit'
 end
 
 target 'keyn' do
