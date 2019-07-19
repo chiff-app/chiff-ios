@@ -9,12 +9,14 @@ PODS:
     - Base32 (~> 1.1.2)
   - Sodium (0.8.0)
   - SwiftyBeaver (1.7.0)
+  - TrustKit (1.6.1)
 
 DEPENDENCIES:
   - JustLog
   - MBProgressHUD (~> 1.0.0)
   - OneTimePassword (~> 3.1)
   - Sodium (~> 0.8)
+  - TrustKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -25,6 +27,7 @@ SPEC REPOS:
     - OneTimePassword
     - Sodium
     - SwiftyBeaver
+    - TrustKit
 
 SPEC CHECKSUMS:
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
@@ -34,7 +37,8 @@ SPEC CHECKSUMS:
   OneTimePassword: 247500f67ab074f10501bb1c46bd1596c57bdb2a
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
+  TrustKit: 0660dd1ce827ae7c8f553f35502a8542e248188f
 
-PODFILE CHECKSUM: 86a8d35fb1256515645acab7aafa5090639c27fa
+PODFILE CHECKSUM: ee3672ea271ad46a061176ad28d7d47cc364be40
 
 COCOAPODS: 1.6.1

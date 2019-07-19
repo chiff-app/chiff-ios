@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import TrustKit
 
 enum APIError: KeynError {
     case url
@@ -13,6 +14,7 @@ enum APIError: KeynError {
     case noData
     case response
     case wrongResponseType
+    case pinninigError
 }
 
 enum APIEndpoint: String {
@@ -47,17 +49,21 @@ enum APIMethod: String {
     case delete = "DELETE"
 }
 
-class API {
+class API: NSObject {
     
     static let shared = API()
 
-    private init() {}
+    private var urlSession: URLSession!
+
+    private override init() {
+        super.init()
+        urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
+    }
 
     func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
-
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
@@ -85,10 +91,13 @@ class API {
     // MARK: - Private
 
     private func send(_ request: URLRequest, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                Logger.shared.warning("Error querying Keyn API", error: error!)
-                completionHandler(nil, error)
+        let task = urlSession.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completionHandler(nil, (error as NSError).code == -999 ? APIError.pinninigError : error)
+                return
+            }
+            guard let data = data else {
+                completionHandler(nil, APIError.noData)
                 return
             }
             if let httpStatus = response as? HTTPURLResponse {
@@ -150,4 +159,15 @@ class API {
 
         return request
     }
+}
+
+extension API: URLSessionDelegate {
+
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        let validator = TrustKit.sharedInstance().pinningValidator
+        if !(validator.handle(challenge, completionHandler: completionHandler)) {
+            completionHandler(URLSession.AuthChallengeDisposition.performDefaultHandling, nil)
+        }
+    }
+
 }
