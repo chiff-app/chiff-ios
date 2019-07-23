@@ -58,6 +58,7 @@ PODS:
   - OneTimePassword (3.1.5):
     - Base32 (~> 1.1.2)
   - Sodium (0.8.0)
+  - TrustKit (1.6.1)
 
 DEPENDENCIES:
   - Amplitude-iOS (~> 4.5)
@@ -85,6 +86,7 @@ SPEC REPOS:
     - nanopb
     - OneTimePassword
     - Sodium
+    - TrustKit
 
 SPEC CHECKSUMS:
   Amplitude-iOS: ac1715ae68104b7a51723209ad574f60ab22ae5f
@@ -101,7 +103,8 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   OneTimePassword: 247500f67ab074f10501bb1c46bd1596c57bdb2a
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
+  TrustKit: 0660dd1ce827ae7c8f553f35502a8542e248188f
 
-PODFILE CHECKSUM: 8aba6387cdaf3e31be19d7508a9fec45f09d9de2
+PODFILE CHECKSUM: b8ead59d09f109b88755b8c1f518468be768790f
 
 COCOAPODS: 1.6.1

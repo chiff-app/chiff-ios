@@ -53,9 +53,12 @@ class API: NSObject {
     
     static let shared = API()
 
-    private let urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral)
+    private var urlSession: URLSession! 
 
-    private init() {}
+    override private init() {
+        super.init()
+        urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
+    }
 
     func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: [String: Any]? = nil, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         var message = message ?? [:]
