@@ -2,7 +2,6 @@
  * Copyright © 2019 Keyn B.V.
  * All rights reserved.
  */
-import CocoaAsyncSocket
 import UIKit
 
 /*

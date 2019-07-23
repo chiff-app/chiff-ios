@@ -88,13 +88,13 @@ class LocalAuthenticationManager {
                 case LAError.biometryNotEnrolled:
                     return "errors.local_authentication.biometry_not_enrolled".localized
                 default:
-                    Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+                    Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
                 }
             } else {
-                Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+                Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
             }
         default:
-            Logger.shared.debug("An LA error occured that was not catched. Check if it should be..", error: error)
+            Logger.shared.warning("An LA error occured that was not catched. Check if it should be..", error: error)
         }
         return nil
     }

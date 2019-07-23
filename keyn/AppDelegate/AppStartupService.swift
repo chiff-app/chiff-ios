@@ -12,7 +12,6 @@ import UserNotifications
  */
 class AppStartupService: NSObject, UIApplicationDelegate {
 
-    var deniedPushNotifications = false
     var window: UIWindow?
     var pushNotificationService: PushNotificationService!
 
@@ -113,12 +112,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             DispatchQueue.main.async {
                 Properties.deniedPushNotifications = !granted
-                Logger.shared.analytics(.notificationPermission, properties: [.value: granted])
                 if granted {
                     UIApplication.shared.registerForRemoteNotifications()
                     completionHandler(true)
                 } else {
-                    self.deniedPushNotifications = true
                     completionHandler(false)
                 }
             }

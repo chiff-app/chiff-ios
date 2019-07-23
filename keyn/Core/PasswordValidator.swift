@@ -213,7 +213,7 @@ class PasswordValidator {
                     guard occurences <= maxOccurs else { return false }
                 }
             } else {
-                Logger.shared.debug("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                Logger.shared.warning("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
             }
         }
         return true
@@ -238,7 +238,7 @@ class PasswordValidator {
                         if occurences >= requirementRule.minOccurs { validRules += 1 }
                     }
                 } else {
-                     Logger.shared.debug("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                     Logger.shared.warning("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
                 }
             }
             guard validRules >= requirementGroup.minRules else  {

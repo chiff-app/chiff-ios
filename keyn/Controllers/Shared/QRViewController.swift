@@ -74,7 +74,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     } catch {
                         switch error {
                         case SessionError.exists:
-                            Logger.shared.debug("QR-code scanned twice.")
                             showError(message: "errors.qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)

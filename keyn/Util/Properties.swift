@@ -36,7 +36,10 @@ struct Properties {
     }
     static var analyticsLogging: Bool {
         get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag) }
+        set {
+            UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
+            Logger.shared.setAnalyticsLogging(value: newValue)
+        }
     }
     static var infoNotifications: InfoNotificationStatus {
         get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
@@ -56,7 +59,13 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
     }
 
-    static var deniedPushNotifications = false
+    static var deniedPushNotifications = false {
+        didSet {
+            if oldValue != deniedPushNotifications {
+                Logger.shared.analytics(.notificationPermission, properties: [.value: !deniedPushNotifications])
+            }
+        }
+    }
     
     static let isDebug: Bool = {
         var debug = false
