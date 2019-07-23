@@ -29,14 +29,19 @@ class RequestViewController: UIViewController {
         switch authorizationGuard.type {
         case .login:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.loginRequestOpened)
         case .add, .addAndLogin, .addToExisting:
             requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.addSiteRequestOpened)
         case .addBulk:
             requestLabel.text = "requests.add_accounts".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.addBulkSitesRequestOpened)
         case .change:
             requestLabel.text = "requests.change_password".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.changePasswordRequestOpened)
         case .fill:
             requestLabel.text = "requests.fill_password".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.fillPassworddRequestOpened)
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }

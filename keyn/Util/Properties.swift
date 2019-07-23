@@ -24,6 +24,7 @@ struct Properties {
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
+    static private let userIdFlag = "userID"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -35,11 +36,21 @@ struct Properties {
     }
     static var analyticsLogging: Bool {
         get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag) }
+        set {
+            UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
+            Logger.shared.setAnalyticsLogging(value: newValue)
+        }
     }
     static var infoNotifications: InfoNotificationStatus {
         get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
         set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
+    }
+    static var userId: String? {
+        get { return UserDefaults.standard.string(forKey: userIdFlag) }
+        set {
+            Logger.shared.setUserId(userId: newValue)
+            UserDefaults.standard.set(newValue, forKey: userIdFlag)
+        }
     }
 
     static func purgePreferences() {
@@ -48,7 +59,13 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
     }
 
-    static var deniedPushNotifications = false
+    static var deniedPushNotifications = false {
+        didSet {
+            if oldValue != deniedPushNotifications {
+                Logger.shared.analytics(.notificationPermission, properties: [.value: !deniedPushNotifications])
+            }
+        }
+    }
     
     static let isDebug: Bool = {
         var debug = false
@@ -90,8 +107,20 @@ struct Properties {
         }
     }
 
+    static var amplitudeToken: String {
+        switch environment {
+        case .dev:
+            return "a6c7cba5e56ef0084e4b61a930a13c84"
+        case .beta:
+            return "1d56fb0765c71d09e73b68119cfab32d"
+        case .prod:
+            return "081d54cf687bdf40799532a854b9a9b6"
+        }
+    }
+
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
+    // IMPORTANT: If this flag is not present, all data will be deleted on App startup!
     static func isFirstLaunch() -> Bool {
         let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
@@ -103,7 +132,8 @@ struct Properties {
         return isFirstLaunch
     }
 
-    static func installTimestamp() -> Date? {
+    static func firstLaunchTimestamp() -> Date {
+        #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
 
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
@@ -111,17 +141,7 @@ struct Properties {
         } else {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
-            return nil
-        }
-    }
-
-    static func userID() -> String {
-        if let userID = UserDefaults.standard.object(forKey: "userID") as? String {
-            return userID
-        } else {
-            let userID = NSUUID().uuidString
-            UserDefaults.standard.set(userID, forKey: "userID")
-            return userID
+            return date
         }
     }
 

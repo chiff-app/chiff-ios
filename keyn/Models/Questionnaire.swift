@@ -132,7 +132,8 @@ class Questionnaire: Codable {
                 "response": question.response ?? "null",
                 "questionnaire": id
             ]
-            Logger.shared.info(question.text, userInfo: userInfo)
+//            Logger.shared.info(question.text, userInfo: userInfo)
+            #warning("TODO: submit questionnaire")
         }
         isFinished = true
         save()

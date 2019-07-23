@@ -262,6 +262,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             }
             try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
             NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
+            Logger.shared.analytics(.accountUpdated, properties: [
+                .username: newUsername != nil,
+                .password: newPassword != nil,
+                .url: newUrl != nil,
+                .siteName: newSiteName != nil
+            ])
         } catch {
             Logger.shared.warning("Could not change username", error: error)
             userNameTextField.text = account?.username
@@ -317,7 +323,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             return
         }
         
-        Logger.shared.analytics("\(indexPath.row == 1 ? "Password" : "OTP-code") copied to pasteboard.", code: .passwordCopy)
+        if indexPath.row == 1 {
+            Logger.shared.analytics(.passwordCopied)
+        } else {
+            Logger.shared.analytics(.otpCopied)
+        }
         
         let pasteBoard = UIPasteboard.general
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text

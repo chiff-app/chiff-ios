@@ -39,6 +39,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         requirementLabels.sort(by: { $0.tag < $1.tag })
         
         updateSaveButtonState()
+        Logger.shared.analytics(.addAccountOpened)
     }
 
     @IBAction func showPassword(_ sender: UIButton) {
@@ -167,6 +168,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             do {
                 self.account = try Account(username: username, sites: [site], password: password, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
+                Logger.shared.analytics(.accountAddedLocal)
             } catch {
                 showError(message: "errors.save_account: \(error)".localized)
                 Logger.shared.error("Account could not be saved", error: error)

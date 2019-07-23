@@ -6,6 +6,7 @@ import UIKit
 import Sodium
 import UserNotifications
 import OneTimePassword
+import Amplitude_iOS
 
 // MARK: - Primitive extensions
 
@@ -417,3 +418,20 @@ extension UIBarButtonItem {
         }
     }
 }
+
+extension Amplitude {
+
+    func set(userProperties: [AnalyticsUserProperty: Any]) {
+        let properties = Dictionary(uniqueKeysWithValues: userProperties.map({ ($0.key.rawValue, $0.value) }))
+        self.setUserProperties(properties)
+    }
+
+    func logEvent(event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {
+        if let properties = properties  {
+            self.logEvent(event.rawValue, withEventProperties: Dictionary(uniqueKeysWithValues: properties.map({ ($0.key.rawValue, $0.value) })))
+        } else {
+            self.logEvent(event.rawValue)
+        }
+    }
+}
+
