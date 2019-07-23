@@ -287,7 +287,6 @@ class AuthorizationGuard {
 
     static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (_: Session?, _: Error?) -> Void) {
         guard !authorizationInProgress else {
-            Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
         }
         defer {

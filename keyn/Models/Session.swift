@@ -250,7 +250,7 @@ class Session: Codable {
                 try session.delete(notifyExtension: true)
             }
         } catch {
-            Logger.shared.debug("Error deleting sessions.", error: error)
+            Logger.shared.warning("Error deleting sessions.", error: error)
         }
 
         // To be sure

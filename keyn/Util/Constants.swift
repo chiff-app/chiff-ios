@@ -42,7 +42,8 @@ enum AnalyticsEvent: String {
     // Local login
     case passwordCopied = "PasswordCopied"
     case otpCopied = "OneTimePasswordCopied"
-    case localLogin = "LocalLogin" // TODO
+    case localLoginOpened = "LocalLoginOpened"
+    case localLoginCompleted = "LocalLoginCompleted"
 
     // Local updates
     case accountUpdated = "AccountUpdated"
