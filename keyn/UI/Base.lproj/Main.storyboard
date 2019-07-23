@@ -3024,7 +3024,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="key_lock" width="80" height="47"/>
         <image name="lock_small" width="10" height="13"/>
         <image name="logo_white" width="52" height="58"/>
-        <image name="logo_white_big" width="80" height="88"/>
+        <image name="logo_white_big" width="77" height="85"/>
         <image name="pen_checkmark" width="110" height="90"/>
         <image name="phone_key" width="142" height="170"/>
         <image name="settings_tab" width="25" height="25"/>
