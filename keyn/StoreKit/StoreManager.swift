@@ -9,7 +9,7 @@ import Foundation
 
 protocol StoreManagerDelegate: AnyObject {
     /// Provides the delegate with the App Store's response.
-    func storeManagerDidReceiveResponse(_ response: [SKProduct])
+    func storeManagerDidReceiveResponse()
 
     /// Provides the delegate with the error encountered during the product request.
     func storeManagerDidReceiveMessage(_ message: String)
@@ -25,7 +25,7 @@ class StoreManager: NSObject {
     // MARK: - Properties
 
     /// Keeps track of all valid products. These products are available for sale in the App Store.
-    fileprivate var availableProducts = [SKProduct]()
+    var availableProducts = [SKProduct]()
 
     /// Keeps a strong reference to the product request.
     fileprivate var productRequest: SKProductsRequest!
@@ -98,7 +98,7 @@ extension StoreManager: SKProductsRequestDelegate {
         if !response.products.isEmpty {
             availableProducts = response.products
             DispatchQueue.main.async {
-                self.delegate?.storeManagerDidReceiveResponse(self.availableProducts)
+                self.delegate?.storeManagerDidReceiveResponse()
             }
         }
     }

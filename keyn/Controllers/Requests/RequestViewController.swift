@@ -176,7 +176,7 @@ class RequestViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination.contents as? SubscriptionViewController {
-            destination.presentedFromRequest = true
+            destination.presentedModally = true
         }
     }
 
