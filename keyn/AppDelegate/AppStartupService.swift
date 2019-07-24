@@ -25,6 +25,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = AuthenticationGuard.shared
 
         StoreObserver.shared.enable()
+        if StoreObserver.shared.isAuthorizedForPayments {
+            StoreManager.shared.startProductRequest()
+        }
         Questionnaire.fetch()
         UIFixes()
 

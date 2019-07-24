@@ -57,6 +57,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
 
+    @objc func showAddSubscription() {
+        performSegue(withIdentifier: "ShowAddSubscription", sender: self)
+    }
+
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
             if let accounts = try? notification.userInfo as? [String: Account] ?? Account.all(context: nil) {
@@ -232,8 +236,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
         addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
-        addAccountButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
-        addAccountButton!.isEnabled = enabled
+        addAccountButton!.addTarget(self, action: !enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
     }
 }

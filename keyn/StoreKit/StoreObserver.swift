@@ -13,6 +13,8 @@ protocol StoreObserverDelegate: AnyObject {
     /// Tells the delegate that the purchase operation was successful.
     func storeObserverPurchaseDidSucceed()
 
+    func storeObserverPurchaseCancelled()
+
     /// Provides the delegate with messages.
     func storeObserverDidReceiveMessage(_ message: String)
 }
@@ -84,19 +86,20 @@ class StoreObserver: NSObject {
         }
     }
 
-    fileprivate func handleRefreshedReceipt(_ request: SKRequest) {
+    fileprivate func handleRefreshedReceipt() {
         validateReceipt { (result, expires, error) in
-            switch result {
-            case .error:
-                print(error!)
-            case .success:
-                Properties.subscriptionExiryDate = expires!
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .error:
+                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
+                case .success:
+                    Properties.subscriptionExiryDate = expires!
                     self.delegate?.storeObserverRestoreDidSucceed()
+                case .failed:
+                    print("TODO")
                 }
-            case .failed:
-                print("TODO")
             }
+
         }
     }
 
@@ -106,18 +109,20 @@ class StoreObserver: NSObject {
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
         print("\("storekit.deliverContent".localized) \(transaction.payment.productIdentifier).")
+
         validateReceipt { (result, expires, error) in
-            switch result {
-            case .error:
-                print(error!)
-            case .success:
-                Properties.subscriptionExiryDate = expires!
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .error:
+                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
+                case .success:
+                    Properties.subscriptionExiryDate = expires!
                     self.delegate?.storeObserverPurchaseDidSucceed()
+                case .failed:
+                    print("TODO")
                 }
-            case .failed:
-                print("TODO")
             }
+
             SKPaymentQueue.default().finishTransaction(transaction)
         }
     }
@@ -132,11 +137,14 @@ class StoreObserver: NSObject {
         }
 
         // Do not send any notifications when the user cancels the purchase.
-        if (transaction.error as? SKError)?.code != .paymentCancelled {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if (transaction.error as? SKError)?.code == .paymentCancelled {
+                self.delegate?.storeObserverPurchaseCancelled()
+            } else {
                 self.delegate?.storeObserverDidReceiveMessage(message)
             }
         }
+
         // Finish the failed transaction.
         SKPaymentQueue.default().finishTransaction(transaction)
     }
@@ -185,7 +193,7 @@ class StoreObserver: NSObject {
 extension StoreObserver: SKRequestDelegate {
 
     func requestDidFinish(_ request: SKRequest) {
-        handleRefreshedReceipt(request)
+        handleRefreshedReceipt()
     }
 
     func request(_ request: SKRequest, didFailWithError error: Error) {
@@ -225,9 +233,14 @@ extension StoreObserver: SKPaymentTransactionObserver {
 
     /// Called when an error occur while restoring purchases. Notify the user about the error.
     func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
-        if let error = error as? SKError, error.code != .paymentCancelled {
+        if let error = error as? SKError {
+            print(error)
             DispatchQueue.main.async {
-                self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
+                if error.code == .paymentCancelled {
+                    self.delegate?.storeObserverPurchaseCancelled()
+                } else {
+                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
+                }
             }
         }
     }

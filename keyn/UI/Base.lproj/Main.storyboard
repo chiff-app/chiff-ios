@@ -966,6 +966,7 @@
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
                         <outlet property="tableViewFooter" destination="4Ne-4j-Ux3" id="ZnT-4M-06T"/>
                         <segue destination="QBn-BQ-Jis" kind="presentation" identifier="ShowAddAccount" id="3VT-CT-bmu"/>
+                        <segue destination="5TW-bl-8eQ" kind="presentation" identifier="ShowAddSubscription" id="3cW-Lf-JJM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWw-9J-QyK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1152,7 +1153,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Keyn unlimited" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AA9-jB-Ux4">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Keyn Premium" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AA9-jB-Ux4">
                                                     <rect key="frame" x="16" y="0.0" width="325" height="43.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1168,7 +1169,7 @@
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <segue destination="IYf-ce-RIH" kind="show" id="NG4-5J-fwh"/>
+                                            <segue destination="uAn-4o-w6e" kind="show" id="6W4-Je-JNT"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -1479,10 +1480,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Kgl-qT-hsr">
-                                <rect key="frame" x="0.0" y="44.333333333333343" width="327" height="256"/>
+                                <rect key="frame" x="0.0" y="44" width="327" height="213"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ebT-JC-q6Y">
-                                        <rect key="frame" x="0.0" y="0.0" width="319.33333333333331" height="118"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="319.33333333333331" height="96.666666666666671"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8FY-tv-c3O" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
@@ -1500,7 +1501,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="okK-X1-Xxw">
-                                                <rect key="frame" x="38" y="0.0" width="281.33333333333331" height="118"/>
+                                                <rect key="frame" x="38" y="0.0" width="281.33333333333331" height="96.666666666666671"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opu-7h-rWq">
                                                         <rect key="frame" x="0.0" y="0.0" width="281.33333333333331" height="44"/>
@@ -1530,7 +1531,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTq-b7-ziV">
-                                                        <rect key="frame" x="0.0" y="52" width="281.33333333333331" height="66"/>
+                                                        <rect key="frame" x="0.0" y="52" width="281.33333333333331" height="44.666666666666657"/>
                                                         <attributedString key="attributedText">
                                                             <fragment content="To start using Keyn, you need to install Keyn in your browser. You do this by visiting ">
                                                                 <attributes>
@@ -1561,7 +1562,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="jgS-nQ-Uea">
-                                        <rect key="frame" x="0.0" y="138" width="310" height="118"/>
+                                        <rect key="frame" x="0.0" y="116.66666666666666" width="310" height="96.333333333333343"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URn-UY-1ll" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
@@ -2791,7 +2792,44 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 <viewControllerPlaceholder storyboardName="Feedback" referencedIdentifier="Feedback" id="edD-lG-IvQ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="562" y="1581"/>
+            <point key="canvasLocation" x="4023.1999999999998" y="1710.5911330049262"/>
+        </scene>
+        <!--Add Subscription View Controller-->
+        <scene sceneID="Kci-Kq-zPO">
+            <objects>
+                <viewController id="7Rd-F1-Gts" customClass="AddSubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oHp-mG-ABC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqk-Gu-nAs" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="87" y="384" width="200" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Upgrade to Premium"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="uAn-4o-w6e" kind="show" id="PXG-f4-W4N"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="tgm-cF-VNh"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iy7-2t-QnJ">
+                        <barButtonItem key="backBarButtonItem" title=" " id="9lF-VX-MkP"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="fdC-eE-Xlk">
+                            <connections>
+                                <segue destination="ZNf-5d-zF7" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="Cak-yn-lWt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kiw-cW-Owa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ZNf-5d-zF7" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="780" y="1922.6600985221676"/>
         </scene>
         <!--Site Table View Controller-->
         <scene sceneID="64j-9P-sYY">
@@ -3029,100 +3067,124 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I1x-Q5-8HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2273" y="1805"/>
+            <point key="canvasLocation" x="2386.4000000000001" y="1922.6600985221676"/>
         </scene>
         <!--Subscription View Controller-->
-        <scene sceneID="veZ-uH-EzO">
+        <scene sceneID="PQJ-En-Efh">
             <objects>
-                <tableViewController storyboardIdentifier="SubscriptionController" id="IYf-ce-RIH" customClass="SubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="TGx-UD-0Ix">
+                <viewController storyboardIdentifier="SubscriptionController" hidesBottomBarWhenPushed="YES" id="uAn-4o-w6e" customClass="SubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3mY-Dt-Bxg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="dyX-BD-MQk">
-                            <rect key="frame" x="0.0" y="186" width="375" height="113"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHh-X5-mpY" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                    <rect key="frame" x="117.66666666666669" y="34.666666666666664" width="140" height="43.999999999999993"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="140" id="UGY-hq-ERe"/>
-                                        <constraint firstAttribute="height" constant="44" id="yvO-JX-bVg"/>
-                                    </constraints>
-                                    <state key="normal" title="Restore"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
-                                    </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <action selector="restore:" destination="IYf-ce-RIH" eventType="touchUpInside" id="No7-6D-uwE"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="MHh-X5-mpY" firstAttribute="centerX" secondItem="dyX-BD-MQk" secondAttribute="centerX" id="RCA-Mu-DC2"/>
-                                <constraint firstItem="MHh-X5-mpY" firstAttribute="centerY" secondItem="dyX-BD-MQk" secondAttribute="centerY" id="n2q-Ia-ovm"/>
-                            </constraints>
-                        </view>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="available" textLabel="Q6u-Ms-X8k" detailTextLabel="jrS-AP-xZc" rowHeight="79" style="IBUITableViewCellStyleSubtitle" id="284-N9-Pq5">
-                                <rect key="frame" x="0.0" y="28" width="375" height="79"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="284-N9-Pq5" id="Lb8-Nh-Ade">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="78.666666666666671"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Q6u-Ms-X8k">
-                                            <rect key="frame" x="16.000000000000004" y="20" width="33.333333333333336" height="20.333333333333332"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myJ-iX-jre" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="117.66666666666669" y="654" width="140" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="bqs-pj-Aao"/>
+                                    <constraint firstAttribute="width" constant="140" id="reh-Nu-Sbz"/>
+                                </constraints>
+                                <state key="normal" title="Upgrade"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="upgrade:" destination="uAn-4o-w6e" eventType="touchUpInside" id="5N0-BR-9bf"/>
+                                </connections>
+                            </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="C5r-au-Gde">
+                                <rect key="frame" x="40" y="366" width="295" height="200"/>
+                                <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="YaJ-AX-5O9"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="M3L-TT-tNm">
+                                    <size key="itemSize" width="128" height="106"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCell" id="k19-7B-s19" customClass="ProductCollectionViewCell" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="106"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="106"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jrS-AP-xZc">
-                                            <rect key="frame" x="15.999999999999996" y="43.333333333333329" width="32.666666666666664" height="14.333333333333334"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="invalid" textLabel="zbH-Xo-6wy" detailTextLabel="81Q-y6-Xh6" rowHeight="79" style="IBUITableViewCellStyleSubtitle" id="xgM-a2-oQu">
-                                <rect key="frame" x="0.0" y="107" width="375" height="79"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xgM-a2-oQu" id="XsL-8K-HYh">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="78.666666666666671"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zbH-Xo-6wy">
-                                            <rect key="frame" x="16.000000000000004" y="20" width="33.333333333333336" height="20.333333333333332"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="81Q-y6-Xh6">
-                                            <rect key="frame" x="15.999999999999996" y="43.333333333333329" width="32.666666666666664" height="14.333333333333334"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="IYf-ce-RIH" id="UBq-23-9b6"/>
-                            <outlet property="delegate" destination="IYf-ce-RIH" id="Hvi-Az-Plk"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pt7-Hw-UKS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9DV-Da-NpT">
+                                                    <rect key="frame" x="20" y="65" width="88" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7j-P5-3gY">
+                                                    <rect key="frame" x="11" y="34" width="107" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <outlet property="price" destination="9DV-Da-NpT" id="O8K-KS-Goa"/>
+                                            <outlet property="title" destination="T7j-P5-3gY" id="QaP-Ph-9sc"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nCX-FC-tx3">
+                                <rect key="frame" x="169" y="387.66666666666669" width="37" height="37"/>
+                                <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8HM-5t-Rgr">
+                                <rect key="frame" x="121.66666666666669" y="718" width="132" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="3ge-xN-81a"/>
+                                </constraints>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="Restore purchases">
+                                            <attributes>
+                                                <color key="NSColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="0.70121527777777781" colorSpace="calibratedRGB"/>
+                                                <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                <integer key="NSUnderline" value="1"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <action selector="restore:" destination="uAn-4o-w6e" eventType="touchUpInside" id="XfJ-0r-bKK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="bottom" secondItem="8HM-5t-Rgr" secondAttribute="bottom" constant="40" id="Hu9-1S-tF0"/>
+                            <constraint firstItem="nCX-FC-tx3" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" id="K21-do-B7P"/>
+                            <constraint firstItem="myJ-iX-jre" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="Uqf-0C-hJ7"/>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" secondItem="C5r-au-Gde" secondAttribute="trailing" constant="40" id="bDu-Qt-hbN"/>
+                            <constraint firstItem="8HM-5t-Rgr" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="biE-cL-8fL"/>
+                            <constraint firstItem="nCX-FC-tx3" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="e4o-Ns-tZ3"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="leading" secondItem="7tH-zF-euC" secondAttribute="leading" constant="40" id="iFX-Xu-APq"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" constant="60" id="pM6-aS-O0A"/>
+                            <constraint firstItem="8HM-5t-Rgr" firstAttribute="top" secondItem="myJ-iX-jre" secondAttribute="bottom" constant="20" id="qv8-tI-DnF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7tH-zF-euC"/>
+                    </view>
+                    <connections>
+                        <outlet property="activityView" destination="nCX-FC-tx3" id="LJW-A8-yYj"/>
+                        <outlet property="collectionView" destination="C5r-au-Gde" id="TDQ-D6-kmi"/>
+                        <outlet property="upgradeButton" destination="myJ-iX-jre" id="xuU-k1-dqC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2gO-3P-4Js" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1469.5999999999999" y="1803.6945812807883"/>
+            <point key="canvasLocation" x="1632.8" y="1922.6600985221676"/>
         </scene>
         <!--Privacy Policy View Controller-->
         <scene sceneID="qnC-oJ-WXO">
@@ -3164,7 +3226,26 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAu-gc-nNf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3142.5" y="1804.2253521126761"/>
+            <point key="canvasLocation" x="3255.1999999999998" y="1920.4433497536947"/>
+        </scene>
+        <!--Keyn Navigation Controller-->
+        <scene sceneID="Xg7-ve-gSt">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5TW-bl-8eQ" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1X8-9j-qOK">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="7Rd-F1-Gts" kind="relationship" relationship="rootViewController" id="7oB-vy-zlI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AsC-x5-5wz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-162.40000000000001" y="1922.6600985221676"/>
         </scene>
     </scenes>
     <resources>
@@ -3191,6 +3272,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="6W4-Je-JNT"/>
         <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>

@@ -9,61 +9,63 @@
 import UIKit
 import StoreKit
 
-class SubscriptionViewController: UITableViewController {
+class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    private var products = [SKProduct]()
-    var presentedFromRequest = false
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
+    @IBOutlet weak var upgradeButton: KeynButton!
+
+    var presentedModally = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         StoreObserver.shared.delegate = self
         StoreManager.shared.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         fetchProductInformation()
-        if presentedFromRequest {
+        if presentedModally {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+        }
+        if !StoreManager.shared.availableProducts.isEmpty {
+            activityView.stopAnimating()
+            select(index: nil)
         }
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return StoreManager.shared.availableProducts.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return products.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: "available", for: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        return collectionView.dequeueReusableCell(withReuseIdentifier: "ProductCell", for: indexPath)
     }
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let product = products[indexPath.row]
-        cell.textLabel!.text = product.localizedTitle
-        if let price = product.regularPrice {
-            cell.detailTextLabel?.text = "\(price)"
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let product = StoreManager.shared.availableProducts[indexPath.row]
+        guard let cell = cell as? ProductCollectionViewCell else {
+            fatalError("Wrong collection view type")
         }
-    }
-
-    /// Starts a purchase when the user taps an available product row.
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        StoreObserver.shared.buy(products[indexPath.row])
+        cell.title.text = product.localizedTitle
+        if let price = product.regularPrice {
+            cell.price.text = "\(price)"
+        }
     }
 
     // MARK: - Navigation
 
     @objc func cancel() {
-        (presentingViewController as? RequestViewController)?.dismiss()
+        (presentingViewController as? RequestViewController)?.dismiss() ?? dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Fetch Product Information
 
     /// Retrieves product information from the App Store.
     private func fetchProductInformation() {
-        // First, let's check whether the user is allowed to make purchases. Proceed if they are allowed. Display an alert, otherwise.
         if StoreObserver.shared.isAuthorizedForPayments {
             StoreManager.shared.startProductRequest()
         } else {
@@ -72,11 +74,19 @@ class SubscriptionViewController: UITableViewController {
         }
     }
 
-    fileprivate func reload(with data: [SKProduct]) {
-        self.products = data
-        tableView.reloadData()
+    private func select(index: Int?) {
+        collectionView.selectItem(at: IndexPath(row: index ?? StoreManager.shared.availableProducts.count - 1, section: 0), animated: false, scrollPosition: [])
     }
 
+    fileprivate func reload() {
+        if let selected = collectionView.indexPathsForSelectedItems?.first {
+            collectionView.reloadData()
+            select(index: selected.row)
+        } else {
+            collectionView.reloadData()
+            select(index: nil)
+        }
+    }
 
     // MARK: - Handle Restored Transactions
 
@@ -87,25 +97,36 @@ class SubscriptionViewController: UITableViewController {
 
     fileprivate func finishPurchase() {
         // If this purchase is done in the requestView flow, dismiss
-        guard presentedFromRequest else { return }
-        (presentingViewController as? RequestViewController)?.dismiss()
+        guard presentedModally else { return }
+        cancel()
     }
 
     // MARK: - Actions
 
     @IBAction func restore(_ sender: UIButton) {
+        upgradeButton.showLoading()
         StoreObserver.shared.restore()
     }
+
+    @IBAction func upgrade(_ sender: KeynButton) {
+        if let selected = collectionView.indexPathsForSelectedItems?.first {
+            sender.showLoading()
+            StoreObserver.shared.buy(StoreManager.shared.availableProducts[selected.row])
+        }
+    }
+
 
 }
 
 extension SubscriptionViewController: StoreManagerDelegate {
 
-    func storeManagerDidReceiveResponse(_ response: [SKProduct]) {
-        reload(with: response)
+    func storeManagerDidReceiveResponse() {
+        activityView.stopAnimating()
+        reload()
     }
 
     func storeManagerDidReceiveMessage(_ message: String) {
+        activityView.stopAnimating()
         showError(message: message)
     }
 
@@ -114,14 +135,21 @@ extension SubscriptionViewController: StoreManagerDelegate {
 /// Extends ParentViewController to conform to StoreObserverDelegate.
 extension SubscriptionViewController: StoreObserverDelegate {
     func storeObserverDidReceiveMessage(_ message: String) {
+        upgradeButton.hideLoading()
         showError(message: message)
     }
 
     func storeObserverPurchaseDidSucceed() {
+        upgradeButton.hideLoading()
         finishPurchase()
     }
 
     func storeObserverRestoreDidSucceed() {
+        upgradeButton.hideLoading()
         handleRestoredSucceededTransaction()
+    }
+
+    func storeObserverPurchaseCancelled() {
+        upgradeButton.hideLoading()
     }
 }
