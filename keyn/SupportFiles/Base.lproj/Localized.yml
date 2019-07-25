@@ -135,13 +135,13 @@ accounts:
   url_warning:
     value: ⚠️ Keyn doesn't work if the URL is incorrect.
   footer:
-    value: You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to store an unlimited number of accounts.
+    value: You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.
   footer_unlimited:
     value: You can save as many accounts as you want.
   footer_account_overflow:  
-    value: Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with an unlimited number of accounts.
+    value: Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.
   footer_account_enabled:
-    value: You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with an unlimited number of accounts.
+    value: You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.
   add_2fa_code:
     value: Add 2FA-code to
   update_2fa_code:
@@ -184,6 +184,8 @@ settings:
   privacy:
     value: Privacy
     comment: The word for privacy
+  premium:
+    value: Premium
   privacy_explanation:
     value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   privacy_beta_explanation:

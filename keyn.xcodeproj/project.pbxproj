@@ -95,6 +95,7 @@
 		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */; };
 		49C8B896225383D300639663 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C8B895225383D300639663 /* StoreKit.framework */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
@@ -302,6 +303,7 @@
 		49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
+		49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewOverlappingLayout.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				4914498622C0F3310021D081 /* KeynTabBar.swift */,
 				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
 				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
+				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1220,6 +1223,7 @@
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
+				49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */,
 				4936E070225F77B3009B0A31 /* MobileExplanationViewController.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */,
