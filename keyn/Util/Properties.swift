@@ -53,6 +53,8 @@ struct Properties {
         }
     }
 
+    static var isJailbroken = false
+
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)

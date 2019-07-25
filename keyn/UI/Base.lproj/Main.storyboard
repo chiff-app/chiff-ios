@@ -985,18 +985,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="XnA-go-mdU">
-                            <rect key="frame" x="0.0" y="309.5" width="320" height="135"/>
+                            <rect key="frame" x="0.0" y="309.5" width="320" height="145"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-9t-JYW">
-                                    <rect key="frame" x="20" y="50" width="280" height="35"/>
+                                    <rect key="frame" x="20" y="75" width="280" height="35"/>
                                     <color key="tintColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="35" id="qFl-jc-a0s"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keyn (unknown version)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwY-AN-xKQ">
-                                    <rect key="frame" x="20" y="93" width="280" height="20"/>
+                                    <rect key="frame" x="20" y="118" width="280" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3Rq-Nq-dKt"/>
                                     </constraints>
@@ -1004,12 +1004,25 @@
                                     <color key="textColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Q6o-28-pWN">
+                                    <rect key="frame" x="20" y="5" width="280" height="40"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="MfF-ds-ht4"/>
+                                    </constraints>
+                                    <color key="textColor" red="0.93333333333333335" green="0.21176470588235294" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
                             </subviews>
                             <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" secondItem="XnA-go-mdU" secondAttribute="top" constant="50" id="SWz-zN-Y5R"/>
+                                <constraint firstItem="Q6o-28-pWN" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="Jm6-sR-c24"/>
+                                <constraint firstItem="Q6o-28-pWN" firstAttribute="top" secondItem="XnA-go-mdU" secondAttribute="top" constant="5" id="QmM-uJ-eG1"/>
                                 <constraint firstItem="fNv-9t-JYW" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="U3t-ku-GeR"/>
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="ahS-cx-tgs"/>
+                                <constraint firstAttribute="trailing" secondItem="Q6o-28-pWN" secondAttribute="trailing" constant="20" id="daS-Cf-wzh"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" secondItem="Q6o-28-pWN" secondAttribute="bottom" constant="30" id="eWJ-nD-cKS"/>
                                 <constraint firstAttribute="trailing" secondItem="wwY-AN-xKQ" secondAttribute="trailing" constant="20" id="m3p-HN-dPK"/>
                                 <constraint firstAttribute="trailing" secondItem="fNv-9t-JYW" secondAttribute="trailing" constant="20" id="waI-uI-Vgb"/>
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="top" secondItem="fNv-9t-JYW" secondAttribute="bottom" constant="8" id="yQY-9x-Ks2"/>
@@ -1149,6 +1162,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="gKl-BS-uBy"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="jailbreakWarningTextView" destination="Q6o-28-pWN" id="hFD-bP-Oju"/>
                         <outlet property="notificationSettingSwitch" destination="yh6-tR-ajZ" id="OlE-5f-b5u"/>
                         <outlet property="paperBackupAlertIcon" destination="2nL-eC-bgn" id="dvl-YY-kLA"/>
                         <outlet property="versionLabel" destination="wwY-AN-xKQ" id="KgF-yh-E6Z"/>

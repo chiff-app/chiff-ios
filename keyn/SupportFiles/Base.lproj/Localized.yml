@@ -209,6 +209,10 @@ settings:
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
+  jailbreak_warning:
+    value: This device appears to be Jailbroken. This will reduce the security of Keyn
+  read_more:
+    value: Read more
 backup:
   word:
     comment: The word for word
