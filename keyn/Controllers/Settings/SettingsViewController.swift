@@ -12,6 +12,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
+    @IBOutlet weak var jailbreakStackView: UIStackView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,21 +130,21 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     private func setJailbreakText() {
         guard Properties.isJailbroken else {
-            jailbreakWarningTextView.isHidden = true
+            jailbreakStackView.isHidden = true
             return
         }
-        jailbreakWarningTextView.isHidden = false
+        jailbreakStackView.isHidden = false
         jailbreakWarningTextView.delegate = self
         let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
+        paragraph.alignment = .left
         let readMore = "settings.read_more".localized
         let jailbreakWarning = "settings.jailbreak_warning".localized
         let attributedString = NSMutableAttributedString(string: "\(jailbreakWarning). \(readMore)", attributes: [
             .paragraphStyle: paragraph,
-            .foregroundColor: UIColor.red,
+            .foregroundColor: UIColor.primary,
             .font: UIFont.primaryMediumNormal!
             ])
-        let url = URL(string: "https://keyn.app/faq")!
+        let url = URL(string: "https://keyn.app/faq#jailbreak")!
         
         attributedString.setAttributes([
             .link: url,

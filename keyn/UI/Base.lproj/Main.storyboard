@@ -989,14 +989,14 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-9t-JYW">
-                                    <rect key="frame" x="20" y="75" width="280" height="35"/>
+                                    <rect key="frame" x="20" y="80" width="280" height="35"/>
                                     <color key="tintColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="35" id="qFl-jc-a0s"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keyn (unknown version)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwY-AN-xKQ">
-                                    <rect key="frame" x="20" y="118" width="280" height="20"/>
+                                    <rect key="frame" x="20" y="123" width="280" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3Rq-Nq-dKt"/>
                                     </constraints>
@@ -1004,26 +1004,37 @@
                                     <color key="textColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Q6o-28-pWN">
-                                    <rect key="frame" x="20" y="5" width="280" height="40"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-FM-4ck">
+                                    <rect key="frame" x="20" y="5" width="280" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lt4-vD-KhI">
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="VM1-XQ-D7R"/>
+                                            </constraints>
+                                        </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6o-28-pWN">
+                                            <rect key="frame" x="30" y="0.0" width="250" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" red="0.93333333333333335" green="0.21176470588235294" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="MfF-ds-ht4"/>
+                                        <constraint firstAttribute="height" constant="50" id="2Lu-qY-8QL"/>
                                     </constraints>
-                                    <color key="textColor" red="0.93333333333333335" green="0.21176470588235294" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                </textView>
+                                </stackView>
                             </subviews>
                             <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="Q6o-28-pWN" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="Jm6-sR-c24"/>
-                                <constraint firstItem="Q6o-28-pWN" firstAttribute="top" secondItem="XnA-go-mdU" secondAttribute="top" constant="5" id="QmM-uJ-eG1"/>
+                                <constraint firstItem="N9K-FM-4ck" firstAttribute="top" secondItem="XnA-go-mdU" secondAttribute="top" constant="5" id="EYe-y9-hJA"/>
+                                <constraint firstItem="N9K-FM-4ck" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="TtJ-4b-j52"/>
                                 <constraint firstItem="fNv-9t-JYW" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="U3t-ku-GeR"/>
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="ahS-cx-tgs"/>
-                                <constraint firstAttribute="trailing" secondItem="Q6o-28-pWN" secondAttribute="trailing" constant="20" id="daS-Cf-wzh"/>
-                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" secondItem="Q6o-28-pWN" secondAttribute="bottom" constant="30" id="eWJ-nD-cKS"/>
+                                <constraint firstAttribute="trailing" secondItem="N9K-FM-4ck" secondAttribute="trailing" constant="20" id="eNd-kq-hvj"/>
                                 <constraint firstAttribute="trailing" secondItem="wwY-AN-xKQ" secondAttribute="trailing" constant="20" id="m3p-HN-dPK"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" secondItem="N9K-FM-4ck" secondAttribute="bottom" constant="25" id="nLD-cC-Wi6"/>
                                 <constraint firstAttribute="trailing" secondItem="fNv-9t-JYW" secondAttribute="trailing" constant="20" id="waI-uI-Vgb"/>
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="top" secondItem="fNv-9t-JYW" secondAttribute="bottom" constant="8" id="yQY-9x-Ks2"/>
                             </constraints>
@@ -1162,6 +1173,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="gKl-BS-uBy"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="jailbreakStackView" destination="N9K-FM-4ck" id="DS8-QJ-3qE"/>
                         <outlet property="jailbreakWarningTextView" destination="Q6o-28-pWN" id="hFD-bP-Oju"/>
                         <outlet property="notificationSettingSwitch" destination="yh6-tR-ajZ" id="OlE-5f-b5u"/>
                         <outlet property="paperBackupAlertIcon" destination="2nL-eC-bgn" id="dvl-YY-kLA"/>

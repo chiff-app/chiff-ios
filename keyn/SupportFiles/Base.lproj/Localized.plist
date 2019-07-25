@@ -695,7 +695,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>jailbreak_warning</key>
 		<dict>
 			<key>value</key>
-			<string>This device appears to be Jailbroken. This will reduce the security of Keyn</string>
+			<string>This device appears to be jailbroken. Other applications may be able to access your passwords</string>
 		</dict>
 		<key>privacy</key>
 		<dict>
