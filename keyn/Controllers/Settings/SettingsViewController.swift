@@ -4,13 +4,14 @@
  */
 import UIKit
 
-class SettingsViewController: UITableViewController {
+class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     @IBOutlet weak var notificationSettingSwitch: UISwitch!
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var versionLabel: UILabel!
+    @IBOutlet weak var jailbreakWarningTextView: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,7 @@ class SettingsViewController: UITableViewController {
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
         setVersionText()
+        setJailbreakText()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +107,13 @@ class SettingsViewController: UITableViewController {
         }
     }
 
+    // MARK: - UITextViewDelegate
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        UIApplication.shared.open(URL, options: [:], completionHandler: nil)
+        return false
+    }
+
     // MARK: - Private
 
     private func setFooterText() {
@@ -116,5 +125,34 @@ class SettingsViewController: UITableViewController {
         if let version = Properties.version, let build = Properties.build {
             versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta (\(build))" : "Keyn \(version) (\(build))"
         }
+    }
+
+    private func setJailbreakText() {
+        guard Properties.isJailbroken else {
+            jailbreakWarningTextView.isHidden = true
+            return
+        }
+        jailbreakWarningTextView.isHidden = false
+        jailbreakWarningTextView.delegate = self
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let readMore = "settings.read_more".localized
+        let jailbreakWarning = "settings.jailbreak_warning".localized
+        let attributedString = NSMutableAttributedString(string: "\(jailbreakWarning). \(readMore)", attributes: [
+            .paragraphStyle: paragraph,
+            .foregroundColor: UIColor.red,
+            .font: UIFont.primaryMediumNormal!
+            ])
+        let url = URL(string: "https://keyn.app/faq")!
+        
+        attributedString.setAttributes([
+            .link: url,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .font: UIFont.primaryMediumNormal!
+            ], range: NSMakeRange(jailbreakWarning.count + 2, readMore.count))
+        jailbreakWarningTextView.attributedText = attributedString
+        jailbreakWarningTextView.linkTextAttributes = [
+            .foregroundColor: UIColor.primary
+        ]
     }
 }

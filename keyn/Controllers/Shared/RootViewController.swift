@@ -16,7 +16,7 @@ class RootViewController: UITabBarController {
     func setBadge(completed: Bool) {
         if let settingsItem = tabBar.items?[2] {
             settingsItem.badgeColor = UIColor.secondary
-            settingsItem.badgeValue = completed ? nil : "!"
+            settingsItem.badgeValue = !completed || Properties.isJailbroken ? "!" : nil
         }
     }
 
