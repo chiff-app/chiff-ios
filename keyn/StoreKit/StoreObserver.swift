@@ -197,9 +197,14 @@ extension StoreObserver: SKRequestDelegate {
     }
 
     func request(_ request: SKRequest, didFailWithError error: Error) {
-        Logger.shared.error("Error refreshing receipt")
         DispatchQueue.main.async {
-            self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
+            let error = error as NSError
+            if error.code == 16 {
+                self.delegate?.storeObserverPurchaseCancelled()
+            } else {
+                Logger.shared.error("Error refreshing receipt", error: error)
+                self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
+            }
         }
     }
 }
