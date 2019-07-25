@@ -2966,7 +2966,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <!--Privacy Policy View Controller-->
         <scene sceneID="qnC-oJ-WXO">
             <objects>
-                <viewController id="Za5-EU-xti" customClass="PrivacyPolicyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Za5-EU-xti" customClass="PrivacyPolicyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WLE-3O-sGT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
