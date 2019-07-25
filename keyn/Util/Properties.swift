@@ -85,6 +85,14 @@ struct Properties {
         }
     }()
 
+    static let version: String? = {
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+    }()
+
+    static let build: String? = {
+        return Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+    }()
+
     static let browsers = ["Chrome", "Edge", "Firefox", "Tor"]
 
     static let systems = ["Windows", "Mac OS", "Debian", "Ubuntu"]

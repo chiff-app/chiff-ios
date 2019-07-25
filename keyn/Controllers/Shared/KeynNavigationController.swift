@@ -13,7 +13,7 @@ class KeynNavigationController: UINavigationController {
     private let height: CGFloat = 38
     private let imageBottomMargin: CGFloat = 0
 
-    let logoImageView = UIImageView(image: UIImage(named: "logo_purple"))
+    let logoImageView = UIImageView(image: UIImage(named: "logo"))
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .default
@@ -21,6 +21,7 @@ class KeynNavigationController: UINavigationController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        logoImageView.tintColor = UIColor.primary
         setNeedsStatusBarAppearanceUpdate()
     }
 

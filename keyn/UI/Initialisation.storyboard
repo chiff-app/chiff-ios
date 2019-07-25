@@ -129,9 +129,9 @@
                                     <segue destination="wDe-lR-s6k" kind="show" id="OZA-Hj-GIA"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="8Ug-bV-7y1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="8Ug-bV-7y1">
                                 <rect key="frame" x="134" y="35" width="52" height="58"/>
-                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="0lL-cQ-Fdv"/>
                                     <constraint firstAttribute="height" constant="58" id="gF0-dt-dYe"/>
@@ -325,8 +325,9 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="i4r-5H-6Zn">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="i4r-5H-6Zn">
                                                 <rect key="frame" x="134" y="-29" width="52" height="58"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="52" id="Tge-q3-6B5"/>
                                                     <constraint firstAttribute="height" constant="58" id="bKK-z7-Jdt"/>
@@ -913,9 +914,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="LLJ-Au-4fr">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="LLJ-Au-4fr">
                                 <rect key="frame" x="134" y="35" width="52" height="58"/>
-                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="RCu-aU-cDa"/>
                                     <constraint firstAttribute="width" constant="52" id="iW4-e4-cA8"/>
@@ -1054,9 +1055,9 @@
                                     <action selector="tryLater:" destination="Zak-ws-iqN" eventType="touchUpInside" id="uKF-at-f2W"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
-                                <rect key="frame" x="134" y="35" width="52" height="58"/>
-                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
+                                <rect key="frame" x="14.5" y="35" width="291" height="58"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="XlO-Uf-5Sz"/>
                                 </constraints>
@@ -1140,9 +1141,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="fgo-Nj-6hp">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fgo-Nj-6hp">
                                 <rect key="frame" x="134" y="35" width="52" height="58"/>
-                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="8AW-lT-tPz"/>
                                     <constraint firstAttribute="height" constant="58" id="8dn-pn-Qlj"/>
@@ -1296,8 +1297,8 @@ Sensitive data is never shared and everything is anonymous.</string>
         <image name="desk" width="375" height="213"/>
         <image name="desktop_login" width="105" height="67"/>
         <image name="desktop_popup" width="105" height="67"/>
+        <image name="logo" width="291" height="323"/>
         <image name="logo_purple" width="52" height="58"/>
-        <image name="logo_white" width="52" height="58"/>
         <image name="phone_checkmark" width="71" height="86"/>
         <image name="phone_fingerprint" width="72" height="86"/>
         <image name="phone_form" width="71" height="86"/>

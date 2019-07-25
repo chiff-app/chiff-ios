@@ -10,6 +10,7 @@ class SettingsViewController: UITableViewController {
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
+    @IBOutlet weak var versionLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +20,7 @@ class SettingsViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
+        setVersionText()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,5 +110,11 @@ class SettingsViewController: UITableViewController {
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 0), with: .none)
         securityFooterText = "settings.backup_completed_footer".localized
+    }
+
+    private func setVersionText() {
+        if let version = Properties.version, let build = Properties.build {
+            versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta (\(build))" : "Keyn \(version) (\(build))"
+        }
     }
 }
