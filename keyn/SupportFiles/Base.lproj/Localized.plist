@@ -24,17 +24,17 @@
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to store an unlimited number of accounts.</string>
+			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.</string>
 		</dict>
 		<key>footer_account_enabled</key>
 		<dict>
 			<key>value</key>
-			<string>You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with an unlimited number of accounts.</string>
+			<string>You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.</string>
 		</dict>
 		<key>footer_account_overflow</key>
 		<dict>
 			<key>value</key>
-			<string>Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with an unlimited number of accounts.</string>
+			<string>Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.</string>
 		</dict>
 		<key>footer_unlimited</key>
 		<dict>
@@ -706,6 +706,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Message to the user after feedback has been submitted</string>
 			<key>value</key>
 			<string>Feedback sent, thanks!</string>
+		</dict>
+		<key>premium</key>
+		<dict>
+			<key>value</key>
+			<string>Premium</string>
 		</dict>
 		<key>privacy</key>
 		<dict>

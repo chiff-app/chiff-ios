@@ -12,17 +12,36 @@ class ProductCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var savingLabel: RoundLabel!
 
-    override var isSelected: Bool {
+    var isFirst: Bool = true {
         didSet {
-            layer.borderColor = isSelected ? UIColor.primary.cgColor : UIColor.primaryTransparant.cgColor
+            if isFirst {
+                layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+            } else {
+                layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            }
         }
+    }
+
+    func showSelected() {
+        layer.zPosition = isSelected ? 10 : 5
+        layer.borderColor = isSelected ? UIColor.primary.cgColor : UIColor.primaryTransparant.cgColor
     }
 
     override func awakeFromNib() {
         layer.borderColor = UIColor.primaryTransparant.cgColor
-        layer.borderWidth = 2.0
+        layer.borderWidth = 1.0
         layer.cornerRadius = 6.0
+    }
+
+}
+
+class RoundLabel: UILabel {
+
+    override func awakeFromNib() {
+        layer.zPosition = CGFloat(INT_MAX)
+        layer.cornerRadius = 2.0
     }
 
 }

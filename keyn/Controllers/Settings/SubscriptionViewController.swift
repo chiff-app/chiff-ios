@@ -47,13 +47,21 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let product = StoreManager.shared.availableProducts[indexPath.row]
-        guard let cell = cell as? ProductCollectionViewCell else {
-            fatalError("Wrong collection view type")
-        }
+        let cell = cell as! ProductCollectionViewCell
+        cell.isFirst = indexPath.row == 0
+        cell.showSelected()
         cell.title.text = product.localizedTitle
         if let price = product.regularPrice {
             cell.price.text = "\(price)"
         }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        updateCellSelectionUI(indexPath: indexPath)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        updateCellSelectionUI(indexPath: indexPath)
     }
 
     // MARK: - Navigation
@@ -75,7 +83,12 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     private func select(index: Int?) {
-        collectionView.selectItem(at: IndexPath(row: index ?? StoreManager.shared.availableProducts.count - 1, section: 0), animated: false, scrollPosition: [])
+        let indexPath = IndexPath(row: index ?? StoreManager.shared.availableProducts.count - 1, section: 0)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+    }
+
+    private func updateCellSelectionUI(indexPath: IndexPath) {
+        (collectionView.cellForItem(at: indexPath) as! ProductCollectionViewCell).showSelected()
     }
 
     fileprivate func reload() {
@@ -153,3 +166,13 @@ extension SubscriptionViewController: StoreObserverDelegate {
         upgradeButton.hideLoading()
     }
 }
+
+// Conform UICollectionViewDelegateFlowLayout first
+extension SubscriptionViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.collectionView.bounds.width / 2, height: self.collectionView.bounds.height - 10)
+    }
+
+}
+    
