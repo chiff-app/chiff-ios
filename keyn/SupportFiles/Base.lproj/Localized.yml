@@ -210,7 +210,7 @@ settings:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
   jailbreak_warning:
-    value: This device appears to be Jailbroken. This will reduce the security of Keyn
+    value: This device appears to be jailbroken. Other applications may be able to access your passwords
   read_more:
     value: Read more
 backup:
