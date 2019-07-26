@@ -60,6 +60,9 @@ struct Properties {
     static var accountOverflow: Bool {
         return accountCount > accountCap
     }
+    static var canAddAccount: Bool {
+        return hasValidSubscription || accountCount < accountCap
+    }
 
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)

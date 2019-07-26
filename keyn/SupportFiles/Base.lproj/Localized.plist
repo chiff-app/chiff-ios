@@ -568,6 +568,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Add</string>
 		</dict>
+		<key>cannot_add</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade needed</string>
+		</dict>
 		<key>change_for</key>
 		<dict>
 			<key>comment</key>
@@ -689,7 +694,12 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Unlock Keyn</string>
 		</dict>
-		<key>upgrade_keyn</key>
+		<key>upgrade_keyn_for_add</key>
+		<dict>
+			<key>value</key>
+			<string>You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save an unlimited number of accounts</string>
+		</dict>
+		<key>upgrade_keyn_for_request</key>
 		<dict>
 			<key>value</key>
 			<string>You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again</string>

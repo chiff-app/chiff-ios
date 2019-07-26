@@ -57,9 +57,12 @@ class RequestViewController: UIViewController {
         authorizationGuard.acceptRequest { account, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    if error is AuthorizationError, case AuthorizationError.accountOverflow = error {
+                    if let error = error as? AuthorizationError {
+                        switch error {
+                            case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
+                            case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+                        }
                         AuthenticationGuard.shared.hideLockWindow()
-                        self.disabled()
                     } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                         self.showError(message: errorMessage)
                         Logger.shared.error("Error authorizing request", error: error)
@@ -138,12 +141,14 @@ class RequestViewController: UIViewController {
         }
     }
 
-    private func disabled() {
+    // "requests.account_disabled".localized.capitalizedFirstLetter
+    private func shouldUpgrade(title: String, description: String) {
         authenticateButton.isHidden = true
         upgradeStackView.isHidden = false
         successImageView.image = UIImage(named: "unhappy")
-        successTextLabel.text = "requests.account_disabled".localized.capitalizedFirstLetter
-        successTextDetailLabel.text = "requests.upgrade_keyn".localized.capitalizedFirstLetter
+        requestLabel.text = title
+        successTextLabel.text = ""
+        successTextDetailLabel.text = description
         self.showSuccessView()
     }
 

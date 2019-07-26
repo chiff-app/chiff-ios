@@ -45,7 +45,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
-        setFooter(canAddAccounts: unfilteredAccounts.count < Properties.accountCap)
+        setFooter()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -79,8 +79,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
-            addAddButton(enabled: Properties.hasValidSubscription || accounts.enabledCount < Properties.accountCap)
-            setFooter(canAddAccounts: Properties.hasValidSubscription || accounts.count <= Properties.accountCap)
+            addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
         } else {
             navigationItem.rightBarButtonItem = nil
@@ -94,16 +94,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         DispatchQueue.main.async {
             self.filteredAccounts = self.unfilteredAccounts
             self.tableView.reloadData()
-            self.setFooter(canAddAccounts: self.filteredAccounts.count < Properties.accountCap)
+            self.setFooter()
             self.updateUi()
         }
     }
 
-    private func setFooter(canAddAccounts: Bool) {
+    private func setFooter() {
         if Properties.hasValidSubscription {
             tableViewFooter.text = "accounts.footer_unlimited".localized
         } else {
-            tableViewFooter.text = canAddAccounts ? "accounts.footer".localized : "accounts.footer_account_overflow".localized
+            tableViewFooter.text = Properties.accountOverflow ? "accounts.footer_account_overflow".localized : "accounts.footer".localized
         }
     }
 
@@ -171,6 +171,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count > Properties.accountCap
                 controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
+        } else if segue.identifier == "ShowAddSubscription", let destination = segue.destination.contents as? SubscriptionViewController {
+            destination.presentedModally = true
         }
     }
 
