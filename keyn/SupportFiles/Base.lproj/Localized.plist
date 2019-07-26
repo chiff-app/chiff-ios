@@ -531,6 +531,26 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>accounts added</string>
 		</dict>
+		<key>accounts_left_1</key>
+		<dict>
+			<key>value</key>
+			<string>You can only add</string>
+		</dict>
+		<key>accounts_left_2_plural</key>
+		<dict>
+			<key>value</key>
+			<string>additional accounts</string>
+		</dict>
+		<key>accounts_left_2_single</key>
+		<dict>
+			<key>value</key>
+			<string>additional account</string>
+		</dict>
+		<key>accounts_left_3</key>
+		<dict>
+			<key>value</key>
+			<string>in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
+		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
@@ -615,6 +635,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>New password generated</string>
+		</dict>
+		<key>no_accounts_left</key>
+		<dict>
+			<key>value</key>
+			<string>You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
 		</dict>
 		<key>on</key>
 		<dict>
