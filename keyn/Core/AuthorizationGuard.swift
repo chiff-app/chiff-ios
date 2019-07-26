@@ -8,6 +8,7 @@ import LocalAuthentication
 
 enum AuthorizationError: KeynError {
     case accountOverflow
+    case cannotAddAccount
 }
 
 class AuthorizationGuard {
@@ -61,6 +62,10 @@ class AuthorizationGuard {
     func acceptRequest(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         switch type {
         case .add, .register, .addAndLogin:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addSite() { error in
                 completionHandler(nil, error)
             }
@@ -69,6 +74,10 @@ class AuthorizationGuard {
                 completionHandler(nil, error)
             }
         case .addBulk:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addBulkSites() { error in
                 completionHandler(nil, error)
             }
