@@ -83,6 +83,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        for service in services.values {
+            service.applicationWillTerminate?(application)
+        }
+    }
+
     // MARK: - Private
 
     func clearUserData() {

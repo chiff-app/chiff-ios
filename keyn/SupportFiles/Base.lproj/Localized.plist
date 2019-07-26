@@ -24,7 +24,17 @@
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.</string>
+			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.</string>
+		</dict>
+		<key>footer_account_enabled</key>
+		<dict>
+			<key>value</key>
+			<string>You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.</string>
+		</dict>
+		<key>footer_account_overflow</key>
+		<dict>
+			<key>value</key>
+			<string>Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.</string>
 		</dict>
 		<key>footer_unlimited</key>
 		<dict>
@@ -509,6 +519,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Account added</string>
 		</dict>
+		<key>account_disabled</key>
+		<dict>
+			<key>value</key>
+			<string>Account disabled</string>
+		</dict>
 		<key>accounts</key>
 		<dict>
 			<key>comment</key>
@@ -520,6 +535,26 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>accounts added</string>
+		</dict>
+		<key>accounts_left_1</key>
+		<dict>
+			<key>value</key>
+			<string>You can only add</string>
+		</dict>
+		<key>accounts_left_2_plural</key>
+		<dict>
+			<key>value</key>
+			<string>additional accounts</string>
+		</dict>
+		<key>accounts_left_2_single</key>
+		<dict>
+			<key>value</key>
+			<string>additional account</string>
+		</dict>
+		<key>accounts_left_3</key>
+		<dict>
+			<key>value</key>
+			<string>in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -537,6 +572,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Ask the user to add a site, e.g. Add Amazon.com?</string>
 			<key>value</key>
 			<string>Add</string>
+		</dict>
+		<key>cannot_add</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade needed</string>
 		</dict>
 		<key>change_for</key>
 		<dict>
@@ -606,6 +646,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>New password generated</string>
 		</dict>
+		<key>no_accounts_left</key>
+		<dict>
+			<key>value</key>
+			<string>You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
+		</dict>
 		<key>on</key>
 		<dict>
 			<key>comment</key>
@@ -654,6 +699,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Unlock Keyn</string>
 		</dict>
+		<key>upgrade_keyn_for_add</key>
+		<dict>
+			<key>value</key>
+			<string>You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save an unlimited number of accounts</string>
+		</dict>
+		<key>upgrade_keyn_for_request</key>
+		<dict>
+			<key>value</key>
+			<string>You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again</string>
+		</dict>
 	</dict>
 	<key>settings</key>
 	<dict>
@@ -696,6 +751,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>This device appears to be jailbroken. Other applications may be able to access your passwords</string>
+		</dict>
+		<key>premium</key>
+		<dict>
+			<key>value</key>
+			<string>Premium</string>
 		</dict>
 		<key>privacy</key>
 		<dict>
@@ -740,6 +800,204 @@ Deleting data will be permanently delete all your local and remote data. You wil
 			<string>The word for settings</string>
 			<key>value</key>
 			<string>Settings</string>
+		</dict>
+	</dict>
+	<key>storekit</key>
+	<dict>
+		<key>cannotMakePayments</key>
+		<dict>
+			<key>value</key>
+			<string>You are not authorized to make payments. In-App Purchases may be restricted on your device.</string>
+		</dict>
+		<key>couldNotFind</key>
+		<dict>
+			<key>value</key>
+			<string>Could not find resource file</string>
+		</dict>
+		<key>deferred</key>
+		<dict>
+			<key>value</key>
+			<string>Allow the user to continue using your app</string>
+		</dict>
+		<key>deliverContent</key>
+		<dict>
+			<key>value</key>
+			<string>Deliver content for</string>
+		</dict>
+		<key>error</key>
+		<dict>
+			<key>value</key>
+			<string>Error: </string>
+		</dict>
+		<key>failed</key>
+		<dict>
+			<key>value</key>
+			<string>failed</string>
+		</dict>
+		<key>installing</key>
+		<dict>
+			<key>value</key>
+			<string>In-App Purchases may be restricted on your device</string>
+		</dict>
+		<key>invalidIndexPath</key>
+		<dict>
+			<key>value</key>
+			<string>Invalid selected index path</string>
+		</dict>
+		<key>noPurchasesAvailable</key>
+		<dict>
+			<key>value</key>
+			<string>No purchases available</string>
+		</dict>
+		<key>noRestorablePurchases</key>
+		<dict>
+			<key>value</key>
+			<string>There are no restorable purchases.</string>
+		</dict>
+		<key>notAuthorized</key>
+		<dict>
+			<key>value</key>
+			<string>You are not authorized to make payments</string>
+		</dict>
+		<key>okButton</key>
+		<dict>
+			<key>value</key>
+			<string>OK</string>
+		</dict>
+		<key>previouslyBought</key>
+		<dict>
+			<key>value</key>
+			<string>Only previously bought non-consumable products and auto-renewable subscriptions can be restored</string>
+		</dict>
+		<key>productRequestStatus</key>
+		<dict>
+			<key>value</key>
+			<string>Product Request Status</string>
+		</dict>
+		<key>purchaseOf</key>
+		<dict>
+			<key>value</key>
+			<string>Purchase of</string>
+		</dict>
+		<key>purchaseStatus</key>
+		<dict>
+			<key>value</key>
+			<string>Purchase Status</string>
+		</dict>
+		<key>removed</key>
+		<dict>
+			<key>value</key>
+			<string>was removed from the payment queue</string>
+		</dict>
+		<key>restorable</key>
+		<dict>
+			<key>value</key>
+			<string>All restorable transactions have been processed by the payment queue</string>
+		</dict>
+		<key>restoreContent</key>
+		<dict>
+			<key>value</key>
+			<string>Restore content for</string>
+		</dict>
+		<key>status</key>
+		<dict>
+			<key>value</key>
+			<string>Status</string>
+		</dict>
+		<key>unableToInstantiateAvailableProducts</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate an AvailableProducts</string>
+		</dict>
+		<key>unableToInstantiateInvalidProductIds</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate an InvalidProductIdentifiers</string>
+		</dict>
+		<key>unableToInstantiateMessages</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate a MessagesViewController</string>
+		</dict>
+		<key>unableToInstantiateNavigationController</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate a navigation controller</string>
+		</dict>
+		<key>unableToInstantiateProducts</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate a Products</string>
+		</dict>
+		<key>unableToInstantiatePurchases</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate a Purchases</string>
+		</dict>
+		<key>unableToInstantiateSettings</key>
+		<dict>
+			<key>value</key>
+			<string>Unable to instantiate a Settings</string>
+		</dict>
+		<key>unknownDefault</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown payment transaction case</string>
+		</dict>
+		<key>unknownDestinationViewController</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown destination view controller</string>
+		</dict>
+		<key>unknownDetail</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown detail row</string>
+		</dict>
+		<key>unknownPurchase</key>
+		<dict>
+			<key>value</key>
+			<string>No selected purchase</string>
+		</dict>
+		<key>unknownSelectedSegmentIndex</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown selected segment index:</string>
+		</dict>
+		<key>unknownSelectedViewController</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown selected view controller</string>
+		</dict>
+		<key>unknownTabBarIndex</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown tab bar index</string>
+		</dict>
+		<key>unknownToolbarItem</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown selected toolbar item:</string>
+		</dict>
+		<key>updateResource</key>
+		<dict>
+			<key>value</key>
+			<string>Update it with your product identifiers to retrieve product information</string>
+		</dict>
+		<key>useStoreRestore</key>
+		<dict>
+			<key>value</key>
+			<string>Use Store &gt; Restore to restore your previously bought non-consumable products and auto-renewable subscriptions</string>
+		</dict>
+		<key>viewControllerDoesNotExist</key>
+		<dict>
+			<key>value</key>
+			<string>The main content view controller does not exist</string>
+		</dict>
+		<key>windowDoesNotExist</key>
+		<dict>
+			<key>value</key>
+			<string>The window does not exist</string>
 		</dict>
 	</dict>
 </dict>

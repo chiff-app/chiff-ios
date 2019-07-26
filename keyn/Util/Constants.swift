@@ -128,4 +128,5 @@ enum KeynMessageType: Int, Codable {
     case expired = 11
     case preferences = 12
     case addToExisting = 13
+    case disabled = 14
 }

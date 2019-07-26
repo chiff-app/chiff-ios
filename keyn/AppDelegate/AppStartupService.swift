@@ -6,6 +6,7 @@
 import LocalAuthentication
 import UIKit
 import UserNotifications
+import StoreKit
 
 /*
  * Code related to starting up the app in different ways.
@@ -22,6 +23,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
+        StoreObserver.shared.enable()
+        if StoreObserver.shared.isAuthorizedForPayments {
+            StoreManager.shared.startProductRequest()
+        }
         Questionnaire.fetch()
         UIFixes()
 
@@ -61,6 +66,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        StoreObserver.shared.disable()
+    }
+
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         guard (error as NSError).code != 3010 else {
             return
@@ -82,6 +91,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                     NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
                 }
             }
+        }
+        if BackupManager.shared.hasKeys {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                StoreObserver.shared.updateSubscriptions { (error) in
+                    if let error = error {
+                        Logger.shared.error("Error updating subsription status", error: error)
+                    }
+                }
+            }
+
         }
     }
 
