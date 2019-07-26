@@ -16,6 +16,7 @@ enum KeynButtonType: String {
     case accent
     case dark
     case darkSecondary
+    case outline
 }
 
 @IBDesignable class KeynButton: UIButton {
@@ -29,6 +30,9 @@ enum KeynButtonType: String {
         }
     }
 
+    var originalButtonText: String?
+    var activityIndicator: UIActivityIndicatorView!
+
     var type: KeynButtonType = .primary {
         didSet {    
             switch type {
@@ -40,6 +44,7 @@ enum KeynButtonType: String {
                 tintColor = UIColor.primary
             case .tertiary:
                 backgroundColor = UIColor.white
+                tintColor = UIColor.primary
                 layer.borderColor = UIColor.primaryLight.cgColor
                 layer.borderWidth = 1.0
             case .accent:
@@ -51,7 +56,11 @@ enum KeynButtonType: String {
             case .darkSecondary:
                 backgroundColor = UIColor.primaryLight.withAlphaComponent(0.3)
                 tintColor = UIColor.white
-
+            case .outline:
+                backgroundColor = UIColor.clear
+                tintColor = UIColor.white.withAlphaComponent(0.8)
+                layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+                layer.borderWidth = 1.0
             }
         }
     }
@@ -73,6 +82,44 @@ enum KeynButtonType: String {
     func sharedInit() {
         layer.cornerRadius = frame.size.height / 2
         titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 14.0)
+    }
+
+    func showLoading() {
+        originalButtonText = self.titleLabel?.text
+        self.setTitle("", for: .normal)
+
+        if (activityIndicator == nil) {
+            activityIndicator = createActivityIndicator()
+        }
+
+        showSpinning()
+    }
+
+    func hideLoading() {
+        self.setTitle(originalButtonText, for: .normal)
+        activityIndicator?.stopAnimating()
+    }
+
+    private func createActivityIndicator() -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .white
+        return activityIndicator
+    }
+
+    private func showSpinning() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(activityIndicator)
+        centerActivityIndicatorInButton()
+        activityIndicator.startAnimating()
+    }
+
+    private func centerActivityIndicatorInButton() {
+        let xCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: activityIndicator, attribute: .centerX, multiplier: 1, constant: 0)
+        self.addConstraint(xCenterConstraint)
+
+        let yCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: activityIndicator, attribute: .centerY, multiplier: 1, constant: 0)
+        self.addConstraint(yCenterConstraint)
     }
 
 }

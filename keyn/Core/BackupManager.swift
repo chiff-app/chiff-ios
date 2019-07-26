@@ -137,6 +137,7 @@ struct BackupManager {
                     }
                 }
             }
+            Properties.accountCount = dict.count
             completionHandler(nil)
         }
     }

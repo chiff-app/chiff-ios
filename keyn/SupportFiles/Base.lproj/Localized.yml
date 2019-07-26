@@ -137,9 +137,13 @@ accounts:
   url_warning:
     value: ⚠️ Keyn doesn't work if the URL is incorrect.
   footer:
-    value: You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.
+    value: You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.
   footer_unlimited:
     value: You can save as many accounts as you want.
+  footer_account_overflow:  
+    value: Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.
+  footer_account_enabled:
+    value: You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.
   add_2fa_code:
     value: Add 2FA-code to
   update_2fa_code:
@@ -182,6 +186,8 @@ settings:
   privacy:
     value: Privacy
     comment: The word for privacy
+  premium:
+    value: Premium
   privacy_explanation:
     value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   privacy_beta_explanation:
@@ -282,6 +288,24 @@ requests:
     value: Next time you can login with Keyn
   to_complete_process:
     value: to complete the process
+  account_disabled:
+    value: Account disabled
+  cannot_add:
+    value: Upgrade needed
+  upgrade_keyn_for_request:
+    value: You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again
+  upgrade_keyn_for_add:
+    value: You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save an unlimited number of accounts
+  accounts_left_1:
+    value: You can only add
+  accounts_left_2_plural:
+    value: additional accounts
+  accounts_left_2_single:
+    value: additional account
+  accounts_left_3:
+    value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
+  no_accounts_left:
+    value: You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -310,3 +334,82 @@ initialization:
       value: Copy your password by simply tapping it.
     third:
       value: Return to the login fields and paste your password.
+storekit:
+  cannotMakePayments:
+    value: You are not authorized to make payments. In-App Purchases may be restricted on your device.
+  couldNotFind:
+    value: Could not find resource file
+  error:
+    value: "Error: "
+  deferred:
+    value: Allow the user to continue using your app
+  deliverContent:
+    value: Deliver content for
+  failed:
+    value: failed
+  installing:
+    value: In-App Purchases may be restricted on your device
+  invalidIndexPath:
+    value: Invalid selected index path
+  noRestorablePurchases:
+    value: There are no restorable purchases.
+  noPurchasesAvailable:
+    value: No purchases available
+  notAuthorized:
+    value: You are not authorized to make payments
+  okButton:
+    value: OK
+  previouslyBought:
+    value: Only previously bought non-consumable products and auto-renewable subscriptions can be restored
+  productRequestStatus:
+    value: Product Request Status
+  purchaseOf:
+    value: Purchase of
+  purchaseStatus:
+    value: Purchase Status
+  removed:
+    value: was removed from the payment queue
+  restorable:
+    value: All restorable transactions have been processed by the payment queue
+  restoreContent:
+    value: Restore content for
+  status:
+    value: Status
+  unableToInstantiateAvailableProducts:
+    value: Unable to instantiate an AvailableProducts
+  unableToInstantiateInvalidProductIds:
+    value: Unable to instantiate an InvalidProductIdentifiers
+  unableToInstantiateMessages:
+    value: Unable to instantiate a MessagesViewController
+  unableToInstantiateNavigationController:
+    value: Unable to instantiate a navigation controller
+  unableToInstantiateProducts:
+    value: Unable to instantiate a Products
+  unableToInstantiatePurchases:
+    value: Unable to instantiate a Purchases
+  unableToInstantiateSettings:
+    value: Unable to instantiate a Settings
+  unknownDefault:
+    value: Unknown payment transaction case
+  unknownDestinationViewController:
+    value: Unknown destination view controller
+  unknownDetail:
+    value: Unknown detail row
+  unknownPurchase:
+    value: No selected purchase
+  unknownSelectedSegmentIndex:
+    value: "Unknown selected segment index:" 
+  unknownSelectedViewController:
+    value: Unknown selected view controller
+  unknownTabBarIndex:
+    value: Unknown tab bar index
+  unknownToolbarItem:
+    value: "Unknown selected toolbar item:"
+  updateResource:
+    value: Update it with your product identifiers to retrieve product information
+  useStoreRestore:
+    value: Use Store > Restore to restore your previously bought non-consumable products and auto-renewable subscriptions
+  viewControllerDoesNotExist:
+    value: The main content view controller does not exist
+  windowDoesNotExist:
+    value: The window does not exist

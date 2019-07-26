@@ -35,11 +35,15 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "settings.settings".localized : nil
+        switch section {
+        case 0: return "settings.premium".localized
+        case 1: return "settings.settings".localized
+        default: fatalError("Too many sections")
+        }
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 0 ? securityFooterText : nil
+        return section == 1 ? securityFooterText : nil
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -48,11 +52,15 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "settings.settings".localized : nil
+        switch section {
+            case 0: header.textLabel?.text = "settings.premium".localized
+            case 1: header.textLabel?.text = "settings.settings".localized
+            default: fatalError("Too many sections")
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == 0 else {
+        guard section == 1 else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
@@ -60,12 +68,12 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = section == 0 ? securityFooterText : nil
+        footer.textLabel?.text = securityFooterText
         footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0 && indexPath.row >= 1) || indexPath.section == 1 {
+        if (indexPath.section == 1 && indexPath.row >= 1) || indexPath.section == 0 {
             cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
         }
     }
@@ -118,7 +126,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     // MARK: - Private
 
     private func setFooterText() {
-        tableView.reloadSections(IndexSet(integer: 0), with: .none)
+        tableView.reloadSections(IndexSet(integer: 1), with: .none)
         securityFooterText = "settings.backup_completed_footer".localized
     }
 

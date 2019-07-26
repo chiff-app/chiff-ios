@@ -15,17 +15,20 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var upgradeButton: KeynButton!
+
+    var addAccountButton: KeynBarButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if let accountDict = try? Account.all(context: nil) {
-            unfilteredAccounts = Array(accountDict.values)
-            updateUi()
+            unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         } else {
             unfilteredAccounts = [Account]()
         }
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+        filteredAccounts = unfilteredAccounts
+        updateUi()
 
         scrollView.delegate = self
         tableView.delegate = self
@@ -40,8 +43,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
+        NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
-        tableViewFooter.text = Properties.environment == .prod ? "accounts.footer".localized : "accounts.footer_unlimited".localized
+        setFooter()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +56,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     @objc func showAddAccount() {
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
+    }
+
+    @objc func showAddSubscription() {
+        performSegue(withIdentifier: "ShowAddSubscription", sender: self)
     }
 
     private func loadAccounts(notification: Notification) {
@@ -67,16 +75,35 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func updateUi() {
         loadingSpinner.stopAnimating()
-        if let accounts = unfilteredAccounts, !accounts.isEmpty {
+        if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
-            addAddButton()
+            addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            setFooter()
+            upgradeButton.isHidden = Properties.hasValidSubscription
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
             (tabBarController as! RootViewController).showGradient(false)
             addAccountContainerView.isHidden = false
+        }
+    }
+
+    private func updateSubscriptionStatus(notification: Notification) {
+        DispatchQueue.main.async {
+            self.filteredAccounts = self.unfilteredAccounts
+            self.tableView.reloadData()
+            self.setFooter()
+            self.updateUi()
+        }
+    }
+
+    private func setFooter() {
+        if Properties.hasValidSubscription {
+            tableViewFooter.text = "accounts.footer_unlimited".localized
+        } else {
+            tableViewFooter.text = Properties.accountOverflow ? "accounts.footer_account_overflow".localized : "accounts.footer".localized
         }
     }
 
@@ -117,10 +144,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
-        let account = filteredAccounts[indexPath.row]
-        cell.titleLabel.text = account.site.name
-        return cell
+        return tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? AccountTableViewCell {
+            let account = filteredAccounts[indexPath.row]
+            cell.titleLabel.text = account.site.name
+            let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
+            cell.titleLabel.alpha = showEnabled ? 1 : 0.5
+            cell.icon.alpha = showEnabled ? 1 : 0.5
+        }
     }
 
     // MARK: - Navigation
@@ -132,8 +166,13 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             if let controller = (segue.destination.contents as? AccountViewController),
                let cell = sender as? UITableViewCell,
                let indexPath = tableView.indexPath(for: cell) {
-                 controller.account = filteredAccounts[indexPath.row]
+                let account = filteredAccounts[indexPath.row]
+                controller.account = account
+                controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count > Properties.accountCap
+                controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
+        } else if segue.identifier == "ShowAddSubscription", let destination = segue.destination.contents as? SubscriptionViewController {
+            destination.presentedModally = true
         }
     }
 
@@ -145,6 +184,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             filteredAccounts[filteredIndex] = account
             let indexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        if !Properties.hasValidSubscription && Properties.accountOverflow {
+            addAccountButton?.isEnabled = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
         }
     }
 
@@ -191,14 +233,14 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         })
     }
 
-    private func addAddButton(){
+    private func addAddButton(enabled: Bool){
 //        guard self.navigationItem.rightBarButtonItem == nil else {
 //            return
 //        }
 
-        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        button.setImage(UIImage(named:"add_button"), for: .normal)
-        button.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItem = button.barButtonItem
+        addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+        addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
     }
 }

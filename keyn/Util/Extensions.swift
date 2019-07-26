@@ -7,6 +7,7 @@ import Sodium
 import UserNotifications
 import OneTimePassword
 import Amplitude_iOS
+import StoreKit
 
 // MARK: - Primitive extensions
 
@@ -138,6 +139,11 @@ extension Array where Element == UInt8 {
 }
 
 extension Date {
+
+    static var now: TimeInterval {
+        return Date().timeIntervalSince1970 * 1000
+    }
+
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
@@ -162,6 +168,7 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
+    static let subscriptionUpdated = Notification.Name("SubscriptionUpdatetd")
 }
 
 extension Token {
@@ -435,3 +442,19 @@ extension Amplitude {
     }
 }
 
+// MARK: - SKProduct
+extension SKProduct {
+    /// - returns: The cost of the product formatted in the local currency.
+    var regularPrice: String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = self.priceLocale
+        return formatter.string(from: self.price)
+    }
+}
+
+extension Array where Iterator.Element == Account {
+    var enabledCount: Int {
+        return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
+    }
+}

@@ -25,17 +25,20 @@ struct Properties {
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
     static private let userIdFlag = "userID"
+    static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
+    static private let subscriptionProductFlag = "subscriptionProduct"
+    static private let accountCountFlag = "accountCount"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
         set { UserDefaults.standard.set(newValue, forKey: questionnaireDirPurgedFlag) }
     }
     static var errorLogging: Bool {
-        get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: errorLoggingFlag) }
+        get { return environment == .beta || UserDefaults.standard.bool(forKey: errorLoggingFlag) }
         set { UserDefaults.standard.set(newValue, forKey: errorLoggingFlag) }
     }
     static var analyticsLogging: Bool {
-        get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
+        get { return environment == .beta || UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
         set {
             UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
             Logger.shared.setAnalyticsLogging(value: newValue)
@@ -54,6 +57,30 @@ struct Properties {
     }
 
     static var isJailbroken = false
+    static var subscriptionExiryDate: TimeInterval {
+        get { return UserDefaults.standard.double(forKey: subscriptionExiryDateFlag) }
+        set {
+            UserDefaults.standard.set(newValue, forKey: subscriptionExiryDateFlag)
+            NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
+        }
+    }
+    static var subscriptionProduct: String? {
+        get { return UserDefaults.standard.string(forKey: subscriptionProductFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: subscriptionProductFlag) }
+    }
+    static var hasValidSubscription: Bool {
+        return environment == .beta || subscriptionExiryDate > Date.now
+    }
+    static var accountCount: Int {
+        get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
+    }
+    static var accountOverflow: Bool {
+        return accountCount > accountCap
+    }
+    static var canAddAccount: Bool {
+        return hasValidSubscription || accountCount < accountCap
+    }
 
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
@@ -102,6 +129,8 @@ struct Properties {
     static let keynApi = "api.keyn.app"
     
     static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
+
+    static let accountCap = 8
     
     static let AWSSNSNotificationArn = (
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",

@@ -6,6 +6,11 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 
+enum AuthorizationError: KeynError {
+    case accountOverflow
+    case cannotAddAccount
+}
+
 class AuthorizationGuard {
 
     static var authorizationInProgress = false
@@ -57,6 +62,10 @@ class AuthorizationGuard {
     func acceptRequest(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         switch type {
         case .add, .register, .addAndLogin:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addSite() { error in
                 completionHandler(nil, error)
             }
@@ -65,6 +74,10 @@ class AuthorizationGuard {
                 completionHandler(nil, error)
             }
         case .addBulk:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addBulkSites() { error in
                 completionHandler(nil, error)
             }
@@ -115,6 +128,14 @@ class AuthorizationGuard {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
+                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (_, error) in // TODO: Change to .disabled after implemented in extension
+                        if let error = error {
+                            Logger.shared.error("Error rejecting request", error: error)
+                        }
+                    })
+                    throw AuthorizationError.accountOverflow
+                }
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 success = true
                 completionHandler(account, nil)
