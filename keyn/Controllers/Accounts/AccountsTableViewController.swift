@@ -78,14 +78,18 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            (tabBarController as! RootViewController).showGradient(true)
+            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
+                (tabBarController as! RootViewController).showGradient(true)
+            }
             addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
             setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
-            (tabBarController as! RootViewController).showGradient(false)
+            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
+                (tabBarController as! RootViewController).showGradient(false)
+            }
             addAccountContainerView.isHidden = false
         }
     }
