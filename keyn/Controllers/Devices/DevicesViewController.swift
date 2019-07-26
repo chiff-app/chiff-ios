@@ -147,25 +147,19 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         guard !Properties.deniedPushNotifications else {
             pushNotificationWarning.isHidden = false
             navigationItem.rightBarButtonItem = nil
-            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
-                (tabBarController as! RootViewController).showGradient(false)
-            }
+            (tabBarController as! RootViewController).showGradient(false)
             return
         }
         pushNotificationWarning.isHidden = true
         if !sessions.isEmpty {
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false
-            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
-                (tabBarController as! RootViewController).showGradient(true)
-            }
+            (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
         } else {
             addSessionContainer.isHidden = false
             tableViewContainer.isHidden = true
-            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
-                (tabBarController as! RootViewController).showGradient(false)
-            }
+            (tabBarController as! RootViewController).showGradient(false)
             navigationItem.rightBarButtonItem = nil
         }
     }

@@ -219,6 +219,8 @@ settings:
     value: This device appears to be jailbroken. Other applications may be able to access your passwords
   read_more:
     value: Read more
+  premium_beta:
+    value: Keyn Premium is already enabled if you're participating in the beta program
 backup:
   word:
     comment: The word for word
