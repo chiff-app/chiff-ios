@@ -15,6 +15,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var upgradeButton: KeynButton!
 
     var addAccountButton: KeynBarButton?
 
@@ -78,8 +79,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
             (tabBarController as! RootViewController).showGradient(true)
-            addAddButton(enabled: Properties.hasValidSubscription || accounts.filter({ $0.enabled }).count < Properties.accountCap)
-            setFooter(canAddAccounts: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            addAddButton(enabled: Properties.hasValidSubscription || accounts.enabledCount < Properties.accountCap)
+            setFooter(canAddAccounts: Properties.hasValidSubscription || accounts.count <= Properties.accountCap)
+            upgradeButton.isHidden = Properties.hasValidSubscription
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
@@ -166,7 +168,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                let indexPath = tableView.indexPath(for: cell) {
                 let account = filteredAccounts[indexPath.row]
                 controller.account = account
-                controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count >= Properties.accountCap
+                controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count > Properties.accountCap
                 controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
         }
@@ -236,7 +238,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
         addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
-        addAccountButton!.addTarget(self, action: !enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
+        addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
     }
 }

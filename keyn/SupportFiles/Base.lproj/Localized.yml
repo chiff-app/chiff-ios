@@ -286,6 +286,16 @@ requests:
     value: Account disabled
   upgrade_keyn:
     value: You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again
+  accounts_left_1:
+    value: You can only add
+  accounts_left_2_plural:
+    value: additional accounts
+  accounts_left_2_single:
+    value: additional account
+  accounts_left_3:
+    value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
+  no_accounts_left:
+    value: You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts
 registration:
   change_password_footer:
     comment: Description for enabling changing a password

@@ -435,3 +435,9 @@ extension SKProduct {
         return formatter.string(from: self.price)
     }
 }
+
+extension Array where Iterator.Element == Account {
+    var enabledCount: Int {
+        return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
+    }
+}
