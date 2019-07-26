@@ -31,6 +31,7 @@ class KeynNavigationController: UINavigationController {
         navigationBar.addSubview(logoImageView)
         logoImageView.clipsToBounds = false
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        logoImageView.tintColor = UIColor.primary
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: navigationBar.centerXAnchor),
             logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageBottomMargin),

@@ -757,6 +757,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Premium</string>
 		</dict>
+		<key>premium_beta</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is already enabled if you're participating in the beta program</string>
+		</dict>
 		<key>privacy</key>
 		<dict>
 			<key>comment</key>

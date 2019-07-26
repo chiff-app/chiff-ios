@@ -44,7 +44,11 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 1 ? securityFooterText : nil
+        if Properties.environment == .beta {
+            return section == 1 ? securityFooterText : "settings.premium_beta".localized
+        } else {
+            return section == 1 ? securityFooterText : nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -61,7 +65,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == 1 else {
+        guard section == 1 || Properties.environment == .beta else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
@@ -69,13 +73,17 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = securityFooterText
+        footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
         footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (indexPath.section == 1 && indexPath.row >= 1) || indexPath.section == 0 {
             cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
+            if Properties.environment == .beta && indexPath.row == 0 {
+                cell.alpha = 0.5
+                cell.isUserInteractionEnabled = false
+            }
         }
     }
     // MARK: - Actions
@@ -132,7 +140,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     private func setVersionText() {
-        if let version = Properties.version, let build = Properties.build {
+        if let version = Properties.version {
             versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta" : "Keyn \(version)"
         }
     }
