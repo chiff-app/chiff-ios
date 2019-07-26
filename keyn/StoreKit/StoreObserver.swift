@@ -15,6 +15,8 @@ protocol StoreObserverDelegate: AnyObject {
 
     func storeObserverPurchaseCancelled()
 
+    func storeObserverCrossgrade()
+
     /// Provides the delegate with messages.
     func storeObserverDidReceiveMessage(_ message: String)
 }
@@ -31,12 +33,6 @@ class StoreObserver: NSObject {
 
     /// Keeps track of all purchases.
     var purchased = [SKPaymentTransaction]()
-
-    /// Keeps track of all restored purchases.
-    var restored = [SKPaymentTransaction]()
-
-    /// Indicates whether there are restorable purchases.
-    fileprivate var hasRestorablePurchases = false
 
     var isAuthorizedForPayments: Bool {
         return SKPaymentQueue.canMakePayments()
@@ -65,19 +61,23 @@ class StoreObserver: NSObject {
         request.start()
     }
 
+    /// This retrieves current subscription status for this seed from the Keyn server
     func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
             API.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
                 if let error = error {
                     completionHandler(error)
-                } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.values.max() {
-                    Properties.subscriptionExiryDate = longest
-                    completionHandler(nil)
+                } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
                     if subscriptions.count > 1 {
                         Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
                     }
+                    Properties.subscriptionExiryDate = longest.value
+                    Properties.subscriptionProduct = longest.key
+                    completionHandler(nil)
+
                 } else {
                     Properties.subscriptionExiryDate = 0
+                    Properties.subscriptionProduct = nil
                     completionHandler(nil)
                 }
             }
@@ -87,13 +87,14 @@ class StoreObserver: NSObject {
     }
 
     fileprivate func handleRefreshedReceipt() {
-        validateReceipt { (result, expires, error) in
+        validateReceipt { (result, expires, product, error) in
             DispatchQueue.main.async {
                 switch result {
                 case .error:
                     self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
                 case .success:
                     Properties.subscriptionExiryDate = expires!
+                    Properties.subscriptionProduct = product
                     self.delegate?.storeObserverRestoreDidSucceed()
                 case .failed:
                     print("TODO")
@@ -110,13 +111,14 @@ class StoreObserver: NSObject {
         purchased.append(transaction)
         print("\("storekit.deliverContent".localized) \(transaction.payment.productIdentifier).")
 
-        validateReceipt { (result, expires, error) in
+        validateReceipt { (result, expires, product, error) in
             DispatchQueue.main.async {
                 switch result {
                 case .error:
                     self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
                 case .success:
                     Properties.subscriptionExiryDate = expires!
+                    Properties.subscriptionProduct = product
                     self.delegate?.storeObserverPurchaseDidSucceed()
                 case .failed:
                     print("TODO")
@@ -133,13 +135,15 @@ class StoreObserver: NSObject {
 
         if let error = transaction.error {
             message += "\n\("storekit.error".localized) \(error.localizedDescription)"
-            print("\("storekit.error".localized) \(error.localizedDescription)")
         }
 
         // Do not send any notifications when the user cancels the purchase.
+        let code = (transaction.error as? SKError)?.code
         DispatchQueue.main.async {
-            if (transaction.error as? SKError)?.code == .paymentCancelled {
+            if code == .paymentCancelled {
                 self.delegate?.storeObserverPurchaseCancelled()
+            } else if code == .unknown { // This probably indicated that a crossgrade SUCCEEDED
+                self.delegate?.storeObserverCrossgrade()
             } else {
                 self.delegate?.storeObserverDidReceiveMessage(message)
             }
@@ -151,19 +155,17 @@ class StoreObserver: NSObject {
 
     // UNUSED, restoring is done with refreshReceipt
     /// Handles restored purchase transactions.
-    fileprivate func handleRestored(_ transaction: SKPaymentTransaction) {
-        hasRestorablePurchases = true
-        restored.append(transaction)
-        print("\("storekit.restoreContent".localized) \(transaction.payment.productIdentifier).")
-//        Properties.isUnlimited = true
-        DispatchQueue.main.async {
-            self.delegate?.storeObserverRestoreDidSucceed()
-        }
-        // Finishes the restored transaction.
-        SKPaymentQueue.default().finishTransaction(transaction)
-    }
+//    fileprivate func handleRestored(_ transaction: SKPaymentTransaction) {
+//        hasRestorablePurchases = true
+//        restored.append(transaction)
+//        DispatchQueue.main.async {
+//            self.delegate?.storeObserverRestoreDidSucceed()
+//        }
+//        // Finishes the restored transaction.
+//        SKPaymentQueue.default().finishTransaction(transaction)
+//    }
 
-    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ expires: TimeInterval?, _ error: Error?) -> Void) {
+    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ expires: TimeInterval?, _ product: String?, _ error: Error?) -> Void) {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
@@ -174,16 +176,16 @@ class StoreObserver: NSObject {
                 API.shared.signedRequest(endpoint: .iosSubscription , method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
                     if let error = error {
                         Logger.shared.error("Error verifying receipt", error: error)
-                        completionHandler(.error, nil, error)
-                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = result?["expires"] as? TimeInterval {
-                        completionHandler(validationResult, expires, nil)
+                        completionHandler(.error, nil, nil, error)
+                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = result?["expires"] as? TimeInterval, let product = result?["product"] as? String {
+                        completionHandler(validationResult, expires, product, nil)
                     } else {
-                        completionHandler(.error, nil, APIError.noResponse)
+                        completionHandler(.error, nil, nil, APIError.noResponse)
                     }
                 }
             } catch {
                 Logger.shared.error("Couldn't read receipt data", error: error)
-                completionHandler(.error, nil, error)
+                completionHandler(.error, nil, nil, error)
             }
         }
     }
@@ -223,7 +225,7 @@ extension StoreObserver: SKPaymentTransactionObserver {
             // The transaction failed.
             case .failed: handleFailed(transaction)
             // There are restored products.
-            case .restored: handleRestored(transaction)
+            case .restored: Logger.shared.warning("Restore transaction. Should not happen")
             @unknown default: fatalError("\("storekit.unknownDefault".localized)")
             }
         }
@@ -250,14 +252,14 @@ extension StoreObserver: SKPaymentTransactionObserver {
         }
     }
 
-    /// Called when all restorable transactions have been processed by the payment queue.
-    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-        print("storekit.restorable".localized)
-
-        if !hasRestorablePurchases {
-            DispatchQueue.main.async {
-                self.delegate?.storeObserverDidReceiveMessage("storekit.noRestorablePurchases".localized)
-            }
-        }
-    }
+//    /// Called when all restorable transactions have been processed by the payment queue.
+//    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+//        print("storekit.restorable".localized)
+//
+//        if !hasRestorablePurchases {
+//            DispatchQueue.main.async {
+//                self.delegate?.storeObserverDidReceiveMessage("storekit.noRestorablePurchases".localized)
+//            }
+//        }
+//    }
 }

@@ -25,6 +25,7 @@ struct Properties {
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let infoNotificationsFlag = "infoNotifications"
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
+    static private let subscriptionProductFlag = "subscriptionProduct"
     static private let accountCountFlag = "accountCount"
 
     static var questionnaireDirPurged: Bool {
@@ -32,11 +33,11 @@ struct Properties {
         set { UserDefaults.standard.set(newValue, forKey: questionnaireDirPurgedFlag) }
     }
     static var errorLogging: Bool {
-        get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: errorLoggingFlag) }
+        get { return environment == .beta || UserDefaults.standard.bool(forKey: errorLoggingFlag) }
         set { UserDefaults.standard.set(newValue, forKey: errorLoggingFlag) }
     }
     static var analyticsLogging: Bool {
-        get { return environment == .beta ? true : UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
+        get { return environment == .beta || UserDefaults.standard.bool(forKey: analyticsLoggingFlag) }
         set { UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag) }
     }
     static var infoNotifications: InfoNotificationStatus {
@@ -50,8 +51,12 @@ struct Properties {
             NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
         }
     }
+    static var subscriptionProduct: String? {
+        get { return UserDefaults.standard.string(forKey: subscriptionProductFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: subscriptionProductFlag) }
+    }
     static var hasValidSubscription: Bool {
-        return subscriptionExiryDate > Date.now
+        return environment == .beta || subscriptionExiryDate > Date.now
     }
     static var accountCount: Int {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }

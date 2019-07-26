@@ -93,11 +93,14 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             }
         }
         if BackupManager.shared.hasKeys {
-            StoreObserver.shared.updateSubscriptions { (error) in
-                if let error = error {
-                    Logger.shared.error("Error updating subsription status", error: error)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                StoreObserver.shared.updateSubscriptions { (error) in
+                    if let error = error {
+                        Logger.shared.error("Error updating subsription status", error: error)
+                    }
                 }
             }
+
         }
     }
 

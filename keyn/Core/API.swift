@@ -89,7 +89,6 @@ class API {
     private func send(_ request: URLRequest, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                Logger.shared.warning("Error querying Keyn API", error: error!)
                 completionHandler(nil, error)
                 return
             }
