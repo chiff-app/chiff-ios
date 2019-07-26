@@ -386,11 +386,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
-                                <rect key="frame" x="16" y="100" width="288" height="80"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <rect key="frame" x="16" y="100" width="343" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="crx-Uc-kTB"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PF9-Mk-y1i">
                                 <rect key="frame" x="162.5" y="580" width="50" height="55"/>
@@ -429,7 +433,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="vag-ph-8Fe">
-                                <rect key="frame" x="16" y="100" width="288" height="80"/>
+                                <rect key="frame" x="16" y="100" width="343" height="80"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="mpA-3n-Ms5"/>
@@ -859,7 +863,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="R4x-S1-A6g">
-                                                                    <rect key="frame" x="20" y="0.0" width="240" height="47.5"/>
+                                                                    <rect key="frame" x="20" y="0.0" width="295" height="47.5"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="4IM-sB-Tlc">
                                                                             <rect key="frame" x="0.0" y="0.0" width="10" height="47.5"/>
@@ -868,13 +872,13 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnq-cd-K12">
-                                                                            <rect key="frame" x="24" y="0.0" width="194" height="47.5"/>
+                                                                            <rect key="frame" x="24" y="0.0" width="249" height="47.5"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGj-DD-c4F">
-                                                                            <rect key="frame" x="232" y="0.0" width="8" height="47.5"/>
+                                                                            <rect key="frame" x="287" y="0.0" width="8" height="47.5"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="8" id="kbp-A7-grk"/>
                                                                             </constraints>
@@ -1044,18 +1048,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="XnA-go-mdU">
-                            <rect key="frame" x="0.0" y="309.5" width="320" height="145"/>
+                            <rect key="frame" x="0.0" y="381" width="375" height="126"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-9t-JYW">
-                                    <rect key="frame" x="20" y="80" width="280" height="35"/>
-                                    <color key="tintColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="20" y="63" width="335" height="35"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="35" id="qFl-jc-a0s"/>
                                     </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                            <color key="value" red="0.62352941179999999" green="0.63921568630000003" blue="0.78823529410000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keyn (unknown version)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwY-AN-xKQ">
-                                    <rect key="frame" x="20" y="123" width="280" height="20"/>
+                                    <rect key="frame" x="20" y="106" width="335" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="3Rq-Nq-dKt"/>
                                     </constraints>
@@ -1064,7 +1072,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-FM-4ck">
-                                    <rect key="frame" x="20" y="5" width="280" height="50"/>
+                                    <rect key="frame" x="20" y="5" width="335" height="50"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lt4-vD-KhI">
                                             <rect key="frame" x="0.0" y="0.0" width="30" height="50"/>
@@ -1073,7 +1081,7 @@
                                             </constraints>
                                         </imageView>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6o-28-pWN">
-                                            <rect key="frame" x="30" y="0.0" width="250" height="50"/>
+                                            <rect key="frame" x="30" y="0.0" width="305" height="50"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="textColor" red="0.93333333333333335" green="0.21176470588235294" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -1093,7 +1101,8 @@
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="ahS-cx-tgs"/>
                                 <constraint firstAttribute="trailing" secondItem="N9K-FM-4ck" secondAttribute="trailing" constant="20" id="eNd-kq-hvj"/>
                                 <constraint firstAttribute="trailing" secondItem="wwY-AN-xKQ" secondAttribute="trailing" constant="20" id="m3p-HN-dPK"/>
-                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" secondItem="N9K-FM-4ck" secondAttribute="bottom" constant="25" id="nLD-cC-Wi6"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="N9K-FM-4ck" secondAttribute="bottom" constant="8" id="nLD-cC-Wi6"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="centerY" secondItem="XnA-go-mdU" secondAttribute="centerY" priority="800" constant="-20" id="vIF-5v-iGY"/>
                                 <constraint firstAttribute="trailing" secondItem="fNv-9t-JYW" secondAttribute="trailing" constant="20" id="waI-uI-Vgb"/>
                                 <constraint firstItem="wwY-AN-xKQ" firstAttribute="top" secondItem="fNv-9t-JYW" secondAttribute="bottom" constant="8" id="yQY-9x-Ks2"/>
                             </constraints>
@@ -1259,6 +1268,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="jailbreakStackView" destination="N9K-FM-4ck" id="DS8-QJ-3qE"/>
+                        <outlet property="jailbreakStackViewHeightConstraint" destination="2Lu-qY-8QL" id="MvR-Pj-tiA"/>
                         <outlet property="jailbreakWarningTextView" destination="Q6o-28-pWN" id="hFD-bP-Oju"/>
                         <outlet property="notificationSettingSwitch" destination="yh6-tR-ajZ" id="OlE-5f-b5u"/>
                         <outlet property="paperBackupAlertIcon" destination="2nL-eC-bgn" id="dvl-YY-kLA"/>
@@ -1267,7 +1277,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YP6-gr-Ko2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1470" y="1073.2394366197184"/>
+            <point key="canvasLocation" x="1469.5999999999999" y="1072.7136431784108"/>
         </scene>
         <!--Settings-->
         <scene sceneID="zrt-ki-pMI">
@@ -1825,7 +1835,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="13u-Fb-Hui">
-                                                                    <rect key="frame" x="77" y="19.5" width="144" height="40.5"/>
+                                                                    <rect key="frame" x="77" y="19.5" width="199" height="40.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehs-SX-H4s">
                                                                             <rect key="frame" x="0.0" y="0.0" width="36.5" height="20"/>
@@ -1842,7 +1852,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cid-g0-mM5">
-                                                                    <rect key="frame" x="221" y="18" width="44" height="44"/>
+                                                                    <rect key="frame" x="276" y="18" width="44" height="44"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="44" id="1qZ-DA-wqL"/>
                                                                         <constraint firstAttribute="height" constant="44" id="4PO-vi-mPW"/>
@@ -2520,7 +2530,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="jrG-1v-3QJ">
-                                <rect key="frame" x="134" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="SXq-7B-tpb"/>
@@ -2598,7 +2608,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="536"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Mmw-t7-nQS">
-                                                <rect key="frame" x="134" y="-26" width="52" height="58"/>
+                                                <rect key="frame" x="161.5" y="-26" width="52" height="58"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="58" id="mff-zM-3We"/>
@@ -2819,7 +2829,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fDQ-QN-mFg">
-                                <rect key="frame" x="134" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="52" id="PhZ-5B-DqQ"/>
@@ -2873,40 +2883,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4023.1999999999998" y="1710.5911330049262"/>
-        </scene>
-        <!--Add Subscription View Controller-->
-        <scene sceneID="Kci-Kq-zPO">
-            <objects>
-                <viewController id="7Rd-F1-Gts" customClass="AddSubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oHp-mG-ABC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqk-Gu-nAs" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="87" y="384" width="200" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Upgrade to Premium"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="tgm-cF-VNh"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="iy7-2t-QnJ">
-                        <barButtonItem key="backBarButtonItem" title=" " id="9lF-VX-MkP"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="fdC-eE-Xlk">
-                            <connections>
-                                <segue destination="ZNf-5d-zF7" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="Cak-yn-lWt"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kiw-cW-Owa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="ZNf-5d-zF7" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="794" y="2339"/>
         </scene>
         <!--Site Table View Controller-->
         <scene sceneID="64j-9P-sYY">
@@ -3458,7 +3434,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AsC-x5-5wz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-54" y="1920"/>
+            <point key="canvasLocation" x="529" y="1902"/>
         </scene>
     </scenes>
     <resources>
@@ -3484,7 +3460,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PK4-77-yX9"/>
+        <segue reference="M0R-pk-Elo"/>
         <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>

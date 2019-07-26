@@ -13,6 +13,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
+    @IBOutlet weak var jailbreakStackViewHeightConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,15 +133,17 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     private func setVersionText() {
         if let version = Properties.version, let build = Properties.build {
-            versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta (\(build))" : "Keyn \(version) (\(build))"
+            versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta" : "Keyn \(version)"
         }
     }
 
     private func setJailbreakText() {
         guard Properties.isJailbroken else {
+            jailbreakStackViewHeightConstraint.constant = 0
             jailbreakStackView.isHidden = true
             return
         }
+        jailbreakStackViewHeightConstraint.constant = 50
         jailbreakStackView.isHidden = false
         jailbreakWarningTextView.delegate = self
         let paragraph = NSMutableParagraphStyle()
