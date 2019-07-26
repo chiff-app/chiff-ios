@@ -171,7 +171,7 @@ extension SubscriptionViewController: StoreObserverDelegate {
 extension SubscriptionViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.collectionView.bounds.width / 2, height: self.collectionView.bounds.height - 10)
+        return CGSize(width: self.collectionView.bounds.width / 2, height: self.collectionView.bounds.height)
     }
 
 }
