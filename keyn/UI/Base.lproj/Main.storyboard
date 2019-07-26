@@ -3115,13 +3115,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                     <rect key="frame" x="0.0" y="0.0" width="159" height="87"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7j-P5-3gY">
-                                                            <rect key="frame" x="10" y="20" width="139" height="17.5"/>
+                                                            <rect key="frame" x="10" y="28" width="139" height="17.5"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                             <color key="textColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1pV-ID-Xt9">
-                                                            <rect key="frame" x="40" y="44" width="99" height="18"/>
+                                                            <rect key="frame" x="40" y="47" width="99" height="18"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dj-ae-w5s" customClass="RadioButton" customModule="keyn" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
@@ -3144,10 +3144,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="T7j-P5-3gY" firstAttribute="top" secondItem="Vjt-gR-b15" secondAttribute="top" constant="20" id="0Oc-2O-ztA"/>
+                                                        <constraint firstItem="T7j-P5-3gY" firstAttribute="top" secondItem="Vjt-gR-b15" secondAttribute="top" constant="28" id="0Oc-2O-ztA"/>
                                                         <constraint firstItem="1pV-ID-Xt9" firstAttribute="leading" secondItem="Vjt-gR-b15" secondAttribute="leading" constant="40" id="CpF-Uq-5rB"/>
                                                         <constraint firstAttribute="trailing" secondItem="1pV-ID-Xt9" secondAttribute="trailing" constant="20" id="FHt-1G-k3H"/>
-                                                        <constraint firstAttribute="bottom" secondItem="1pV-ID-Xt9" secondAttribute="bottom" constant="25" id="hQ5-4R-b2g"/>
+                                                        <constraint firstAttribute="bottom" secondItem="1pV-ID-Xt9" secondAttribute="bottom" constant="22" id="hQ5-4R-b2g"/>
                                                         <constraint firstItem="T7j-P5-3gY" firstAttribute="leading" secondItem="Vjt-gR-b15" secondAttribute="leading" constant="10" id="qsA-dQ-hPs"/>
                                                         <constraint firstAttribute="trailing" secondItem="T7j-P5-3gY" secondAttribute="trailing" constant="10" id="r3e-sG-BjT"/>
                                                     </constraints>
@@ -3163,6 +3163,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="active" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vW3-Zr-zvD" customClass="BorderedRoundLabel" customModule="keyn" customModuleProvider="target">
+                                                    <rect key="frame" x="100" y="5" width="54" height="15"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="54" id="BhR-af-sBP"/>
+                                                        <constraint firstAttribute="height" constant="15" id="e2J-MY-Cgd"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="12"/>
+                                                    <color key="textColor" red="0.93333333330000001" green="0.54901960780000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </view>
                                         <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3171,11 +3182,14 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <constraint firstItem="Vjt-gR-b15" firstAttribute="top" secondItem="k19-7B-s19" secondAttribute="top" id="AlB-hV-nuy"/>
                                             <constraint firstAttribute="bottom" secondItem="ckE-BD-7xJ" secondAttribute="bottom" id="Arw-Aj-P0W"/>
                                             <constraint firstItem="ckE-BD-7xJ" firstAttribute="centerX" secondItem="k19-7B-s19" secondAttribute="centerX" id="H3H-GL-HNl"/>
+                                            <constraint firstAttribute="trailing" secondItem="vW3-Zr-zvD" secondAttribute="trailing" constant="5" id="ONl-c5-Tfy"/>
+                                            <constraint firstItem="vW3-Zr-zvD" firstAttribute="top" secondItem="k19-7B-s19" secondAttribute="top" constant="5" id="Uve-HK-RB0"/>
                                             <constraint firstItem="Vjt-gR-b15" firstAttribute="leading" secondItem="k19-7B-s19" secondAttribute="leading" id="cTg-bt-czc"/>
                                             <constraint firstAttribute="bottom" secondItem="Vjt-gR-b15" secondAttribute="bottom" constant="10" id="huG-Pa-8bL"/>
                                             <constraint firstAttribute="trailing" secondItem="Vjt-gR-b15" secondAttribute="trailing" id="xnR-HS-DXx"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="activeLabel" destination="vW3-Zr-zvD" id="Dkx-IY-6tE"/>
                                             <outlet property="boxView" destination="Vjt-gR-b15" id="4ma-sq-M4O"/>
                                             <outlet property="price" destination="9DV-Da-NpT" id="O8K-KS-Goa"/>
                                             <outlet property="radioButton" destination="6dj-ae-w5s" id="Rjz-fU-Mlt"/>

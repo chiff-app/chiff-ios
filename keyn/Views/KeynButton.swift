@@ -97,7 +97,7 @@ enum KeynButtonType: String {
 
     func hideLoading() {
         self.setTitle(originalButtonText, for: .normal)
-        activityIndicator.stopAnimating()
+        activityIndicator?.stopAnimating()
     }
 
     private func createActivityIndicator() -> UIActivityIndicatorView {

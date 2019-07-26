@@ -54,6 +54,12 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         if let price = product.regularPrice {
             cell.price.text = "\(price)"
         }
+        if Properties.hasValidSubscription, let productId = Properties.subscriptionProduct, productId == product.productIdentifier {
+            cell.active = true
+            if cell.isSelected {
+                upgradeButton.isEnabled = false
+            }
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -88,7 +94,9 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
     }
 
     private func updateCellSelectionUI(indexPath: IndexPath) {
-        (collectionView.cellForItem(at: indexPath) as! ProductCollectionViewCell).showSelected()
+        let cell = collectionView.cellForItem(at: indexPath) as! ProductCollectionViewCell
+        cell.showSelected()
+        upgradeButton.isEnabled = !cell.active
     }
 
     fileprivate func reload() {
@@ -105,13 +113,15 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
 
     /// Handles successful restored transactions.
     fileprivate func handleRestoredSucceededTransaction() {
-        print("Transactions successfully restored")
+        reload()
     }
 
     fileprivate func finishPurchase() {
-        // If this purchase is done in the requestView flow, dismiss
-        guard presentedModally else { return }
-        cancel()
+        if presentedModally {
+            cancel()
+        } else {
+            reload()
+        }
     }
 
     // MARK: - Actions
@@ -147,6 +157,10 @@ extension SubscriptionViewController: StoreManagerDelegate {
 
 /// Extends ParentViewController to conform to StoreObserverDelegate.
 extension SubscriptionViewController: StoreObserverDelegate {
+    func storeObserverCrossgrade() {
+        upgradeButton.hideLoading()
+    }
+
     func storeObserverDidReceiveMessage(_ message: String) {
         upgradeButton.hideLoading()
         showError(message: message)

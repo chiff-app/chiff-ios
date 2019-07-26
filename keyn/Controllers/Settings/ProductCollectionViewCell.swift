@@ -15,6 +15,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var savingLabel: RoundLabel!
     @IBOutlet weak var boxView: UIView!
     @IBOutlet weak var radioButton: RadioButton!
+    @IBOutlet weak var activeLabel: RoundLabel!
 
     var isFirst: Bool = true {
         didSet {
@@ -25,6 +26,12 @@ class ProductCollectionViewCell: UICollectionViewCell {
                 savingLabel.isHidden = false
                 boxView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
             }
+        }
+    }
+
+    var active: Bool = false {
+        didSet {
+            activeLabel.isHidden = !active
         }
     }
 
@@ -47,9 +54,20 @@ class ProductCollectionViewCell: UICollectionViewCell {
 class RoundLabel: UILabel {
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         layer.masksToBounds = true
         layer.zPosition = 15
         layer.cornerRadius = 2.0
+    }
+
+}
+
+class BorderedRoundLabel: RoundLabel {
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        layer.borderColor = UIColor.secondary.cgColor
+        layer.borderWidth = 1.0
     }
 
 }
