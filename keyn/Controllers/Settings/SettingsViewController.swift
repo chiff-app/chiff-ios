@@ -29,7 +29,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(false)
+        (tabBarController as! RootViewController).showGradient(true)
         if !justLoaded {
             setFooterText()
         } else { justLoaded = false }
