@@ -25,7 +25,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         collectionView.dataSource = self
         fetchProductInformation()
         if presentedModally {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
         }
         if !StoreManager.shared.availableProducts.isEmpty {
             activityView.stopAnimating()

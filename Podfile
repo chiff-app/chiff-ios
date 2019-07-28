@@ -13,22 +13,26 @@ def shared_pods
   pod 'OneTimePassword', '~> 3.1'
   pod 'TrustKit'
   pod 'Firebase/Core'
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.13.4'
   pod 'Amplitude-iOS', '~> 4.5'
 end
 
 target 'keyn' do
   shared_pods
 #  pod 'SmileLock'
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 target 'keynNotificationExtension' do
   shared_pods
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 target 'keynCredentialProvider' do
   shared_pods
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 
