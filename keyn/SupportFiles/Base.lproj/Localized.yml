@@ -30,6 +30,8 @@ errors:
   no_camera:
     value: Camera not available
     comment: The camera is not available
+  camera_denied:
+    value: You can only pair with a computer when camera is enabled. You can do this in Settings.
   qr_scanned_twice:
     value: This QR-code was already scanned.
     comment: This QR-code was already scanned.
@@ -77,6 +79,8 @@ errors:
       value: Error deleting backup data
 popups:
   questions:
+    camera_permission:
+      value: Permission needed
     delete_corrupted:
       value: Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.
     delete_existing:
@@ -129,6 +133,8 @@ popups:
     questionnaire_deny:
       comment: Deny the questionnaire
       value: No, thanks
+    settings:
+      value: Open settings
 accounts:
   website_details:
     value: Website details
