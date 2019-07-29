@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum ProductCellType {
+    case discount
+    case active
+    case none
+}
+
 class ProductCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var title: UILabel!
@@ -15,23 +21,31 @@ class ProductCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var savingLabel: RoundLabel!
     @IBOutlet weak var boxView: UIView!
     @IBOutlet weak var radioButton: RadioButton!
-    @IBOutlet weak var activeLabel: RoundLabel!
 
     var isFirst: Bool = true {
         didSet {
             if isFirst {
-                savingLabel.isHidden = true
                 boxView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
             } else {
-                savingLabel.isHidden = false
                 boxView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
             }
         }
     }
 
-    var active: Bool = false {
+    var type: ProductCellType = .none {
         didSet {
-            activeLabel.isHidden = !active
+            switch type {
+            case .discount:
+                savingLabel.isHidden = false
+                savingLabel.backgroundColor = UIColor.primary
+                savingLabel.text = "settings.discount".localized
+            case .active:
+                savingLabel.isHidden = false
+                savingLabel.backgroundColor = UIColor.keynGreen
+                savingLabel.text = "settings.active".localized
+            case .none:
+                savingLabel.isHidden = true
+            }
         }
     }
 
@@ -46,12 +60,16 @@ class ProductCollectionViewCell: UICollectionViewCell {
         boxView.layer.borderColor = UIColor.primaryTransparant.cgColor
         boxView.layer.borderWidth = 1.0
         boxView.layer.cornerRadius = 6.0
-        savingLabel.isHidden = isFirst
     }
 
 }
 
-class RoundLabel: UILabel {
+@IBDesignable class RoundLabel: UILabel {
+
+    @IBInspectable var topInset: CGFloat = 5.0
+    @IBInspectable var bottomInset: CGFloat = 5.0
+    @IBInspectable var leftInset: CGFloat = 7.0
+    @IBInspectable var rightInset: CGFloat = 7.0
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -60,14 +78,15 @@ class RoundLabel: UILabel {
         layer.cornerRadius = 2.0
     }
 
-}
+    override func drawText(in rect: CGRect) {
+        let insets = UIEdgeInsets(top: topInset, left: leftInset, bottom: bottomInset, right: rightInset)
+        super.drawText(in: rect.inset(by: insets))
+    }
 
-class BorderedRoundLabel: RoundLabel {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        layer.borderColor = UIColor.secondary.cgColor
-        layer.borderWidth = 1.0
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + leftInset + rightInset,
+                      height: size.height + topInset + bottomInset)
     }
 
 }

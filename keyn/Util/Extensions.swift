@@ -349,6 +349,9 @@ extension UIColor {
     static var secondary: UIColor = {
         return UIColor(rgb: 0xEE8C00)
     }()
+    static var keynGreen: UIColor = {
+        return UIColor(rgb: 0x009C0C)
+    }()
 }
 
 extension UIFont {
@@ -362,6 +365,10 @@ extension UIFont {
 
     static var primaryBold: UIFont? = {
         return UIFont(name: "Montserrat-Bold", size: 14)
+    }()
+
+    static var primaryBoldSmall: UIFont? = {
+        return UIFont(name: "Montserrat-Bold", size: 12)
     }()
 }
 

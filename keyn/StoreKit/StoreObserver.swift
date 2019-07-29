@@ -10,6 +10,12 @@ protocol StoreObserverDelegate: AnyObject {
     /// Tells the delegate that the restore operation was successful.
     func storeObserverRestoreDidSucceed()
 
+    func storeObserverRestoreNoProducts()
+
+    func storeObserverRestoreDidFail()
+
+    func storeObserverPurchaseDidFail()
+
     /// Tells the delegate that the purchase operation was successful.
     func storeObserverPurchaseDidSucceed()
 
@@ -25,6 +31,7 @@ enum ValidationResult: String {
     case success = "success"
     case failed = "failed"
     case error = "error"
+    case expired = "expired"
 }
 
 class StoreObserver: NSObject {
@@ -97,7 +104,9 @@ class StoreObserver: NSObject {
                     Properties.subscriptionProduct = product
                     self.delegate?.storeObserverRestoreDidSucceed()
                 case .failed:
-                    print("TODO")
+                    self.delegate?.storeObserverRestoreDidFail()
+                case .expired:
+                    self.delegate?.storeObserverRestoreNoProducts()
                 }
             }
 
@@ -120,8 +129,8 @@ class StoreObserver: NSObject {
                     Properties.subscriptionExiryDate = expires!
                     Properties.subscriptionProduct = product
                     self.delegate?.storeObserverPurchaseDidSucceed()
-                case .failed:
-                    print("TODO")
+                case .failed, .expired:
+                    self.delegate?.storeObserverPurchaseDidFail()
                 }
             }
 
