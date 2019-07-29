@@ -320,7 +320,7 @@
                                         <rect key="frame" x="0.0" y="519" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HO-qZ-Te9">
@@ -2020,7 +2020,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="howToAddAnAccount:" destination="yEQ-dB-DTP" eventType="touchUpInside" id="y1H-my-zyo"/>
                                             <action selector="openSettings:" destination="dlt-f0-1c5" eventType="touchUpInside" id="oFQ-PY-kQp"/>
                                         </connections>
                                     </button>

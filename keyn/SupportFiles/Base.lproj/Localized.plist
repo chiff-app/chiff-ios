@@ -156,6 +156,11 @@
 			<key>value</key>
 			<string>Authentication error</string>
 		</dict>
+		<key>camera_denied</key>
+		<dict>
+			<key>value</key>
+			<string>You can only pair with a computer when camera is enabled. You can do this in Settings.</string>
+		</dict>
 		<key>corrupted_data</key>
 		<dict>
 			<key>value</key>
@@ -363,6 +368,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	<dict>
 		<key>questions</key>
 		<dict>
+			<key>camera_permission</key>
+			<dict>
+				<key>value</key>
+				<string>Permission needed</string>
+			</dict>
 			<key>cancel_backup</key>
 			<dict>
 				<key>comment</key>
@@ -478,6 +488,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<string>Resets something</string>
 				<key>value</key>
 				<string>Reset</string>
+			</dict>
+			<key>settings</key>
+			<dict>
+				<key>value</key>
+				<string>Open settings</string>
 			</dict>
 			<key>yes</key>
 			<dict>
