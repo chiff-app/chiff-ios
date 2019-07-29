@@ -512,7 +512,7 @@ Thank you!</string>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="bYa-ob-W6u" firstAttribute="top" secondItem="4rd-kh-kR9" secondAttribute="bottom" constant="70" id="0Ch-fL-Rd0"/>
                                             <constraint firstAttribute="trailing" secondItem="pGp-n3-5Bb" secondAttribute="trailing" constant="20" id="0bs-fX-Ino"/>
@@ -539,7 +539,7 @@ Thank you!</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UGT-bz-Ij4" firstAttribute="width" secondItem="PyX-nu-NCe" secondAttribute="width" id="9Y7-6x-JIr"/>
                             <constraint firstItem="kz8-Jl-FFj" firstAttribute="bottom" secondItem="upc-ee-AFa" secondAttribute="bottom" id="THM-fA-ger"/>
