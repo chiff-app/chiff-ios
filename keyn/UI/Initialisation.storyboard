@@ -787,19 +787,19 @@
                                     <constraint firstAttribute="height" constant="52" id="le7-mV-IR2"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="uSJ-Qy-5zc">
-                                <rect key="frame" x="22" y="76" width="276" height="203"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uSJ-Qy-5zc">
+                                <rect key="frame" x="22" y="72" width="276" height="211"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gcm-DT-Z3k">
-                                        <rect key="frame" x="0.0" y="0.0" width="276" height="54.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gcm-DT-Z3k">
+                                        <rect key="frame" x="0.0" y="0.0" width="276" height="63.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="Pdq-R8-k1e">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="46" height="63.5"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpH-Mu-G6O">
-                                                <rect key="frame" x="71" y="0.0" width="205" height="54.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpH-Mu-G6O">
+                                                <rect key="frame" x="61" y="0.5" width="215" height="63"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="205" id="9ZG-HC-UJ1"/>
+                                                    <constraint firstAttribute="width" constant="215" id="9ZG-HC-UJ1"/>
                                                 </constraints>
                                                 <attributedString key="attributedText">
                                                     <fragment content="To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.">
@@ -814,14 +814,14 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="4gE-5a-WF7">
-                                        <rect key="frame" x="0.0" y="74.5" width="276" height="54"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="4gE-5a-WF7">
+                                        <rect key="frame" x="0.0" y="73.5" width="276" height="64"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_form" translatesAutoresizingMaskIntoConstraints="NO" id="8Jj-aJ-INp">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="46" height="64"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sak-tq-M9C">
-                                                <rect key="frame" x="71" y="0.0" width="205" height="54"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sak-tq-M9C">
+                                                <rect key="frame" x="61" y="0.5" width="215" height="63"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="When you want to login, iOS will automatically ask Keyn for your password.">
                                                         <attributes>
@@ -835,14 +835,14 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="seD-cU-WCL">
-                                        <rect key="frame" x="0.0" y="148.5" width="276" height="54.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="seD-cU-WCL">
+                                        <rect key="frame" x="0.0" y="147.5" width="276" height="63.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_fingerprint" translatesAutoresizingMaskIntoConstraints="NO" id="wdO-rL-q8N">
-                                                <rect key="frame" x="0.0" y="0.0" width="41" height="54.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="46" height="63.5"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-DT-gcI">
-                                                <rect key="frame" x="71" y="6.5" width="205" height="42"/>
+                                                <rect key="frame" x="61" y="10.5" width="215" height="42"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="You can login by authorizing the request.">
                                                         <attributes>
@@ -858,7 +858,9 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="Pdq-R8-k1e" firstAttribute="height" secondItem="8Jj-aJ-INp" secondAttribute="height" id="4r0-AG-a2p"/>
                                     <constraint firstItem="cKE-DT-gcI" firstAttribute="width" secondItem="wpH-Mu-G6O" secondAttribute="width" id="jQn-t0-6GJ"/>
+                                    <constraint firstItem="Pdq-R8-k1e" firstAttribute="height" secondItem="wdO-rL-q8N" secondAttribute="height" id="swE-S4-Cdv"/>
                                     <constraint firstItem="sak-tq-M9C" firstAttribute="width" secondItem="wpH-Mu-G6O" secondAttribute="width" id="wk4-JE-HAt"/>
                                 </constraints>
                             </stackView>
@@ -867,10 +869,10 @@
                         <constraints>
                             <constraint firstItem="Zpr-JN-sw2" firstAttribute="height" secondItem="1qr-M2-Kqu" secondAttribute="height" id="5PX-1d-Jvd"/>
                             <constraint firstItem="Zpr-JN-sw2" firstAttribute="top" secondItem="yjo-0M-e6N" secondAttribute="top" id="E8W-UR-0H0"/>
-                            <constraint firstAttribute="bottom" secondItem="uSJ-Qy-5zc" secondAttribute="bottom" constant="24" id="Fwr-Mh-qyh"/>
+                            <constraint firstAttribute="bottom" secondItem="uSJ-Qy-5zc" secondAttribute="bottom" constant="20" id="Fwr-Mh-qyh"/>
                             <constraint firstItem="uSJ-Qy-5zc" firstAttribute="leading" secondItem="yjo-0M-e6N" secondAttribute="leading" constant="22" id="HbH-Wp-Cmu"/>
                             <constraint firstAttribute="trailing" secondItem="1qr-M2-Kqu" secondAttribute="trailing" id="HjU-aa-5Th"/>
-                            <constraint firstItem="uSJ-Qy-5zc" firstAttribute="top" secondItem="1qr-M2-Kqu" secondAttribute="bottom" constant="24" id="XL4-st-OQC"/>
+                            <constraint firstItem="uSJ-Qy-5zc" firstAttribute="top" secondItem="1qr-M2-Kqu" secondAttribute="bottom" constant="20" id="XL4-st-OQC"/>
                             <constraint firstItem="1qr-M2-Kqu" firstAttribute="leading" secondItem="yjo-0M-e6N" secondAttribute="leading" id="ejI-Jd-n3I"/>
                             <constraint firstItem="1qr-M2-Kqu" firstAttribute="top" secondItem="yjo-0M-e6N" secondAttribute="top" id="fcM-eA-7ob"/>
                             <constraint firstAttribute="trailing" secondItem="uSJ-Qy-5zc" secondAttribute="trailing" constant="22" id="iaF-4V-hBE"/>
