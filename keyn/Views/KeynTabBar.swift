@@ -27,10 +27,9 @@ class KeynTabBar: UITabBar {
         if gradientView == nil {
             let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
             gradientView = UIView(frame: frame)
+            addBackgroundLayer()
             self.insertSubview(gradientView, at: 0)
         }
-
-        addBackgroundLayer()
     }
 
     private func addBackgroundLayer() {

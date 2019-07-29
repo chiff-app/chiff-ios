@@ -55,10 +55,14 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             cell.price.text = "\(price)"
         }
         if Properties.hasValidSubscription, let productId = Properties.subscriptionProduct, productId == product.productIdentifier {
-            cell.active = true
+            cell.type = .active
             if cell.isSelected {
                 upgradeButton.isEnabled = false
             }
+        } else if indexPath.row == 0 {
+            cell.type = .none
+        } else {
+            cell.type = .discount
         }
     }
 
@@ -96,7 +100,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
     private func updateCellSelectionUI(indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! ProductCollectionViewCell
         cell.showSelected()
-        upgradeButton.isEnabled = !cell.active
+        upgradeButton.isEnabled = cell.type != .active
     }
 
     fileprivate func reload() {
@@ -114,6 +118,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
     /// Handles successful restored transactions.
     fileprivate func handleRestoredSucceededTransaction() {
         reload()
+        showMessage(message: "settings.restore_successful".localized)
     }
 
     fileprivate func finishPurchase() {
@@ -122,6 +127,12 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         } else {
             reload()
         }
+    }
+
+    fileprivate func showMessage(message: String) {
+        let alert = UIAlertController(title: "settings.success".localized, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 
     // MARK: - Actions
@@ -137,7 +148,6 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             StoreObserver.shared.buy(StoreManager.shared.availableProducts[selected.row])
         }
     }
-
 
 }
 
@@ -159,6 +169,7 @@ extension SubscriptionViewController: StoreManagerDelegate {
 extension SubscriptionViewController: StoreObserverDelegate {
     func storeObserverCrossgrade() {
         upgradeButton.hideLoading()
+        showMessage(message: "settings.crossgrade_successful".localized)
     }
 
     func storeObserverDidReceiveMessage(_ message: String) {
@@ -174,6 +185,21 @@ extension SubscriptionViewController: StoreObserverDelegate {
     func storeObserverRestoreDidSucceed() {
         upgradeButton.hideLoading()
         handleRestoredSucceededTransaction()
+    }
+
+    func storeObserverRestoreNoProducts() {
+        upgradeButton.hideLoading()
+        showError(message: "settings.restore_failed".localized)
+    }
+
+    func storeObserverPurchaseDidFail() {
+        upgradeButton.hideLoading()
+        showError(message: "settings.purchase_failed".localized)
+    }
+
+    func storeObserverRestoreDidFail() {
+        upgradeButton.hideLoading()
+        showError(message: "settings.restore_failed".localized)
     }
 
     func storeObserverPurchaseCancelled() {

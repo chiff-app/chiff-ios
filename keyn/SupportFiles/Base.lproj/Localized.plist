@@ -712,6 +712,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>settings</key>
 	<dict>
+		<key>active</key>
+		<dict>
+			<key>value</key>
+			<string>active</string>
+		</dict>
 		<key>backup_completed_footer</key>
 		<dict>
 			<key>comment</key>
@@ -726,12 +731,22 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Paper backup not finished</string>
 		</dict>
+		<key>crossgrade_successful</key>
+		<dict>
+			<key>value</key>
+			<string>Your new subscription will go into effect after the current subscription cycle ends</string>
+		</dict>
 		<key>delete_data_warning</key>
 		<dict>
 			<key>comment</key>
 			<string>Alert before deleting all data</string>
 			<key>value</key>
 			<string>⚠️ This will permanently delete all local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+		</dict>
+		<key>discount</key>
+		<dict>
+			<key>value</key>
+			<string>You save 17%</string>
 		</dict>
 		<key>feedback_description</key>
 		<dict>
@@ -799,12 +814,27 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup. 
 Deleting data will be permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
 		</dict>
+		<key>restore_failed</key>
+		<dict>
+			<key>value</key>
+			<string>No active subscriptions were found</string>
+		</dict>
+		<key>restore_successful</key>
+		<dict>
+			<key>value</key>
+			<string>Your purchase has been restored</string>
+		</dict>
 		<key>settings</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for settings</string>
 			<key>value</key>
 			<string>Settings</string>
+		</dict>
+		<key>success</key>
+		<dict>
+			<key>value</key>
+			<string>Success</string>
 		</dict>
 	</dict>
 	<key>storekit</key>
@@ -908,41 +938,6 @@ Deleting data will be permanently delete all your local and remote data. You wil
 		<dict>
 			<key>value</key>
 			<string>Status</string>
-		</dict>
-		<key>unableToInstantiateAvailableProducts</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate an AvailableProducts</string>
-		</dict>
-		<key>unableToInstantiateInvalidProductIds</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate an InvalidProductIdentifiers</string>
-		</dict>
-		<key>unableToInstantiateMessages</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate a MessagesViewController</string>
-		</dict>
-		<key>unableToInstantiateNavigationController</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate a navigation controller</string>
-		</dict>
-		<key>unableToInstantiateProducts</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate a Products</string>
-		</dict>
-		<key>unableToInstantiatePurchases</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate a Purchases</string>
-		</dict>
-		<key>unableToInstantiateSettings</key>
-		<dict>
-			<key>value</key>
-			<string>Unable to instantiate a Settings</string>
 		</dict>
 		<key>unknownDefault</key>
 		<dict>

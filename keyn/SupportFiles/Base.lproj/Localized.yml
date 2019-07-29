@@ -221,6 +221,18 @@ settings:
     value: Read more
   premium_beta:
     value: Keyn Premium is already enabled if you're participating in the beta program
+  success:
+    value: Success
+  restore_successful:
+    value: Your purchase has been restored
+  crossgrade_successful:
+    value: Your new subscription will go into effect after the current subscription cycle ends
+  restore_failed:
+    value: No active subscriptions were found
+  discount:
+    value: You save 17%
+  active:
+    value: active
 backup:
   word:
     comment: The word for word
@@ -377,20 +389,6 @@ storekit:
     value: Restore content for
   status:
     value: Status
-  unableToInstantiateAvailableProducts:
-    value: Unable to instantiate an AvailableProducts
-  unableToInstantiateInvalidProductIds:
-    value: Unable to instantiate an InvalidProductIdentifiers
-  unableToInstantiateMessages:
-    value: Unable to instantiate a MessagesViewController
-  unableToInstantiateNavigationController:
-    value: Unable to instantiate a navigation controller
-  unableToInstantiateProducts:
-    value: Unable to instantiate a Products
-  unableToInstantiatePurchases:
-    value: Unable to instantiate a Purchases
-  unableToInstantiateSettings:
-    value: Unable to instantiate a Settings
   unknownDefault:
     value: Unknown payment transaction case
   unknownDestinationViewController:
