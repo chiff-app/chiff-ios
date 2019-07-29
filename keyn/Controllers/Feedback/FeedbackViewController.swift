@@ -23,7 +23,6 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         textView.clipsToBounds = true
         textView.layer.cornerRadius = 4.0
         nameTextField.layer.cornerRadius = 4.0
