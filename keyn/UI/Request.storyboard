@@ -115,23 +115,8 @@
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ozE-eJ-GQE">
                                 <rect key="frame" x="67.5" y="583" width="240" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mC-29-Na1" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="135" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="135" id="1Cf-l1-baA"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Upgrade"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <segue destination="P3y-jh-lMf" kind="show" id="Qmy-f6-vzG"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuq-R6-pyz" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="150" y="0.0" width="90" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="90" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Return"/>
@@ -140,6 +125,21 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="close:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="jTK-h3-QhK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mC-29-Na1" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="105" y="0.0" width="135" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="135" id="1Cf-l1-baA"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Upgrade now"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="P3y-jh-lMf" kind="show" id="Qmy-f6-vzG"/>
                                         </connections>
                                     </button>
                                 </subviews>

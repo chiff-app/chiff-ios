@@ -826,8 +826,8 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup. 
-Deleting data will be permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
+Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
 		</dict>
 		<key>restore_failed</key>
 		<dict>
