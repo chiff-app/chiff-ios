@@ -846,7 +846,7 @@
                                         <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                     <view hidden="YES" opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="399"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="387"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUK-ag-3dM">
                                                 <rect key="frame" x="29" y="20" width="365" height="17.666666666666671"/>
@@ -942,7 +942,7 @@
                                             <constraint firstItem="gr4-VD-pHi" firstAttribute="top" secondItem="dUK-ag-3dM" secondAttribute="bottom" constant="8" id="YrE-hM-JA7"/>
                                             <constraint firstItem="4Ne-4j-Ux3" firstAttribute="top" secondItem="gr4-VD-pHi" secondAttribute="bottom" constant="10" id="pc5-z2-rII"/>
                                             <constraint firstAttribute="trailing" secondItem="gr4-VD-pHi" secondAttribute="trailing" constant="20" id="tpe-Os-S7d"/>
-                                            <constraint firstAttribute="bottom" secondItem="S1T-p0-33d" secondAttribute="bottom" constant="50" id="whE-Wh-Wz0"/>
+                                            <constraint firstAttribute="bottom" secondItem="S1T-p0-33d" secondAttribute="bottom" constant="38" id="whE-Wh-Wz0"/>
                                             <constraint firstItem="gr4-VD-pHi" firstAttribute="trailing" secondItem="4Ne-4j-Ux3" secondAttribute="trailing" constant="10" id="zXo-RN-fSh"/>
                                         </constraints>
                                     </view>
@@ -987,12 +987,14 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addAccountContainerView" destination="hjK-VU-J4E" id="PsJ-cq-QVX"/>
+                        <outlet property="bottomMarginConstraint" destination="whE-Wh-Wz0" id="4eX-Jk-JQU"/>
                         <outlet property="loadingSpinner" destination="pzB-Jb-04f" id="L2c-CU-a7u"/>
                         <outlet property="scrollView" destination="SV6-MR-Wzp" id="ogx-mk-bir"/>
                         <outlet property="tableView" destination="gr4-VD-pHi" id="dpo-qR-onP"/>
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
                         <outlet property="tableViewFooter" destination="4Ne-4j-Ux3" id="ZnT-4M-06T"/>
                         <outlet property="upgradeButton" destination="S1T-p0-33d" id="Mte-ab-aUg"/>
+                        <outlet property="upgradeButtonHeightConstraint" destination="rPH-Vn-CVt" id="ONO-es-M7s"/>
                         <segue destination="QBn-BQ-Jis" kind="presentation" identifier="ShowAddAccount" id="3VT-CT-bmu"/>
                     </connections>
                 </viewController>
@@ -3139,7 +3141,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="C5r-au-Gde">
-                                <rect key="frame" x="20" y="481.33333333333326" width="374" height="104"/>
+                                <rect key="frame" x="20" y="396" width="374" height="104"/>
                                 <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="104" id="YaJ-AX-5O9"/>
@@ -3284,8 +3286,8 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                     <action selector="restore:" destination="uAn-4o-w6e" eventType="touchUpInside" id="XfJ-0r-bKK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="Hrf-E1-2zX">
-                                <rect key="frame" x="66.666666666666657" y="128" width="280.66666666666674" height="84"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="Hrf-E1-2zX">
+                                <rect key="frame" x="66.666666666666657" y="148" width="280.66666666666674" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="oO4-Fh-Ztv"/>
                                 </constraints>
@@ -3300,13 +3302,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="650" text="Choose your plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oA8-RV-Oue">
-                                <rect key="frame" x="145" y="252.00000000000003" width="124" height="17.333333333333343"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oA8-RV-Oue">
+                                <rect key="frame" x="145" y="343.66666666666669" width="124" height="17.333333333333314"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.79953703703703705" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6e2-07-cE1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="850" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6e2-07-cE1">
                                 <rect key="frame" x="20" y="739.33333333333337" width="374" height="102.66666666666663"/>
                                 <string key="text">Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
@@ -3318,16 +3320,16 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <constraints>
                             <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" secondItem="6e2-07-cE1" secondAttribute="trailing" constant="20" id="4jZ-am-Hin"/>
                             <constraint firstItem="oA8-RV-Oue" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="5Qt-ns-xUy"/>
-                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="top" secondItem="7tH-zF-euC" secondAttribute="top" priority="200" constant="40" id="5sk-AV-RP4"/>
+                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="top" secondItem="7tH-zF-euC" secondAttribute="top" priority="748" constant="60" id="5sk-AV-RP4"/>
                             <constraint firstItem="7tH-zF-euC" firstAttribute="bottom" secondItem="6e2-07-cE1" secondAttribute="bottom" constant="20" id="BrX-4Z-ubc"/>
-                            <constraint firstItem="C5r-au-Gde" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oA8-RV-Oue" secondAttribute="bottom" id="FUO-n0-pWI"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oA8-RV-Oue" secondAttribute="bottom" constant="20" id="FUO-n0-pWI"/>
                             <constraint firstItem="nCX-FC-tx3" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" id="K21-do-B7P"/>
-                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" secondItem="Hrf-E1-2zX" secondAttribute="bottom" priority="201" constant="40" id="LxW-14-lYF"/>
-                            <constraint firstItem="myJ-iX-jre" firstAttribute="top" secondItem="C5r-au-Gde" secondAttribute="bottom" priority="700" constant="40" id="OkQ-bB-IFx"/>
                             <constraint firstItem="6e2-07-cE1" firstAttribute="leading" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="RQr-Nf-bZT"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" priority="800" id="S9J-fp-42r"/>
                             <constraint firstItem="myJ-iX-jre" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="Uqf-0C-hJ7"/>
                             <constraint firstItem="Hrf-E1-2zX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="XVf-uS-qIS"/>
                             <constraint firstItem="6e2-07-cE1" firstAttribute="top" secondItem="8HM-5t-Rgr" secondAttribute="bottom" priority="600" constant="30" id="XsX-qu-LCg"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="top" secondItem="oA8-RV-Oue" secondAttribute="bottom" priority="751" constant="35" id="Zsa-5p-9lo"/>
                             <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" secondItem="C5r-au-Gde" secondAttribute="trailing" constant="20" id="bDu-Qt-hbN"/>
                             <constraint firstItem="8HM-5t-Rgr" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="biE-cL-8fL"/>
                             <constraint firstItem="6e2-07-cE1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8HM-5t-Rgr" secondAttribute="bottom" constant="15" id="dUf-Lb-Jyk"/>
@@ -3335,7 +3337,8 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                             <constraint firstItem="Hrf-E1-2zX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7tH-zF-euC" secondAttribute="top" constant="10" id="hpT-ZX-Yre"/>
                             <constraint firstItem="C5r-au-Gde" firstAttribute="leading" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="iFX-Xu-APq"/>
                             <constraint firstItem="Hrf-E1-2zX" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="iO3-uy-eNZ"/>
-                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="bottom" constant="20" id="k6h-ZN-B8b"/>
+                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="bottom" id="k6h-ZN-B8b"/>
+                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="bottom" priority="749" constant="40" id="mYb-mH-Umg"/>
                             <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="trailing" constant="20" id="pct-bO-92i"/>
                             <constraint firstItem="8HM-5t-Rgr" firstAttribute="top" secondItem="myJ-iX-jre" secondAttribute="bottom" constant="20" id="qv8-tI-DnF"/>
                             <constraint firstItem="myJ-iX-jre" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C5r-au-Gde" secondAttribute="bottom" constant="15" id="uci-aq-ob2"/>
