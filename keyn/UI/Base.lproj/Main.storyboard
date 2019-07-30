@@ -320,11 +320,11 @@
                                         <rect key="frame" x="0.0" y="519" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HO-qZ-Te9">
-                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="Delete account">
@@ -867,7 +867,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="R4x-S1-A6g">
-                                                                    <rect key="frame" x="20" y="0.0" width="295" height="47.5"/>
+                                                                    <rect key="frame" x="20" y="0.0" width="240" height="47.5"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="4IM-sB-Tlc">
                                                                             <rect key="frame" x="0.0" y="0.0" width="10" height="47.5"/>
@@ -876,13 +876,13 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnq-cd-K12">
-                                                                            <rect key="frame" x="24" y="0.0" width="249" height="47.5"/>
+                                                                            <rect key="frame" x="24" y="0.0" width="194" height="47.5"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGj-DD-c4F">
-                                                                            <rect key="frame" x="287" y="0.0" width="8" height="47.5"/>
+                                                                            <rect key="frame" x="232" y="0.0" width="8" height="47.5"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="8" id="kbp-A7-grk"/>
                                                                             </constraints>
@@ -1008,7 +1008,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QBn-BQ-Jis" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="aZp-CQ-5qN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
@@ -1841,7 +1841,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="13u-Fb-Hui">
-                                                                    <rect key="frame" x="77" y="19.5" width="199" height="40.5"/>
+                                                                    <rect key="frame" x="77" y="19.5" width="144" height="40.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehs-SX-H4s">
                                                                             <rect key="frame" x="0.0" y="0.0" width="36.5" height="20"/>
@@ -1858,7 +1858,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cid-g0-mM5">
-                                                                    <rect key="frame" x="276" y="18" width="44" height="44"/>
+                                                                    <rect key="frame" x="221" y="18" width="44" height="44"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="44" id="1qZ-DA-wqL"/>
                                                                         <constraint firstAttribute="height" constant="44" id="4PO-vi-mPW"/>
@@ -3202,7 +3202,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You save 17%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckE-BD-7xJ" customClass="RoundLabel" customModule="keyn" customModuleProvider="target">
-                                                    <rect key="frame" x="30.5" y="77" width="98" height="20"/>
+                                                    <rect key="frame" x="40.5" y="77" width="78" height="20"/>
                                                     <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="cqM-ny-YVY"/>
@@ -3471,7 +3471,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="M0R-pk-Elo"/>
-        <segue reference="RlN-hs-OcW"/>
+        <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>
 </document>
