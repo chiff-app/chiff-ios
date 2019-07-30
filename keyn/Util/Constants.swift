@@ -4,32 +4,82 @@
  */
 import Foundation
 
-enum AnalyticsMessage: String {
-    case install = "INSTALL"
-    case seedCreated = "SEED_CREATED"
-    case update = "UPDATE"
-    case iosUpdate = "IOS_UPDATE"
-    case pairResponse = "PAIR_RESPONSE"
-    case loginResponse = "LOGIN_RESPONSE"
-    case fillResponse = "FILL_PASSWORD_RESPONSE"
-    case addAndChange = "ADDANDCHANGE"
-    case passwordChange = "PASSWORD_CHANGE"
-    case addResponse = "ADD_RESPONSE"
-    case registrationResponse = "REGISTRATION_RESPONSE"
-    case sessionEnd = "SESSION_END"
-    case deleteAccount = "DELETE_ACCOUNT"
-    case backupCompleted = "BACKUP_COMPLETED"
-    case keynReset = "KEYN_RESET"
-    case keynDeleteAll = "DELETE_ALL"
-    case passwordCopy = "PASSWORD_COPY"
-    case requestDenied = "REQUEST_DENIED"
-    case siteReported = "SITE_REPORTED"
-    case siteAdded = "SITE_ADDED"
-    case accountsRestored = "ACCOUNTS_RESTORED"
-    case userFeedback = "USER_FEEDBACK"
-    case accountMigration = "ACCOUNT_MIGRATION"
-    case declinedQuestionnaire = "QUESTIONNAIRE_DECLINED"
-    case postponedQuestionnaire = "QUESTIONNAIRE_POSTPONED"
+enum AnalyticsUserProperty: String {
+    case accountCount = "Account count"
+    case pairingCount = "Pairing count"
+    case subscribed = "Subscribed"
+    case infoNotifications = "Notifications enabled"
+    case backupCompleted = "Backup completed"
+    case installTime = "Installed on"
+    case requestSum = "Request sum"
+    case sessionSum = "Session sum" // = Amplitude sessions, as in: times the app was used
+}
+
+enum AnalyticsEvent: String {
+    // Onboarding
+    case appFirstOpened = "AppFirstOpened"
+    case restoreBackupOpened = "RecoverAccountOpened"
+    case backupRestored = "BackupRestored"
+    case learnMoreClicked = "LearnMoreClicked"
+    case seedCreated = "SeedCreated"
+    case notificationPermission = "NotificationPermission"
+    case cameraPermission = "CameraPermission" // TODO
+    case tryLaterClicked = "Try later clicked"
+
+    // Requests
+    case loginRequestOpened = "LoginRequestOpened"
+    case loginRequestAuthorized = "LoginRequestAuthorized"
+    case addSiteRequestOpened = "AddSiteRequestOpened"
+    case addSiteRequstAuthorized = "AddSiteRequestAuthorized"
+    case addSiteToExistingRequestAuthorized = "AddSiteToExistingRequestAuthorized"
+    case addBulkSitesRequestOpened = "AddBulkSiteRequestOpened"
+    case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
+    case changePasswordRequestOpened = "ChangePasswordRequestOpened"
+    case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
+    case fillPassworddRequestOpened = "FillPassworddRequestOpened"
+    case fillPassworddRequestAuthorized = "FillPassworddRequestAuthorized"
+
+    // Local login
+    case passwordCopied = "PasswordCopied"
+    case otpCopied = "OneTimePasswordCopied"
+    case localLoginOpened = "LocalLoginOpened"
+    case localLoginCompleted = "LocalLoginCompleted"
+
+    // Local updates
+    case accountUpdated = "AccountUpdated"
+    case accountDeleted = "AccountDeleted"
+    case accountAddedLocal = "AccountAddedLocal"
+    case addAccountOpened = "AddAccountOpened"
+
+    // Backup
+    case backupExplanationOpened = "BackupExplanationOpened"
+    case backupProcessStarted = "BackupProcessStarted"
+    case backupCheckOpened = "BackupCheckOpened"
+    case backupCompleted = "BackupCompleted"
+
+    // Devices
+    case addSessionOpened = "AddSessionOpened"
+    case qrCodeScanned = "QRCodeScanned"
+    case paired = "Paired"
+    case sessionDeleted = "SessionDeleted"
+
+    // Settings
+    case resetKeyn = "ResetKeyn"
+    case deleteData = "DeleteData"
+
+    // Questionnaire
+    case questionnaireDeclined = "QuestionnaireDeclined"
+    case questionnairePostponed = "QuestionnairePostponed"
+}
+
+enum AnalyticsEventProperty: String {
+    case timestamp = "Timestamp"
+    case value = "Value" // True or false
+    case scheme = "Scheme" // Of QR-code
+    case username = "Username"
+    case password = "Password"
+    case url = "URL"
+    case siteName = "SiteName"
 }
 
 enum MessageParameter {
@@ -78,4 +128,5 @@ enum KeynMessageType: Int, Codable {
     case expired = 11
     case preferences = 12
     case addToExisting = 13
+    case disabled = 14
 }

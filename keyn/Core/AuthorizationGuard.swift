@@ -6,6 +6,11 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 
+enum AuthorizationError: KeynError {
+    case accountOverflow
+    case cannotAddAccount
+}
+
 class AuthorizationGuard {
 
     static var authorizationInProgress = false
@@ -57,6 +62,10 @@ class AuthorizationGuard {
     func acceptRequest(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         switch type {
         case .add, .register, .addAndLogin:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addSite() { error in
                 completionHandler(nil, error)
             }
@@ -65,6 +74,10 @@ class AuthorizationGuard {
                 completionHandler(nil, error)
             }
         case .addBulk:
+            guard Properties.canAddAccount else {
+                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                return
+            }
             addBulkSites() { error in
                 completionHandler(nil, error)
             }
@@ -93,9 +106,20 @@ class AuthorizationGuard {
 
     private func authorize(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
         LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+            var success = false
             do {
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
+                    switch self.type {
+                    case .login:
+                        Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
+                    case .change:
+                        Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
+                    case .fill:
+                        Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
+                    default:
+                        Logger.shared.warning("Authorize called on the wrong type?")
+                    }
                 }
                 if let error = error {
                     throw error
@@ -104,7 +128,16 @@ class AuthorizationGuard {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
+                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (_, error) in // TODO: Change to .disabled after implemented in extension
+                        if let error = error {
+                            Logger.shared.error("Error rejecting request", error: error)
+                        }
+                    })
+                    throw AuthorizationError.accountOverflow
+                }
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+                success = true
                 completionHandler(account, nil)
             } catch {
                 completionHandler(nil, error)
@@ -119,9 +152,11 @@ class AuthorizationGuard {
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+                var success = false
                 do {
                     defer {
                         AuthorizationGuard.authorizationInProgress = false
+                        Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
                     if let error = error {
                         throw error
@@ -135,6 +170,7 @@ class AuthorizationGuard {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
+                    success = true
                     completionHandler(nil)
                 } catch {
                     completionHandler(error)
@@ -151,7 +187,11 @@ class AuthorizationGuard {
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(site.name)", withMainContext: false) { (context, error) in
+                var success = false
                 do {
+                    defer {
+                        Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
+                    }
                     if let error = error {
                         throw error
                     }
@@ -160,6 +200,7 @@ class AuthorizationGuard {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
+                    success = true
                     completionHandler(nil)
                 } catch {
                     completionHandler(error)
@@ -173,7 +214,11 @@ class AuthorizationGuard {
             AuthorizationGuard.authorizationInProgress = false
         }
         LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
+            var success = false
             do {
+                defer {
+                    Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
+                }
                 if let error = error {
                     throw error
                 }
@@ -182,6 +227,7 @@ class AuthorizationGuard {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
                     let _ = try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
                 }
+                success = true
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
@@ -262,7 +308,6 @@ class AuthorizationGuard {
 
     static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (_: Session?, _: Error?) -> Void) {
         guard !authorizationInProgress else {
-            Logger.shared.debug("authorizePairing() called while already in the process of authorizing.")
             return
         }
         defer {

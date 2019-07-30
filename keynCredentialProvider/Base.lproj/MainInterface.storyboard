@@ -43,8 +43,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="gW4-or-nXt">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="gW4-or-nXt">
                                 <rect key="frame" x="16" y="35" width="343" height="58"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="Puo-U4-JNq"/>
                                 </constraints>
@@ -233,6 +234,6 @@
         <image name="chevron_right" width="7" height="11"/>
         <image name="fingerprint" width="50" height="55"/>
         <image name="lock_small" width="10" height="13"/>
-        <image name="logo_white" width="52" height="58"/>
+        <image name="logo" width="291" height="323"/>
     </resources>
 </document>

@@ -29,8 +29,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="QbB-2z-UH0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="QbB-2z-UH0">
                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="MQc-By-rZQ"/>
                                 </constraints>
@@ -150,8 +151,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="xCh-va-3qa">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xCh-va-3qa">
                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="1up-fG-Efq"/>
                                 </constraints>
@@ -228,8 +230,9 @@ Thank you!</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM3-so-hgI">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="700"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="CEt-Qb-P8a">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="CEt-Qb-P8a">
                                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="58" id="L4L-Li-SpP"/>
                                                 </constraints>
@@ -385,8 +388,9 @@ Thank you!</string>
                                     <constraint firstAttribute="height" constant="44" id="ULW-H8-Lwf"/>
                                 </constraints>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="f0a-ba-rCd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="f0a-ba-rCd">
                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="v2o-2o-OB7"/>
                                 </constraints>
@@ -508,7 +512,7 @@ Thank you!</string>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="bYa-ob-W6u" firstAttribute="top" secondItem="4rd-kh-kR9" secondAttribute="bottom" constant="70" id="0Ch-fL-Rd0"/>
                                             <constraint firstAttribute="trailing" secondItem="pGp-n3-5Bb" secondAttribute="trailing" constant="20" id="0bs-fX-Ino"/>
@@ -535,7 +539,7 @@ Thank you!</string>
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UGT-bz-Ij4" firstAttribute="width" secondItem="PyX-nu-NCe" secondAttribute="width" id="9Y7-6x-JIr"/>
                             <constraint firstItem="kz8-Jl-FFj" firstAttribute="bottom" secondItem="upc-ee-AFa" secondAttribute="bottom" id="THM-fA-ger"/>
@@ -582,8 +586,9 @@ Thank you!</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="y6G-hA-phK">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="y6G-hA-phK">
                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="rHv-cM-MEp"/>
                                 </constraints>
@@ -675,11 +680,16 @@ Thank you!</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="qJi-ZX-udd">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="qJi-ZX-udd">
                                 <rect key="frame" x="0.0" y="35" width="414" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="Uez-Io-b9k"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3p-Hu-GZ9" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="135.66666666666666" y="662" width="142.99999999999997" height="44"/>
@@ -800,8 +810,9 @@ Thank you!</string>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3A1-NC-bUh">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="670"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="ebh-WY-9At">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ebh-WY-9At">
                                                 <rect key="frame" x="0.0" y="-26" width="414" height="58"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="58" id="x6j-AU-iQ0"/>
                                                 </constraints>
@@ -822,6 +833,7 @@ Thank you!</string>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="yha-ok-pGY" customClass="FormTextField" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="30" y="133.66666666666666" width="354" height="35"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="BLI-SA-dtI"/>
                                                 </constraints>
@@ -837,20 +849,14 @@ Thank you!</string>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tnb-GO-qmc">
                                                 <rect key="frame" x="30" y="198.66666666666666" width="354" height="441.33333333333337"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <string key="text">Description issue:
-
-
-Functionality:
-
-
-Reproduction steps:
-</string>
+                                                <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes"/>
                                             </textView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="w0b-Tb-2Hc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ebh-WY-9At" secondAttribute="bottom" constant="10" id="29h-xk-OLa"/>
                                             <constraint firstItem="w0b-Tb-2Hc" firstAttribute="top" secondItem="ebh-WY-9At" secondAttribute="bottom" constant="20" id="4hZ-Ce-LJk"/>
@@ -919,6 +925,6 @@ Reproduction steps:
         </scene>
     </scenes>
     <resources>
-        <image name="logo_white" width="52" height="58"/>
+        <image name="logo" width="291" height="323"/>
     </resources>
 </document>

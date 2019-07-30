@@ -141,7 +141,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
     private func waitForPasswordChangeConfirmation(notification: Notification) {
         guard let session = notification.object as? Session else {
-            Logger.shared.debug("Received notification from unexpected object")
+            Logger.shared.warning("Received notification from unexpected object")
             return
         }
 
@@ -231,11 +231,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard account != nil else {
                 throw AccountError.notFound
             }
-            try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
+            try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, enabled: nil)
         case .addBulk:
             result = keynMessage.accounts!
         default:
-            Logger.shared.debug("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
+            Logger.shared.warning("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
         session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
         return result
@@ -250,7 +250,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         do {
             return try NotificationProcessor.process(content: mutableContent)
         } catch {
-            Logger.shared.debug("Error reprocessing data", error: error)
+            Logger.shared.warning("Error reprocessing data", error: error)
         }
 
         return content

@@ -22,10 +22,18 @@ class PairViewController: QRViewController {
     var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme, scheme == "keyn" else {
+        guard let scheme = url.scheme else {
+            Logger.shared.analytics(.qrCodeScanned, properties: [.value: false])
             return
         }
-
+        guard scheme == "keyn" else {
+            Logger.shared.analytics(.qrCodeScanned, properties: [
+                .value: false,
+                .scheme: scheme
+            ])
+            return
+        }
+        Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
         self.pair(url: url)
     }
 
@@ -37,6 +45,7 @@ class PairViewController: QRViewController {
                 self.pairContainerDelegate.finishLoading()
                 if let session = session {
                     self.pairControllerDelegate.sessionCreated(session: session)
+                    Logger.shared.analytics(.paired)
                 } else if let error = error {
                     self.hideIcon()
                     switch error {
@@ -44,6 +53,9 @@ class PairViewController: QRViewController {
                         if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
                              self.showError(message: authenticationError)
                         }
+                    case SessionError.invalid:
+                        Logger.shared.error("Invalid QR-code scanned", error: error)
+                        self.showError(message: "errors.session_invalid".localized)
                     case SessionError.noEndpoint:
                         Logger.shared.error("There is no endpoint in the session data.", error: error)
                         self.showError(message: "errors.session_error_no_endpoint".localized)

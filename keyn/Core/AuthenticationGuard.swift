@@ -92,10 +92,12 @@ class AuthenticationGuard {
                     self.hideLockWindow()
                 }
             } catch let error as DecodingError {
+                Logger.shared.error("Error decoding accounts", error: error)
                 DispatchQueue.main.async {
                     (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
                 }
             } catch {
+                Logger.shared.error("Error retrieving accounts", error: error)
                 if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                     DispatchQueue.main.async {
                         (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
@@ -130,22 +132,29 @@ class AuthenticationGuard {
         LocalAuthenticationManager.shared.mainContext.invalidate()
         
         let lockView = UIView(frame: lockWindow.frame)
-        let keynLogoView = UIImageView(image: UIImage(named: "logo_white_big"))
+        lockView.translatesAutoresizingMaskIntoConstraints = false
+        let keynLogoView = UIImageView(image: UIImage(named: "logo"))
+        keynLogoView.translatesAutoresizingMaskIntoConstraints = false
+        keynLogoView.tintColor = UIColor.white
         
-        keynLogoView.frame = CGRect(x: 0, y: 289, width: 375, height: 88)
+        keynLogoView.frame = CGRect(x: 0, y: 0, width: 100, height: 88)
         keynLogoView.contentMode = .scaleAspectFit
         lockView.addSubview(keynLogoView)
-        lockView.backgroundColor = UIColor(rgb: 0x4722C3)
+        lockView.backgroundColor = UIColor.primary
         lockView.tag = lockViewTag
         
         lockWindow.addSubview(lockView)
         lockWindow.bringSubviewToFront(lockView)
         
-        #warning("TODO:Make autolayout constrained")
-        //            keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
-        //            keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
-        //            keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
-        //            keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
+        lockView.topAnchor.constraint(equalTo: lockWindow.topAnchor).isActive = true
+        lockView.bottomAnchor.constraint(equalTo: lockWindow.bottomAnchor).isActive = true
+        lockView.leadingAnchor.constraint(equalTo: lockWindow.leadingAnchor).isActive = true
+        lockView.trailingAnchor.constraint(equalTo: lockWindow.trailingAnchor).isActive = true
+
+        keynLogoView.heightAnchor.constraint(equalToConstant: 88).isActive = true
+        keynLogoView.widthAnchor.constraint(equalTo: lockView.widthAnchor).isActive = true
+        keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
+        keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
     }
     
     private func didFinishLaunchingWithOptions(notification: Notification) {

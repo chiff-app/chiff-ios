@@ -18,6 +18,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     @IBOutlet weak var userCodeCell: UITableViewCell!
     @IBOutlet weak var totpLoader: UIView!
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var enabledSwitch: UISwitch!
+    @IBOutlet weak var bottomSpacer: UIView!
 
     var editButton: UIBarButtonItem!
     var account: Account!
@@ -27,6 +29,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var otpCodeTimer: Timer?
     var token: Token?
     var loadingCircle: FilledCircle?
+    var showAccountEnableButton: Bool = false
+    var canEnableAccount: Bool = true
 
     var password: String? {
         return try? account.password()
@@ -41,7 +45,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         tableView.layer.borderWidth = 1.0
 
         tableView.separatorColor = UIColor.primaryTransparant
-
+        bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
@@ -59,6 +63,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             userNameTextField.text = account.username
             userPasswordTextField.text = password ?? "22characterplaceholder"
             token = try account.oneTimePasswordToken()
+            enabledSwitch.isOn = account.enabled
+            enabledSwitch.isEnabled = account.enabled || canEnableAccount
             updateOTPUI()
             websiteNameTextField.delegate = self
             websiteURLTextField.delegate = self
@@ -79,7 +85,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return editingMode ? 3 : 2
+        return editingMode || showAccountEnableButton ? 3 : 2
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -99,6 +105,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             return "accounts.url_warning".localized.capitalizedFirstLetter
         case 1:
             return "accounts.2fa_description".localized.capitalizedFirstLetter
+        case 2:
+            return showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
         default:
             return nil
         }
@@ -118,7 +126,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section < 2 else {
+        guard section < 2 || showAccountEnableButton else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
@@ -126,13 +134,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        if section == 0 {
+        switch section {
+        case 0:
             footer.textLabel?.text = "accounts.url_warning".localized.capitalizedFirstLetter
             footer.textLabel?.isHidden = !tableView.isEditing
-        } else {
+        case 1:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
             footer.textLabel?.numberOfLines = 3
+        case 2:
+            footer.textLabel?.isHidden = false
+            footer.textLabel?.text = "accounts.footer_account_enabled".localized.capitalizedFirstLetter
+        default:
+            fatalError("An extra section appeared!")
         }
     }
     
@@ -148,6 +162,29 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }
         tableView.cellForRow(at: indexPath)?.setEditing(false, animated: true)
 
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 2 && showAccountEnableButton && indexPath.row > 0 {
+            return editingMode ? tableView.rowHeight : 0
+        } else if indexPath.section == 2 && !showAccountEnableButton && indexPath.row == 0 {
+            return 0.5 // So we still have a border
+        }
+        return tableView.rowHeight
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            if indexPath.row == 1 && account.sites.count > 1 {
+                performSegue(withIdentifier: "ShowSiteOverview", sender: self)
+            }
+        } else if indexPath.section == 1 {
+            if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
+                copyToPasteboard(indexPath)
+            } else if indexPath.row == 2 && qrEnabled {
+                performSegue(withIdentifier: "showQR", sender: self)
+            }
+        }
     }
     
     // MARK: - UITextFieldDelegate
@@ -165,16 +202,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     func textFieldDidEndEditing(_ textField: UITextField) {
         view.removeGestureRecognizer(tap)
     }
-    
-    // TODO: Perhaps hide cell if TOTP is not possible for site. But should be registered somewhere
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.section == 1 && indexPath.row == 2, let account = account {
-//            return account.hasOtp ?? false ? 44 : 0
-//        }
-//        return 44
-//    }
 
     // MARK: - Actions
+
+    @IBAction func enableSwitchChanged(_ sender: UISwitch) {
+        do {
+            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
+            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
+        } catch {
+            Logger.shared.error("Failed to update enabled state in account")
+            sender.isOn = account.enabled
+        }
+    }
+
     
     @IBAction func showPassword(_ sender: UIButton) {
         account.password(reason: "Retrieve password for \(account.site.name)", context: nil, type: .ifNeeded) { (password, error) in
@@ -203,20 +243,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             self.performSegue(withIdentifier: "DeleteAccount", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 1 && account.sites.count > 1 {
-                performSegue(withIdentifier: "ShowSiteOverview", sender: self)
-            }
-        } else if indexPath.section == 1 {
-            if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
-                copyToPasteboard(indexPath)
-            } else if indexPath.row == 2 && qrEnabled {
-                performSegue(withIdentifier: "showQR", sender: self)
-            }
-        }
     }
     
     @objc func edit() {
@@ -260,8 +286,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
+            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
             NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
+            Logger.shared.analytics(.accountUpdated, properties: [
+                .username: newUsername != nil,
+                .password: newPassword != nil,
+                .url: newUrl != nil,
+                .siteName: newSiteName != nil
+            ])
         } catch {
             Logger.shared.warning("Could not change username", error: error)
             userNameTextField.text = account?.username
@@ -317,7 +349,11 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             return
         }
         
-        Logger.shared.analytics("\(indexPath.row == 1 ? "Password" : "OTP-code") copied to pasteboard.", code: .passwordCopy)
+        if indexPath.row == 1 {
+            Logger.shared.analytics(.passwordCopied)
+        } else {
+            Logger.shared.analytics(.otpCopied)
+        }
         
         let pasteBoard = UIPasteboard.general
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text

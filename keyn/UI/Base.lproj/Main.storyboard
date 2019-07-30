@@ -29,6 +29,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="dBK-p5-2ym">
+                            <rect key="frame" x="0.0" y="581" width="320" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <sections>
                             <tableViewSection headerTitle="Accounts details" footerTitle=" " id="Yaa-8Q-3K0">
                                 <cells>
@@ -250,8 +255,41 @@
                             </tableViewSection>
                             <tableViewSection id="Xtc-o6-09S">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="4uW-T0-c3t">
                                         <rect key="frame" x="0.0" y="431" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4uW-T0-c3t" id="wTw-0q-5E9">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Enabled" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5k-PA-hbt">
+                                                    <rect key="frame" x="16" y="0.0" width="235" height="43.5"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jVp-EX-YgW">
+                                                    <rect key="frame" x="251" y="6.5" width="51" height="31"/>
+                                                    <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="enableSwitchChanged:" destination="UWD-YS-l0e" eventType="valueChanged" id="iFk-eO-0eN"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="jVp-EX-YgW" secondAttribute="trailing" constant="20" symbolic="YES" id="8Mi-LI-IvU"/>
+                                                <constraint firstItem="jVp-EX-YgW" firstAttribute="leading" secondItem="M5k-PA-hbt" secondAttribute="trailing" id="EcA-kq-UU7"/>
+                                                <constraint firstItem="M5k-PA-hbt" firstAttribute="top" secondItem="wTw-0q-5E9" secondAttribute="top" id="Lt5-vj-t4V"/>
+                                                <constraint firstItem="jVp-EX-YgW" firstAttribute="centerY" secondItem="wTw-0q-5E9" secondAttribute="centerY" id="Yjc-lY-KVs"/>
+                                                <constraint firstItem="M5k-PA-hbt" firstAttribute="leading" secondItem="wTw-0q-5E9" secondAttribute="leading" constant="16" id="mHc-4B-03V"/>
+                                                <constraint firstAttribute="bottom" secondItem="M5k-PA-hbt" secondAttribute="bottom" id="rNW-ka-8AK"/>
+                                                <constraint firstItem="jVp-EX-YgW" firstAttribute="leading" secondItem="M5k-PA-hbt" secondAttribute="trailing" id="xdP-lY-cLr"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KXD-8V-vma">
+                                        <rect key="frame" x="0.0" y="475" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KXD-8V-vma" id="99P-am-w3J">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -260,7 +298,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LaZ-O8-9Mf">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="Report">
                                                         <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -279,16 +317,16 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="zon-vV-iH2">
-                                        <rect key="frame" x="0.0" y="475" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="519" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zon-vV-iH2" id="Smy-j3-k4H">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HO-qZ-Te9">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="titleEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <state key="normal" title="Delete account">
                                                         <color key="titleColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
@@ -318,6 +356,8 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="w1v-8M-rha"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomSpacer" destination="dBK-p5-2ym" id="s4L-6w-PTj"/>
+                        <outlet property="enabledSwitch" destination="jVp-EX-YgW" id="g5E-Po-4HG"/>
                         <outlet property="showPasswordButton" destination="CeR-JP-bY6" id="PaS-Z2-H4U"/>
                         <outlet property="totpLoader" destination="Lql-km-Qfu" id="0GC-dm-QMU"/>
                         <outlet property="totpLoaderWidthConstraint" destination="bJ1-yd-KjI" id="Z11-RW-sRy"/>
@@ -335,7 +375,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAD-fx-Eo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ibN-3J-G1l" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1884" y="-939"/>
+            <point key="canvasLocation" x="1884" y="-939.16256157635473"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="SgE-Op-oyl">
@@ -345,11 +385,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white_big" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="xGc-jF-fzx">
                                 <rect key="frame" x="16" y="100" width="288" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="crx-Uc-kTB"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PF9-Mk-y1i">
                                 <rect key="frame" x="135" y="481" width="50" height="55"/>
@@ -387,11 +432,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white_big" translatesAutoresizingMaskIntoConstraints="NO" id="vag-ph-8Fe">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="vag-ph-8Fe">
                                 <rect key="frame" x="16" y="100" width="288" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="mpA-3n-Ms5"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An unknown problem occured." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iNK-us-ipI">
                                 <rect key="frame" x="20" y="307" width="280" height="17.5"/>
@@ -796,7 +846,7 @@
                                         <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                     <view hidden="YES" opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="n1D-Fz-RNq">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="349.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="387"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUK-ag-3dM">
                                                 <rect key="frame" x="29" y="20" width="271" height="17.5"/>
@@ -817,7 +867,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="R4x-S1-A6g">
-                                                                    <rect key="frame" x="20" y="0.0" width="240" height="47.5"/>
+                                                                    <rect key="frame" x="20" y="0.0" width="334" height="47.5"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="4IM-sB-Tlc">
                                                                             <rect key="frame" x="0.0" y="0.0" width="10" height="47.5"/>
@@ -826,13 +876,13 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnq-cd-K12">
-                                                                            <rect key="frame" x="24" y="0.0" width="194" height="47.5"/>
+                                                                            <rect key="frame" x="24" y="0.0" width="288" height="47.5"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGj-DD-c4F">
-                                                                            <rect key="frame" x="232" y="0.0" width="8" height="47.5"/>
+                                                                            <rect key="frame" x="326" y="0.0" width="8" height="47.5"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="8" id="kbp-A7-grk"/>
                                                                             </constraints>
@@ -851,31 +901,49 @@
                                                             </constraints>
                                                         </tableViewCellContentView>
                                                         <connections>
+                                                            <outlet property="icon" destination="4IM-sB-Tlc" id="s8y-kl-N5P"/>
                                                             <outlet property="titleLabel" destination="Jnq-cd-K12" id="1L5-lP-WZd"/>
                                                             <segue destination="UWD-YS-l0e" kind="show" identifier="ShowAccount" id="1Un-yp-Smy"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
                                             </tableView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ne-4j-Ux3">
-                                                <rect key="frame" x="22" y="255.5" width="278" height="44"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to save more." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Ne-4j-Ux3">
+                                                <rect key="frame" x="30" y="259.5" width="260" height="29.5"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                                 <color key="textColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S1T-p0-33d" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="92.5" y="305" width="135" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="135" id="Jx0-Td-C04"/>
+                                                    <constraint firstAttribute="height" constant="44" id="rPH-Vn-CVt"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Upgrade"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="5TW-bl-8eQ" kind="presentation" identifier="ShowAddSubscription" id="Qho-Nt-gK1"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="dUK-ag-3dM" firstAttribute="leading" secondItem="gr4-VD-pHi" secondAttribute="leading" constant="9" id="1fy-0R-dqI"/>
+                                            <constraint firstItem="S1T-p0-33d" firstAttribute="centerX" secondItem="n1D-Fz-RNq" secondAttribute="centerX" id="4RV-MS-jbX"/>
+                                            <constraint firstItem="S1T-p0-33d" firstAttribute="top" secondItem="4Ne-4j-Ux3" secondAttribute="bottom" constant="16" id="Ck4-j0-jd1"/>
                                             <constraint firstItem="dUK-ag-3dM" firstAttribute="top" secondItem="n1D-Fz-RNq" secondAttribute="top" constant="20" id="HLx-cH-7Ng"/>
-                                            <constraint firstItem="4Ne-4j-Ux3" firstAttribute="leading" secondItem="gr4-VD-pHi" secondAttribute="leading" constant="2" id="MoV-Pa-gvL"/>
+                                            <constraint firstItem="4Ne-4j-Ux3" firstAttribute="leading" secondItem="gr4-VD-pHi" secondAttribute="leading" constant="10" id="MoV-Pa-gvL"/>
                                             <constraint firstItem="dUK-ag-3dM" firstAttribute="trailing" secondItem="gr4-VD-pHi" secondAttribute="trailing" id="Umf-pH-uE1"/>
                                             <constraint firstItem="gr4-VD-pHi" firstAttribute="leading" secondItem="n1D-Fz-RNq" secondAttribute="leading" constant="20" id="WCq-jG-uEc"/>
                                             <constraint firstItem="gr4-VD-pHi" firstAttribute="top" secondItem="dUK-ag-3dM" secondAttribute="bottom" constant="8" id="YrE-hM-JA7"/>
-                                            <constraint firstAttribute="bottom" secondItem="4Ne-4j-Ux3" secondAttribute="bottom" constant="50" id="iZd-E7-3Bh"/>
-                                            <constraint firstItem="4Ne-4j-Ux3" firstAttribute="top" secondItem="gr4-VD-pHi" secondAttribute="bottom" constant="6" id="pc5-z2-rII"/>
+                                            <constraint firstItem="4Ne-4j-Ux3" firstAttribute="top" secondItem="gr4-VD-pHi" secondAttribute="bottom" constant="10" id="pc5-z2-rII"/>
                                             <constraint firstAttribute="trailing" secondItem="gr4-VD-pHi" secondAttribute="trailing" constant="20" id="tpe-Os-S7d"/>
-                                            <constraint firstItem="4Ne-4j-Ux3" firstAttribute="trailing" secondItem="gr4-VD-pHi" secondAttribute="trailing" id="zXo-RN-fSh"/>
+                                            <constraint firstAttribute="bottom" secondItem="S1T-p0-33d" secondAttribute="bottom" constant="38" id="whE-Wh-Wz0"/>
+                                            <constraint firstItem="gr4-VD-pHi" firstAttribute="trailing" secondItem="4Ne-4j-Ux3" secondAttribute="trailing" constant="10" id="zXo-RN-fSh"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -919,17 +987,20 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addAccountContainerView" destination="hjK-VU-J4E" id="PsJ-cq-QVX"/>
+                        <outlet property="bottomMarginConstraint" destination="whE-Wh-Wz0" id="4eX-Jk-JQU"/>
                         <outlet property="loadingSpinner" destination="pzB-Jb-04f" id="L2c-CU-a7u"/>
                         <outlet property="scrollView" destination="SV6-MR-Wzp" id="ogx-mk-bir"/>
                         <outlet property="tableView" destination="gr4-VD-pHi" id="dpo-qR-onP"/>
                         <outlet property="tableViewContainer" destination="n1D-Fz-RNq" id="3cf-b9-7UP"/>
                         <outlet property="tableViewFooter" destination="4Ne-4j-Ux3" id="ZnT-4M-06T"/>
+                        <outlet property="upgradeButton" destination="S1T-p0-33d" id="Mte-ab-aUg"/>
+                        <outlet property="upgradeButtonHeightConstraint" destination="rPH-Vn-CVt" id="ONO-es-M7s"/>
                         <segue destination="QBn-BQ-Jis" kind="presentation" identifier="ShowAddAccount" id="3VT-CT-bmu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWw-9J-QyK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="823" y="-938"/>
+            <point key="canvasLocation" x="821.73913043478262" y="-938.16964285714278"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="85X-Xm-p3i">
@@ -982,22 +1053,106 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="XnA-go-mdU">
+                            <rect key="frame" x="0.0" y="381" width="320" height="126"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fNv-9t-JYW">
+                                    <rect key="frame" x="20" y="63" width="280" height="35"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="35" id="qFl-jc-a0s"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                            <color key="value" red="0.62352941179999999" green="0.63921568630000003" blue="0.78823529410000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keyn (unknown version)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wwY-AN-xKQ">
+                                    <rect key="frame" x="20" y="103" width="280" height="20"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="3Rq-Nq-dKt"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                    <color key="textColor" red="0.62352941176470589" green="0.63921568627450975" blue="0.78823529411764703" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9K-FM-4ck">
+                                    <rect key="frame" x="20" y="5" width="280" height="50"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alert_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lt4-vD-KhI">
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="VM1-XQ-D7R"/>
+                                            </constraints>
+                                        </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q6o-28-pWN">
+                                            <rect key="frame" x="30" y="0.0" width="250" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" red="0.93333333333333335" green="0.21176470588235294" blue="0.0039215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="50" id="2Lu-qY-8QL"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="N9K-FM-4ck" firstAttribute="top" secondItem="XnA-go-mdU" secondAttribute="top" constant="5" id="EYe-y9-hJA"/>
+                                <constraint firstItem="N9K-FM-4ck" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="TtJ-4b-j52"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="U3t-ku-GeR"/>
+                                <constraint firstItem="wwY-AN-xKQ" firstAttribute="leading" secondItem="XnA-go-mdU" secondAttribute="leading" constant="20" id="ahS-cx-tgs"/>
+                                <constraint firstAttribute="trailing" secondItem="N9K-FM-4ck" secondAttribute="trailing" constant="20" id="eNd-kq-hvj"/>
+                                <constraint firstAttribute="trailing" secondItem="wwY-AN-xKQ" secondAttribute="trailing" constant="20" id="m3p-HN-dPK"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="N9K-FM-4ck" secondAttribute="bottom" constant="8" id="nLD-cC-Wi6"/>
+                                <constraint firstItem="fNv-9t-JYW" firstAttribute="centerY" secondItem="XnA-go-mdU" secondAttribute="centerY" priority="800" constant="-20" id="vIF-5v-iGY"/>
+                                <constraint firstAttribute="trailing" secondItem="fNv-9t-JYW" secondAttribute="trailing" constant="20" id="waI-uI-Vgb"/>
+                                <constraint firstItem="wwY-AN-xKQ" firstAttribute="top" secondItem="fNv-9t-JYW" secondAttribute="bottom" constant="5" id="yQY-9x-Ks2"/>
+                            </constraints>
+                        </view>
                         <sections>
+                            <tableViewSection headerTitle="Premium" footerTitle="[Generated in ViewController] " id="ipm-Bl-jUP">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="gO0-y1-XIQ">
+                                        <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gO0-y1-XIQ" id="nkk-KI-165">
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Keyn Premium" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yKQ-lq-4Q8">
+                                                    <rect key="frame" x="16" y="11" width="262" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="yKQ-lq-4Q8" firstAttribute="leading" secondItem="nkk-KI-165" secondAttribute="leadingMargin" id="Sxd-BP-9VX"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="yKQ-lq-4Q8" secondAttribute="trailing" id="Wmu-CT-1fg"/>
+                                                <constraint firstItem="yKQ-lq-4Q8" firstAttribute="top" secondItem="nkk-KI-165" secondAttribute="topMargin" id="ekH-bM-cH1"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="yKQ-lq-4Q8" secondAttribute="bottom" id="sTa-cl-qh1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <segue destination="uAn-4o-w6e" kind="show" id="M0R-pk-Elo"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="General" footerTitle="[Generated in ViewController] " id="zsO-ju-Qwo">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="gWv-pU-vcN">
-                                        <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="175" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gWv-pU-vcN" id="HaI-HK-tvM">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Info notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kz6-5t-xp6">
-                                                    <rect key="frame" x="16" y="0.0" width="235" height="43.5"/>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yh6-tR-ajZ">
                                                     <rect key="frame" x="251" y="6.5" width="51" height="31"/>
                                                     <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1005,42 +1160,78 @@
                                                         <action selector="updateNotificationSettings:" destination="dcO-2k-qG2" eventType="valueChanged" id="GhG-7S-zLm"/>
                                                     </connections>
                                                 </switch>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="News from Keyn" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kz6-5t-xp6">
+                                                    <rect key="frame" x="16" y="11" width="235" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="kz6-5t-xp6" secondAttribute="bottom" id="52b-8f-6AB"/>
-                                                <constraint firstItem="yh6-tR-ajZ" firstAttribute="leading" secondItem="kz6-5t-xp6" secondAttribute="trailing" id="BZF-Gz-lS8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="kz6-5t-xp6" secondAttribute="bottom" id="1EC-89-gvt"/>
+                                                <constraint firstItem="kz6-5t-xp6" firstAttribute="leading" secondItem="HaI-HK-tvM" secondAttribute="leadingMargin" id="1vo-UB-ge0"/>
+                                                <constraint firstItem="yh6-tR-ajZ" firstAttribute="leading" secondItem="kz6-5t-xp6" secondAttribute="trailing" id="3aX-u3-GJt"/>
+                                                <constraint firstItem="kz6-5t-xp6" firstAttribute="top" secondItem="HaI-HK-tvM" secondAttribute="topMargin" id="Hc2-wp-xn1"/>
                                                 <constraint firstAttribute="trailing" secondItem="yh6-tR-ajZ" secondAttribute="trailing" constant="20" symbolic="YES" id="Stt-GC-TSR"/>
-                                                <constraint firstItem="kz6-5t-xp6" firstAttribute="top" secondItem="HaI-HK-tvM" secondAttribute="top" id="UgS-1k-thi"/>
                                                 <constraint firstItem="yh6-tR-ajZ" firstAttribute="centerY" secondItem="HaI-HK-tvM" secondAttribute="centerY" id="deS-EP-X7G"/>
-                                                <constraint firstItem="yh6-tR-ajZ" firstAttribute="leading" secondItem="kz6-5t-xp6" secondAttribute="trailing" id="m0y-ha-4DG"/>
-                                                <constraint firstItem="kz6-5t-xp6" firstAttribute="leading" secondItem="HaI-HK-tvM" secondAttribute="leading" constant="16" id="w62-oh-V2t"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="KLj-dJ-Zfx" style="IBUITableViewCellStyleDefault" id="dSn-id-Ull">
-                                        <rect key="frame" x="0.0" y="99.5" width="320" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dSn-id-Ull">
+                                        <rect key="frame" x="0.0" y="219" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dSn-id-Ull" id="H7M-wl-DFI">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KLj-dJ-Zfx">
-                                                    <rect key="frame" x="15" y="0.0" width="289" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xw5-vm-6DL">
+                                                    <rect key="frame" x="16" y="11" width="288" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="xw5-vm-6DL" secondAttribute="bottom" id="7Ly-Ox-WRh"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="xw5-vm-6DL" secondAttribute="trailing" id="PJw-aY-CIM"/>
+                                                <constraint firstItem="xw5-vm-6DL" firstAttribute="leading" secondItem="H7M-wl-DFI" secondAttribute="leadingMargin" id="Zvv-zi-sBF"/>
+                                                <constraint firstItem="xw5-vm-6DL" firstAttribute="top" secondItem="H7M-wl-DFI" secondAttribute="topMargin" id="h0h-Oc-8d1"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <segue destination="edD-lG-IvQ" kind="presentation" modalPresentationStyle="fullScreen" id="GuR-bU-weO"/>
+                                            <segue destination="edD-lG-IvQ" kind="show" id="jiG-b4-5vN"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2JR-su-vfy">
+                                        <rect key="frame" x="0.0" y="263" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2JR-su-vfy" id="Xox-Mh-T5S">
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gb5-Gr-8l0">
+                                                    <rect key="frame" x="16" y="0.0" width="270" height="43.5"/>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="gb5-Gr-8l0" firstAttribute="leading" secondItem="Xox-Mh-T5S" secondAttribute="leadingMargin" id="SZ1-5P-hfY"/>
+                                                <constraint firstAttribute="bottom" secondItem="gb5-Gr-8l0" secondAttribute="bottom" id="rgk-1j-wo7"/>
+                                                <constraint firstItem="gb5-Gr-8l0" firstAttribute="top" secondItem="Xox-Mh-T5S" secondAttribute="top" id="wLD-z4-MPX"/>
+                                                <constraint firstAttribute="trailing" secondItem="gb5-Gr-8l0" secondAttribute="trailing" id="x70-bt-8nH"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <segue destination="NAd-Fh-Sau" kind="show" id="ofU-Rf-DsQ"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="oyn-RN-Wtn">
-                                        <rect key="frame" x="0.0" y="143.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="307" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oyn-RN-Wtn" id="VeV-CE-y5A">
                                             <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
@@ -1076,35 +1267,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="[Generated in ViewController] " id="skm-3B-40e">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2JR-su-vfy">
-                                        <rect key="frame" x="0.0" y="235.5" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2JR-su-vfy" id="Xox-Mh-T5S">
-                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Privacy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gb5-Gr-8l0">
-                                                    <rect key="frame" x="16" y="0.0" width="51.5" height="43.5"/>
-                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="gb5-Gr-8l0" firstAttribute="leading" secondItem="Xox-Mh-T5S" secondAttribute="leadingMargin" id="SZ1-5P-hfY"/>
-                                                <constraint firstAttribute="bottom" secondItem="gb5-Gr-8l0" secondAttribute="bottom" id="rgk-1j-wo7"/>
-                                                <constraint firstItem="gb5-Gr-8l0" firstAttribute="top" secondItem="Xox-Mh-T5S" secondAttribute="top" id="wLD-z4-MPX"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <segue destination="NAd-Fh-Sau" kind="show" id="ofU-Rf-DsQ"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="dcO-2k-qG2" id="wER-7P-7af"/>
@@ -1115,13 +1277,17 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="gKl-BS-uBy"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="jailbreakStackView" destination="N9K-FM-4ck" id="DS8-QJ-3qE"/>
+                        <outlet property="jailbreakStackViewHeightConstraint" destination="2Lu-qY-8QL" id="MvR-Pj-tiA"/>
+                        <outlet property="jailbreakWarningTextView" destination="Q6o-28-pWN" id="hFD-bP-Oju"/>
                         <outlet property="notificationSettingSwitch" destination="yh6-tR-ajZ" id="OlE-5f-b5u"/>
                         <outlet property="paperBackupAlertIcon" destination="2nL-eC-bgn" id="dvl-YY-kLA"/>
+                        <outlet property="versionLabel" destination="wwY-AN-xKQ" id="KgF-yh-E6Z"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YP6-gr-Ko2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1471.2" y="1073.6131934032985"/>
+            <point key="canvasLocation" x="1468.125" y="1070.0704225352113"/>
         </scene>
         <!--Settings-->
         <scene sceneID="zrt-ki-pMI">
@@ -1679,7 +1845,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="13u-Fb-Hui">
-                                                                    <rect key="frame" x="77" y="19.5" width="144" height="40.5"/>
+                                                                    <rect key="frame" x="77" y="19.5" width="238" height="40.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehs-SX-H4s">
                                                                             <rect key="frame" x="0.0" y="0.0" width="36.5" height="20"/>
@@ -1696,7 +1862,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cid-g0-mM5">
-                                                                    <rect key="frame" x="221" y="18" width="44" height="44"/>
+                                                                    <rect key="frame" x="315" y="18" width="44" height="44"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="44" id="1qZ-DA-wqL"/>
                                                                         <constraint firstAttribute="height" constant="44" id="4PO-vi-mPW"/>
@@ -1860,7 +2026,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="howToAddAnAccount:" destination="yEQ-dB-DTP" eventType="touchUpInside" id="y1H-my-zyo"/>
                                             <action selector="openSettings:" destination="dlt-f0-1c5" eventType="touchUpInside" id="oFQ-PY-kQp"/>
                                         </connections>
                                     </button>
@@ -1936,10 +2101,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="yql-ng-dDJ">
-                                <rect key="frame" x="89" y="63" width="142" height="170"/>
+                                <rect key="frame" x="89" y="45.5" width="142" height="170"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZQ-ul-e5r">
-                                <rect key="frame" x="47" y="238" width="226" height="56"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="754" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZQ-ul-e5r">
+                                <rect key="frame" x="47" y="237.5" width="226" height="56"/>
                                 <attributedString key="attributedText">
                                     <fragment content="You didn’t save any of your accounts just yet.">
                                         <attributes>
@@ -1954,12 +2119,12 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="szR-bg-VMn" firstAttribute="top" secondItem="6ZQ-ul-e5r" secondAttribute="bottom" priority="249" constant="28" id="2nk-vy-dkG"/>
+                            <constraint firstItem="szR-bg-VMn" firstAttribute="top" secondItem="6ZQ-ul-e5r" secondAttribute="bottom" priority="249" constant="35" id="2nk-vy-dkG"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="leading" secondItem="hxD-DE-Aqf" secondAttribute="leadingMargin" constant="31" id="8eG-hz-jOS"/>
                             <constraint firstItem="szR-bg-VMn" firstAttribute="centerX" secondItem="hxD-DE-Aqf" secondAttribute="centerX" id="HuO-gB-rRN"/>
                             <constraint firstItem="yql-ng-dDJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Jx5-KB-eKG" secondAttribute="top" constant="20" id="NlI-WQ-dph"/>
-                            <constraint firstItem="yql-ng-dDJ" firstAttribute="top" secondItem="hxD-DE-Aqf" secondAttribute="topMargin" priority="250" constant="100" id="OVq-75-0J5"/>
                             <constraint firstItem="yql-ng-dDJ" firstAttribute="centerX" secondItem="hxD-DE-Aqf" secondAttribute="centerX" id="VOl-Vu-z5h"/>
+                            <constraint firstItem="6ZQ-ul-e5r" firstAttribute="centerY" secondItem="hxD-DE-Aqf" secondAttribute="centerY" priority="750" constant="60" id="kec-73-kKk"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="top" secondItem="yql-ng-dDJ" secondAttribute="bottom" priority="249" constant="22" id="m9O-q1-NdN"/>
                             <constraint firstItem="Jx5-KB-eKG" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="szR-bg-VMn" secondAttribute="bottom" constant="45" id="nZl-mE-jIY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6ZQ-ul-e5r" secondAttribute="trailing" constant="31" id="v0Y-7X-Ewu"/>
@@ -1987,7 +2152,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="lIj-jV-k3b">
-                                <rect key="frame" x="20" y="150.5" width="280" height="316.5"/>
+                                <rect key="frame" x="20" y="147" width="280" height="316.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="mOD-6G-Agp">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="85.5"/>
@@ -2041,7 +2206,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R9O-0N-DlN">
-                                <rect key="frame" x="20" y="109" width="280" height="21.5"/>
+                                <rect key="frame" x="20" y="99" width="280" height="28"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Adding an account">
                                         <attributes>
@@ -2102,7 +2267,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                             <constraint firstItem="lIj-jV-k3b" firstAttribute="top" secondItem="R9O-0N-DlN" secondAttribute="bottom" constant="20" id="JHT-Ji-m12"/>
                             <constraint firstItem="lIj-jV-k3b" firstAttribute="leading" secondItem="csT-mb-C3g" secondAttribute="leading" constant="20" id="M7G-zm-6yR"/>
                             <constraint firstItem="74p-yn-CGA" firstAttribute="trailing" secondItem="QTV-Mw-hof" secondAttribute="trailing" id="Mpb-8K-TEt"/>
-                            <constraint firstItem="R9O-0N-DlN" firstAttribute="top" secondItem="csT-mb-C3g" secondAttribute="top" constant="45" id="TyS-xG-Vkz"/>
+                            <constraint firstItem="R9O-0N-DlN" firstAttribute="top" secondItem="csT-mb-C3g" secondAttribute="top" constant="35" id="TyS-xG-Vkz"/>
                             <constraint firstItem="74p-yn-CGA" firstAttribute="leading" secondItem="QTV-Mw-hof" secondAttribute="leading" id="Ub7-y6-zbT"/>
                             <constraint firstAttribute="trailing" secondItem="QTV-Mw-hof" secondAttribute="trailing" constant="20" id="fYI-gU-yKd"/>
                             <constraint firstItem="74p-yn-CGA" firstAttribute="top" secondItem="lIj-jV-k3b" secondAttribute="bottom" priority="249" constant="40" id="hCt-yL-O9c"/>
@@ -2164,89 +2329,93 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <!--Start Backup View Controller-->
         <scene sceneID="LaY-Pj-9d6">
             <objects>
-                <viewController id="UMK-2r-SA1" customClass="StartBackupViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="UMK-2r-SA1" customClass="StartBackupViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Rzu-ZE-ozG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAR-sz-fna">
-                                <rect key="frame" x="18" y="69" width="284" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="320" id="Idp-i4-i5c"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="757" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="HAR-sz-fna">
+                                <rect key="frame" x="25" y="79" width="270" height="64"/>
                                 <attributedString key="attributedText">
                                     <fragment content="What if your phone gets">
                                         <attributes>
                                             <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <font key="NSFont" size="24" name="Montserrat-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content=" ">
                                         <attributes>
                                             <color key="NSColor" red="0.21201" green="0.36577999999999999" blue="0.69174000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <font key="NSFont" size="24" name="Montserrat-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="lost or stolen?">
                                         <attributes>
                                             <color key="NSColor" red="0.85502999999999996" green="0.56596999999999997" blue="0.12123" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
+                                            <font key="NSFont" size="24" name="Montserrat-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="VKF-fP-axV">
-                                <rect key="frame" x="20" y="163" width="280" height="51.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="GL8-o6-n6G">
+                                <rect key="frame" x="20" y="153" width="280" height="335.5"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="key_lock" translatesAutoresizingMaskIntoConstraints="NO" id="tw7-rK-Pqd">
-                                        <rect key="frame" x="0.0" y="2.5" width="60" height="47"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn keeps your passwords in a safe and only your phone has the key." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGm-lF-7dp">
-                                        <rect key="frame" x="75" y="0.0" width="205" height="51.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="205" id="l8j-3l-LfS"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                        <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="VKF-fP-axV">
+                                        <rect key="frame" x="0.0" y="0.0" width="280" height="102.5"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="key_lock" translatesAutoresizingMaskIntoConstraints="NO" id="tw7-rK-Pqd">
+                                                <rect key="frame" x="0.0" y="28" width="65" height="47"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Keyn keeps your passwords in a safe and only your phone has the key." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGm-lF-7dp">
+                                                <rect key="frame" x="85" y="17" width="195" height="68.5"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="lor-U0-AT1">
+                                        <rect key="frame" x="0.0" y="116.5" width="280" height="102.5"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="fQR-vQ-uFF">
+                                                <rect key="frame" x="0.0" y="1.5" width="65" height="100"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="So if your phone gets lost or stolen, you need a backup, something that's not on your phone." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVP-N1-u9d">
+                                                <rect key="frame" x="85" y="17" width="195" height="68.5"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="urq-A1-3ev">
+                                        <rect key="frame" x="0.0" y="233" width="280" height="102.5"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="book_pen" translatesAutoresizingMaskIntoConstraints="NO" id="blZ-kF-xBC">
+                                                <rect key="frame" x="0.0" y="1.5" width="65" height="100"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="754" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="acF-tx-ze9">
+                                                <rect key="frame" x="85" y="0.0" width="195" height="102.5"/>
+                                                <string key="text">Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.</string>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="lor-U0-AT1">
-                                <rect key="frame" x="20" y="234.5" width="280" height="68.5"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="fQR-vQ-uFF">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="68.5"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="So if your phone gets lost or stolen, you need a backup, something that's not on your phone." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVP-N1-u9d">
-                                        <rect key="frame" x="75" y="0.0" width="205" height="68.5"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                        <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="urq-A1-3ev">
-                                <rect key="frame" x="20" y="326.5" width="280" height="102.5"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="book_pen" translatesAutoresizingMaskIntoConstraints="NO" id="blZ-kF-xBC">
-                                        <rect key="frame" x="0.0" y="9.5" width="60" height="83.5"/>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="acF-tx-ze9">
-                                        <rect key="frame" x="75" y="0.0" width="205" height="102.5"/>
-                                        <string key="text">Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.</string>
-                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                        <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="blZ-kF-xBC" firstAttribute="height" secondItem="fQR-vQ-uFF" secondAttribute="height" id="bwg-en-mpq"/>
+                                    <constraint firstItem="KGm-lF-7dp" firstAttribute="width" secondItem="acF-tx-ze9" secondAttribute="width" id="o5t-Rd-kbi"/>
+                                    <constraint firstItem="KGm-lF-7dp" firstAttribute="width" secondItem="vVP-N1-u9d" secondAttribute="width" id="yMq-yt-ktX"/>
+                                </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4L-dd-zPx" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="71.5" y="465" width="177" height="44"/>
+                                <rect key="frame" x="71.5" y="504" width="177" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="177" id="VdZ-2w-uvQ"/>
                                     <constraint firstAttribute="height" constant="44" id="kQA-tn-od9"/>
@@ -2262,30 +2431,19 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="vVP-N1-u9d" firstAttribute="width" secondItem="KGm-lF-7dp" secondAttribute="width" id="1ag-kW-su5"/>
-                            <constraint firstItem="VKF-fP-axV" firstAttribute="leading" secondItem="Rzu-ZE-ozG" secondAttribute="leading" constant="20" id="4sF-3d-lK4"/>
-                            <constraint firstItem="lor-U0-AT1" firstAttribute="top" secondItem="VKF-fP-axV" secondAttribute="bottom" priority="239" constant="30" id="7hk-Cq-H4y"/>
-                            <constraint firstItem="HAR-sz-fna" firstAttribute="top" secondItem="iz3-Fj-7H1" secondAttribute="top" priority="200" constant="40" id="BHH-jt-Eu6"/>
-                            <constraint firstItem="urq-A1-3ev" firstAttribute="top" secondItem="lor-U0-AT1" secondAttribute="bottom" priority="240" constant="30" id="EIV-F3-wAN"/>
-                            <constraint firstItem="a4L-dd-zPx" firstAttribute="top" secondItem="urq-A1-3ev" secondAttribute="bottom" priority="241" constant="36" id="EgZ-ey-gu8"/>
-                            <constraint firstItem="HAR-sz-fna" firstAttribute="centerX" secondItem="Rzu-ZE-ozG" secondAttribute="centerX" id="MFU-kh-Jwy"/>
-                            <constraint firstItem="a4L-dd-zPx" firstAttribute="centerX" secondItem="Rzu-ZE-ozG" secondAttribute="centerX" id="S4x-1q-iZv"/>
-                            <constraint firstItem="urq-A1-3ev" firstAttribute="top" relation="greaterThanOrEqual" secondItem="lor-U0-AT1" secondAttribute="bottom" constant="20" id="V6z-Ef-kE4"/>
-                            <constraint firstItem="blZ-kF-xBC" firstAttribute="height" secondItem="fQR-vQ-uFF" secondAttribute="height" constant="15" id="VfP-xt-tal"/>
-                            <constraint firstItem="acF-tx-ze9" firstAttribute="width" secondItem="vVP-N1-u9d" secondAttribute="width" id="VvQ-Cb-xvL"/>
-                            <constraint firstItem="lor-U0-AT1" firstAttribute="leading" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="20" id="WNt-11-a4D"/>
-                            <constraint firstAttribute="trailing" secondItem="urq-A1-3ev" secondAttribute="trailing" constant="20" id="Ydr-He-gcc"/>
-                            <constraint firstItem="VKF-fP-axV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HAR-sz-fna" secondAttribute="bottom" constant="10" id="ZBW-5X-3Ec"/>
-                            <constraint firstAttribute="trailing" secondItem="lor-U0-AT1" secondAttribute="trailing" constant="20" id="c4x-2N-kZ8"/>
-                            <constraint firstItem="iz3-Fj-7H1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HAR-sz-fna" secondAttribute="trailing" constant="18" id="cLY-Z6-4ue"/>
-                            <constraint firstItem="urq-A1-3ev" firstAttribute="leading" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="20" id="e1j-T1-N0E"/>
-                            <constraint firstItem="iz3-Fj-7H1" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="a4L-dd-zPx" secondAttribute="bottom" constant="10" id="f05-dU-sIV"/>
-                            <constraint firstAttribute="trailing" secondItem="VKF-fP-axV" secondAttribute="trailing" constant="20" id="hM8-Lx-00U"/>
-                            <constraint firstItem="VKF-fP-axV" firstAttribute="top" secondItem="HAR-sz-fna" secondAttribute="bottom" priority="245" constant="30" id="lsf-NV-HJx"/>
-                            <constraint firstItem="a4L-dd-zPx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="urq-A1-3ev" secondAttribute="bottom" constant="15" id="rKE-D2-bWL"/>
-                            <constraint firstItem="HAR-sz-fna" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="18" id="vRp-zP-I11"/>
-                            <constraint firstItem="HAR-sz-fna" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iz3-Fj-7H1" secondAttribute="top" constant="5" id="wZ2-iN-Aa7"/>
-                            <constraint firstItem="lor-U0-AT1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VKF-fP-axV" secondAttribute="bottom" constant="20" id="wab-DD-spz"/>
+                            <constraint firstItem="HAR-sz-fna" firstAttribute="top" secondItem="iz3-Fj-7H1" secondAttribute="top" priority="700" constant="30" id="4m5-vw-TTF"/>
+                            <constraint firstItem="GL8-o6-n6G" firstAttribute="leading" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="20" id="6yb-jb-9Id"/>
+                            <constraint firstAttribute="trailing" secondItem="GL8-o6-n6G" secondAttribute="trailing" constant="20" id="8R9-86-aAv"/>
+                            <constraint firstItem="a4L-dd-zPx" firstAttribute="top" secondItem="GL8-o6-n6G" secondAttribute="bottom" priority="750" constant="25" id="EMT-n6-qdd"/>
+                            <constraint firstItem="HAR-sz-fna" firstAttribute="leading" secondItem="iz3-Fj-7H1" secondAttribute="leading" constant="25" id="Ksc-bh-eYb"/>
+                            <constraint firstItem="iz3-Fj-7H1" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="a4L-dd-zPx" secondAttribute="bottom" constant="20" id="NwC-4S-IEc"/>
+                            <constraint firstItem="HAR-sz-fna" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iz3-Fj-7H1" secondAttribute="top" constant="15" id="O3a-kB-1lK"/>
+                            <constraint firstItem="iz3-Fj-7H1" firstAttribute="bottom" secondItem="a4L-dd-zPx" secondAttribute="bottom" priority="700" constant="30" id="Sul-D0-MhG"/>
+                            <constraint firstItem="GL8-o6-n6G" firstAttribute="top" secondItem="HAR-sz-fna" secondAttribute="bottom" constant="10" id="Xfm-Y0-NBy"/>
+                            <constraint firstItem="a4L-dd-zPx" firstAttribute="centerX" secondItem="Rzu-ZE-ozG" secondAttribute="centerX" id="br9-Yd-oOB"/>
+                            <constraint firstItem="KGm-lF-7dp" firstAttribute="width" secondItem="Rzu-ZE-ozG" secondAttribute="width" multiplier="0.61" id="cWJ-LT-re1"/>
+                            <constraint firstItem="a4L-dd-zPx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="GL8-o6-n6G" secondAttribute="bottom" constant="15" id="lpD-Zd-tTo"/>
+                            <constraint firstItem="iz3-Fj-7H1" firstAttribute="trailing" secondItem="HAR-sz-fna" secondAttribute="trailing" constant="25" id="qnt-Ri-9jZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iz3-Fj-7H1"/>
                     </view>
@@ -2295,7 +2453,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wtB-gg-8pu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2273.913043478261" y="1073.6413043478262"/>
+            <point key="canvasLocation" x="2271.1999999999998" y="1072.1674876847292"/>
         </scene>
         <!--Backup Wizard View Controller-->
         <scene sceneID="hnj-mF-bHk">
@@ -2373,12 +2531,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                     <constraint firstAttribute="height" constant="44" id="mtl-cx-pLI"/>
                                 </constraints>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="jrG-1v-3QJ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="jrG-1v-3QJ">
                                 <rect key="frame" x="134" y="35" width="52" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="SXq-7B-tpb"/>
                                     <constraint firstAttribute="width" constant="52" id="gpv-ZT-SGK"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -2450,12 +2613,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                     <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="273" translatesAutoresizingMaskIntoConstraints="NO" id="75x-El-3XL">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="558"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="Mmw-t7-nQS">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Mmw-t7-nQS">
                                                 <rect key="frame" x="134" y="-26" width="52" height="58"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="58" id="mff-zM-3We"/>
                                                     <constraint firstAttribute="width" constant="52" id="vPm-ej-1iJ"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pen_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="npl-gA-Gej">
                                                 <rect key="frame" x="105" y="47" width="110" height="90"/>
@@ -2670,12 +2838,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                     <constraint firstItem="J5j-4b-hvw" firstAttribute="leading" secondItem="FUQ-zr-X1l" secondAttribute="leading" id="hpR-8G-TRY"/>
                                 </constraints>
                             </stackView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_white" translatesAutoresizingMaskIntoConstraints="NO" id="fDQ-QN-mFg">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="fDQ-QN-mFg">
                                 <rect key="frame" x="134" y="35" width="52" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="52" id="PhZ-5B-DqQ"/>
                                     <constraint firstAttribute="height" constant="58" id="kKB-19-wte"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HVC-by-Hkx" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="22.5" y="450" width="275" height="44"/>
@@ -2723,7 +2896,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 <viewControllerPlaceholder storyboardName="Feedback" referencedIdentifier="Feedback" id="edD-lG-IvQ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1471" y="1521"/>
+            <point key="canvasLocation" x="4023.1999999999998" y="1710.5911330049262"/>
         </scene>
         <!--Site Table View Controller-->
         <scene sceneID="64j-9P-sYY">
@@ -2787,7 +2960,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <!--Privacy View Controller-->
         <scene sceneID="43A-oG-F36">
             <objects>
-                <tableViewController id="NAd-Fh-Sau" customClass="PrivacyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController hidesBottomBarWhenPushed="YES" id="NAd-Fh-Sau" customClass="PrivacyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="vEB-vj-Fkp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2803,7 +2976,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Share errors" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUe-Ox-U7k">
-                                                    <rect key="frame" x="16" y="0.0" width="235" height="43.5"/>
+                                                    <rect key="frame" x="16" y="11" width="235" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2818,12 +2991,11 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="cmq-sh-47t" firstAttribute="centerY" secondItem="2px-JB-T71" secondAttribute="centerY" id="1PZ-KK-YC6"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="DUe-Ox-U7k" secondAttribute="bottom" id="7lL-JJ-ZHj"/>
                                                 <constraint firstAttribute="trailing" secondItem="cmq-sh-47t" secondAttribute="trailing" constant="20" symbolic="YES" id="Eu7-d1-jwa"/>
-                                                <constraint firstItem="DUe-Ox-U7k" firstAttribute="leading" secondItem="2px-JB-T71" secondAttribute="leading" constant="16" id="I06-EP-zGe"/>
-                                                <constraint firstItem="DUe-Ox-U7k" firstAttribute="top" secondItem="2px-JB-T71" secondAttribute="top" id="Ta6-Bs-1Qd"/>
-                                                <constraint firstItem="cmq-sh-47t" firstAttribute="leading" secondItem="DUe-Ox-U7k" secondAttribute="trailing" id="dfj-EZ-V6j"/>
-                                                <constraint firstItem="cmq-sh-47t" firstAttribute="leading" secondItem="DUe-Ox-U7k" secondAttribute="trailing" id="gUn-CR-a3D"/>
-                                                <constraint firstAttribute="bottom" secondItem="DUe-Ox-U7k" secondAttribute="bottom" id="sK2-Ge-xuc"/>
+                                                <constraint firstItem="cmq-sh-47t" firstAttribute="leading" secondItem="DUe-Ox-U7k" secondAttribute="trailing" id="kp8-YH-SmW"/>
+                                                <constraint firstItem="DUe-Ox-U7k" firstAttribute="top" secondItem="2px-JB-T71" secondAttribute="topMargin" id="tTK-Pv-0sA"/>
+                                                <constraint firstItem="DUe-Ox-U7k" firstAttribute="leading" secondItem="2px-JB-T71" secondAttribute="leadingMargin" id="xU7-Ug-TdY"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2836,7 +3008,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Share analytical data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZR0-YE-KrK">
-                                                    <rect key="frame" x="16" y="0.0" width="235" height="43.5"/>
+                                                    <rect key="frame" x="16" y="11" width="235" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2851,11 +3023,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="pxV-dR-0E9" secondAttribute="trailing" constant="20" symbolic="YES" id="0fb-t4-C4C"/>
-                                                <constraint firstItem="ZR0-YE-KrK" firstAttribute="leading" secondItem="DCd-Go-Qig" secondAttribute="leading" constant="16" id="AYd-kg-xVL"/>
-                                                <constraint firstItem="pxV-dR-0E9" firstAttribute="leading" secondItem="ZR0-YE-KrK" secondAttribute="trailing" id="MmB-2V-5v8"/>
-                                                <constraint firstItem="pxV-dR-0E9" firstAttribute="leading" secondItem="ZR0-YE-KrK" secondAttribute="trailing" id="e4P-qJ-ULb"/>
-                                                <constraint firstItem="ZR0-YE-KrK" firstAttribute="top" secondItem="DCd-Go-Qig" secondAttribute="top" id="hBA-gb-f3Q"/>
-                                                <constraint firstAttribute="bottom" secondItem="ZR0-YE-KrK" secondAttribute="bottom" id="off-QF-aPh"/>
+                                                <constraint firstItem="pxV-dR-0E9" firstAttribute="leading" secondItem="ZR0-YE-KrK" secondAttribute="trailing" id="2nS-rj-dbt"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="ZR0-YE-KrK" secondAttribute="bottom" id="7db-J0-t0e"/>
+                                                <constraint firstItem="ZR0-YE-KrK" firstAttribute="top" secondItem="DCd-Go-Qig" secondAttribute="topMargin" id="h9j-em-2Fa"/>
+                                                <constraint firstItem="ZR0-YE-KrK" firstAttribute="leading" secondItem="DCd-Go-Qig" secondAttribute="leadingMargin" id="nQx-5H-4GW"/>
                                                 <constraint firstItem="pxV-dR-0E9" firstAttribute="centerY" secondItem="DCd-Go-Qig" secondAttribute="centerY" id="qIt-4t-rg1"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -2869,16 +3040,17 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Privacy policy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdf-hm-sxY">
-                                                    <rect key="frame" x="16" y="0.0" width="97" height="43.5"/>
+                                                    <rect key="frame" x="16" y="11" width="262" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="top" secondItem="KnT-eZ-Rly" secondAttribute="top" id="9tc-aW-r59"/>
-                                                <constraint firstAttribute="bottom" secondItem="bdf-hm-sxY" secondAttribute="bottom" id="A0p-Hl-uVe"/>
-                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="leading" secondItem="KnT-eZ-Rly" secondAttribute="leadingMargin" id="ReM-qt-12n"/>
+                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="top" secondItem="KnT-eZ-Rly" secondAttribute="topMargin" id="CPK-j6-CTu"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="bdf-hm-sxY" secondAttribute="trailing" id="GAM-nL-7ag"/>
+                                                <constraint firstItem="bdf-hm-sxY" firstAttribute="leading" secondItem="KnT-eZ-Rly" secondAttribute="leadingMargin" id="i5G-VQ-gXi"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="bdf-hm-sxY" secondAttribute="bottom" id="zgU-78-RCb"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2898,7 +3070,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OJr-NU-A8G">
-                                                    <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
+                                                    <rect key="frame" x="16" y="11" width="288" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <state key="normal" title="Reset Keyn">
                                                         <color key="titleColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2909,10 +3081,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="OJr-NU-A8G" firstAttribute="top" secondItem="CyX-ML-OtD" secondAttribute="top" id="6Pi-Vw-a3V"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="OJr-NU-A8G" secondAttribute="trailing" id="HUW-jA-oKJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="OJr-NU-A8G" secondAttribute="bottom" id="S8V-EA-la7"/>
-                                                <constraint firstItem="OJr-NU-A8G" firstAttribute="leading" secondItem="CyX-ML-OtD" secondAttribute="leadingMargin" id="XhI-Gw-rid"/>
+                                                <constraint firstItem="OJr-NU-A8G" firstAttribute="top" secondItem="CyX-ML-OtD" secondAttribute="topMargin" id="3rI-C2-Bnc"/>
+                                                <constraint firstItem="OJr-NU-A8G" firstAttribute="trailing" secondItem="CyX-ML-OtD" secondAttribute="trailingMargin" id="XTV-Sc-gR5"/>
+                                                <constraint firstItem="OJr-NU-A8G" firstAttribute="leading" secondItem="CyX-ML-OtD" secondAttribute="leadingMargin" id="auY-u1-fhB"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="OJr-NU-A8G" secondAttribute="bottom" id="t7z-x6-9wE"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2925,7 +3097,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gzE-Vl-7ul">
-                                                    <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
+                                                    <rect key="frame" x="16" y="11" width="288" height="22"/>
                                                     <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                     <state key="normal" title="Delete data">
                                                         <color key="titleColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2936,10 +3108,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="gzE-Vl-7ul" firstAttribute="top" secondItem="GuX-a3-fcl" secondAttribute="top" id="5pv-W1-few"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="gzE-Vl-7ul" secondAttribute="trailing" id="5sx-9D-J0W"/>
-                                                <constraint firstItem="gzE-Vl-7ul" firstAttribute="leading" secondItem="GuX-a3-fcl" secondAttribute="leadingMargin" id="7Kz-eG-PIZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="gzE-Vl-7ul" secondAttribute="bottom" id="ehN-6C-Qu5"/>
+                                                <constraint firstItem="gzE-Vl-7ul" firstAttribute="trailing" secondItem="GuX-a3-fcl" secondAttribute="trailingMargin" id="ADZ-kL-i7f"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="gzE-Vl-7ul" secondAttribute="bottom" id="gqw-dT-7vw"/>
+                                                <constraint firstItem="gzE-Vl-7ul" firstAttribute="leading" secondItem="GuX-a3-fcl" secondAttribute="leadingMargin" id="mJS-Ce-4T3"/>
+                                                <constraint firstItem="gzE-Vl-7ul" firstAttribute="top" secondItem="GuX-a3-fcl" secondAttribute="topMargin" id="zkd-Pg-Zcs"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2961,12 +3133,265 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I1x-Q5-8HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2273" y="1805"/>
+            <point key="canvasLocation" x="2386.4000000000001" y="1922.6600985221676"/>
+        </scene>
+        <!--Subscription View Controller-->
+        <scene sceneID="PQJ-En-Efh">
+            <objects>
+                <viewController storyboardIdentifier="SubscriptionController" hidesBottomBarWhenPushed="YES" id="uAn-4o-w6e" customClass="SubscriptionViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3mY-Dt-Bxg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="C5r-au-Gde">
+                                <rect key="frame" x="20" y="183.5" width="280" height="104"/>
+                                <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="104" id="YaJ-AX-5O9"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="M3L-TT-tNm" customClass="CollectionViewOverlappingLayout" customModule="keyn" customModuleProvider="target">
+                                    <size key="itemSize" width="159" height="97"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCell" id="k19-7B-s19" customClass="ProductCollectionViewCell" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="60.5" y="0.0" width="159" height="97"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="159" height="97"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vjt-gR-b15">
+                                                    <rect key="frame" x="0.0" y="0.0" width="159" height="87"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T7j-P5-3gY">
+                                                            <rect key="frame" x="10" y="24" width="139" height="17.5"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                            <color key="textColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1pV-ID-Xt9">
+                                                            <rect key="frame" x="40" y="45" width="99" height="18"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6dj-ae-w5s" customClass="RadioButton" customModule="keyn" customModuleProvider="target">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="6dj-ae-w5s" secondAttribute="height" multiplier="1:1" id="EVP-dx-uS0"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9DV-Da-NpT">
+                                                                    <rect key="frame" x="28" y="0.0" width="71" height="18"/>
+                                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                                                                    <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="18" id="eM3-eI-Xkv"/>
+                                                            </constraints>
+                                                        </stackView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="T7j-P5-3gY" firstAttribute="top" secondItem="Vjt-gR-b15" secondAttribute="top" constant="24" id="0Oc-2O-ztA"/>
+                                                        <constraint firstItem="1pV-ID-Xt9" firstAttribute="leading" secondItem="Vjt-gR-b15" secondAttribute="leading" constant="40" id="CpF-Uq-5rB"/>
+                                                        <constraint firstAttribute="trailing" secondItem="1pV-ID-Xt9" secondAttribute="trailing" constant="20" id="FHt-1G-k3H"/>
+                                                        <constraint firstAttribute="bottom" secondItem="1pV-ID-Xt9" secondAttribute="bottom" constant="24" id="hQ5-4R-b2g"/>
+                                                        <constraint firstItem="T7j-P5-3gY" firstAttribute="leading" secondItem="Vjt-gR-b15" secondAttribute="leading" constant="10" id="qsA-dQ-hPs"/>
+                                                        <constraint firstAttribute="trailing" secondItem="T7j-P5-3gY" secondAttribute="trailing" constant="10" id="r3e-sG-BjT"/>
+                                                    </constraints>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You save 17%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckE-BD-7xJ" customClass="RoundLabel" customModule="keyn" customModuleProvider="target">
+                                                    <rect key="frame" x="30.5" y="77" width="98" height="20"/>
+                                                    <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="cqM-ny-YVY"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="topInset">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="bottomInset">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="leftInset">
+                                                            <real key="value" value="10"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="rightInset">
+                                                            <real key="value" value="10"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Vjt-gR-b15" firstAttribute="top" secondItem="k19-7B-s19" secondAttribute="top" id="AlB-hV-nuy"/>
+                                            <constraint firstAttribute="bottom" secondItem="ckE-BD-7xJ" secondAttribute="bottom" id="Arw-Aj-P0W"/>
+                                            <constraint firstItem="ckE-BD-7xJ" firstAttribute="centerX" secondItem="k19-7B-s19" secondAttribute="centerX" id="H3H-GL-HNl"/>
+                                            <constraint firstItem="Vjt-gR-b15" firstAttribute="leading" secondItem="k19-7B-s19" secondAttribute="leading" id="cTg-bt-czc"/>
+                                            <constraint firstAttribute="bottom" secondItem="Vjt-gR-b15" secondAttribute="bottom" constant="10" id="huG-Pa-8bL"/>
+                                            <constraint firstAttribute="trailing" secondItem="Vjt-gR-b15" secondAttribute="trailing" id="xnR-HS-DXx"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="boxView" destination="Vjt-gR-b15" id="4ma-sq-M4O"/>
+                                            <outlet property="price" destination="9DV-Da-NpT" id="O8K-KS-Goa"/>
+                                            <outlet property="radioButton" destination="6dj-ae-w5s" id="Rjz-fU-Mlt"/>
+                                            <outlet property="savingLabel" destination="ckE-BD-7xJ" id="tcf-lC-X6v"/>
+                                            <outlet property="title" destination="T7j-P5-3gY" id="QaP-Ph-9sc"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myJ-iX-jre" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="90" y="302.5" width="140" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="bqs-pj-Aao"/>
+                                    <constraint firstAttribute="width" constant="140" id="reh-Nu-Sbz"/>
+                                </constraints>
+                                <state key="normal" title="Purchase"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="upgrade:" destination="uAn-4o-w6e" eventType="touchUpInside" id="5N0-BR-9bf"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nCX-FC-tx3">
+                                <rect key="frame" x="141.5" y="265.5" width="37" height="37"/>
+                                <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8HM-5t-Rgr">
+                                <rect key="frame" x="56" y="366.5" width="208" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="3ge-xN-81a"/>
+                                </constraints>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment content="I already have Keyn Premium">
+                                            <attributes>
+                                                <color key="NSColor" red="0.27843137254901962" green="0.12941176470588234" blue="0.76470588235294112" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <font key="NSFont" size="14" name="Montserrat-Medium"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                <integer key="NSUnderline" value="1"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <action selector="restore:" destination="uAn-4o-w6e" eventType="touchUpInside" id="XfJ-0r-bKK"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="Hrf-E1-2zX">
+                                <rect key="frame" x="20" y="74" width="280" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="oO4-Fh-Ztv"/>
+                                </constraints>
+                                <attributedString key="attributedText">
+                                    <fragment content="With Keyn Premium, you can add an unlimited number of accounts to Keyn.">
+                                        <attributes>
+                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="18" name="Montserrat-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="28" maximumLineHeight="28" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oA8-RV-Oue">
+                                <rect key="frame" x="98" y="158" width="124" height="0.0"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.79953703703703705" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="850" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6e2-07-cE1">
+                                <rect key="frame" x="20" y="401.5" width="280" height="146.5"/>
+                                <string key="text">Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96033364529999998" green="0.95284456009999996" blue="0.9857286811" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" secondItem="6e2-07-cE1" secondAttribute="trailing" constant="20" id="4jZ-am-Hin"/>
+                            <constraint firstItem="oA8-RV-Oue" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="5Qt-ns-xUy"/>
+                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="top" secondItem="7tH-zF-euC" secondAttribute="top" priority="748" constant="60" id="5sk-AV-RP4"/>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="bottom" secondItem="6e2-07-cE1" secondAttribute="bottom" constant="20" id="BrX-4Z-ubc"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="top" relation="greaterThanOrEqual" secondItem="oA8-RV-Oue" secondAttribute="bottom" constant="20" id="FUO-n0-pWI"/>
+                            <constraint firstItem="nCX-FC-tx3" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" id="K21-do-B7P"/>
+                            <constraint firstItem="6e2-07-cE1" firstAttribute="leading" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="RQr-Nf-bZT"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="centerY" secondItem="3mY-Dt-Bxg" secondAttribute="centerY" priority="800" id="S9J-fp-42r"/>
+                            <constraint firstItem="myJ-iX-jre" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="Uqf-0C-hJ7"/>
+                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="XVf-uS-qIS"/>
+                            <constraint firstItem="6e2-07-cE1" firstAttribute="top" secondItem="8HM-5t-Rgr" secondAttribute="bottom" priority="600" constant="30" id="XsX-qu-LCg"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="top" secondItem="oA8-RV-Oue" secondAttribute="bottom" priority="751" constant="35" id="Zsa-5p-9lo"/>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" secondItem="C5r-au-Gde" secondAttribute="trailing" constant="20" id="bDu-Qt-hbN"/>
+                            <constraint firstItem="8HM-5t-Rgr" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="biE-cL-8fL"/>
+                            <constraint firstItem="6e2-07-cE1" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8HM-5t-Rgr" secondAttribute="bottom" constant="15" id="dUf-Lb-Jyk"/>
+                            <constraint firstItem="nCX-FC-tx3" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="e4o-Ns-tZ3"/>
+                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7tH-zF-euC" secondAttribute="top" constant="10" id="hpT-ZX-Yre"/>
+                            <constraint firstItem="C5r-au-Gde" firstAttribute="leading" secondItem="7tH-zF-euC" secondAttribute="leading" constant="20" id="iFX-Xu-APq"/>
+                            <constraint firstItem="Hrf-E1-2zX" firstAttribute="centerX" secondItem="3mY-Dt-Bxg" secondAttribute="centerX" id="iO3-uy-eNZ"/>
+                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="bottom" id="k6h-ZN-B8b"/>
+                            <constraint firstItem="oA8-RV-Oue" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="bottom" priority="749" constant="40" id="mYb-mH-Umg"/>
+                            <constraint firstItem="7tH-zF-euC" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Hrf-E1-2zX" secondAttribute="trailing" constant="20" id="pct-bO-92i"/>
+                            <constraint firstItem="8HM-5t-Rgr" firstAttribute="top" secondItem="myJ-iX-jre" secondAttribute="bottom" constant="20" id="qv8-tI-DnF"/>
+                            <constraint firstItem="myJ-iX-jre" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C5r-au-Gde" secondAttribute="bottom" constant="15" id="uci-aq-ob2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7tH-zF-euC"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="htS-Kq-qy6"/>
+                    <connections>
+                        <outlet property="activityView" destination="nCX-FC-tx3" id="LJW-A8-yYj"/>
+                        <outlet property="collectionView" destination="C5r-au-Gde" id="TDQ-D6-kmi"/>
+                        <outlet property="upgradeButton" destination="myJ-iX-jre" id="xuU-k1-dqC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2gO-3P-4Js" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" id="e63-6B-z3P">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iO9-4U-ex7" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="160" height="52"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="Desktop">
+                                <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6vX-jp-5Jr">
+                            <rect key="frame" x="160" y="0.0" width="160" height="52"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                            <state key="normal" title="Mobile">
+                                <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.49935787669999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="Jwa-bp-gZH"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="fXw-nE-Gzq"/>
+                </stackView>
+            </objects>
+            <point key="canvasLocation" x="1632.8" y="1922.6600985221676"/>
         </scene>
         <!--Privacy Policy View Controller-->
         <scene sceneID="qnC-oJ-WXO">
             <objects>
-                <viewController id="Za5-EU-xti" customClass="PrivacyPolicyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="Za5-EU-xti" customClass="PrivacyPolicyViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WLE-3O-sGT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3003,7 +3428,26 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAu-gc-nNf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3142.5" y="1804.2253521126761"/>
+            <point key="canvasLocation" x="3255.1999999999998" y="1920.4433497536947"/>
+        </scene>
+        <!--Keyn Navigation Controller-->
+        <scene sceneID="Xg7-ve-gSt">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5TW-bl-8eQ" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1X8-9j-qOK">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uAn-4o-w6e" kind="relationship" relationship="rootViewController" id="PK4-77-yX9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AsC-x5-5wz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="529" y="1902"/>
         </scene>
     </scenes>
     <resources>
@@ -3023,13 +3467,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="fingerprint" width="50" height="55"/>
         <image name="key_lock" width="80" height="47"/>
         <image name="lock_small" width="10" height="13"/>
-        <image name="logo_white" width="52" height="58"/>
-        <image name="logo_white_big" width="80" height="88"/>
+        <image name="logo" width="291" height="323"/>
         <image name="pen_checkmark" width="110" height="90"/>
         <image name="phone_key" width="142" height="170"/>
         <image name="settings_tab" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="M0R-pk-Elo"/>
         <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>

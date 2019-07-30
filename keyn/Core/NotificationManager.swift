@@ -109,7 +109,7 @@ struct NotificationManager {
             "topic": topic
         ]
         do {
-            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.subscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
+            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
                 do {
                     if let error = error {
                         throw error
@@ -137,7 +137,7 @@ struct NotificationManager {
             guard let subscription = String(data: try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), encoding: .utf8) else {
                 throw CodingError.stringDecoding
             }
-            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.subscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
+            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
                 do {
                     if let error = error {
                         throw error

@@ -10,21 +10,29 @@ use_frameworks!
 def shared_pods
   pod 'MBProgressHUD', '~> 1.0.0'
   pod 'Sodium', '~> 0.8'
-  pod 'JustLog'
   pod 'OneTimePassword', '~> 3.1'
+  pod 'TrustKit'
+  pod 'Firebase/Core'
+  pod 'Amplitude-iOS', '~> 4.5'
 end
 
 target 'keyn' do
   shared_pods
 #  pod 'SmileLock'
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 target 'keynNotificationExtension' do
   shared_pods
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 target 'keynCredentialProvider' do
   shared_pods
+  pod 'Fabric', '~> 1.10.2'
+  pod 'Crashlytics', '~> 3.13.4'
 end
 
 
@@ -36,7 +44,7 @@ post_install do |installer_representation|
     installer_representation.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AMPLITUDE_SSL_PINNING=1']
         end
     end
 end
-

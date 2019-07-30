@@ -21,6 +21,7 @@ class LearnMoreViewController: UIViewController, WKUIDelegate, WKNavigationDeleg
         let myURL = URL(string:"https://keyn.app/faq_raw")
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
+        Logger.shared.analytics(.learnMoreClicked)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

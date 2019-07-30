@@ -2,7 +2,6 @@
  * Copyright © 2019 Keyn B.V.
  * All rights reserved.
  */
-import CocoaAsyncSocket
 import UIKit
 
 /*
@@ -81,6 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         for service in services.values {
             service.applicationDidEnterBackground?(application)
+        }
+    }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        for service in services.values {
+            service.applicationWillTerminate?(application)
         }
     }
 
