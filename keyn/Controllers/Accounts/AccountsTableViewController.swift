@@ -16,6 +16,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     @IBOutlet weak var upgradeButton: KeynButton!
+    @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
 
     var addAccountButton: KeynBarButton?
 
@@ -84,6 +86,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
             setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
+            upgradeButtonHeightConstraint.constant = Properties.hasValidSubscription ? 0 : 44
+            bottomMarginConstraint.constant = Properties.hasValidSubscription ? 0 : 38
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true

@@ -92,10 +92,12 @@ class AuthenticationGuard {
                     self.hideLockWindow()
                 }
             } catch let error as DecodingError {
+                Logger.shared.error("Error decoding accounts", error: error)
                 DispatchQueue.main.async {
                     (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
                 }
             } catch {
+                Logger.shared.error("Error retrieving accounts", error: error)
                 if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                     DispatchQueue.main.async {
                         (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
