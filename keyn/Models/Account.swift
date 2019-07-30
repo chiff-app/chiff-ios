@@ -17,7 +17,7 @@ enum AccountError: KeynError {
 /*
  * An account belongs to the user and can have one Site.
  */
-struct Account: Codable {
+struct Account {
 
     let id: String
     var username: String
@@ -30,6 +30,7 @@ struct Account: Codable {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
+    var enabled: Bool
 
     var synced: Bool {
         do {
@@ -45,6 +46,7 @@ struct Account: Codable {
 
         self.sites = sites
         self.username = username
+        self.enabled = false
 
         let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, context: context)
         if let password = password {
@@ -63,7 +65,7 @@ struct Account: Codable {
         try save(password: generatedPassword)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -72,6 +74,7 @@ struct Account: Codable {
         self.passwordOffset = passwordOffset
         self.askToLogin = askToLogin
         self.askToChange = askToChange
+        self.enabled = enabled
     }
 
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
@@ -135,7 +138,7 @@ struct Account: Codable {
         try update(secret: nil)
     }
     
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -150,6 +153,9 @@ struct Account: Codable {
         }
         if let askToChange = askToChange {
             self.askToChange = askToChange
+        }
+        if let enabled = enabled {
+            self.enabled = enabled
         }
 
         if let newPassword = newPassword {
@@ -189,7 +195,6 @@ struct Account: Codable {
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
-        Logger.shared.analytics("Password changed.", code: .passwordChange, userInfo: nil)
     }
 
     func delete(completionHandler: @escaping (_ error: Error?) -> Void) {
@@ -201,7 +206,8 @@ struct Account: Codable {
                 try BackupManager.shared.deleteAccount(accountId: self.id)
                 try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
                 Account.deleteFromToIdentityStore(account: self)
-                Logger.shared.analytics("Account deleted.", code: .deleteAccount, userInfo: nil)
+                Logger.shared.analytics(.accountDeleted)
+                Properties.accountCount -= 1
                 completionHandler(nil)
             } catch {
                 Logger.shared.error("Error deleting accounts", error: error)
@@ -247,7 +253,7 @@ struct Account: Codable {
         guard let dataArray = try Keychain.shared.all(service: .account, context: context) else {
             return [:]
         }
-
+        Properties.accountCount = dataArray.count
         let decoder = PropertyListDecoder()
 
         return Dictionary(uniqueKeysWithValues: try dataArray.map { (dict) in
@@ -286,7 +292,8 @@ struct Account: Codable {
                               lastPasswordTryIndex: backupAccount.lastPasswordUpdateTryIndex,
                               passwordOffset: backupAccount.passwordOffset,
                               askToLogin: backupAccount.askToLogin,
-                              askToChange: backupAccount.askToChange)
+                              askToChange: backupAccount.askToChange,
+                              enabled: backupAccount.enabled)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, context: context)
@@ -334,6 +341,7 @@ struct Account: Codable {
         try backup()
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
+        Properties.accountCount += 1
     }
 
     private func backup() throws {
@@ -399,6 +407,35 @@ struct Account: Codable {
                 }
             }
         }
+    }
+
+}
+
+extension Account: Codable {
+
+    enum CodingKeys: CodingKey {
+        case id
+        case username
+        case sites
+        case passwordIndex
+        case lastPasswordUpdateTryIndex
+        case passwordOffset
+        case askToLogin
+        case askToChange
+        case enabled
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.username = try values.decode(String.self, forKey: .username)
+        self.sites = try values.decode([Site].self, forKey: .sites)
+        self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
+        self.lastPasswordUpdateTryIndex = try values.decode(Int.self, forKey: .lastPasswordUpdateTryIndex)
+        self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
+        self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
+        self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
+        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
     }
 
 }

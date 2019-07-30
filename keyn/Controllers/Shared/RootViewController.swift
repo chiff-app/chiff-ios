@@ -16,7 +16,7 @@ class RootViewController: UITabBarController {
     func setBadge(completed: Bool) {
         if let settingsItem = tabBar.items?[2] {
             settingsItem.badgeColor = UIColor.secondary
-            settingsItem.badgeValue = completed ? nil : "!"
+            settingsItem.badgeValue = !completed || Properties.isJailbroken ? "!" : nil
         }
     }
 
@@ -42,13 +42,13 @@ class RootViewController: UITabBarController {
             alert.addAction(UIAlertAction(title: "popups.responses.questionnaire_deny".localized, style: .cancel, handler: { _ in
                 questionnaire.isFinished = true
                 questionnaire.save()
-                Logger.shared.analytics("Declined questionnaire.", code: .declinedQuestionnaire)
+                Logger.shared.analytics(.questionnaireDeclined)
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
             questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
             questionnaire.save()
-            Logger.shared.analytics("Postponed questionnaire.", code: .postponedQuestionnaire)
+            Logger.shared.analytics(.questionnairePostponed)
         }))
         self.present(alert, animated: true, completion: nil)
     }    
@@ -64,45 +64,4 @@ class RootViewController: UITabBarController {
         self.present(modalViewController, animated: true, completion: nil)
     }
 
-}
-
-class KeynTabBar: UITabBar {
-
-    let height: CGFloat = 90
-    var gradientView: UIView!
-
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        guard let window = UIApplication.shared.keyWindow else {
-            return super.sizeThatFits(size)
-        }
-        var sizeThatFits = super.sizeThatFits(size)
-        if #available(iOS 11.0, *) {
-            sizeThatFits.height = height + window.safeAreaInsets.bottom
-        } else {
-            sizeThatFits.height = height
-        }
-        return sizeThatFits
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if gradientView == nil {
-            let frame = CGRect(x: self.bounds.minX, y: self.bounds.minY - 60.0, width: self.bounds.width, height: 150.0)
-            gradientView = UIView(frame: frame)
-            self.insertSubview(gradientView, at: 0)
-        }
-
-        addBackgroundLayer()
-    }
-
-    private func addBackgroundLayer() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = gradientView.bounds
-        var colors = [CGColor]()
-        colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
-        colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
-        gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.6)]
-        gradientLayer.colors = colors
-        gradientView.layer.insertSublayer(gradientLayer, at: 0)
-    }
 }

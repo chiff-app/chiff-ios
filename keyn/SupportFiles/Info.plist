@@ -2,6 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>TSKConfiguration</key>
+	<dict>
+		<key>TSKPinnedDomains</key>
+		<dict>
+			<key>api.keyn.app</key>
+			<dict>
+				<key>TSKDisableDefaultReportUri</key>
+				<true/>
+				<key>TSKPublicKeyHashes</key>
+				<array>
+					<string>++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=</string>
+					<string>f0KW/FtqTjs108NpYj42SrGvOB2PpxIVM8nWxjPqJGE=</string>
+					<string>NqvDJlas/GRcYbcWE8S/IceH9cq77kg0jVhZeAPXq8k=</string>
+					<string>9+ze1cZgR9KO1kZrVDxA4HQ6voHRCSVNz4RdTCx4U8U=</string>
+					<string>KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I=</string>
+				</array>
+				<key>TSKIncludeSubdomains</key>
+				<false/>
+				<key>TSKEnforcePinning</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -17,7 +42,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.2.2</string>
+	<string>2.3.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,33 +57,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>27</string>
+	<string>32</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>amazonaws.com</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.0</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
-			<key>amazonaws.com.cn</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.0</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
-		</dict>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Scanning QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>

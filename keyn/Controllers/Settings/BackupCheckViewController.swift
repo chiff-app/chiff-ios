@@ -46,6 +46,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
 
         navigationItem.leftBarButtonItem?.setColor(color: .white)
+        Logger.shared.analytics(.backupCheckOpened)
     }
 
     // MARK: - UITextFieldDelegate
@@ -109,7 +110,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func finish(_ sender: UIButton) {
         Seed.paperBackupCompleted = true
-        Logger.shared.analytics("Backup completed.", code: .backupCompleted)
+        Logger.shared.analytics(.backupCompleted)
     }
 
     // MARK: - Private

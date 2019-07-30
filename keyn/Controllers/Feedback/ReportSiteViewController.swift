@@ -85,16 +85,6 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
     // MARK: - Actions
 
     @IBAction func send(_ sender: UIBarButtonItem) {
-        Logger.shared.warning("Site reported.", userInfo: [
-            "code": AnalyticsMessage.siteReported.rawValue,
-            "siteID": account.site.id,
-            "siteName": account.site.name,
-            "loginError": loginReport.isOn,
-            "changeError": changeReport.isOn,
-            "addError": addReport.isOn,
-            "remarks": textView.text ?? ""
-        ])
-
         let message = """
         Hallo,
 

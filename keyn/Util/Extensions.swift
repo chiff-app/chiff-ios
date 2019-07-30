@@ -6,6 +6,8 @@ import UIKit
 import Sodium
 import UserNotifications
 import OneTimePassword
+import Amplitude_iOS
+import StoreKit
 
 // MARK: - Primitive extensions
 
@@ -137,6 +139,11 @@ extension Array where Element == UInt8 {
 }
 
 extension Date {
+
+    static var now: TimeInterval {
+        return Date().timeIntervalSince1970 * 1000
+    }
+
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
@@ -161,6 +168,7 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
+    static let subscriptionUpdated = Notification.Name("SubscriptionUpdatetd")
 }
 
 extension Token {
@@ -341,6 +349,9 @@ extension UIColor {
     static var secondary: UIColor = {
         return UIColor(rgb: 0xEE8C00)
     }()
+    static var keynGreen: UIColor = {
+        return UIColor(rgb: 0x009C0C)
+    }()
 }
 
 extension UIFont {
@@ -354,6 +365,10 @@ extension UIFont {
 
     static var primaryBold: UIFont? = {
         return UIFont(name: "Montserrat-Bold", size: 14)
+    }()
+
+    static var primaryBoldSmall: UIFont? = {
+        return UIFont(name: "Montserrat-Bold", size: 12)
     }()
 }
 
@@ -415,5 +430,38 @@ extension UIBarButtonItem {
         default:
             setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity, .font: UIFont.primaryBold!], for: UIControl.State.disabled)
         }
+    }
+}
+
+extension Amplitude {
+
+    func set(userProperties: [AnalyticsUserProperty: Any]) {
+        let properties = Dictionary(uniqueKeysWithValues: userProperties.map({ ($0.key.rawValue, $0.value) }))
+        self.setUserProperties(properties)
+    }
+
+    func logEvent(event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {
+        if let properties = properties  {
+            self.logEvent(event.rawValue, withEventProperties: Dictionary(uniqueKeysWithValues: properties.map({ ($0.key.rawValue, $0.value) })))
+        } else {
+            self.logEvent(event.rawValue)
+        }
+    }
+}
+
+// MARK: - SKProduct
+extension SKProduct {
+    /// - returns: The cost of the product formatted in the local currency.
+    var regularPrice: String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = self.priceLocale
+        return formatter.string(from: self.price)
+    }
+}
+
+extension Array where Iterator.Element == Account {
+    var enabledCount: Int {
+        return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }
 }

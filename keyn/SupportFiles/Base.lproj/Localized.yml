@@ -30,6 +30,8 @@ errors:
   no_camera:
     value: Camera not available
     comment: The camera is not available
+  camera_denied:
+    value: You can only pair with a computer when camera is enabled. You can do this in Settings.
   qr_scanned_twice:
     value: This QR-code was already scanned.
     comment: This QR-code was already scanned.
@@ -59,6 +61,8 @@ errors:
     comment: This may occur during the initialisation process
   seed_restore:
     value: Error restoring backup
+  session_invalid:
+    value: This QR-code is invalid
   token_creation:
     value: Error creating OTP token
   add_otp:
@@ -75,6 +79,8 @@ errors:
       value: Error deleting backup data
 popups:
   questions:
+    camera_permission:
+      value: Permission needed
     delete_corrupted:
       value: Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.
     delete_existing:
@@ -127,6 +133,8 @@ popups:
     questionnaire_deny:
       comment: Deny the questionnaire
       value: No, thanks
+    settings:
+      value: Open settings
 accounts:
   website_details:
     value: Website details
@@ -135,9 +143,13 @@ accounts:
   url_warning:
     value: ⚠️ Keyn doesn't work if the URL is incorrect.
   footer:
-    value: You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to store an unlimited number of accounts.
+    value: You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.
   footer_unlimited:
     value: You can save as many accounts as you want.
+  footer_account_overflow:  
+    value: Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.
+  footer_account_enabled:
+    value: You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.
   add_2fa_code:
     value: Add 2FA-code to
   update_2fa_code:
@@ -180,6 +192,8 @@ settings:
   privacy:
     value: Privacy
     comment: The word for privacy
+  premium:
+    value: Premium
   privacy_explanation:
     value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   privacy_beta_explanation:
@@ -190,8 +204,8 @@ settings:
   reset_warning:
     comment: Description under reset Keyn
     value: |- 
-      Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup. 
-      Deleting data will be permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
+      Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
+      Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
   reset_keyn_warning:
     comment: Alert before deleting local data
     value: ⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.       
@@ -207,6 +221,24 @@ settings:
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
+  jailbreak_warning:
+    value: This device appears to be jailbroken. Other applications may be able to access your passwords
+  read_more:
+    value: Read more
+  premium_beta:
+    value: Keyn Premium is already enabled if you're participating in the beta program
+  success:
+    value: Success
+  restore_successful:
+    value: Your purchase has been restored
+  crossgrade_successful:
+    value: Your new subscription will go into effect after the current subscription cycle ends
+  restore_failed:
+    value: No active subscriptions were found
+  discount:
+    value: You save 17%
+  active:
+    value: active
 backup:
   word:
     comment: The word for word
@@ -276,6 +308,24 @@ requests:
     value: Next time you can login with Keyn
   to_complete_process:
     value: to complete the process
+  account_disabled:
+    value: Account disabled
+  cannot_add:
+    value: Upgrade needed
+  upgrade_keyn_for_request:
+    value: You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again
+  upgrade_keyn_for_add:
+    value: You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save an unlimited number of accounts
+  accounts_left_1:
+    value: You can only add
+  accounts_left_2_plural:
+    value: additional accounts
+  accounts_left_2_single:
+    value: additional account
+  accounts_left_3:
+    value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
+  no_accounts_left:
+    value: You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -304,3 +354,68 @@ initialization:
       value: Copy your password by simply tapping it.
     third:
       value: Return to the login fields and paste your password.
+storekit:
+  cannotMakePayments:
+    value: You are not authorized to make payments. In-App Purchases may be restricted on your device.
+  couldNotFind:
+    value: Could not find resource file
+  error:
+    value: "Error: "
+  deferred:
+    value: Allow the user to continue using your app
+  deliverContent:
+    value: Deliver content for
+  failed:
+    value: failed
+  installing:
+    value: In-App Purchases may be restricted on your device
+  invalidIndexPath:
+    value: Invalid selected index path
+  noRestorablePurchases:
+    value: There are no restorable purchases.
+  noPurchasesAvailable:
+    value: No purchases available
+  notAuthorized:
+    value: You are not authorized to make payments
+  okButton:
+    value: OK
+  previouslyBought:
+    value: Only previously bought non-consumable products and auto-renewable subscriptions can be restored
+  productRequestStatus:
+    value: Product Request Status
+  purchaseOf:
+    value: Purchase of
+  purchaseStatus:
+    value: Purchase Status
+  removed:
+    value: was removed from the payment queue
+  restorable:
+    value: All restorable transactions have been processed by the payment queue
+  restoreContent:
+    value: Restore content for
+  status:
+    value: Status
+  unknownDefault:
+    value: Unknown payment transaction case
+  unknownDestinationViewController:
+    value: Unknown destination view controller
+  unknownDetail:
+    value: Unknown detail row
+  unknownPurchase:
+    value: No selected purchase
+  unknownSelectedSegmentIndex:
+    value: "Unknown selected segment index:" 
+  unknownSelectedViewController:
+    value: Unknown selected view controller
+  unknownTabBarIndex:
+    value: Unknown tab bar index
+  unknownToolbarItem:
+    value: "Unknown selected toolbar item:"
+  updateResource:
+    value: Update it with your product identifiers to retrieve product information
+  useStoreRestore:
+    value: Use Store > Restore to restore your previously bought non-consumable products and auto-renewable subscriptions
+  viewControllerDoesNotExist:
+    value: The main content view controller does not exist
+  windowDoesNotExist:
+    value: The window does not exist

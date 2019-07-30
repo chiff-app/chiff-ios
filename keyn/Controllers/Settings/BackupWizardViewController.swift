@@ -33,6 +33,7 @@ class BackupWizardViewController: UIViewController {
             Logger.shared.error("Error getting mnemonic.", error: error)
         }
         navigationItem.leftBarButtonItem?.setColor(color: .white)
+        Logger.shared.analytics(.backupProcessStarted)
     }
 
     override func viewDidLayoutSubviews() {

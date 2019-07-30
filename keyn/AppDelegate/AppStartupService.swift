@@ -6,13 +6,13 @@
 import LocalAuthentication
 import UIKit
 import UserNotifications
+import StoreKit
 
 /*
  * Code related to starting up the app in different ways.
  */
 class AppStartupService: NSObject, UIApplicationDelegate {
 
-    var deniedPushNotifications = false
     var window: UIWindow?
     var pushNotificationService: PushNotificationService!
 
@@ -23,10 +23,15 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
+        StoreObserver.shared.enable()
+        if StoreObserver.shared.isAuthorizedForPayments {
+            StoreManager.shared.startProductRequest()
+        }
         Questionnaire.fetch()
         UIFixes()
 
         launchInitialView()
+        Properties.isJailbroken = isJailbroken()
 
         return true
     }
@@ -61,6 +66,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        StoreObserver.shared.disable()
+    }
+
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         guard (error as NSError).code != 3010 else {
             return
@@ -82,6 +91,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                     NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
                 }
             }
+        }
+        if BackupManager.shared.hasKeys {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                StoreObserver.shared.updateSubscriptions { (error) in
+                    if let error = error {
+                        Logger.shared.error("Error updating subsription status", error: error)
+                    }
+                }
+            }
+
         }
     }
 
@@ -117,8 +136,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                     UIApplication.shared.registerForRemoteNotifications()
                     completionHandler(true)
                 } else {
-                    Logger.shared.warning("User denied remote notifications.")
-                    self.deniedPushNotifications = true
                     completionHandler(false)
                 }
             }
@@ -137,9 +154,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-
-            Logger.shared.analytics("App was installed", code: .install)
-            let _ = Properties.installTimestamp()
+            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ]) // TODO: Check date format
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {
@@ -233,6 +248,31 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
 
         return label == "true"
+    }
+
+    func isJailbroken() -> Bool {
+        if TARGET_IPHONE_SIMULATOR != 1 {
+            // Check 1 : existence of files that are common for jailbroken devices
+            if FileManager.default.fileExists(atPath: "/Applications/Cydia.app")
+                || FileManager.default.fileExists(atPath: "/Library/MobileSubstrate/MobileSubstrate.dylib")
+                || FileManager.default.fileExists(atPath: "/bin/bash")
+                || FileManager.default.fileExists(atPath: "/usr/sbin/sshd")
+                || FileManager.default.fileExists(atPath: "/etc/apt")
+                || FileManager.default.fileExists(atPath: "/private/var/lib/apt/")
+                || UIApplication.shared.canOpenURL(URL(string:"cydia://package/com.example.package")!) {
+                return true
+            }
+        }
+
+        // Check 2 : Reading and writing in system directories (sandbox violation)
+        let stringToWrite = "Jailbreak Test"
+        do {
+            try stringToWrite.write(toFile:"/private/JailbreakTest.txt", atomically:true, encoding:String.Encoding.utf8)
+            //Device is jailbroken
+            return true
+        } catch {
+            return false
+        }
     }
 
 }   

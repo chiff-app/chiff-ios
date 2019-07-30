@@ -137,7 +137,7 @@ struct BackupManager {
                     }
                 }
             }
-            Logger.shared.analytics("Accounts restored", code: .accountsRestored, userInfo: ["accounts": dict.count])
+            Properties.accountCount = dict.count
             completionHandler(nil)
         }
     }
@@ -164,6 +164,7 @@ struct BackupManager {
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
+        Properties.userId = "\(base64PubKey)_KEYN_USER_ID".sha256
         return (keyPair.privKey, base64PubKey)
     }
     

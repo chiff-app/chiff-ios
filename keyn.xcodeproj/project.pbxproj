@@ -32,6 +32,7 @@
 		49062C7922146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -63,7 +64,6 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
-		4967F426225CC7110069330D /* Localized.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4967F424225CC7100069330D /* Localized.yml */; };
 		4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
@@ -95,11 +95,19 @@
 		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
+		49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */; };
+		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
 		49C8B896225383D300639663 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C8B895225383D300639663 /* StoreKit.framework */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
+		49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */; };
+		49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
+		49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
+		49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
+		49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */; };
+		49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2FE0A22D390B3001AA622 /* ProductIds.plist */; };
 		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
@@ -119,6 +127,11 @@
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
+		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
+		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
+		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
+		49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
+		49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */; };
 		49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */; };
 		49F2A0F522142EB900429875 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F422142EB900429875 /* Extensions.swift */; };
@@ -244,6 +257,7 @@
 		49062C862214731700A30669 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
+		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -293,10 +307,18 @@
 		49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
+		49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewOverlappingLayout.swift; sourceTree = "<group>"; };
+		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
+		49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubscriptionViewController.swift; sourceTree = "<group>"; };
+		49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		49E2FE0222D347E1001AA622 /* StoreObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
+		49E2FE0422D35A39001AA622 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
+		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
 		49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
@@ -317,6 +339,7 @@
 		49E766711F7E6F420022C042 /* keynUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766751F7E6F420022C042 /* keynUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keynUITests.swift; sourceTree = "<group>"; };
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PatrickHand-Regular.ttf"; sourceTree = "<group>"; };
 		49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreViewController.swift; sourceTree = "<group>"; };
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -460,7 +483,6 @@
 				61B5D4CD214C21E5004C93FE /* QRViewController.swift */,
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
-				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 				61F938C31FF4161300AF0880 /* PairViewController.swift */,
 			);
 			path = Shared;
@@ -469,12 +491,16 @@
 		4950262C22BBA29400545118 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				49E4A1E622425904005E8EBF /* KeynButton.swift */,
-				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
-				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
-				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950262F22BBA2FC00545118 /* BackupCircle.swift */,
+				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950263122BBA31200545118 /* FilledCircle.swift */,
+				4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */,
+				49E4A1E622425904005E8EBF /* KeynButton.swift */,
+				4914498622C0F3310021D081 /* KeynTabBar.swift */,
+				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
+				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
+				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
+				49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -504,6 +530,8 @@
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
 				49774C1722664DC30094D3ED /* StartBackupViewController.swift */,
 				49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */,
+				49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */,
+				49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -533,6 +561,15 @@
 				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		49E2FE0822D361B8001AA622 /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				49E2FE0422D35A39001AA622 /* StoreManager.swift */,
+				49E2FE0222D347E1001AA622 /* StoreObserver.swift */,
+			);
+			path = StoreKit;
 			sourceTree = "<group>";
 		};
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
@@ -586,6 +623,7 @@
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
 				49E7D3401FC318CD0059D97E /* Models */,
+				49E2FE0822D361B8001AA622 /* StoreKit */,
 				49F2A106221434C600429875 /* SupportFiles */,
 				495E72B9221186DA003132ED /* Util */,
 				499BE4F91FC0953C001038DF /* UI */,
@@ -647,7 +685,9 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				4967F424225CC7100069330D /* Localized.yml */,
+				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
 				49062C7C22146D8700A30669 /* Localized.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
@@ -680,6 +720,7 @@
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
 				4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */,
+				49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
@@ -766,10 +807,11 @@
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
-				4967F423225CBF950069330D /* ShellScript */,
+				4967F423225CBF950069330D /* Convert YAML to plist */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
+				49EB0A4922DE26E0000F05DD /* Crashlytics script */,
 			);
 			buildRules = (
 			);
@@ -941,6 +983,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49062C7922146D8700A30669 /* Localized.plist in Resources */,
+				49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,18 +991,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */,
 				49062C7822146D8700A30669 /* Localized.plist in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
+				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
-				4967F426225CC7110069330D /* Localized.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,6 +1030,7 @@
 				49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
+				49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -999,30 +1044,32 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Amplitude-iOS/Amplitude_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4967F423225CBF950069330D /* ShellScript */ = {
+		4967F423225CBF950069330D /* Convert YAML to plist */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1032,6 +1079,7 @@
 			inputPaths = (
 				"$(SRCROOT)/keyn/SupportFiles/Base.lproj/Localized.yml",
 			);
+			name = "Convert YAML to plist";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -1039,6 +1087,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cat ${SCRIPT_INPUT_FILE_0} | yq . | plutil -convert xml1 - -o ${SRCROOT}/keyn/SupportFiles/Base.lproj/Localized.plist   \n";
+		};
+		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Crashlytics script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1083,23 +1150,25 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Amplitude-iOS/Amplitude_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
 				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1155,6 +1224,7 @@
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
+				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				495E72BC22118F9D003132ED /* Logger.swift in Sources */,
 				49062C6E2214679400A30669 /* Localizer.swift in Sources */,
@@ -1188,15 +1258,19 @@
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
+				49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */,
 				4936E070225F77B3009B0A31 /* MobileExplanationViewController.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
+				49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */,
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
+				49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */,
 				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */,
+				49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
@@ -1205,10 +1279,12 @@
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
 				492EC843224919A10088F73D /* PairingViewController.swift in Sources */,
+				49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */,
 				49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
 				49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */,
+				49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */,
 				496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */,
 				49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */,
 				611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */,
@@ -1234,8 +1310,10 @@
 				492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
+				49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */,
 				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */,
+				4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
@@ -1296,6 +1374,7 @@
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
+				49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,
@@ -1565,7 +1644,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 32;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1590,7 +1670,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 27;
+				CURRENT_PROJECT_VERSION = 32;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

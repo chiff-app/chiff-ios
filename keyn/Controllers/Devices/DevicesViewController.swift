@@ -91,18 +91,18 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
-        if let cell = cell as? DevicesViewCell {
-            let session = sessions[indexPath.row]
-            guard Properties.browsers.contains(session.browser) else {
-                Logger.shared.warning("Unknown browser")
-                return cell
-            }
+        return tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let session = sessions[indexPath.row]
+        if let cell = cell as? DevicesViewCell, Properties.browsers.contains(session.browser) {
             cell.titleLabel.text = "\(session.browser) on \(session.os)"
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
             cell.deviceLogo.image = UIImage(named: session.browser.lowercased())
+        } else {
+            Logger.shared.warning("Unknown browser")
         }
-        return cell
     }
     
     // MARK: - Navigation
@@ -177,5 +177,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @objc private func showAddSession() {
         performSegue(withIdentifier: "ShowAddSession", sender: self)
+        Logger.shared.analytics(.addSessionOpened)
     }
 }

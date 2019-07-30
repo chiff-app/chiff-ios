@@ -19,11 +19,6 @@ class PrivacyPolicyViewController: UIViewController, WKUIDelegate, WKNavigationD
         webView.load(myRequest)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(true)
-    }
-
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         loadingActivity.stopAnimating()
     }

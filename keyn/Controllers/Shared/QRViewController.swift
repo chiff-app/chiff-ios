@@ -11,6 +11,7 @@ enum CameraError: KeynError {
     case videoInputInitFailed
     case exists
     case invalid
+    case unknown
 }
 
 class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
@@ -27,7 +28,11 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     override func viewDidLayoutSubviews() {
         qrFound = false
         do {
-            try scanQR()
+            switch AVCaptureDevice.authorizationStatus(for: .video) {
+            case .authorized, .notDetermined: try scanQR() // Will automatically ask permission
+            case .denied, .restricted: showCameraDeniedError()
+            @unknown default: throw CameraError.unknown
+            }
         } catch {
             showError(message: "errors.no_camera".localized)
             Logger.shared.warning("Camera not available.", error: error)
@@ -62,7 +67,6 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     } catch {
                         switch error {
                         case SessionError.exists:
-                            Logger.shared.debug("QR-code scanned twice.")
                             showError(message: "errors.qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)
@@ -109,5 +113,19 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
 
         captureSession.startRunning()
     }
+
+    // MARK: - Private functions
+
+    private func showCameraDeniedError() {
+        let alert = UIAlertController(title: "popups.questions.camera_permission".localized, message: "errors.camera_denied".localized, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "popups.responses.settings".localized, style: .default, handler: { _ in
+            if let url = URL.init(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+
 
 }

@@ -28,7 +28,7 @@ class PrivacyViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(false)
+        (tabBarController as! RootViewController).showGradient(true)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -83,7 +83,7 @@ class PrivacyViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
             self.deleteLocalData()
-            Logger.shared.analytics("Keyn reset.", code: .keynReset)
+            Logger.shared.analytics(.resetKeyn)
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
@@ -103,7 +103,7 @@ class PrivacyViewController: UITableViewController {
                     }
                 }
             }
-            Logger.shared.analytics("Keyn data deleted.", code: .keynDeleteAll)
+            Logger.shared.analytics(.deleteData)
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }))
