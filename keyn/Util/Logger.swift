@@ -22,10 +22,12 @@ struct Logger {
         Analytics.setAnalyticsCollectionEnabled(false)
         FirebaseApp.configure()
         amplitude.initializeApiKey(Properties.amplitudeToken)
+        amplitude.disableIdfaTracking()
+        amplitude.disableLocationListening()
         amplitude.set(userProperties: [
-            .accountCount: 42,
-            .pairingCount: 32,
-            .subscribed: false,
+            .accountCount: Properties.accountCount,
+            .pairingCount: Properties.sessionCount,
+            .subscribed: Properties.hasValidSubscription,
             .infoNotifications: Properties.infoNotifications,
             .backupCompleted: Seed.paperBackupCompleted
         ])

@@ -17,7 +17,15 @@ struct Properties {
     enum Environment: String {
         case dev = "dev"
         case beta = "beta"
-        case prod = "v1"
+        case prod = "prod"
+
+        var path: String {
+            switch self {
+            case .dev: return "dev"
+            case .beta: return "beta"
+            case .prod: return "v1"
+            }
+        }
     }
 
     static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
@@ -28,6 +36,7 @@ struct Properties {
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
     static private let subscriptionProductFlag = "subscriptionProduct"
     static private let accountCountFlag = "accountCount"
+    static private let sessionCountFlag = "sessionCount"
 
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
@@ -74,6 +83,10 @@ struct Properties {
     static var accountCount: Int {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
         set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
+    }
+    static var sessionCount: Int {
+        get { return UserDefaults.standard.integer(forKey: sessionCountFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: sessionCountFlag) }
     }
     static var accountOverflow: Bool {
         return accountCount > accountCap

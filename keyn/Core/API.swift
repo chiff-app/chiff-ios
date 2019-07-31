@@ -133,7 +133,7 @@ class API: NSObject {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
-        components.path = "/\(Properties.environment.rawValue)/\(endpoint.rawValue)"
+        components.path = "/\(Properties.environment.path)/\(endpoint.rawValue)"
 
         if let path = path {
             components.path += "/\(path)"
