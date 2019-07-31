@@ -5,8 +5,8 @@
 import Foundation
 
 enum AnalyticsUserProperty: String {
-    case accountCount = "Account count"
-    case pairingCount = "Pairing count"
+    case accountCount = "Number of accounts"
+    case pairingCount = "Number of pairings"
     case subscribed = "Subscribed"
     case infoNotifications = "Notifications enabled"
     case backupCompleted = "Backup completed"
