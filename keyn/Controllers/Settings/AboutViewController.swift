@@ -60,10 +60,6 @@ class AboutViewController: UITableViewController {
         footer.textLabel?.text = section == 1 ? "settings.feedback_footer".localized : nil
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
             let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
