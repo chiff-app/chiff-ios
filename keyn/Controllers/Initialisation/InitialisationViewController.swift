@@ -7,7 +7,24 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
-    @IBAction func setupKeyn(_ sender: UIButton) {
+    // MARK: - Actions
+
+    @IBAction func trySetupKeyn(_ sender: Any) {
+        if Properties.agreedWithTerms {
+            setupKeyn()
+        } else {
+            performSegue(withIdentifier: "ShowTerms", sender: self)
+        }
+    }
+
+    @IBAction func unwindAndSetupKeyn(sender: UIStoryboardSegue) {
+        Properties.agreedWithTerms = true
+        setupKeyn()
+    }
+
+    // MARK: - Private functions
+
+    private func setupKeyn() {
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             registerForPushNotifications()
         } else {
@@ -26,10 +43,7 @@ class InitialisationViewController: UIViewController {
                 }
             }
         }
-
     }
-
-    // MARK: - Private functions
 
     private func registerForPushNotifications() {
         AppDelegate.startupService.registerForPushNotifications() { result in
