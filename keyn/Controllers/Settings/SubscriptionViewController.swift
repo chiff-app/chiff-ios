@@ -9,11 +9,12 @@
 import UIKit
 import StoreKit
 
-class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextViewDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     @IBOutlet weak var upgradeButton: KeynButton!
+    @IBOutlet weak var disclaimerTextView: UITextView!
 
     var presentedModally = false
 
@@ -24,6 +25,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         collectionView.delegate = self
         collectionView.dataSource = self
         fetchProductInformation()
+        setDisclaimerText()
         if presentedModally {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
         }
@@ -78,6 +80,60 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
 
     @objc func cancel() {
         (presentingViewController as? RequestViewController)?.dismiss() ?? dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Disclaimer
+
+    private func setDisclaimerText() {
+        disclaimerTextView.delegate = self
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let disclaimer = "settings.disclaimer".localized
+        let termsOfService = "settings.terms_of_service".localized
+        let privacyPolicy = "settings.privacy_policy".localized
+        let and = "settings.and".localized
+        let attributedString = NSMutableAttributedString(string: "\(disclaimer) \(termsOfService) \(and) \(privacyPolicy).", attributes: [
+            .paragraphStyle: paragraph,
+            .foregroundColor: UIColor.primaryHalfOpacity,
+            .font: UIFont.primaryMediumSmall!
+            ])
+
+        let termsOfServiceUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+        let privacyPolicyUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+
+        let termsOfServiceUrl = URL(fileURLWithPath: termsOfServiceUrlPath!)
+        let privacyPolicyUrl = URL(fileURLWithPath: privacyPolicyUrlPath!)
+
+        attributedString.setAttributes([
+            .link: termsOfServiceUrl,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .font: UIFont.primaryMediumSmall!
+            ], range: NSMakeRange(disclaimer.count + 1, termsOfService.count))
+        attributedString.setAttributes([
+            .link: privacyPolicyUrl,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .font: UIFont.primaryMediumSmall!
+            ], range: NSMakeRange(disclaimer.count + termsOfService.count + and.count + 3, privacyPolicy.count))
+        disclaimerTextView.attributedText = attributedString
+        disclaimerTextView.linkTextAttributes = [
+            .foregroundColor: UIColor.primary
+        ]
+    }
+
+    // MARK: - UITextViewDelegate
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        self.performSegue(withIdentifier: "ShowUrlViewController", sender: URL)
+        return false
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowUrlViewController", let destination = segue.destination.contents as? WebViewController, let url = sender as? URL {
+            destination.url = url
+            destination.presentedModally = true
+        }
     }
 
     // MARK: - Fetch Product Information

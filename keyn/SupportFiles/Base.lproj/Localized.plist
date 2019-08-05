@@ -732,6 +732,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>active</string>
 		</dict>
+		<key>and</key>
+		<dict>
+			<key>value</key>
+			<string>and</string>
+		</dict>
 		<key>backup_completed_footer</key>
 		<dict>
 			<key>comment</key>
@@ -758,6 +763,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>⚠️ This will permanently delete all local and remote data. You will not be able to restore your accounts with your paper backup!</string>
 		</dict>
+		<key>delete_warning</key>
+		<dict>
+			<key>value</key>
+			<string>Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+		</dict>
+		<key>disclaimer</key>
+		<dict>
+			<key>value</key>
+			<string>Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our</string>
+		</dict>
 		<key>discount</key>
 		<dict>
 			<key>value</key>
@@ -770,6 +785,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Use this form to provide feedback :)</string>
 		</dict>
+		<key>feedback_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Help us make Keyn better by letting us know what you think or give suggestions for improvements</string>
+		</dict>
 		<key>feedback_submitted</key>
 		<dict>
 			<key>comment</key>
@@ -777,10 +797,24 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Feedback sent, thanks!</string>
 		</dict>
+		<key>help</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for help</string>
+			<key>value</key>
+			<string>Help</string>
+		</dict>
 		<key>jailbreak_warning</key>
 		<dict>
 			<key>value</key>
 			<string>This device appears to be jailbroken. Other applications may be able to access your passwords</string>
+		</dict>
+		<key>legal</key>
+		<dict>
+			<key>comment</key>
+			<string>The word for legal</string>
+			<key>value</key>
+			<string>Legal</string>
 		</dict>
 		<key>premium</key>
 		<dict>
@@ -809,6 +843,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.</string>
 		</dict>
+		<key>privacy_policy</key>
+		<dict>
+			<key>value</key>
+			<string>Privacy Policy</string>
+		</dict>
 		<key>read_more</key>
 		<dict>
 			<key>value</key>
@@ -826,8 +865,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
-Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.</string>
 		</dict>
 		<key>restore_failed</key>
 		<dict>
@@ -850,6 +888,11 @@ Deleting data will permanently delete all your local and remote data. You will n
 		<dict>
 			<key>value</key>
 			<string>Success</string>
+		</dict>
+		<key>terms_of_service</key>
+		<dict>
+			<key>value</key>
+			<string>Terms of Service</string>
 		</dict>
 	</dict>
 	<key>storekit</key>

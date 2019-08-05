@@ -192,6 +192,12 @@ settings:
   privacy:
     value: Privacy
     comment: The word for privacy
+  legal:
+    value: Legal
+    comment: The word for legal
+  help:
+    value: Help
+    comment: The word for help
   premium:
     value: Premium
   privacy_explanation:
@@ -203,9 +209,9 @@ settings:
     value: Use this form to provide feedback :)
   reset_warning:
     comment: Description under reset Keyn
-    value: |- 
-      Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
-      Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
+    value: Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
+  delete_warning:
+    value: Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
   reset_keyn_warning:
     comment: Alert before deleting local data
     value: ⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.       
@@ -221,6 +227,8 @@ settings:
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
+  feedback_footer:
+    value: Help us make Keyn better by letting us know what you think or give suggestions for improvements
   jailbreak_warning:
     value: This device appears to be jailbroken. Other applications may be able to access your passwords
   read_more:
@@ -239,6 +247,14 @@ settings:
     value: You save 17%
   active:
     value: active
+  disclaimer:
+    value: Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our
+  terms_of_service:
+    value: Terms of Service
+  and:
+    value: and
+  privacy_policy:
+    value: Privacy Policy
 backup:
   word:
     comment: The word for word
