@@ -71,6 +71,9 @@
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
 		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
 		49721F9D2128EED00090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
+		4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7022F8157E0004E365 /* privacy_policy.html */; };
+		4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7122F8157E0004E365 /* privacy_policy_files */; };
+		4973BB7522F818470004E365 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7422F818470004E365 /* TermsViewController.swift */; };
 		49774C122266035C0094D3ED /* SiteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C112266035C0094D3ED /* SiteTableViewController.swift */; };
 		49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C132266044D0094D3ED /* SiteTableViewCell.swift */; };
 		49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C1722664DC30094D3ED /* StartBackupViewController.swift */; };
@@ -127,11 +130,11 @@
 		49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E766591F7E6F420022C042 /* Main.storyboard */; };
 		49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */; };
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
+		49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
+		49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
-		49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
-		49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */; };
 		49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */; };
 		49F2A0F522142EB900429875 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F422142EB900429875 /* Extensions.swift */; };
@@ -287,6 +290,9 @@
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
 		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		4973BB7022F8157E0004E365 /* privacy_policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy_policy.html; path = ../../../../../Desktop/privacy_policy.html; sourceTree = "<group>"; };
+		4973BB7122F8157E0004E365 /* privacy_policy_files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = privacy_policy_files; path = ../../../../../Desktop/privacy_policy_files; sourceTree = "<group>"; };
+		4973BB7422F818470004E365 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		49774C112266035C0094D3ED /* SiteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewController.swift; sourceTree = "<group>"; };
 		49774C132266044D0094D3ED /* SiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewCell.swift; sourceTree = "<group>"; };
 		49774C1722664DC30094D3ED /* StartBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBackupViewController.swift; sourceTree = "<group>"; };
@@ -520,6 +526,15 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
+		4973BB6F22F815270004E365 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				4973BB7122F8157E0004E365 /* privacy_policy_files */,
+				4973BB7022F8157E0004E365 /* privacy_policy.html */,
+			);
+			path = HTML;
+			sourceTree = "<group>";
+		};
 		497FDD8C1FFBDB5F00AAB0DA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,6 +634,7 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
+				4973BB6F22F815270004E365 /* HTML */,
 				013438C5220C45F3000685B2 /* AppDelegate */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
@@ -709,6 +725,7 @@
 				49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */,
 				4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */,
 				49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */,
+				4973BB7422F818470004E365 /* TermsViewController.swift */,
 			);
 			path = Initialisation;
 			sourceTree = "<group>";
@@ -996,9 +1013,11 @@
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
+				4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
+				4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */,
 				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
 				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
@@ -1252,6 +1271,7 @@
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */,
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
+				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,

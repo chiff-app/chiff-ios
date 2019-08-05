@@ -14,9 +14,10 @@ class PrivacyPolicyViewController: UIViewController, WKUIDelegate, WKNavigationD
         super.viewDidLoad()
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        let myURL = URL(string:"https://keyn.app/privacy_raw")
-        let myRequest = URLRequest(url: myURL!)
-        webView.load(myRequest)
+        let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+        let url = URL(fileURLWithPath: urlPath!)
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

@@ -37,7 +37,12 @@ struct Properties {
     static private let subscriptionProductFlag = "subscriptionProduct"
     static private let accountCountFlag = "accountCount"
     static private let sessionCountFlag = "sessionCount"
+    static private let agreedWithTermsFlag = "agreedWithTerms"
 
+    static var agreedWithTerms: Bool {
+        get { return UserDefaults.standard.bool(forKey: agreedWithTermsFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: agreedWithTermsFlag) }
+    }
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
         set { UserDefaults.standard.set(newValue, forKey: questionnaireDirPurgedFlag) }
