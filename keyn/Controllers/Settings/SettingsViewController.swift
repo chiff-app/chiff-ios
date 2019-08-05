@@ -76,12 +76,8 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.section == 1 && indexPath.row >= 1) || indexPath.section == 0 {
-            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
-            if Properties.environment == .beta && indexPath.row == 0 {
-                cell.alpha = 0.5
-                cell.isUserInteractionEnabled = false
-            }
+        if indexPath.section == 0 && indexPath.row == 0 && Properties.environment == .beta, let cell = cell as? AccessoryTableViewCell {
+            cell.enabled = false
         }
     }
 

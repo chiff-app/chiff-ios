@@ -72,12 +72,6 @@ class PrivacyViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row > 1 {
-            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
-        }
-    }
-
     // MARK: - Actions
 
     @IBAction func toggleShareErrors(_ sender: UISwitch) {

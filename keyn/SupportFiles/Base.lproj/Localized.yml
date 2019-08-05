@@ -228,7 +228,7 @@ settings:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
   feedback_footer:
-    value: Help us make Keyn better by letting us know what you think or give suggestions for improvements
+    value: Help us make Keyn better by letting us know what you think or providing suggestions for improvements.
   jailbreak_warning:
     value: This device appears to be jailbroken. Other applications may be able to access your passwords
   read_more:

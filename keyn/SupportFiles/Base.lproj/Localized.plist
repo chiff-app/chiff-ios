@@ -788,7 +788,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>feedback_footer</key>
 		<dict>
 			<key>value</key>
-			<string>Help us make Keyn better by letting us know what you think or give suggestions for improvements</string>
+			<string>Help us make Keyn better by letting us know what you think or providing suggestions for improvements.</string>
 		</dict>
 		<key>feedback_submitted</key>
 		<dict>
