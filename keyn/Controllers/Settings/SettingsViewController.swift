@@ -10,7 +10,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
-    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
     @IBOutlet weak var jailbreakStackViewHeightConstraint: NSLayoutConstraint!
@@ -23,7 +22,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
-        setVersionText()
         setJailbreakText()
     }
 
@@ -86,6 +84,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             }
         }
     }
+
     // MARK: - Actions
 
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
@@ -137,12 +136,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
         securityFooterText = "settings.backup_completed_footer".localized
-    }
-
-    private func setVersionText() {
-        if let version = Properties.version {
-            versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta" : "Keyn \(version)"
-        }
     }
 
     private func setJailbreakText() {

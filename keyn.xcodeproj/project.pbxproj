@@ -74,6 +74,7 @@
 		4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7022F8157E0004E365 /* privacy_policy.html */; };
 		4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7122F8157E0004E365 /* privacy_policy_files */; };
 		4973BB7522F818470004E365 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7422F818470004E365 /* TermsViewController.swift */; };
+		4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7622F84C490004E365 /* AboutViewController.swift */; };
 		49774C122266035C0094D3ED /* SiteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C112266035C0094D3ED /* SiteTableViewController.swift */; };
 		49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C132266044D0094D3ED /* SiteTableViewCell.swift */; };
 		49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C1722664DC30094D3ED /* StartBackupViewController.swift */; };
@@ -93,7 +94,7 @@
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
-		49B1733A229ED29A0029FD2B /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */; };
+		49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* WebViewController.swift */; };
 		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
 		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
@@ -293,6 +294,7 @@
 		4973BB7022F8157E0004E365 /* privacy_policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy_policy.html; path = ../../../../../Desktop/privacy_policy.html; sourceTree = "<group>"; };
 		4973BB7122F8157E0004E365 /* privacy_policy_files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = privacy_policy_files; path = ../../../../../Desktop/privacy_policy_files; sourceTree = "<group>"; };
 		4973BB7422F818470004E365 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		4973BB7622F84C490004E365 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		49774C112266035C0094D3ED /* SiteTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewController.swift; sourceTree = "<group>"; };
 		49774C132266044D0094D3ED /* SiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewCell.swift; sourceTree = "<group>"; };
 		49774C1722664DC30094D3ED /* StartBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBackupViewController.swift; sourceTree = "<group>"; };
@@ -310,7 +312,7 @@
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
-		49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		49B17339229ED29A0029FD2B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewOverlappingLayout.swift; sourceTree = "<group>"; };
@@ -538,15 +540,16 @@
 		497FDD8C1FFBDB5F00AAB0DA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
-				49B17337229ECADC0029FD2B /* PrivacyViewController.swift */,
+				4973BB7622F84C490004E365 /* AboutViewController.swift */,
 				6105598E1FDC55570030F871 /* BackupWizardViewController.swift */,
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
-				49774C1722664DC30094D3ED /* StartBackupViewController.swift */,
-				49B17339229ED29A0029FD2B /* PrivacyPolicyViewController.swift */,
+				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
 				49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */,
+				49774C1722664DC30094D3ED /* StartBackupViewController.swift */,
+				49B17337229ECADC0029FD2B /* PrivacyViewController.swift */,
 				49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */,
+				49B17339229ED29A0029FD2B /* WebViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1291,6 +1294,7 @@
 				61B5D4D0214C253F004C93FE /* OTPViewController.swift in Sources */,
 				4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */,
 				49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */,
+				4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
@@ -1351,7 +1355,7 @@
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */,
-				49B1733A229ED29A0029FD2B /* PrivacyPolicyViewController.swift in Sources */,
+				49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */,
 				49F2A0F722142F0400429875 /* FormTextField.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				497828862285712C00D30C42 /* NotificationManager.swift in Sources */,
