@@ -172,6 +172,7 @@ extension Notification.Name {
     static let sessionStarted = Notification.Name("SessionStarted")
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
+    static let sharedAccountsChanged = Notification.Name("SharedAccountsChanged")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
     static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
@@ -492,7 +493,7 @@ extension SKProduct {
     }
 }
 
-extension Array where Iterator.Element == Account {
+extension Array where Iterator.Element == UserAccount {
     var enabledCount: Int {
         return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }

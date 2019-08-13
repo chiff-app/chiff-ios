@@ -180,11 +180,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         do {
             for session in try TeamSession.all() {
-                session.sharedAccounts { (accounts, error) in
+                session.updateSharedAccounts { (error) in
                     if let error = error {
                         print(error)
-                    } else {
-                        print(accounts)
                     }
                 }
             }
@@ -234,7 +232,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try Account.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(accountID: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
@@ -248,7 +246,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try Account.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(accountID: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }

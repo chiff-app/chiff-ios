@@ -240,7 +240,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             do {
                 BrowserSession.deleteAll()
-                Account.deleteAll()
+                UserAccount.deleteAll()
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()

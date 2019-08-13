@@ -1,0 +1,307 @@
+/*
+ * Copyright © 2019 Keyn B.V.
+ * All rights reserved.
+ */
+import Foundation
+import OneTimePassword
+import LocalAuthentication
+import AuthenticationServices
+
+
+/*
+ * An account belongs to the user and can have one Site.
+ */
+struct UserAccount: Account {
+
+    let id: String
+    var username: String
+    var sites: [Site]
+    var site: Site {
+        return sites[0]
+    }
+    var passwordIndex: Int
+    var lastPasswordUpdateTryIndex: Int
+    var passwordOffset: [Int]?
+    var askToLogin: Bool?
+    var askToChange: Bool?
+    var enabled: Bool
+    var version: Int
+
+    var synced: Bool {
+        do {
+            return try Keychain.shared.isSynced(id: id, service: .account)
+        } catch {
+            Logger.shared.error("Error get account sync info", error: error)
+        }
+        return true // Defaults to true to prevent infinite cycles when an error occurs
+    }
+
+    var hasOtp: Bool {
+        return Keychain.shared.has(id: id, service: .otp)
+    }
+
+    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
+        id = "\(sites[0].id)_\(username)".hash
+
+        self.sites = sites
+        self.username = username
+        self.enabled = false
+        self.version = 1
+
+        let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+        if let password = password {
+            passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
+        } else {
+            askToChange = false
+        }
+
+        let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
+        self.passwordIndex = index  
+        self.lastPasswordUpdateTryIndex = index
+
+        try save(password: generatedPassword)
+    }
+
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int) {
+        self.id = id
+        self.username = username
+        self.sites = sites
+        self.passwordIndex = passwordIndex
+        self.lastPasswordUpdateTryIndex = lastPasswordTryIndex
+        self.passwordOffset = passwordOffset
+        self.askToLogin = askToLogin
+        self.askToChange = askToChange
+        self.enabled = enabled
+        self.version = version
+    }
+
+
+    mutating func nextPassword(context: LAContext? = nil) throws -> String {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+        let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+        let (newPassword, index) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex + 1, offset: offset)
+        self.lastPasswordUpdateTryIndex = index
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData)
+        return newPassword
+    }
+
+    mutating func setOtp(token: Token) throws {
+        let secret = token.generator.secret
+        let tokenData = try token.toURL().absoluteString.data
+
+        if self.hasOtp {
+            try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
+        } else {
+            try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
+        }
+        try backup()
+    }
+
+    mutating func deleteOtp() throws {
+        try Keychain.shared.delete(id: id, service: .otp)
+        try backup()
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        saveToIdentityStore()
+    }
+
+    mutating func addSite(site: Site) throws {
+        self.sites.append(site)
+        try update(secret: nil)
+    }
+
+    mutating func removeSite(forIndex index: Int) throws {
+        self.sites.remove(at: index)
+        try update(secret: nil)
+    }
+
+    mutating func updateSite(url: String, forIndex index: Int) throws {
+        self.sites[index].url = url
+        try update(secret: nil)
+    }
+
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {
+        if let newUsername = newUsername {
+            self.username = newUsername
+        }
+        if let siteName = siteName {
+            self.sites[0].name = siteName
+        }
+        if let url = url {
+            self.sites[0].url = url
+        }
+        if let askToLogin = askToLogin {
+            self.askToLogin = askToLogin
+        }
+        if let askToChange = askToChange {
+            self.askToChange = askToChange
+        }
+        if let enabled = enabled {
+            self.enabled = enabled
+        }
+
+        if let newPassword = newPassword {
+            if askToChange == nil {
+                self.askToChange = true
+            }
+            let newIndex = passwordIndex + 1
+            let passwordGenerator = try PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
+            self.passwordIndex = newIndex
+            self.lastPasswordUpdateTryIndex = newIndex
+        } else if let newUsername = newUsername {
+            let passwordGenerator = try PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(context: context))
+        }
+
+        try update(secret: newPassword?.data)
+    }
+
+    /*
+     * After saving a new (generated) password in the browser we place a message
+     * on the queue stating that it succeeded. We can then call this function to
+     * confirm the new password and store it in the account.
+     */
+    mutating func updatePasswordAfterConfirmation(context: LAContext?) throws {
+        let offset: [Int]? = nil // Will it be possible to change to custom password?
+
+        let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+        let (newPassword, newIndex) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex, offset: offset)
+
+        self.passwordIndex = newIndex
+        self.lastPasswordUpdateTryIndex = newIndex
+        passwordOffset = offset
+        askToChange = false
+
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
+        try backup()
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+    }
+
+    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
+            do {
+                switch result {
+                case .success(_):
+                    try BackupManager.shared.deleteAccount(accountId: self.id)
+                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+                    Account.deleteFromToIdentityStore(account: self)
+                    Logger.shared.analytics(.accountDeleted)
+                    Properties.accountCount -= 1
+                    completionHandler(.success(()))
+                case .failure(let error): throw error
+                }
+            } catch {
+                Logger.shared.error("Error deleting accounts", error: error)
+                return completionHandler(.failure(error))
+            }
+        }
+    }
+
+    func backup() throws {
+        var tokenURL: URL? = nil
+        var tokenSecret: Data? = nil
+        if let token = try oneTimePasswordToken() {
+            tokenURL = try token.toURL()
+            tokenSecret = token.generator.secret
+        }
+        let account = BackupAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
+        BackupManager.shared.backup(account: account) { result in
+            do {
+                try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
+            } catch {
+                Logger.shared.error("Error setting account sync info", error: error)
+            }
+        }
+    }
+
+    // MARK: - Static functions
+
+    static func save(accountData: Data, id: String, context: LAContext?) throws {
+        let decoder = JSONDecoder()
+        let backupAccount = try decoder.decode(BackupAccount.self, from: accountData)
+        let account = UserAccount(id: backupAccount.id,
+                              username: backupAccount.username,
+                              sites: backupAccount.sites,
+                              passwordIndex: backupAccount.passwordIndex,
+                              lastPasswordTryIndex: backupAccount.lastPasswordUpdateTryIndex,
+                              passwordOffset: backupAccount.passwordOffset,
+                              askToLogin: backupAccount.askToLogin,
+                              askToChange: backupAccount.askToChange,
+                              enabled: backupAccount.enabled,
+                              version: backupAccount.version)
+        assert(account.id == id, "Account restoring went wrong. Different id")
+
+        let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+        let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
+
+        assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
+
+        // Remove token and save seperately in Keychain
+        if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
+            let tokenData = tokenURL.absoluteString.data
+            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
+        }
+
+        let data = try PropertyListEncoder().encode(account)
+
+        try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
+        account.saveToIdentityStore(account: account)
+    }
+
+}
+
+extension UserAccount: Codable {
+
+    enum CodingKeys: CodingKey {
+        case id
+        case username
+        case sites
+        case passwordIndex
+        case lastPasswordUpdateTryIndex
+        case passwordOffset
+        case askToLogin
+        case askToChange
+        case enabled
+        case version
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.username = try values.decode(String.self, forKey: .username)
+        self.sites = try values.decode([Site].self, forKey: .sites)
+        self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
+        self.lastPasswordUpdateTryIndex = try values.decode(Int.self, forKey: .lastPasswordUpdateTryIndex)
+        self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
+        self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
+        self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
+        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+    }
+
+}
+
+
+// Version migration
+extension UserAccount {
+
+    mutating func updateVersion(context: LAContext?) {
+        guard version == 0 else {
+            return
+        }
+        do {
+            let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context, version: 1)
+            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password())
+            version = 1
+            let accountData = try PropertyListEncoder().encode(self)
+            try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
+            try backup()
+        } catch {
+            Logger.shared.warning("Error updating account version", error: error, userInfo: nil)
+        }
+
+    }
+}
+

@@ -18,7 +18,7 @@ class ManualOTPViewController: UITableViewController, TokenController {
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!
 
-    var account: Account!
+    var account: UserAccount!
     var token: Token?
 
     override func viewDidLoad() {

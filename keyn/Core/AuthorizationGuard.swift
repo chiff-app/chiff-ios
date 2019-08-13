@@ -113,7 +113,7 @@ class AuthorizationGuard {
             var success = false
             
             func onSuccess(context: LAContext?) throws {
-                guard let account = try Account.get(accountID: self.accountId, context: context) else {
+                guard let account = try UserAccount.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -166,7 +166,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    guard var account = try Account.get(accountID: self.accountId, context: context) else {
+                    guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
                         throw AccountError.notFound
                     }
                     try account.addSite(site: site)
@@ -198,7 +198,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
+                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -224,7 +224,7 @@ class AuthorizationGuard {
                 #warning("TODO: Fetch PPD for each site")
                 for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
-                    let _ = try Account(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
+                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
                 }
                 success = true
                 DispatchQueue.main.async {
