@@ -186,6 +186,17 @@ struct JSONSite: Codable {
     }
 }
 
+struct SharedBackupAccount: Codable {
+    let id: String
+    var username: String
+    var sites: [Site]
+    var passwordIndex: Int
+    var passwordOffset: [Int]?
+    var tokenURL: URL?
+    var tokenSecret: Data?
+}
+
+
 struct BackupAccount: Codable {
     let id: String
     var username: String
@@ -215,7 +226,7 @@ struct BackupAccount: Codable {
         case version
     }
 
-    init(account: Account, tokenURL: URL?, tokenSecret: Data?) {
+    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites

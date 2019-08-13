@@ -131,7 +131,7 @@ struct BackupManager {
                         do {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                             let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
-                            try Account.save(accountData: accountData, id: id, context: context)
+                            try UserAccount.save(accountData: accountData, id: id, context: context)
                         } catch {
                             failedAccounts.append(id)
                             Logger.shared.error("Could not restore account.", error: error)

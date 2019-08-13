@@ -22,7 +22,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     @IBOutlet weak var bottomSpacer: UIView!
 
     var editButton: UIBarButtonItem!
-    var account: Account!
+    var account: UserAccount!
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
     var editingMode: Bool = false
@@ -302,7 +302,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }
     }
 
-    func updateAccount(account: Account) {
+    func updateAccount(account: UserAccount) {
         self.account = account
         loadAccountData()
         NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])

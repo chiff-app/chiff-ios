@@ -16,18 +16,18 @@ class PasswordGenerator {
 
     static let CRYPTO_CONTEXT = "keynpass"
 
+    let seed: Data
     let username: String
     let siteId: String
     let ppd: PPD?
-    let authenticationContext: LAContext?
     let characters: [Character]
     let version: Int
 
-    init(username: String, siteId: String, ppd: PPD?, context: LAContext?, version: Int = 1) {
+    init(username: String, siteId: String, ppd: PPD?, passwordSeed: Data, version: Int = 1) {
         self.username = username
         self.siteId = siteId
         self.ppd = ppd
-        self.authenticationContext = context
+        self.seed = passwordSeed
         self.version = version
         if let characterSets = ppd?.characterSets {
             self.characters = characterSets.reduce([Character](), { $1.characters != nil ? $0 + $1.characters!.sorted() : $0 })
@@ -114,7 +114,7 @@ class PasswordGenerator {
         var value: UInt64 = 0
         _ = withUnsafeMutableBytes(of: &value, { version == 0 ? siteId.sha256.data.copyBytes(to: $0, from: 0..<8) : siteId.sha256Data.copyBytes(to: $0, from: 0..<8) } )
 
-        let siteKey = try Crypto.shared.deriveKey(keyData: Seed.getPasswordSeed(context: authenticationContext), context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(version == 0 ? username.sha256.prefix(8) : username.sha256Data.base64.prefix(8)), index: UInt64(passwordIndex))
         return key
     }

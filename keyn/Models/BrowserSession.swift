@@ -93,7 +93,7 @@ class BrowserSession: Session {
     ///   - browserTab: The browser tab
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
-    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
+    func sendCredentials(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
         var account = account
         var response: KeynCredentialsResponse?
         switch type {
@@ -188,7 +188,13 @@ class BrowserSession: Session {
         }
     }
 
- static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    func save(key: Data, signingKeyPair: KeyPair) throws {
+        let sessionData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: BrowserSession.encryptionService, secretData: key, objectData: sessionData)
+        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
+    }
+
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -271,7 +277,7 @@ class BrowserSession: Session {
         }
 
         do {
-            let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
+            let encryptedAccounts = try UserAccount.accountList().mapValues { (account) -> String in
                 let accountData = try JSONEncoder().encode(account)
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }

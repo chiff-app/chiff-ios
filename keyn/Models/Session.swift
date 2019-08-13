@@ -19,6 +19,7 @@ enum SessionError: KeynError {
 fileprivate enum SessionIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
+    case passwordSeed = "passwordSeed"
 
     func identifier(for id: String) -> String {
         return "\(id)-\(self.rawValue)"
@@ -70,12 +71,6 @@ extension Session {
         return try JSONDecoder().decode(T.self, from: data)
     }
 
-    func save(key: Data, signingKeyPair: KeyPair) throws {
-        let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, secretData: key, objectData: sessionData)
-        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService, secretData: signingKeyPair.privKey)
-    }
-
     func deleteQueuesAtAWS() {
         do {
             let message = [
@@ -93,7 +88,7 @@ extension Session {
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
         // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

@@ -21,6 +21,7 @@ class TeamSession: Session {
         return UIImage(named: "logo_purple") // TODO: get logo from somewhere? Team db?
     }
 
+    static let CRYPTO_CONTEXT = "keynteam"
     static var signingService: KeychainService = .signingTeamSessionKey
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
@@ -33,37 +34,48 @@ class TeamSession: Session {
         self.company = company
     }
 
-    func sharedAccounts(completion: @escaping (_ accounts: [Account]?, _ error: Error?) -> Void) {
+    func updateSharedAccounts(completion: @escaping (_ error: Error?) -> Void) {
         do {
             API.shared.signedRequest(endpoint: .adminSession, method: .get, pubKey: signingPubKey, privKey: try signingPrivKey()) { (dict, error) in
                 if let error = error {
                     Logger.shared.error("Error fetching shared accounts", error: error)
-                    completion(nil, error)
+                    completion(error)
                     return
                 }
 
                 guard let dict = dict else {
-                    completion(nil, CodingError.missingData)
+                    completion(CodingError.missingData)
                     return
                 }
-
-                for (id, data) in dict {
-                    if let base64Data = data as? String {
-                        do {
+                var changed = false
+                do {
+                    let key = try self.passwordSeed()
+                    #warning("TODO: Also delete account if it doesn't exist")
+                    for (id, data) in dict {
+                        if let base64Data = data as? String {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                             let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey())
-                            let jsonData = try JSONSerialization.jsonObject(with: accountData, options: [])
-                            print(jsonData)
-//                            try Account.save(accountData: accountData, id: id, context: nil)
-                        } catch {
-                            Logger.shared.error("Could not save shared account.", error: error)
+                            var account = try SharedAccount.get(accountID: id, context: nil)
+                            if account != nil { // Update existing account
+                                try account!.update(accountData: accountData, key: key)
+                                changed = true
+                            } else { // New account added
+                                try SharedAccount.save(accountData: accountData, id: id, key: key, context: nil)
+                                changed = true
+                            }
                         }
                     }
+                } catch {
+                    Logger.shared.error("Could not save shared account.", error: error)
                 }
+                if changed {
+                    NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+                }
+                completion(nil)
             }
         } catch {
             Logger.shared.error("Error fetching shared accounts", error: error)
-            completion(nil, error)
+            completion(error)
         }
     }
 
@@ -71,10 +83,13 @@ class TeamSession: Session {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
-            let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
-            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
 
-            let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
+            let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
+            let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
+            let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
+            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
+
+            let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
 
             let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, role: browser, company: os)
             try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { error in
@@ -82,7 +97,7 @@ class TeamSession: Session {
                     if let error = error {
                         throw error
                     }
-                    try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
+                    try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
                     TeamSession.count += 1
                     NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     completion(session, nil)
@@ -106,6 +121,17 @@ class TeamSession: Session {
         try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingTeamSessionKey)
         TeamSession.count -= 1
         NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+    }
+
+    func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {
+        let sessionData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService, secretData: key, objectData: sessionData)
+        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
+        try Keychain.shared.save(id: KeyIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService, secretData: passwordSeed)
+    }
+
+    func passwordSeed() throws -> Data {
+        return try Keychain.shared.get(id: KeyIdentifier.passwordSeed.identifier(for: id), service: TeamSession.encryptionService)
     }
 
 }

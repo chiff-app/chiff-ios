@@ -58,7 +58,7 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
-            guard let account = try Account.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
+            guard let account = try UserAccount.get(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
             
@@ -83,11 +83,11 @@ class LoginViewController: ASCredentialProviderViewController {
             do {
                 switch result {
                 case .success(let context):
-                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try Account.get(accountID: accountID, context: context) {
+                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.get(accountID: accountID, context: context) {
                         let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: context))
                         self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
                     } else {
-                        let accounts = try Account.all(context: context)
+                        let accounts = try UserAccount.all(context: context)
                         guard !accounts.isEmpty else {
                             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
                             return

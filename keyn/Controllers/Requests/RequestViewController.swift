@@ -195,7 +195,8 @@ class RequestViewController: UIViewController {
     @IBAction func authenticate(_ sender: UIButton) {
         if let factor = token?.generator.factor, case .counter(_) = factor, let newToken = token?.updatedToken() {
             self.token = newToken
-            try? account?.setOtp(token: newToken)
+            var userAccount = account as? UserAccount
+            try? userAccount?.setOtp(token: newToken)
             successTextLabel.text = newToken.currentPasswordSpaced
         } else {
             acceptRequest()
