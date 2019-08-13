@@ -31,6 +31,7 @@ enum APIEndpoint: String {
     case questionnaire = "questionnaire"
     case subscription = "subscription"
     case iosSubscription = "subscription/ios"
+    case adminSession = "admin/session"
 
     // This construcs the endpoint for the subscription
     static func notificationSubscription(for pubkey: String) -> String {

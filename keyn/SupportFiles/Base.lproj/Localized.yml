@@ -373,6 +373,8 @@ settings:
     value: Read more
   premium_beta:
     value: Keyn Premium is already enabled if you're participating in the beta program
+  premium_teams:
+    value: Keyn Premium is already enabled because you have an active Keyn for Teams session.
   success:
     value: Success
   restore_successful:

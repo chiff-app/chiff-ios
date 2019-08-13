@@ -32,7 +32,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.definesPresentationContext = true
 
         do {
-            sessions = try Session.all()
+            sessions = try BrowserSession.all()
+            sessions.append(contentsOf: try TeamSession.all())
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
@@ -47,11 +48,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.browser) \("devices.on".localized) \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 do {
-                    try self.sessions[indexPath.row].delete(notifyExtension: true)
+                    try self.sessions[indexPath.row].delete(notify: true)
                     DispatchQueue.main.async {
                         self.sessions.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -96,10 +97,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
-        if let cell = cell as? DevicesViewCell, Properties.browsers.contains(session.browser) {
-            cell.titleLabel.text = "\(session.browser) \("devices.on".localized) \(session.os)"
+        if let cell = cell as? DevicesViewCell {
+            cell.titleLabel.text = session.title
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-            cell.deviceLogo.image = UIImage(named: session.browser.lowercased())
+            cell.deviceLogo.image = session.logo
         } else {
             Logger.shared.warning("Unknown browser")
         }
@@ -116,7 +117,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Actions
 
     func addSession(notification: Notification) {
-        guard let session = notification.userInfo?["session"] as? Session else {
+        guard let session = notification.userInfo?["session"] as? BrowserSession else {
             Logger.shared.warning("Session was nil when trying to add it to the devices view.")
             return
         }

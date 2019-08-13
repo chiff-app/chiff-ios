@@ -24,12 +24,14 @@ enum KeychainService: String {
     case seed = "io.keyn.seed"
     case sharedSessionKey = "io.keyn.session.shared"
     case signingSessionKey = "io.keyn.session.signing"
+    case sharedTeamSessionKey = "io.keyn.teamsession.shared"
+    case signingTeamSessionKey = "io.keyn.teamsession.signing"
     case aws = "io.keyn.aws"
     case backup = "io.keyn.backup"
 
     var classification: Classification {
         switch self {
-        case .sharedSessionKey, .signingSessionKey:
+        case .sharedSessionKey, .signingSessionKey, .sharedTeamSessionKey, .signingTeamSessionKey:
             return .restricted
         case .account:
             return .confidential

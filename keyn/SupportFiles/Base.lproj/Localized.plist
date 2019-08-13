@@ -1736,6 +1736,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Keyn Premium is already enabled if you're participating in the beta program</string>
 		</dict>
+		<key>premium_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is already enabled because you have an active Keyn for Teams session.</string>
+		</dict>
 		<key>privacy</key>
 		<dict>
 			<key>comment</key>
