@@ -15,7 +15,7 @@ class AuthorizationGuard {
 
     static var authorizationInProgress = false
 
-    let session: Session
+    let session: BrowserSession
     let type: KeynMessageType
     let accounts: [BulkAccount]!// Should be present for bulk add site requests
     private let browserTab: Int!        // Should be present for all requests
@@ -41,7 +41,7 @@ class AuthorizationGuard {
         }
     }
 
-    init?(request: KeynRequest, session: Session) {
+    init?(request: KeynRequest, session: BrowserSession) {
         guard request.verifyIntegrity() else {
             return nil
         }
@@ -252,7 +252,7 @@ class AuthorizationGuard {
         }
         AuthorizationGuard.authorizationInProgress = true
         do {
-            guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID) else {
+            guard let sessionID = request.sessionID, let session = try BrowserSession.get(id: sessionID) else {
                 AuthorizationGuard.authorizationInProgress = false
                 throw SessionError.doesntExist
             }
@@ -280,7 +280,7 @@ class AuthorizationGuard {
         }
         AuthorizationGuard.authorizationInProgress = true
         do {
-            guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
+            guard let sessionID = request.sessionID, let session = try BrowserSession.get(id: sessionID), let browserTab = request.browserTab else {
                 throw SessionError.doesntExist
             }
             session.cancelRequest(reason: .expired, browserTab: browserTab) { (result) in
@@ -323,10 +323,10 @@ class AuthorizationGuard {
             guard let parameters = url.queryParameters, let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
                 throw SessionError.invalid
             }
-            guard Properties.browsers.contains(browser), Properties.systems.contains(os) else {
-                throw SessionError.unknownType
-            }
-            guard try !Session.exists(id: browserPubKey.hash) else {
+//            guard Properties.browsers.contains(browser), Properties.systems.contains(os) else {
+//                throw SessionError.unknownType
+//            }
+            guard try !BrowserSession.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
             var version: Int = 0
@@ -340,7 +340,12 @@ class AuthorizationGuard {
                 switch result {
                 case .success(_):
                     authenticationCompletionHandler?(result)
-                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
+                    if let type = parameters["t"], type == "1" {
+                        TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
+                    } else {
+                        BrowserSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
+                    }
+                    
                 case .failure(let error):
                     authenticationCompletionHandler?(result)
                     completionHandler(.failure(error))

@@ -90,7 +90,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         if keynRequest.type == .end {
             do {
                 if let sessionID = keynRequest.sessionID {
-                    try Session.get(id: sessionID)?.delete(notifyExtension: false)
+                    try BrowserSession.get(id: sessionID)?.delete(notify: false)
                     NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
                 }
             } catch {
@@ -113,7 +113,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .addBulk {
             do {
-                guard let sessionID = keynRequest.sessionID, let session = try Session.get(id: sessionID) else {
+                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) else {
                     throw CodingError.missingData
                 }
                 #warning("TODO: Improve this by using background fetching in notification processor.")
@@ -147,7 +147,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func waitForPasswordChangeConfirmation(notification: Notification) {
-        guard let session = notification.object as? Session else {
+        guard let session = notification.object as? BrowserSession else {
             Logger.shared.warning("Received notification from unexpected object")
             return
         }
@@ -172,15 +172,28 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
     private func checkPersistentQueue(notification: Notification) {
         do {
-            for session in try Session.all() {
+            for session in try BrowserSession.all() {
                 self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil, completionHandler: nil)
+            }
+        } catch {
+            Logger.shared.error("Could not get sessions.", error: error)
+        }
+        do {
+            for session in try TeamSession.all() {
+                session.sharedAccounts { (accounts, error) in
+                    if let error = error {
+                        print(error)
+                    } else {
+                        print(accounts)
+                    }
+                }
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
     }
 
-    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
+    private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
         session.getPersistentQueueMessages(shortPolling: shortPolling) { (result) in
             switch result {
             case .success(let messages):
@@ -211,7 +224,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws -> [BulkAccount]? {
+    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> [BulkAccount]? {
         guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }

@@ -121,7 +121,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         if Properties.isFirstLaunch {
             // Purge Keychain
-            Session.purgeSessionDataFromKeychain()
+            BrowserSession.purgeSessionDataFromKeychain()
             Account.deleteAll()
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()

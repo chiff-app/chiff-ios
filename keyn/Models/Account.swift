@@ -195,7 +195,7 @@ struct Account {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
     func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
@@ -204,7 +204,7 @@ struct Account {
                 switch result {
                 case .success(_):
                     try BackupManager.shared.deleteAccount(accountId: self.id)
-                    try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
+                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     Account.deleteFromToIdentityStore(account: self)
                     Logger.shared.analytics(.accountDeleted)
                     Properties.accountCount -= 1
@@ -339,7 +339,7 @@ struct Account {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: secret, objectData: accountData, context: nil)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
     }
 
@@ -347,7 +347,7 @@ struct Account {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData)
         try backup()
-        try Session.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         Account.saveToIdentityStore(account: self)
         Properties.accountCount += 1
     }

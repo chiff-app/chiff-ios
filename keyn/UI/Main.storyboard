@@ -1822,7 +1822,7 @@
                                                                         <action selector="deleteDevice:" destination="dlt-f0-1c5" eventType="touchUpInside" id="XeY-cF-pr1"/>
                                                                     </connections>
                                                                 </button>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VSb-5p-ce7">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VSb-5p-ce7">
                                                                     <rect key="frame" x="23" y="22" width="36" height="36"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="VSb-5p-ce7" secondAttribute="height" multiplier="1:1" id="CKN-aj-J3A"/>

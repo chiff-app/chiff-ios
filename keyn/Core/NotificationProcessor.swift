@@ -24,7 +24,7 @@ class NotificationProcessor {
             throw NotificationExtensionError.decodeSessionId
         }
 
-        guard let session = try Session.get(id: id) else {
+        guard let session = try BrowserSession.get(id: id) else {
             throw SessionError.doesntExist
         }
 
