@@ -108,8 +108,7 @@ extension Session {
 
     static func all() throws -> [Self] {
         var sessions = [Self]()
-
-        guard let dataArray = try Keychain.shared.all(service: encryptionService) else {
+        guard let dataArray = try Keychain.shared.all(service: Self.encryptionService) else {
             return sessions
         }
 
@@ -124,7 +123,7 @@ extension Session {
                 sessions.append(session)
             } catch {
                 Logger.shared.error("Can not decode session", error: error)
-                guard let sessionId = dict[kSecAttrAccount as String] as? String, let _ = try? Keychain.shared.delete(id: sessionId, service: .sharedSessionKey) else {
+                guard let sessionId = dict[kSecAttrAccount as String] as? String, let _ = try? Keychain.shared.delete(id: sessionId, service: Self.encryptionService) else {
                     purgeSessionDataFromKeychain()
                     return []
                 }

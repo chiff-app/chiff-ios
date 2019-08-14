@@ -39,6 +39,7 @@ struct UserAccount: Account {
     var hasOtp: Bool {
         return Keychain.shared.has(id: id, service: .otp)
     }
+    static let keychainService: KeychainService = .account
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash

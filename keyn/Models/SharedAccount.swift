@@ -22,7 +22,10 @@ struct SharedAccount: Account {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool? = false
+    let enabled = true
     var synced = true
+
+    static let keychainService: KeychainService = .sharedAccount
 
     init(username: String, sites: [Site], passwordIndex: Int = 0, key: Data, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -46,12 +49,11 @@ struct SharedAccount: Account {
         self.askToLogin = true
     }
 
-    mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws {
+    mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(SharedBackupAccount.self, from: accountData)
-
         guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
-            return
+            return false
         }
         self.username = backupAccount.username
         self.sites = backupAccount.sites
@@ -60,12 +62,12 @@ struct SharedAccount: Account {
         let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: key)
         let (password, newIndex) = try passwordGenerator.generate(index: backupAccount.passwordIndex, offset: self.passwordOffset)
         self.passwordIndex = newIndex
-
         try update(secret: password.data)
+        return true
     }
 
     func delete(completionHandler: @escaping (_ error: Error?) -> Void) {
-        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (context, error) in
+        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (context, error) in
             do {
                 if let error = error {
                     throw error
@@ -109,7 +111,7 @@ struct SharedAccount: Account {
 
         let data = try PropertyListEncoder().encode(account)
 
-        try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
+        try Keychain.shared.save(id: account.id, service: SharedAccount.keychainService, secretData: password.data, objectData: data)
         account.saveToIdentityStore()
     }
 

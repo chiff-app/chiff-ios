@@ -22,7 +22,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     @IBOutlet weak var bottomSpacer: UIView!
 
     var editButton: UIBarButtonItem!
-    var account: UserAccount!
+    var account: Account!
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
     var editingMode: Bool = false
@@ -39,6 +39,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     override func viewDidLoad() {
         super.viewDidLoad()
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
+        editButton.isEnabled = account is UserAccount
+        canEnableAccount = account is UserAccount
         navigationItem.rightBarButtonItem = editButton
 
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
@@ -152,11 +154,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing
+        return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing && account is UserAccount
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        try? self.account.deleteOtp()
+        guard var account = self.account as? UserAccount else {
+            fatalError("Should not be able to edit sharedAccount")
+        }
+        try? account.deleteOtp()
         self.token = nil
         DispatchQueue.main.async {
             self.updateOTPUI()
@@ -176,13 +181,13 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            if indexPath.row == 1 && account.sites.count > 1 {
+            if indexPath.row == 1 && account.sites.count > 1 && account is UserAccount {
                 performSegue(withIdentifier: "ShowSiteOverview", sender: self)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
                 copyToPasteboard(indexPath)
-            } else if indexPath.row == 2 && qrEnabled {
+            } else if indexPath.row == 2 && qrEnabled && account is UserAccount {
                 performSegue(withIdentifier: "showQR", sender: self)
             }
         }
@@ -207,9 +212,12 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     // MARK: - Actions
 
     @IBAction func enableSwitchChanged(_ sender: UISwitch) {
+        guard var account = self.account as? UserAccount else {
+            return
+        }
         do {
             try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
+            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
         } catch {
             Logger.shared.error("Failed to update enabled state in account")
             sender.isOn = account.enabled
@@ -274,20 +282,23 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
 
     @objc func update() {
+        guard var account = self.account as? UserAccount else {
+            return
+        }
         endEditing()
         do {
             var newPassword: String? = nil
-            let newUsername = userNameTextField.text != account?.username ? userNameTextField.text : nil
-            let newSiteName = websiteNameTextField.text != account?.site.name ? websiteNameTextField.text : nil
+            let newUsername = userNameTextField.text != account.username ? userNameTextField.text : nil
+            let newSiteName = websiteNameTextField.text != account.site.name ? websiteNameTextField.text : nil
             if let oldPassword: String = password {
                 newPassword = userPasswordTextField.text != oldPassword ? userPasswordTextField.text : nil
             }
-            let newUrl = websiteURLTextField.text != account?.site.url ? websiteURLTextField.text : nil
+            let newUrl = websiteURLTextField.text != account.site.url ? websiteURLTextField.text : nil
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
             try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account!])
+            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
             Logger.shared.analytics(.accountUpdated, properties: [
                 .username: newUsername != nil,
                 .password: newPassword != nil,
@@ -296,9 +307,9 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             ])
         } catch {
             Logger.shared.warning("Could not change username", error: error)
-            userNameTextField.text = account?.username
-            websiteNameTextField.text = account?.site.name
-            websiteURLTextField.text = account?.site.url
+            userNameTextField.text = account.username
+            websiteNameTextField.text = account.site.name
+            websiteURLTextField.text = account.site.url
         }
     }
 
@@ -416,7 +427,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
     
     @objc func updateHOTP() {
-        if let token = token?.updatedToken() {
+        if let token = token?.updatedToken(), var account = self.account as? UserAccount {
             self.token = token
             try? account.setOtp(token: token)
             userCodeTextField.text = token.currentPasswordSpaced
@@ -449,8 +460,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             destination.account = account
         } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeCircleAnimation()
+            guard let account = account as? UserAccount else {
+                fatalError("Should not be able to open OTP controller on shared account")
+            }
             destination.account = account
         } else if segue.identifier == "ShowSiteOverview", let destination = segue.destination as? SiteTableViewController {
+            guard let account = account as? UserAccount else {
+                fatalError("Should not be able to open site overview on shared account")
+            }
             destination.account = account
             destination.delegate = self
         }

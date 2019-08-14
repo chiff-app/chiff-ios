@@ -87,7 +87,7 @@ class AuthenticationGuard {
         do {
             switch result {
             case .success(let context):
-                let accounts = try UserAccount.all(context: context, sync: true)
+                let accounts = try UserAccount.allCombined(context: context, sync: true)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()

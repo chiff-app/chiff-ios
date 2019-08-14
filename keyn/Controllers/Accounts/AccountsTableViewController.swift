@@ -8,8 +8,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
-    var unfilteredAccounts: [UserAccount]!
-    var filteredAccounts: [UserAccount]!
+    var unfilteredAccounts: [Account]!
+    var filteredAccounts: [Account]!
 //    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
@@ -67,7 +67,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
-            if let accounts = try? notification.userInfo as? [String: UserAccount] ?? UserAccount.all(context: nil) {
+            if let accounts = try? notification.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()

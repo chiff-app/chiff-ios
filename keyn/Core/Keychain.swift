@@ -20,6 +20,7 @@ enum KeychainError: KeynError {
 
 enum KeychainService: String {
     case account = "io.keyn.account"
+    case sharedAccount = "io.keyn.sharedaccount"
     case otp = "io.keyn.otp"
     case seed = "io.keyn.seed"
     case sharedSessionKey = "io.keyn.session.shared"
@@ -33,7 +34,7 @@ enum KeychainService: String {
         switch self {
         case .sharedSessionKey, .signingSessionKey, .sharedTeamSessionKey, .signingTeamSessionKey:
             return .restricted
-        case .account:
+        case .account, .sharedAccount:
             return .confidential
         case .aws, .backup:
             return .secret
