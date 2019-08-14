@@ -42,14 +42,13 @@ class TeamSession: Session {
                     completion(error)
                     return
                 }
-
                 guard let dict = dict else {
                     completion(CodingError.missingData)
                     return
                 }
                 var changed = false
                 do {
-                    let key = try self.passwordSeed()
+                     let key = try self.passwordSeed()
                     #warning("TODO: Also delete account if it doesn't exist")
                     for (id, data) in dict {
                         if let base64Data = data as? String {
@@ -57,8 +56,9 @@ class TeamSession: Session {
                             let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey())
                             var account = try SharedAccount.get(accountID: id, context: nil)
                             if account != nil { // Update existing account
-                                try account!.update(accountData: accountData, key: key)
-                                changed = true
+                                if try account!.update(accountData: accountData, key: key) {
+                                    changed = true
+                                }
                             } else { // New account added
                                 try SharedAccount.save(accountData: accountData, id: id, key: key, context: nil)
                                 changed = true
@@ -131,7 +131,7 @@ class TeamSession: Session {
     }
 
     func passwordSeed() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.passwordSeed.identifier(for: id), service: TeamSession.encryptionService)
+        return try Keychain.shared.get(id: KeyIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
     }
 
 }

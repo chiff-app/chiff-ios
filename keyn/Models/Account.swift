@@ -25,6 +25,8 @@ protocol Account: Codable {
     var askToLogin: Bool? { get set }
     var askToChange: Bool? { get set }
     var synced: Bool { get }
+    var enabled: Bool { get }
+    static var keychainService: KeychainService { get }
 
     func backup() throws
     func delete(completionHandler: @escaping (_ error: Error?) -> Void)
@@ -41,7 +43,7 @@ extension Account {
     //         return true // Defaults to true to prevent infinite cycles when an error occurs
     //     }
 
-            let data = try Keychain.shared.get(id: id, service: .account, context: context)
+            let data = try Keychain.shared.get(id: id, service: Self.keychainService, context: context)
 
             guard let password = String(data: data, encoding: .utf8) else {
                 throw CodingError.stringEncoding
@@ -55,7 +57,7 @@ extension Account {
     }
 
     func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (Result<String, Error>) -> Void) {
-        Keychain.shared.get(id: id, service: .account, reason: reason, with: context, authenticationType: type) { (result) in
+        Keychain.shared.get(id: id, service: Self.keychainService, reason: reason, with: context, authenticationType: type) { (result) in
             switch result {
             case .success(let data):
                 guard let password = String(data: data, encoding: .utf8) else {
@@ -86,7 +88,7 @@ extension Account {
 
     func update(secret: Data?) throws {
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: .account, secretData: secret, objectData: accountData, context: nil)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
@@ -94,7 +96,7 @@ extension Account {
 
     func save(password: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: .account, secretData: password.data, objectData: accountData)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
@@ -104,7 +106,7 @@ extension Account {
     // MARK: - Static functions
 
     static func all(context: LAContext?, sync: Bool = false) throws -> [String: Self] {
-        guard let dataArray = try Keychain.shared.all(service: .account, context: context) else {
+        guard let dataArray = try Keychain.shared.all(service: Self.keychainService, context: context) else {
             return [:]
         }
         Properties.accountCount = dataArray.count
@@ -127,7 +129,7 @@ extension Account {
     }
 
     static func get(accountID: String, context: LAContext?) throws -> Self? {
-        guard let dict = try Keychain.shared.attributes(id: accountID, service: .account, context: context) else {
+        guard let dict = try Keychain.shared.attributes(id: accountID, service: Self.keychainService, context: context) else {
             return nil
         }
 
@@ -145,11 +147,19 @@ extension Account {
     }
 
     static func deleteAll() {
-        Keychain.shared.deleteAll(service: .account)
+        Keychain.shared.deleteAll(service: Self.keychainService)
+        #warning("Also fix otp keychain service")
         Keychain.shared.deleteAll(service: .otp)
         if #available(iOS 12.0, *) {
             ASCredentialIdentityStore.shared.removeAllCredentialIdentities(nil)
         }
+    }
+
+    static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
+        let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
+        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
+            return userAccount
+        })
     }
 
     // MARK: - AuthenticationServices
