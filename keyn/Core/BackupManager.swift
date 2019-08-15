@@ -4,6 +4,7 @@
  */
 import Foundation
 import LocalAuthentication
+import DeviceCheck
 
 struct BackupManager {
 
@@ -47,13 +48,18 @@ struct BackupManager {
             deleteAllKeys()
             try createEncryptionKey(seed: seed)
             let (privKey, pubKey) = try createSigningKeypair(seed: seed)
-
-            API.shared.signedRequest(endpoint: .backup, method: .put, pubKey: pubKey, privKey: privKey) { (_, error) in
+            DCDevice.current.generateToken { (data, error) in
                 if let error = error {
-                    Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                    completionHandler(error)
-                } else {
-                    completionHandler(nil)
+                    Logger.shared.warning("Error retrieving device token.", error: error)
+                }
+                let message: [String: Any]? = data != nil ? [MessageIdentifier.data: data!.base64] : nil
+                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey) { (_, error) in
+                    if let error = error {
+                        Logger.shared.error("Cannot initialize BackupManager.", error: error)
+                        completionHandler(error)
+                    } else {
+                        completionHandler(nil)
+                    }
                 }
             }
         } catch {

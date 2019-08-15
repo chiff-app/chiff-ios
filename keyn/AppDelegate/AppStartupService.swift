@@ -59,11 +59,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
-        if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
-                Properties.infoNotifications = error == nil ? .yes : .no
-            }
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -275,4 +270,4 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
-}   
+}
