@@ -48,7 +48,7 @@ class TeamSession: Session {
                 }
                 var changed = false
                 do {
-                     let key = try self.passwordSeed()
+                    let key = try self.passwordSeed()
                     #warning("TODO: Also delete account if it doesn't exist")
                     for (id, data) in dict {
                         if let base64Data = data as? String {
