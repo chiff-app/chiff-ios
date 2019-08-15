@@ -68,22 +68,20 @@ class API: NSObject {
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.signature(message: jsonData, privKey: privKey)
-
+            let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData),
-                "s": try Crypto.shared.convertToBase64(from: signature)
+                "s": "42" // Geen idee waarom dit er nog in moet
             ]
-
-            request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, body: body, completionHandler: completionHandler)
+            request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
         }
     }
 
-    func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func request(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, signature: String? = nil, body: Data? = nil, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
         do {
-            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, method: method, body: body)
+            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, signature: signature, method: method, body: body)
             send(request, completionHandler: completionHandler)
         } catch {
             completionHandler(nil, error)
@@ -129,7 +127,7 @@ class API: NSObject {
         task.resume()
     }
 
-    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, method: APIMethod, body: Data?) throws -> URLRequest {
+    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: [String: String]?, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
@@ -138,7 +136,6 @@ class API: NSObject {
         if let path = path {
             components.path += "/\(path)"
         }
-
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {
@@ -151,15 +148,16 @@ class API: NSObject {
         guard let url = components.url else {
             throw APIError.url
         }
-
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        if let signature = signature {
+            request.setValue(signature, forHTTPHeaderField: "keyn-signature")
+        }
         if let body = body {
             request.httpBody = body
         }
-
-        return request
+            return request
     }
 }
 
