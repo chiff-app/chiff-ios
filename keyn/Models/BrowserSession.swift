@@ -93,11 +93,13 @@ class BrowserSession: Session {
     ///   - browserTab: The browser tab
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
-    func sendCredentials(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
-        var account = account
+    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
+            guard var account = account as? UserAccount else {
+                throw SessionError.unknownType
+            }
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add, .addAndLogin, .addToExisting:

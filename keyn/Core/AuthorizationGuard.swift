@@ -113,7 +113,7 @@ class AuthorizationGuard {
             var success = false
             
             func onSuccess(context: LAContext?) throws {
-                guard let account = try UserAccount.get(accountID: self.accountId, context: context) else {
+                guard let account = try UserAccount.get(accountID: self.accountId, context: context) ?? SharedAccount.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
