@@ -50,7 +50,7 @@ struct Logger {
     }
 
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
-        print("--------- ⚠️ WARNING: \(error?.localizedDescription ?? "(no error)"). \(message) ---------")
+        print("--------- ⚠️ WARNING: \(String(describing: error)). \(message) ---------")
         guard Properties.errorLogging else {
             return
         }
@@ -68,7 +68,7 @@ struct Logger {
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
-        print("--------- ☠️ ERROR: \(error?.localizedDescription ?? "(no error)"). \(message) --------- ")
+        print("--------- ☠️ ERROR: \(String(describing: error)). \(message) --------- ")
         guard Properties.errorLogging else {
             return
         }
