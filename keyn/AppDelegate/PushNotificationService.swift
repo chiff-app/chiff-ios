@@ -30,7 +30,30 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        completionHandler(UIBackgroundFetchResult.noData)
+        guard let aps = userInfo["aps"] as? [AnyHashable : Any],
+            let category = aps["category"] as? String,
+            category == "UPDATE_TEAM_SESSION",
+            let pubkey = userInfo["pubkey"] as? String else {
+                completionHandler(UIBackgroundFetchResult.noData)
+            return
+        }
+        do {
+            guard let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
+                completionHandler(UIBackgroundFetchResult.failed)
+                return
+            }
+            session.updateSharedAccounts { (error) in
+                if let error = error {
+                    print(error)
+                    completionHandler(UIBackgroundFetchResult.failed)
+                } else {
+                    completionHandler(UIBackgroundFetchResult.newData)
+                }
+            }
+        } catch {
+            Logger.shared.error("Could not get sessions.", error: error)
+            completionHandler(UIBackgroundFetchResult.failed)
+        }
     }
 
     /*
