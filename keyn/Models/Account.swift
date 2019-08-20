@@ -143,7 +143,7 @@ extension Account {
     }
 
     static func accountList(context: LAContext? = nil) throws -> AccountList {
-        return try all(context: context).mapValues({ JSONAccount(account: $0) })
+        return try allCombined(context: context).mapValues({ JSONAccount(account: $0) })
     }
 
     static func deleteAll() {
