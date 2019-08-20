@@ -333,6 +333,9 @@ class Session: Codable {
             "pubkey": keyPair.pubKey.base64,
             "deviceEndpoint": deviceEndpoint
         ]
+        if let userId = Properties.userId {
+            message["userId"] = userId
+        }
 
         do {
             let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
@@ -341,12 +344,8 @@ class Session: Codable {
             }
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey)
-
-            let parameters = [
-                "s": try Crypto.shared.convertToBase64(from: signature)
-            ]
-            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, body: jsonData) { (_, error) in
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
+            API.shared.request(endpoint: .message, path: nil, parameters: nil, method: .put, signature: signature, body: jsonData) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
                     completion(error)
