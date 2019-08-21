@@ -46,6 +46,9 @@
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
 		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
+		4933535C230D8C4A00549DA5 /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4933535E230D8C4A00549DA5 /* Feedback.storyboard */; };
+		4933535F230D8C5A00549DA5 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49335361230D8C5A00549DA5 /* Initialisation.storyboard */; };
+		49335362230D8C6100549DA5 /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49335364230D8C6100549DA5 /* Request.storyboard */; };
 		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
 		4936E070225F77B3009B0A31 /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */; };
 		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
@@ -89,7 +92,6 @@
 		498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498FF17B22B0F3490072C3AE /* TabBarGradient.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
-		499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499BE4FA1FC0955D001038DF /* Request.storyboard */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
@@ -120,7 +122,6 @@
 		49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */; };
 		49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
-		49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */; };
 		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
 		49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */; };
 		49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */; };
@@ -152,7 +153,6 @@
 		49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
-		6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6105598B1FDC41C30030F871 /* Initialisation.storyboard */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */; };
@@ -259,7 +259,6 @@
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
 		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		49062C7B22146D8700A30669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Localized.plist; sourceTree = "<group>"; };
-		49062C862214731700A30669 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
@@ -274,6 +273,18 @@
 		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
 		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
+		4933535B230D8C2F00549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4933535D230D8C4A00549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feedback.storyboard; sourceTree = "<group>"; };
+		49335360230D8C5A00549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Initialisation.storyboard; sourceTree = "<group>"; };
+		49335363230D8C6100549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Request.storyboard; sourceTree = "<group>"; };
+		49335365230D8D0400549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
+		49335366230D8D0400549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Request.strings; sourceTree = "<group>"; };
+		49335368230D8D0400549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Initialisation.strings; sourceTree = "<group>"; };
+		49335369230D8D0400549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Feedback.strings; sourceTree = "<group>"; };
+		4933536A230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainInterface.strings; sourceTree = "<group>"; };
+		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
+		4933536C230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Localized.plist; sourceTree = "<group>"; };
+		4933536D230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/wordlist.txt; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -308,7 +319,6 @@
 		498FF17B22B0F3490072C3AE /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
-		499BE4FA1FC0955D001038DF /* Request.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Request.storyboard; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
@@ -332,7 +342,6 @@
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
 		49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
-		49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedback.storyboard; sourceTree = "<group>"; };
 		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
 		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
 		49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooleanQuestionViewController.swift; sourceTree = "<group>"; };
@@ -358,7 +367,6 @@
 		49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		6105598B1FDC41C30030F871 /* Initialisation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Initialisation.storyboard; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
@@ -576,10 +584,10 @@
 			isa = PBXGroup;
 			children = (
 				49E766591F7E6F420022C042 /* Main.storyboard */,
-				499BE4FA1FC0955D001038DF /* Request.storyboard */,
+				49335364230D8C6100549DA5 /* Request.storyboard */,
 				49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */,
-				6105598B1FDC41C30030F871 /* Initialisation.storyboard */,
-				49E75C9D20FF27AB00BC0D65 /* Feedback.storyboard */,
+				49335361230D8C5A00549DA5 /* Initialisation.storyboard */,
+				4933535E230D8C4A00549DA5 /* Feedback.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -985,6 +993,7 @@
 			knownRegions = (
 				en,
 				Base,
+				nl,
 			);
 			mainGroup = 49E766471F7E6F420022C042;
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
@@ -1017,15 +1026,15 @@
 				49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */,
 				49062C7822146D8700A30669 /* Localized.plist in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
-				6105598C1FDC41C30030F871 /* Initialisation.storyboard in Resources */,
+				4933535F230D8C5A00549DA5 /* Initialisation.storyboard in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
 				4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
 				4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */,
-				49E75C9E20FF27AB00BC0D65 /* Feedback.storyboard in Resources */,
-				499BE4FB1FC0955D001038DF /* Request.storyboard in Resources */,
+				4933535C230D8C4A00549DA5 /* Feedback.storyboard in Resources */,
+				49335362230D8C6100549DA5 /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
 				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
 				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
@@ -1111,7 +1120,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cat ${SCRIPT_INPUT_FILE_0} | yq . | plutil -convert xml1 - -o ${SRCROOT}/keyn/SupportFiles/Base.lproj/Localized.plist   \n";
+			shellScript = "cat ${SCRIPT_INPUT_FILE_0} | yq . | plutil -convert xml1 - -o ${SRCROOT}/keyn/SupportFiles/Base.lproj/Localized.plist\n";
 		};
 		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1454,6 +1463,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				4905772C2215BA5C006D98C0 /* Base */,
+				4933536D230D8D0600549DA5 /* nl */,
 			);
 			name = wordlist.txt;
 			sourceTree = "<group>";
@@ -1462,14 +1472,43 @@
 			isa = PBXVariantGroup;
 			children = (
 				49062C7B22146D8700A30669 /* Base */,
+				4933536C230D8D0600549DA5 /* nl */,
 			);
 			name = Localized.plist;
+			sourceTree = "<group>";
+		};
+		4933535E230D8C4A00549DA5 /* Feedback.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4933535D230D8C4A00549DA5 /* Base */,
+				49335369230D8D0400549DA5 /* nl */,
+			);
+			name = Feedback.storyboard;
+			sourceTree = "<group>";
+		};
+		49335361230D8C5A00549DA5 /* Initialisation.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49335360230D8C5A00549DA5 /* Base */,
+				49335368230D8D0400549DA5 /* nl */,
+			);
+			name = Initialisation.storyboard;
+			sourceTree = "<group>";
+		};
+		49335364230D8C6100549DA5 /* Request.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49335363230D8C6100549DA5 /* Base */,
+				49335366230D8D0400549DA5 /* nl */,
+			);
+			name = Request.storyboard;
 			sourceTree = "<group>";
 		};
 		4967F424225CC7100069330D /* Localized.yml */ = {
 			isa = PBXVariantGroup;
 			children = (
 				4967F425225CC7100069330D /* Base */,
+				4933536B230D8D0500549DA5 /* nl */,
 			);
 			name = Localized.yml;
 			sourceTree = "<group>";
@@ -1478,6 +1517,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				49E7665A1F7E6F420022C042 /* Base */,
+				49335365230D8D0400549DA5 /* nl */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1485,7 +1525,7 @@
 		49E7665E1F7E6F420022C042 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49062C862214731700A30669 /* en */,
+				4933535B230D8C2F00549DA5 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1494,6 +1534,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				611F4B4B2146B47300B35A89 /* Base */,
+				4933536A230D8D0500549DA5 /* nl */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
