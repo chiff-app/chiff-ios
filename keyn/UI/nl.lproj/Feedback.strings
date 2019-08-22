@@ -75,10 +75,10 @@
 "ibB-jS-9Xz.text" = "That's the question";
 
 /* Class = "UILabel"; text = "Changing password"; ObjectID = "kT3-4a-H0p"; */
-"kT3-4a-H0p.text" = "Changing password";
+"kT3-4a-H0p.text" = "Wijzig wachtwoord";
 
 /* Class = "UILabel"; text = "What didn't work?"; ObjectID = "pGp-n3-5Bb"; */
-"pGp-n3-5Bb.text" = "What didn't work?";
+"pGp-n3-5Bb.text" = "Wat werkte niet?";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "pbY-4i-QVT"; */
 "pbY-4i-QVT.title" = " ";
@@ -87,13 +87,13 @@
 "t8V-aB-X11.title" = " ";
 
 /* Class = "UILabel"; text = "Introduction"; ObjectID = "uS2-Be-1x3"; */
-"uS2-Be-1x3.text" = "Introduction";
+"uS2-Be-1x3.text" = "Introductie";
 
 /* Class = "UILabel"; text = "That's the question"; ObjectID = "yKy-5X-Oe6"; */
-"yKy-5X-Oe6.text" = "That's the question";
+"yKy-5X-Oe6.text" = "Dat is de vraag";
 
 /* Class = "UILabel"; text = "Adding site"; ObjectID = "ydL-An-OqA"; */
-"ydL-An-OqA.text" = "Adding site";
+"ydL-An-OqA.text" = "Voeg site toe";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "yha-ok-pGY"; */
-"yha-ok-pGY.placeholder" = "Name";
+"yha-ok-pGY.placeholder" = "Naam";
