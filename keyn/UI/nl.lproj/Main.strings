@@ -3,40 +3,40 @@
 "0HP-Ad-Fbl.placeholder" = "URL";
 
 /* Class = "UITableViewSection"; headerTitle = "Legal"; ObjectID = "15Q-st-QTd"; */
-"15Q-st-QTd.headerTitle" = "Legal";
+"15Q-st-QTd.headerTitle" = "Wettelijk";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "1nN-U5-rZs"; */
 "1nN-U5-rZs.title" = " ";
 
 /* Class = "UILabel"; text = "Add 2FA code"; ObjectID = "2eC-LB-IQr"; */
-"2eC-LB-IQr.text" = "Add 2FA code";
+"2eC-LB-IQr.text" = "Voeg 2FA code toe";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "2ko-9K-nBH"; */
-"2ko-9K-nBH.placeholder" = "Name";
+"2ko-9K-nBH.placeholder" = "Naam";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "3l8-lS-VvP"; */
 "3l8-lS-VvP.title" = " ";
 
 /* Class = "UILabel"; text = "Keyn will store the password on your phone. Next time you want to login, you can use Keyn."; ObjectID = "4ML-a9-Tg7"; */
-"4ML-a9-Tg7.text" = "Keyn will store the password on your phone. Next time you want to login, you can use Keyn.";
+"4ML-a9-Tg7.text" = "Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.";
 
 /* Class = "UILabel"; text = "You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to save more."; ObjectID = "4Ne-4j-Ux3"; */
-"4Ne-4j-Ux3.text" = "You can save up to 8 accounts in your free Keyn plan. Upgrade Keyn to save more.";
+"4Ne-4j-Ux3.text" = "Je kunt maximaal 8 accounts gratis opslaan. Upgrade Keyn om er meer op te slaan.";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "5Fz-qe-6rZ"; */
 "5Fz-qe-6rZ.title" = " ";
 
 /* Class = "UITableViewSection"; headerTitle = "User details"; ObjectID = "5WJ-Wg-SIe"; */
-"5WJ-Wg-SIe.headerTitle" = "User details";
+"5WJ-Wg-SIe.headerTitle" = "Details gebruiker";
 
 /* Class = "UIButton"; normalTitle = "Delete account"; ObjectID = "6HO-qZ-Te9"; */
-"6HO-qZ-Te9.normalTitle" = "Delete account";
+"6HO-qZ-Te9.normalTitle" = "Verwijder account";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "6JE-Jy-rlX"; */
-"6JE-Jy-rlX.placeholder" = "Password";
+"6JE-Jy-rlX.placeholder" = "Wachtwoord";
 
 /* Class = "UIButton"; normalTitle = "Mobile"; ObjectID = "6vX-jp-5Jr"; */
-"6vX-jp-5Jr.normalTitle" = "Mobile";
+"6vX-jp-5Jr.normalTitle" = "Mobiel";
 
 /* Class = "UITableViewSection"; headerTitle = "Feedback"; ObjectID = "7CO-hl-vci"; */
 "7CO-hl-vci.headerTitle" = "Feedback";
@@ -45,7 +45,7 @@
 "8FY-tv-c3O.normalTitle" = "1";
 
 /* Class = "UILabel"; text = "Price"; ObjectID = "9DV-Da-NpT"; */
-"9DV-Da-NpT.text" = "Price";
+"9DV-Da-NpT.text" = "Prijs";
 
 /* Class = "UILabel"; text = "Privacy policy"; ObjectID = "9S6-kU-s2O"; */
 "9S6-kU-s2O.text" = "Privacy policy";
@@ -54,7 +54,7 @@
 "9Yz-CS-DB7.normalTitle" = "Scan QR code";
 
 /* Class = "UILabel"; text = "Keyn (unknown version)"; ObjectID = "Aw6-GH-aTA"; */
-"Aw6-GH-aTA.text" = "Keyn (unknown version)";
+"Aw6-GH-aTA.text" = "Keyn (onbekende versie)";
 
 /* Class = "UITableViewSection"; footerTitle = "[Generated in ViewController] "; ObjectID = "B1I-fr-6GL"; */
 "B1I-fr-6GL.footerTitle" = "[Generated in ViewController] ";
@@ -66,76 +66,76 @@
 "C0b-Y0-5ht.title" = " ";
 
 /* Class = "UILabel"; text = "The mth word was"; ObjectID = "DJQ-yv-IUX"; */
-"DJQ-yv-IUX.text" = "The mth word was";
+"DJQ-yv-IUX.text" = "Het mde woord was";
 
 /* Class = "UILabel"; text = "Share errors"; ObjectID = "DUe-Ox-U7k"; */
-"DUe-Ox-U7k.text" = "Share errors";
+"DUe-Ox-U7k.text" = "Deel fouten";
 
 /* Class = "UITextView"; text = "Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our Terms of Service and Privacy Policy."; ObjectID = "EPQ-0G-xxG"; */
-"EPQ-0G-xxG.text" = "Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our Terms of Service and Privacy Policy.";
+"EPQ-0G-xxG.text" = "De betaling wordt in rekening gebracht via uw AppleID account als de aankoop is bevestigd. Het abonnement wordt automatisch vernieuwd, tenzij het minstens 24 uur voor het einde van de periode geannuleerd is. De verlenging wordt binnen 24 uur voor het einde van het lopende abonnement in rekening gebracht. Je kunt je abonnementen beheren en annuleren via je AppStore accountinstellingen na de aankoop. Bij de aankoop gaat u akkoord met onze algemene voorwaarden en privacy policy.";
 
 /* Class = "UITableViewSection"; headerTitle = "Accounts details"; ObjectID = "EW1-vD-FXR"; */
 "EW1-vD-FXR.headerTitle" = "Accounts details";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "Ehs-SX-H4s"; */
-"Ehs-SX-H4s.text" = "Title";
+"Ehs-SX-H4s.text" = "Titel";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "Elj-VJ-Plw"; */
-"Elj-VJ-Plw.placeholder" = "Password";
+"Elj-VJ-Plw.placeholder" = "Wachtwoord";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "F11-Gx-yGH"; */
-"F11-Gx-yGH.text" = "Username";
+"F11-Gx-yGH.text" = "Gebruikersnaam";
 
 /* Class = "UITabBarItem"; title = "Devices"; ObjectID = "GWP-vo-zZa"; */
-"GWP-vo-zZa.title" = "Devices";
+"GWP-vo-zZa.title" = "Apparaten";
 
 /* Class = "UIButton"; normalTitle = "Return to settings"; ObjectID = "HVC-by-Hkx"; */
-"HVC-by-Hkx.normalTitle" = "Return to settings";
+"HVC-by-Hkx.normalTitle" = "Terug naar instellingen";
 
 /* Class = "UIButton"; normalTitle = "Delete data"; ObjectID = "HlH-om-nvo"; */
-"HlH-om-nvo.normalTitle" = "Delete data";
+"HlH-om-nvo.normalTitle" = "Verwijder data";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "IOU-TV-zuq"; */
-"IOU-TV-zuq.text" = "Password";
+"IOU-TV-zuq.text" = "Wachtwoord";
 
 /* Class = "UILabel"; text = "Great! Now store your paper backup in a safe place"; ObjectID = "J5j-4b-hvw"; */
-"J5j-4b-hvw.text" = "Great! Now store your paper backup in a safe place";
+"J5j-4b-hvw.text" = "Top! Bewaar de paper backup nu op een veilige plek";
 
 /* Class = "UILabel"; text = "De Correspondent"; ObjectID = "Jnq-cd-K12"; */
 "Jnq-cd-K12.text" = "De Correspondent";
 
 /* Class = "UILabel"; text = "Keyn keeps your passwords in a safe and only your phone has the key."; ObjectID = "KGm-lF-7dp"; */
-"KGm-lF-7dp.text" = "Keyn keeps your passwords in a safe and only your phone has the key.";
+"KGm-lF-7dp.text" = "Keyn bewaart je wachtwoorden in een kluis en alleen je telefoon heeft de sleutel.";
 
 /* Class = "UILabel"; text = "Go to a website on your computer and login as you’d normally do."; ObjectID = "KUt-Vv-asn"; */
-"KUt-Vv-asn.text" = "Go to a website on your computer and login as you’d normally do.";
+"KUt-Vv-asn.text" = "Ga naar een website op je computer en log in zoals je normaal zou doen.";
 
 /* Class = "UILabel"; text = "2FA code"; ObjectID = "LRg-fa-pXv"; */
 "LRg-fa-pXv.text" = "2FA code";
 
 /* Class = "UIButton"; normalTitle = "Report"; ObjectID = "LaZ-O8-9Mf"; */
-"LaZ-O8-9Mf.normalTitle" = "Report";
+"LaZ-O8-9Mf.normalTitle" = "Rapporteer";
 
 /* Class = "UILabel"; text = "Enabled"; ObjectID = "M5k-PA-hbt"; */
-"M5k-PA-hbt.text" = "Enabled";
+"M5k-PA-hbt.text" = "Ingeschakeld";
 
-/* Class = "UILabel"; text = "But you can only use Keyn to log in to other devices if  you enable push notifications.\n\nYou can allow Keyn to send notifications via Settings > Keyn > Notifications.  Choose 'Allow Notifications' under 'Notifications'."; ObjectID = "M6E-B5-ZLy"; */
-"M6E-B5-ZLy.text" = "But you can only use Keyn to log in to other devices if  you enable push notifications.\n\nYou can allow Keyn to send notifications via Settings > Keyn > Notifications.  Choose 'Allow Notifications' under 'Notifications'.";
+/* Class = "UILabel"; text = "But you can only use Keyn to log in to other devices if you enable push notifications.\n\nYou can allow Keyn to send notifications via Settings > Keyn > Notifications.\n\nChoose 'Allow Notifications' under 'Notifications'."; ObjectID = "M6E-B5-ZLy"; */
+"M6E-B5-ZLy.text" = "Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.\n\nJe kunt Keyn toestaan berichten te versturen via Instellingen > Keyn > Berichtgeving.\n\nKies 'Sta berichtgeving toe' onder 'Berichtgeving'.";
 
 /* Class = "UITableViewSection"; footerTitle = "The secret that was shared by the website."; ObjectID = "NAo-Uf-bOY"; */
-"NAo-Uf-bOY.footerTitle" = "The secret that was shared by the website.";
+"NAo-Uf-bOY.footerTitle" = "Het geheim dat gedeeld is door de website.";
 
 /* Class = "UITableViewSection"; headerTitle = "secret"; ObjectID = "NAo-Uf-bOY"; */
-"NAo-Uf-bOY.headerTitle" = "secret";
+"NAo-Uf-bOY.headerTitle" = "geheim";
 
 /* Class = "UIButton"; normalTitle = "Reset Keyn"; ObjectID = "OJr-NU-A8G"; */
 "OJr-NU-A8G.normalTitle" = "Reset Keyn";
 
 /* Class = "UILabel"; text = "We don't want to push you..."; ObjectID = "OPH-6s-Zfx"; */
-"OPH-6s-Zfx.text" = "We don't want to push you...";
+"OPH-6s-Zfx.text" = "We willen je niet dwingen...";
 
 /* Class = "UIButton"; normalTitle = "Open settings"; ObjectID = "Ogi-NG-Nkr"; */
-"Ogi-NG-Nkr.normalTitle" = "Open settings";
+"Ogi-NG-Nkr.normalTitle" = "Open instellingen";
 
 /* Class = "UILabel"; text = "FAQ"; ObjectID = "PJe-j6-5cN"; */
 "PJe-j6-5cN.text" = "FAQ";
@@ -150,22 +150,22 @@
 "S1T-p0-33d.normalTitle" = "Upgrade";
 
 /* Class = "UIButton"; normalTitle = "Complete"; ObjectID = "S7v-Uf-nZb"; */
-"S7v-Uf-nZb.normalTitle" = "Complete";
+"S7v-Uf-nZb.normalTitle" = "Voltooi";
 
 /* Class = "UILabel"; text = "word"; ObjectID = "SfX-9C-xGX"; */
-"SfX-9C-xGX.text" = "word";
+"SfX-9C-xGX.text" = "woord";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "T7j-P5-3gY"; */
-"T7j-P5-3gY.text" = "Title";
+"T7j-P5-3gY.text" = "Titel";
 
 /* Class = "UILabel"; text = "Please write down"; ObjectID = "UL6-5n-J9N"; */
-"UL6-5n-J9N.text" = "Please write down";
+"UL6-5n-J9N.text" = "Schrijf op a.u.b.";
 
 /* Class = "UIButton"; normalTitle = "2"; ObjectID = "URn-UY-1ll"; */
 "URn-UY-1ll.normalTitle" = "2";
 
 /* Class = "UILabel"; text = "Scan the QR code to add the 2FA code for"; ObjectID = "VIp-Rp-5pm"; */
-"VIp-Rp-5pm.text" = "Scan the QR code to add the 2FA code for";
+"VIp-Rp-5pm.text" = "Scan de QR code om een 2FA code toe te voegen voor";
 
 /* Class = "UITableViewSection"; footerTitle = "[Generated in ViewController] "; ObjectID = "Vgj-5z-uCg"; */
 "Vgj-5z-uCg.footerTitle" = "[Generated in ViewController] ";
@@ -174,7 +174,7 @@
 "Vgj-5z-uCg.headerTitle" = "Privacy";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "YDS-HQ-wvZ"; */
-"YDS-HQ-wvZ.text" = "Name";
+"YDS-HQ-wvZ.text" = "Naam";
 
 /* Class = "UITableViewSection"; footerTitle = " "; ObjectID = "Yaa-8Q-3K0"; */
 "Yaa-8Q-3K0.footerTitle" = " ";
@@ -183,13 +183,13 @@
 "Yaa-8Q-3K0.headerTitle" = "Accounts details";
 
 /* Class = "UILabel"; text = "Share analytical data"; ObjectID = "ZR0-YE-KrK"; */
-"ZR0-YE-KrK.text" = "Share analytical data";
+"ZR0-YE-KrK.text" = "Deel analytische data";
 
 /* Class = "UIButton"; normalTitle = "Start backing up"; ObjectID = "a4L-dd-zPx"; */
-"a4L-dd-zPx.normalTitle" = "Start backing up";
+"a4L-dd-zPx.normalTitle" = "Begin backup";
 
 /* Class = "UILabel"; text = "Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place."; ObjectID = "acF-tx-ze9"; */
-"acF-tx-ze9.text" = "Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.";
+"acF-tx-ze9.text" = "Woorden zijn eenvoudig op te schrijven, maar één zou niet veilig zijn, dus geven we je er 12. Schrijf ze op en bewaar ze op een veilige plek.";
 
 /* Class = "UITabBarItem"; title = "Accounts"; ObjectID = "acW-dT-cKf"; */
 "acW-dT-cKf.title" = "Accounts";
@@ -198,37 +198,37 @@
 "afT-jz-a0z.text" = "Paper backup";
 
 /* Class = "UINavigationController"; title = "Settings"; ObjectID = "b4Q-ze-Q2f"; */
-"b4Q-ze-Q2f.title" = "Settings";
+"b4Q-ze-Q2f.title" = "Instellingen";
 
 /* Class = "UILabel"; text = "Privacy policy"; ObjectID = "bdf-hm-sxY"; */
 "bdf-hm-sxY.text" = "Privacy policy";
 
 /* Class = "UILabel"; text = "There was a problem"; ObjectID = "c2r-bc-5ef"; */
-"c2r-bc-5ef.text" = "There was a problem";
+"c2r-bc-5ef.text" = "Er was een probleem";
 
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "c9B-ZA-BTt"; */
-"c9B-ZA-BTt.placeholder" = "Username";
+"c9B-ZA-BTt.placeholder" = "Gebruikersnaam";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "cGP-H2-6bc"; */
 "cGP-H2-6bc.title" = " ";
 
 /* Class = "UILabel"; text = "You save 17%"; ObjectID = "ckE-BD-7xJ"; */
-"ckE-BD-7xJ.text" = "You save 17%";
+"ckE-BD-7xJ.text" = "Je bespaart 17%";
 
 /* Class = "UIButton"; normalTitle = "Previous"; ObjectID = "dD1-yq-ZbA"; */
-"dD1-yq-ZbA.normalTitle" = "Previous";
+"dD1-yq-ZbA.normalTitle" = "Vorige";
 
 /* Class = "UILabel"; text = "The nth word was"; ObjectID = "dDM-k6-RaV"; */
-"dDM-k6-RaV.text" = "The nth word was";
+"dDM-k6-RaV.text" = "Het nde woord was";
 
 /* Class = "UILabel"; text = "My accounts"; ObjectID = "dUK-ag-3dM"; */
-"dUK-ag-3dM.text" = "My accounts";
+"dUK-ag-3dM.text" = "Mijn accounts";
 
 /* Class = "UILabel"; text = "URL"; ObjectID = "fZx-ed-gtB"; */
 "fZx-ed-gtB.text" = "URL";
 
 /* Class = "UILabel"; text = "Keyn will automatically ask you to save the password. This will securely send the password to this phone. "; ObjectID = "fil-0g-fNO"; */
-"fil-0g-fNO.text" = "Keyn will automatically ask you to save the password. This will securely send the password to this phone. ";
+"fil-0g-fNO.text" = "Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd. ";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "gKl-BS-uBy"; */
 "gKl-BS-uBy.title" = " ";
@@ -243,13 +243,13 @@
 "iDi-4h-0Ke.text" = "Feedback";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "iIZ-Cv-P1z"; */
-"iIZ-Cv-P1z.text" = "Username";
+"iIZ-Cv-P1z.text" = "Gebruikersnaam";
 
 /* Class = "UILabel"; text = "Time-based"; ObjectID = "iJo-1D-PPV"; */
-"iJo-1D-PPV.text" = "Time-based";
+"iJo-1D-PPV.text" = "Tijdgebaseerd";
 
 /* Class = "UILabel"; text = "An unknown problem occured."; ObjectID = "iNK-us-ipI"; */
-"iNK-us-ipI.text" = "An unknown problem occured.";
+"iNK-us-ipI.text" = "Een onbekend probleem is opgetreden.";
 
 /* Class = "UIButton"; normalTitle = "Desktop"; ObjectID = "iO9-4U-ex7"; */
 "iO9-4U-ex7.normalTitle" = "Desktop";
@@ -261,70 +261,70 @@
 "ipm-Bl-jUP.headerTitle" = "Premium";
 
 /* Class = "UILabel"; text = "Terms of use"; ObjectID = "jn8-ZS-6UP"; */
-"jn8-ZS-6UP.text" = "Terms of use";
+"jn8-ZS-6UP.text" = "Algemene voorwaarden";
 
 /* Class = "UIButton"; normalTitle = "Next"; ObjectID = "k7r-ay-cil"; */
-"k7r-ay-cil.normalTitle" = "Next";
+"k7r-ay-cil.normalTitle" = "Volgende";
 
 /* Class = "UILabel"; text = "My paired devices"; ObjectID = "kAk-h2-8eD"; */
-"kAk-h2-8eD.text" = "My paired devices";
+"kAk-h2-8eD.text" = "Mijn gekoppelde apparaten";
 
 /* Class = "UILabel"; text = "News from Keyn"; ObjectID = "kz6-5t-xp6"; */
-"kz6-5t-xp6.text" = "News from Keyn";
+"kz6-5t-xp6.text" = "Nieuws van Keyn";
 
 /* Class = "UITableViewSection"; footerTitle = "Codes can either be time-based or counter-based."; ObjectID = "lQp-GJ-vE5"; */
-"lQp-GJ-vE5.footerTitle" = "Codes can either be time-based or counter-based.";
+"lQp-GJ-vE5.footerTitle" = "Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn";
 
 /* Class = "UITableViewSection"; headerTitle = "mode"; ObjectID = "lQp-GJ-vE5"; */
-"lQp-GJ-vE5.headerTitle" = "mode";
+"lQp-GJ-vE5.headerTitle" = "type";
 
 /* Class = "UIButton"; normalTitle = "Purchase"; ObjectID = "myJ-iX-jre"; */
-"myJ-iX-jre.normalTitle" = "Purchase";
+"myJ-iX-jre.normalTitle" = "Aankoop";
 
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "n3L-Py-LkS"; */
-"n3L-Py-LkS.placeholder" = "Username";
+"n3L-Py-LkS.placeholder" = "Gebruikersnaam";
 
 /* Class = "UITableViewController"; title = "Add Account"; ObjectID = "ndI-SS-mi6"; */
-"ndI-SS-mi6.title" = "Add Account";
+"ndI-SS-mi6.title" = "Voeg account toe";
 
 /* Class = "UILabel"; text = "Choose your plan"; ObjectID = "oA8-RV-Oue"; */
-"oA8-RV-Oue.text" = "Choose your plan";
+"oA8-RV-Oue.text" = "Kies je type abonnement";
 
 /* Class = "UILabel"; text = "One final check"; ObjectID = "pCi-lF-JyN"; */
-"pCi-lF-JyN.text" = "One final check";
+"pCi-lF-JyN.text" = "Eén laatste check";
 
 /* Class = "UITableViewSection"; footerTitle = "The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor."; ObjectID = "pkM-Zd-Upy"; */
-"pkM-Zd-Upy.footerTitle" = "The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor.";
+"pkM-Zd-Upy.footerTitle" = "De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor. ";
 
 /* Class = "UITableViewSection"; headerTitle = "User details"; ObjectID = "pkM-Zd-Upy"; */
-"pkM-Zd-Upy.headerTitle" = "User details";
+"pkM-Zd-Upy.headerTitle" = "Details gebruiker";
 
 /* Class = "UITextField"; placeholder = "URL"; ObjectID = "quk-fZ-e0s"; */
 "quk-fZ-e0s.placeholder" = "URL";
 
 /* Class = "UIButton"; normalTitle = "How to add an account"; ObjectID = "szR-bg-VMn"; */
-"szR-bg-VMn.normalTitle" = "How to add an account";
+"szR-bg-VMn.normalTitle" = "Het toevoegen van een account";
 
 /* Class = "UITextField"; placeholder = "secret"; ObjectID = "tC1-Hz-I18"; */
-"tC1-Hz-I18.placeholder" = "secret";
+"tC1-Hz-I18.placeholder" = "geheim";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "tYa-Za-W2z"; */
 "tYa-Za-W2z.title" = " ";
 
 /* Class = "UILabel"; text = "Timestamp"; ObjectID = "tmI-5F-s8M"; */
-"tmI-5F-s8M.text" = "Timestamp";
+"tmI-5F-s8M.text" = "Tijdstempel";
 
 /* Class = "UILabel"; text = "Password"; ObjectID = "tzL-n9-IOh"; */
-"tzL-n9-IOh.text" = "Password";
+"tzL-n9-IOh.text" = "Wachtwoord";
 
 /* Class = "UITabBarItem"; title = "Settings"; ObjectID = "u7q-tf-p2Q"; */
-"u7q-tf-p2Q.title" = "Settings";
+"u7q-tf-p2Q.title" = "Instellingen";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "uGT-fo-1hO"; */
-"uGT-fo-1hO.text" = "Name";
+"uGT-fo-1hO.text" = "Naam";
 
 /* Class = "UILabel"; text = "So if your phone gets lost or stolen, you need a backup, something that's not on your phone."; ObjectID = "vVP-N1-u9d"; */
-"vVP-N1-u9d.text" = "So if your phone gets lost or stolen, you need a backup, something that's not on your phone.";
+"vVP-N1-u9d.text" = "Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig, iets dat niet op je telefoon staat.";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "vlb-4c-iBb"; */
 "vlb-4c-iBb.title" = " ";
@@ -336,22 +336,22 @@
 "w1v-8M-rha.title" = " ";
 
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "wzY-zr-e19"; */
-"wzY-zr-e19.normalTitle" = "Button";
+"wzY-zr-e19.normalTitle" = "Knop";
 
 /* Class = "UITextField"; placeholder = "Name"; ObjectID = "xRz-I8-dK4"; */
-"xRz-I8-dK4.placeholder" = "Name";
+"xRz-I8-dK4.placeholder" = "Naam";
 
 /* Class = "UILabel"; text = "About"; ObjectID = "xw5-vm-6DL"; */
-"xw5-vm-6DL.text" = "About";
+"xw5-vm-6DL.text" = "Over";
 
 /* Class = "UILabel"; text = "Keyn Premium"; ObjectID = "yKQ-lq-4Q8"; */
 "yKQ-lq-4Q8.text" = "Keyn Premium";
 
 /* Class = "UILabel"; text = "Pairing"; ObjectID = "yqO-8h-OgS"; */
-"yqO-8h-OgS.text" = "Pairing";
+"yqO-8h-OgS.text" = "Koppelen";
 
 /* Class = "UITableViewSection"; footerTitle = "[Generated in ViewController] "; ObjectID = "zsO-ju-Qwo"; */
 "zsO-ju-Qwo.footerTitle" = "[Generated in ViewController] ";
 
 /* Class = "UITableViewSection"; headerTitle = "General"; ObjectID = "zsO-ju-Qwo"; */
-"zsO-ju-Qwo.headerTitle" = "General";
+"zsO-ju-Qwo.headerTitle" = "Algemeen";

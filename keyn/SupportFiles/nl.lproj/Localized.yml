@@ -172,7 +172,7 @@ accounts:
   mode_description:
     value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
   2fa_description:
-    value: De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord (OTP) toe te voegen als tweede authenticatiefactor. 
+    value: De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor. 
   sites_header:
     value: Websites
 devices:
@@ -347,10 +347,10 @@ requests:
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
-    value: Indien ingeschakeld, verandert Keyn het wachtwoord automatisch in een zeer veilig wachtwoord
+    value: Indien ingeschakeld, wijzigt Keyn het wachtwoord automatisch in een zeer veilig wachtwoord
   change_password_impossible:
     comment: Description if changing a password is not possible
-    value: Het is niet mogelijk het wachtwoord voor deze website te veranderen.
+    value: Het is niet mogelijk het wachtwoord voor deze website te wijzigen.
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: Dit wachtwoord is gevonden in
