@@ -291,7 +291,7 @@ requests:
     comment: Unlock Keyn
   'on':
     value: 'on'
-    comment: The word for on
+    comment: The word for on, e.g. Pair with browser on OS?
   pair_with:
     value: Pair with
   unknown_request:
@@ -371,8 +371,6 @@ initialization:
     third:
       value: Return to the login fields and paste your password.
 storekit:
-  cannotMakePayments:
-    value: You are not authorized to make payments. In-App Purchases may be restricted on your device.
   couldNotFind:
     value: Could not find resource file
   error:
@@ -383,55 +381,17 @@ storekit:
     value: Deliver content for
   failed:
     value: failed
-  installing:
-    value: In-App Purchases may be restricted on your device
-  invalidIndexPath:
-    value: Invalid selected index path
   noRestorablePurchases:
     value: There are no restorable purchases.
-  noPurchasesAvailable:
-    value: No purchases available
-  notAuthorized:
-    value: You are not authorized to make payments
-  okButton:
-    value: OK
-  previouslyBought:
-    value: Only previously bought non-consumable products and auto-renewable subscriptions can be restored
-  productRequestStatus:
-    value: Product Request Status
   purchaseOf:
     value: Purchase of
-  purchaseStatus:
-    value: Purchase Status
   removed:
     value: was removed from the payment queue
   restorable:
     value: All restorable transactions have been processed by the payment queue
-  restoreContent:
-    value: Restore content for
   status:
     value: Status
   unknownDefault:
     value: Unknown payment transaction case
-  unknownDestinationViewController:
-    value: Unknown destination view controller
-  unknownDetail:
-    value: Unknown detail row
-  unknownPurchase:
-    value: No selected purchase
-  unknownSelectedSegmentIndex:
-    value: "Unknown selected segment index:" 
-  unknownSelectedViewController:
-    value: Unknown selected view controller
-  unknownTabBarIndex:
-    value: Unknown tab bar index
-  unknownToolbarItem:
-    value: "Unknown selected toolbar item:"
   updateResource:
     value: Update it with your product identifiers to retrieve product information
-  useStoreRestore:
-    value: Use Store > Restore to restore your previously bought non-consumable products and auto-renewable subscriptions
-  viewControllerDoesNotExist:
-    value: The main content view controller does not exist
-  windowDoesNotExist:
-    value: The window does not exist
