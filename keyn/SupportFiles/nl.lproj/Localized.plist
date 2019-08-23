@@ -7,49 +7,92 @@
 		<key>2fa_description</key>
 		<dict>
 			<key>value</key>
-			<string>The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor.</string>
+			<string>De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor.</string>
 		</dict>
 		<key>add_2fa_code</key>
 		<dict>
 			<key>value</key>
-			<string>Add 2FA-code to</string>
+			<string>Voeg 2FA-code toe</string>
+		</dict>
+		<key>add_an_account</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg een account toe</string>
+		</dict>
+		<key>add_instructions</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Ga naar een website op je computer en log in zoals je normaal zou doen.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.</string>
+			</dict>
+		</dict>
+		<key>adding_account</key>
+		<dict>
+			<key>value</key>
+			<string>Een account toevoegen</string>
+		</dict>
+		<key>alternative_add</key>
+		<dict>
+			<key>value</key>
+			<string>Je kunt ook handmatig een account toevoegen</string>
 		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
 			<string>Show the user that a value has been copied</string>
 			<key>value</key>
-			<string>Copied</string>
+			<string>Gekopieerd</string>
+		</dict>
+		<key>didnt_save</key>
+		<dict>
+			<key>value</key>
+			<string>Je hebt nog geen accounts opgeslagen</string>
 		</dict>
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save more.</string>
+			<string>Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan.</string>
 		</dict>
 		<key>footer_account_enabled</key>
 		<dict>
 			<key>value</key>
-			<string>You can enable 8 accounts to use with your computer. Upgrade to Keyn Premium to log in with more.</string>
+			<string>Je kunt slechts 8 accounts gebruiken met je computer. Upgrade naar Keyn Premium om met alle accounts in te loggen.</string>
 		</dict>
 		<key>footer_account_overflow</key>
 		<dict>
 			<key>value</key>
-			<string>Only 8 accounts can be used to log in to your computer. Upgrade to Keyn Premium to log in with more.</string>
+			<string>Je kunt slechts 8 accounts gebruiken om in te loggen met je computer. Upgrade naar Keyn Premium om met alle accounts in te loggen.</string>
 		</dict>
 		<key>footer_unlimited</key>
 		<dict>
 			<key>value</key>
-			<string>You can save as many accounts as you want.</string>
+			<string>Je kunt zoveel accounts opslaan als je wilt.</string>
+		</dict>
+		<key>how_to_add</key>
+		<dict>
+			<key>value</key>
+			<string>Een account toevoegen</string>
 		</dict>
 		<key>mode</key>
 		<dict>
 			<key>value</key>
-			<string>Mode</string>
+			<string>Type</string>
 		</dict>
 		<key>mode_description</key>
 		<dict>
 			<key>value</key>
-			<string>Codes can either be time-based or counter-based</string>
+			<string>Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -61,12 +104,12 @@
 		<key>secret</key>
 		<dict>
 			<key>value</key>
-			<string>Secret</string>
+			<string>Geheim</string>
 		</dict>
 		<key>secret_description</key>
 		<dict>
 			<key>value</key>
-			<string>The secret that was shared by the website</string>
+			<string>Het geheim dat gedeeld is door de website</string>
 		</dict>
 		<key>sites_header</key>
 		<dict>
@@ -78,22 +121,22 @@
 			<key>comment</key>
 			<string>Instruct the user to scan a 2FA-code</string>
 			<key>value</key>
-			<string>Scan the QR-code to add the 2FA-code for</string>
+			<string>Scan de QR-code om een 2FA-code toe te voegen voor</string>
 		</dict>
 		<key>update_2fa_code</key>
 		<dict>
 			<key>value</key>
-			<string>Update 2FA-code for</string>
+			<string>Update 2FA-code voor</string>
 		</dict>
 		<key>url_warning</key>
 		<dict>
 			<key>value</key>
-			<string>⚠️ Keyn doesn't work if the URL is incorrect.</string>
+			<string>⚠️ Keyn werkt niet als de URL incorrect is.</string>
 		</dict>
 		<key>user_details</key>
 		<dict>
 			<key>value</key>
-			<string>User details</string>
+			<string>Gebruiker details</string>
 		</dict>
 		<key>website_details</key>
 		<dict>
@@ -103,12 +146,59 @@
 	</dict>
 	<key>backup</key>
 	<dict>
+		<key>check_text</key>
+		<dict>
+			<key>value</key>
+			<string>Vul alsjeblieft de volgende woorden in om te checken of alles goed is opgeschreven</string>
+		</dict>
+		<key>complete</key>
+		<dict>
+			<key>value</key>
+			<string>Klaar</string>
+		</dict>
+		<key>great</key>
+		<dict>
+			<key>value</key>
+			<string>Top! Bewaar de paper backup nu op een veilige plek</string>
+		</dict>
+		<key>if_stolen</key>
+		<dict>
+			<key>value</key>
+			<string>Als je telefoon wordt gestolen of als je hem kwijtraakt, kun je al je accounts herstellen door deze twaalf woorden in te voeren.</string>
+		</dict>
+		<key>next</key>
+		<dict>
+			<key>value</key>
+			<string>Volgende</string>
+		</dict>
+		<key>previous</key>
+		<dict>
+			<key>value</key>
+			<string>Vorige</string>
+		</dict>
+		<key>return_to_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Terug naar instellingen</string>
+		</dict>
+		<key>start_backup</key>
+		<dict>
+			<key>value</key>
+			<string>Begin backup</string>
+		</dict>
+		<key>what_if</key>
+		<dict>
+			<key>start</key>
+			<integer>23</integer>
+			<key>value</key>
+			<string>Wat als je je telefoon kwijtraakt?</string>
+		</dict>
 		<key>word</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for word</string>
 			<key>value</key>
-			<string>word</string>
+			<string>woord</string>
 		</dict>
 	</dict>
 	<key>devices</key>
@@ -118,14 +208,59 @@
 			<key>comment</key>
 			<string>Section title for devices</string>
 			<key>value</key>
-			<string>devices</string>
+			<string>Apparaten</string>
+		</dict>
+		<key>pair_with_device</key>
+		<dict>
+			<key>value</key>
+			<string>Koppel met je computer</string>
+		</dict>
+		<key>pairing_explanation</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>end</key>
+				<integer>19</integer>
+				<key>start</key>
+				<integer>8</integer>
+				<key>value</key>
+				<string>Ga naar keyn.app/go op je computer</string>
+			</dict>
+			<key>fourth</key>
+			<dict>
+				<key>value</key>
+				<string>Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>end</key>
+				<integer>99</integer>
+				<key>start</key>
+				<integer>88</integer>
+				<key>value</key>
+				<string>Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op your computer.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Scan QR code</string>
+			</dict>
 		</dict>
 		<key>pairing_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
 			<key>value</key>
-			<string>Open the Keyn browser extension to display QR-code.</string>
+			<string>Open Keyn's browserextensie om de QR-code weer te geven.</string>
+		</dict>
+		<key>pairing_instruction_two</key>
+		<dict>
+			<key>end</key>
+			<integer>127</integer>
+			<key>start</key>
+			<integer>116</integer>
+			<key>value</key>
+			<string>Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -140,79 +275,79 @@
 		<key>add_otp</key>
 		<dict>
 			<key>value</key>
-			<string>Error adding OTP token</string>
+			<string>Fout bij toevoegen OTP token</string>
 		</dict>
 		<key>api_error</key>
 		<dict>
 			<key>comment</key>
 			<string>An error thrown by the API</string>
 			<key>value</key>
-			<string>A network error occured</string>
+			<string>Er is een netwerkfout opgetreden</string>
 		</dict>
 		<key>authentication_error</key>
 		<dict>
 			<key>comment</key>
 			<string>Error in the authentication process to the phone, e.g. TouchID</string>
 			<key>value</key>
-			<string>Authentication error</string>
+			<string>Authenticatiefout</string>
 		</dict>
 		<key>camera_denied</key>
 		<dict>
 			<key>value</key>
-			<string>You can only pair with a computer when camera is enabled. You can do this in Settings.</string>
+			<string>Je kunt alleen koppelen met een computer als de camera is ingeschakeld. Dit kun je doen via Instellingen.</string>
 		</dict>
 		<key>corrupted_data</key>
 		<dict>
 			<key>value</key>
-			<string>Unreadable data error</string>
+			<string>Onleesbare data fout</string>
 		</dict>
 		<key>delete_url</key>
 		<dict>
 			<key>comment</key>
 			<string>Error deleting url</string>
 			<key>value</key>
-			<string>Error deleting URL</string>
+			<string>Fout bij verwijderen URL</string>
 		</dict>
 		<key>deleting</key>
 		<dict>
 			<key>value</key>
-			<string>Error deleting backup data</string>
+			<string>Fout bij verwijderen backup data</string>
 		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
 			<string>A generic error description</string>
 			<key>value</key>
-			<string>An error occured.</string>
+			<string>Er is een fout opgetreden.</string>
 		</dict>
 		<key>generic_problem</key>
 		<dict>
 			<key>comment</key>
 			<string>A generic problem description</string>
 			<key>value</key>
-			<string>There was a problem</string>
+			<string>Er was een probleem</string>
 		</dict>
 		<key>local_authentication</key>
 		<dict>
 			<key>biometry_not_available</key>
 			<dict>
 				<key>value</key>
-				<string>Authentication could not start, because biometry is not available on the device.</string>
+				<string>Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de telefoon.</string>
 			</dict>
 			<key>biometry_not_enrolled</key>
 			<dict>
 				<key>value</key>
-				<string>Authentication could not start, because biometry has no enrolled identities.</string>
+				<string>Authenticatie kan niet gestart worden, omdat biometrie niet is ingesteld op de telefoon.</string>
 			</dict>
 			<key>generic</key>
 			<dict>
 				<key>value</key>
-				<string>An authentication error occurred.</string>
+				<string>Er is een authenticatiefout opgetreden.</string>
 			</dict>
 			<key>passcode_not_set</key>
 			<dict>
 				<key>value</key>
-				<string>Authentication could not start, because passcode is not set on the device.</string>
+				<string>Authenticatie kan niet gestart worden, omdat de toegangscode niet is ingesteld op de telefoon.</string>
 			</dict>
 		</dict>
 		<key>no_camera</key>
@@ -220,28 +355,28 @@
 			<key>comment</key>
 			<string>The camera is not available</string>
 			<key>value</key>
-			<string>Camera not available</string>
+			<string>Camera niet beschikbaar</string>
 		</dict>
 		<key>no_push_notifications</key>
 		<dict>
 			<key>comment</key>
 			<string>Error when push notifications are not available</string>
 			<key>value</key>
-			<string>Unfortunately, Keyn doesn't work without push notifications :(
+			<string>Helaas werkt Keyn niet zonder pushberichten :(
 
-Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt; Keyn &gt; Berichtgeving.</string>
 		</dict>
 		<key>otp_fetch</key>
 		<dict>
 			<key>comment</key>
 			<string>Error retrieving the OTP-code</string>
 			<key>value</key>
-			<string>Error retrieving the OTP-code</string>
+			<string>Fout bij ophalen OTP-code</string>
 		</dict>
 		<key>password_error</key>
 		<dict>
 			<key>comment</key>
-			<string>Error fetching password</string>
+			<string>Fout bij ophalen wachtwoord</string>
 			<key>value</key>
 			<string>Error fetching password</string>
 		</dict>
@@ -250,99 +385,167 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Error when push notifications are not available</string>
 			<key>value</key>
-			<string>There was an error registering for push notifications.</string>
+			<string>Er is een fout opgetreden bij het registreren van pushberichten.</string>
 		</dict>
 		<key>qr_scanned_twice</key>
 		<dict>
 			<key>comment</key>
 			<string>This QR-code was already scanned.</string>
 			<key>value</key>
-			<string>This QR-code was already scanned.</string>
+			<string>Deze QR-code is al gescand.</string>
 		</dict>
 		<key>save_account</key>
 		<dict>
 			<key>comment</key>
 			<string>Error saving account</string>
 			<key>value</key>
-			<string>Error saving account</string>
+			<string>Fout bij opslaan account</string>
 		</dict>
 		<key>seed_creation</key>
 		<dict>
 			<key>comment</key>
 			<string>This may occur during the initialisation process</string>
 			<key>value</key>
-			<string>Error generating seed</string>
+			<string>Fout bij genereren seed</string>
 		</dict>
 		<key>seed_exists</key>
 		<dict>
 			<key>value</key>
-			<string>Keyn already initialized</string>
+			<string>Keyn is al geïnitialiseerd</string>
 		</dict>
 		<key>seed_restore</key>
 		<dict>
 			<key>value</key>
-			<string>Error restoring backup</string>
+			<string>Fout bij herstellen backup</string>
 		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
 			<key>comment</key>
 			<string>There was no endpoint found</string>
 			<key>value</key>
-			<string>There is no AWS endpoint in the session data.</string>
+			<string>Er is geen AWS endpoint in de sessiegegevens.</string>
 		</dict>
 		<key>session_invalid</key>
 		<dict>
 			<key>value</key>
-			<string>This QR-code is invalid</string>
+			<string>Deze QR-code is ongeldig</string>
 		</dict>
 		<key>subscribing</key>
 		<dict>
 			<key>value</key>
-			<string>Error subscribing to info notifications</string>
+			<string>Fout bij aanzetten infoberichten</string>
 		</dict>
 		<key>token_creation</key>
 		<dict>
 			<key>value</key>
-			<string>Error creating OTP token</string>
+			<string>Fout bij aanmaken OTP token</string>
 		</dict>
 		<key>undecodable_qr</key>
 		<dict>
 			<key>comment</key>
 			<string>The QR-code could not be decoded.</string>
 			<key>value</key>
-			<string>This QR-code could not be decoded.</string>
+			<string>Deze QR-code kon niet ontcijferd worden.</string>
 		</dict>
 		<key>unsubscribing</key>
 		<dict>
 			<key>value</key>
-			<string>Error unsubscribing to info notifications</string>
+			<string>Fout bij uitzetten infoberichten</string>
 		</dict>
 	</dict>
 	<key>initialization</key>
 	<dict>
+		<key>agree</key>
+		<dict>
+			<key>value</key>
+			<string>Akkoord</string>
+		</dict>
+		<key>byebye</key>
+		<dict>
+			<key>start</key>
+			<integer>17</integer>
+			<key>value</key>
+			<string>Dag wachtwoorden, hallo Keyn</string>
+		</dict>
+		<key>change</key>
+		<dict>
+			<key>value</key>
+			<string>Je kan dit altijd later veranderingen in de instellingen.</string>
+		</dict>
+		<key>desktop_instruction</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vraagt in je browser of je wil inloggen.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vult je inloggegevens in de juiste velden.</string>
+			</dict>
+		</dict>
+		<key>enter_words</key>
+		<dict>
+			<key>value</key>
+			<string>Voer de 12 woorden van je paper backup in</string>
+		</dict>
+		<key>get_started</key>
+		<dict>
+			<key>value</key>
+			<string>Beginnen</string>
+		</dict>
+		<key>help_improve</key>
+		<dict>
+			<key>end</key>
+			<integer>13</integer>
+			<key>start</key>
+			<integer>9</integer>
+			<key>value</key>
+			<string>Help ons Keyn te verbeteren</string>
+		</dict>
+		<key>how_keyn_works</key>
+		<dict>
+			<key>end</key>
+			<integer>8</integer>
+			<key>start</key>
+			<integer>4</integer>
+			<key>value</key>
+			<string>Hoe Keyn werkt op</string>
+		</dict>
 		<key>initialize_keyn</key>
 		<dict>
 			<key>comment</key>
 			<string>This is provided as a reason for authenticating the first time.</string>
 			<key>value</key>
-			<string>Initialize encrypted storage</string>
+			<string>Initialiseer versleutelde opslag</string>
+		</dict>
+		<key>learn_more</key>
+		<dict>
+			<key>value</key>
+			<string>Meer info</string>
 		</dict>
 		<key>mobile_instruction_&lt;iOS12</key>
 		<dict>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>To login on your phone, open Keyn.</string>
+				<string>Open Keyn om in te loggen op je telefoon.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Copy your password by simply tapping it.</string>
+				<string>Kopieer je wachtwoord door er eenvoudig op te tikken.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Return to the login fields and paste your password.</string>
+				<string>Keer terug naar de website en plak je wachtwoord.</string>
 			</dict>
 		</dict>
 		<key>mobile_instruction_iOS12</key>
@@ -350,18 +553,77 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.</string>
+				<string>Om Keyn op je telefoon te gebruiken, moet je iOS laten weten dat Keyn je wachtwoorden beheert.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>When you want to login, iOS will automatically ask Keyn for your password.</string>
+				<string>Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>You can login by authorizing the request.</string>
+				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
 			</dict>
+		</dict>
+		<key>one_minute_away</key>
+		<dict>
+			<key>end</key>
+			<integer>16</integer>
+			<key>start</key>
+			<integer>8</integer>
+			<key>value</key>
+			<string>Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden</string>
+		</dict>
+		<key>scan_qr</key>
+		<dict>
+			<key>value</key>
+			<string>Scan QR code</string>
+		</dict>
+		<key>setup_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>Verder</string>
+		</dict>
+		<key>start_using_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>Start met Keyn</string>
+		</dict>
+		<key>try_later</key>
+		<dict>
+			<key>value</key>
+			<string>Later</string>
+		</dict>
+		<key>welcome_text</key>
+		<dict>
+			<key>value</key>
+			<string>Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger</string>
+		</dict>
+		<key>working</key>
+		<dict>
+			<key>value</key>
+			<string>We werken constant om Keyn te verbeteren. Het deling van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+
+Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</string>
+		</dict>
+	</dict>
+	<key>numbers</key>
+	<dict>
+		<key>one</key>
+		<dict>
+			<key>value</key>
+			<string>1</string>
+		</dict>
+		<key>three</key>
+		<dict>
+			<key>value</key>
+			<string>3</string>
+		</dict>
+		<key>two</key>
+		<dict>
+			<key>value</key>
+			<string>2</string>
 		</dict>
 	</dict>
 	<key>popups</key>
@@ -371,59 +633,59 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>camera_permission</key>
 			<dict>
 				<key>value</key>
-				<string>Permission needed</string>
+				<string>Toegang vereist</string>
 			</dict>
 			<key>cancel_backup</key>
 			<dict>
 				<key>comment</key>
 				<string>Ask the user to cancel the backup</string>
 				<key>value</key>
-				<string>Cancel backup?</string>
+				<string>Annuleer backup?</string>
 			</dict>
 			<key>cancel_backup_description</key>
 			<dict>
 				<key>comment</key>
 				<string>Tell the user he can complete the backup process later</string>
 				<key>value</key>
-				<string>You can complete the backup sequence later.</string>
+				<string>Je kunt de backup later voltooien.</string>
 			</dict>
 			<key>delete_account</key>
 			<dict>
 				<key>comment</key>
 				<string>Ask the user to delete the account</string>
 				<key>value</key>
-				<string>Delete account?</string>
+				<string>Verwijder account?</string>
 			</dict>
 			<key>delete_corrupted</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn couldn't read the data from your phone. Perhaps it's in an old format. You can probably fix this by deleting all data. If you don't want to do this, contact us at hello@keyn.app.</string>
+				<string>Keyn kon niet de data van je telefoon lezen. Misschien is het in een oud formaat. Je kunt dit verhelpen door alle data te verwijderen. Als je dit niet wilt doen, contact ons dan via hello@keyn.app.</string>
 			</dict>
 			<key>delete_data</key>
 			<dict>
 				<key>comment</key>
 				<string>Delete local and remote data</string>
 				<key>value</key>
-				<string>Delete data?</string>
+				<string>Verwijder data?</string>
 			</dict>
 			<key>delete_existing</key>
 			<dict>
 				<key>value</key>
-				<string>You are trying to restore a backup while Keyn has already been initialized. Do you want to delete Keyn's current data?</string>
+				<string>Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd. Wil je Keyn's huidige data verwijderen?</string>
 			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
 				<key>comment</key>
 				<string>Ask the user to answer some questions</string>
 				<key>value</key>
-				<string>Do you have time to answer a few questions? It'll only take a moment.</string>
+				<string>Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.</string>
 			</dict>
 			<key>questionnaire_popup_title</key>
 			<dict>
 				<key>comment</key>
 				<string>The title of the popup that asks the user fill a questionnaire</string>
 				<key>value</key>
-				<string>Questiontime!</string>
+				<string>Vragenrondje!</string>
 			</dict>
 			<key>reset_keyn</key>
 			<dict>
@@ -437,12 +699,12 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>comment</key>
 				<string>This will delete the seed and all passwords.</string>
 				<key>value</key>
-				<string>This will delete the seed and all passwords.</string>
+				<string>Dit verwijdert de seed en alle wachtwoorden.</string>
 			</dict>
 			<key>restore_accounts</key>
 			<dict>
 				<key>value</key>
-				<string>Restore accounts</string>
+				<string>Herstel accounts</string>
 			</dict>
 		</dict>
 		<key>responses</key>
@@ -452,26 +714,26 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>comment</key>
 				<string>Cancels something</string>
 				<key>value</key>
-				<string>Cancel</string>
+				<string>Annuleer</string>
 			</dict>
 			<key>continue</key>
 			<dict>
 				<key>comment</key>
 				<string>Continue something</string>
 				<key>value</key>
-				<string>Continue</string>
+				<string>Doorgaan</string>
 			</dict>
 			<key>delete</key>
 			<dict>
 				<key>comment</key>
 				<string>Deletes something</string>
 				<key>value</key>
-				<string>Delete</string>
+				<string>Verwijder</string>
 			</dict>
 			<key>no</key>
 			<dict>
 				<key>comment</key>
-				<string>no</string>
+				<string>nee</string>
 				<key>value</key>
 				<string>no</string>
 			</dict>
@@ -480,7 +742,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>comment</key>
 				<string>Deny the questionnaire</string>
 				<key>value</key>
-				<string>No, thanks</string>
+				<string>Nee, bedankt</string>
 			</dict>
 			<key>reset</key>
 			<dict>
@@ -492,12 +754,12 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>settings</key>
 			<dict>
 				<key>value</key>
-				<string>Open settings</string>
+				<string>Open instellingen</string>
 			</dict>
 			<key>yes</key>
 			<dict>
 				<key>comment</key>
-				<string>yes</string>
+				<string>ja</string>
 				<key>value</key>
 				<string>yes</string>
 			</dict>
@@ -510,21 +772,21 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>comment</key>
 			<string>Part of sentence This password has been found in 3 breaches! You should probably change it.</string>
 			<key>value</key>
-			<string>This password has been found in</string>
+			<string>Dit wachtwoord is gevonden in</string>
 		</dict>
 		<key>change_password_footer</key>
 		<dict>
 			<key>comment</key>
 			<string>Description for enabling changing a password</string>
 			<key>value</key>
-			<string>If enabled, Keyn will automatically change the password to a secure password</string>
+			<string>Indien ingeschakeld, wijzigt Keyn het wachtwoord automatisch in een zeer veilig wachtwoord</string>
 		</dict>
 		<key>change_password_impossible</key>
 		<dict>
 			<key>comment</key>
 			<string>Description if changing a password is not possible</string>
 			<key>value</key>
-			<string>It's not possible to change the password for this site.</string>
+			<string>Het is niet mogelijk het wachtwoord voor deze website te wijzigen.</string>
 		</dict>
 	</dict>
 	<key>requests</key>
@@ -532,12 +794,12 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>account_added</key>
 		<dict>
 			<key>value</key>
-			<string>Account added</string>
+			<string>Account toegevoegd</string>
 		</dict>
 		<key>account_disabled</key>
 		<dict>
 			<key>value</key>
-			<string>Account disabled</string>
+			<string>Account uitgeschakeld</string>
 		</dict>
 		<key>accounts</key>
 		<dict>
@@ -549,37 +811,39 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>accounts_added</key>
 		<dict>
 			<key>value</key>
-			<string>accounts added</string>
+			<string>accounts toegevoegd</string>
 		</dict>
 		<key>accounts_left_1</key>
 		<dict>
+			<key>comment</key>
+			<string>Je kunt nog 1 account toevoegen. Check in code.</string>
 			<key>value</key>
 			<string>You can only add</string>
 		</dict>
 		<key>accounts_left_2_plural</key>
 		<dict>
 			<key>value</key>
-			<string>additional accounts</string>
+			<string>extra accounts</string>
 		</dict>
 		<key>accounts_left_2_single</key>
 		<dict>
 			<key>value</key>
-			<string>additional account</string>
+			<string>extra account</string>
 		</dict>
 		<key>accounts_left_3</key>
 		<dict>
 			<key>value</key>
-			<string>in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
+			<string>in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
-			<string>Add account</string>
+			<string>Voeg account toe</string>
 		</dict>
 		<key>add_accounts</key>
 		<dict>
 			<key>value</key>
-			<string>Add accounts</string>
+			<string>Voeg accounts toe</string>
 		</dict>
 		<key>add_site</key>
 		<dict>
@@ -591,138 +855,138 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>cannot_add</key>
 		<dict>
 			<key>value</key>
-			<string>Upgrade needed</string>
+			<string>Upgrade nodig</string>
 		</dict>
 		<key>change_for</key>
 		<dict>
 			<key>comment</key>
 			<string>Ask the user to change a password, e.g. Change password for Amazon.com?</string>
 			<key>value</key>
-			<string>Change password for</string>
+			<string>Wijzig wachtwoord voor</string>
 		</dict>
 		<key>change_password</key>
 		<dict>
 			<key>value</key>
-			<string>Change password</string>
+			<string>Wijzig wachtwoord</string>
 		</dict>
 		<key>confirm_login</key>
 		<dict>
 			<key>value</key>
-			<string>Confirm login</string>
+			<string>Bevestig login</string>
 		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
-			<string>The request that was received expired. This means it was sent more than three minutes ago.</string>
+			<string>Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden verstuurd.</string>
 		</dict>
 		<key>fill_for</key>
 		<dict>
 			<key>comment</key>
 			<string>Ask the user to fill a password, e.g. Fill password for Amazon.com?</string>
 			<key>value</key>
-			<string>Fill password for</string>
+			<string>Vul wachtwoord in bij</string>
 		</dict>
 		<key>fill_password</key>
 		<dict>
 			<key>value</key>
-			<string>Fill password</string>
+			<string>Vul wachtwoord in</string>
 		</dict>
 		<key>fill_password_successful</key>
 		<dict>
 			<key>value</key>
-			<string>Fill password successful</string>
+			<string>Wachtwoord invullen gelukt</string>
 		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>
 			<key>value</key>
-			<string>Next time you can login with Keyn</string>
+			<string>Volgende keer kun je met Keyn inloggen</string>
 		</dict>
 		<key>login_succesful</key>
 		<dict>
 			<key>value</key>
-			<string>Login successful</string>
+			<string>Login gelukt</string>
 		</dict>
 		<key>login_to</key>
 		<dict>
 			<key>comment</key>
 			<string>Ask to the user to login to a site, e.g. Login to Amazon.com?</string>
 			<key>value</key>
-			<string>Login to</string>
+			<string>Login bij</string>
 		</dict>
 		<key>login_with</key>
 		<dict>
 			<key>comment</key>
 			<string>Ask to the user to login with an account, e.g. Login with demo@keyn.io?</string>
 			<key>value</key>
-			<string>Login with</string>
+			<string>Login met</string>
 		</dict>
 		<key>new_password_generated</key>
 		<dict>
 			<key>value</key>
-			<string>New password generated</string>
+			<string>Nieuw wachtwoord gegenereerd</string>
 		</dict>
 		<key>no_accounts_left</key>
 		<dict>
 			<key>value</key>
-			<string>You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts</string>
+			<string>Je kunt niet meer accounts toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.</string>
 		</dict>
 		<key>on</key>
 		<dict>
 			<key>comment</key>
-			<string>The word for on</string>
+			<string>The word for on, e.g. Pair with browser on OS?</string>
 			<key>value</key>
-			<string>on</string>
+			<string>op</string>
 		</dict>
 		<key>pair_with</key>
 		<dict>
 			<key>value</key>
-			<string>Pair with</string>
+			<string>Koppel met</string>
 		</dict>
 		<key>return_to_computer</key>
 		<dict>
 			<key>value</key>
-			<string>Return to your computer</string>
+			<string>Keer terug naar je computer</string>
 		</dict>
 		<key>save</key>
 		<dict>
 			<key>comment</key>
 			<string>Ask the user to save a site, e.g. Save Amazon.com?</string>
 			<key>value</key>
-			<string>Save</string>
+			<string>Bewaar</string>
 		</dict>
 		<key>to_complete_process</key>
 		<dict>
 			<key>value</key>
-			<string>to complete the process</string>
+			<string>om het proces te voltooien</string>
 		</dict>
 		<key>unknown_request</key>
 		<dict>
 			<key>value</key>
-			<string>Unknown request</string>
+			<string>Onbekend verzoek</string>
 		</dict>
 		<key>unlock_accounts</key>
 		<dict>
 			<key>comment</key>
 			<string>Unlock accounts</string>
 			<key>value</key>
-			<string>Unlock accounts</string>
+			<string>Ontgrendel accounts</string>
 		</dict>
 		<key>unlock_keyn</key>
 		<dict>
 			<key>comment</key>
 			<string>Unlock Keyn</string>
 			<key>value</key>
-			<string>Unlock Keyn</string>
+			<string>Ontgrendel Keyn</string>
 		</dict>
 		<key>upgrade_keyn_for_add</key>
 		<dict>
 			<key>value</key>
-			<string>You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn Premium to save an unlimited number of accounts</string>
+			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan</string>
 		</dict>
 		<key>upgrade_keyn_for_request</key>
 		<dict>
 			<key>value</key>
-			<string>You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to Keyn Premium to log in with all your accounts again</string>
+			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen</string>
 		</dict>
 	</dict>
 	<key>settings</key>
@@ -730,72 +994,72 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>active</key>
 		<dict>
 			<key>value</key>
-			<string>active</string>
+			<string>actief</string>
 		</dict>
 		<key>and</key>
 		<dict>
 			<key>value</key>
-			<string>and</string>
+			<string>en</string>
 		</dict>
 		<key>backup_completed_footer</key>
 		<dict>
 			<key>comment</key>
 			<string>Description if backup is already completed</string>
 			<key>value</key>
-			<string>The paper backup is the only way to recover your accounts if your phone gets lost or broken.</string>
+			<string>De paper backup is de enige manier om je accounts te herstellen wanneer je telefoon kwijt raakt of kapot gaat.</string>
 		</dict>
 		<key>backup_not_finished</key>
 		<dict>
 			<key>comment</key>
 			<string>Warning that the user did not finish paper backup yet</string>
 			<key>value</key>
-			<string>Paper backup not finished</string>
+			<string>Paper backup is niet voltooid</string>
 		</dict>
 		<key>crossgrade_successful</key>
 		<dict>
 			<key>value</key>
-			<string>Your new subscription will go into effect after the current subscription cycle ends</string>
+			<string>Je nieuwe abonnement zal ingaan nadat het huidige abonnement eindigt</string>
 		</dict>
 		<key>delete_data_warning</key>
 		<dict>
 			<key>comment</key>
 			<string>Alert before deleting all data</string>
 			<key>value</key>
-			<string>⚠️ This will permanently delete all local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+			<string>⚠️ Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!</string>
 		</dict>
 		<key>delete_warning</key>
 		<dict>
 			<key>value</key>
-			<string>Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!</string>
+			<string>Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!</string>
 		</dict>
 		<key>disclaimer</key>
 		<dict>
 			<key>value</key>
-			<string>Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our</string>
+			<string>De betaling wordt in rekening gebracht via uw AppleID account als de aankoop is bevestigd. Het abonnement wordt automatisch vernieuwd, tenzij het minstens 24 uur voor het einde van de periode geannuleerd is. De verlenging wordt binnen 24 uur voor het einde van het lopende abonnement in rekening gebracht. Je kunt je abonnementen beheren en annuleren via je AppStore accountinstellingen na de aankoop. Bij de aankoop gaat u akkoord met onze</string>
 		</dict>
 		<key>discount</key>
 		<dict>
 			<key>value</key>
-			<string>You save 17%</string>
+			<string>Bespaar 17%</string>
 		</dict>
 		<key>feedback_description</key>
 		<dict>
 			<key>comment</key>
 			<string>Description under feedback form</string>
 			<key>value</key>
-			<string>Use this form to provide feedback :)</string>
+			<string>Gebruik dit formulier om ons feedback te geven :)</string>
 		</dict>
 		<key>feedback_footer</key>
 		<dict>
 			<key>value</key>
-			<string>Help us make Keyn better by letting us know what you think or providing suggestions for improvements.</string>
+			<string>Help ons Keyn te verbeteren door ons te laten weten wat je er van vindt. Heb je suggesties?</string>
 		</dict>
 		<key>feedback_submitted</key>
 		<dict>
 			<key>comment</key>
 			<string>Message to the user after feedback has been submitted</string>
 			<key>value</key>
-			<string>Feedback sent, thanks!</string>
+			<string>Feedback verstuurd, bedankt!</string>
 		</dict>
 		<key>help</key>
 		<dict>
@@ -807,7 +1071,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>jailbreak_warning</key>
 		<dict>
 			<key>value</key>
-			<string>This device appears to be jailbroken. Other applications may be able to access your passwords</string>
+			<string>Dit apparaat lijkt gekraakt te zijn (jailbreak). Andere applicaties hebben mogelijk toegang tot je wachtwoorden</string>
 		</dict>
 		<key>legal</key>
 		<dict>
@@ -824,7 +1088,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>premium_beta</key>
 		<dict>
 			<key>value</key>
-			<string>Keyn Premium is already enabled if you're participating in the beta program</string>
+			<string>Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma</string>
 		</dict>
 		<key>privacy</key>
 		<dict>
@@ -836,226 +1100,136 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>privacy_beta_explanation</key>
 		<dict>
 			<key>value</key>
-			<string>Usage statistics are shared automatically if you join the public beta. You can read more about it in our privacy policy and the terms and conditions of Testflight.</string>
+			<string>Gebruiksstatistieken worden automatisch gedeeld als je de betaversie gebruikt. Je kunt hier meer over lezen in Keyn's privacy policy en de algemene voorwaarden van Testflight.</string>
 		</dict>
 		<key>privacy_explanation</key>
 		<dict>
 			<key>value</key>
-			<string>Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.</string>
+			<string>Het delen van foutmeldingen en analytische gegevens helpt veel om Keyn te verbeteren. Please consider enabling it.</string>
 		</dict>
 		<key>privacy_policy</key>
 		<dict>
 			<key>value</key>
-			<string>Privacy Policy</string>
+			<string>privacy policy</string>
 		</dict>
 		<key>read_more</key>
 		<dict>
 			<key>value</key>
-			<string>Read more</string>
+			<string>Lees meer</string>
 		</dict>
 		<key>reset_keyn_warning</key>
 		<dict>
 			<key>comment</key>
 			<string>Alert before deleting local data</string>
 			<key>value</key>
-			<string>⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.</string>
+			<string>⚠️ Met het resetten van Keyn verwijder je alle gegevens op de telefoon. Zorg ervoor dat je de paper back-up hebt genoteerd.</string>
 		</dict>
 		<key>reset_warning</key>
 		<dict>
 			<key>comment</key>
 			<string>Description under reset Keyn</string>
 			<key>value</key>
-			<string>Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.</string>
+			<string>Met het resetten van Keyn verwijder je alle gegevens op de telefoon. Je kunt altijd je accounts herstellen met de paper backup.</string>
 		</dict>
 		<key>restore_failed</key>
 		<dict>
 			<key>value</key>
-			<string>No active subscriptions were found</string>
+			<string>Geen actief abonnement gevonden</string>
 		</dict>
 		<key>restore_successful</key>
 		<dict>
 			<key>value</key>
-			<string>Your purchase has been restored</string>
+			<string>Je aankoop is hersteld</string>
 		</dict>
 		<key>settings</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for settings</string>
 			<key>value</key>
-			<string>Settings</string>
+			<string>Instellingen</string>
 		</dict>
 		<key>success</key>
 		<dict>
 			<key>value</key>
-			<string>Success</string>
+			<string>Gelukt</string>
 		</dict>
 		<key>terms_of_service</key>
 		<dict>
 			<key>value</key>
-			<string>Terms of Service</string>
+			<string>algemene voorwaarden</string>
 		</dict>
 	</dict>
 	<key>storekit</key>
 	<dict>
-		<key>cannotMakePayments</key>
-		<dict>
-			<key>value</key>
-			<string>You are not authorized to make payments. In-App Purchases may be restricted on your device.</string>
-		</dict>
 		<key>couldNotFind</key>
 		<dict>
 			<key>value</key>
-			<string>Could not find resource file</string>
+			<string>Kon bronbestand niet vinden</string>
 		</dict>
 		<key>deferred</key>
 		<dict>
 			<key>value</key>
-			<string>Allow the user to continue using your app</string>
+			<string>Sta gebruiker toe je app te blijven gebruiken</string>
 		</dict>
 		<key>deliverContent</key>
 		<dict>
 			<key>value</key>
-			<string>Deliver content for</string>
+			<string>Lever inhoud voor</string>
 		</dict>
 		<key>error</key>
 		<dict>
 			<key>value</key>
-			<string>Error: </string>
+			<string>Fout: </string>
 		</dict>
 		<key>failed</key>
 		<dict>
 			<key>value</key>
-			<string>failed</string>
-		</dict>
-		<key>installing</key>
-		<dict>
-			<key>value</key>
-			<string>In-App Purchases may be restricted on your device</string>
-		</dict>
-		<key>invalidIndexPath</key>
-		<dict>
-			<key>value</key>
-			<string>Invalid selected index path</string>
-		</dict>
-		<key>noPurchasesAvailable</key>
-		<dict>
-			<key>value</key>
-			<string>No purchases available</string>
+			<string>mislukt</string>
 		</dict>
 		<key>noRestorablePurchases</key>
 		<dict>
 			<key>value</key>
-			<string>There are no restorable purchases.</string>
+			<string>Geen herstelbare aankopen gevonden.</string>
 		</dict>
-		<key>notAuthorized</key>
+		<key>purchase</key>
 		<dict>
 			<key>value</key>
-			<string>You are not authorized to make payments</string>
-		</dict>
-		<key>okButton</key>
-		<dict>
-			<key>value</key>
-			<string>OK</string>
-		</dict>
-		<key>previouslyBought</key>
-		<dict>
-			<key>value</key>
-			<string>Only previously bought non-consumable products and auto-renewable subscriptions can be restored</string>
-		</dict>
-		<key>productRequestStatus</key>
-		<dict>
-			<key>value</key>
-			<string>Product Request Status</string>
+			<string>Koop</string>
 		</dict>
 		<key>purchaseOf</key>
 		<dict>
 			<key>value</key>
-			<string>Purchase of</string>
-		</dict>
-		<key>purchaseStatus</key>
-		<dict>
-			<key>value</key>
-			<string>Purchase Status</string>
+			<string>Aankoop van</string>
 		</dict>
 		<key>removed</key>
 		<dict>
 			<key>value</key>
-			<string>was removed from the payment queue</string>
+			<string>is verwijderd van de betalingswachtrij</string>
 		</dict>
 		<key>restorable</key>
 		<dict>
 			<key>value</key>
-			<string>All restorable transactions have been processed by the payment queue</string>
-		</dict>
-		<key>restoreContent</key>
-		<dict>
-			<key>value</key>
-			<string>Restore content for</string>
+			<string>Alle herstelbare transacties zijn verwerkt door de betalingswachtrij</string>
 		</dict>
 		<key>status</key>
 		<dict>
 			<key>value</key>
 			<string>Status</string>
 		</dict>
+		<key>title</key>
+		<dict>
+			<key>value</key>
+			<string>Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.</string>
+		</dict>
 		<key>unknownDefault</key>
 		<dict>
 			<key>value</key>
-			<string>Unknown payment transaction case</string>
-		</dict>
-		<key>unknownDestinationViewController</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown destination view controller</string>
-		</dict>
-		<key>unknownDetail</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown detail row</string>
-		</dict>
-		<key>unknownPurchase</key>
-		<dict>
-			<key>value</key>
-			<string>No selected purchase</string>
-		</dict>
-		<key>unknownSelectedSegmentIndex</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected segment index:</string>
-		</dict>
-		<key>unknownSelectedViewController</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected view controller</string>
-		</dict>
-		<key>unknownTabBarIndex</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown tab bar index</string>
-		</dict>
-		<key>unknownToolbarItem</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected toolbar item:</string>
+			<string>Onbekende betalingstransactie</string>
 		</dict>
 		<key>updateResource</key>
 		<dict>
 			<key>value</key>
-			<string>Update it with your product identifiers to retrieve product information</string>
-		</dict>
-		<key>useStoreRestore</key>
-		<dict>
-			<key>value</key>
-			<string>Use Store &gt; Restore to restore your previously bought non-consumable products and auto-renewable subscriptions</string>
-		</dict>
-		<key>viewControllerDoesNotExist</key>
-		<dict>
-			<key>value</key>
-			<string>The main content view controller does not exist</string>
-		</dict>
-		<key>windowDoesNotExist</key>
-		<dict>
-			<key>value</key>
-			<string>The window does not exist</string>
+			<string>Update het met je product ID's om de productinformatie op te halen</string>
 		</dict>
 	</dict>
 </dict>

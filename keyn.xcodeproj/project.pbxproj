@@ -21,6 +21,7 @@
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
 		49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49057730221AE04B006D98C0 /* AuthorizationGuard.swift */; };
+		4905E09B230ECD3B00EE380E /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
 		49062C582214499A00A30669 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		49062C59221449B400A30669 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		49062C5A221449C700A30669 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
@@ -257,6 +258,7 @@
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
+		4905E09A230ECD3B00EE380E /* KeynLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynLabel.swift; sourceTree = "<group>"; };
 		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		49062C7B22146D8700A30669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Localized.plist; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
@@ -516,6 +518,7 @@
 				49E4A1E622425904005E8EBF /* KeynButton.swift */,
 				4914498622C0F3310021D081 /* KeynTabBar.swift */,
 				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
+				4905E09A230ECD3B00EE380E /* KeynLabel.swift */,
 				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
 				49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */,
@@ -838,7 +841,7 @@
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
-				4967F423225CBF950069330D /* Convert YAML to plist */,
+				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
@@ -1103,7 +1106,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4967F423225CBF950069330D /* Convert YAML to plist */ = {
+		4967F423225CBF950069330D /* Convert localizations from YAML to plist */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1111,16 +1114,16 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/keyn/SupportFiles/Base.lproj/Localized.yml",
+				"$(SRCROOT)/keyn/SupportFiles",
 			);
-			name = "Convert YAML to plist";
+			name = "Convert localizations from YAML to plist";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cat ${SCRIPT_INPUT_FILE_0} | yq . | plutil -convert xml1 - -o ${SRCROOT}/keyn/SupportFiles/Base.lproj/Localized.plist\n";
+			shellScript = "for loc in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    cat $loc/Localized.yml | yq . | plutil -convert xml1 - -o $loc/Localized.plist\ndone\n\n";
 		};
 		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1321,6 +1324,7 @@
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
 				49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */,
 				49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */,
+				4905E09B230ECD3B00EE380E /* KeynLabel.swift in Sources */,
 				496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */,
 				49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */,
 				611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */,

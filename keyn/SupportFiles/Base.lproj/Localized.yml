@@ -1,4 +1,11 @@
 ---
+numbers:
+  one: 
+    value: '1'
+  two: 
+    value: '2'
+  three: 
+    value: '3'
 errors:
   local_authentication:
     biometry_not_available:
@@ -136,6 +143,23 @@ popups:
     settings:
       value: Open settings
 accounts:
+  didnt_save:
+    value: You didn’t save any of your accounts just yet.
+  how_to_add:
+    value: How to add an account
+  add_an_account:
+    value: Add an account
+  adding_account:
+    value: Adding an account
+  add_instructions:
+    first:
+      value: Go to a website on your computer and login as you’d normally do.
+    second:
+      value: Keyn will automatically ask you to save the password. This will securely send the password to this phone. 
+    third:
+      value: Keyn will store the password on your phone. Next time you want to login, you can use Keyn.
+  alternative_add:
+    value: Alternatively, you can add an account manually.
   website_details:
     value: Website details
   user_details:
@@ -182,9 +206,27 @@ devices:
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
     value: Open the Keyn browser extension to display QR-code.
+  pairing_instruction_two:
+    value: Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go
+    start: 104
   scan_qr:
     comment: Cell title for scanning qr code
     value: Scan QR
+  pair_with_device:
+    value: Pair with your device
+  pairing_explanation:
+    first:
+      value: Go to keyn.app/go on your computer
+      start: 6
+      end: 17
+    second:
+      value: To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.
+      start: 87
+      end: 98
+    third:
+      value: Scan QR code
+    fourth:
+      value: After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!
 settings:
   settings:
     value: Settings
@@ -259,6 +301,25 @@ backup:
   word:
     comment: The word for word
     value: word
+  start_backup:
+    value: Start backing up
+  what_if:
+    value: What if your phone gets lost or stolen?
+    start: 24
+  next:
+    value: Next
+  previous:
+    value: Previous
+  check_text:
+    value: To make sure everything was written down correctly, please enter te following words from your paper to continue
+  complete:
+    value: Complete
+  great:
+    value: Great! Now store your paper backup in a safe place
+  if_stolen:
+    value: If your phone gets lost or stolen, you can recover all your accounts by entering the words on your new phone.
+  return_to_settings:
+    value: Return to settings
 requests:
   accounts:
     value: accounts
@@ -353,9 +414,56 @@ registration:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: This password has been found in
 initialization:
+  get_started:
+    value: Let's get started
+  learn_more:
+    value: Learn more
+  setup_keyn:
+    value: Setup Keyn
+  scan_qr:
+    value: Scan QR code
+  try_later:
+    value: Try later
+  start_using_keyn:
+    value: Start using Keyn
+  byebye:
+    value: Bye bye forgetting passwords, hello Keyn
+    start: 30
+    end: 40
+  welcome_text:
+    value: Keyn allows you to log in to any website using your phone, making it safer and simpler
+  how_keyn_works:
+    value: How Keyn works on
+    start: 4
+    end: 8
+  help_improve:
+    value: Help us improve Keyn
+    start: 16
+  working:
+    value: |-
+      We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+
+      Sensitive data is never shared and everything is anonymous.
+  change:
+    value: You can always change this later in settings
+  one_minute_away:
+    value: You're 1 minute away from forgetting your passwords
+    start: 6
+    end: 14
+  agree:
+    value: Agree
   initialize_keyn:
     value: Initialize encrypted storage
     comment: This is provided as a reason for authenticating the first time.
+  enter_words:
+    value: Enter the words of your paper backup to recover your passwords
+  desktop_instruction:
+    first:
+      value: Keyn asks you in your browser if you want to log in.
+    second:
+      value: You receive a notification on your phone that asks you to authorize the request.
+    third:
+      value: Keyn fills your credentials in the right fields.
   mobile_instruction_iOS12:
     first:
       value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.
@@ -371,6 +479,10 @@ initialization:
     third:
       value: Return to the login fields and paste your password.
 storekit:
+  title:
+    value: With Keyn Premium, you can add an unlimited number of accounts to Keyn.
+  purchase:
+    value: Purchase
   couldNotFind:
     value: Could not find resource file
   error:

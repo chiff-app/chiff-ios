@@ -14,12 +14,50 @@
 			<key>value</key>
 			<string>Add 2FA-code to</string>
 		</dict>
+		<key>add_an_account</key>
+		<dict>
+			<key>value</key>
+			<string>Add an account</string>
+		</dict>
+		<key>add_instructions</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Go to a website on your computer and login as you’d normally do.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn will automatically ask you to save the password. This will securely send the password to this phone.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn will store the password on your phone. Next time you want to login, you can use Keyn.</string>
+			</dict>
+		</dict>
+		<key>adding_account</key>
+		<dict>
+			<key>value</key>
+			<string>Adding an account</string>
+		</dict>
+		<key>alternative_add</key>
+		<dict>
+			<key>value</key>
+			<string>Alternatively, you can add an account manually.</string>
+		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
 			<string>Show the user that a value has been copied</string>
 			<key>value</key>
 			<string>Copied</string>
+		</dict>
+		<key>didnt_save</key>
+		<dict>
+			<key>value</key>
+			<string>You didn’t save any of your accounts just yet.</string>
 		</dict>
 		<key>footer</key>
 		<dict>
@@ -40,6 +78,11 @@
 		<dict>
 			<key>value</key>
 			<string>You can save as many accounts as you want.</string>
+		</dict>
+		<key>how_to_add</key>
+		<dict>
+			<key>value</key>
+			<string>How to add an account</string>
 		</dict>
 		<key>mode</key>
 		<dict>
@@ -103,6 +146,53 @@
 	</dict>
 	<key>backup</key>
 	<dict>
+		<key>check_text</key>
+		<dict>
+			<key>value</key>
+			<string>To make sure everything was written down correctly, please enter te following words from your paper to continue</string>
+		</dict>
+		<key>complete</key>
+		<dict>
+			<key>value</key>
+			<string>Complete</string>
+		</dict>
+		<key>great</key>
+		<dict>
+			<key>value</key>
+			<string>Great! Now store your paper backup in a safe place</string>
+		</dict>
+		<key>if_stolen</key>
+		<dict>
+			<key>value</key>
+			<string>If your phone gets lost or stolen, you can recover all your accounts by entering the words on your new phone.</string>
+		</dict>
+		<key>next</key>
+		<dict>
+			<key>value</key>
+			<string>Next</string>
+		</dict>
+		<key>previous</key>
+		<dict>
+			<key>value</key>
+			<string>Previous</string>
+		</dict>
+		<key>return_to_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Return to settings</string>
+		</dict>
+		<key>start_backup</key>
+		<dict>
+			<key>value</key>
+			<string>Start backing up</string>
+		</dict>
+		<key>what_if</key>
+		<dict>
+			<key>start</key>
+			<integer>24</integer>
+			<key>value</key>
+			<string>What if your phone gets lost or stolen?</string>
+		</dict>
 		<key>word</key>
 		<dict>
 			<key>comment</key>
@@ -120,12 +210,55 @@
 			<key>value</key>
 			<string>devices</string>
 		</dict>
+		<key>pair_with_device</key>
+		<dict>
+			<key>value</key>
+			<string>Pair with your device</string>
+		</dict>
+		<key>pairing_explanation</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>end</key>
+				<integer>17</integer>
+				<key>start</key>
+				<integer>6</integer>
+				<key>value</key>
+				<string>Go to keyn.app/go on your computer</string>
+			</dict>
+			<key>fourth</key>
+			<dict>
+				<key>value</key>
+				<string>After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>end</key>
+				<integer>98</integer>
+				<key>start</key>
+				<integer>87</integer>
+				<key>value</key>
+				<string>To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Scan QR code</string>
+			</dict>
+		</dict>
 		<key>pairing_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
 			<key>value</key>
 			<string>Open the Keyn browser extension to display QR-code.</string>
+		</dict>
+		<key>pairing_instruction_two</key>
+		<dict>
+			<key>start</key>
+			<integer>104</integer>
+			<key>value</key>
+			<string>Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -320,12 +453,80 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>initialization</key>
 	<dict>
+		<key>agree</key>
+		<dict>
+			<key>value</key>
+			<string>Agree</string>
+		</dict>
+		<key>byebye</key>
+		<dict>
+			<key>end</key>
+			<integer>40</integer>
+			<key>start</key>
+			<integer>30</integer>
+			<key>value</key>
+			<string>Bye bye forgetting passwords, hello Keyn</string>
+		</dict>
+		<key>change</key>
+		<dict>
+			<key>value</key>
+			<string>You can always change this later in settings</string>
+		</dict>
+		<key>desktop_instruction</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn asks you in your browser if you want to log in.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>You receive a notification on your phone that asks you to authorize the request.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn fills your credentials in the right fields.</string>
+			</dict>
+		</dict>
+		<key>enter_words</key>
+		<dict>
+			<key>value</key>
+			<string>Enter the words of your paper backup to recover your passwords</string>
+		</dict>
+		<key>get_started</key>
+		<dict>
+			<key>value</key>
+			<string>Let's get started</string>
+		</dict>
+		<key>help_improve</key>
+		<dict>
+			<key>start</key>
+			<integer>16</integer>
+			<key>value</key>
+			<string>Help us improve Keyn</string>
+		</dict>
+		<key>how_keyn_works</key>
+		<dict>
+			<key>end</key>
+			<integer>8</integer>
+			<key>start</key>
+			<integer>4</integer>
+			<key>value</key>
+			<string>How Keyn works on</string>
+		</dict>
 		<key>initialize_keyn</key>
 		<dict>
 			<key>comment</key>
 			<string>This is provided as a reason for authenticating the first time.</string>
 			<key>value</key>
 			<string>Initialize encrypted storage</string>
+		</dict>
+		<key>learn_more</key>
+		<dict>
+			<key>value</key>
+			<string>Learn more</string>
 		</dict>
 		<key>mobile_instruction_&lt;iOS12</key>
 		<dict>
@@ -362,6 +563,65 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>value</key>
 				<string>You can login by authorizing the request.</string>
 			</dict>
+		</dict>
+		<key>one_minute_away</key>
+		<dict>
+			<key>end</key>
+			<integer>14</integer>
+			<key>start</key>
+			<integer>6</integer>
+			<key>value</key>
+			<string>You're 1 minute away from forgetting your passwords</string>
+		</dict>
+		<key>scan_qr</key>
+		<dict>
+			<key>value</key>
+			<string>Scan QR code</string>
+		</dict>
+		<key>setup_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>Setup Keyn</string>
+		</dict>
+		<key>start_using_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>Start using Keyn</string>
+		</dict>
+		<key>try_later</key>
+		<dict>
+			<key>value</key>
+			<string>Try later</string>
+		</dict>
+		<key>welcome_text</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn allows you to log in to any website using your phone, making it safer and simpler</string>
+		</dict>
+		<key>working</key>
+		<dict>
+			<key>value</key>
+			<string>We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+
+Sensitive data is never shared and everything is anonymous.</string>
+		</dict>
+	</dict>
+	<key>numbers</key>
+	<dict>
+		<key>one</key>
+		<dict>
+			<key>value</key>
+			<string>1</string>
+		</dict>
+		<key>three</key>
+		<dict>
+			<key>value</key>
+			<string>3</string>
+		</dict>
+		<key>two</key>
+		<dict>
+			<key>value</key>
+			<string>2</string>
 		</dict>
 	</dict>
 	<key>popups</key>
@@ -669,7 +929,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<key>on</key>
 		<dict>
 			<key>comment</key>
-			<string>The word for on</string>
+			<string>The word for on, e.g. Pair with browser on OS?</string>
 			<key>value</key>
 			<string>on</string>
 		</dict>
@@ -897,11 +1157,6 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 	</dict>
 	<key>storekit</key>
 	<dict>
-		<key>cannotMakePayments</key>
-		<dict>
-			<key>value</key>
-			<string>You are not authorized to make payments. In-App Purchases may be restricted on your device.</string>
-		</dict>
 		<key>couldNotFind</key>
 		<dict>
 			<key>value</key>
@@ -927,55 +1182,20 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>failed</string>
 		</dict>
-		<key>installing</key>
-		<dict>
-			<key>value</key>
-			<string>In-App Purchases may be restricted on your device</string>
-		</dict>
-		<key>invalidIndexPath</key>
-		<dict>
-			<key>value</key>
-			<string>Invalid selected index path</string>
-		</dict>
-		<key>noPurchasesAvailable</key>
-		<dict>
-			<key>value</key>
-			<string>No purchases available</string>
-		</dict>
 		<key>noRestorablePurchases</key>
 		<dict>
 			<key>value</key>
 			<string>There are no restorable purchases.</string>
 		</dict>
-		<key>notAuthorized</key>
+		<key>purchase</key>
 		<dict>
 			<key>value</key>
-			<string>You are not authorized to make payments</string>
-		</dict>
-		<key>okButton</key>
-		<dict>
-			<key>value</key>
-			<string>OK</string>
-		</dict>
-		<key>previouslyBought</key>
-		<dict>
-			<key>value</key>
-			<string>Only previously bought non-consumable products and auto-renewable subscriptions can be restored</string>
-		</dict>
-		<key>productRequestStatus</key>
-		<dict>
-			<key>value</key>
-			<string>Product Request Status</string>
+			<string>Purchase</string>
 		</dict>
 		<key>purchaseOf</key>
 		<dict>
 			<key>value</key>
 			<string>Purchase of</string>
-		</dict>
-		<key>purchaseStatus</key>
-		<dict>
-			<key>value</key>
-			<string>Purchase Status</string>
 		</dict>
 		<key>removed</key>
 		<dict>
@@ -987,75 +1207,25 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>All restorable transactions have been processed by the payment queue</string>
 		</dict>
-		<key>restoreContent</key>
-		<dict>
-			<key>value</key>
-			<string>Restore content for</string>
-		</dict>
 		<key>status</key>
 		<dict>
 			<key>value</key>
 			<string>Status</string>
+		</dict>
+		<key>title</key>
+		<dict>
+			<key>value</key>
+			<string>With Keyn Premium, you can add an unlimited number of accounts to Keyn.</string>
 		</dict>
 		<key>unknownDefault</key>
 		<dict>
 			<key>value</key>
 			<string>Unknown payment transaction case</string>
 		</dict>
-		<key>unknownDestinationViewController</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown destination view controller</string>
-		</dict>
-		<key>unknownDetail</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown detail row</string>
-		</dict>
-		<key>unknownPurchase</key>
-		<dict>
-			<key>value</key>
-			<string>No selected purchase</string>
-		</dict>
-		<key>unknownSelectedSegmentIndex</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected segment index:</string>
-		</dict>
-		<key>unknownSelectedViewController</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected view controller</string>
-		</dict>
-		<key>unknownTabBarIndex</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown tab bar index</string>
-		</dict>
-		<key>unknownToolbarItem</key>
-		<dict>
-			<key>value</key>
-			<string>Unknown selected toolbar item:</string>
-		</dict>
 		<key>updateResource</key>
 		<dict>
 			<key>value</key>
 			<string>Update it with your product identifiers to retrieve product information</string>
-		</dict>
-		<key>useStoreRestore</key>
-		<dict>
-			<key>value</key>
-			<string>Use Store &gt; Restore to restore your previously bought non-consumable products and auto-renewable subscriptions</string>
-		</dict>
-		<key>viewControllerDoesNotExist</key>
-		<dict>
-			<key>value</key>
-			<string>The main content view controller does not exist</string>
-		</dict>
-		<key>windowDoesNotExist</key>
-		<dict>
-			<key>value</key>
-			<string>The window does not exist</string>
 		</dict>
 	</dict>
 </dict>
