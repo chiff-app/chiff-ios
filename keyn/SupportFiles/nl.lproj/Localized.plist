@@ -470,7 +470,12 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<key>change</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan dit altijd later veranderingen in de instellingen.</string>
+			<string>Je kan dit altijd later veranderen in de instellingen.</string>
+		</dict>
+		<key>desktop</key>
+		<dict>
+			<key>value</key>
+			<string>Desktop</string>
 		</dict>
 		<key>desktop_instruction</key>
 		<dict>
@@ -494,6 +499,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<dict>
 			<key>value</key>
 			<string>Voer de 12 woorden van je paper backup in</string>
+		</dict>
+		<key>finish</key>
+		<dict>
+			<key>value</key>
+			<string>Gereed</string>
 		</dict>
 		<key>get_started</key>
 		<dict>
@@ -530,6 +540,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>value</key>
 			<string>Meer info</string>
 		</dict>
+		<key>mobile</key>
+		<dict>
+			<key>value</key>
+			<string>Mobiel</string>
+		</dict>
 		<key>mobile_instruction_&lt;iOS12</key>
 		<dict>
 			<key>first</key>
@@ -553,7 +568,7 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Om Keyn op je telefoon te gebruiken, moet je iOS laten weten dat Keyn je wachtwoorden beheert.</string>
+				<string>Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.</string>
 			</dict>
 			<key>second</key>
 			<dict>
@@ -575,6 +590,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>value</key>
 			<string>Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden</string>
 		</dict>
+		<key>recover</key>
+		<dict>
+			<key>value</key>
+			<string>Herstel van paper backup</string>
+		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>value</key>
@@ -582,8 +602,20 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		</dict>
 		<key>setup_keyn</key>
 		<dict>
+			<key>comment</key>
+			<string>Of 'stel keyn in'</string>
 			<key>value</key>
 			<string>Verder</string>
+		</dict>
+		<key>share_analytics</key>
+		<dict>
+			<key>value</key>
+			<string>Deel gebruiksstatistieken</string>
+		</dict>
+		<key>share_errors</key>
+		<dict>
+			<key>value</key>
+			<string>Deel foutmeldingen</string>
 		</dict>
 		<key>start_using_keyn</key>
 		<dict>
@@ -874,6 +906,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Bevestig login</string>
 		</dict>
+		<key>confirm_request</key>
+		<dict>
+			<key>value</key>
+			<string>Bevestig verzoek</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -942,6 +979,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Koppel met</string>
 		</dict>
+		<key>return</key>
+		<dict>
+			<key>value</key>
+			<string>Terug</string>
+		</dict>
 		<key>return_to_computer</key>
 		<dict>
 			<key>value</key>
@@ -977,6 +1019,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<string>Unlock Keyn</string>
 			<key>value</key>
 			<string>Ontgrendel Keyn</string>
+		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade nu</string>
 		</dict>
 		<key>upgrade_keyn_for_add</key>
 		<dict>
@@ -1231,6 +1278,105 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Update het met je product ID's om de productinformatie op te halen</string>
 		</dict>
+	</dict>
+	<key>todo</key>
+	<dict>
+		<key>2fa</key>
+		<dict>
+			<key>value</key>
+			<string>2FA code</string>
+		</dict>
+		<key>account_details</key>
+		<dict>
+			<key>value</key>
+			<string>Accounts details</string>
+		</dict>
+		<key>add_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg 2FA code toe</string>
+		</dict>
+		<key>code</key>
+		<dict>
+			<key>value</key>
+			<string>Code</string>
+		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je kan met zoveel apparaten koppelen als je wilt.</string>
+		</dict>
+		<key>my_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Mijn accounts</string>
+		</dict>
+		<key>name</key>
+		<dict>
+			<key>value</key>
+			<string>Naam</string>
+		</dict>
+		<key>no_push_warning_text</key>
+		<dict>
+			<key>value</key>
+			<string>Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
+
+Je kunt Keyn toestaan berichten te versturen via Instellingen &gt; Keyn &gt; Berichtgeving.
+
+Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
+		</dict>
+		<key>no_push_warning_title</key>
+		<dict>
+			<key>value</key>
+			<string>We willen je niet pushen...</string>
+		</dict>
+		<key>open_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Open instellingen</string>
+		</dict>
+		<key>paired_devices</key>
+		<dict>
+			<key>value</key>
+			<string>Mijn gekoppelde apparaten</string>
+		</dict>
+		<key>password</key>
+		<dict>
+			<key>value</key>
+			<string>Wachtwoord</string>
+		</dict>
+		<key>scan_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Scan de QR code om een 2FA code toe te voegen voor</string>
+		</dict>
+		<key>time_based</key>
+		<dict>
+			<key>value</key>
+			<string>Tijdgebaseerd</string>
+		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>upgrade</string>
+		</dict>
+		<key>url</key>
+		<dict>
+			<key>value</key>
+			<string>URL</string>
+		</dict>
+		<key>user_details</key>
+		<dict>
+			<key>value</key>
+			<string>Gebruikersgegevens</string>
+		</dict>
+		<key>username</key>
+		<dict>
+			<key>value</key>
+			<string>Gebruikersnaam</string>
+		</dict>
+		<key>value</key>
+		<string>Algemeen</string>
 	</dict>
 </dict>
 </plist>

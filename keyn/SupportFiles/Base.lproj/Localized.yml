@@ -403,6 +403,12 @@ requests:
     value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
   no_accounts_left:
     value: You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts
+  return:
+    value: Return
+  upgrade:
+    value: Upgrade now
+  confirm_request:
+    value: Confirm request
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -452,11 +458,19 @@ initialization:
     end: 14
   agree:
     value: Agree
+  finish: 
+    value: Finish
   initialize_keyn:
     value: Initialize encrypted storage
     comment: This is provided as a reason for authenticating the first time.
+  recover:
+    value: Recover from paper backup
   enter_words:
     value: Enter the words of your paper backup to recover your passwords
+  mobile:
+    value: Mobile
+  desktop:
+    value: Desktop
   desktop_instruction:
     first:
       value: Keyn asks you in your browser if you want to log in.
@@ -478,6 +492,10 @@ initialization:
       value: Copy your password by simply tapping it.
     third:
       value: Return to the login fields and paste your password.
+  share_analytics:
+    value: Share usage statistics
+  share_errors:
+    value: Share error data
 storekit:
   title:
     value: With Keyn Premium, you can add an unlimited number of accounts to Keyn.
@@ -507,3 +525,118 @@ storekit:
     value: Unknown payment transaction case
   updateResource:
     value: Update it with your product identifiers to retrieve product information
+
+todo:
+  #accounts
+  account_details:
+    value: Accounts details
+  name: 
+    value: Name
+  url:
+    value: URL
+  user_details:
+    value: User details
+  password:
+    value: Password
+  username:
+    value: Username
+  2fa:
+    value: 2FA code
+  code:
+    value: Code
+  my_accounts:
+    value: My accounts
+  upgrade:
+    value: upgrade
+  add_2fa:
+    value: Add 2FA code
+  scan_2fa:
+    value: Scan the QR code to add the 2FA code for
+  time_based:
+    value: Time-based
+
+  # devices
+  paired_devices:
+    value: My paired devices
+  footer:
+    value: You can pair with as many devices as you want.
+  no_push_warning_title:
+    value: We don't want to push you...
+  no_push_warning_text:
+    value: |- 
+      But you can only use Keyn to log in to other devices if  you enable push notifications.
+
+      You can allow Keyn to send notifications via Settings > Keyn > Notifications.
+      
+      Choose 'Allow Notifications' under 'Notifications'.
+  open_settings:
+    value: Open settings
+  pairing:  
+    value: Pairing
+
+  value: Legal
+  value: Keyn will store the password on your phone. Next time you want to login, you can use Keyn.
+  value: Delete account
+  value: Mobile
+  value: Feedback
+  value: Price
+  value: Privacy policy
+  value: Keyn (unknown version)
+  value: Share errors
+  value: Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our Terms of Service and Privacy Policy.
+  value: Title
+  value: Devices
+  value: Return to settings
+  value: Delete data
+  value: Keyn keeps your passwords in a safe and only your phone has the key.
+  value: Report
+  value: Enabled
+  value: Reset Keyn
+  value: FAQ
+  value: Complete
+  value: word
+  value: Please write down
+  value: Alternatively, you can add an account manually. 
+  value: Privacy
+  value: Accounts details
+  value: Share analytical data
+  value: Start backing up
+  value: Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.
+  value: Accounts
+  value: Paper backup
+  value: Settings
+  value: Privacy policy
+  value: There was a problem
+  value: You save 17%
+  value: Previous
+  value: The nth word was
+  value: Keyn will automatically ask you to save the password. This will securely send the password to this phone. 
+  value: Privacy
+  value: Feedback
+  value: An unknown problem occured.
+  value: Desktop
+  value: Premium
+  value: Terms of use
+  value: Next
+  value: News from Keyn
+  value: Codes can either be time-based or counter-based.
+  value: mode
+  value: Purchase
+  value: Username
+  value: Add Account
+  value: Choose your plan
+  value: One final check
+  value: The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor.
+  value: User details
+  value: URL
+  value: Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go 
+  value: secret
+  value: Timestamp
+  value: Password
+  value: Settings
+  value: Name
+  value: So if your phone gets lost or stolen, you need a backup, something that's not on your phone.
+  value: Name
+  value: About
+  value: Keyn Premium
+  value: General
