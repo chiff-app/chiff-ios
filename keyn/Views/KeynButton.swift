@@ -19,7 +19,13 @@ enum KeynButtonType: String {
     case outline
 }
 
-@IBDesignable class KeynButton: UIButton {
+@IBDesignable class KeynButton: UIButton, XIBLocalizable {
+
+    @IBInspectable var localizationKey: String? = nil {
+        didSet {
+            sharedInit()
+        }
+    }
 
     @IBInspectable var keynButtonType: String {
         get {
@@ -82,6 +88,7 @@ enum KeynButtonType: String {
     func sharedInit() {
         layer.cornerRadius = frame.size.height / 2
         titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 14.0)
+        setTitle(localizationKey?.localized, for: .normal)
     }
 
     func showLoading() {

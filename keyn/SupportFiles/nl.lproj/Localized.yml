@@ -1,4 +1,11 @@
 ---
+numbers:
+  one: 
+    value: '1'
+  two: 
+    value: '2'
+  three: 
+    value: '3'
 errors:
   local_authentication:
     biometry_not_available:
@@ -136,6 +143,23 @@ popups:
     settings:
       value: Open instellingen
 accounts:
+  didnt_save:
+    value: Je hebt nog geen accounts opgeslagen
+  how_to_add:
+    value: Een account toevoegen
+  add_an_account:
+    value: Voeg een account toe
+  adding_account:
+    value: Een account toevoegen
+  add_instructions:
+    first:
+      value: Ga naar een website op je computer en log in zoals je normaal zou doen.
+    second:
+      value: Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd. 
+    third:
+      value: Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.
+  alternative_add:
+    value: Je kunt ook handmatig een account toevoegen
   website_details:
     value: Website details
   user_details:
@@ -182,9 +206,28 @@ devices:
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
     value: Open Keyn's browserextensie om de QR-code weer te geven.
+  pairing_instruction_two:
+    value: Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.
+    start: 116
+    end: 127
   scan_qr:
     comment: Cell title for scanning qr code
     value: Scan QR
+  pair_with_device:
+    value: Koppel met je computer
+  pairing_explanation:
+    first:
+      value: Ga naar keyn.app/go op je computer
+      start: 8
+      end: 19
+    second:
+      value: Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op your computer.
+      start: 88
+      end: 99
+    third:
+      value: Scan QR code
+    fourth:
+      value: Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!
 settings:
   settings:
     value: Instellingen
@@ -259,6 +302,25 @@ backup:
   word:
     comment: The word for word
     value: woord
+  start_backup:
+    value: Begin backup
+  what_if:
+    value: Wat als je je telefoon kwijtraakt?
+    start: 23
+  next:
+    value: Volgende
+  previous:
+    value: Vorige
+  check_text:
+    value: Vul alsjeblieft de volgende woorden in om te checken of alles goed is opgeschreven
+  complete:
+    value: Klaar
+  great:
+    value: Top! Bewaar de paper backup nu op een veilige plek
+  if_stolen:
+    value: Als je telefoon wordt gestolen of als je hem kwijtraakt, kun je al je accounts herstellen door deze twaalf woorden in te voeren.
+  return_to_settings:
+    value: Terug naar instellingen  
 requests:
   accounts:
     value: accounts
@@ -335,7 +397,7 @@ requests:
     value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
   accounts_left_1:
     value: You can only add
-    #"Je kunt nog 1 account toevoegen". Check in code.
+    comment: Je kunt nog 1 account toevoegen. Check in code.
   accounts_left_2_plural:
     value: extra accounts
   accounts_left_2_single:
@@ -355,9 +417,56 @@ registration:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: Dit wachtwoord is gevonden in
 initialization:
+  learn_more:
+    value: Meer info
+  setup_keyn:
+    value: Verder
+  scan_qr:
+    value: Scan QR code
+  try_later:
+    value: Later
+  start_using_keyn:
+    value: Start met Keyn
+  byebye:
+    value: Dag wachtwoorden, hallo Keyn
+    start: 17
+  welcome_text:
+    value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
+  get_started:
+    value: Beginnen
+  how_keyn_works:
+    value: Hoe Keyn werkt op
+    start: 4
+    end: 8
+  help_improve:
+    value: Help ons Keyn te verbeteren
+    start: 9
+    end: 13
+  working:
+    value: |-
+      We werken constant om Keyn te verbeteren. Het deling van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+
+      Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
+  change:
+    value: Je kan dit altijd later veranderingen in de instellingen.
+  one_minute_away:
+    value: Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden
+    start: 8
+    end: 16
+  agree:
+    value: Akkoord
   initialize_keyn:
     value: Initialiseer versleutelde opslag
     comment: This is provided as a reason for authenticating the first time.
+  enter_words:
+    value: Voer de 12 woorden van je paper backup in
+  desktop_instruction:
+    first:
+      value: Keyn vraagt in je browser of je wil inloggen.
+    second:
+      value: Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.
+    third:
+      value: Keyn vult je inloggegevens in de juiste velden.
   mobile_instruction_iOS12:
     first:
       value: Om Keyn op je telefoon te gebruiken, moet je iOS laten weten dat Keyn je wachtwoorden beheert.
@@ -373,6 +482,10 @@ initialization:
     third:
       value: Keer terug naar de website en plak je wachtwoord.
 storekit:
+  title:
+    value: Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.
+  purchase:
+    value: Koop
   couldNotFind:
     value: Kon bronbestand niet vinden
   error:
