@@ -472,6 +472,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>You can always change this later in settings</string>
 		</dict>
+		<key>desktop</key>
+		<dict>
+			<key>value</key>
+			<string>Desktop</string>
+		</dict>
 		<key>desktop_instruction</key>
 		<dict>
 			<key>first</key>
@@ -494,6 +499,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>Enter the words of your paper backup to recover your passwords</string>
+		</dict>
+		<key>finish</key>
+		<dict>
+			<key>value</key>
+			<string>Finish</string>
 		</dict>
 		<key>get_started</key>
 		<dict>
@@ -527,6 +537,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>Learn more</string>
+		</dict>
+		<key>mobile</key>
+		<dict>
+			<key>value</key>
+			<string>Mobile</string>
 		</dict>
 		<key>mobile_instruction_&lt;iOS12</key>
 		<dict>
@@ -573,6 +588,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>You're 1 minute away from forgetting your passwords</string>
 		</dict>
+		<key>recover</key>
+		<dict>
+			<key>value</key>
+			<string>Recover from paper backup</string>
+		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>value</key>
@@ -582,6 +602,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>Setup Keyn</string>
+		</dict>
+		<key>share_analytics</key>
+		<dict>
+			<key>value</key>
+			<string>Share usage statistics</string>
+		</dict>
+		<key>share_errors</key>
+		<dict>
+			<key>value</key>
+			<string>Share error data</string>
 		</dict>
 		<key>start_using_keyn</key>
 		<dict>
@@ -870,6 +900,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Confirm login</string>
 		</dict>
+		<key>confirm_request</key>
+		<dict>
+			<key>value</key>
+			<string>Confirm request</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -938,6 +973,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Pair with</string>
 		</dict>
+		<key>return</key>
+		<dict>
+			<key>value</key>
+			<string>Return</string>
+		</dict>
 		<key>return_to_computer</key>
 		<dict>
 			<key>value</key>
@@ -973,6 +1013,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<string>Unlock Keyn</string>
 			<key>value</key>
 			<string>Unlock Keyn</string>
+		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade now</string>
 		</dict>
 		<key>upgrade_keyn_for_add</key>
 		<dict>
@@ -1227,6 +1272,105 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Update it with your product identifiers to retrieve product information</string>
 		</dict>
+	</dict>
+	<key>todo</key>
+	<dict>
+		<key>2fa</key>
+		<dict>
+			<key>value</key>
+			<string>2FA code</string>
+		</dict>
+		<key>account_details</key>
+		<dict>
+			<key>value</key>
+			<string>Accounts details</string>
+		</dict>
+		<key>add_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Add 2FA code</string>
+		</dict>
+		<key>code</key>
+		<dict>
+			<key>value</key>
+			<string>Code</string>
+		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can pair with as many devices as you want.</string>
+		</dict>
+		<key>my_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>My accounts</string>
+		</dict>
+		<key>name</key>
+		<dict>
+			<key>value</key>
+			<string>Name</string>
+		</dict>
+		<key>no_push_warning_text</key>
+		<dict>
+			<key>value</key>
+			<string>But you can only use Keyn to log in to other devices if  you enable push notifications.
+
+You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notifications.
+
+Choose 'Allow Notifications' under 'Notifications'.</string>
+		</dict>
+		<key>no_push_warning_title</key>
+		<dict>
+			<key>value</key>
+			<string>We don't want to push you...</string>
+		</dict>
+		<key>open_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Open settings</string>
+		</dict>
+		<key>paired_devices</key>
+		<dict>
+			<key>value</key>
+			<string>My paired devices</string>
+		</dict>
+		<key>password</key>
+		<dict>
+			<key>value</key>
+			<string>Password</string>
+		</dict>
+		<key>scan_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Scan the QR code to add the 2FA code for</string>
+		</dict>
+		<key>time_based</key>
+		<dict>
+			<key>value</key>
+			<string>Time-based</string>
+		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>upgrade</string>
+		</dict>
+		<key>url</key>
+		<dict>
+			<key>value</key>
+			<string>URL</string>
+		</dict>
+		<key>user_details</key>
+		<dict>
+			<key>value</key>
+			<string>User details</string>
+		</dict>
+		<key>username</key>
+		<dict>
+			<key>value</key>
+			<string>Username</string>
+		</dict>
+		<key>value</key>
+		<string>General</string>
 	</dict>
 </dict>
 </plist>

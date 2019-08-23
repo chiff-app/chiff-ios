@@ -106,11 +106,15 @@
                                     <constraint firstItem="jtk-5h-fdB" firstAttribute="centerX" secondItem="Dnn-31-QJY" secondAttribute="centerX" id="z6x-MW-ACF"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAm-BS-Rbr">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAm-BS-Rbr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="16" y="154" width="343" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.confirm_request"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ozE-eJ-GQE">
                                 <rect key="frame" x="67.5" y="583" width="240" height="44"/>
@@ -122,6 +126,7 @@
                                         <state key="normal" title="Return"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="outline"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.return"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="close:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="jTK-h3-QhK"/>
@@ -137,6 +142,7 @@
                                         <state key="normal" title="Upgrade now"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.upgrade"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="P3y-jh-lMf" kind="show" id="Qmy-f6-vzG"/>

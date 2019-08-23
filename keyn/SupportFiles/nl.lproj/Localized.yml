@@ -406,6 +406,12 @@ requests:
     value: in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
   no_accounts_left:
     value: Je kunt niet meer accounts toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
+  return:
+    value: Terug
+  upgrade:
+    value: Upgrade nu
+  confirm_request:
+    value: Bevestig verzoek
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -417,10 +423,13 @@ registration:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: Dit wachtwoord is gevonden in
 initialization:
+  get_started:
+    value: Beginnen
   learn_more:
     value: Meer info
-  setup_keyn:
-    value: Verder
+  setup_keyn: 
+    comment: Of 'stel keyn in'
+    value: Verder 
   scan_qr:
     value: Scan QR code
   try_later:
@@ -432,8 +441,6 @@ initialization:
     start: 17
   welcome_text:
     value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
-  get_started:
-    value: Beginnen
   how_keyn_works:
     value: Hoe Keyn werkt op
     start: 4
@@ -448,18 +455,26 @@ initialization:
 
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
   change:
-    value: Je kan dit altijd later veranderingen in de instellingen.
+    value: Je kan dit altijd later veranderen in de instellingen.
   one_minute_away:
     value: Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden
     start: 8
     end: 16
   agree:
     value: Akkoord
+  finish:
+    value: Gereed
   initialize_keyn:
     value: Initialiseer versleutelde opslag
     comment: This is provided as a reason for authenticating the first time.
+  recover:
+    value: Herstel van paper backup
   enter_words:
     value: Voer de 12 woorden van je paper backup in
+  mobile:
+    value: Mobiel
+  desktop:
+    value: Desktop
   desktop_instruction:
     first:
       value: Keyn vraagt in je browser of je wil inloggen.
@@ -469,7 +484,7 @@ initialization:
       value: Keyn vult je inloggegevens in de juiste velden.
   mobile_instruction_iOS12:
     first:
-      value: Om Keyn op je telefoon te gebruiken, moet je iOS laten weten dat Keyn je wachtwoorden beheert.
+      value: Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.
     second:
       value: Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.
     third:
@@ -481,6 +496,10 @@ initialization:
       value: Kopieer je wachtwoord door er eenvoudig op te tikken.
     third:
       value: Keer terug naar de website en plak je wachtwoord.
+  share_analytics:
+    value: Deel gebruiksstatistieken
+  share_errors:
+    value: Deel foutmeldingen
 storekit:
   title:
     value: Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.
@@ -510,3 +529,117 @@ storekit:
     value: Onbekende betalingstransactie 
   updateResource:
     value: Update het met je product ID's om de productinformatie op te halen
+
+todo:
+  #accounts
+  account_details:
+    value: Accounts details
+  name: 
+    value: Naam
+  url:
+    value: URL
+  user_details:
+    value: Gebruikersgegevens
+  username:
+    value: Gebruikersnaam
+  password:
+    value: Wachtwoord
+  2fa:
+    value: 2FA code
+  code:
+    value: Code
+  my_accounts:
+    value: Mijn accounts
+  upgrade:
+    value: upgrade
+  add_2fa:
+    value: Voeg 2FA code toe
+  scan_2fa:
+    value: Scan de QR code om een 2FA code toe te voegen voor
+  time_based:
+    value: Tijdgebaseerd
+
+  # devices
+  paired_devices:
+    value: Mijn gekoppelde apparaten
+  footer:
+    value: Je kan met zoveel apparaten koppelen als je wilt.
+  no_push_warning_title:
+    value: We willen je niet pushen...
+  no_push_warning_text:
+    value: |-
+      Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
+
+      Je kunt Keyn toestaan berichten te versturen via Instellingen > Keyn > Berichtgeving.
+      
+      Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.
+  open_settings:
+    value: Open instellingen
+  pairing:
+    value: Koppelen
+
+  value: Juridisch
+  value: Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.
+  value: Verwijder account
+  value: Mobiel
+  value: Feedback
+  value: Prijs
+  value: Privacy policy
+  value: Keyn (onbekende versie)
+  value: Deel fouten
+  value: De betaling wordt in rekening gebracht via uw AppleID account als de aankoop is bevestigd. Het abonnement wordt automatisch vernieuwd, tenzij het minstens 24 uur voor het einde van de periode geannuleerd is. De verlenging wordt binnen 24 uur voor het einde van het lopende abonnement in rekening gebracht. Je kunt je abonnementen beheren en annuleren via je AppStore accountinstellingen na de aankoop. Bij de aankoop gaat u akkoord met onze algemene voorwaarden en privacy policy.
+  value: Apparaten
+  value: Terug naar instellingen
+  value: Verwijder data
+  value: Keyn bewaart je wachtwoorden in een kluis en alleen je telefoon heeft de sleutel.
+  value: Rapporteer
+  value: Ingeschakeld
+  value: Het geheim dat gedeeld is door de website.
+  value: Reset Keyn
+  value: FAQ
+  value: Voltooi
+  value: Schrijf op a.u.b.
+  value: Privacy
+  value: Accounts details
+  value: Deel analytische data
+  value: Begin backup
+  value: Woorden zijn eenvoudig op te schrijven, maar één zou niet veilig zijn, dus geven we je er 12. Schrijf ze op en bewaar ze op een veilige plek.
+  value: Accounts
+  value: Paper backup
+  value: Instellingen
+  value: Privacy policy
+  value: Er was een probleem
+  value: Je bespaart 17%
+  value: Vorige
+  value: Het nde woord was
+  value: Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd. 
+  value: Privacy
+  value: Feedback
+  value: Een onbekend probleem is opgetreden.
+  value: Desktop
+  value: Premium
+  value: Algemene voorwaarden
+  value: Volgende
+  value: Nieuws van Keyn
+  value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
+  value: type
+  value: Aankoop
+  value: Gebruikersnaam
+  value: Voeg account toe
+  value: Kies je type abonnement
+  value: Een laatste check
+  value: De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor. 
+  value: Details gebruiker
+  value: URL
+  value: Het toevoegen van een account
+  value: geheim
+  value: Tijdstempel
+  value: Wachtwoord
+  value: Instellingen
+  value: Naam
+  value: Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig, iets dat niet op je telefoon staat.
+  value: Naam
+  value: Over
+  value: Keyn Premium
+  value: Koppelen
+  value: Algemeen
