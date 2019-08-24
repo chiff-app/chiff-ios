@@ -1340,6 +1340,11 @@ Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
 			<key>value</key>
 			<string>Mijn gekoppelde apparaten</string>
 		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Koppelen</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>

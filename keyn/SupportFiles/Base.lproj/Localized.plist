@@ -1334,6 +1334,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>My paired devices</string>
 		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Pairing</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>
