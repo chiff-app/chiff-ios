@@ -4,10 +4,25 @@
 <dict>
 	<key>accounts</key>
 	<dict>
+		<key>2fa</key>
+		<dict>
+			<key>value</key>
+			<string>2FA code</string>
+		</dict>
 		<key>2fa_description</key>
 		<dict>
 			<key>value</key>
 			<string>De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor.</string>
+		</dict>
+		<key>account_details</key>
+		<dict>
+			<key>value</key>
+			<string>Accounts details</string>
+		</dict>
+		<key>add_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg 2FA code toe</string>
 		</dict>
 		<key>add_2fa_code</key>
 		<dict>
@@ -47,6 +62,11 @@
 			<key>value</key>
 			<string>Je kunt ook handmatig een account toevoegen</string>
 		</dict>
+		<key>code</key>
+		<dict>
+			<key>value</key>
+			<string>Code</string>
+		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
@@ -54,10 +74,20 @@
 			<key>value</key>
 			<string>Gekopieerd</string>
 		</dict>
+		<key>delete_account</key>
+		<dict>
+			<key>value</key>
+			<string>Verwijder account</string>
+		</dict>
 		<key>didnt_save</key>
 		<dict>
 			<key>value</key>
 			<string>Je hebt nog geen accounts opgeslagen</string>
+		</dict>
+		<key>enabled</key>
+		<dict>
+			<key>value</key>
+			<string>Ingeschakeld</string>
 		</dict>
 		<key>footer</key>
 		<dict>
@@ -94,6 +124,31 @@
 			<key>value</key>
 			<string>Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn</string>
 		</dict>
+		<key>my_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Mijn accounts</string>
+		</dict>
+		<key>name</key>
+		<dict>
+			<key>value</key>
+			<string>Naam</string>
+		</dict>
+		<key>password</key>
+		<dict>
+			<key>value</key>
+			<string>Wachtwoord</string>
+		</dict>
+		<key>report</key>
+		<dict>
+			<key>value</key>
+			<string>Rapporteer</string>
+		</dict>
+		<key>scan_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Scan de QR code om een 2FA code toe te voegen voor</string>
+		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>comment</key>
@@ -116,6 +171,11 @@
 			<key>value</key>
 			<string>Websites</string>
 		</dict>
+		<key>time_based</key>
+		<dict>
+			<key>value</key>
+			<string>Tijdgebaseerd</string>
+		</dict>
 		<key>two_fa_instruction</key>
 		<dict>
 			<key>comment</key>
@@ -128,6 +188,16 @@
 			<key>value</key>
 			<string>Update 2FA-code voor</string>
 		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade</string>
+		</dict>
+		<key>url</key>
+		<dict>
+			<key>value</key>
+			<string>URL</string>
+		</dict>
 		<key>url_warning</key>
 		<dict>
 			<key>value</key>
@@ -136,12 +206,17 @@
 		<key>user_details</key>
 		<dict>
 			<key>value</key>
-			<string>Gebruiker details</string>
+			<string>Gebruikersgegevens</string>
+		</dict>
+		<key>username</key>
+		<dict>
+			<key>value</key>
+			<string>Naam</string>
 		</dict>
 		<key>website_details</key>
 		<dict>
 			<key>value</key>
-			<string>Website details</string>
+			<string>Websitegegevens</string>
 		</dict>
 	</dict>
 	<key>backup</key>
@@ -155,6 +230,29 @@
 		<dict>
 			<key>value</key>
 			<string>Klaar</string>
+		</dict>
+		<key>explanation</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig, iets dat niet op je telefoon staat.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Woorden zijn eenvoudig op te schrijven, maar één zou niet veilig zijn, dus geven we je er 12. Schrijf ze op en bewaar ze op een veilige plek.</string>
+			</dict>
+		</dict>
+		<key>final_check</key>
+		<dict>
+			<key>value</key>
+			<string>Een laatste check</string>
 		</dict>
 		<key>great</key>
 		<dict>
@@ -170,6 +268,11 @@
 		<dict>
 			<key>value</key>
 			<string>Volgende</string>
+		</dict>
+		<key>please_write_down</key>
+		<dict>
+			<key>value</key>
+			<string>Schrijf op a.u.b.</string>
 		</dict>
 		<key>previous</key>
 		<dict>
@@ -210,10 +313,44 @@
 			<key>value</key>
 			<string>Apparaten</string>
 		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je kan met zoveel apparaten koppelen als je wilt.</string>
+		</dict>
+		<key>no_push_warning_text</key>
+		<dict>
+			<key>value</key>
+			<string>Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
+
+Je kunt Keyn toestaan berichten te versturen via Instellingen &gt; Keyn &gt; Berichtgeving.
+
+Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
+		</dict>
+		<key>no_push_warning_title</key>
+		<dict>
+			<key>value</key>
+			<string>We willen je niet pushen...</string>
+		</dict>
+		<key>open_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Open instellingen</string>
+		</dict>
 		<key>pair_with_device</key>
 		<dict>
 			<key>value</key>
 			<string>Koppel met je computer</string>
+		</dict>
+		<key>paired_devices</key>
+		<dict>
+			<key>value</key>
+			<string>Mijn gekoppelde apparaten</string>
+		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Koppelen</string>
 		</dict>
 		<key>pairing_explanation</key>
 		<dict>
@@ -462,6 +599,8 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		</dict>
 		<key>byebye</key>
 		<dict>
+			<key>end</key>
+			<integer>27</integer>
 			<key>start</key>
 			<integer>17</integer>
 			<key>value</key>
@@ -635,7 +774,7 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<key>working</key>
 		<dict>
 			<key>value</key>
-			<string>We werken constant om Keyn te verbeteren. Het deling van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+			<string>We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
 
 Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</string>
 		</dict>
@@ -1038,6 +1177,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 	</dict>
 	<key>settings</key>
 	<dict>
+		<key>about</key>
+		<dict>
+			<key>value</key>
+			<string>Over</string>
+		</dict>
 		<key>active</key>
 		<dict>
 			<key>value</key>
@@ -1053,7 +1197,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>comment</key>
 			<string>Description if backup is already completed</string>
 			<key>value</key>
-			<string>De paper backup is de enige manier om je accounts te herstellen wanneer je telefoon kwijt raakt of kapot gaat.</string>
+			<string>De paper backup is de enige manier om je accounts te herstellen als je telefoon kwijt raakt of kapot gaat.</string>
 		</dict>
 		<key>backup_not_finished</key>
 		<dict>
@@ -1066,6 +1210,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Je nieuwe abonnement zal ingaan nadat het huidige abonnement eindigt</string>
+		</dict>
+		<key>delete_data_button</key>
+		<dict>
+			<key>value</key>
+			<string>Verwijder data</string>
 		</dict>
 		<key>delete_data_warning</key>
 		<dict>
@@ -1089,6 +1238,16 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Bespaar 17%</string>
 		</dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>FAQ</string>
+		</dict>
+		<key>feedback</key>
+		<dict>
+			<key>value</key>
+			<string>Feedback</string>
+		</dict>
 		<key>feedback_description</key>
 		<dict>
 			<key>comment</key>
@@ -1099,7 +1258,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>feedback_footer</key>
 		<dict>
 			<key>value</key>
-			<string>Help ons Keyn te verbeteren door ons te laten weten wat je er van vindt. Heb je suggesties?</string>
+			<string>Help ons Keyn te verbeteren door ons te laten weten wat je er van vindt.</string>
 		</dict>
 		<key>feedback_submitted</key>
 		<dict>
@@ -1120,12 +1279,27 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Dit apparaat lijkt gekraakt te zijn (jailbreak). Andere applicaties hebben mogelijk toegang tot je wachtwoorden</string>
 		</dict>
+		<key>keyn_premium</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium</string>
+		</dict>
 		<key>legal</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for legal</string>
 			<key>value</key>
-			<string>Legal</string>
+			<string>Juridisch</string>
+		</dict>
+		<key>news_from_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>Nieuws van Keyn</string>
+		</dict>
+		<key>paper_backup</key>
+		<dict>
+			<key>value</key>
+			<string>Paper backup</string>
 		</dict>
 		<key>premium</key>
 		<dict>
@@ -1152,17 +1326,22 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>privacy_explanation</key>
 		<dict>
 			<key>value</key>
-			<string>Het delen van foutmeldingen en analytische gegevens helpt veel om Keyn te verbeteren. Please consider enabling it.</string>
+			<string>Het delen van foutmeldingen en analytische gegevens helpt ons veel om Keyn te verbeteren.</string>
 		</dict>
 		<key>privacy_policy</key>
 		<dict>
 			<key>value</key>
-			<string>privacy policy</string>
+			<string>Privacy policy</string>
 		</dict>
 		<key>read_more</key>
 		<dict>
 			<key>value</key>
 			<string>Lees meer</string>
+		</dict>
+		<key>reset_keyn_button</key>
+		<dict>
+			<key>value</key>
+			<string>Reset Keyn</string>
 		</dict>
 		<key>reset_keyn_warning</key>
 		<dict>
@@ -1195,19 +1374,34 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Instellingen</string>
 		</dict>
+		<key>share_analytics</key>
+		<dict>
+			<key>value</key>
+			<string>Deel analytische data</string>
+		</dict>
+		<key>share_errors</key>
+		<dict>
+			<key>value</key>
+			<string>Deel foutmeldingen</string>
+		</dict>
 		<key>success</key>
 		<dict>
 			<key>value</key>
 			<string>Gelukt</string>
 		</dict>
-		<key>terms_of_service</key>
+		<key>terms_of_use</key>
 		<dict>
 			<key>value</key>
-			<string>algemene voorwaarden</string>
+			<string>Algemene voorwaarden</string>
 		</dict>
 	</dict>
 	<key>storekit</key>
 	<dict>
+		<key>choose_plan</key>
+		<dict>
+			<key>value</key>
+			<string>Kies je type abonnement</string>
+		</dict>
 		<key>couldNotFind</key>
 		<dict>
 			<key>value</key>
@@ -1258,10 +1452,33 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Alle herstelbare transacties zijn verwerkt door de betalingswachtrij</string>
 		</dict>
+		<key>restore_button</key>
+		<dict>
+			<key>value</key>
+			<string>Ik heb al Keyn Premium</string>
+		</dict>
 		<key>status</key>
 		<dict>
 			<key>value</key>
 			<string>Status</string>
+		</dict>
+		<key>tabs</key>
+		<dict>
+			<key>accounts</key>
+			<dict>
+				<key>value</key>
+				<string>Accounts</string>
+			</dict>
+			<key>devices</key>
+			<dict>
+				<key>value</key>
+				<string>Apparaten</string>
+			</dict>
+			<key>settings</key>
+			<dict>
+				<key>value</key>
+				<string>Instellingen</string>
+			</dict>
 		</dict>
 		<key>title</key>
 		<dict>
@@ -1278,110 +1495,6 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Update het met je product ID's om de productinformatie op te halen</string>
 		</dict>
-	</dict>
-	<key>todo</key>
-	<dict>
-		<key>2fa</key>
-		<dict>
-			<key>value</key>
-			<string>2FA code</string>
-		</dict>
-		<key>account_details</key>
-		<dict>
-			<key>value</key>
-			<string>Accounts details</string>
-		</dict>
-		<key>add_2fa</key>
-		<dict>
-			<key>value</key>
-			<string>Voeg 2FA code toe</string>
-		</dict>
-		<key>code</key>
-		<dict>
-			<key>value</key>
-			<string>Code</string>
-		</dict>
-		<key>footer</key>
-		<dict>
-			<key>value</key>
-			<string>Je kan met zoveel apparaten koppelen als je wilt.</string>
-		</dict>
-		<key>my_accounts</key>
-		<dict>
-			<key>value</key>
-			<string>Mijn accounts</string>
-		</dict>
-		<key>name</key>
-		<dict>
-			<key>value</key>
-			<string>Naam</string>
-		</dict>
-		<key>no_push_warning_text</key>
-		<dict>
-			<key>value</key>
-			<string>Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
-
-Je kunt Keyn toestaan berichten te versturen via Instellingen &gt; Keyn &gt; Berichtgeving.
-
-Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
-		</dict>
-		<key>no_push_warning_title</key>
-		<dict>
-			<key>value</key>
-			<string>We willen je niet pushen...</string>
-		</dict>
-		<key>open_settings</key>
-		<dict>
-			<key>value</key>
-			<string>Open instellingen</string>
-		</dict>
-		<key>paired_devices</key>
-		<dict>
-			<key>value</key>
-			<string>Mijn gekoppelde apparaten</string>
-		</dict>
-		<key>pairing</key>
-		<dict>
-			<key>value</key>
-			<string>Koppelen</string>
-		</dict>
-		<key>password</key>
-		<dict>
-			<key>value</key>
-			<string>Wachtwoord</string>
-		</dict>
-		<key>scan_2fa</key>
-		<dict>
-			<key>value</key>
-			<string>Scan de QR code om een 2FA code toe te voegen voor</string>
-		</dict>
-		<key>time_based</key>
-		<dict>
-			<key>value</key>
-			<string>Tijdgebaseerd</string>
-		</dict>
-		<key>upgrade</key>
-		<dict>
-			<key>value</key>
-			<string>upgrade</string>
-		</dict>
-		<key>url</key>
-		<dict>
-			<key>value</key>
-			<string>URL</string>
-		</dict>
-		<key>user_details</key>
-		<dict>
-			<key>value</key>
-			<string>Gebruikersgegevens</string>
-		</dict>
-		<key>username</key>
-		<dict>
-			<key>value</key>
-			<string>Gebruikersnaam</string>
-		</dict>
-		<key>value</key>
-		<string>Algemeen</string>
 	</dict>
 </dict>
 </plist>

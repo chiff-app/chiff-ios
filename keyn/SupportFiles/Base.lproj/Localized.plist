@@ -1252,6 +1252,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>All restorable transactions have been processed by the payment queue</string>
 		</dict>
+		<key>restore_button</key>
+		<dict>
+			<key>value</key>
+			<string>I already have Keyn Premium</string>
+		</dict>
 		<key>status</key>
 		<dict>
 			<key>value</key>
@@ -1280,6 +1285,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>2FA code</string>
 		</dict>
+		<key>about</key>
+		<dict>
+			<key>value</key>
+			<string>About</string>
+		</dict>
 		<key>account_details</key>
 		<dict>
 			<key>value</key>
@@ -1295,10 +1305,35 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Code</string>
 		</dict>
+		<key>explanation</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn keeps your passwords in a safe and only your phone has the key.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>So if your phone gets lost or stolen, you need a backup, something that's not on your phone.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.</string>
+			</dict>
+			<key>value</key>
+			<string>secret</string>
+		</dict>
 		<key>footer</key>
 		<dict>
 			<key>value</key>
 			<string>You can pair with as many devices as you want.</string>
+		</dict>
+		<key>keyn_premium</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium</string>
 		</dict>
 		<key>my_accounts</key>
 		<dict>
@@ -1309,6 +1344,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Name</string>
+		</dict>
+		<key>news_from_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>News from Keyn</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -1339,10 +1379,20 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Pairing</string>
 		</dict>
+		<key>paper_backup</key>
+		<dict>
+			<key>value</key>
+			<string>Paper backup</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>
 			<string>Password</string>
+		</dict>
+		<key>privacy</key>
+		<dict>
+			<key>value</key>
+			<string>Privacy</string>
 		</dict>
 		<key>scan_2fa</key>
 		<dict>
@@ -1374,8 +1424,6 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Username</string>
 		</dict>
-		<key>value</key>
-		<string>General</string>
 	</dict>
 </dict>
 </plist>
