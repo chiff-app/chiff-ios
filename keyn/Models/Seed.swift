@@ -50,17 +50,27 @@ struct Seed {
             return
         }
         do {
+
             let seed = try Crypto.shared.generateSeed()
             let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
             let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-            try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-            try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-
-            BackupManager.shared.initialize(seed: backupSeed, context: context, completionHandler: completionHandler)
+            BackupManager.shared.initialize(seed: backupSeed, context: context) { error in
+                do {
+                    if let error = error {
+                        throw error
+                    }
+                    try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+                    try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+                    try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+                    completionHandler(nil)
+                } catch {
+                    BackupManager.shared.deleteAllKeys()
+                    try? delete()
+                    completionHandler(error)
+                }
+            }
         } catch {
-            BackupManager.shared.deleteAllKeys()
             try? delete()
             completionHandler(error)
         }

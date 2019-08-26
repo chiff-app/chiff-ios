@@ -21,11 +21,19 @@ class PasswordGeneratorTests: XCTestCase {
         TestHelper.deleteLocalData()
     }
     
-    func testGeneratePasswordShouldReturnPassword() throws {
+    func testGeneratePasswordShouldReturnPasswordv0() throws {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
-        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil, version: 0)
         let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
         XCTAssertEqual("RMMbQu1QVLIAchpgm7!.<CcL9EM[KFJ(", password)
+        XCTAssertEqual(index, 0)
+    }
+
+    func testGeneratePasswordShouldReturnPasswordv1() throws {
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: nil)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil, version: 1)
+        let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
+        XCTAssertEqual("}a`]mSI]TRsO@juAxH0YHgDCP<v~THow", password)
         XCTAssertEqual(index, 0)
     }
     

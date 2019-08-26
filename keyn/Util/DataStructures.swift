@@ -197,6 +197,7 @@ struct BackupAccount: Codable {
     var enabled: Bool
     var tokenURL: URL?
     var tokenSecret: Data?
+    var version: Int
 
     enum CodingKeys: CodingKey {
         case id
@@ -210,6 +211,7 @@ struct BackupAccount: Codable {
         case enabled
         case tokenURL
         case tokenSecret
+        case version
     }
 
     init(account: Account, tokenURL: URL?, tokenSecret: Data?) {
@@ -224,6 +226,7 @@ struct BackupAccount: Codable {
         self.enabled = account.enabled
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
+        self.version = account.version
     }
 
     init(from decoder: Decoder) throws {
@@ -239,6 +242,7 @@ struct BackupAccount: Codable {
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
     }
 
 }

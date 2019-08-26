@@ -32,6 +32,10 @@ extension String {
     var sha256: String {
         return Crypto.shared.sha256(from: self)
     }
+
+    var sha256Data: Data {
+        return Crypto.shared.sha256(from: self.data)
+    }
     
     var fromBase64: Data? {
         return try? Crypto.shared.convertFromBase64(from: self)
@@ -209,8 +213,8 @@ extension UIViewController {
         }
     }
 
-    func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+    func showError(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true)
     }
