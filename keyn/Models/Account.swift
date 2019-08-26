@@ -12,6 +12,7 @@ enum AccountError: KeynError {
     case accountsNotLoaded
     case notFound
     case missingContext
+    case passwordGeneration
 }
 
 /*
@@ -31,6 +32,7 @@ struct Account {
     var askToLogin: Bool?
     var askToChange: Bool?
     var enabled: Bool
+    var version: Int
 
     var synced: Bool {
         do {
@@ -47,8 +49,9 @@ struct Account {
         self.sites = sites
         self.username = username
         self.enabled = false
+        self.version = 1
 
-        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, context: context)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, context: context, version: version)
         if let password = password {
             passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
         } else {
@@ -58,14 +61,14 @@ struct Account {
         let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
         self.passwordIndex = index  
         self.lastPasswordUpdateTryIndex = index
-        if password != nil {
-            assert(generatedPassword == password, "Password offset wasn't properly generated.")
+        guard password == nil || generatedPassword == password else {
+            throw AccountError.passwordGeneration
         }
 
         try save(password: generatedPassword)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -75,11 +78,12 @@ struct Account {
         self.askToLogin = askToLogin
         self.askToChange = askToChange
         self.enabled = enabled
+        self.version = version
     }
 
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
-        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context, version: version)
         let (newPassword, index) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex + 1, offset: offset)
         self.lastPasswordUpdateTryIndex = index
         let accountData = try PropertyListEncoder().encode(self)
@@ -163,12 +167,12 @@ struct Account {
                 self.askToChange = true
             }
             let newIndex = passwordIndex + 1
-            let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, context: context)
+            let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, context: context, version: version)
             self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
         } else if let newUsername = newUsername {
-            let passwordGenerator = PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, context: context)
+            let passwordGenerator = PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, context: context, version: version)
             self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(context: context))
         }
 
@@ -183,7 +187,7 @@ struct Account {
     mutating func updatePasswordAfterConfirmation(context: LAContext?) throws {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
 
-        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context)
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context, version: version)
         let (newPassword, newIndex) = try passwordGenerator.generate(index: lastPasswordUpdateTryIndex, offset: offset)
 
         self.passwordIndex = newIndex
@@ -260,9 +264,13 @@ struct Account {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
                 throw CodingError.unexpectedData
             }
-            let account = try decoder.decode(Account.self, from: accountData)
-            if sync && !account.synced {
-                try? account.backup()
+            var account = try decoder.decode(Account.self, from: accountData)
+            if sync {
+                if account.version == 0 {
+                    account.updateVersion(context: context)
+                } else if !account.synced {
+                    try? account.backup()
+                }
             }
             return (account.id, account)
         })
@@ -293,10 +301,11 @@ struct Account {
                               passwordOffset: backupAccount.passwordOffset,
                               askToLogin: backupAccount.askToLogin,
                               askToChange: backupAccount.askToChange,
-                              enabled: backupAccount.enabled)
+                              enabled: backupAccount.enabled,
+                              version: backupAccount.version)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
-        let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, context: context)
+        let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, context: context, version: account.version)
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
         
         assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
@@ -423,6 +432,7 @@ extension Account: Codable {
         case askToLogin
         case askToChange
         case enabled
+        case version
     }
 
     init(from decoder: Decoder) throws {
@@ -436,6 +446,29 @@ extension Account: Codable {
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+    }
+
+}
+
+// Version migration
+extension Account {
+
+    mutating func updateVersion(context: LAContext?) {
+        guard version == 0 else {
+            return
+        }
+        do {
+            let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context, version: 1)
+            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password())
+            version = 1
+            let accountData = try PropertyListEncoder().encode(self)
+            try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
+            try backup()
+        } catch {
+            Logger.shared.warning("Error updating account version", error: error, userInfo: nil)
+        }
+
     }
 
 }

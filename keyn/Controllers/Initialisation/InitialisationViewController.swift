@@ -35,7 +35,7 @@ class InitialisationViewController: UIViewController {
                             self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
                         }
                     } else if let error = error {
-                        self.showError(message:"\("errors.seed_creation".localized): \(error)")
+                        self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
                     } else {
                         self.registerForPushNotifications()
                         Logger.shared.analytics(.seedCreated)
