@@ -23,7 +23,10 @@ enum KeynButtonType: String {
 
     @IBInspectable var localizationKey: String? = nil {
         didSet {
-            setTitle(localizationKey?.localized, for: .normal)
+            UIView.performWithoutAnimation {
+                setTitle(localizationKey?.localized, for: .normal)
+                layoutIfNeeded()
+            }
         }
     }
 
