@@ -84,7 +84,7 @@
 		49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C132266044D0094D3ED /* SiteTableViewCell.swift */; };
 		49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49774C1722664DC30094D3ED /* StartBackupViewController.swift */; };
 		497828862285712C00D30C42 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
-		497B4E8C23101B0300ED7E4A /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B4E8B23101B0300ED7E4A /* LocalizableButton.swift */; };
+		497B4E8C23101B0300ED7E4A /* UnderlinedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B4E8B23101B0300ED7E4A /* UnderlinedButton.swift */; };
 		497B4E90231027F400ED7E4A /* LocalizableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */; };
 		497D21B7205A80800040E0C0 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
@@ -93,6 +93,7 @@
 		497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */; };
 		4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */; };
 		498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498FF17B22B0F3490072C3AE /* TabBarGradient.swift */; };
+		49911E80231413DA007905DF /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
@@ -314,7 +315,7 @@
 		49774C132266044D0094D3ED /* SiteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTableViewCell.swift; sourceTree = "<group>"; };
 		49774C1722664DC30094D3ED /* StartBackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartBackupViewController.swift; sourceTree = "<group>"; };
 		497828852285712C00D30C42 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		497B4E8B23101B0300ED7E4A /* LocalizableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableButton.swift; sourceTree = "<group>"; };
+		497B4E8B23101B0300ED7E4A /* UnderlinedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedButton.swift; sourceTree = "<group>"; };
 		497B4E8E2310220C00ED7E4A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableTextField.swift; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
@@ -322,6 +323,7 @@
 		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
 		498FF17B22B0F3490072C3AE /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
+		49911E7F231413DA007905DF /* LocalizableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableButton.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -522,7 +524,8 @@
 				4914498622C0F3310021D081 /* KeynTabBar.swift */,
 				496F0DEC22429C2F007C4152 /* KeynTabButton.swift */,
 				4905E09A230ECD3B00EE380E /* KeynLabel.swift */,
-				497B4E8B23101B0300ED7E4A /* LocalizableButton.swift */,
+				497B4E8B23101B0300ED7E4A /* UnderlinedButton.swift */,
+				49911E7F231413DA007905DF /* LocalizableButton.swift */,
 				497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */,
 				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
@@ -1338,6 +1341,7 @@
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
+				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
 				49062C6D2214679400A30669 /* Localizer.swift in Sources */,
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
@@ -1353,7 +1357,7 @@
 				49721F9C2128E5830090AF48 /* API.swift in Sources */,
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
-				497B4E8C23101B0300ED7E4A /* LocalizableButton.swift in Sources */,
+				497B4E8C23101B0300ED7E4A /* UnderlinedButton.swift in Sources */,
 				492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
