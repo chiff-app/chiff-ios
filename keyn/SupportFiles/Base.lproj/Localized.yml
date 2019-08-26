@@ -611,11 +611,10 @@ storekit:
   choose_plan:
     value: Choose your plan
 
-  tabs:
-    accounts:
-      value: Accounts
-    devices:
-      value: Devices
-    settings:
-      value: Settings
-      
+tabs:
+  accounts:
+    value: Accounts
+  devices:
+    value: Devices
+  settings:
+    value: Settings

@@ -165,9 +165,9 @@ accounts:
   url_warning:
     value: ⚠️ Keyn werkt niet als de URL incorrect is.
   footer:
-    value: Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan.
+    value: Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om zoveel accounts toe te voegen als je wilt.
   footer_unlimited:
-    value: Je kunt zoveel accounts opslaan als je wilt.
+    value: Je kunt zoveel accounts toevoegen als je wilt.
   footer_account_overflow:  
     value: Je kunt slechts 8 accounts gebruiken om in te loggen met je computer. Upgrade naar Keyn Premium om met alle accounts in te loggen.
   footer_account_enabled:
@@ -295,7 +295,7 @@ settings:
   news_from_keyn:
     value: Nieuws van Keyn
   about:
-    value: Over
+    value: Over Keyn
   paper_backup:
     value: Paper backup
   terms_of_use:
@@ -441,9 +441,9 @@ requests:
   confirm_login:
     value: Bevestig login
   add_account:
-    value: Voeg account toe
+    value: Account toevoegen
   add_accounts:
-    value: Voeg accounts toe
+    value: Accounts toevoegen
   change_password:
     value: Wijzig wachtwoord
   fill_password:
@@ -475,16 +475,16 @@ requests:
   upgrade_keyn_for_add:
     value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
   accounts_left_1:
-    value: You can only add
+    value: Je kan nog maar
     comment: Je kunt nog 1 account toevoegen. Check in code.
   accounts_left_2_plural:
     value: extra accounts
   accounts_left_2_single:
     value: extra account
   accounts_left_3:
-    value: in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
+    value: toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
   no_accounts_left:
-    value: Je kunt niet meer accounts toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
+    value: Je kunt geen accounts meer toevoegen in de gratis versie van Keyn. Upgrade om een onbeperkt aantal accounts te bewaren.
   return:
     value: Terug
   upgrade:
@@ -614,10 +614,10 @@ storekit:
   choose_plan:
     value: Kies je type abonnement
 
-  tabs:
-    accounts:
-      value: Accounts
-    devices:
-      value: Apparaten
-    settings:
-      value: Instellingen
+tabs:
+  accounts:
+    value: Accounts
+  devices:
+    value: Apparaten
+  settings:
+    value: Instellingen

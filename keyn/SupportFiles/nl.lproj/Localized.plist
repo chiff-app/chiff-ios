@@ -92,7 +92,7 @@
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan.</string>
+			<string>Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om zoveel accounts toe te voegen als je wilt.</string>
 		</dict>
 		<key>footer_account_enabled</key>
 		<dict>
@@ -107,7 +107,7 @@
 		<key>footer_unlimited</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt zoveel accounts opslaan als je wilt.</string>
+			<string>Je kunt zoveel accounts toevoegen als je wilt.</string>
 		</dict>
 		<key>how_to_add</key>
 		<dict>
@@ -989,7 +989,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>comment</key>
 			<string>Je kunt nog 1 account toevoegen. Check in code.</string>
 			<key>value</key>
-			<string>You can only add</string>
+			<string>Je kan nog maar</string>
 		</dict>
 		<key>accounts_left_2_plural</key>
 		<dict>
@@ -1004,17 +1004,17 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>accounts_left_3</key>
 		<dict>
 			<key>value</key>
-			<string>in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.</string>
+			<string>toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
-			<string>Voeg account toe</string>
+			<string>Account toevoegen</string>
 		</dict>
 		<key>add_accounts</key>
 		<dict>
 			<key>value</key>
-			<string>Voeg accounts toe</string>
+			<string>Accounts toevoegen</string>
 		</dict>
 		<key>add_site</key>
 		<dict>
@@ -1104,7 +1104,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>no_accounts_left</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt niet meer accounts toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.</string>
+			<string>Je kunt geen accounts meer toevoegen in de gratis versie van Keyn. Upgrade om een onbeperkt aantal accounts te bewaren.</string>
 		</dict>
 		<key>on</key>
 		<dict>
@@ -1180,7 +1180,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>about</key>
 		<dict>
 			<key>value</key>
-			<string>Over</string>
+			<string>Over Keyn</string>
 		</dict>
 		<key>active</key>
 		<dict>
@@ -1462,24 +1462,6 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Status</string>
 		</dict>
-		<key>tabs</key>
-		<dict>
-			<key>accounts</key>
-			<dict>
-				<key>value</key>
-				<string>Accounts</string>
-			</dict>
-			<key>devices</key>
-			<dict>
-				<key>value</key>
-				<string>Apparaten</string>
-			</dict>
-			<key>settings</key>
-			<dict>
-				<key>value</key>
-				<string>Instellingen</string>
-			</dict>
-		</dict>
 		<key>title</key>
 		<dict>
 			<key>value</key>
@@ -1494,6 +1476,24 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Update het met je product ID's om de productinformatie op te halen</string>
+		</dict>
+	</dict>
+	<key>tabs</key>
+	<dict>
+		<key>accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Accounts</string>
+		</dict>
+		<key>devices</key>
+		<dict>
+			<key>value</key>
+			<string>Apparaten</string>
+		</dict>
+		<key>settings</key>
+		<dict>
+			<key>value</key>
+			<string>Instellingen</string>
 		</dict>
 	</dict>
 </dict>
