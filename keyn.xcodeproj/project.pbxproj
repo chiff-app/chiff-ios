@@ -42,6 +42,11 @@
 		49214B7821032CFD00C793DE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		49214B882103359B00C793DE /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		49235FF323151BC3003C4A0F /* privacy_policy.md in Resources */ = {isa = PBXBuildFile; fileRef = 49235FF523151BC3003C4A0F /* privacy_policy.md */; };
+		49235FF923152686003C4A0F /* WebView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49235FF823152686003C4A0F /* WebView.bundle */; };
+		49235FFC23152C73003C4A0F /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
+		49235FFD23152C73003C4A0F /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */; };
+		49236000231534F2003C4A0F /* terms_of_use.md in Resources */ = {isa = PBXBuildFile; fileRef = 49236002231534F2003C4A0F /* terms_of_use.md */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
@@ -75,8 +80,6 @@
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
 		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
 		49721F9D2128EED00090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
-		4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7022F8157E0004E365 /* privacy_policy.html */; };
-		4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */ = {isa = PBXBuildFile; fileRef = 4973BB7122F8157E0004E365 /* privacy_policy_files */; };
 		4973BB7522F818470004E365 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7422F818470004E365 /* TermsViewController.swift */; };
 		4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7622F84C490004E365 /* AboutViewController.swift */; };
 		4973BB7922F866D90004E365 /* AccessoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */; };
@@ -122,8 +125,6 @@
 		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
-		49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */; };
-		49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */; };
 		49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1E622425904005E8EBF /* KeynButton.swift */; };
 		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
@@ -153,8 +154,6 @@
 		49F2A0FF2214322700429875 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F8221431C700429875 /* DataStructures.swift */; };
 		49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
-		49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
-		49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */; };
 		49FA7F761FB9E08E00EDB367 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* Session.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
@@ -274,6 +273,13 @@
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
+		49235FF423151BC3003C4A0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Base; path = Base.lproj/privacy_policy.md; sourceTree = "<group>"; };
+		49235FF623151BCC003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/privacy_policy.md; sourceTree = "<group>"; };
+		49235FF823152686003C4A0F /* WebView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WebView.bundle; sourceTree = "<group>"; };
+		49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		49236001231534F2003C4A0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Base; path = Base.lproj/terms_of_use.md; sourceTree = "<group>"; };
+		49236003231534F3003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynBarButton.swift; sourceTree = "<group>"; };
 		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
@@ -305,8 +311,6 @@
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
 		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		4973BB7022F8157E0004E365 /* privacy_policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = privacy_policy.html; path = ../../../../../Desktop/privacy_policy.html; sourceTree = "<group>"; };
-		4973BB7122F8157E0004E365 /* privacy_policy_files */ = {isa = PBXFileReference; lastKnownFileType = folder; name = privacy_policy_files; path = ../../../../../Desktop/privacy_policy_files; sourceTree = "<group>"; };
 		4973BB7422F818470004E365 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4973BB7622F84C490004E365 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -345,7 +349,6 @@
 		49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
 		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
-		49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
 		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
 		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
@@ -369,7 +372,6 @@
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		49F2A0F622142F0400429875 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
-		49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
@@ -547,15 +549,6 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		4973BB6F22F815270004E365 /* HTML */ = {
-			isa = PBXGroup;
-			children = (
-				4973BB7122F8157E0004E365 /* privacy_policy_files */,
-				4973BB7022F8157E0004E365 /* privacy_policy.html */,
-			);
-			path = HTML;
-			sourceTree = "<group>";
-		};
 		497FDD8C1FFBDB5F00AAB0DA /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -657,7 +650,6 @@
 		49E766521F7E6F420022C042 /* keyn */ = {
 			isa = PBXGroup;
 			children = (
-				4973BB6F22F815270004E365 /* HTML */,
 				013438C5220C45F3000685B2 /* AppDelegate */,
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
@@ -724,6 +716,13 @@
 		49F2A106221434C600429875 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				49235FF823152686003C4A0F /* WebView.bundle */,
+				49235FF523151BC3003C4A0F /* privacy_policy.md */,
+				4905772D2215BA5C006D98C0 /* wordlist.txt */,
+				49236002231534F2003C4A0F /* terms_of_use.md */,
+				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
+				49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */,
+				49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */,
 				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				4967F424225CC7100069330D /* Localized.yml */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
@@ -731,10 +730,6 @@
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
-				4905772D2215BA5C006D98C0 /* wordlist.txt */,
-				49F9BDCE22427A2100440C86 /* Montserrat-Medium.ttf */,
-				49E4A1E0224258B1005E8EBF /* Montserrat-Bold.ttf */,
-				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
 			);
 			path = SupportFiles;
 			sourceTree = "<group>";
@@ -1037,16 +1032,17 @@
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				4933535F230D8C5A00549DA5 /* Initialisation.storyboard in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
-				4973BB7222F8157E0004E365 /* privacy_policy.html in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E766601F7E6F420022C042 /* LaunchScreen.storyboard in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
-				4973BB7322F8157E0004E365 /* privacy_policy_files in Resources */,
+				49235FFD23152C73003C4A0F /* Montserrat-Bold.ttf in Resources */,
+				49236000231534F2003C4A0F /* terms_of_use.md in Resources */,
 				4933535C230D8C4A00549DA5 /* Feedback.storyboard in Resources */,
 				49335362230D8C6100549DA5 /* Request.storyboard in Resources */,
 				49E7665B1F7E6F420022C042 /* Main.storyboard in Resources */,
-				49E4A1E1224258B1005E8EBF /* Montserrat-Bold.ttf in Resources */,
-				49F9BDCF22427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
+				49235FF323151BC3003C4A0F /* privacy_policy.md in Resources */,
+				49235FFC23152C73003C4A0F /* Montserrat-Medium.ttf in Resources */,
+				49235FF923152686003C4A0F /* WebView.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,8 +1065,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
-				49E4A1E2224258B2005E8EBF /* Montserrat-Bold.ttf in Resources */,
-				49F9BDD022427A2100440C86 /* Montserrat-Medium.ttf in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
 				49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
@@ -1089,6 +1083,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Amplitude-iOS/Amplitude_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
+				"${BUILT_PRODUCTS_DIR}/Down/Down.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
@@ -1100,6 +1095,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude_iOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Down.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
@@ -1488,6 +1484,24 @@
 				4933536C230D8D0600549DA5 /* nl */,
 			);
 			name = Localized.plist;
+			sourceTree = "<group>";
+		};
+		49235FF523151BC3003C4A0F /* privacy_policy.md */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49235FF423151BC3003C4A0F /* Base */,
+				49235FF623151BCC003C4A0F /* nl */,
+			);
+			name = privacy_policy.md;
+			sourceTree = "<group>";
+		};
+		49236002231534F2003C4A0F /* terms_of_use.md */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49236001231534F2003C4A0F /* Base */,
+				49236003231534F3003C4A0F /* nl */,
+			);
+			name = terms_of_use.md;
 			sourceTree = "<group>";
 		};
 		4933535E230D8C4A00549DA5 /* Feedback.storyboard */ = {

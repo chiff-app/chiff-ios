@@ -118,6 +118,12 @@ popups:
     questionnaire_popup_title:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Vragenrondje!
+    close_warning:
+      value: Je kunt Keyn niet gebruiken als je niet akkoord gaat met de Algemene Voorwaarden. Weet je het zeker?
+    agree_terms:
+      value: Ik heb de Algemene Voorwaarden gelezen en ga akkoord
+    terms:
+      value: Algemene Voorwaarden
   responses:
     delete:
       value: Verwijder
@@ -518,7 +524,6 @@ initialization:
   byebye:
     value: Dag wachtwoorden, hallo Keyn
     start: 17
-    end: 27
   welcome_text:
     value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
   how_keyn_works:
@@ -542,6 +547,8 @@ initialization:
     end: 16
   agree:
     value: Akkoord
+  disagree:
+    value: Niet akkoord
   finish:
     value: Gereed
   initialize_keyn:

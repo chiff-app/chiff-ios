@@ -599,8 +599,6 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		</dict>
 		<key>byebye</key>
 		<dict>
-			<key>end</key>
-			<integer>27</integer>
 			<key>start</key>
 			<integer>17</integer>
 			<key>value</key>
@@ -633,6 +631,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 				<key>value</key>
 				<string>Keyn vult je inloggegevens in de juiste velden.</string>
 			</dict>
+		</dict>
+		<key>disagree</key>
+		<dict>
+			<key>value</key>
+			<string>Niet akkoord</string>
 		</dict>
 		<key>enter_words</key>
 		<dict>
@@ -801,6 +804,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 	<dict>
 		<key>questions</key>
 		<dict>
+			<key>agree_terms</key>
+			<dict>
+				<key>value</key>
+				<string>Ik heb de Algemene Voorwaarden gelezen en ga akkoord</string>
+			</dict>
 			<key>camera_permission</key>
 			<dict>
 				<key>value</key>
@@ -819,6 +827,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 				<string>Tell the user he can complete the backup process later</string>
 				<key>value</key>
 				<string>Je kunt de backup later voltooien.</string>
+			</dict>
+			<key>close_warning</key>
+			<dict>
+				<key>value</key>
+				<string>Je kunt Keyn niet gebruiken als je niet akkoord gaat met de Algemene Voorwaarden. Weet je het zeker?</string>
 			</dict>
 			<key>delete_account</key>
 			<dict>
@@ -876,6 +889,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<dict>
 				<key>value</key>
 				<string>Herstel accounts</string>
+			</dict>
+			<key>terms</key>
+			<dict>
+				<key>value</key>
+				<string>Algemene Voorwaarden</string>
 			</dict>
 		</dict>
 		<key>responses</key>
