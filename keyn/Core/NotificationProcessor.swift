@@ -33,28 +33,27 @@ class NotificationProcessor {
 
         let siteName = keynRequest.siteName ?? "Unknown"
 
-        #warning("TODO: Localize this")
         switch keynRequest.type {
         case .add, .addAndLogin, .addToExisting:
-            content.title = "Add account"
+            content.title = "notifications.add_account".localized
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .addBulk:
-            content.title = "Add accounts"
+            content.title = "notifications.add_accounts".localized
             content.body = "\(keynRequest.count!) accounts from \(session.browser) on \(session.os)."
         case .end:
-            content.title = "Session ended"
+            content.title = "notifications.end_session".localized
             content.body = "\(session.browser) on \(session.os)."
         case .change:
-            content.title = "Change password request"
+            content.title = "notifications.change_password".localized
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .login:
-            content.title = "Login request"
+            content.title = "notifications.login".localized
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .fill:
-            content.title = "Fill password request"
+            content.title = "notifications.fill_password".localized
             content.body = "\(siteName) on \(session.browser) on \(session.os)."
         case .pair:
-            content.title = "Pairing request"
+            content.title = "notifications.pairing".localized
             content.body = "\(session.browser) on \(session.os)."
         default:
             content.body = "Unknown request"

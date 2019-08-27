@@ -59,10 +59,14 @@
 		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
+		493DB00B231577B40061CB5C /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */; };
+		493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
+		493DB00D231578380061CB5C /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
 		4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262F22BBA2FC00545118 /* BackupCircle.swift */; };
 		4950263222BBA31200545118 /* FilledCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950263122BBA31200545118 /* FilledCircle.swift */; };
+		4955DE642315773600C66996 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4955DE632315773500C66996 /* MainInterface.storyboard */; };
 		495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
 		495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */; };
@@ -165,7 +169,6 @@
 		611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */; };
 		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
-		611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 611F4B4A2146B47300B35A89 /* MainInterface.storyboard */; };
 		611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		611F4B562146B52600B35A89 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
@@ -287,7 +290,6 @@
 		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
 		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
-		4933536A230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
 		4933536C230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Localized.plist; sourceTree = "<group>"; };
 		4933536D230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/wordlist.txt; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 		4950262D22BBA2DC00545118 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		4950262F22BBA2FC00545118 /* BackupCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCircle.swift; sourceTree = "<group>"; };
 		4950263122BBA31200545118 /* FilledCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledCircle.swift; sourceTree = "<group>"; };
+		4955DE632315773500C66996 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewCell.swift; sourceTree = "<group>"; };
 		495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynNavigationController.swift; sourceTree = "<group>"; };
 		495E5B551FAC8EFA002E6AC6 /* AccountsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
@@ -383,7 +386,6 @@
 		611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireIntroductionViewController.swift; sourceTree = "<group>"; };
 		611F4B452146B47300B35A89 /* keynCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
-		611F4B4B2146B47300B35A89 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		611F4B4D2146B47300B35A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynCredentialProvider.entitlements; sourceTree = "<group>"; };
 		611F4B652146C63F00B35A89 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -781,7 +783,7 @@
 		611F4B472146B47300B35A89 /* keynCredentialProvider */ = {
 			isa = PBXGroup;
 			children = (
-				611F4B4A2146B47300B35A89 /* MainInterface.storyboard */,
+				4955DE632315773500C66996 /* MainInterface.storyboard */,
 				498FF17B22B0F3490072C3AE /* TabBarGradient.swift */,
 				611F4B4D2146B47300B35A89 /* Info.plist */,
 				611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */,
@@ -1067,9 +1069,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				493DB00B231577B40061CB5C /* Montserrat-Bold.ttf in Resources */,
 				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
+				4955DE642315773600C66996 /* MainInterface.storyboard in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
-				611F4B4C2146B47300B35A89 /* MainInterface.storyboard in Resources */,
+				493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */,
 				49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1414,6 +1418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
+				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B622146B65200B35A89 /* API.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
@@ -1516,15 +1521,6 @@
 				4933536B230D8D0500549DA5 /* nl */,
 			);
 			name = Localized.yml;
-			sourceTree = "<group>";
-		};
-		611F4B4A2146B47300B35A89 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				611F4B4B2146B47300B35A89 /* Base */,
-				4933536A230D8D0500549DA5 /* nl */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

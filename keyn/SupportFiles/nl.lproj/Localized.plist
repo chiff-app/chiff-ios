@@ -62,6 +62,11 @@
 			<key>value</key>
 			<string>Je kunt ook handmatig een account toevoegen</string>
 		</dict>
+		<key>choose</key>
+		<dict>
+			<key>value</key>
+			<string>Kies een account om gebruikersnaam en wachtwoord in te vullen.</string>
+		</dict>
 		<key>code</key>
 		<dict>
 			<key>value</key>
@@ -304,6 +309,180 @@
 			<string>woord</string>
 		</dict>
 	</dict>
+	<key>date_components</key>
+	<dict>
+		<key>ago</key>
+		<dict>
+			<key>value</key>
+			<string>geleden</string>
+		</dict>
+		<key>day</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Morgen</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Gisteren</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>dagen</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>dag</string>
+			</dict>
+		</dict>
+		<key>hour</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Over een uur</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Een uur geleden</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>uren</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>uur</string>
+			</dict>
+		</dict>
+		<key>in</key>
+		<dict>
+			<key>value</key>
+			<string>over</string>
+		</dict>
+		<key>minute</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>In een minuut</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Een minuut geleden</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>minuten</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>minuut</string>
+			</dict>
+		</dict>
+		<key>month</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Volgende maand</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Vorige maand</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>maanden</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>maand</string>
+			</dict>
+		</dict>
+		<key>second</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Bijna</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Zojuist</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>seconden</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>seconde</string>
+			</dict>
+		</dict>
+		<key>week</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Volgende week</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Vorige week</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>weken</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>week</string>
+			</dict>
+		</dict>
+		<key>year</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Volgend jaar</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Vorig jaar</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>jaren</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>jaar</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>devices</key>
 	<dict>
 		<key>devices</key>
@@ -331,6 +510,11 @@ Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
 		<dict>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
+		</dict>
+		<key>on</key>
+		<dict>
+			<key>value</key>
+			<string>op</string>
 		</dict>
 		<key>open_settings</key>
 		<dict>
@@ -844,6 +1028,44 @@ Thank you!</string>
 			<string>We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
 
 Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</string>
+		</dict>
+	</dict>
+	<key>notifications</key>
+	<dict>
+		<key>add_account</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg account toe</string>
+		</dict>
+		<key>add_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg accounts toe</string>
+		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Verander wachtwoord</string>
+		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>Sessie beëindigd</string>
+		</dict>
+		<key>fill_password</key>
+		<dict>
+			<key>value</key>
+			<string>Wachtwoord invullen</string>
+		</dict>
+		<key>login</key>
+		<dict>
+			<key>value</key>
+			<string>Inloggen</string>
+		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Koppelen</string>
 		</dict>
 	</dict>
 	<key>numbers</key>

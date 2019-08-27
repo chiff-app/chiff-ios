@@ -47,7 +47,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.browser) on \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.browser) \("devices.on".localized) \(session.os)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
                 do {
@@ -97,7 +97,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
         if let cell = cell as? DevicesViewCell, Properties.browsers.contains(session.browser) {
-            cell.titleLabel.text = "\(session.browser) on \(session.os)"
+            cell.titleLabel.text = "\(session.browser) \("devices.on".localized) \(session.os)"
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
             cell.deviceLogo.image = UIImage(named: session.browser.lowercased())
         } else {
