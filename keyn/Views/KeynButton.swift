@@ -19,16 +19,7 @@ enum KeynButtonType: String {
     case outline
 }
 
-@IBDesignable class KeynButton: UIButton, XIBLocalizable {
-
-    @IBInspectable var localizationKey: String? = nil {
-        didSet {
-            UIView.performWithoutAnimation {
-                setTitle(localizationKey?.localized, for: .normal)
-                layoutIfNeeded()
-            }
-        }
-    }
+@IBDesignable class KeynButton: LocalizableButton {
 
     @IBInspectable var keynButtonType: String {
         get {

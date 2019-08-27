@@ -47,6 +47,8 @@
 		49235FFC23152C73003C4A0F /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
 		49235FFD23152C73003C4A0F /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */; };
 		49236000231534F2003C4A0F /* terms_of_use.md in Resources */ = {isa = PBXBuildFile; fileRef = 49236002231534F2003C4A0F /* terms_of_use.md */; };
+		4923600523156893003C4A0F /* LocalizableBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4923600423156893003C4A0F /* LocalizableBarButton.swift */; };
+		4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
@@ -280,6 +282,7 @@
 		49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		49236001231534F2003C4A0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Base; path = Base.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		49236003231534F3003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/terms_of_use.md; sourceTree = "<group>"; };
+		4923600423156893003C4A0F /* LocalizableBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableBarButton.swift; sourceTree = "<group>"; };
 		4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynBarButton.swift; sourceTree = "<group>"; };
 		492EC840224907FA0088F73D /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
@@ -288,7 +291,6 @@
 		4933535D230D8C4A00549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feedback.storyboard; sourceTree = "<group>"; };
 		49335360230D8C5A00549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Initialisation.storyboard; sourceTree = "<group>"; };
 		49335363230D8C6100549DA5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Request.storyboard; sourceTree = "<group>"; };
-		49335369230D8D0400549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Feedback.strings; sourceTree = "<group>"; };
 		4933536A230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MainInterface.strings; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
 		4933536C230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Localized.plist; sourceTree = "<group>"; };
@@ -526,9 +528,11 @@
 				4905E09A230ECD3B00EE380E /* KeynLabel.swift */,
 				497B4E8B23101B0300ED7E4A /* UnderlinedButton.swift */,
 				49911E7F231413DA007905DF /* LocalizableButton.swift */,
+				4923600423156893003C4A0F /* LocalizableBarButton.swift */,
 				497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */,
 				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
 				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
+				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */,
 			);
 			path = Views;
@@ -541,7 +545,6 @@
 				49F2A0F8221431C700429875 /* DataStructures.swift */,
 				493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */,
 				49F2A0F422142EB900429875 /* Extensions.swift */,
-				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				495E72BA22118717003132ED /* Logger.swift */,
 				49062C6C2214679400A30669 /* Localizer.swift */,
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
@@ -718,15 +721,15 @@
 			children = (
 				49235FF823152686003C4A0F /* WebView.bundle */,
 				49235FF523151BC3003C4A0F /* privacy_policy.md */,
-				4905772D2215BA5C006D98C0 /* wordlist.txt */,
 				49236002231534F2003C4A0F /* terms_of_use.md */,
+				4905772D2215BA5C006D98C0 /* wordlist.txt */,
+				4967F424225CC7100069330D /* Localized.yml */,
+				49062C7C22146D8700A30669 /* Localized.plist */,
 				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
 				49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */,
 				49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */,
 				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
-				4967F424225CC7100069330D /* Localized.yml */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
-				49062C7C22146D8700A30669 /* Localized.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
@@ -1363,6 +1366,7 @@
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
+				4923600523156893003C4A0F /* LocalizableBarButton.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,
 				49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */,
 				4973BB7922F866D90004E365 /* AccessoryTableViewCell.swift in Sources */,
@@ -1428,6 +1432,7 @@
 				49062C6F2214679400A30669 /* Localizer.swift in Sources */,
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
+				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
 				49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
@@ -1508,7 +1513,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				4933535D230D8C4A00549DA5 /* Base */,
-				49335369230D8D0400549DA5 /* nl */,
 			);
 			name = Feedback.storyboard;
 			sourceTree = "<group>";

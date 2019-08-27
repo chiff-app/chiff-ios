@@ -8,13 +8,12 @@
 
 import UIKit
 
-@IBDesignable class LocalizableButton: UIButton, XIBLocalizable {
+@IBDesignable class LocalizableBarButton: UIBarButtonItem, XIBLocalizable {
 
     @IBInspectable var localizationKey: String? = nil {
         didSet {
-            UIView.performWithoutAnimation {
-                setTitle(localizationKey?.localized, for: .normal)
-                layoutIfNeeded()
+            if let key = localizationKey {
+                title = key.localized
             }
         }
     }

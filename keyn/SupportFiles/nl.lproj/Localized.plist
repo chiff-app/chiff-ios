@@ -590,6 +590,70 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<string>Fout bij uitzetten infoberichten</string>
 		</dict>
 	</dict>
+	<key>feedback</key>
+	<dict>
+		<key>add_site</key>
+		<dict>
+			<key>value</key>
+			<string>Site toevoegen</string>
+		</dict>
+		<key>additional_info</key>
+		<dict>
+			<key>value</key>
+			<string>Wil je nog iets toevoegen?</string>
+		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Wachtwoord wijzigen</string>
+		</dict>
+		<key>feedback</key>
+		<dict>
+			<key>value</key>
+			<string>Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.</string>
+		</dict>
+		<key>finish</key>
+		<dict>
+			<key>value</key>
+			<string>Klaar</string>
+		</dict>
+		<key>logging_in</key>
+		<dict>
+			<key>value</key>
+			<string>Inloggen</string>
+		</dict>
+		<key>send</key>
+		<dict>
+			<key>value</key>
+			<string>Stuur</string>
+		</dict>
+		<key>start</key>
+		<dict>
+			<key>value</key>
+			<string>Start</string>
+		</dict>
+		<key>submit</key>
+		<dict>
+			<key>value</key>
+			<string>Stuur</string>
+		</dict>
+		<key>thanks</key>
+		<dict>
+			<key>value</key>
+			<string>That was all.
+Thank you!</string>
+		</dict>
+		<key>use_help</key>
+		<dict>
+			<key>value</key>
+			<string>We kunnen je hulp gebruiken</string>
+		</dict>
+		<key>what_did_not_work</key>
+		<dict>
+			<key>value</key>
+			<string>What didn't work?</string>
+		</dict>
+	</dict>
 	<key>initialization</key>
 	<dict>
 		<key>agree</key>
@@ -784,6 +848,16 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 	</dict>
 	<key>numbers</key>
 	<dict>
+		<key>five</key>
+		<dict>
+			<key>value</key>
+			<string>5</string>
+		</dict>
+		<key>four</key>
+		<dict>
+			<key>value</key>
+			<string>4</string>
+		</dict>
 		<key>one</key>
 		<dict>
 			<key>value</key>

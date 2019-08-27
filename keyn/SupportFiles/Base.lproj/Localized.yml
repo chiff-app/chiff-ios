@@ -6,6 +6,11 @@ numbers:
     value: '2'
   three: 
     value: '3'
+  four: 
+    value: '4'
+  five: 
+    value: '5'
+
 errors:
   local_authentication:
     biometry_not_available:
@@ -84,6 +89,7 @@ errors:
     value: Error unsubscribing to info notifications
   deleting:
       value: Error deleting backup data
+
 popups:
   questions:
     camera_permission:
@@ -148,6 +154,7 @@ popups:
       value: No, thanks
     settings:
       value: Open settings
+
 accounts:
   didnt_save:
     value: You didn’t save any of your accounts just yet.
@@ -235,6 +242,7 @@ accounts:
     value: Delete account
   report:  
     value: Report
+
 devices:
   devices:
     comment: Section title for devices
@@ -280,6 +288,7 @@ devices:
     value: Open settings
   pairing:  
     value: Pairing
+
 settings:
   settings:
     value: Settings
@@ -372,6 +381,7 @@ settings:
     value: Delete data
   reset_keyn_button:
     value: Reset Keyn
+
 backup:
   word:
     comment: The word for word
@@ -496,6 +506,7 @@ requests:
     value: Upgrade now
   confirm_request:
     value: Confirm request
+
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -506,6 +517,7 @@ registration:
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: This password has been found in
+
 initialization:
   get_started:
     value: Let's get started
@@ -585,6 +597,7 @@ initialization:
     value: Share usage statistics
   share_errors:
     value: Share error data
+
 storekit:
   title:
     value: With Keyn Premium, you can add an unlimited number of accounts to Keyn.
@@ -626,3 +639,31 @@ tabs:
     value: Devices
   settings:
     value: Settings
+
+feedback:
+  start:
+    value: Start
+  send:
+    value: Send
+  use_help:
+    value: We could use your help
+  submit:
+    value: Submit
+  thanks:
+    value: |-
+      That was all.
+      Thank you!
+  finish:
+    value: Finish
+  what_did_not_work:
+    value: What didn't work?  
+  logging_in: 
+    value: Logging in
+  change_password:
+    value: Changing password
+  add_site: 
+    value: Adding site
+  additional_info:
+    value: Anything you want to add?
+  feedback:
+    value: Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.
