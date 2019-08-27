@@ -209,6 +209,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
         }
 
+        textfield.placeholder = "\("backup.word".localized.capitalizedFirstLetter) \(textfield.tag + 1)"
         textfield.rightViewMode = .always
         textfield.rightView = checkMarkImageView
         textfield.rightView?.alpha = 0.0

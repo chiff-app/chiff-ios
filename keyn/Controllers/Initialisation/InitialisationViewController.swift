@@ -10,7 +10,7 @@ class InitialisationViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func trySetupKeyn(_ sender: Any) {
-        if Properties.agreedWithTerms {
+        if Properties.agreedWithTerms && false {
             setupKeyn()
         } else {
             performSegue(withIdentifier: "ShowTerms", sender: self)

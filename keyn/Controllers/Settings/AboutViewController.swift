@@ -62,10 +62,10 @@ class AboutViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
-            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+            let urlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
             performSegue(withIdentifier: "ShowWebView", sender: URL(fileURLWithPath: urlPath!))
         } else if indexPath.section == 0 && indexPath.row == 1 {
-            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
             performSegue(withIdentifier: "ShowWebView", sender: URL(fileURLWithPath: urlPath!))
         } else if indexPath.section == 1 && indexPath.row == 0 {
             performSegue(withIdentifier: "ShowWebView", sender: URL(string:"https://keyn.app/faq_raw"))
