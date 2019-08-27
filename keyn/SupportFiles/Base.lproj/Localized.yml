@@ -273,7 +273,7 @@ devices:
       value: Scan QR code
     fourth:
       value: After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!
-    paired_devices:
+  paired_devices:
     value: My paired devices
   footer:
     value: You can pair with as many devices as you want.
@@ -420,6 +420,11 @@ backup:
     value: Please write down
   final_check:
     value: One final check
+  the:
+    comment: For the word 'word'
+    value: the
+  word_is:
+    value: word is
 
 requests:
   accounts:
