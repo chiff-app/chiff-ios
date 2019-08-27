@@ -3,6 +3,7 @@ PODS:
   - Base32 (1.1.2)
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
+  - Down (0.8.6)
   - Fabric (1.10.2)
   - Firebase/Core (6.4.0):
     - Firebase/CoreOnly
@@ -63,6 +64,7 @@ PODS:
 DEPENDENCIES:
   - Amplitude-iOS (~> 4.5)
   - Crashlytics (~> 3.13.4)
+  - Down
   - Fabric (~> 1.10.2)
   - Firebase/Core
   - MBProgressHUD (~> 1.0.0)
@@ -75,6 +77,7 @@ SPEC REPOS:
     - Amplitude-iOS
     - Base32
     - Crashlytics
+    - Down
     - Fabric
     - Firebase
     - FirebaseAnalytics
@@ -92,6 +95,7 @@ SPEC CHECKSUMS:
   Amplitude-iOS: ac1715ae68104b7a51723209ad574f60ab22ae5f
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  Down: 3c758f2388fa739663023f400e742a988fa1e21d
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 9445469655a98e9010737f4bc4720e5bda465873
   FirebaseAnalytics: 69fe25866d2ec87c6f02d72c3c9a82bce9c065a0
@@ -105,6 +109,6 @@ SPEC CHECKSUMS:
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   TrustKit: 0660dd1ce827ae7c8f553f35502a8542e248188f
 
-PODFILE CHECKSUM: aeb2491c6e7a4ed2d6c6d8644d5412a97e5d1797
+PODFILE CHECKSUM: 8b48d887fdfc9680c2c6668c0dd5176ef6035aa4
 
 COCOAPODS: 1.6.1

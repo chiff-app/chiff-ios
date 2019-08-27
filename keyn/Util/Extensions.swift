@@ -8,6 +8,7 @@ import UserNotifications
 import OneTimePassword
 import Amplitude_iOS
 import StoreKit
+import WebKit
 
 // MARK: - Primitive extensions
 
@@ -465,3 +466,39 @@ extension Array where Iterator.Element == Account {
         return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }
 }
+
+
+// MARK: Printable PDFs
+
+extension WKWebView {
+
+    var pdf: NSData {
+        let a4 = CGRect.init(x: 0, y: 0, width: 595.2, height: 841.8)
+        let renderer = UIPrintPageRenderer()
+        let formatter = viewPrintFormatter()
+        formatter.perPageContentInsets = UIEdgeInsets(top: 35.0, left: 25.0, bottom: 35.0, right: 25.0)
+        renderer.addPrintFormatter(formatter, startingAtPageAt: 0)
+        renderer.setValue(NSValue(cgRect: a4), forKey: "paperRect")
+        renderer.setValue(NSValue(cgRect: a4), forKey: "printableRect")
+        return renderer.pdf
+    }
+
+}
+
+extension UIPrintPageRenderer {
+
+    var pdf: NSData {
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, self.paperRect, nil)
+        self.prepare(forDrawingPages: NSMakeRange(0, self.numberOfPages))
+        let bounds = UIGraphicsGetPDFContextBounds()
+        for i in 0..<self.numberOfPages {
+            UIGraphicsBeginPDFPage()
+            self.drawPage(at: i, in: bounds)
+        }
+        UIGraphicsEndPDFContext()
+        return pdfData
+    }
+
+}
+

@@ -118,7 +118,7 @@ class PrivacyViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination.contents as? WebViewController {
-            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
             destination.url = URL(fileURLWithPath: urlPath!)
         }
     }

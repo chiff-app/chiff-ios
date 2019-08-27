@@ -99,8 +99,8 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             .font: UIFont.primaryMediumSmall!
             ])
 
-        let termsOfServiceUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
-        let privacyPolicyUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+        let termsOfServiceUrlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
+        let privacyPolicyUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
 
         let termsOfServiceUrl = URL(fileURLWithPath: termsOfServiceUrlPath!)
         let privacyPolicyUrl = URL(fileURLWithPath: privacyPolicyUrlPath!)
