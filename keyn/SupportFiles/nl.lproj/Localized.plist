@@ -294,6 +294,13 @@
 			<key>value</key>
 			<string>Begin backup</string>
 		</dict>
+		<key>the</key>
+		<dict>
+			<key>comment</key>
+			<string>For the word 'word'</string>
+			<key>value</key>
+			<string>het</string>
+		</dict>
 		<key>what_if</key>
 		<dict>
 			<key>start</key>
@@ -307,6 +314,11 @@
 			<string>The word for word</string>
 			<key>value</key>
 			<string>woord</string>
+		</dict>
+		<key>word_is</key>
+		<dict>
+			<key>value</key>
+			<string>woord is</string>
 		</dict>
 	</dict>
 	<key>date_components</key>

@@ -419,6 +419,11 @@ backup:
     value: Schrijf op a.u.b.
   final_check:
     value: Een laatste check
+  the:
+    comment: For the word 'word'
+    value: het
+  word_is:
+    value: woord is
 
 requests:
   accounts:

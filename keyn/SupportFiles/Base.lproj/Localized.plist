@@ -4,10 +4,25 @@
 <dict>
 	<key>accounts</key>
 	<dict>
+		<key>2fa</key>
+		<dict>
+			<key>value</key>
+			<string>2FA code</string>
+		</dict>
 		<key>2fa_description</key>
 		<dict>
 			<key>value</key>
 			<string>The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor.</string>
+		</dict>
+		<key>account_details</key>
+		<dict>
+			<key>value</key>
+			<string>Accounts details</string>
+		</dict>
+		<key>add_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Add 2FA code</string>
 		</dict>
 		<key>add_2fa_code</key>
 		<dict>
@@ -47,6 +62,16 @@
 			<key>value</key>
 			<string>Alternatively, you can add an account manually.</string>
 		</dict>
+		<key>choose</key>
+		<dict>
+			<key>value</key>
+			<string>Choose an account to fill the credentials.</string>
+		</dict>
+		<key>code</key>
+		<dict>
+			<key>value</key>
+			<string>Code</string>
+		</dict>
 		<key>copied</key>
 		<dict>
 			<key>comment</key>
@@ -54,10 +79,20 @@
 			<key>value</key>
 			<string>Copied</string>
 		</dict>
+		<key>delete_account</key>
+		<dict>
+			<key>value</key>
+			<string>Delete account</string>
+		</dict>
 		<key>didnt_save</key>
 		<dict>
 			<key>value</key>
 			<string>You didn’t save any of your accounts just yet.</string>
+		</dict>
+		<key>enabled</key>
+		<dict>
+			<key>value</key>
+			<string>Enabled</string>
 		</dict>
 		<key>footer</key>
 		<dict>
@@ -94,6 +129,31 @@
 			<key>value</key>
 			<string>Codes can either be time-based or counter-based</string>
 		</dict>
+		<key>my_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>My accounts</string>
+		</dict>
+		<key>name</key>
+		<dict>
+			<key>value</key>
+			<string>Name</string>
+		</dict>
+		<key>password</key>
+		<dict>
+			<key>value</key>
+			<string>Password</string>
+		</dict>
+		<key>report</key>
+		<dict>
+			<key>value</key>
+			<string>Report</string>
+		</dict>
+		<key>scan_2fa</key>
+		<dict>
+			<key>value</key>
+			<string>Scan the QR code to add the 2FA code for</string>
+		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>comment</key>
@@ -116,6 +176,11 @@
 			<key>value</key>
 			<string>Websites</string>
 		</dict>
+		<key>time_based</key>
+		<dict>
+			<key>value</key>
+			<string>Time-based</string>
+		</dict>
 		<key>two_fa_instruction</key>
 		<dict>
 			<key>comment</key>
@@ -128,6 +193,16 @@
 			<key>value</key>
 			<string>Update 2FA-code for</string>
 		</dict>
+		<key>upgrade</key>
+		<dict>
+			<key>value</key>
+			<string>Upgrade</string>
+		</dict>
+		<key>url</key>
+		<dict>
+			<key>value</key>
+			<string>URL</string>
+		</dict>
 		<key>url_warning</key>
 		<dict>
 			<key>value</key>
@@ -137,6 +212,11 @@
 		<dict>
 			<key>value</key>
 			<string>User details</string>
+		</dict>
+		<key>username</key>
+		<dict>
+			<key>value</key>
+			<string>Username</string>
 		</dict>
 		<key>website_details</key>
 		<dict>
@@ -156,6 +236,29 @@
 			<key>value</key>
 			<string>Complete</string>
 		</dict>
+		<key>explanation</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn keeps your passwords in a safe and only your phone has the key.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>So if your phone gets lost or stolen, you need a backup, something that's not on your phone.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.</string>
+			</dict>
+		</dict>
+		<key>final_check</key>
+		<dict>
+			<key>value</key>
+			<string>One final check</string>
+		</dict>
 		<key>great</key>
 		<dict>
 			<key>value</key>
@@ -170,6 +273,11 @@
 		<dict>
 			<key>value</key>
 			<string>Next</string>
+		</dict>
+		<key>please_write_down</key>
+		<dict>
+			<key>value</key>
+			<string>Please write down</string>
 		</dict>
 		<key>previous</key>
 		<dict>
@@ -186,6 +294,13 @@
 			<key>value</key>
 			<string>Start backing up</string>
 		</dict>
+		<key>the</key>
+		<dict>
+			<key>comment</key>
+			<string>For the word 'word'</string>
+			<key>value</key>
+			<string>the</string>
+		</dict>
 		<key>what_if</key>
 		<dict>
 			<key>start</key>
@@ -200,6 +315,185 @@
 			<key>value</key>
 			<string>word</string>
 		</dict>
+		<key>word_is</key>
+		<dict>
+			<key>value</key>
+			<string>word is</string>
+		</dict>
+	</dict>
+	<key>date_components</key>
+	<dict>
+		<key>ago</key>
+		<dict>
+			<key>value</key>
+			<string>ago</string>
+		</dict>
+		<key>day</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Tomorrow</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Yesterday</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>days</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>day</string>
+			</dict>
+		</dict>
+		<key>hour</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>In an hour</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>An hour ago</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>hours</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>hour</string>
+			</dict>
+		</dict>
+		<key>in</key>
+		<dict>
+			<key>value</key>
+			<string>in</string>
+		</dict>
+		<key>minute</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>In a minute</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>A minute ago</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>minutes</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>minute</string>
+			</dict>
+		</dict>
+		<key>month</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Next month</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Last month</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>months</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>month</string>
+			</dict>
+		</dict>
+		<key>second</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Just now</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Just now</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>seconds</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>second</string>
+			</dict>
+		</dict>
+		<key>week</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Next week</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Last week</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>weeks</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>week</string>
+			</dict>
+		</dict>
+		<key>year</key>
+		<dict>
+			<key>future_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Next year</string>
+			</dict>
+			<key>past_singular</key>
+			<dict>
+				<key>value</key>
+				<string>Last year</string>
+			</dict>
+			<key>plural_unit</key>
+			<dict>
+				<key>value</key>
+				<string>years</string>
+			</dict>
+			<key>singular_unit</key>
+			<dict>
+				<key>value</key>
+				<string>year</string>
+			</dict>
+		</dict>
 	</dict>
 	<key>devices</key>
 	<dict>
@@ -210,10 +504,49 @@
 			<key>value</key>
 			<string>devices</string>
 		</dict>
+		<key>footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can pair with as many devices as you want.</string>
+		</dict>
+		<key>no_push_warning_text</key>
+		<dict>
+			<key>value</key>
+			<string>But you can only use Keyn to log in to other devices if  you enable push notifications.
+
+You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notifications.
+
+Choose 'Allow Notifications' under 'Notifications'.</string>
+		</dict>
+		<key>no_push_warning_title</key>
+		<dict>
+			<key>value</key>
+			<string>We don't want to push you...</string>
+		</dict>
+		<key>on</key>
+		<dict>
+			<key>value</key>
+			<string>on</string>
+		</dict>
+		<key>open_settings</key>
+		<dict>
+			<key>value</key>
+			<string>Open settings</string>
+		</dict>
 		<key>pair_with_device</key>
 		<dict>
 			<key>value</key>
 			<string>Pair with your device</string>
+		</dict>
+		<key>paired_devices</key>
+		<dict>
+			<key>value</key>
+			<string>My paired devices</string>
+		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Pairing</string>
 		</dict>
 		<key>pairing_explanation</key>
 		<dict>
@@ -451,6 +784,70 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>Error unsubscribing to info notifications</string>
 		</dict>
 	</dict>
+	<key>feedback</key>
+	<dict>
+		<key>add_site</key>
+		<dict>
+			<key>value</key>
+			<string>Adding site</string>
+		</dict>
+		<key>additional_info</key>
+		<dict>
+			<key>value</key>
+			<string>Anything you want to add?</string>
+		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Changing password</string>
+		</dict>
+		<key>feedback</key>
+		<dict>
+			<key>value</key>
+			<string>Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.</string>
+		</dict>
+		<key>finish</key>
+		<dict>
+			<key>value</key>
+			<string>Finish</string>
+		</dict>
+		<key>logging_in</key>
+		<dict>
+			<key>value</key>
+			<string>Logging in</string>
+		</dict>
+		<key>send</key>
+		<dict>
+			<key>value</key>
+			<string>Send</string>
+		</dict>
+		<key>start</key>
+		<dict>
+			<key>value</key>
+			<string>Start</string>
+		</dict>
+		<key>submit</key>
+		<dict>
+			<key>value</key>
+			<string>Submit</string>
+		</dict>
+		<key>thanks</key>
+		<dict>
+			<key>value</key>
+			<string>That was all.
+Thank you!</string>
+		</dict>
+		<key>use_help</key>
+		<dict>
+			<key>value</key>
+			<string>We could use your help</string>
+		</dict>
+		<key>what_did_not_work</key>
+		<dict>
+			<key>value</key>
+			<string>What didn't work?</string>
+		</dict>
+	</dict>
 	<key>initialization</key>
 	<dict>
 		<key>agree</key>
@@ -494,6 +891,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 				<key>value</key>
 				<string>Keyn fills your credentials in the right fields.</string>
 			</dict>
+		</dict>
+		<key>disagree</key>
+		<dict>
+			<key>value</key>
+			<string>Disagree</string>
 		</dict>
 		<key>enter_words</key>
 		<dict>
@@ -636,8 +1038,56 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 Sensitive data is never shared and everything is anonymous.</string>
 		</dict>
 	</dict>
+	<key>notifications</key>
+	<dict>
+		<key>add_account</key>
+		<dict>
+			<key>value</key>
+			<string>Add account</string>
+		</dict>
+		<key>add_accounts</key>
+		<dict>
+			<key>value</key>
+			<string>Add accounts</string>
+		</dict>
+		<key>change_password</key>
+		<dict>
+			<key>value</key>
+			<string>Change password</string>
+		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>Session ended</string>
+		</dict>
+		<key>fill_password</key>
+		<dict>
+			<key>value</key>
+			<string>Fill password</string>
+		</dict>
+		<key>login</key>
+		<dict>
+			<key>value</key>
+			<string>Log in</string>
+		</dict>
+		<key>pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Pair</string>
+		</dict>
+	</dict>
 	<key>numbers</key>
 	<dict>
+		<key>five</key>
+		<dict>
+			<key>value</key>
+			<string>5</string>
+		</dict>
+		<key>four</key>
+		<dict>
+			<key>value</key>
+			<string>4</string>
+		</dict>
 		<key>one</key>
 		<dict>
 			<key>value</key>
@@ -658,6 +1108,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 	<dict>
 		<key>questions</key>
 		<dict>
+			<key>agree_terms</key>
+			<dict>
+				<key>value</key>
+				<string>I have read and agree to the Terms of Service of Keyn</string>
+			</dict>
 			<key>camera_permission</key>
 			<dict>
 				<key>value</key>
@@ -676,6 +1131,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<string>Tell the user he can complete the backup process later</string>
 				<key>value</key>
 				<string>You can complete the backup sequence later.</string>
+			</dict>
+			<key>close_warning</key>
+			<dict>
+				<key>value</key>
+				<string>You cannot use Keyn if you don't agree with the Terms of Service. Are you sure?</string>
 			</dict>
 			<key>delete_account</key>
 			<dict>
@@ -733,6 +1193,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<dict>
 				<key>value</key>
 				<string>Restore accounts</string>
+			</dict>
+			<key>terms</key>
+			<dict>
+				<key>value</key>
+				<string>Terms of Service</string>
 			</dict>
 		</dict>
 		<key>responses</key>
@@ -1032,6 +1497,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 	</dict>
 	<key>settings</key>
 	<dict>
+		<key>about</key>
+		<dict>
+			<key>value</key>
+			<string>About</string>
+		</dict>
 		<key>active</key>
 		<dict>
 			<key>value</key>
@@ -1061,6 +1531,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Your new subscription will go into effect after the current subscription cycle ends</string>
 		</dict>
+		<key>delete_data_button</key>
+		<dict>
+			<key>value</key>
+			<string>Delete data</string>
+		</dict>
 		<key>delete_data_warning</key>
 		<dict>
 			<key>comment</key>
@@ -1082,6 +1557,16 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>You save 17%</string>
+		</dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>FAQ</string>
+		</dict>
+		<key>feedback</key>
+		<dict>
+			<key>value</key>
+			<string>Feedback</string>
 		</dict>
 		<key>feedback_description</key>
 		<dict>
@@ -1114,12 +1599,27 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>This device appears to be jailbroken. Other applications may be able to access your passwords</string>
 		</dict>
+		<key>keyn_premium</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium</string>
+		</dict>
 		<key>legal</key>
 		<dict>
 			<key>comment</key>
 			<string>The word for legal</string>
 			<key>value</key>
 			<string>Legal</string>
+		</dict>
+		<key>news_from_keyn</key>
+		<dict>
+			<key>value</key>
+			<string>News from Keyn</string>
+		</dict>
+		<key>paper_backup</key>
+		<dict>
+			<key>value</key>
+			<string>Paper backup</string>
 		</dict>
 		<key>premium</key>
 		<dict>
@@ -1151,12 +1651,17 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>privacy_policy</key>
 		<dict>
 			<key>value</key>
-			<string>Privacy Policy</string>
+			<string>Privacy policy</string>
 		</dict>
 		<key>read_more</key>
 		<dict>
 			<key>value</key>
 			<string>Read more</string>
+		</dict>
+		<key>reset_keyn_button</key>
+		<dict>
+			<key>value</key>
+			<string>Reset Keyn</string>
 		</dict>
 		<key>reset_keyn_warning</key>
 		<dict>
@@ -1189,19 +1694,34 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Settings</string>
 		</dict>
+		<key>share_analytics</key>
+		<dict>
+			<key>value</key>
+			<string>Share analytical data</string>
+		</dict>
+		<key>share_errors</key>
+		<dict>
+			<key>value</key>
+			<string>Share errors</string>
+		</dict>
 		<key>success</key>
 		<dict>
 			<key>value</key>
 			<string>Success</string>
 		</dict>
-		<key>terms_of_service</key>
+		<key>terms_of_use</key>
 		<dict>
 			<key>value</key>
-			<string>Terms of Service</string>
+			<string>Terms of service</string>
 		</dict>
 	</dict>
 	<key>storekit</key>
 	<dict>
+		<key>choose_plan</key>
+		<dict>
+			<key>value</key>
+			<string>Choose your plan</string>
+		</dict>
 		<key>couldNotFind</key>
 		<dict>
 			<key>value</key>
@@ -1278,151 +1798,22 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<string>Update it with your product identifiers to retrieve product information</string>
 		</dict>
 	</dict>
-	<key>todo</key>
+	<key>tabs</key>
 	<dict>
-		<key>2fa</key>
+		<key>accounts</key>
 		<dict>
 			<key>value</key>
-			<string>2FA code</string>
+			<string>Accounts</string>
 		</dict>
-		<key>about</key>
+		<key>devices</key>
 		<dict>
 			<key>value</key>
-			<string>About</string>
+			<string>Devices</string>
 		</dict>
-		<key>account_details</key>
+		<key>settings</key>
 		<dict>
 			<key>value</key>
-			<string>Accounts details</string>
-		</dict>
-		<key>add_2fa</key>
-		<dict>
-			<key>value</key>
-			<string>Add 2FA code</string>
-		</dict>
-		<key>code</key>
-		<dict>
-			<key>value</key>
-			<string>Code</string>
-		</dict>
-		<key>explanation</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Keyn keeps your passwords in a safe and only your phone has the key.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>So if your phone gets lost or stolen, you need a backup, something that's not on your phone.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.</string>
-			</dict>
-			<key>value</key>
-			<string>secret</string>
-		</dict>
-		<key>footer</key>
-		<dict>
-			<key>value</key>
-			<string>You can pair with as many devices as you want.</string>
-		</dict>
-		<key>keyn_premium</key>
-		<dict>
-			<key>value</key>
-			<string>Keyn Premium</string>
-		</dict>
-		<key>my_accounts</key>
-		<dict>
-			<key>value</key>
-			<string>My accounts</string>
-		</dict>
-		<key>name</key>
-		<dict>
-			<key>value</key>
-			<string>Name</string>
-		</dict>
-		<key>news_from_keyn</key>
-		<dict>
-			<key>value</key>
-			<string>News from Keyn</string>
-		</dict>
-		<key>no_push_warning_text</key>
-		<dict>
-			<key>value</key>
-			<string>But you can only use Keyn to log in to other devices if  you enable push notifications.
-
-You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notifications.
-
-Choose 'Allow Notifications' under 'Notifications'.</string>
-		</dict>
-		<key>no_push_warning_title</key>
-		<dict>
-			<key>value</key>
-			<string>We don't want to push you...</string>
-		</dict>
-		<key>open_settings</key>
-		<dict>
-			<key>value</key>
-			<string>Open settings</string>
-		</dict>
-		<key>paired_devices</key>
-		<dict>
-			<key>value</key>
-			<string>My paired devices</string>
-		</dict>
-		<key>pairing</key>
-		<dict>
-			<key>value</key>
-			<string>Pairing</string>
-		</dict>
-		<key>paper_backup</key>
-		<dict>
-			<key>value</key>
-			<string>Paper backup</string>
-		</dict>
-		<key>password</key>
-		<dict>
-			<key>value</key>
-			<string>Password</string>
-		</dict>
-		<key>privacy</key>
-		<dict>
-			<key>value</key>
-			<string>Privacy</string>
-		</dict>
-		<key>scan_2fa</key>
-		<dict>
-			<key>value</key>
-			<string>Scan the QR code to add the 2FA code for</string>
-		</dict>
-		<key>time_based</key>
-		<dict>
-			<key>value</key>
-			<string>Time-based</string>
-		</dict>
-		<key>upgrade</key>
-		<dict>
-			<key>value</key>
-			<string>upgrade</string>
-		</dict>
-		<key>url</key>
-		<dict>
-			<key>value</key>
-			<string>URL</string>
-		</dict>
-		<key>user_details</key>
-		<dict>
-			<key>value</key>
-			<string>User details</string>
-		</dict>
-		<key>username</key>
-		<dict>
-			<key>value</key>
-			<string>Username</string>
+			<string>Settings</string>
 		</dict>
 	</dict>
 </dict>
