@@ -6,6 +6,11 @@ numbers:
     value: '2'
   three: 
     value: '3'
+  four: 
+    value: '4'
+  five: 
+    value: '5'
+
 errors:
   local_authentication:
     biometry_not_available:
@@ -84,6 +89,7 @@ errors:
     value: Fout bij uitzetten infoberichten
   deleting:
       value: Fout bij verwijderen backup data
+
 popups:
   questions:
     camera_permission:
@@ -148,6 +154,7 @@ popups:
       value: Nee, bedankt
     settings:
       value: Open instellingen
+
 accounts:
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen
@@ -235,6 +242,7 @@ accounts:
     value: Verwijder account
   report:
     value: Rapporteer
+
 devices:
   devices:
     comment: Section title for devices
@@ -371,6 +379,7 @@ settings:
     value: Verwijder data
   reset_keyn_button:
     value: Reset Keyn
+
 backup:
   word:
     comment: The word for word
@@ -497,6 +506,7 @@ requests:
     value: Upgrade nu
   confirm_request:
     value: Bevestig verzoek
+
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -507,6 +517,7 @@ registration:
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: Dit wachtwoord is gevonden in
+
 initialization:
   get_started:
     value: Beginnen
@@ -587,6 +598,7 @@ initialization:
     value: Deel gebruiksstatistieken
   share_errors:
     value: Deel foutmeldingen
+
 storekit:
   title:
     value: Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.
@@ -628,3 +640,31 @@ tabs:
     value: Apparaten
   settings:
     value: Instellingen
+
+feedback:
+  start:
+    value: Start
+  send:
+    value: Stuur
+  use_help:
+    value: We kunnen je hulp gebruiken
+  submit:
+    value: Stuur
+  thanks:
+    value: |-
+      That was all.
+      Thank you!
+  finish:
+    value: Klaar
+  what_did_not_work:
+    value: What didn't work?  
+  logging_in: 
+    value: Inloggen
+  change_password:
+    value: Wachtwoord wijzigen
+  add_site: 
+    value: Site toevoegen
+  additional_info:
+    value: Wil je nog iets toevoegen?
+  feedback:
+    value: Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.
