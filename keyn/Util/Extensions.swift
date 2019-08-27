@@ -145,6 +145,7 @@ extension Date {
         return Date().timeIntervalSince1970 * 1000
     }
 
+    // TODO: localize this
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]

@@ -242,6 +242,8 @@ accounts:
     value: Verwijder account
   report:
     value: Rapporteer
+  choose:
+    value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
 
 devices:
   devices:
@@ -289,6 +291,9 @@ devices:
     value: Open instellingen
   pairing:
     value: Koppelen
+  'on':
+    value: op
+  
 settings:
   settings:
     value: Instellingen
@@ -507,6 +512,22 @@ requests:
   confirm_request:
     value: Bevestig verzoek
 
+notifications:
+  add_account:
+    value: Voeg account toe
+  add_accounts:
+    value: Voeg accounts toe
+  end_session:
+    value: Sessie beëindigd
+  change_password:
+    value: Verander wachtwoord
+  login:
+    value: Inloggen
+  fill_password:
+    value: Wachtwoord invullen
+  pairing:
+    value: Koppelen
+
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -640,6 +661,75 @@ tabs:
     value: Apparaten
   settings:
     value: Instellingen
+
+date_components:
+  year:
+    singular_unit:
+      value: jaar
+    plural_unit:
+      value: jaren
+    future_singular:
+      value: Volgend jaar
+    past_singular:
+      value: Vorig jaar
+  month:
+    singular_unit:
+      value: maand
+    plural_unit:
+      value: maanden
+    future_singular:
+      value: Volgende maand
+    past_singular:
+      value: Vorige maand
+  week:
+    singular_unit:
+      value: week
+    plural_unit:
+      value: weken
+    future_singular:
+      value: Volgende week
+    past_singular:
+      value: Vorige week
+  day:
+    singular_unit:
+      value: dag
+    plural_unit:
+      value: dagen
+    future_singular:
+      value: Morgen
+    past_singular:
+      value: Gisteren
+  hour:
+    singular_unit:
+      value: uur
+    plural_unit:
+      value: uren
+    future_singular:
+      value: Over een uur
+    past_singular:
+      value: Een uur geleden
+  minute:
+    singular_unit:
+      value: minuut
+    plural_unit:
+      value: minuten
+    future_singular:
+      value: In een minuut
+    past_singular:
+      value: Een minuut geleden
+  second:
+    singular_unit:
+      value: seconde
+    plural_unit:
+      value: seconden
+    future_singular:
+      value: Bijna
+    past_singular:
+      value: Zojuist
+  ago:
+    value: geleden
+  in:
+    value: over
 
 feedback:
   start:

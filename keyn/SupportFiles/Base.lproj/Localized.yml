@@ -242,6 +242,8 @@ accounts:
     value: Delete account
   report:  
     value: Report
+  choose:
+    value: Choose an account to fill the credentials.
 
 devices:
   devices:
@@ -288,6 +290,8 @@ devices:
     value: Open settings
   pairing:  
     value: Pairing
+  'on':
+    value: 'on'
 
 settings:
   settings:
@@ -507,6 +511,22 @@ requests:
   confirm_request:
     value: Confirm request
 
+notifications:
+  add_account:
+    value: Add account
+  add_accounts:
+    value: Add accounts
+  end_session:
+    value: Session ended
+  change_password:
+    value: Change password
+  login:
+    value: Log in
+  fill_password:
+    value: Fill password
+  pairing:
+    value: Pair
+
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -639,6 +659,75 @@ tabs:
     value: Devices
   settings:
     value: Settings
+
+date_components:
+  year:
+    singular_unit:
+      value: year
+    plural_unit:
+      value: years
+    future_singular:
+      value: Next year
+    past_singular:
+      value: Last year
+  month:
+    singular_unit:
+      value: month
+    plural_unit:
+      value: months
+    future_singular:
+      value: Next month
+    past_singular:
+      value: Last month
+  week:
+    singular_unit:
+      value: week
+    plural_unit:
+      value: weeks
+    future_singular:
+      value: Next week
+    past_singular:
+      value: Last week
+  day:
+    singular_unit:
+      value: day
+    plural_unit:
+      value: days
+    future_singular:
+      value: Tomorrow
+    past_singular:
+      value: Yesterday
+  hour:
+    singular_unit:
+      value: hour
+    plural_unit:
+      value: hours
+    future_singular:
+      value: In an hour
+    past_singular:
+      value: An hour ago
+  minute:
+    singular_unit:
+      value: minute
+    plural_unit:
+      value: minutes
+    future_singular:
+      value: In a minute
+    past_singular:
+      value: A minute ago
+  second:
+    singular_unit:
+      value: second
+    plural_unit:
+      value: seconds
+    future_singular:
+      value: Just now
+    past_singular:
+      value: Just now
+  ago:
+    value: ago
+  in:
+    value: in
 
 feedback:
   start:
