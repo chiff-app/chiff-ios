@@ -19,7 +19,7 @@ enum KeynButtonType: String {
     case outline
 }
 
-@IBDesignable class KeynButton: UIButton {
+@IBDesignable class KeynButton: LocalizableButton {
 
     @IBInspectable var keynButtonType: String {
         get {

@@ -158,13 +158,17 @@
                                     <constraint firstAttribute="height" constant="58" id="1up-fG-Efq"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cr2-IF-gK1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cr2-IF-gK1" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="35" y="158" width="344" height="444"/>
                                 <string key="text">That was all.
 Thank you!</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.thanks"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3j5-ir-Kbf" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="137" y="662" width="140" height="44"/>
@@ -180,6 +184,7 @@ Thank you!</string>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="dark"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.finish"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="finish:" destination="0mz-F2-gbm" eventType="touchUpInside" id="txc-tL-8gM"/>
@@ -203,7 +208,6 @@ Thank you!</string>
                         <viewLayoutGuide key="safeArea" id="feu-MA-Ogq"/>
                     </view>
                     <navigationItem key="navigationItem" id="Sis-AY-sXO">
-                        <barButtonItem key="backBarButtonItem" title=" " id="pbY-4i-QVT"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="pL9-SB-CpT">
                             <connections>
                                 <action selector="cancel:" destination="0mz-F2-gbm" id="vBY-Nr-yl8"/>
@@ -270,6 +274,7 @@ Thank you!</string>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="dark"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.submit"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="submit:" destination="3sW-lK-iF5" eventType="touchUpInside" id="rvK-4a-ELb"/>
@@ -364,6 +369,7 @@ Thank you!</string>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="darkSecondary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="popups.responses.no"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="noButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="7g3-4B-fSv"/>
@@ -378,6 +384,7 @@ Thank you!</string>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="dark"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="popups.responses.yes"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="yesButton:" destination="nqx-MU-jy9" eventType="touchUpInside" id="AS7-yI-y63"/>
@@ -442,17 +449,25 @@ Thank you!</string>
                                     <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGT-bz-Ij4">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="603"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What didn't work?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-n3-5Bb">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What didn't work?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pGp-n3-5Bb" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="30" width="374" height="27"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.what_did_not_work"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anything you want to add?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYa-ob-W6u">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anything you want to add?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYa-ob-W6u" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="310" width="374" height="17.333333333333314"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.additional_info"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XIA-IH-xz5">
                                                 <rect key="frame" x="35" y="342.33333333333331" width="344" height="150"/>
@@ -470,11 +485,15 @@ Thank you!</string>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HKi-tX-1js">
                                                         <rect key="frame" x="0.0" y="0.0" width="344" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83y-Ed-JIA">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logging in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83y-Ed-JIA" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="295" height="31"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.logging_in"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LQy-KN-DbV">
                                                                 <rect key="frame" x="295" y="0.0" width="51" height="31"/>
@@ -484,11 +503,15 @@ Thank you!</string>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qdU-ZF-s9s">
                                                         <rect key="frame" x="0.0" y="56" width="344" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Changing password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kT3-4a-H0p">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Changing password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kT3-4a-H0p" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="295" height="31"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.change_password"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="gSi-aq-f3T">
                                                                 <rect key="frame" x="295" y="0.0" width="51" height="31"/>
@@ -498,11 +521,15 @@ Thank you!</string>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-LJ-A4Y">
                                                         <rect key="frame" x="0.0" y="112" width="344" height="31"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adding site" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydL-An-OqA">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adding site" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydL-An-OqA" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="0.0" width="295" height="31"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.add_site"/>
+                                                                </userDefinedRuntimeAttributes>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n0D-XR-bd1">
                                                                 <rect key="frame" x="295" y="0.0" width="51" height="31"/>
@@ -557,8 +584,11 @@ Thank you!</string>
                                 <action selector="cancel:" destination="cag-xL-qvy" id="TPb-CT-FF6"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="EyM-xc-IlH">
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="EyM-xc-IlH" customClass="LocalizableBarButton" customModule="keyn" customModuleProvider="target">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.send"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="send:" destination="cag-xL-qvy" id="8Lo-rr-tQl"/>
                             </connections>
@@ -703,6 +733,7 @@ Thank you!</string>
                                 <state key="normal" title="Start"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="dark"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.start"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="start:" destination="BvK-1u-I7M" eventType="touchUpInside" id="MH7-sz-ekG"/>
@@ -714,7 +745,7 @@ Thank you!</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We could use your help" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ads-Gy-uuR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We could use your help" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ads-Gy-uuR" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="21" y="193" width="372" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Gsb-Ue-ohO"/>
@@ -722,6 +753,10 @@ Thank you!</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.use_help"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -817,21 +852,21 @@ Thank you!</string>
                                                     <constraint firstAttribute="height" constant="58" id="x6j-AU-iQ0"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0b-Tb-2Hc">
-                                                <rect key="frame" x="35" y="52" width="344" height="61.666666666666657"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.">
-                                                        <attributes>
-                                                            <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0b-Tb-2Hc" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="35" y="52" width="344" height="49"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.feedback"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                        <real key="value" value="22"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="yha-ok-pGY" customClass="FormTextField" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="30" y="133.66666666666666" width="354" height="35"/>
+                                                <rect key="frame" x="30" y="121" width="354" height="35"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -844,10 +879,11 @@ Thank you!</string>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="inset">
                                                         <real key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.name"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Tnb-GO-qmc">
-                                                <rect key="frame" x="30" y="198.66666666666666" width="354" height="441.33333333333337"/>
+                                                <rect key="frame" x="30" y="186" width="354" height="454"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -896,13 +932,15 @@ Thank you!</string>
                         <viewLayoutGuide key="safeArea" id="2TE-im-8ge"/>
                     </view>
                     <navigationItem key="navigationItem" id="2IB-rB-mLF">
-                        <barButtonItem key="backBarButtonItem" title=" " id="t8V-aB-X11"/>
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Two-Jn-YJe">
                             <connections>
                                 <segue destination="kAW-oE-Eak" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="y1e-WA-W7Z"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="7SY-Ci-fRO">
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="7SY-Ci-fRO" customClass="LocalizableBarButton" customModule="keyn" customModuleProvider="target">
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.send"/>
+                            </userDefinedRuntimeAttributes>
                             <connections>
                                 <action selector="sendFeedback:" destination="dSa-2Z-8vP" id="zC3-Ia-xg5"/>
                             </connections>

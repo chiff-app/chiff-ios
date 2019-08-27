@@ -52,6 +52,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         let cell = cell as! ProductCollectionViewCell
         cell.isFirst = indexPath.row == 0
         cell.showSelected()
+        print(product.localizedDescription)
         cell.title.text = product.localizedTitle
         if let price = product.regularPrice {
             cell.price.text = "\(price)"
@@ -89,8 +90,8 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
         let disclaimer = "settings.disclaimer".localized
-        let termsOfService = "settings.terms_of_service".localized
-        let privacyPolicy = "settings.privacy_policy".localized
+        let termsOfService = "settings.terms_of_use".localized.lowercased()
+        let privacyPolicy = "settings.privacy_policy".localized.lowercased()
         let and = "settings.and".localized
         let attributedString = NSMutableAttributedString(string: "\(disclaimer) \(termsOfService) \(and) \(privacyPolicy).", attributes: [
             .paragraphStyle: paragraph,
@@ -98,8 +99,8 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             .font: UIFont.primaryMediumSmall!
             ])
 
-        let termsOfServiceUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
-        let privacyPolicyUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "html")
+        let termsOfServiceUrlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
+        let privacyPolicyUrlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
 
         let termsOfServiceUrl = URL(fileURLWithPath: termsOfServiceUrlPath!)
         let privacyPolicyUrl = URL(fileURLWithPath: privacyPolicyUrlPath!)

@@ -118,7 +118,6 @@ class StoreObserver: NSObject {
     /// Handles successful purchase transactions.
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
-        print("\("storekit.deliverContent".localized) \(transaction.payment.productIdentifier).")
 
         validateReceipt { (result, expires, product, error) in
             DispatchQueue.main.async {
