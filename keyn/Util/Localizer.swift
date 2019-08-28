@@ -18,10 +18,14 @@ private class Localizer {
     static let shared = Localizer()
     
     lazy var localizableDictionary: NSDictionary! = {
-        if let path = Bundle.main.path(forResource: "Localized", ofType: "plist") {
+        #if !TARGET_INTERFACE_BUILDER
+        let bundle = Bundle.main
+        #else
+        let bundle = Bundle(for: type(of: self))
+        #endif
+        if let path = bundle.path(forResource: "Localized", ofType: "plist") {
             return NSDictionary(contentsOfFile: path)
         }
-        
         fatalError("Localizable file not found.")
     }()
     
