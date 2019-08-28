@@ -16,7 +16,7 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **1.6.** Diensten van derden: websites, diensten en applicaties van derden;  
 **1.7.** Extensie: de door Keyn ontwikkelde browser-extensie om haar Diensten tot uitvoering te brengen;  
 **1.8.** Gebruiker: de natuurlijke of rechtspersoon die een Overeenkomst op afstand sluit met Keyn, zichzelf toegang verschaft tot de website of Applicatie van Keyn of deze gebruikt;  
-**1.9.** Herroepingsrecht: de mogelijkheid voor de Consument om binnen de bedenktijd af te zien van de overeenkomst op afstand ingevolge artikel 6:230o van het Burgerlijk Wetboek;  
+**1.9.** Herroepingsrecht: de mogelijkheid voor de consument om binnen de bedenktijd af te zien van de overeenkomst op afstand ingevolge artikel 6:230o van het Burgerlijk Wetboek;  
 **1.10.** Keyn: de besloten vennootschap met beperkte aansprakelijkheid Keyn B.V., ingeschreven in het Handelsregister van de Kamer van Koophandel onder nummer 72100419, de aan Keyn gelieerde entiteiten en/of door Keyn (eventueel) nader aan te wijzen derden;  
 **1.11.** Mobiele Applicatie: de door Keyn ontwikkelde app om haar Diensten tot uitvoering te brengen;  
 **1.12.** Overeenkomst op afstand: een overeenkomst waarbij in het kader van een door Keyn georganiseerd systeem voor verkoop op afstand van producten en/of diensten, tot en met het sluiten van de overeenkomst uitsluitend gebruik gemaakt wordt van één of meer technieken voor communicatie op afstand;  

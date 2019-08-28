@@ -49,6 +49,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+
+        reEnableBarButtonFont()
     }
 
     override func viewWillAppear(_ animated: Bool) {

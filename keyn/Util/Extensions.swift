@@ -221,6 +221,26 @@ extension UIViewController {
         self.present(alert, animated: true)
     }
 
+    func reEnableBarButtonFont() {
+        if #available(iOS 13.0, *) {
+            // Bar button font is disabled for some reason in iOS13..
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.normal)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.normal)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        }
+    }
+
 }
 
 extension UIStoryboard {

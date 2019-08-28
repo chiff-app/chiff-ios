@@ -92,14 +92,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Private
 
     func clearUserData() {
+        #if DEBUG
         // FOR TESTING PURPOSES
         //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
-        //Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
-        //try? Seed.delete()      // Uncomment if you want to force seed regeneration
-        //try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
-        //BackupManager.shared.deleteAll()
+//        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
+//        try? Seed.delete()      // Uncomment if you want to force seed regeneration
+//        try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: .aws) // Uncomment to delete snsDeviceEndpointArn from Keychain
+//        BackupManager.shared.deleteAllKeys()
         //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
+        #endif
     }
 
 }
