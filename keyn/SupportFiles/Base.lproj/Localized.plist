@@ -984,7 +984,7 @@ Thank you!</string>
 		<key>one_minute_away</key>
 		<dict>
 			<key>end</key>
-			<integer>14</integer>
+			<integer>15</integer>
 			<key>start</key>
 			<integer>6</integer>
 			<key>value</key>

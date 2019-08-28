@@ -76,12 +76,12 @@ struct Seed {
         }
     }
 
+    #warning("Ask for authorization instead of throw if context is invalid")
     static func mnemonic() throws -> [String] {
         let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: nil)
         let checksumSize = seed.count / 4
         let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
         let wordlist = try self.wordlist()
-        print(wordlist.count)
 
         return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
     }

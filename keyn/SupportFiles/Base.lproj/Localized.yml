@@ -579,7 +579,7 @@ initialization:
   one_minute_away:
     value: You're 1 minute away from forgetting your passwords
     start: 6
-    end: 14
+    end: 15
   agree:
     value: Agree
   disagree:
