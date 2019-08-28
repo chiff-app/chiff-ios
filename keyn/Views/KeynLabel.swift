@@ -50,9 +50,9 @@ import UIKit
 //        sharedInit()
 //    }
 //
-//    override func prepareForInterfaceBuilder() {
-//        sharedInit()
-//    }
+    override func prepareForInterfaceBuilder() {
+        decorate()
+    }
 
     func decorate() {
         guard let key = localizationKey else {
