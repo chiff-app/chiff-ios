@@ -40,6 +40,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         
         updateSaveButtonState()
         Logger.shared.analytics(.addAccountOpened)
+        reEnableBarButtonFont()
     }
 
     @IBAction func showPassword(_ sender: UIButton) {
