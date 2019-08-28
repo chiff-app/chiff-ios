@@ -125,11 +125,11 @@ popups:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Questiontime!
     close_warning:
-      value: You cannot use Keyn if you don't agree with the Terms of Service. Are you sure?
+      value: You cannot use Keyn if you don't agree with the Terms of Use. Are you sure?
     agree_terms:
-      value: I have read and agree to the Terms of Service of Keyn
+      value: I have read and agree to the Terms of Use of Keyn
     terms:
-      value: Terms of Service
+      value: Terms of Use
   responses:
     delete:
       value: Delete
@@ -319,7 +319,7 @@ settings:
   paper_backup:
     value: Paper backup
   terms_of_use:
-    value: Terms of service
+    value: Terms of use
   privacy_policy:
     value: Privacy policy
   faq:
