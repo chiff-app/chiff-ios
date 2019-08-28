@@ -23,7 +23,7 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **1.13.** Paper Back-up: twaalf (12) woorden welke de Gebruiker dient te noteren na het installeren van de Mobiele Applicatie. De twaalf woorden vertegenwoordigen de unieke en willekeurig gegenereerde Random Seed;  
 **1.14.** Partijen: Keyn en Gebruiker gezamenlijk;  
 **1.15.** Random Seed: de willekeurig gegenereerde sleutel, waarvan de wachtwoorden van de Gebruiker van worden afgeleid met een deterministisch algoritme;  
-**1.16.** Website: de door Keyn ontwikkelde website (www.keyn.app) om haar Diensten tot uitvoering te brengen.
+**1.16.** Website: de door Keyn ontwikkelde website [keyn.app](https:/keyn.app) om haar Diensten tot uitvoering te brengen.
 
 #### ARTIKEL 2: TOEPASSING ALGEMENE VOORWAARDEN
 
@@ -59,10 +59,8 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 #### ARTIKEL 5: PRIJZEN 
 
 **5.1.** Keyn biedt de Gebruiker twee versies van gebruik:  
-
 **a.** een gratis versie, die functioneel is, maar beperkt tot acht (8) accounts ("gratis versie"); of  
-**b.** een betaalde versie, met gebruik van een onbeperkt aantal accounts ("Abonnement").
-
+**b.** een betaalde versie, met gebruik van een onbeperkt aantal accounts ("Abonnement").  
 **5.2.** Bij het afsluiten van een Abonnement heeft de Gebruiker de mogelijkheid het Abonnement zonder opgave van reden te ontbinden gedurende 14 (veertien) dagen. De bedenktijd gaat in op de dag na het afsluiten van het Abonnement door de Gebruiker  
 **5.3.** Alle bedragen die de Gebruiker ten aanzien van een Abonnement aan Keyn verschuldigd is, dienen door de Gebruiker per vooruitbetaling aan Keyn te worden voldaan. De Gebruiker wordt op een terugkerende en periodieke basis gefactureerd. Keyn kent twee vormen: een jaarlijkse betaling of een maandelijkse betaling.  
 **5.4.** Alle door Keyn opgegeven, dan wel tussen Partijen overeengekomen, kosten en prijzen en alle verklaringen daaromtrent zijn vrijblijvend en kunnen te allen tijde door Keyn worden gewijzigd met voorafgaande schriftelijke toestemming van de Gebruiker.  
@@ -79,7 +77,6 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **6.5.** Door de Gebruiker gedane betalingen strekken in de eerste plaats steeds ter afdoening van alle verschuldigde rente en kosten, in de tweede plaats van opeisbare facturen die het langst openstaan, zelfs al vermeldt de Gebruiker dat de voldoening betrekking heeft op een latere factuur.  
 **6.6.** Keyn is te allen tijde gerechtigd (goederenrechtelijke)zekerheden te verlangen voor de nakoming van de uit de overeenkomst voor de Gebruiker voortvloeiende (betalings-)verplichtingen.
 **6.7.** De volledige vordering tot betaling is onmiddellijk opeisbaar als:  
-
 **a.** een betalingstermijn is overschreden;  
 **b.** de Gebruiker surseance van betaling aanvraagt of is toegelaten tot een schuldsanering;  
 **c.** beslag op zaken of vorderingen van de Gebruiker is gelegd;  
@@ -99,13 +96,10 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 #### ARTIKEL 9: AANSPRAKELIJKHEID KEYN
 **9.1.** De beperking van de aansprakelijkheid van Keyn conform het genoemde in dit artikel 9 geldt slechts voor zover wettelijk is toegestaan. De beperking van de aansprakelijkheid is niet van toepassing indien sprake is van opzet of bewuste roekeloosheid van Keyn of haar leidinggevende personen.  
 **9.2.** Keyn is jegens de Gebruiker slechts aansprakelijk voor de directe schade die het rechtstreekse gevolg is van een toerekenbare tekortkoming en/of onrechtmatig handelen of nalaten zijdens Keyn. Onder directe schade wordt uitsluitend verstaan (i) zaakschade, (ii) de redelijke kosten ter vaststelling van de oorzaak en de omvang van de schade, voor zover de vaststelling betrekking heeft op de directe schade zoals in dit artikel bedoeld is, (iii) de eventuele redelijke en aantoonbare kosten gemaakt om de gebrekkige prestatie van Keyn aan de overeenkomst te laten beantwoorden, voor zover deze aan Keyn toegerekend kunnen worden, en (iv) de redelijke en aantoonbare kosten die de Gebruiker heeft gemaakt ter voorkoming of beperking van de directe schade, voor zover de Gebruiker aantoont dat deze kosten hebben geleid tot beperking van de directe schade zoals in dit artikel bedoeld is.  
-**9.3.** De aansprakelijkheid van Keyn is te allen tijde beperkt tot:
-
+**9.3.** De aansprakelijkheid van Keyn is te allen tijde beperkt tot:  
 **a.** de directe schade. Keyn is nimmer gehouden tot vergoeding van indirecte schade. Onder indirecte schade wordt verstaan alle schade die geen directe schade is, daaronder in ieder geval, doch niet uitsluitend, begrepen gevolgschade, derving van inkomsten of mogelijkheden, winstderving en schade als gevolg van bedrijfsstagnatie;  
 **b.** de aansprakelijkheid van Keyn is in ieder geval steeds beperkt tot het bedrag der uitkering van de verzekering van Keyn in het voorkomend geval.  
-
-**9.4.** Behoudens opzet en bewuste roekeloosheid zijdens Keyn, is Keyn nimmer aansprakelijk voor enige schade van welke aard dan ook, veroorzaakt door:
-
+**9.4.** Behoudens opzet en bewuste roekeloosheid zijdens Keyn, is Keyn nimmer aansprakelijk voor enige schade van welke aard dan ook, veroorzaakt door:  
 **a.** enig verlies van of schade aan de reputatie of goodwill van de Gebruiker;  
 **b.** enig verlies van goederen, zaken, gelden, gelegenheden, klanten of contracten van de Gebruiker;  
 **c.** enig verlies of verspilling van overheadkosten, management of personeelstijden van de Gebruiker;  
@@ -122,9 +116,8 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **n.** derden die op verzoek of met toestemming van de Gebruiker bij de uitvoering van de overeenkomst worden ingeschakeld;  
 **o.** onvoldoende c.q. ontoereikende kennis van de Gebruiker omtrent de risico’s die gepaard gaan met het gebruik van de Applicatie en de Diensten;  
 **p.** een schending zijdens Keyn van de overeenkomst tussen Partijen welke is te wijten aan een overmachtssituatie overeenkomstig het bepaalde in artikel 11;  
-**q.** doordat Keyn is uitgegaan van door of namens de Gebruiker verstrekte onjuiste, onvolledige en/of onbetrouwbare gegevens, documenten en informatie.
-
-**9.5.** De Diensten worden geleverd naar rato van beschikbaarheid en zonder dat daarvoor enigerlei garantie wordt afgegeven. 
+**q.** doordat Keyn is uitgegaan van door of namens de Gebruiker verstrekte onjuiste, onvolledige en/of onbetrouwbare gegevens, documenten en informatie.  
+**9.5.** De Diensten worden geleverd naar rato van beschikbaarheid en zonder dat daarvoor enigerlei garantie wordt afgegeven.  
 **9.6.** Gebruiker vrijwaart Keyn tegen alle aanspraken van derden, de kosten van juridische bijstand daaronder mede begrepen, die samenhangen met of voortvloeien uit iedere Overeenkomst op afstand  tussen Partijen, ieder Abonnement, alle Diensten en op ieder (ander) gebruik van of toegang tot de Applicatie en/of de Website,  behoudens opzet of bewuste roekeloosheid van Keyn. Bovendien stemt de Gebruiker ermee in dat Keyn het recht heeft om schade op hem te verhalen als hij de Applicatie of Website voor onwettige doeleinden, op een onwettige manier of op een andere manier die indruist tegen de Algemene Voorwaarden gebruikt. Deze schade kan onder andere bestaan uit directe, indirecte, gevolg of incidentele schade.
 **9.7.** De Gebruiker dient aan Keyn alle schade en kosten te vergoeden die voortvloeien uit of gepaard gaan met een schending door de Gebruiker van de overeenkomst (Algemene Voorwaarden) tussen Partijen, een onrechtmatige daad van de Gebruiker jegens Keyn dan wel eventuele andere aanspraken die Keyn jegens de Gebruiker heeft op basis van de geldende wet- en/of regelgeving. 
 
@@ -141,14 +134,12 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **11.2.** Onder overmacht wordt verstaan omstandigheden die de nakoming van de overeenkomst tijdelijk of blijvend verhinderen, en die niet aan Keyn zijn toe te rekenen. Hieronder wordt in ieder geval, doch niet uitsluitend, begrepen: oorlog, oorlogsgevaar, oproer, overheidsmaatregelen, bijzondere weersomstandigheden, ziekte van het personeel van Keyn, werkstaking, brand, storingen in het computernetwerk en andere ernstige storingen in het bedrijf van Keyn. 
 
 #### ARTIKEL 12: BEEINDIGING ABONNEMENT EN STAKEN APPLICATE EN/OF WEBSITE
-**12.1.** Keyn is, zonder dat een nadere ingebrekestelling is vereist alsmede tot enige schadevergoeding gehouden te zijn, bevoegd het Abonnement met de Gebruiker geheel of gedeeltelijk te ontbinden of ieder gebruik van de Applicatie en/of Website te ontzeggen indien:
-
+**12.1.** Keyn is, zonder dat een nadere ingebrekestelling is vereist alsmede tot enige schadevergoeding gehouden te zijn, bevoegd het Abonnement met de Gebruiker geheel of gedeeltelijk te ontbinden of ieder gebruik van de Applicatie en/of Website te ontzeggen indien:  
 **a.**  de Gebruiker zijn verplichtingen uit de overeenkomst met Keyn niet, niet tijdig of niet volledig nakomt;  
 **b.**  Keyn vermoedt dat de Gebruiker Diensten op een frauduleuze of ongeautoriseerde manier gebruikt;  
 **c.**  de Gebruiker surseance van betaling aanvraagt of is toegelaten tot een schuldsanering;  
 **d.**  beslag op zaken of vorderingen van de Gebruiker is gelegd;  
-**e.**  de Gebruiker onder curatele wordt gesteld of overlijdt.
-
+**e.**  de Gebruiker onder curatele wordt gesteld of overlijdt.  
 **12.2.** Indien de overeenkomst wordt ontbonden, zijn de vorderingen van Keyn op de Gebruiker terstond en geheel opeisbaar. Keyn is nimmer aansprakelijk ter zake voor enige wettelijke (handels-) rente of (buitengerechtelijke) incassokosten.  
 **12.3.** Indien Keyn overgaat tot het ontbinden van het Abonnement dan wel het gebruik van de Applicatie en/of Website te ontzeggen, zal zij de reeds vooruitbetaalde termijnen door de Gebruiker terugbetalen.  
 **12.4.** De Gebruiker is te allen tijde gerechtigd om het Abonnement via de App Store op te zeggen. De Gebruiker kan het Abonnement blijven gebruiken tot de voorziene vervaldatum. De Gebruiker komt niet in aanmerking voor terugbetaling van de lopende termijn.  

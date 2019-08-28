@@ -1111,7 +1111,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>agree_terms</key>
 			<dict>
 				<key>value</key>
-				<string>I have read and agree to the Terms of Service of Keyn</string>
+				<string>I have read and agree to the Terms of Use of Keyn</string>
 			</dict>
 			<key>camera_permission</key>
 			<dict>
@@ -1135,7 +1135,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>close_warning</key>
 			<dict>
 				<key>value</key>
-				<string>You cannot use Keyn if you don't agree with the Terms of Service. Are you sure?</string>
+				<string>You cannot use Keyn if you don't agree with the Terms of Use. Are you sure?</string>
 			</dict>
 			<key>delete_account</key>
 			<dict>
@@ -1197,7 +1197,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>terms</key>
 			<dict>
 				<key>value</key>
-				<string>Terms of Service</string>
+				<string>Terms of Use</string>
 			</dict>
 		</dict>
 		<key>responses</key>
@@ -1712,7 +1712,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>terms_of_use</key>
 		<dict>
 			<key>value</key>
-			<string>Terms of service</string>
+			<string>Terms of use</string>
 		</dict>
 	</dict>
 	<key>storekit</key>

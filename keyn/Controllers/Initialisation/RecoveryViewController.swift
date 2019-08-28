@@ -143,6 +143,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                     if let error = error {
                                         Logger.shared.error("Error updating subscriptions", error: error)
                                     }
+                                    Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
                                     self.registerForPushNotifications()
                                     Logger.shared.analytics(.backupRestored)
                                 }

@@ -7,10 +7,17 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
+    @IBOutlet weak var loadingView: UIView!
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        self.loadingView.isHidden = true
+    }
+
     // MARK: - Actions
 
     @IBAction func trySetupKeyn(_ sender: Any) {
-        if Properties.agreedWithTerms && false {
+        if Properties.agreedWithTerms {
             setupKeyn()
         } else {
             performSegue(withIdentifier: "ShowTerms", sender: self)
@@ -25,6 +32,7 @@ class InitialisationViewController: UIViewController {
     // MARK: - Private functions
 
     private func setupKeyn() {
+        loadingView.isHidden = false
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             registerForPushNotifications()
         } else {
@@ -32,9 +40,11 @@ class InitialisationViewController: UIViewController {
                 DispatchQueue.main.async {
                     if let error = error as? LAError {
                         if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                            self.loadingView.isHidden = true
                             self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
                         }
                     } else if let error = error {
+                        self.loadingView.isHidden = true
                         self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
                     } else {
                         self.registerForPushNotifications()

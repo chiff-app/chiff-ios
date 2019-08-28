@@ -11,8 +11,7 @@ class TermsViewController: WebViewController {
     @IBOutlet var gradientView: UIView!
 
     override func viewDidLoad() {
-        let urlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
-        url = URL(fileURLWithPath: urlPath!)
+        url = Bundle.main.url(forResource: "terms_of_use", withExtension: "md")!
         super.viewDidLoad()
     }
 
