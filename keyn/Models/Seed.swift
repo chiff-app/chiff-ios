@@ -81,7 +81,7 @@ struct Seed {
         let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: nil)
         let checksumSize = seed.count / 4
         let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
-        let wordlist = try self.wordlist()
+        let wordlist = try self.localizedWordlist()
 
         return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
     }
@@ -139,13 +139,27 @@ struct Seed {
 
     // MARK: - Private
 
-    static func wordlist() throws -> [String] {
+    static func wordlists() throws -> [[String]] {
+        let bundle = Bundle.main
+        return try bundle.localizations.compactMap { (localization) in
+            guard let path = bundle.path(forResource: "wordlist", ofType: "txt", inDirectory: nil, forLocalization: localization) else {
+                return nil
+            }
+            let wordlistData = try String(contentsOfFile: path, encoding: .utf8)
+            return wordlistData.components(separatedBy: .newlines)
+        }
+    }
+
+    static func localizedWordlist() throws -> [String] {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "wordlist", ofType: "txt")!, encoding: .utf8)
         return wordlistData.components(separatedBy: .newlines)
     }
     
     static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
-        let wordlist = try self.wordlist()
+        let wordlists = try self.wordlists()
+        guard let wordlist = (wordlists.first { Set(mnemonic).isSubset(of: (Set($0))) }) else {
+            throw SeedError.mnemonicConversion
+        }
 
         let bitstring = try mnemonic.reduce("") { (result, word) throws -> String in
             guard let index: Int = wordlist.firstIndex(of: word) else {
