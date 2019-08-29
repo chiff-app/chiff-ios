@@ -425,6 +425,8 @@ backup:
     value: the
   word_is:
     value: word is
+  retrieve:
+    value: Retrieve paper backup
 
 requests:
   accounts:

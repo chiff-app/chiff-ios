@@ -424,6 +424,8 @@ backup:
     value: het
   word_is:
     value: woord is
+  retrieve:
+    value: Paper backup ontsleutelen
 
 requests:
   accounts:

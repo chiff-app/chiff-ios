@@ -25,13 +25,8 @@ class BackupWizardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        do {
-            mnemonic = try Seed.mnemonic()
-            wordLabel.text = mnemonic![counter]
-            counterLabel.text = "\(counter + 1) / \(mnemonic!.count)"
-        } catch {
-            Logger.shared.error("Error getting mnemonic.", error: error)
-        }
+        wordLabel.text = mnemonic[counter]
+        counterLabel.text = "\(counter + 1) / \(mnemonic.count)"
         navigationItem.leftBarButtonItem?.setColor(color: .white)
         Logger.shared.analytics(.backupProcessStarted)
     }

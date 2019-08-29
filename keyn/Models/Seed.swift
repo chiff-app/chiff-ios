@@ -9,6 +9,7 @@ enum SeedError: KeynError {
     case mnemonicConversion
     case checksumFailed
     case exists
+    case notFound
 }
 
 struct Seed {
@@ -76,14 +77,25 @@ struct Seed {
         }
     }
 
-    #warning("Ask for authorization instead of throw if context is invalid")
-    static func mnemonic() throws -> [String] {
-        let seed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: nil)
-        let checksumSize = seed.count / 4
-        let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
-        let wordlist = try self.localizedWordlist()
-
-        return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
+    static func mnemonic(completionHandler: @escaping (_ mnemonic: [String]?, _ error: Error?) -> Void) {
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded) { (data, error) in
+            do {
+                if let error = error {
+                    throw error
+                }
+                guard let seed = data else {
+                    throw SeedError.notFound
+                }
+                let checksumSize = seed.count / 4
+                let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
+                let wordlist = try self.localizedWordlist()
+                
+                let mnemonic = bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
+                completionHandler(mnemonic, nil)
+            } catch {
+                completionHandler(nil, error)
+            }
+        }
     }
     
     static func validate(mnemonic: [String]) -> Bool {
