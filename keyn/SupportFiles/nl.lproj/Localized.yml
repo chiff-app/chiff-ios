@@ -740,7 +740,7 @@ date_components:
   just_now:
     value: Zojuist
   less_than_minute:
-    value: Minder dan een minuut geleden
+    value: Zojuist
 
 feedback:
   start:

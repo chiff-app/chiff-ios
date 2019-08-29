@@ -384,6 +384,16 @@
 			<key>value</key>
 			<string>over</string>
 		</dict>
+		<key>just_now</key>
+		<dict>
+			<key>value</key>
+			<string>Zojuist</string>
+		</dict>
+		<key>less_than_minute</key>
+		<dict>
+			<key>value</key>
+			<string>Zojuist</string>
+		</dict>
 		<key>minute</key>
 		<dict>
 			<key>future_singular</key>
