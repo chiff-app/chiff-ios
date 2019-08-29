@@ -284,6 +284,11 @@
 			<key>value</key>
 			<string>Vorige</string>
 		</dict>
+		<key>retrieve</key>
+		<dict>
+			<key>value</key>
+			<string>Paper backup ontsleutelen</string>
+		</dict>
 		<key>return_to_settings</key>
 		<dict>
 			<key>value</key>
