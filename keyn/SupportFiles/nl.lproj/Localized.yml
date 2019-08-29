@@ -737,6 +737,10 @@ date_components:
     value: geleden
   in:
     value: over
+  just_now:
+    value: Zojuist
+  less_than_minute:
+    value: Minder dan een minuut geleden
 
 feedback:
   start:

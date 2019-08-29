@@ -735,6 +735,10 @@ date_components:
     value: ago
   in:
     value: in
+  just_now:
+    value: Just now
+  less_than_minute:
+    value: Less than a minute ago
 
 feedback:
   start:
