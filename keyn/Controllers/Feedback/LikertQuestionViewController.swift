@@ -11,7 +11,7 @@ class LikertQuestionViewController: QuestionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let font = UIFont.systemFont(ofSize: 20)
+        let font = UIFont(name: "Montserrat-Bold", size: 20.0)
         likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
     }
     

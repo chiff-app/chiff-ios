@@ -818,6 +818,16 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>value</key>
 			<string>Inloggen</string>
 		</dict>
+		<key>next</key>
+		<dict>
+			<key>value</key>
+			<string>Volgende</string>
+		</dict>
+		<key>no</key>
+		<dict>
+			<key>value</key>
+			<string>Nee</string>
+		</dict>
 		<key>send</key>
 		<dict>
 			<key>value</key>
@@ -848,6 +858,11 @@ Thank you!</string>
 		<dict>
 			<key>value</key>
 			<string>What didn't work?</string>
+		</dict>
+		<key>yes</key>
+		<dict>
+			<key>value</key>
+			<string>Ja</string>
 		</dict>
 	</dict>
 	<key>initialization</key>

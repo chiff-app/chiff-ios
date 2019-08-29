@@ -743,6 +743,12 @@ feedback:
     value: We could use your help
   submit:
     value: Submit
+  'yes':
+    value: 'Yes'
+  'no':
+    value: 'No'
+  next:
+    value: Next
   thanks:
     value: |-
       That was all.

@@ -745,6 +745,12 @@ feedback:
     value: We kunnen je hulp gebruiken
   submit:
     value: Stuur
+  'yes':
+    value: Ja
+  'no':
+    value: Nee
+  next:
+    value: Volgende
   thanks:
     value: |-
       That was all.
