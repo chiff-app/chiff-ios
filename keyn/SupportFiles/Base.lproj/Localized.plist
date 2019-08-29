@@ -816,6 +816,16 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Logging in</string>
 		</dict>
+		<key>next</key>
+		<dict>
+			<key>value</key>
+			<string>Next</string>
+		</dict>
+		<key>no</key>
+		<dict>
+			<key>value</key>
+			<string>No</string>
+		</dict>
 		<key>send</key>
 		<dict>
 			<key>value</key>
@@ -846,6 +856,11 @@ Thank you!</string>
 		<dict>
 			<key>value</key>
 			<string>What didn't work?</string>
+		</dict>
+		<key>yes</key>
+		<dict>
+			<key>value</key>
+			<string>Yes</string>
 		</dict>
 	</dict>
 	<key>initialization</key>

@@ -15,6 +15,8 @@ class QuestionViewController: UIViewController {
         super.viewDidLoad()
         questionLabel.text = question?.text
         self.navigationItem.hidesBackButton = isFirst
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+        navigationItem.rightBarButtonItem?.setColor(color: .white)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {

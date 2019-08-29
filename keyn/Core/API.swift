@@ -96,13 +96,12 @@ class API: NSObject {
                 completionHandler(nil, (error as NSError).code == -999 ? APIError.pinninigError : error)
                 return
             }
-            guard let data = data else {
-                completionHandler(nil, APIError.noData)
-                return
-            }
             if let httpStatus = response as? HTTPURLResponse {
                 do {
                     if httpStatus.statusCode == 200 {
+                        guard let data = data, !data.isEmpty else {
+                            throw APIError.noData
+                        }
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
                         guard let json = jsonData as? [String: Any] else {
                             throw APIError.jsonSerialization
@@ -116,7 +115,7 @@ class API: NSObject {
                         throw APIError.statusCode(httpStatus.statusCode)
                     }
                 } catch {
-                    Logger.shared.error("API error", error: error)
+                    print("API error: \(error)")
                     completionHandler(nil, error)
                 }
             } else {

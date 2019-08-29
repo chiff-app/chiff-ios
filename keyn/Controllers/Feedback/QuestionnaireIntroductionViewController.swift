@@ -12,8 +12,9 @@ class QuestionnaireIntroductionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         introductionLabel.text = introduction
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel, target: self, action: #selector(cancel))
+        navigationItem.rightBarButtonItem?.setColor(color: .white)
     }
-
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
