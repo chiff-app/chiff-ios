@@ -54,7 +54,7 @@ struct DateComponentUnitFormatter {
             case .minute:
                 unitValue = dateComponents.minute ?? 0
             case .second:
-                return "Less than a minute ago"
+                return "date_components.less_than_minute".localized
             default:
                 assertionFailure("Date does not have requried components")
                 return ""
@@ -74,6 +74,6 @@ struct DateComponentUnitFormatter {
             }
         }
 
-        return "Just now"
+        return "date_components.just_now".localized
     }
 }
