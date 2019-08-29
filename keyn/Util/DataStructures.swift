@@ -236,7 +236,7 @@ struct BackupAccount: Codable {
         self.sites = try values.decode([Site].self, forKey: .sites)
         self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
         self.lastPasswordUpdateTryIndex = try values.decode(Int.self, forKey: .lastPasswordUpdateTryIndex)
-        self.passwordOffset = try values.decode([Int].self, forKey: .passwordOffset)
+        self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
