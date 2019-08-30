@@ -32,7 +32,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     var isInitialSetup = true
-    let wordlist = try! Seed.wordlist()
+    let wordlists = try! Seed.wordlists()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,6 +143,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                     if let error = error {
                                         Logger.shared.error("Error updating subscriptions", error: error)
                                     }
+                                    Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
                                     self.registerForPushNotifications()
                                     Logger.shared.analytics(.backupRestored)
                                 }
@@ -187,7 +188,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func checkWord(for textField: UITextField) {
-        if let word = textField.text, word != "", wordlist.contains(word) {
+        if let word = textField.text, word != "", (wordlists.contains { $0.contains(word) }) {
             mnemonic[textField.tag] = word
             UIView.animate(withDuration: 0.1) {
                 textField.rightView?.alpha = 1.0
@@ -209,6 +210,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
         }
 
+        textfield.placeholder = "\("backup.word".localized.capitalizedFirstLetter) \(textfield.tag + 1)"
         textfield.rightViewMode = .always
         textfield.rightView = checkMarkImageView
         textfield.rightView?.alpha = 0.0

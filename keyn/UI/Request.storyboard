@@ -88,29 +88,30 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can only add 4 additional accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KU-eH-Piw">
-                                        <rect key="frame" x="0.0" y="231" width="275" height="44"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="0KU-eH-Piw" secondAttribute="bottom" id="ElM-ks-cRh"/>
-                                    <constraint firstItem="0KU-eH-Piw" firstAttribute="leading" secondItem="Dnn-31-QJY" secondAttribute="leading" id="Rhh-8f-pIX"/>
-                                    <constraint firstAttribute="trailing" secondItem="0KU-eH-Piw" secondAttribute="trailing" id="auY-Pf-8nJ"/>
                                     <constraint firstItem="jtk-5h-fdB" firstAttribute="centerY" secondItem="Dnn-31-QJY" secondAttribute="centerY" constant="-10" id="b2P-mF-oqu"/>
                                     <constraint firstAttribute="width" secondItem="Dnn-31-QJY" secondAttribute="height" multiplier="1:1" id="jbp-OD-blC"/>
                                     <constraint firstItem="jtk-5h-fdB" firstAttribute="centerX" secondItem="Dnn-31-QJY" secondAttribute="centerX" id="z6x-MW-ACF"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAm-BS-Rbr">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can only add 4 additional accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0KU-eH-Piw">
+                                <rect key="frame" x="40" y="471" width="295" height="72"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm request" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAm-BS-Rbr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="16" y="154" width="343" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.confirm_request"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="ozE-eJ-GQE">
                                 <rect key="frame" x="67.5" y="583" width="240" height="44"/>
@@ -122,6 +123,7 @@
                                         <state key="normal" title="Return"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="outline"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.return"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="close:" destination="Z8s-OA-xSG" eventType="touchUpInside" id="jTK-h3-QhK"/>
@@ -137,6 +139,7 @@
                                         <state key="normal" title="Upgrade now"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="requests.upgrade"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="P3y-jh-lMf" kind="show" id="Qmy-f6-vzG"/>
@@ -160,10 +163,14 @@
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="qAm-BS-Rbr" secondAttribute="trailing" constant="16" id="KcC-aH-lvM"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="50" id="MlD-um-UHF"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="Dnn-31-QJY" secondAttribute="trailing" constant="50" id="Xyn-Vi-8YG"/>
+                            <constraint firstItem="0KU-eH-Piw" firstAttribute="top" secondItem="Dnn-31-QJY" secondAttribute="bottom" id="avg-fr-3Np"/>
                             <constraint firstItem="VTZ-Sz-IhE" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="25" id="cCz-eg-KTW"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="J0B-1e-Apk" secondAttribute="bottom" constant="60" id="dwk-8s-tIy"/>
+                            <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="0KU-eH-Piw" secondAttribute="trailing" constant="40" id="er0-TM-XRM"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="fEo-uK-RmZ"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="centerY" secondItem="TnR-ml-hOh" secondAttribute="centerY" id="g6y-im-dWL"/>
+                            <constraint firstItem="0KU-eH-Piw" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="40" id="hNV-DU-Ucr"/>
+                            <constraint firstItem="ozE-eJ-GQE" firstAttribute="top" secondItem="0KU-eH-Piw" secondAttribute="bottom" constant="40" id="lmk-ae-isQ"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="ozE-eJ-GQE" secondAttribute="bottom" constant="40" id="mQ5-KG-D91"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="VTZ-Sz-IhE" secondAttribute="trailing" constant="25" id="oDr-Ga-dGo"/>
                             <constraint firstItem="ozE-eJ-GQE" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="pc7-GI-njz"/>

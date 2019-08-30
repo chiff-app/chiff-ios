@@ -5,7 +5,7 @@
 import UIKit
 
 @IBDesignable
-class FormTextField: UITextField {
+class FormTextField: LocalizableTextField {
     @IBInspectable var inset: CGFloat = 0
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {

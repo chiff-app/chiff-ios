@@ -8,7 +8,17 @@
 
 import UIKit
 
-@IBDesignable class KeynTabButton: UIButton {
+@IBDesignable class KeynTabButton: UIButton, XIBLocalizable {
+
+    @IBInspectable var localizationKey: String? = nil {
+        didSet {
+            if let key = localizationKey {
+                setTitle(key.localized, for: .normal)
+                setTitle(key.localized, for: .selected)
+                setTitle(key.localized, for: .highlighted)
+            }
+        }
+    }
 
     @IBInspectable var keynButtonType: String {
         get {

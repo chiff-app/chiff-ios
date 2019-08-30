@@ -51,6 +51,7 @@ class Session: Codable {
     }
 
     func delete(notifyExtension: Bool) throws {
+        Properties.sessionCount -= 1
         Logger.shared.analytics(.sessionDeleted)
         if notifyExtension {
             try sendByeToPersistentQueue() { (_, error) in
@@ -63,6 +64,7 @@ class Session: Codable {
         }
         try Keychain.shared.delete(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
         try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+
     }
 
     func decrypt(message message64: String) throws -> KeynRequest {
@@ -225,7 +227,7 @@ class Session: Codable {
                 }
             }
         }
-
+        Properties.sessionCount = sessions.count
         return sessions
     }
 
@@ -255,6 +257,7 @@ class Session: Codable {
 
         // To be sure
         purgeSessionDataFromKeychain()
+        Properties.sessionCount = 0
     }
 
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completion: @escaping (_ session: Session?, _ error: Error?) -> Void) {
@@ -289,6 +292,7 @@ class Session: Codable {
                         throw error
                     }
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
+                    Properties.sessionCount += 1
                     completion(session, nil)
                 } catch is KeychainError {
                     completion(nil, SessionError.exists)
@@ -329,6 +333,9 @@ class Session: Codable {
             "pubkey": keyPair.pubKey.base64,
             "deviceEndpoint": deviceEndpoint
         ]
+        if let userId = Properties.userId {
+            message["userId"] = userId
+        }
 
         do {
             let encryptedAccounts = try Account.accountList().mapValues { (account) -> String in
@@ -337,12 +344,8 @@ class Session: Codable {
             }
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey)
-
-            let parameters = [
-                "s": try Crypto.shared.convertToBase64(from: signature)
-            ]
-            API.shared.request(endpoint: .message, path: nil, parameters: parameters, method: .put, body: jsonData) { (_, error) in
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
+            API.shared.request(endpoint: .message, path: nil, parameters: nil, method: .put, signature: signature, body: jsonData) { (_, error) in
                 if let error = error {
                     Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
                     completion(error)

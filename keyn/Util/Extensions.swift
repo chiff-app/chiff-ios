@@ -8,6 +8,7 @@ import UserNotifications
 import OneTimePassword
 import Amplitude_iOS
 import StoreKit
+import WebKit
 
 // MARK: - Primitive extensions
 
@@ -31,6 +32,10 @@ extension String {
     
     var sha256: String {
         return Crypto.shared.sha256(from: self)
+    }
+
+    var sha256Data: Data {
+        return Crypto.shared.sha256(from: self.data)
     }
     
     var fromBase64: Data? {
@@ -144,6 +149,7 @@ extension Date {
         return Date().timeIntervalSince1970 * 1000
     }
 
+    // TODO: localize this
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]
@@ -209,10 +215,30 @@ extension UIViewController {
         }
     }
 
-    func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+    func showError(message: String, title: String = "Error") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true)
+    }
+
+    func reEnableBarButtonFont() {
+        if #available(iOS 13.0, *) {
+            // Bar button font is disabled for some reason in iOS13..
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.normal)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
+            navigationItem.leftBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primary,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.normal)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.highlighted)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.selected)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.font: UIFont.primaryBold!], for: UIControl.State.focused)
+            navigationItem.rightBarButtonItem?.setTitleTextAttributes([.foregroundColor: UIColor.primaryHalfOpacity,
+                                                           .font: UIFont.primaryBold!], for: UIControl.State.disabled)
+        }
     }
 
 }
@@ -465,3 +491,39 @@ extension Array where Iterator.Element == Account {
         return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }
 }
+
+
+// MARK: Printable PDFs
+
+extension WKWebView {
+
+    var pdf: NSData {
+        let a4 = CGRect.init(x: 0, y: 0, width: 595.2, height: 841.8)
+        let renderer = UIPrintPageRenderer()
+        let formatter = viewPrintFormatter()
+        formatter.perPageContentInsets = UIEdgeInsets(top: 35.0, left: 25.0, bottom: 35.0, right: 25.0)
+        renderer.addPrintFormatter(formatter, startingAtPageAt: 0)
+        renderer.setValue(NSValue(cgRect: a4), forKey: "paperRect")
+        renderer.setValue(NSValue(cgRect: a4), forKey: "printableRect")
+        return renderer.pdf
+    }
+
+}
+
+extension UIPrintPageRenderer {
+
+    var pdf: NSData {
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, self.paperRect, nil)
+        self.prepare(forDrawingPages: NSMakeRange(0, self.numberOfPages))
+        let bounds = UIGraphicsGetPDFContextBounds()
+        for i in 0..<self.numberOfPages {
+            UIGraphicsBeginPDFPage()
+            self.drawPage(at: i, in: bounds)
+        }
+        UIGraphicsEndPDFContext()
+        return pdfData
+    }
+
+}
+

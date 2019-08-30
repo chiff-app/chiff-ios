@@ -49,6 +49,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+
+        reEnableBarButtonFont()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -141,7 +143,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         case 1:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
-            footer.textLabel?.numberOfLines = 3
         case 2:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.footer_account_enabled".localized.capitalizedFirstLetter

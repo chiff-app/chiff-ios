@@ -22,10 +22,12 @@ struct Logger {
         Analytics.setAnalyticsCollectionEnabled(false)
         FirebaseApp.configure()
         amplitude.initializeApiKey(Properties.amplitudeToken)
+        amplitude.disableIdfaTracking()
+        amplitude.disableLocationListening()
         amplitude.set(userProperties: [
-            .accountCount: 42,
-            .pairingCount: 32,
-            .subscribed: false,
+            .accountCount: Properties.accountCount,
+            .pairingCount: Properties.sessionCount,
+            .subscribed: Properties.hasValidSubscription,
             .infoNotifications: Properties.infoNotifications,
             .backupCompleted: Seed.paperBackupCompleted
         ])
@@ -48,7 +50,9 @@ struct Logger {
     }
 
     func warning(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
-        print("--------- ⚠️ WARNING: \(error?.localizedDescription ?? "(no error)"). \(message) ---------")
+        #if DEBUG
+        print("--------- ⚠️ WARNING: \(String(describing: error)). \(message) ---------")
+        #endif
         guard Properties.errorLogging else {
             return
         }
@@ -66,7 +70,9 @@ struct Logger {
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
-        print("--------- ☠️ ERROR: \(error?.localizedDescription ?? "(no error)"). \(message) --------- ")
+        #if DEBUG
+        print("--------- ☠️ ERROR: \(String(describing: error)). \(message) --------- ")
+        #endif
         guard Properties.errorLogging else {
             return
         }

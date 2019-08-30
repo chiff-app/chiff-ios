@@ -10,7 +10,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
     var justLoaded = true
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
-    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
     @IBOutlet weak var jailbreakStackViewHeightConstraint: NSLayoutConstraint!
@@ -23,7 +22,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
-        setVersionText()
         setJailbreakText()
     }
 
@@ -74,18 +72,14 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
-        footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.section == 1 && indexPath.row >= 1) || indexPath.section == 0 {
-            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
-            if Properties.environment == .beta && indexPath.row == 0 {
-                cell.alpha = 0.5
-                cell.isUserInteractionEnabled = false
-            }
+        if indexPath.section == 0 && indexPath.row == 0 && Properties.environment == .beta, let cell = cell as? AccessoryTableViewCell {
+            cell.enabled = false
         }
     }
+
     // MARK: - Actions
 
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
@@ -137,12 +131,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     private func setFooterText() {
         tableView.reloadSections(IndexSet(integer: 1), with: .none)
         securityFooterText = "settings.backup_completed_footer".localized
-    }
-
-    private func setVersionText() {
-        if let version = Properties.version {
-            versionLabel.text = Properties.environment == .beta ? "Keyn \(version)-beta" : "Keyn \(version)"
-        }
     }
 
     private func setJailbreakText() {

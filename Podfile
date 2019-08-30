@@ -21,6 +21,7 @@ target 'keyn' do
 #  pod 'SmileLock'
   pod 'Fabric', '~> 1.10.2'
   pod 'Crashlytics', '~> 3.13.4'
+  pod 'Down'
 end
 
 target 'keynNotificationExtension' do

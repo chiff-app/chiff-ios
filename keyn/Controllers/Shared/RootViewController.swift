@@ -11,6 +11,11 @@ class RootViewController: UITabBarController {
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
         setBadge(completed: Seed.paperBackupCompleted)
         selectedIndex = Properties.deniedPushNotifications ? 1 : 0
+        tabBar.items?[0].title = "tabs.accounts".localized
+        tabBar.items?[1].title = "tabs.devices".localized
+        tabBar.items?[2].title = "tabs.settings".localized
+        tabBar.unselectedItemTintColor = UIColor.primaryHalfOpacity
+        tabBar.tintColor = UIColor.primary
     }
 
     func setBadge(completed: Bool) {

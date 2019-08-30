@@ -4,6 +4,7 @@
  */
 import Foundation
 import LocalAuthentication
+import DeviceCheck
 
 struct BackupManager {
 
@@ -46,14 +47,25 @@ struct BackupManager {
             }
             deleteAllKeys()
             try createEncryptionKey(seed: seed)
-            let (privKey, pubKey) = try createSigningKeypair(seed: seed)
-
-            API.shared.signedRequest(endpoint: .backup, method: .put, pubKey: pubKey, privKey: privKey) { (_, error) in
+            let (privKey, pubKey, userId) = try createSigningKeypair(seed: seed)
+            DCDevice.current.generateToken { (data, error) in
                 if let error = error {
-                    Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                    completionHandler(error)
-                } else {
-                    completionHandler(nil)
+                    Logger.shared.warning("Error retrieving device token.", error: error)
+                }
+                var message: [String: Any] = [
+                    "os": "ios",
+                    "userId": userId
+                ]
+                if let data = data {
+                    message[MessageIdentifier.token] = data.base64EncodedString()
+                }
+                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey) { (_, error) in
+                    if let error = error {
+                        Logger.shared.error("Cannot initialize BackupManager.", error: error)
+                        completionHandler(error)
+                    } else {
+                        completionHandler(nil)
+                    }
                 }
             }
         } catch {
@@ -110,7 +122,7 @@ struct BackupManager {
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
             try createEncryptionKey(seed: seed)
-            (_, pubKey) = try createSigningKeypair(seed: seed)
+            (_, pubKey, _) = try createSigningKeypair(seed: seed)
         } else {
             pubKey = try publicKey()
         }
@@ -159,13 +171,14 @@ struct BackupManager {
 
     // MARK: - Private
     
-    private func createSigningKeypair(seed: Data) throws -> (Data, String) {
+    private func createSigningKeypair(seed: Data) throws -> (Data, String, String) {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
-        Properties.userId = "\(base64PubKey)_KEYN_USER_ID".sha256
-        return (keyPair.privKey, base64PubKey)
+        let userId = "\(base64PubKey)_KEYN_USER_ID".sha256
+        Properties.userId = userId
+        return (keyPair.privKey, base64PubKey, userId)
     }
     
     private func createEncryptionKey(seed: Data) throws {

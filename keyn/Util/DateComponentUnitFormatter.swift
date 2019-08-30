@@ -8,56 +8,32 @@ struct DateComponentUnitFormatter {
     
     private struct DateComponentUnitFormat {
         let unit: Calendar.Component
+        let localizationKey: String
 
-        let singularUnit: String
-        let pluralUnit: String
+        var singularUnit: String {
+            return "date_components.\(localizationKey).singular_unit".localized
+        }
+        var pluralUnit: String {
+            return "date_components.\(localizationKey).plural_unit".localized
+        }
 
-        let futureSingular: String
-        let pastSingular: String
+        var futureSingular: String {
+            return "date_components.\(localizationKey).future_singular".localized
+        }
+        var pastSingular: String {
+            return "date_components.\(localizationKey).past_singular".localized
+        }
+
     }
 
     private let formats: [DateComponentUnitFormat] = [
-        DateComponentUnitFormat(unit: .year,
-                                singularUnit: "year",
-                                pluralUnit: "years",
-                                futureSingular: "Next year",
-                                pastSingular: "Last year"),
-
-        DateComponentUnitFormat(unit: .month,
-                                singularUnit: "month",
-                                pluralUnit: "months",
-                                futureSingular: "Next month",
-                                pastSingular: "Last month"),
-
-        DateComponentUnitFormat(unit: .weekOfYear,
-                                singularUnit: "week",
-                                pluralUnit: "weeks",
-                                futureSingular: "Next week",
-                                pastSingular: "Last week"),
-
-        DateComponentUnitFormat(unit: .day,
-                                singularUnit: "day",
-                                pluralUnit: "days",
-                                futureSingular: "Tomorrow",
-                                pastSingular: "Yesterday"),
-
-        DateComponentUnitFormat(unit: .hour,
-                                singularUnit: "hour",
-                                pluralUnit: "hours",
-                                futureSingular: "In an hour",
-                                pastSingular: "An hour ago"),
-
-        DateComponentUnitFormat(unit: .minute,
-                                singularUnit: "minute",
-                                pluralUnit: "minutes",
-                                futureSingular: "In a minute",
-                                pastSingular: "A minute ago"),
-
-        DateComponentUnitFormat(unit: .second,
-                                singularUnit: "second",
-                                pluralUnit: "seconds",
-                                futureSingular: "Just now",
-                                pastSingular: "Just now"),
+        DateComponentUnitFormat(unit: .year, localizationKey: "year"),
+        DateComponentUnitFormat(unit: .month, localizationKey: "month"),
+        DateComponentUnitFormat(unit: .weekOfYear, localizationKey: "week"),
+        DateComponentUnitFormat(unit: .day, localizationKey: "day"),
+        DateComponentUnitFormat(unit: .hour, localizationKey: "hour"),
+        DateComponentUnitFormat(unit: .minute, localizationKey: "minute"),
+        DateComponentUnitFormat(unit: .second, localizationKey: "second"),
         ]
 
     func string(forDateComponents dateComponents: DateComponents, useNumericDates: Bool) -> String {
@@ -78,7 +54,7 @@ struct DateComponentUnitFormatter {
             case .minute:
                 unitValue = dateComponents.minute ?? 0
             case .second:
-                return "Less than a minute ago"
+                return "date_components.less_than_minute".localized
             default:
                 assertionFailure("Date does not have requried components")
                 return ""
@@ -86,18 +62,18 @@ struct DateComponentUnitFormatter {
 
             switch unitValue {
             case 2 ..< Int.max:
-                return "\(unitValue) \(format.pluralUnit) ago"
+                return "\(unitValue) \(format.pluralUnit) \("date_components.ago".localized)"
             case 1:
-                return useNumericDates ? "\(unitValue) \(format.singularUnit) ago" : format.pastSingular
+                return useNumericDates ? "\(unitValue) \(format.singularUnit) \("date_components.ago".localized)" : format.pastSingular
             case -1:
-                return useNumericDates ? "In \(-unitValue) \(format.singularUnit)" : format.futureSingular
+                return useNumericDates ? "\("date_components.in".localized.capitalizedFirstLetter) \(-unitValue) \(format.singularUnit)" : format.futureSingular
             case Int.min ..< -1:
-                return "In \(-unitValue) \(format.pluralUnit)"
+                return "\("date_components.in".localized.capitalizedFirstLetter) \(-unitValue) \(format.pluralUnit)"
             default:
                 break
             }
         }
 
-        return "Just now"
+        return "date_components.just_now".localized
     }
 }
