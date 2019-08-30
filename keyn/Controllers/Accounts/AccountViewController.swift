@@ -143,7 +143,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         case 1:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
-            footer.textLabel?.numberOfLines = 3
         case 2:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.footer_account_enabled".localized.capitalizedFirstLetter

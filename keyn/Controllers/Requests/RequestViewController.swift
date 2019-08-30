@@ -170,8 +170,9 @@ class RequestViewController: UIViewController {
         }
         upgradeStackView.isHidden = false
         authenticateButton.isHidden = true
-        accountsLeftLabel.isHidden = false // TODO: set text
+        accountsLeftLabel.isHidden = false
         let accountsLeft = Properties.accountCap - Properties.accountCount
+        // TODO: Use stringsdict for this
         if accountsLeft == 0 {
             accountsLeftLabel.attributedText = NSAttributedString(string: "requests.no_accounts_left".localized, attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
         } else {

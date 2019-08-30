@@ -87,7 +87,7 @@ class AboutViewController: UITableViewController {
     private func setVersionText() {
         if let version = Properties.version {
 
-            let versionText = Properties.environment == .beta ? "Version \(version)-beta" : "Version \(version)"
+            let versionText = Properties.environment == .beta ? "\("settings.version".localized.capitalizedFirstLetter) \(version)-beta" : "\("settings.version".localized.capitalizedFirstLetter) \(version)"
             versionLabel.text = "© \(Calendar.current.component(.year, from: Date())) Keyn B.V.\n\(versionText)"
         }
     }
