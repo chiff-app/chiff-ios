@@ -17,7 +17,7 @@ class LoginViewController: ASCredentialProviderViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let username = credentialIdentity?.user {
-            requestLabel.text = "\("requests.login_with".localized) \(username)"
+            requestLabel.text = String(format: "requests.login_with".localized, username)
         } else {
             requestLabel.text = "requests.unlock_accounts".localized
         }
@@ -71,7 +71,7 @@ class LoginViewController: ASCredentialProviderViewController {
     // MARK: - Private functions
 
     private func loadUsers() {
-        let reason = credentialIdentity != nil ? "\("requests.login_with".localized) \(credentialIdentity!.user)" : "requests.unlock_accounts".localized
+        let reason = credentialIdentity != nil ? String(format: "requests.login_with".localized, credentialIdentity!.user) : "requests.unlock_accounts".localized
         LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true) { (context, error) in
             do {
                 if let error = error {

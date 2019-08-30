@@ -267,7 +267,7 @@ devices:
       start: 8
       end: 19
     second:
-      value: Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op your computer.
+      value: Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.
       start: 88
       end: 99
     third:
@@ -282,11 +282,11 @@ devices:
     value: We willen je niet pushen...
   no_push_warning_text:
     value: |-
-      Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
+      Maar Keyn werkt helaas niet zonder pushberichten. 
 
-      Je kunt Keyn toestaan berichten te versturen via Instellingen > Keyn > Berichtgeving.
+      Je kun pushberichten aan  zetten via Instellingen > Keyn > Berichtgeving.
       
-      Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.
+      Kies dan 'Sta berichtgeving toe'.
   open_settings:
     value: Open instellingen
   pairing:
@@ -328,9 +328,9 @@ settings:
   share_errors:
     value: Deel foutmeldingen
   share_analytics:
-    value: Deel analytische data
+    value: Deel gebruiksstatistieken
   privacy_explanation:
-    value: Het delen van foutmeldingen en analytische gegevens helpt ons veel om Keyn te verbeteren.
+    value: Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Keyn te verbeteren.
   privacy_beta_explanation:
     value: Gebruiksstatistieken worden automatisch gedeeld als je de betaversie gebruikt. Je kunt hier meer over lezen in Keyn's privacy policy en de algemene voorwaarden van Testflight.
   feedback_description:
@@ -352,7 +352,7 @@ settings:
     value: Paper backup is niet voltooid
   backup_completed_footer:
     comment: Description if backup is already completed
-    value: De paper backup is de enige manier om je accounts te herstellen als je telefoon kwijt raakt of kapot gaat.
+    value: De paper backup is de enige manier om je accounts te herstellen als je telefoon kapot gaat of als je hem kwijt raakt.
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback verstuurd, bedankt!
@@ -384,6 +384,8 @@ settings:
     value: Verwijder data
   reset_keyn_button:
     value: Reset Keyn
+  version:
+    value: Versie
 
 backup:
   word:
@@ -435,20 +437,19 @@ requests:
     value: Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden verstuurd.
   login_with:
     comment: Ask to the user to login with an account, e.g. Login with demo@keyn.io?
-    value: Login met
+    value: Login met %@
   login_to:
     comment: Ask to the user to login to a site, e.g. Login to Amazon.com?
-    value: Login bij
+    value: Login bij %@
   fill_for:
     comment: Ask the user to fill a password, e.g. Fill password for Amazon.com?
-    value: Vul wachtwoord in bij
+    value: Vul wachtwoord in voor %@
   change_for: 
     comment: Ask the user to change a password, e.g. Change password for Amazon.com?
-    value: Wijzig wachtwoord voor
+    value: Wijzig wachtwoord voor %@
   add_site:
     comment: Ask the user to add a site, e.g. Add Amazon.com?
-    value: Add 
-    #Voeg ... toe (veranderen in code)
+    value: Voeg %@ toe
   save:
     comment: Ask the user to save a site, e.g. Save Amazon.com?
     value: Bewaar
@@ -570,9 +571,9 @@ initialization:
     start: 4
     end: 8
   help_improve:
-    value: Help ons Keyn te verbeteren
-    start: 9
-    end: 13
+    value: Help Keyn te verbeteren
+    start: 5
+    end: 9
   working:
     value: |-
       We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
@@ -605,7 +606,7 @@ initialization:
     first:
       value: Keyn vraagt in je browser of je wil inloggen.
     second:
-      value: Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.
+      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
     third:
       value: Keyn vult je inloggegevens in de juiste velden.
   mobile_instruction_iOS12:
@@ -737,6 +738,10 @@ date_components:
     value: geleden
   in:
     value: over
+  just_now:
+    value: Zojuist
+  less_than_minute:
+    value: Zojuist
 
 feedback:
   start:
