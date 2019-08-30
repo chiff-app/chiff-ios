@@ -72,7 +72,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
-        footer.textLabel?.numberOfLines = footer.textLabel!.text!.count > 60 ? 2 : 1
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

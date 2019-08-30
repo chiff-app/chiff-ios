@@ -16,7 +16,7 @@ Keyn BV
 Langegracht 70  
 2312NV Leiden  
 The Netherlands  
-[privacy@keyn.app](privacy@keyn.app)
+[privacy@keyn.app](mailto:privacy@keyn.app)
 
 #### Purpose data collection
 Keyn has several purposes why your data is needed:
@@ -36,7 +36,7 @@ There are some third parties Keyn BV transfers personally identifiable informati
     
 #### User’s rights
 Following the GDPR legislation, users have the right to access, change or delete personal identifiable information. Your backup data can be deleted by choosing _Delete data_ in the privacy settings of the Keyn app. This will delete all data locally and on the server.
-If you have any additional needs for accessing, changing or deleting your data, please send us an email to [privacy@keyn.app](privacy@keyn.app). Keyn BV will respond as soon as possible, but always within four weeks, to answer your request. If you have a complaint about the way your data is processed, you can object via [Autoriteit Persoonsgegevens](https://www.autoriteitpersoonsgegevens.nl).
+If you have any additional needs for accessing, changing or deleting your data, please send us an email to [privacy@keyn.app](mailto:privacy@keyn.app). Keyn BV will respond as soon as possible, but always within four weeks, to answer your request. If you have a complaint about the way your data is processed, you can object via [Autoriteit Persoonsgegevens](https://www.autoriteitpersoonsgegevens.nl).
 
 #### Security
 For Keyn BV information security is of major importance. Keyn BV takes all possible measures to prevent abuse, loss, unauthorized access, unwanted disclosure and unwanted modification of personal information. The website of Keyn BV uses TLS to encrypt communication for the website and backend.

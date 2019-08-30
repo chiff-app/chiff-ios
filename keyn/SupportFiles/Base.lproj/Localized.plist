@@ -1744,6 +1744,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Terms of use</string>
 		</dict>
+		<key>version</key>
+		<dict>
+			<key>value</key>
+			<string>Version</string>
+		</dict>
 	</dict>
 	<key>storekit</key>
 	<dict>
