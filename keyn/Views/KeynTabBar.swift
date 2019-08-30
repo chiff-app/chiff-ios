@@ -9,6 +9,16 @@ class KeynTabBar: UITabBar {
     let height: CGFloat = 90
     var gradientView: UIView!
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        sharedInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        sharedInit()
+    }
+
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         guard let window = UIApplication.shared.keyWindow else {
             return super.sizeThatFits(size)
@@ -41,5 +51,13 @@ class KeynTabBar: UITabBar {
         gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.5)]
         gradientLayer.colors = colors
         gradientView.layer.insertSublayer(gradientLayer, at: 0)
+    }
+
+    private func sharedInit() {
+        if #available(iOS 13.0, *) {
+            layer.borderWidth = 0.50
+            layer.borderColor = UIColor.clear.cgColor
+            clipsToBounds = true
+        }
     }
 }

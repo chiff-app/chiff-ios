@@ -14,6 +14,7 @@ import UIKit
     private let imageBottomMargin: CGFloat = 0
     private var gradientLayer: CAGradientLayer!
 
+    @IBInspectable var gradientColor: UIColor = .primaryVeryLight
     @IBInspectable var logoColor: UIColor = .primary
     @IBInspectable var gradientEnabled: Bool = true
 
@@ -41,17 +42,20 @@ import UIKit
             logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageBottomMargin),
             logoImageView.heightAnchor.constraint(equalToConstant: height),
         ])
+    }
+
+    override func viewDidLayoutSubviews() {
         addBackgroundLayer()
         gradientLayer.isHidden = !gradientEnabled
     }
 
     private func addBackgroundLayer() {
         gradientLayer = CAGradientLayer()
-        gradientLayer.frame = navigationBar.bounds
+        gradientLayer.frame = navigationBar.frame
         var colors = [CGColor]()
-        colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
-        colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
-        gradientLayer.locations = [NSNumber(value: 0.0), NSNumber(value: 0.8)]
+        colors.append(gradientColor.withAlphaComponent(1).cgColor)
+        colors.append(gradientColor.withAlphaComponent(0).cgColor)
+        gradientLayer.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5)]
         gradientLayer.colors = colors
         if let image = getImageFrom(gradientLayer: gradientLayer) {
             navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)

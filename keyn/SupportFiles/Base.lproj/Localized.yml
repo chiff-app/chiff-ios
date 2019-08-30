@@ -1,4 +1,16 @@
 ---
+numbers:
+  one: 
+    value: '1'
+  two: 
+    value: '2'
+  three: 
+    value: '3'
+  four: 
+    value: '4'
+  five: 
+    value: '5'
+
 errors:
   local_authentication:
     biometry_not_available:
@@ -77,6 +89,7 @@ errors:
     value: Error unsubscribing to info notifications
   deleting:
       value: Error deleting backup data
+
 popups:
   questions:
     camera_permission:
@@ -111,6 +124,12 @@ popups:
     questionnaire_popup_title:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Questiontime!
+    close_warning:
+      value: You cannot use Keyn if you don't agree with the Terms of Use. Are you sure?
+    agree_terms:
+      value: I have read and agree to the Terms of Use of Keyn
+    terms:
+      value: Terms of Use
   responses:
     delete:
       value: Delete
@@ -135,7 +154,25 @@ popups:
       value: No, thanks
     settings:
       value: Open settings
+
 accounts:
+  didnt_save:
+    value: You didn’t save any of your accounts just yet.
+  how_to_add:
+    value: How to add an account
+  add_an_account:
+    value: Add an account
+  adding_account:
+    value: Adding an account
+  add_instructions:
+    first:
+      value: Go to a website on your computer and login as you’d normally do.
+    second:
+      value: Keyn will automatically ask you to save the password. This will securely send the password to this phone. 
+    third:
+      value: Keyn will store the password on your phone. Next time you want to login, you can use Keyn.
+  alternative_add:
+    value: Alternatively, you can add an account manually.
   website_details:
     value: Website details
   user_details:
@@ -175,6 +212,39 @@ accounts:
     value: The 2FA code can be used if the website offers the possibility to add a one-time password as a second authentication factor. 
   sites_header:
     value: Websites
+  account_details:
+    value: Accounts details
+  name: 
+    value: Name
+  url:
+    value: URL
+  password:
+    value: Password
+  username:
+    value: Username
+  2fa:
+    value: 2FA code
+  code:
+    value: Code
+  my_accounts:
+    value: My accounts
+  upgrade:
+    value: Upgrade
+  add_2fa:
+    value: Add 2FA code
+  scan_2fa:
+    value: Scan the QR code to add the 2FA code for
+  time_based:
+    value: Time-based
+  enabled:
+    value: Enabled
+  delete_account:
+    value: Delete account
+  report:  
+    value: Report
+  choose:
+    value: Choose an account to fill the credentials.
+
 devices:
   devices:
     comment: Section title for devices
@@ -182,9 +252,47 @@ devices:
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
     value: Open the Keyn browser extension to display QR-code.
+  pairing_instruction_two:
+    value: Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go
+    start: 104
   scan_qr:
     comment: Cell title for scanning qr code
     value: Scan QR
+  pair_with_device:
+    value: Pair with your device
+  pairing_explanation:
+    first:
+      value: Go to keyn.app/go on your computer
+      start: 6
+      end: 17
+    second:
+      value: To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.
+      start: 87
+      end: 98
+    third:
+      value: Scan QR code
+    fourth:
+      value: After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!
+  paired_devices:
+    value: My paired devices
+  footer:
+    value: You can pair with as many devices as you want.
+  no_push_warning_title:
+    value: We don't want to push you...
+  no_push_warning_text:
+    value: |- 
+      But you can only use Keyn to log in to other devices if  you enable push notifications.
+
+      You can allow Keyn to send notifications via Settings > Keyn > Notifications.
+      
+      Choose 'Allow Notifications' under 'Notifications'.
+  open_settings:
+    value: Open settings
+  pairing:  
+    value: Pairing
+  'on':
+    value: 'on'
+
 settings:
   settings:
     value: Settings
@@ -192,8 +300,36 @@ settings:
   privacy:
     value: Privacy
     comment: The word for privacy
+  legal:
+    value: Legal
+    comment: The word for legal
+  help:
+    value: Help
+    comment: The word for help
   premium:
     value: Premium
+  privacy_policy:
+    value: Privacy Policy
+  keyn_premium:
+    value: Keyn Premium
+  news_from_keyn:
+    value: News from Keyn
+  about:
+    value: About
+  paper_backup:
+    value: Paper backup
+  terms_of_use:
+    value: Terms of use
+  privacy_policy:
+    value: Privacy policy
+  faq:
+    value: FAQ
+  feedback:
+    value: Feedback
+  share_errors:
+    value: Share errors
+  share_analytics:
+    value: Share analytical data
   privacy_explanation:
     value: Sharing error and analytical data will greatly help us improving Keyn. Please consider enabling it.
   privacy_beta_explanation:
@@ -203,9 +339,9 @@ settings:
     value: Use this form to provide feedback :)
   reset_warning:
     comment: Description under reset Keyn
-    value: |- 
-      Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
-      Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
+    value: Resetting Keyn will delete your local data, but still allow you to restore your accounts with the paper backup.
+  delete_warning:
+    value: Deleting data will permanently delete all your local and remote data. You will not be able to restore your accounts with your paper backup!
   reset_keyn_warning:
     comment: Alert before deleting local data
     value: ⚠️ Resetting Keyn will delete your local data. Make sure you have written down your paper backup.       
@@ -221,6 +357,8 @@ settings:
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: Feedback sent, thanks!
+  feedback_footer:
+    value: Help us make Keyn better by letting us know what you think or providing suggestions for improvements.
   jailbreak_warning:
     value: This device appears to be jailbroken. Other applications may be able to access your passwords
   read_more:
@@ -239,10 +377,59 @@ settings:
     value: You save 17%
   active:
     value: active
+  disclaimer:
+    value: Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase. By purchasing, you agree with our
+  and:
+    value: and
+  delete_data_button:
+    value: Delete data
+  reset_keyn_button:
+    value: Reset Keyn
+  version:
+    value: Version
+
 backup:
   word:
     comment: The word for word
     value: word
+  start_backup:
+    value: Start backing up
+  what_if:
+    value: What if your phone gets lost or stolen?
+    start: 24
+  next:
+    value: Next
+  previous:
+    value: Previous
+  check_text:
+    value: To make sure everything was written down correctly, please enter te following words from your paper to continue
+  complete:
+    value: Complete
+  great:
+    value: Great! Now store your paper backup in a safe place
+  if_stolen:
+    value: If your phone gets lost or stolen, you can recover all your accounts by entering the words on your new phone.
+  return_to_settings:
+    value: Return to settings
+  explanation:
+    first:
+      value: Keyn keeps your passwords in a safe and only your phone has the key.
+    second:
+      value: So if your phone gets lost or stolen, you need a backup, something that's not on your phone.
+    third:
+      value: Words are easy to write down, but one word wouldn't be secure, so we're giving you 12. Write them down and store them in a safe place.
+  please_write_down:
+    value: Please write down
+  final_check:
+    value: One final check
+  the:
+    comment: For the word 'word'
+    value: the
+  word_is:
+    value: word is
+  retrieve:
+    value: Retrieve paper backup
+
 requests:
   accounts:
     value: accounts
@@ -251,19 +438,19 @@ requests:
     value: The request that was received expired. This means it was sent more than three minutes ago.
   login_with:
     comment: Ask to the user to login with an account, e.g. Login with demo@keyn.io?
-    value: Login with
+    value: Login with %@
   login_to:
     comment: Ask to the user to login to a site, e.g. Login to Amazon.com?
-    value: Login to
+    value: Login to %@
   fill_for:
     comment: Ask the user to fill a password, e.g. Fill password for Amazon.com?
-    value: Fill password for
+    value: Fill password for %@
   change_for: 
     comment: Ask the user to change a password, e.g. Change password for Amazon.com?
-    value: Change password for
+    value: Change password for %@
   add_site:
     comment: Ask the user to add a site, e.g. Add Amazon.com?
-    value: Add
+    value: Add %@
   save:
     comment: Ask the user to save a site, e.g. Save Amazon.com?
     value: Save
@@ -275,7 +462,7 @@ requests:
     comment: Unlock Keyn
   'on':
     value: 'on'
-    comment: The word for on
+    comment: The word for on, e.g. Pair with browser on OS?
   pair_with:
     value: Pair with
   unknown_request:
@@ -326,6 +513,29 @@ requests:
     value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
   no_accounts_left:
     value: You cannot add any more accounts in your free Keyn plan. Upgrade to save an unlimited number of accounts
+  return:
+    value: Return
+  upgrade:
+    value: Upgrade now
+  confirm_request:
+    value: Confirm request
+
+notifications:
+  add_account:
+    value: Add account
+  add_accounts:
+    value: Add accounts
+  end_session:
+    value: Session ended
+  change_password:
+    value: Change password
+  login:
+    value: Log in
+  fill_password:
+    value: Fill password
+  pairing:
+    value: Pair
+
 registration:
   change_password_footer:
     comment: Description for enabling changing a password
@@ -336,10 +546,68 @@ registration:
   breach_password_found:
     comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
     value: This password has been found in
+
 initialization:
+  get_started:
+    value: Let's get started
+  learn_more:
+    value: Learn more
+  setup_keyn:
+    value: Setup Keyn
+  scan_qr:
+    value: Scan QR code
+  try_later:
+    value: Try later
+  start_using_keyn:
+    value: Start using Keyn
+  byebye:
+    value: Bye bye forgetting passwords, hello Keyn
+    start: 30
+    end: 40
+  welcome_text:
+    value: Keyn allows you to log in to any website using your phone, making it safer and simpler
+  how_keyn_works:
+    value: How Keyn works on
+    start: 4
+    end: 8
+  help_improve:
+    value: Help us improve Keyn
+    start: 16
+  working:
+    value: |-
+      We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+
+      Sensitive data is never shared and everything is anonymous.
+  change:
+    value: You can always change this later in settings
+  one_minute_away:
+    value: You're 1 minute away from forgetting your passwords
+    start: 6
+    end: 15
+  agree:
+    value: Agree
+  disagree:
+    value: Disagree
+  finish: 
+    value: Finish
   initialize_keyn:
     value: Initialize encrypted storage
     comment: This is provided as a reason for authenticating the first time.
+  recover:
+    value: Recover from paper backup
+  enter_words:
+    value: Enter the words of your paper backup to recover your passwords
+  mobile:
+    value: Mobile
+  desktop:
+    value: Desktop
+  desktop_instruction:
+    first:
+      value: Keyn asks you in your browser if you want to log in.
+    second:
+      value: You receive a notification on your phone that asks you to authorize the request.
+    third:
+      value: Keyn fills your credentials in the right fields.
   mobile_instruction_iOS12:
     first:
       value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.
@@ -354,9 +622,16 @@ initialization:
       value: Copy your password by simply tapping it.
     third:
       value: Return to the login fields and paste your password.
+  share_analytics:
+    value: Share usage statistics
+  share_errors:
+    value: Share error data
+
 storekit:
-  cannotMakePayments:
-    value: You are not authorized to make payments. In-App Purchases may be restricted on your device.
+  title:
+    value: With Keyn Premium, you can add an unlimited number of accounts to Keyn.
+  purchase:
+    value: Purchase
   couldNotFind:
     value: Could not find resource file
   error:
@@ -367,55 +642,136 @@ storekit:
     value: Deliver content for
   failed:
     value: failed
-  installing:
-    value: In-App Purchases may be restricted on your device
-  invalidIndexPath:
-    value: Invalid selected index path
   noRestorablePurchases:
     value: There are no restorable purchases.
-  noPurchasesAvailable:
-    value: No purchases available
-  notAuthorized:
-    value: You are not authorized to make payments
-  okButton:
-    value: OK
-  previouslyBought:
-    value: Only previously bought non-consumable products and auto-renewable subscriptions can be restored
-  productRequestStatus:
-    value: Product Request Status
   purchaseOf:
     value: Purchase of
-  purchaseStatus:
-    value: Purchase Status
   removed:
     value: was removed from the payment queue
   restorable:
     value: All restorable transactions have been processed by the payment queue
-  restoreContent:
-    value: Restore content for
   status:
     value: Status
   unknownDefault:
     value: Unknown payment transaction case
-  unknownDestinationViewController:
-    value: Unknown destination view controller
-  unknownDetail:
-    value: Unknown detail row
-  unknownPurchase:
-    value: No selected purchase
-  unknownSelectedSegmentIndex:
-    value: "Unknown selected segment index:" 
-  unknownSelectedViewController:
-    value: Unknown selected view controller
-  unknownTabBarIndex:
-    value: Unknown tab bar index
-  unknownToolbarItem:
-    value: "Unknown selected toolbar item:"
   updateResource:
     value: Update it with your product identifiers to retrieve product information
-  useStoreRestore:
-    value: Use Store > Restore to restore your previously bought non-consumable products and auto-renewable subscriptions
-  viewControllerDoesNotExist:
-    value: The main content view controller does not exist
-  windowDoesNotExist:
-    value: The window does not exist
+  restore_button:
+    value: I already have Keyn Premium
+  choose_plan:
+    value: Choose your plan
+
+tabs:
+  accounts:
+    value: Accounts
+  devices:
+    value: Devices
+  settings:
+    value: Settings
+
+date_components:
+  year:
+    singular_unit:
+      value: year
+    plural_unit:
+      value: years
+    future_singular:
+      value: Next year
+    past_singular:
+      value: Last year
+  month:
+    singular_unit:
+      value: month
+    plural_unit:
+      value: months
+    future_singular:
+      value: Next month
+    past_singular:
+      value: Last month
+  week:
+    singular_unit:
+      value: week
+    plural_unit:
+      value: weeks
+    future_singular:
+      value: Next week
+    past_singular:
+      value: Last week
+  day:
+    singular_unit:
+      value: day
+    plural_unit:
+      value: days
+    future_singular:
+      value: Tomorrow
+    past_singular:
+      value: Yesterday
+  hour:
+    singular_unit:
+      value: hour
+    plural_unit:
+      value: hours
+    future_singular:
+      value: In an hour
+    past_singular:
+      value: An hour ago
+  minute:
+    singular_unit:
+      value: minute
+    plural_unit:
+      value: minutes
+    future_singular:
+      value: In a minute
+    past_singular:
+      value: A minute ago
+  second:
+    singular_unit:
+      value: second
+    plural_unit:
+      value: seconds
+    future_singular:
+      value: Just now
+    past_singular:
+      value: Just now
+  ago:
+    value: ago
+  in:
+    value: in
+  just_now:
+    value: Just now
+  less_than_minute:
+    value: Less than a minute ago
+
+feedback:
+  start:
+    value: Start
+  send:
+    value: Send
+  use_help:
+    value: We could use your help
+  submit:
+    value: Submit
+  'yes':
+    value: 'Yes'
+  'no':
+    value: 'No'
+  next:
+    value: Next
+  thanks:
+    value: |-
+      That was all.
+      Thank you!
+  finish:
+    value: Finish
+  what_did_not_work:
+    value: What didn't work?  
+  logging_in: 
+    value: Logging in
+  change_password:
+    value: Changing password
+  add_site: 
+    value: Adding site
+  additional_info:
+    value: Anything you want to add?
+  feedback:
+    value: Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.

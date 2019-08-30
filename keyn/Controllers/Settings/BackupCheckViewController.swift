@@ -151,9 +151,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
 
         let ordinalFormatter = NumberFormatter()
         ordinalFormatter.numberStyle = .ordinal
-        let attributedText = NSMutableAttributedString(string: "The ", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
+        let attributedText = NSMutableAttributedString(string: "\("backup.the".localized.capitalizedFirstLetter) ", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
         attributedText.append(NSMutableAttributedString(string: ordinalFormatter.string(from: NSNumber(value: index + 1))!, attributes: [NSAttributedString.Key.font: UIFont.primaryBold!]))
-        attributedText.append(NSMutableAttributedString(string: " word is", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!]))
+        attributedText.append(NSMutableAttributedString(string: " \("backup.word_is".localized)", attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!]))
         label.attributedText = attributedText
     }
 }

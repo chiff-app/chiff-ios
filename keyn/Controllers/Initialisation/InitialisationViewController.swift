@@ -7,7 +7,32 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
-    @IBAction func setupKeyn(_ sender: UIButton) {
+    @IBOutlet weak var loadingView: UIView!
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        self.loadingView.isHidden = true
+    }
+
+    // MARK: - Actions
+
+    @IBAction func trySetupKeyn(_ sender: Any) {
+        if Properties.agreedWithTerms {
+            setupKeyn()
+        } else {
+            performSegue(withIdentifier: "ShowTerms", sender: self)
+        }
+    }
+
+    @IBAction func unwindAndSetupKeyn(sender: UIStoryboardSegue) {
+        Properties.agreedWithTerms = true
+        setupKeyn()
+    }
+
+    // MARK: - Private functions
+
+    private func setupKeyn() {
+        loadingView.isHidden = false
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             registerForPushNotifications()
         } else {
@@ -15,10 +40,12 @@ class InitialisationViewController: UIViewController {
                 DispatchQueue.main.async {
                     if let error = error as? LAError {
                         if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                            self.loadingView.isHidden = true
                             self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
                         }
                     } else if let error = error {
-                        self.showError(message:"\("errors.seed_creation".localized): \(error)")
+                        self.loadingView.isHidden = true
+                        self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
                     } else {
                         self.registerForPushNotifications()
                         Logger.shared.analytics(.seedCreated)
@@ -26,10 +53,7 @@ class InitialisationViewController: UIViewController {
                 }
             }
         }
-
     }
-
-    // MARK: - Private functions
 
     private func registerForPushNotifications() {
         AppDelegate.startupService.registerForPushNotifications() { result in

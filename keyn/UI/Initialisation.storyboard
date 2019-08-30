@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_5" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -23,65 +23,29 @@
             <objects>
                 <viewController id="qfd-wO-wI4" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gEp-N2-gPp">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33">
-                                <rect key="frame" x="20" y="138" width="374" height="159"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="20" y="98" width="335" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="wFq-E5-qbT"/>
                                 </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="Bye bye forgetting">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26340000000000002" green="0.15792999999999999" blue="0.76895000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="passwords">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=",">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26340000000000002" green="0.15792999999999999" blue="0.76895000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.37264000000000003" green="0.28637000000000001" blue="0.98290999999999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="hello Keyn">
-                                        <attributes>
-                                            <color key="NSColor" red="0.85502999999999996" green="0.56596999999999997" blue="0.12123" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="30" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="38" maximumLineHeight="38" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="30"/>
+                                <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                        <real key="value" value="38"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.byebye"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="4ye-iw-xa2">
-                                <rect key="frame" x="0.0" y="465" width="414" height="213"/>
+                                <rect key="frame" x="0.0" y="314" width="375" height="213"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-Ka-Tah" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="116" y="758" width="182" height="44"/>
+                                <rect key="frame" x="96.5" y="563" width="182" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="182" id="5og-uA-XoT"/>
                                     <constraint firstAttribute="height" constant="44" id="vuH-ba-cl0"/>
@@ -91,46 +55,42 @@
                                 <state key="normal" title="Let's get started"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.get_started"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="vKQ-PU-y17" kind="show" id="Y9R-XK-IMG"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr">
-                                <rect key="frame" x="28" y="327" width="358" height="78"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Keyn allows you to log in to any website using your phone, making it safer and simpler">
-                                        <attributes>
-                                            <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="16" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="26" maximumLineHeight="26" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="28" y="183" width="319" height="78"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                        <real key="value" value="26"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.welcome_text"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB">
-                                <rect key="frame" x="107.66666666666669" y="822" width="199" height="20"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB" customClass="UnderlinedButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="88" y="627" width="199" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="b0G-uf-Vuz"/>
                                 </constraints>
-                                <state key="normal">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="Recover from paper backup">
-                                            <attributes>
-                                                <color key="NSColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="0.70121527777777781" colorSpace="calibratedRGB"/>
-                                                <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                <integer key="NSUnderline" value="1"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                <state key="normal" title="Recover from paper backup">
+                                    <color key="titleColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="0.70121527777777781" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.recover"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="wDe-lR-s6k" kind="show" id="OZA-Hj-GIA"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="8Ug-bV-7y1">
-                                <rect key="frame" x="181" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="0lL-cQ-Fdv"/>
                                     <constraint firstAttribute="height" constant="58" id="gF0-dt-dYe"/>
@@ -177,17 +137,17 @@
             <objects>
                 <viewController id="wDe-lR-s6k" customClass="RecoveryViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c7M-Ze-aN8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tzd-mZ-6gD">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xbU-f7-YEE">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="602"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="602"/>
                                         <subviews>
                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="lOf-AR-sAb">
-                                                <rect key="frame" x="188.66666666666666" y="282.66666666666669" width="37" height="37"/>
+                                                <rect key="frame" x="169" y="282.5" width="37" height="37"/>
                                             </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.49539930555555556" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -197,22 +157,24 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DVf-9c-q0h">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="602"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="602"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="diW-j3-j1S">
-                                                <rect key="frame" x="20" y="120" width="374" height="444"/>
+                                                <rect key="frame" x="20" y="120" width="335" height="444"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="sqp-v3-j9s">
-                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 1" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eR0-Ah-TRS">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 2" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6cz-b2-H5E">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -223,16 +185,18 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="FFl-Cl-RbY">
-                                                        <rect key="frame" x="0.0" y="80" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="80" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 3" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EQU-kG-PCG">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 4" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="T3L-VE-69V">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -240,16 +204,18 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="z6i-oi-A02">
-                                                        <rect key="frame" x="0.0" y="160" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="160" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 5" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PjC-qq-8CI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 6" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="utN-X5-bfb">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -257,16 +223,18 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="HRz-1f-SFU">
-                                                        <rect key="frame" x="0.0" y="240" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="240" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 7" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bp7-3k-iQ9">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 8" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n9W-Gx-TuY">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -274,16 +242,18 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="2FO-XB-okI">
-                                                        <rect key="frame" x="0.0" y="320" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="320" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 9" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BRf-vZ-ldi">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 10" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aAx-n9-XvJ">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -291,16 +261,18 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gvt-0U-VSW">
-                                                        <rect key="frame" x="0.0" y="400" width="374" height="44"/>
+                                                        <rect key="frame" x="0.0" y="400" width="335" height="44"/>
                                                         <subviews>
                                                             <textField opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 11" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AYs-oG-9kt">
-                                                                <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                             </textField>
                                                             <textField opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Word 12" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ys7-RF-a4e">
-                                                                <rect key="frame" x="202" y="0.0" width="172" height="44"/>
+                                                                <rect key="frame" x="182.5" y="0.0" width="152.5" height="44"/>
+                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -316,17 +288,23 @@
                                                     <constraint firstItem="HRz-1f-SFU" firstAttribute="height" secondItem="sqp-v3-j9s" secondAttribute="height" id="sMS-GN-JlB"/>
                                                 </constraints>
                                             </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the words of your paper backup to recover your passwords" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk6-TU-eK2">
-                                                <rect key="frame" x="20" y="50" width="374" height="50"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the words of your paper backup to recover your passwords" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nk6-TU-eK2" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="20" y="50" width="335" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="jDk-N3-t8V"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.enter_words"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                        <real key="value" value="22"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="i4r-5H-6Zn">
-                                                <rect key="frame" x="181" y="-29" width="52" height="58"/>
+                                                <rect key="frame" x="161.5" y="-29" width="52" height="58"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="52" id="Tge-q3-6B5"/>
                                                     <constraint firstAttribute="height" constant="58" id="bKK-z7-Jdt"/>
@@ -383,7 +361,7 @@
                                 <action selector="back:" destination="wDe-lR-s6k" id="5fG-1V-AEF"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Finish" id="Cu1-m4-L2W">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="done" id="Cu1-m4-L2W">
                             <connections>
                                 <action selector="finish:" destination="wDe-lR-s6k" id="Wtj-B7-W0L"/>
                             </connections>
@@ -412,7 +390,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xU1-bR-Wqn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1025" y="2461"/>
+            <point key="canvasLocation" x="-1026" y="2667"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aHG-Go-xaD">
@@ -420,7 +398,7 @@
                 <navigationController storyboardIdentifier="InitialisationViewController" automaticallyAdjustsScrollViewInsets="NO" id="uer-44-cz8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Oie-l9-eJi">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </navigationBar>
@@ -438,11 +416,11 @@
             <objects>
                 <viewController id="lxx-hW-z2Y" customClass="LearnMoreViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kw5-0m-u7r">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NyX-GK-Zf6">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -450,7 +428,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cVw-x3-Mcr">
-                                <rect key="frame" x="188.66666666666666" y="429.66666666666669" width="37" height="37"/>
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
                                 <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
@@ -466,7 +444,7 @@
                         <viewLayoutGuide key="safeArea" id="iuA-zX-KVZ"/>
                     </view>
                     <navigationItem key="navigationItem" id="Klj-lJ-TcA">
-                        <barButtonItem key="rightBarButtonItem" title="Done" style="done" id="Mb3-V8-08K">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Mb3-V8-08K">
                             <connections>
                                 <segue destination="9nX-Ba-WN9" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="h9L-Uy-Drf"/>
                             </connections>
@@ -482,43 +460,121 @@
             </objects>
             <point key="canvasLocation" x="724" y="869"/>
         </scene>
+        <!--Terms View Controller-->
+        <scene sceneID="3Oz-gG-3bl">
+            <objects>
+                <viewController id="nXW-29-59c" customClass="TermsViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wwN-uw-Pks">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQo-jV-3u6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="539"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rIe-Is-zOc">
+                                <rect key="frame" x="0.0" y="483" width="375" height="120"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="tpc-nz-dhr"/>
+                                </constraints>
+                            </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="COX-AA-qfX">
+                                <rect key="frame" x="169" y="283" width="37" height="37"/>
+                                <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mGp-gb-OVx">
+                                <rect key="frame" x="40" y="539" width="295" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YpQ-vr-qYc" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Learn more"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.disagree"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="disagree:" destination="nXW-29-59c" eventType="touchUpInside" id="1Hx-WR-CO0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="weg-oh-KUs" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="155" y="0.0" width="140" height="44"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Setup Keyn"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.agree"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="agree:" destination="nXW-29-59c" eventType="touchUpInside" id="nFb-Rs-6v5"/>
+                                            <action selector="trySetupKeyn:" destination="vKQ-PU-y17" eventType="touchUpInside" id="BBl-Zg-qQt"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Igw-oT-cBY"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="rIe-Is-zOc" firstAttribute="bottom" secondItem="DJ8-Lh-yki" secondAttribute="bottom" id="6pV-Oj-yYj"/>
+                            <constraint firstItem="COX-AA-qfX" firstAttribute="centerY" secondItem="wwN-uw-Pks" secondAttribute="centerY" id="7hr-BL-zBd"/>
+                            <constraint firstItem="bQo-jV-3u6" firstAttribute="bottom" secondItem="mGp-gb-OVx" secondAttribute="top" id="AaY-Ya-mI8"/>
+                            <constraint firstItem="DJ8-Lh-yki" firstAttribute="trailing" secondItem="mGp-gb-OVx" secondAttribute="trailing" constant="40" id="FNK-eM-aeq"/>
+                            <constraint firstItem="rIe-Is-zOc" firstAttribute="trailing" secondItem="DJ8-Lh-yki" secondAttribute="trailing" id="UEs-Mn-HiF"/>
+                            <constraint firstItem="bQo-jV-3u6" firstAttribute="leading" secondItem="DJ8-Lh-yki" secondAttribute="leading" id="Vd2-iZ-tiR"/>
+                            <constraint firstItem="bQo-jV-3u6" firstAttribute="trailing" secondItem="DJ8-Lh-yki" secondAttribute="trailing" id="XRI-j5-j6e"/>
+                            <constraint firstItem="COX-AA-qfX" firstAttribute="centerX" secondItem="wwN-uw-Pks" secondAttribute="centerX" id="ZdC-TA-OeK"/>
+                            <constraint firstItem="bQo-jV-3u6" firstAttribute="top" secondItem="DJ8-Lh-yki" secondAttribute="top" id="dEB-Rm-CpJ"/>
+                            <constraint firstItem="DJ8-Lh-yki" firstAttribute="bottom" secondItem="mGp-gb-OVx" secondAttribute="bottom" constant="20" id="juz-UG-TrS"/>
+                            <constraint firstItem="mGp-gb-OVx" firstAttribute="leading" secondItem="DJ8-Lh-yki" secondAttribute="leading" constant="40" id="mQR-ZA-rSO"/>
+                            <constraint firstItem="rIe-Is-zOc" firstAttribute="leading" secondItem="DJ8-Lh-yki" secondAttribute="leading" id="wr9-Cc-WaU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="DJ8-Lh-yki"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6q1-Sf-w5m">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="uDP-sm-lfJ">
+                            <connections>
+                                <action selector="save:" destination="nXW-29-59c" id="dT7-Bf-gPx"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="agreeButton" destination="weg-oh-KUs" id="FeB-IO-UaX"/>
+                        <outlet property="containerView" destination="bQo-jV-3u6" id="j1O-Iy-3l9"/>
+                        <outlet property="gradientView" destination="rIe-Is-zOc" id="rWh-pP-hky"/>
+                        <outlet property="loadingActivity" destination="COX-AA-qfX" id="T4J-4R-FpL"/>
+                        <segue destination="QYj-DF-aq8" kind="unwind" identifier="SetupKeyn" unwindAction="unwindAndSetupKeynWithSender:" id="P59-cg-KtG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bWB-k0-4NQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="QYj-DF-aq8" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2629" y="805"/>
+        </scene>
         <!-- -->
         <scene sceneID="kyW-4Y-Yv8">
             <objects>
                 <viewController title=" " id="vKQ-PU-y17" customClass="InitialisationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bYT-oF-mE0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Te-gr-8Cm">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="179"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFy-QE-aSD">
-                                        <rect key="frame" x="16" y="115.00000000000001" width="382" height="29.666666666666671"/>
-                                        <attributedString key="attributedText">
-                                            <fragment content="How ">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                            <fragment content="Keyn">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.94901960784313721" green="0.55294117647058827" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                            <fragment content=" works on">
-                                                <attributes>
-                                                    <color key="NSColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.1000000000000001" tighteningFactorForTruncation="0.0"/>
-                                                </attributes>
-                                            </fragment>
-                                        </attributedString>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How Keyn works on" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFy-QE-aSD" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="115" width="343" height="26"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                        <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.how_keyn_works"/>
+                                        </userDefinedRuntimeAttributes>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.8980392157" green="0.88235294119999996" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -530,7 +586,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="xeG-Zd-YR3">
-                                <rect key="frame" x="181" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="Xhf-s9-Aav"/>
@@ -539,36 +595,38 @@
                                 </constraints>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g28-8G-bJf">
-                                <rect key="frame" x="0.0" y="179" width="414" height="597"/>
+                                <rect key="frame" x="0.0" y="179" width="375" height="402"/>
                                 <connections>
                                     <segue destination="vrY-4p-tgl" kind="embed" id="WhT-ed-hFi"/>
                                 </connections>
                             </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dCu-v8-lMJ">
-                                <rect key="frame" x="40" y="788" width="334" height="44"/>
+                                <rect key="frame" x="40" y="593" width="295" height="44"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2CT-ks-iN7" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="159.66666666666666" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Learn more"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.learn_more"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="4aU-Ys-UHr" kind="presentation" id="wVI-PT-IlA"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40O-lf-r0r" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="174.66666666666663" y="0.0" width="159.33333333333337" height="44"/>
+                                        <rect key="frame" x="155" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Setup Keyn"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.setup_keyn"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="setupKeyn:" destination="vKQ-PU-y17" eventType="touchUpInside" id="NYM-cB-QjT"/>
+                                            <action selector="trySetupKeyn:" destination="vKQ-PU-y17" eventType="touchUpInside" id="50u-4N-Pqn"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -576,6 +634,19 @@
                                     <constraint firstAttribute="height" constant="44" id="g1v-pj-k0M"/>
                                 </constraints>
                             </stackView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ep-gl-5FP">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="woN-79-RFZ">
+                                        <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.49539930560000001" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="woN-79-RFZ" firstAttribute="centerY" secondItem="3Ep-gl-5FP" secondAttribute="centerY" id="C95-Et-8Zk"/>
+                                    <constraint firstItem="woN-79-RFZ" firstAttribute="centerX" secondItem="3Ep-gl-5FP" secondAttribute="centerX" id="lee-Fz-VEK"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -585,7 +656,11 @@
                             <constraint firstItem="g28-8G-bJf" firstAttribute="leading" secondItem="gxG-vJ-7lf" secondAttribute="leading" id="CaB-T0-8yp"/>
                             <constraint firstItem="xeG-Zd-YR3" firstAttribute="top" secondItem="bYT-oF-mE0" secondAttribute="top" constant="35" id="Or9-Ea-epP"/>
                             <constraint firstItem="dCu-v8-lMJ" firstAttribute="top" secondItem="g28-8G-bJf" secondAttribute="bottom" constant="12" id="S7A-xu-8La"/>
+                            <constraint firstAttribute="bottom" secondItem="3Ep-gl-5FP" secondAttribute="bottom" id="Z57-LA-Czw"/>
+                            <constraint firstItem="3Ep-gl-5FP" firstAttribute="leading" secondItem="bYT-oF-mE0" secondAttribute="leading" id="Zem-wm-kWK"/>
+                            <constraint firstItem="3Ep-gl-5FP" firstAttribute="trailing" secondItem="bYT-oF-mE0" secondAttribute="trailing" id="cE5-md-9we"/>
                             <constraint firstItem="4Te-gr-8Cm" firstAttribute="leading" secondItem="gxG-vJ-7lf" secondAttribute="leading" id="hiq-Dj-QNG"/>
+                            <constraint firstItem="3Ep-gl-5FP" firstAttribute="top" secondItem="bYT-oF-mE0" secondAttribute="top" id="i8B-4T-imc"/>
                             <constraint firstItem="gxG-vJ-7lf" firstAttribute="bottom" secondItem="dCu-v8-lMJ" secondAttribute="bottom" constant="30" id="klX-yN-9LC"/>
                             <constraint firstItem="gxG-vJ-7lf" firstAttribute="trailing" secondItem="dCu-v8-lMJ" secondAttribute="trailing" constant="40" id="oOB-2G-6N9"/>
                             <constraint firstItem="xeG-Zd-YR3" firstAttribute="centerX" secondItem="bYT-oF-mE0" secondAttribute="centerX" id="pbG-fL-HiD"/>
@@ -596,7 +671,9 @@
                         <viewLayoutGuide key="safeArea" id="gxG-vJ-7lf"/>
                     </view>
                     <connections>
+                        <outlet property="loadingView" destination="3Ep-gl-5FP" id="lp6-zl-zNr"/>
                         <segue destination="pyf-tg-8Bl" kind="show" identifier="ShowPairingExplanation" id="a1f-vF-Odm"/>
+                        <segue destination="Ydb-xL-bng" kind="presentation" identifier="ShowTerms" id="oJm-to-fz0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kRr-cI-qxN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -608,34 +685,40 @@
             <objects>
                 <viewController id="NKs-7g-OpF" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lAC-zJ-sxV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="597"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qmH-qE-mgV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                 <color key="backgroundColor" red="0.8980392157" green="0.88235294119999996" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Rtg-PY-R18">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAn-YA-xuR" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="207" height="52"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAn-YA-xuR" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="52"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <state key="normal" title="Desktop">
                                             <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.desktop"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX4-j4-kbO">
-                                        <rect key="frame" x="207" y="0.0" width="207" height="52"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX4-j4-kbO" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="52"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <state key="normal" title="Mobile">
                                             <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.49935787671232879" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.mobile"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="WCr-G8-miW" kind="show" animates="NO" id="fFX-hC-N3v"/>
                                         </connections>
@@ -646,76 +729,79 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Sqd-OW-esD">
-                                <rect key="frame" x="22" y="72" width="370" height="505"/>
+                                <rect key="frame" x="22" y="72" width="331" height="310"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uvv-ym-y52">
-                                        <rect key="frame" x="0.0" y="0.0" width="370" height="161.66666666666666"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="uvv-ym-y52">
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="96.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="AiG-RV-ot6">
-                                                <rect key="frame" x="0.0" y="47.333333333333329" width="135" height="67"/>
+                                                <rect key="frame" x="0.0" y="15" width="101" height="67"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaK-8B-jSe">
-                                                <rect key="frame" x="165" y="60" width="205" height="42"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn asks you in your browser if you want to login." lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aaK-8B-jSe" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="126" y="0.0" width="205" height="96.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="oVj-lu-3oJ"/>
                                                 </constraints>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Keyn asks you in your browser if you want to login.">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="21" maximumLineHeight="21" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.desktop_instruction.first"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="aaK-8B-jSe" firstAttribute="top" secondItem="uvv-ym-y52" secondAttribute="top" id="2fE-7i-3xZ"/>
+                                            <constraint firstAttribute="bottom" secondItem="aaK-8B-jSe" secondAttribute="bottom" id="oTI-Uc-iQp"/>
+                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-MO-mgq">
-                                        <rect key="frame" x="0.0" y="171.66666666666669" width="370" height="161.66666666666669"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="uMR-MO-mgq">
+                                        <rect key="frame" x="0.0" y="106.5" width="331" height="97"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="YmP-xR-cl1">
-                                                <rect key="frame" x="0.0" y="38.000000000000028" width="135" height="86"/>
+                                                <rect key="frame" x="0.0" y="5.5" width="101" height="86"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="x0y-Uj-lCk"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-YB-fQe">
-                                                <rect key="frame" x="165" y="49.333333333333343" width="205" height="63"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="You receive a notification on your phone that asks you to authorize the request.">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="21" maximumLineHeight="21" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You receive a notification on your phone that asks you to authorize the request." lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMc-YB-fQe" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="126" y="0.0" width="205" height="97"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.desktop_instruction.second"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="FMc-YB-fQe" secondAttribute="bottom" id="VgP-kW-FCh"/>
+                                            <constraint firstItem="FMc-YB-fQe" firstAttribute="top" secondItem="uMR-MO-mgq" secondAttribute="top" id="ZHQ-yq-TpV"/>
+                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="9kU-iV-dCe">
-                                        <rect key="frame" x="0.0" y="343.33333333333331" width="370" height="161.66666666666669"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="9kU-iV-dCe">
+                                        <rect key="frame" x="0.0" y="213.5" width="331" height="96.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="y3j-BT-tLP">
-                                                <rect key="frame" x="0.0" y="47.333333333333371" width="135" height="67"/>
+                                                <rect key="frame" x="0.0" y="14.5" width="101" height="67"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-0Q-aRX">
-                                                <rect key="frame" x="165" y="60" width="205" height="42"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="Keyn fills your credentials in the right fields.">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" minimumLineHeight="21" maximumLineHeight="21" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn fills your credentials in the right fields." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NM2-0Q-aRX" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="126" y="0.0" width="205" height="96.5"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.desktop_instruction.third"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="NM2-0Q-aRX" firstAttribute="top" secondItem="9kU-iV-dCe" secondAttribute="top" id="M44-6m-3ku"/>
+                                            <constraint firstAttribute="bottom" secondItem="NM2-0Q-aRX" secondAttribute="bottom" id="j1r-Lc-b6R"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -744,42 +830,54 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edq-d8-Hl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="726" y="2492"/>
+            <point key="canvasLocation" x="725.625" y="2491.3732394366198"/>
         </scene>
         <!--Mobile Explanation View Controller-->
         <scene sceneID="GpQ-i2-0Bt">
             <objects>
                 <viewController id="WCr-G8-miW" customClass="MobileExplanationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yjo-0M-e6N">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="597"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zpr-JN-sw2">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                 <color key="backgroundColor" red="0.8980392157" green="0.88235294119999996" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1qr-M2-Kqu">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdj-Ue-BPM">
-                                        <rect key="frame" x="0.0" y="0.0" width="207" height="52"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdj-Ue-BPM" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="52"/>
                                         <state key="normal" title="Desktop">
                                             <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.desktop"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <segue destination="uC0-6X-VME" kind="unwind" unwindAction="dismissWithSender:" id="ORR-hT-u9g"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCL-ae-e19" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="207" y="0.0" width="207" height="52"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCL-ae-e19" customClass="KeynTabButton" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="52"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <state key="normal" title="Mobile">
                                             <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.27450980390000002" green="0.16078431369999999" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="secondary"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.mobile"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                 </subviews>
@@ -787,17 +885,17 @@
                                     <constraint firstAttribute="height" constant="52" id="le7-mV-IR2"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uSJ-Qy-5zc">
-                                <rect key="frame" x="22" y="72" width="370" height="505"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uSJ-Qy-5zc">
+                                <rect key="frame" x="22" y="72" width="331" height="310"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gcm-DT-Z3k">
-                                        <rect key="frame" x="0.0" y="0.0" width="370" height="161.66666666666666"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="gcm-DT-Z3k">
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="96.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="Pdq-R8-k1e">
-                                                <rect key="frame" x="0.0" y="38" width="140" height="86"/>
+                                                <rect key="frame" x="0.0" y="5.5" width="91" height="86"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpH-Mu-G6O">
-                                                <rect key="frame" x="155" y="49.333333333333329" width="215" height="63"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpH-Mu-G6O">
+                                                <rect key="frame" x="116" y="0.0" width="215" height="96.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="215" id="9ZG-HC-UJ1"/>
                                                 </constraints>
@@ -813,15 +911,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="wpH-Mu-G6O" secondAttribute="bottom" id="U6x-c7-bjk"/>
+                                            <constraint firstItem="wpH-Mu-G6O" firstAttribute="top" secondItem="gcm-DT-Z3k" secondAttribute="top" id="lnN-tL-Xt8"/>
+                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="4gE-5a-WF7">
-                                        <rect key="frame" x="0.0" y="171.66666666666669" width="370" height="161.66666666666669"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="4gE-5a-WF7">
+                                        <rect key="frame" x="0.0" y="106.5" width="331" height="97"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_form" translatesAutoresizingMaskIntoConstraints="NO" id="8Jj-aJ-INp">
-                                                <rect key="frame" x="0.0" y="38.000000000000028" width="140" height="86"/>
+                                                <rect key="frame" x="0.0" y="5.5" width="91" height="86"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sak-tq-M9C">
-                                                <rect key="frame" x="155" y="49.333333333333343" width="215" height="63"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sak-tq-M9C">
+                                                <rect key="frame" x="116" y="0.0" width="215" height="97"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="When you want to login, iOS will automatically ask Keyn for your password.">
                                                         <attributes>
@@ -834,15 +936,19 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="sak-tq-M9C" firstAttribute="top" secondItem="4gE-5a-WF7" secondAttribute="top" id="4Ls-yr-DnE"/>
+                                            <constraint firstAttribute="bottom" secondItem="sak-tq-M9C" secondAttribute="bottom" id="pdL-fN-2Je"/>
+                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="seD-cU-WCL">
-                                        <rect key="frame" x="0.0" y="343.33333333333331" width="370" height="161.66666666666669"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="seD-cU-WCL">
+                                        <rect key="frame" x="0.0" y="213.5" width="331" height="96.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_fingerprint" translatesAutoresizingMaskIntoConstraints="NO" id="wdO-rL-q8N">
-                                                <rect key="frame" x="0.0" y="38" width="140" height="86"/>
+                                                <rect key="frame" x="0.0" y="5" width="91" height="86"/>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-DT-gcI">
-                                                <rect key="frame" x="155" y="60" width="215" height="42"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cKE-DT-gcI">
+                                                <rect key="frame" x="116" y="0.0" width="215" height="96.5"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="You can login by authorizing the request.">
                                                         <attributes>
@@ -855,6 +961,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="cKE-DT-gcI" secondAttribute="bottom" id="Jeg-4K-YM7"/>
+                                            <constraint firstItem="cKE-DT-gcI" firstAttribute="top" secondItem="seD-cU-WCL" secondAttribute="top" id="pom-cS-xwb"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -910,18 +1020,18 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XX1-aC-uk5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-135" y="2492"/>
+            <point key="canvasLocation" x="-135" y="2527"/>
         </scene>
         <!-- -->
         <scene sceneID="eRY-12-Tba">
             <objects>
                 <viewController title=" " id="pyf-tg-8Bl" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="16g-My-AD4">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="LLJ-Au-4fr">
-                                <rect key="frame" x="181" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="RCu-aU-cDa"/>
                                     <constraint firstAttribute="width" constant="52" id="iW4-e4-cA8"/>
@@ -929,7 +1039,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-7v-dBp" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="127" y="788" width="160" height="44"/>
+                                <rect key="frame" x="107.5" y="593" width="160" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="IYO-KS-4vH"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="LVW-Gc-i5N"/>
@@ -940,78 +1050,161 @@
                                 <state key="normal" title="Scan QR code"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.scan_qr"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="Zak-ws-iqN" kind="show" id="9Sb-e9-Z3E"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE">
-                                <rect key="frame" x="16" y="133" width="382" height="64"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="You're">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.21201" green="0.36577999999999999" blue="0.69174000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="1 minute">
-                                        <attributes>
-                                            <color key="NSColor" red="0.85502999999999996" green="0.56596999999999997" blue="0.12123" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.21201" green="0.36577999999999999" blue="0.69174000000000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="away from forgetting your passwords.">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="22" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="10" y="133" width="355" height="54"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.one_minute_away"/>
+                                </userDefinedRuntimeAttributes>
                             </label>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lat-gi-JQD">
-                                <rect key="frame" x="16" y="257" width="382" height="521"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MTn-7A-WzI">
+                                <rect key="frame" x="16" y="282" width="327" height="223.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZFa-Lt-vxv">
+                                        <rect key="frame" x="0.0" y="0.0" width="327" height="99"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdf-af-3Y6" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="fdf-af-3Y6" secondAttribute="height" multiplier="1:1" id="Jpv-Lb-e55"/>
+                                                    <constraint firstAttribute="height" constant="26" id="dXT-LB-pC3"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="1">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.one"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ijX-TY-h5g">
+                                                <rect key="frame" x="38" y="0.0" width="289" height="99"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Go to keyn.app/go on your computer" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUB-Ob-HrV" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="39.5"/>
+                                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
+                                                        <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.first"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                                <real key="value" value="22"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer." lineBreakMode="clip" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXa-gj-Sg4" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="47.5" width="289" height="51.5"/>
+                                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                        <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.second"/>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="accentIsBold" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="accentColor">
+                                                                <color key="value" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                                <real key="value" value="22"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="0fg-BS-Ogr">
+                                        <rect key="frame" x="0.0" y="144" width="327" height="79.5"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="npw-P3-4Xr" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="npw-P3-4Xr" secondAttribute="height" multiplier="1:1" id="CNW-nC-7xS"/>
+                                                    <constraint firstAttribute="height" constant="26" id="YjA-Zp-4eg"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="2">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.two"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="LzP-h9-uFL">
+                                                <rect key="frame" x="38" y="0.0" width="289" height="79.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Scan QR code" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MOx-kG-Qld" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="289" height="20"/>
+                                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
+                                                        <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.third"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                                <real key="value" value="22"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jw3-K2-oL8" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="28" width="289" height="51.5"/>
+                                                        <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                        <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.fourth"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                                <real key="value" value="22"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="256" id="7KI-Pi-Yst"/>
+                                    <constraint firstAttribute="bottom" secondItem="0fg-BS-Ogr" secondAttribute="bottom" id="1rX-cs-5HE"/>
+                                    <constraint firstItem="ZFa-Lt-vxv" firstAttribute="leading" secondItem="MTn-7A-WzI" secondAttribute="leading" id="6Dl-sD-eTi"/>
+                                    <constraint firstItem="0fg-BS-Ogr" firstAttribute="top" secondItem="ZFa-Lt-vxv" secondAttribute="bottom" priority="750" constant="45" id="7a9-t4-axQ"/>
+                                    <constraint firstItem="ZFa-Lt-vxv" firstAttribute="top" secondItem="MTn-7A-WzI" secondAttribute="top" id="F4o-ci-xoi"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="280" id="Tc2-KD-eFt"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZFa-Lt-vxv" secondAttribute="trailing" id="jl8-D4-piK"/>
+                                    <constraint firstAttribute="trailing" secondItem="0fg-BS-Ogr" secondAttribute="trailing" id="kmt-x0-YxX"/>
+                                    <constraint firstItem="0fg-BS-Ogr" firstAttribute="leading" secondItem="MTn-7A-WzI" secondAttribute="leading" id="pv4-yD-2CT"/>
+                                    <constraint firstItem="0fg-BS-Ogr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ZFa-Lt-vxv" secondAttribute="bottom" constant="20" id="s7X-TL-aqt"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="sCf-FB-PX2" kind="embed" id="U14-7v-pJr"/>
-                                </connections>
-                            </containerView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="O94-HQ-lRE" secondAttribute="trailing" constant="16" id="8cI-cU-sKA"/>
+                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="O94-HQ-lRE" secondAttribute="trailing" constant="10" id="8cI-cU-sKA"/>
+                            <constraint firstItem="MTn-7A-WzI" firstAttribute="top" secondItem="O94-HQ-lRE" secondAttribute="bottom" priority="740" constant="100" id="A1c-ta-XNn"/>
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="B8G-3i-ANV"/>
                             <constraint firstItem="LLJ-Au-4fr" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" constant="35" id="EEv-tV-3cS"/>
                             <constraint firstItem="3w9-7v-dBp" firstAttribute="centerX" secondItem="16g-My-AD4" secondAttribute="centerX" id="FPU-TV-EGA"/>
-                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="LLJ-Au-4fr" secondAttribute="bottom" priority="249" constant="40" id="GdD-vI-Ybl"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" secondItem="LLJ-Au-4fr" secondAttribute="bottom" priority="741" constant="40" id="GdD-vI-Ybl"/>
+                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="MTn-7A-WzI" secondAttribute="trailing" constant="32" id="J6l-sk-Jgl"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="bottom" secondItem="3w9-7v-dBp" secondAttribute="bottom" constant="30" id="Jxy-Lw-Dew"/>
-                            <constraint firstItem="3w9-7v-dBp" firstAttribute="top" secondItem="Lat-gi-JQD" secondAttribute="bottom" constant="10" id="Vnp-d7-rnF"/>
-                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LLJ-Au-4fr" secondAttribute="bottom" constant="16" id="X79-oX-U4s"/>
-                            <constraint firstItem="Lat-gi-JQD" firstAttribute="top" secondItem="O94-HQ-lRE" secondAttribute="bottom" priority="250" constant="60" id="amp-ai-oIK"/>
-                            <constraint firstItem="Lat-gi-JQD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O94-HQ-lRE" secondAttribute="bottom" constant="16" id="bEU-Mq-KiT"/>
-                            <constraint firstItem="Lat-gi-JQD" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="cBd-XG-hLg"/>
-                            <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="Lat-gi-JQD" secondAttribute="trailing" constant="16" id="rDC-tI-flZ"/>
-                            <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LLJ-Au-4fr" secondAttribute="bottom" constant="8" id="X79-oX-U4s"/>
+                            <constraint firstItem="3w9-7v-dBp" firstAttribute="top" secondItem="MTn-7A-WzI" secondAttribute="bottom" priority="730" constant="100" id="Xd9-ai-UJm"/>
+                            <constraint firstItem="MTn-7A-WzI" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="c14-55-1eV"/>
+                            <constraint firstItem="MTn-7A-WzI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O94-HQ-lRE" secondAttribute="bottom" constant="16" id="gHV-FC-4MH"/>
+                            <constraint firstItem="MTn-7A-WzI" firstAttribute="centerY" secondItem="16g-My-AD4" secondAttribute="centerY" priority="740" constant="60" id="m57-xX-Qpg"/>
+                            <constraint firstItem="3w9-7v-dBp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="MTn-7A-WzI" secondAttribute="bottom" constant="16" id="odK-hH-NfH"/>
+                            <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="10" id="xEh-aY-Xe6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n4m-XJ-WMR"/>
                     </view>
@@ -1019,14 +1212,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSv-Bf-0hp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="726" y="1711"/>
-        </scene>
-        <!--PairingExplanation-->
-        <scene sceneID="NSZ-v2-93r">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="PairingExplanation" id="sCf-FB-PX2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yxF-76-YC1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="724" y="2228"/>
         </scene>
         <!--PairController-->
         <scene sceneID="4Qw-A3-hiJ">
@@ -1041,11 +1226,11 @@
             <objects>
                 <viewController storyboardIdentifier="Pair Controller" id="Zak-ws-iqN" customClass="PairingViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HUa-JV-NuI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fo9-YI-YeD" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="137" y="788" width="140" height="44"/>
+                                <rect key="frame" x="117.5" y="593" width="140" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="3SM-R7-aeW"/>
                                     <constraint firstAttribute="height" constant="44" id="t4o-p1-JzQ"/>
@@ -1055,29 +1240,30 @@
                                 <state key="normal" title="Try later"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.try_later"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="tryLater:" destination="Zak-ws-iqN" eventType="touchUpInside" id="uKF-at-f2W"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
-                                <rect key="frame" x="181" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="XlO-Uf-5Sz"/>
                                 </constraints>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
-                                <rect key="frame" x="0.0" y="103" width="414" height="655"/>
+                                <rect key="frame" x="0.0" y="103" width="375" height="460"/>
                                 <connections>
                                     <segue destination="Lp7-Hn-Yem" kind="embed" identifier="EmbeddedPairing" id="PRF-kk-uoI"/>
                                 </connections>
                             </containerView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-id-QPJ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5mj-pn-FKy">
-                                        <rect key="frame" x="188.66666666666666" y="412.66666666666669" width="37" height="37"/>
+                                        <rect key="frame" x="169" y="315" width="37" height="37"/>
                                         <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                 </subviews>
@@ -1124,7 +1310,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4aU-Ys-UHr" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bLN-jS-lIN">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -1143,11 +1329,11 @@
             <objects>
                 <viewController title=" " id="KhE-wf-gD6" customClass="LoggingPreferenceViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Aae-Us-eLh">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="fgo-Nj-6hp">
-                                <rect key="frame" x="181" y="35" width="52" height="58"/>
+                                <rect key="frame" x="161.5" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="8AW-lT-tPz"/>
@@ -1156,7 +1342,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sMy-56-2qE" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="127" y="788" width="160" height="44"/>
+                                <rect key="frame" x="107.5" y="593" width="160" height="44"/>
                                 <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="Gsk-iY-Gyt"/>
@@ -1168,66 +1354,68 @@
                                 <state key="normal" title="Start using Keyn"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="primary"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.start_using_keyn"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="finish:" destination="KhE-wf-gD6" eventType="touchUpInside" id="pwb-Ig-bpy"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="M8I-e3-aXB">
-                                <rect key="frame" x="20" y="158" width="374" height="32"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Help us to improve ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="26" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content="Keyn">
-                                        <attributes>
-                                            <color key="NSColor" red="0.85502999999999996" green="0.56596999999999997" blue="0.12123" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="26" name="Montserrat-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="truncatingTail" baseWritingDirection="natural" minimumLineHeight="32" maximumLineHeight="32" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help us to improve Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="M8I-e3-aXB" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="20" y="113" width="335" height="82.5"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="26"/>
+                                <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.help_improve"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR">
-                                <rect key="frame" x="20" y="305.66666666666669" width="374" height="125"/>
-                                <attributedString key="attributedText">
-                                    <fragment>
-                                        <string key="content">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="20" y="210.5" width="335" height="126"/>
+                                <string key="text">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
 Sensitive data is never shared and everything is anonymous.</string>
-                                        <attributes>
-                                            <color key="NSColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="14" name="Montserrat-Medium"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="15" minimumLineHeight="22" maximumLineHeight="22" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt">
-                                <rect key="frame" x="20" y="690.66666666666663" width="374" height="17.333333333333371"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.working"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                        <real key="value" value="21"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
-                                <rect key="frame" x="20" y="562.66666666666663" width="374" height="78"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="20" y="522.5" width="335" height="22"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.change"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                        <real key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
+                                <rect key="frame" x="20" y="396.5" width="335" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duW-jH-tOo">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share error data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnx-Nq-zcW">
-                                                <rect key="frame" x="0.0" y="0.0" width="309" height="31"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share error data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gnx-Nq-zcW" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="270" height="31"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.share_errors"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fhl-3Z-Rmq">
-                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                <rect key="frame" x="286" y="0.0" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="shareErrorData:" destination="KhE-wf-gD6" eventType="valueChanged" id="Bs8-sm-H4n"/>
@@ -1236,16 +1424,20 @@ Sensitive data is never shared and everything is anonymous.</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="RDJ-Pq-F2C">
-                                        <rect key="frame" x="0.0" y="47" width="374" height="31"/>
+                                        <rect key="frame" x="0.0" y="45" width="335" height="31"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share usage statistics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBQ-qg-TDr">
-                                                <rect key="frame" x="0.0" y="0.0" width="309" height="31"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share usage statistics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBQ-qg-TDr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="270" height="31"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.share_analytics"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="GBv-ex-Zlu">
-                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                <rect key="frame" x="286" y="0.0" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="shareAnalyticalData:" destination="KhE-wf-gD6" eventType="valueChanged" id="pSd-sE-dpS"/>
@@ -1269,16 +1461,14 @@ Sensitive data is never shared and everything is anonymous.</string>
                         <constraints>
                             <constraint firstItem="fgo-Nj-6hp" firstAttribute="top" secondItem="Aae-Us-eLh" secondAttribute="top" constant="35" id="Ap4-hI-YZu"/>
                             <constraint firstAttribute="trailing" secondItem="Hge-wN-kmb" secondAttribute="trailing" constant="20" id="CNH-z8-KNe"/>
-                            <constraint firstItem="M8I-e3-aXB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fgo-Nj-6hp" secondAttribute="bottom" constant="20" id="ERh-29-qtJ"/>
+                            <constraint firstItem="M8I-e3-aXB" firstAttribute="top" secondItem="fgo-Nj-6hp" secondAttribute="bottom" constant="20" id="ERh-29-qtJ"/>
                             <constraint firstItem="sMy-56-2qE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C1f-Mc-Tnt" secondAttribute="bottom" constant="20" id="Eb2-MM-tl6"/>
-                            <constraint firstItem="sMy-56-2qE" firstAttribute="top" secondItem="C1f-Mc-Tnt" secondAttribute="bottom" priority="301" constant="80" id="IXR-bP-Lef"/>
                             <constraint firstItem="C1f-Mc-Tnt" firstAttribute="top" secondItem="Hge-wN-kmb" secondAttribute="bottom" priority="251" constant="50" id="Ksl-ed-SpX"/>
                             <constraint firstItem="Hge-wN-kmb" firstAttribute="leading" secondItem="SKd-p7-vuQ" secondAttribute="leading" constant="20" id="Lbx-MU-pT9"/>
                             <constraint firstItem="C1f-Mc-Tnt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Hge-wN-kmb" secondAttribute="bottom" constant="20" id="RAi-R7-yBZ"/>
                             <constraint firstItem="Hge-wN-kmb" firstAttribute="top" secondItem="bgW-c9-TVR" secondAttribute="bottom" priority="250" constant="60" id="RE2-5O-yvB"/>
                             <constraint firstItem="bgW-c9-TVR" firstAttribute="leading" secondItem="Aae-Us-eLh" secondAttribute="leading" constant="20" id="TAO-gS-pdF"/>
                             <constraint firstAttribute="trailing" secondItem="bgW-c9-TVR" secondAttribute="trailing" constant="20" id="TtF-YG-3gQ"/>
-                            <constraint firstItem="bgW-c9-TVR" firstAttribute="top" secondItem="M8I-e3-aXB" secondAttribute="bottom" priority="250" constant="50" id="VvC-uS-zjR"/>
                             <constraint firstItem="SKd-p7-vuQ" firstAttribute="trailing" secondItem="C1f-Mc-Tnt" secondAttribute="trailing" constant="20" id="WCZ-LQ-ew7"/>
                             <constraint firstItem="M8I-e3-aXB" firstAttribute="leading" secondItem="SKd-p7-vuQ" secondAttribute="leading" constant="20" id="Xg6-Mm-gUc"/>
                             <constraint firstItem="C1f-Mc-Tnt" firstAttribute="leading" secondItem="SKd-p7-vuQ" secondAttribute="leading" constant="20" id="YYe-Pb-HpX"/>
@@ -1286,17 +1476,42 @@ Sensitive data is never shared and everything is anonymous.</string>
                             <constraint firstItem="fgo-Nj-6hp" firstAttribute="centerX" secondItem="Aae-Us-eLh" secondAttribute="centerX" id="dqM-oe-Tts"/>
                             <constraint firstItem="sMy-56-2qE" firstAttribute="centerX" secondItem="Aae-Us-eLh" secondAttribute="centerX" id="eHr-xy-Qn3"/>
                             <constraint firstItem="SKd-p7-vuQ" firstAttribute="bottom" secondItem="sMy-56-2qE" secondAttribute="bottom" constant="30" id="fbT-7g-c0s"/>
-                            <constraint firstItem="M8I-e3-aXB" firstAttribute="top" secondItem="fgo-Nj-6hp" secondAttribute="bottom" priority="300" constant="65" id="hvo-wL-Cja"/>
                             <constraint firstItem="SKd-p7-vuQ" firstAttribute="trailing" secondItem="M8I-e3-aXB" secondAttribute="trailing" constant="20" id="jEW-ha-14C"/>
-                            <constraint firstItem="bgW-c9-TVR" firstAttribute="top" relation="greaterThanOrEqual" secondItem="M8I-e3-aXB" secondAttribute="bottom" constant="15" id="kiF-Po-REa"/>
-                            <constraint firstItem="bgW-c9-TVR" firstAttribute="centerY" secondItem="Aae-Us-eLh" secondAttribute="centerY" priority="250" constant="-80" id="znA-8P-6xO"/>
+                            <constraint firstItem="bgW-c9-TVR" firstAttribute="top" secondItem="M8I-e3-aXB" secondAttribute="bottom" constant="15" id="kiF-Po-REa"/>
+                            <constraint firstItem="bgW-c9-TVR" firstAttribute="centerY" secondItem="Aae-Us-eLh" secondAttribute="centerY" priority="749" constant="-60" id="znA-8P-6xO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SKd-p7-vuQ"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vdc-n4-nxI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2335.1999999999998" y="1710.5911330049262"/>
+            <point key="canvasLocation" x="2629" y="1710"/>
+        </scene>
+        <!--Keyn Navigation Controller-->
+        <scene sceneID="av3-y2-coI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ydb-xL-bng" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Vkn-qR-tkX">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="gradientColor">
+                            <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="gradientEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="nXW-29-59c" kind="relationship" relationship="rootViewController" id="FVU-lj-1Uq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xSU-Z7-qwz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1552.5" y="870.42253521126759"/>
         </scene>
     </scenes>
     <resources>

@@ -96,9 +96,10 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         change werkt \(changeReport.isOn ? "niet" : "wel")
         add werkt \(addReport.isOn ? "niet" : "wel")
         toevoegingen:
-        \(textView.text ?? "")
+        \(textView.text ?? "")  
 
         Groetjes!
+        id: \(Properties.userId ?? "not set")
         """
         API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
             if let error = error {

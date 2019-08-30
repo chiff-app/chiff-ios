@@ -1,0 +1,778 @@
+---
+numbers:
+  one: 
+    value: '1'
+  two: 
+    value: '2'
+  three: 
+    value: '3'
+  four: 
+    value: '4'
+  five: 
+    value: '5'
+
+errors:
+  local_authentication:
+    biometry_not_available:
+      value: Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de telefoon.
+    biometry_not_enrolled:
+      value: Authenticatie kan niet gestart worden, omdat biometrie niet is ingesteld op de telefoon.
+    passcode_not_set:
+      value: Authenticatie kan niet gestart worden, omdat de toegangscode niet is ingesteld op de telefoon.
+    generic:
+      value: Er is een authenticatiefout opgetreden.
+  generic_problem:
+    value: Er was een probleem
+    comment: A generic problem description
+  generic_error:
+    value: Er is een fout opgetreden.
+    comment: A generic error description
+  api_error:
+    value: Er is een netwerkfout opgetreden
+    comment: An error thrown by the API
+  no_push_notifications:
+    value: |-
+      Helaas werkt Keyn niet zonder pushberichten :(
+
+      Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen > Keyn > Berichtgeving.
+    comment: Error when push notifications are not available
+  push_notifications_error:
+    value: Er is een fout opgetreden bij het registreren van pushberichten.
+    comment: Error when push notifications are not available
+  no_camera:
+    value: Camera niet beschikbaar
+    comment: The camera is not available
+  camera_denied:
+    value: Je kunt alleen koppelen met een computer als de camera is ingeschakeld. Dit kun je doen via Instellingen.
+  qr_scanned_twice:
+    value: Deze QR-code is al gescand.
+    comment: This QR-code was already scanned.
+  save_account:
+    value: Fout bij opslaan account
+    comment: Error saving account
+  delete_url:
+    value: Fout bij verwijderen URL
+    comment: Error deleting url
+  undecodable_qr:
+    value: Deze QR-code kon niet ontcijferd worden.
+    comment: The QR-code could not be decoded.
+  authentication_error:
+    value: Authenticatiefout
+    comment: Error in the authentication process to the phone, e.g. TouchID
+  otp_fetch:
+    value: Fout bij ophalen OTP-code
+    comment: Error retrieving the OTP-code
+  password_error:
+    comment: Fout bij ophalen wachtwoord
+    value: Error fetching password
+  session_error_no_endpoint:
+    value: Er is geen AWS endpoint in de sessiegegevens.
+    comment: There was no endpoint found
+  seed_creation:
+    value: Fout bij genereren seed
+    comment: This may occur during the initialisation process
+  seed_restore:
+    value: Fout bij herstellen backup
+  session_invalid:
+    value: Deze QR-code is ongeldig
+  token_creation:
+    value: Fout bij aanmaken OTP token
+  add_otp:
+    value: Fout bij toevoegen OTP token
+  corrupted_data:
+    value: Onleesbare data fout
+  seed_exists:
+    value: Keyn is al geïnitialiseerd
+  subscribing:
+    value: Fout bij aanzetten infoberichten
+  unsubscribing:
+    value: Fout bij uitzetten infoberichten
+  deleting:
+      value: Fout bij verwijderen backup data
+
+popups:
+  questions:
+    camera_permission:
+      value: Toegang vereist
+    delete_corrupted:
+      value: Keyn kon niet de data van je telefoon lezen. Misschien is het in een oud formaat. Je kunt dit verhelpen door alle data te verwijderen. Als je dit niet wilt doen, contact ons dan via hello@keyn.app.
+    delete_existing:
+      value: Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd. Wil je Keyn's huidige data verwijderen?
+    restore_accounts:
+      value: Herstel accounts
+    cancel_backup:
+      value: Annuleer backup?
+      comment: Ask the user to cancel the backup
+    delete_account:
+      value: Verwijder account?
+      comment: Ask the user to delete the account
+    reset_keyn:
+      comment: Resets Keyn and deletes all data
+      value: Reset Keyn?
+    delete_data:
+      comment: Delete local and remote data
+      value: Verwijder data?
+    cancel_backup_description:
+      comment: Tell the user he can complete the backup process later
+      value: Je kunt de backup later voltooien.
+    reset_keyn_description:
+      comment: This will delete the seed and all passwords.
+      value: Dit verwijdert de seed en alle wachtwoorden.
+    questionnaire_permission:
+      comment: Ask the user to answer some questions
+      value: Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.
+    questionnaire_popup_title:
+      comment: The title of the popup that asks the user fill a questionnaire
+      value: Vragenrondje!
+    close_warning:
+      value: Je kunt Keyn niet gebruiken als je niet akkoord gaat met de Algemene Voorwaarden. Weet je het zeker?
+    agree_terms:
+      value: Ik heb de Algemene Voorwaarden gelezen en ga akkoord
+    terms:
+      value: Algemene Voorwaarden
+  responses:
+    delete:
+      value: Verwijder
+      comment: Deletes something
+    cancel:
+      value: Annuleer
+      comment: Cancels something
+    continue:
+      value: Doorgaan
+      comment: Continue something
+    reset:
+      value: Reset
+      comment: Resets something
+    'yes':
+      comment: ja
+      value: 'yes'
+    'no':
+      comment: nee
+      value: 'no'
+    questionnaire_deny:
+      comment: Deny the questionnaire
+      value: Nee, bedankt
+    settings:
+      value: Open instellingen
+
+accounts:
+  didnt_save:
+    value: Je hebt nog geen accounts opgeslagen
+  how_to_add:
+    value: Een account toevoegen
+  add_an_account:
+    value: Voeg een account toe
+  adding_account:
+    value: Een account toevoegen
+  add_instructions:
+    first:
+      value: Ga naar een website op je computer en log in zoals je normaal zou doen.
+    second:
+      value: Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd. 
+    third:
+      value: Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.
+  alternative_add:
+    value: Je kunt ook handmatig een account toevoegen
+  website_details:
+    value: Websitegegevens
+  url_warning:
+    value: ⚠️ Keyn werkt niet als de URL incorrect is.
+  footer:
+    value: Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn Premium om zoveel accounts toe te voegen als je wilt.
+  footer_unlimited:
+    value: Je kunt zoveel accounts toevoegen als je wilt.
+  footer_account_overflow:  
+    value: Je kunt slechts 8 accounts gebruiken om in te loggen met je computer. Upgrade naar Keyn Premium om met alle accounts in te loggen.
+  footer_account_enabled:
+    value: Je kunt slechts 8 accounts gebruiken met je computer. Upgrade naar Keyn Premium om met alle accounts in te loggen.
+  add_2fa_code:
+    value: Voeg 2FA-code toe
+  update_2fa_code:
+    value: Update 2FA-code voor
+  scan_qr:
+    comment: Cell title for scanning qr code for OTP
+    value: Scan QR
+  copied:
+    comment: Show the user that a value has been copied
+    value: Gekopieerd
+  two_fa_instruction:
+    comment: Instruct the user to scan a 2FA-code
+    value: Scan de QR-code om een 2FA-code toe te voegen voor
+  secret:
+    value: Geheim
+  mode:
+    value: Type
+  secret_description:
+    value: Het geheim dat gedeeld is door de website
+  mode_description:
+    value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
+  2fa_description:
+    value: De 2FA code kan gebruikt worden als de website de mogelijkheid biedt een eenmalig wachtwoord toe te voegen als tweede authenticatiefactor. 
+  sites_header:
+    value: Websites
+  account_details:
+    value: Accounts details
+  name: 
+    value: Naam
+  url:
+    value: URL
+  user_details:
+    value: Gebruikersgegevens
+  username:
+    value: Naam
+  password:
+    value: Wachtwoord
+  2fa:
+    value: 2FA code
+  code:
+    value: Code
+  my_accounts:
+    value: Mijn accounts
+  upgrade:
+    value: Upgrade
+  add_2fa:
+    value: Voeg 2FA code toe
+  scan_2fa:
+    value: Scan de QR code om een 2FA code toe te voegen voor
+  time_based:
+    value: Tijdgebaseerd
+  enabled:
+    value: Ingeschakeld
+  delete_account:
+    value: Verwijder account
+  report:
+    value: Rapporteer
+  choose:
+    value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
+
+devices:
+  devices:
+    comment: Section title for devices
+    value: Apparaten
+  pairing_instruction:
+    comment: Instruction shown above the qr-code scanner
+    value: Open Keyn's browserextensie om de QR-code weer te geven.
+  pairing_instruction_two:
+    value: Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.
+    start: 116
+    end: 127
+  scan_qr:
+    comment: Cell title for scanning qr code
+    value: Scan QR
+  pair_with_device:
+    value: Koppel met je computer
+  pairing_explanation:
+    first:
+      value: Ga naar keyn.app/go op je computer
+      start: 8
+      end: 19
+    second:
+      value: Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.
+      start: 88
+      end: 99
+    third:
+      value: Scan QR code
+    fourth:
+      value: Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!
+  paired_devices:
+    value: Mijn gekoppelde apparaten
+  footer:
+    value: Je kan met zoveel apparaten koppelen als je wilt.
+  no_push_warning_title:
+    value: We willen je niet pushen...
+  no_push_warning_text:
+    value: |-
+      Maar Keyn werkt helaas niet zonder pushberichten. 
+
+      Je kun pushberichten aan  zetten via Instellingen > Keyn > Berichtgeving.
+      
+      Kies dan 'Sta berichtgeving toe'.
+  open_settings:
+    value: Open instellingen
+  pairing:
+    value: Koppelen
+  'on':
+    value: op
+  
+settings:
+  settings:
+    value: Instellingen
+    comment: The word for settings
+  privacy:
+    value: Privacy
+    comment: The word for privacy
+  legal:
+    value: Juridisch
+    comment: The word for legal
+  help:
+    value: Help
+    comment: The word for help
+  premium:
+    value: Premium
+  keyn_premium:
+    value: Keyn Premium
+  news_from_keyn:
+    value: Nieuws van Keyn
+  about:
+    value: Over Keyn
+  paper_backup:
+    value: Paper backup
+  terms_of_use:
+    value: Algemene voorwaarden
+  privacy_policy:
+    value: Privacy policy
+  faq:
+    value: FAQ
+  feedback:
+    value: Feedback
+  share_errors:
+    value: Deel foutmeldingen
+  share_analytics:
+    value: Deel gebruiksstatistieken
+  privacy_explanation:
+    value: Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Keyn te verbeteren.
+  privacy_beta_explanation:
+    value: Gebruiksstatistieken worden automatisch gedeeld als je de betaversie gebruikt. Je kunt hier meer over lezen in Keyn's privacy policy en de algemene voorwaarden van Testflight.
+  feedback_description:
+    comment: Description under feedback form
+    value: Gebruik dit formulier om ons feedback te geven :)
+  reset_warning:
+    comment: Description under reset Keyn
+    value: Met het resetten van Keyn verwijder je alle gegevens op de telefoon. Je kunt altijd je accounts herstellen met de paper backup.
+  delete_warning:
+    value: Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!
+  reset_keyn_warning:
+    comment: Alert before deleting local data
+    value: ⚠️ Met het resetten van Keyn verwijder je alle gegevens op de telefoon. Zorg ervoor dat je de paper back-up hebt genoteerd.
+  delete_data_warning:
+    comment: Alert before deleting all data
+    value: ⚠️ Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!
+  backup_not_finished:
+    comment: Warning that the user did not finish paper backup yet
+    value: Paper backup is niet voltooid
+  backup_completed_footer:
+    comment: Description if backup is already completed
+    value: De paper backup is de enige manier om je accounts te herstellen als je telefoon kapot gaat of als je hem kwijt raakt.
+  feedback_submitted:
+    comment: Message to the user after feedback has been submitted
+    value: Feedback verstuurd, bedankt!
+  feedback_footer:
+    value: Help ons Keyn te verbeteren door ons te laten weten wat je er van vindt.
+  jailbreak_warning:
+    value: Dit apparaat lijkt gekraakt te zijn (jailbreak). Andere applicaties hebben mogelijk toegang tot je wachtwoorden
+  read_more:
+    value: Lees meer
+  premium_beta:
+    value: Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma
+  success:
+    value: Gelukt
+  restore_successful:
+    value: Je aankoop is hersteld
+  crossgrade_successful:
+    value: Je nieuwe abonnement zal ingaan nadat het huidige abonnement eindigt
+  restore_failed:
+    value: Geen actief abonnement gevonden
+  discount:
+    value: Bespaar 17%
+  active:
+    value: actief
+  disclaimer:
+    value: De betaling wordt in rekening gebracht via uw AppleID account als de aankoop is bevestigd. Het abonnement wordt automatisch vernieuwd, tenzij het minstens 24 uur voor het einde van de periode geannuleerd is. De verlenging wordt binnen 24 uur voor het einde van het lopende abonnement in rekening gebracht. Je kunt je abonnementen beheren en annuleren via je AppStore accountinstellingen na de aankoop. Bij de aankoop gaat u akkoord met onze
+  and:
+    value: en
+  delete_data_button:
+    value: Verwijder data
+  reset_keyn_button:
+    value: Reset Keyn
+  version:
+    value: Versie
+
+backup:
+  word:
+    comment: The word for word
+    value: woord
+  start_backup:
+    value: Begin backup
+  what_if:
+    value: Wat als je je telefoon kwijtraakt?
+    start: 23
+  next:
+    value: Volgende
+  previous:
+    value: Vorige
+  check_text:
+    value: Vul alsjeblieft de volgende woorden in om te checken of alles goed is opgeschreven
+  complete:
+    value: Klaar
+  great:
+    value: Top! Bewaar de paper backup nu op een veilige plek
+  if_stolen:
+    value: Als je telefoon wordt gestolen of als je hem kwijtraakt, kun je al je accounts herstellen door deze twaalf woorden in te voeren.
+  return_to_settings:
+    value: Terug naar instellingen  
+  explanation:
+    first:
+      value: Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.
+    second:
+      value: Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig, iets dat niet op je telefoon staat.
+    third:
+      value: Woorden zijn eenvoudig op te schrijven, maar één zou niet veilig zijn, dus geven we je er 12. Schrijf ze op en bewaar ze op een veilige plek.
+  please_write_down:
+    value: Schrijf op a.u.b.
+  final_check:
+    value: Een laatste check
+  the:
+    comment: For the word 'word'
+    value: het
+  word_is:
+    value: woord is
+  retrieve:
+    value: Paper backup ontsleutelen
+
+requests:
+  accounts:
+    value: accounts
+    comment: The word for 'accounts'
+  expired:
+    value: Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden verstuurd.
+  login_with:
+    comment: Ask to the user to login with an account, e.g. Login with demo@keyn.io?
+    value: Login met %@
+  login_to:
+    comment: Ask to the user to login to a site, e.g. Login to Amazon.com?
+    value: Login bij %@
+  fill_for:
+    comment: Ask the user to fill a password, e.g. Fill password for Amazon.com?
+    value: Vul wachtwoord in voor %@
+  change_for: 
+    comment: Ask the user to change a password, e.g. Change password for Amazon.com?
+    value: Wijzig wachtwoord voor %@
+  add_site:
+    comment: Ask the user to add a site, e.g. Add Amazon.com?
+    value: Voeg %@ toe
+  save:
+    comment: Ask the user to save a site, e.g. Save Amazon.com?
+    value: Bewaar
+  unlock_accounts:
+    value: Ontgrendel accounts
+    comment: Unlock accounts
+  unlock_keyn:
+    value: Ontgrendel Keyn
+    comment: Unlock Keyn
+  'on':
+    value: 'op'
+    comment: The word for on, e.g. Pair with browser on OS?
+  pair_with:
+    value: Koppel met
+  unknown_request:
+    value: Onbekend verzoek
+  confirm_login:
+    value: Bevestig login
+  add_account:
+    value: Account toevoegen
+  add_accounts:
+    value: Accounts toevoegen
+  change_password:
+    value: Wijzig wachtwoord
+  fill_password:
+    value: Vul wachtwoord in
+  unknown_request:
+    value: Onbekend verzoek
+  login_succesful:
+    value: Login gelukt
+  account_added:
+    value: Account toegevoegd
+  accounts_added:
+    value: accounts toegevoegd
+  new_password_generated:
+    value: Nieuw wachtwoord gegenereerd
+  fill_password_successful:
+    value: Wachtwoord invullen gelukt
+  return_to_computer:
+    value: Keer terug naar je computer
+  login_keyn_next_time:
+    value: Volgende keer kun je met Keyn inloggen
+  to_complete_process:
+    value: om het proces te voltooien
+  account_disabled:
+    value: Account uitgeschakeld
+  cannot_add:
+    value: Upgrade nodig
+  upgrade_keyn_for_request:
+    value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen
+  upgrade_keyn_for_add:
+    value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
+  accounts_left_1:
+    value: Je kan nog maar
+    comment: Je kunt nog 1 account toevoegen. Check in code.
+  accounts_left_2_plural:
+    value: extra accounts
+  accounts_left_2_single:
+    value: extra account
+  accounts_left_3:
+    value: toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te bewaren.
+  no_accounts_left:
+    value: Je kunt geen accounts meer toevoegen in de gratis versie van Keyn. Upgrade om een onbeperkt aantal accounts te bewaren.
+  return:
+    value: Terug
+  upgrade:
+    value: Upgrade nu
+  confirm_request:
+    value: Bevestig verzoek
+
+notifications:
+  add_account:
+    value: Voeg account toe
+  add_accounts:
+    value: Voeg accounts toe
+  end_session:
+    value: Sessie beëindigd
+  change_password:
+    value: Verander wachtwoord
+  login:
+    value: Inloggen
+  fill_password:
+    value: Wachtwoord invullen
+  pairing:
+    value: Koppelen
+
+registration:
+  change_password_footer:
+    comment: Description for enabling changing a password
+    value: Indien ingeschakeld, wijzigt Keyn het wachtwoord automatisch in een zeer veilig wachtwoord
+  change_password_impossible:
+    comment: Description if changing a password is not possible
+    value: Het is niet mogelijk het wachtwoord voor deze website te wijzigen.
+  breach_password_found:
+    comment: Part of sentence This password has been found in 3 breaches! You should probably change it.
+    value: Dit wachtwoord is gevonden in
+
+initialization:
+  get_started:
+    value: Beginnen
+  learn_more:
+    value: Meer info
+  setup_keyn: 
+    comment: Of 'stel keyn in'
+    value: Verder 
+  scan_qr:
+    value: Scan QR code
+  try_later:
+    value: Later
+  start_using_keyn:
+    value: Start met Keyn
+  byebye:
+    value: Dag wachtwoorden, hallo Keyn
+    start: 17
+  welcome_text:
+    value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
+  how_keyn_works:
+    value: Hoe Keyn werkt op
+    start: 4
+    end: 8
+  help_improve:
+    value: Help Keyn te verbeteren
+    start: 5
+    end: 9
+  working:
+    value: |-
+      We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+
+      Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
+  change:
+    value: Je kan dit altijd later veranderen in de instellingen.
+  one_minute_away:
+    value: Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden
+    start: 8
+    end: 16
+  agree:
+    value: Akkoord
+  disagree:
+    value: Niet akkoord
+  finish:
+    value: Gereed
+  initialize_keyn:
+    value: Initialiseer versleutelde opslag
+    comment: This is provided as a reason for authenticating the first time.
+  recover:
+    value: Herstel van paper backup
+  enter_words:
+    value: Voer de 12 woorden van je paper backup in
+  mobile:
+    value: Mobiel
+  desktop:
+    value: Desktop
+  desktop_instruction:
+    first:
+      value: Keyn vraagt in je browser of je wil inloggen.
+    second:
+      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
+    third:
+      value: Keyn vult je inloggegevens in de juiste velden.
+  mobile_instruction_iOS12:
+    first:
+      value: Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.
+    second:
+      value: Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.
+    third:
+      value: Je kan dan inloggen door het verzoek te autoriseren.
+  mobile_instruction_<iOS12:
+    first:
+      value: Open Keyn om in te loggen op je telefoon.
+    second:
+      value: Kopieer je wachtwoord door er eenvoudig op te tikken.
+    third:
+      value: Keer terug naar de website en plak je wachtwoord.
+  share_analytics:
+    value: Deel gebruiksstatistieken
+  share_errors:
+    value: Deel foutmeldingen
+
+storekit:
+  title:
+    value: Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.
+  purchase:
+    value: Koop
+  couldNotFind:
+    value: Kon bronbestand niet vinden
+  error:
+    value: "Fout: "
+  deferred:
+    value: Sta gebruiker toe je app te blijven gebruiken
+  deliverContent:
+    value: Lever inhoud voor
+  failed:
+    value: mislukt
+  noRestorablePurchases:
+    value: Geen herstelbare aankopen gevonden.
+  purchaseOf:
+    value: Aankoop van
+  removed:
+    value: is verwijderd van de betalingswachtrij
+  restorable:
+    value: Alle herstelbare transacties zijn verwerkt door de betalingswachtrij
+  status:
+    value: Status
+  unknownDefault:
+    value: Onbekende betalingstransactie 
+  updateResource:
+    value: Update het met je product ID's om de productinformatie op te halen
+  restore_button:
+    value: Ik heb al Keyn Premium
+  choose_plan:
+    value: Kies je type abonnement
+
+tabs:
+  accounts:
+    value: Accounts
+  devices:
+    value: Apparaten
+  settings:
+    value: Instellingen
+
+date_components:
+  year:
+    singular_unit:
+      value: jaar
+    plural_unit:
+      value: jaren
+    future_singular:
+      value: Volgend jaar
+    past_singular:
+      value: Vorig jaar
+  month:
+    singular_unit:
+      value: maand
+    plural_unit:
+      value: maanden
+    future_singular:
+      value: Volgende maand
+    past_singular:
+      value: Vorige maand
+  week:
+    singular_unit:
+      value: week
+    plural_unit:
+      value: weken
+    future_singular:
+      value: Volgende week
+    past_singular:
+      value: Vorige week
+  day:
+    singular_unit:
+      value: dag
+    plural_unit:
+      value: dagen
+    future_singular:
+      value: Morgen
+    past_singular:
+      value: Gisteren
+  hour:
+    singular_unit:
+      value: uur
+    plural_unit:
+      value: uren
+    future_singular:
+      value: Over een uur
+    past_singular:
+      value: Een uur geleden
+  minute:
+    singular_unit:
+      value: minuut
+    plural_unit:
+      value: minuten
+    future_singular:
+      value: In een minuut
+    past_singular:
+      value: Een minuut geleden
+  second:
+    singular_unit:
+      value: seconde
+    plural_unit:
+      value: seconden
+    future_singular:
+      value: Bijna
+    past_singular:
+      value: Zojuist
+  ago:
+    value: geleden
+  in:
+    value: over
+  just_now:
+    value: Zojuist
+  less_than_minute:
+    value: Zojuist
+
+feedback:
+  start:
+    value: Start
+  send:
+    value: Stuur
+  use_help:
+    value: We kunnen je hulp gebruiken
+  submit:
+    value: Stuur
+  'yes':
+    value: Ja
+  'no':
+    value: Nee
+  next:
+    value: Volgende
+  thanks:
+    value: |-
+      That was all.
+      Thank you!
+  finish:
+    value: Klaar
+  what_did_not_work:
+    value: What didn't work?  
+  logging_in: 
+    value: Inloggen
+  change_password:
+    value: Wachtwoord wijzigen
+  add_site: 
+    value: Site toevoegen
+  additional_info:
+    value: Wil je nog iets toevoegen?
+  feedback:
+    value: Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.

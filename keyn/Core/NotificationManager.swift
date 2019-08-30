@@ -74,6 +74,11 @@ struct NotificationManager {
                     } else {
                         try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     }
+                    if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
+                        self.subscribe(topic: Properties.notificationTopic) { error in
+                            Properties.infoNotifications = error == nil ? .yes : .no
+                        }
+                    }
                 }
             } catch {
                 Logger.shared.error("AWS cannot get arn.", error: error)

@@ -37,7 +37,12 @@ class PrivacyViewController: UITableViewController {
 
     // This gets overrided by willDisplayFooterView, but this sets the correct height
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 0 ? footerText : "settings.reset_warning".localized
+        switch section {
+            case 0: return footerText
+            case 1: return "settings.reset_warning".localized
+            case 2: return "settings.delete_warning".localized
+            default: fatalError("Too many sections")
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -59,12 +64,11 @@ class PrivacyViewController: UITableViewController {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = section == 0 ? footerText : "settings.reset_warning".localized
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row > 1 {
-            cell.accessoryView = UIImageView(image: UIImage(named: "chevron_right"))
+        switch section {
+            case 0: footer.textLabel?.text = footerText
+            case 1: footer.textLabel?.text = "settings.reset_warning".localized
+            case 2: footer.textLabel?.text = "settings.delete_warning".localized
+            default: fatalError("Too many sections")
         }
     }
 
@@ -109,6 +113,17 @@ class PrivacyViewController: UITableViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination.contents as? WebViewController {
+            let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
+            destination.url = URL(fileURLWithPath: urlPath!)
+        }
+    }
+
+    // MARK: - Private functions
 
     private func deleteLocalData() {
         Session.deleteAll()

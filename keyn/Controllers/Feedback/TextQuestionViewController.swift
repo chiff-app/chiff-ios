@@ -63,6 +63,10 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             })
             
             let distanceToBottom = self.scrollView.frame.size.height - (textView.frame.origin.y) - (textView.frame.size.height)
+
+            guard self.lastOffset != nil else {
+                return
+            }
             
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {

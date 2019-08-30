@@ -59,11 +59,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
-        if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
-                Properties.infoNotifications = error == nil ? .yes : .no
-            }
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -160,7 +155,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         } else if !Properties.questionnaireDirPurged {
             Questionnaire.cleanFolder()
             Properties.questionnaireDirPurged = true
-            Seed.paperBackupCompleted = migratePaperbackupCompletedStatus()
         }
         guard Seed.hasKeys == BackupManager.shared.hasKeys else {
             launchErrorView("Inconsistency between seed and backup keys.")
@@ -219,37 +213,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                                                        .font: UIFont.primaryBold!], for: UIControl.State.disabled)
     }
 
-    private func migratePaperbackupCompletedStatus() -> Bool {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: "io.keyn.seed.master",
-                                    kSecAttrService as String: "io.keyn.seed",
-                                    kSecMatchLimit as String: kSecMatchLimitOne,
-                                    kSecReturnAttributes as String: true,
-                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUISkip]
-
-        var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
-        }
-
-        if status == errSecItemNotFound {
-            return false
-        }
-        guard status == noErr else {
-            return false
-        }
-
-        guard let dataArray = queryResult as? [String: Any] else {
-            return false
-        }
-
-        guard let label = dataArray[kSecAttrLabel as String] as? String else {
-            return false
-        }
-
-        return label == "true"
-    }
-
     func isJailbroken() -> Bool {
         if TARGET_IPHONE_SIMULATOR != 1 {
             // Check 1 : existence of files that are common for jailbroken devices
@@ -275,4 +238,4 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
     }
 
-}   
+}

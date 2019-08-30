@@ -151,6 +151,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         Groetjes,
 
         \(debugLogUser)
+        id: \(Properties.userId ?? "not set")
         """
         API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
             if let error = error {

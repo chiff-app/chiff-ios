@@ -94,7 +94,7 @@ class Questionnaire: Codable {
             self.delay = 0
         }
         self.questions = try values.decode([Question].self, forKey: .questions)
-        self.compulsory = try values.decode(Bool.self, forKey: .compulsory)
+        self.compulsory = Properties.environment == .prod ? false : try values.decodeIfPresent(Bool.self, forKey: .compulsory) ?? false // In production, questionnaire are never compulsory
     }
     
     func askAgainAt(date: Date) {
@@ -114,7 +114,7 @@ class Questionnaire: Codable {
     
     func save() {
         do {
-            let data = try PropertyListEncoder().encode(self)
+            let data = try JSONEncoder().encode(self)
             let filemgr = FileManager.default
             let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(id).path
@@ -127,13 +127,24 @@ class Questionnaire: Codable {
     func submit() {
         for question in questions {
             let userInfo: [String: Any] = [
+                "message": "Questionnaire response",
                 "questionID": question.id,
                 "type": question.type.rawValue,
                 "response": question.response ?? "null",
-                "questionnaire": id
+                "questionnaire": id,
+                "userId": Properties.userId ?? "anonymous"
             ]
-//            Logger.shared.info(question.text, userInfo: userInfo)
-            #warning("TODO: submit questionnaire")
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: []) else {
+                break
+            }
+            API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .post, body: jsonData) { (_, error) in
+                if let error = error {
+                    if let error = error as? APIError, case .noData = error {
+                        return
+                    }
+                    Logger.shared.warning("Error submitting questionnaire response", error: error, userInfo: nil)
+                }
+            }
         }
         isFinished = true
         save()
@@ -183,7 +194,6 @@ class Questionnaire: Codable {
                 Logger.shared.warning("Could not get questionnaires")
                 return
             }
-
             if let questionnaires = dict["questionnaires"] as? [Any] {
                 for object in questionnaires {
                     do {
@@ -195,7 +205,6 @@ class Questionnaire: Codable {
                     } catch {
                         Logger.shared.error("Failed to decode questionnaire", error: error)
                     }
-
                 }
             }
         }
@@ -215,7 +224,7 @@ class Questionnaire: Codable {
     
     static private func writeFile(questionnaire: Questionnaire) {
         do {
-            let data = try PropertyListEncoder().encode(questionnaire)
+            let data = try JSONEncoder().encode(questionnaire)
             let filemgr = FileManager.default
             let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
             let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(questionnaire.id).path
@@ -231,7 +240,7 @@ class Questionnaire: Codable {
             return nil
         }
         do {
-            return try PropertyListDecoder().decode(Questionnaire.self, from: data)
+            return try JSONDecoder().decode(Questionnaire.self, from: data)
         } catch {
             Logger.shared.warning("Questionnaire not found.", error: error)
             try? filemgr.removeItem(atPath: path) // Remove legacy questionnaire
