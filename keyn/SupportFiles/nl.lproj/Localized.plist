@@ -914,7 +914,7 @@ Thank you!</string>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.</string>
+				<string>Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.</string>
 			</dict>
 			<key>third</key>
 			<dict>
@@ -945,11 +945,11 @@ Thank you!</string>
 		<key>help_improve</key>
 		<dict>
 			<key>end</key>
-			<integer>13</integer>
-			<key>start</key>
 			<integer>9</integer>
+			<key>start</key>
+			<integer>5</integer>
 			<key>value</key>
-			<string>Help ons Keyn te verbeteren</string>
+			<string>Help Keyn te verbeteren</string>
 		</dict>
 		<key>how_keyn_works</key>
 		<dict>

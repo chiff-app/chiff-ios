@@ -572,9 +572,9 @@ initialization:
     start: 4
     end: 8
   help_improve:
-    value: Help ons Keyn te verbeteren
-    start: 9
-    end: 13
+    value: Help Keyn te verbeteren
+    start: 5
+    end: 9
   working:
     value: |-
       We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
@@ -607,7 +607,7 @@ initialization:
     first:
       value: Keyn vraagt in je browser of je wil inloggen.
     second:
-      value: Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.
+      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
     third:
       value: Keyn vult je inloggegevens in de juiste velden.
   mobile_instruction_iOS12:
