@@ -527,11 +527,11 @@
 		<key>no_push_warning_text</key>
 		<dict>
 			<key>value</key>
-			<string>Maar je kunt Keyn alleen gebruiken om in te loggen op andere apparaten als je pushberichten toestaat.
+			<string>Maar Keyn werkt helaas niet zonder pushberichten. 
 
-Je kunt Keyn toestaan berichten te versturen via Instellingen &gt; Keyn &gt; Berichtgeving.
+Je kun pushberichten aan  zetten via Instellingen &gt; Keyn &gt; Berichtgeving.
 
-Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
+Kies dan 'Sta berichtgeving toe'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
@@ -586,7 +586,7 @@ Kies 'Sta berichtgeving toe' onder 'Berichtgeving'.</string>
 				<key>start</key>
 				<integer>88</integer>
 				<key>value</key>
-				<string>Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op your computer.</string>
+				<string>Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.</string>
 			</dict>
 			<key>third</key>
 			<dict>
@@ -1553,7 +1553,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>comment</key>
 			<string>Description if backup is already completed</string>
 			<key>value</key>
-			<string>De paper backup is de enige manier om je accounts te herstellen als je telefoon kwijt raakt of kapot gaat.</string>
+			<string>De paper backup is de enige manier om je accounts te herstellen als je telefoon kapot gaat of als je hem kwijt raakt.</string>
 		</dict>
 		<key>backup_not_finished</key>
 		<dict>
@@ -1682,7 +1682,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>privacy_explanation</key>
 		<dict>
 			<key>value</key>
-			<string>Het delen van foutmeldingen en analytische gegevens helpt ons veel om Keyn te verbeteren.</string>
+			<string>Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Keyn te verbeteren.</string>
 		</dict>
 		<key>privacy_policy</key>
 		<dict>
@@ -1733,7 +1733,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>share_analytics</key>
 		<dict>
 			<key>value</key>
-			<string>Deel analytische data</string>
+			<string>Deel gebruiksstatistieken</string>
 		</dict>
 		<key>share_errors</key>
 		<dict>
@@ -1749,6 +1749,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Algemene voorwaarden</string>
+		</dict>
+		<key>version</key>
+		<dict>
+			<key>value</key>
+			<string>Versie</string>
 		</dict>
 	</dict>
 	<key>storekit</key>

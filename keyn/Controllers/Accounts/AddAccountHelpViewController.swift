@@ -12,8 +12,8 @@ class AddAccountHelpViewController: UIViewController {
 
     @IBOutlet weak var howToAddAnAccountButton: KeynButton!
 
-    var buttonTitle: String {
-        return Properties.deniedPushNotifications ? "accounts.add_an_account".localized : "accounts.how_to_add".localized
+    var buttonLocalizationKey: String {
+        return Properties.deniedPushNotifications ? "accounts.add_an_account" : "accounts.how_to_add"
     }
 
     override func viewDidLoad() {
@@ -21,14 +21,14 @@ class AddAccountHelpViewController: UIViewController {
 
         NotificationCenter.default.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (notification) in
             DispatchQueue.main.async {
-                self.howToAddAnAccountButton.setTitle(self.buttonTitle, for: .normal)
+                self.howToAddAnAccountButton.localizationKey = self.buttonLocalizationKey
             }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        howToAddAnAccountButton.setTitle(self.buttonTitle, for: .normal)
+        howToAddAnAccountButton.localizationKey = buttonLocalizationKey
     }
 
     @IBAction func howToAddAnAccount(_ sender: Any) {

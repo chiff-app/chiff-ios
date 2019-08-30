@@ -17,7 +17,7 @@ Keyn BV
 Langegracht 70  
 2312NV Leiden  
 Nederland  
-[privacy@keyn.app](privacy@keyn.app)
+[privacy@keyn.app](mailto:privacy@keyn.app)
 
 #### Grondslag verwerking
 Keyn heeft een aantal doelen waarvoor je persoonsgegevens noodzakelijk zijn:
@@ -37,7 +37,7 @@ Keyn BV verstrekt persoonsgegevens aan een aantal derde partijen:
 
 #### Rechten van de gebruiker
 Volgens de AVG hebben gebruikers het recht om hun persoonsgegevens in te zien, te wijzigen of verwijderen. Als je je backup-data wil verwijderen van onze server, kun je dit doen door in de app naar naar _Instellingen_ -> _Privacy_ -> _Verwijder data_ te gaan. Deze optie verwijdert alle data van je telefoon en onze server. 
-Als je andere vragen hebt wat betreft het inzien, veranderen of verwijderen van je gegevens, stuur ons dan een email naar [privacy@keyn.app](privacy@keyn.app). We zullen altijd zo snel mogelijk, maar in ieder geval binnen vier weken, antwoorden op je vraag. Mocht je een klacht hebben over de manier waarop we omgaan met je gegevens kun je altijd een klacht indienen bij bij de [Autoriteit Persoonsgegevens](https://www.autoriteitpersoonsgegevens.nl).
+Als je andere vragen hebt wat betreft het inzien, veranderen of verwijderen van je gegevens, stuur ons dan een email naar [privacy@keyn.app](mailto:privacy@keyn.app). We zullen altijd zo snel mogelijk, maar in ieder geval binnen vier weken, antwoorden op je vraag. Mocht je een klacht hebben over de manier waarop we omgaan met je gegevens kun je altijd een klacht indienen bij bij de [Autoriteit Persoonsgegevens](https://www.autoriteitpersoonsgegevens.nl).
 
 #### Veiligheid
 Veiligheid is voor Keyn BV van het grootste belang. Keyn BV neemt  technische en organisatorische maatregelen om misbruik, verlies of onrechtmatige verwerking van persoonsgegevens tegen te gaan. Naast standaardmaatregelen als het gebruikt van TLS voor verbindingen naar de server, is Keyn zo ontworpen dat alle communicatie die tussen de browser-extensie en app end-to-end verlsleuteld is. Bovendien is de backup-data die is opgeslagen op de server versleuteld. Als gevolg hiervan is het voor Keyn niet mogelijk om deze data in te zien of in onversleutelde toestand te delen met derde partijen. Mocht je meer interesse hebben in de veiligheidsaspecten van Keyn, lees dan de [blog van Bas](/articles/2018/06/17/keyn-security/).
