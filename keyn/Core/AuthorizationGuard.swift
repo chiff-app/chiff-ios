@@ -29,13 +29,13 @@ class AuthorizationGuard {
     private var authenticationReason: String {
         switch type {
         case .login:
-            return "\("requests.login_to".localized.capitalizedFirstLetter) \(siteName!)"
+            return String(format: "requests.login_to".localized, siteName!)
         case .add, .register, .addAndLogin, .addToExisting:
-            return "\("requests.add_site".localized.capitalizedFirstLetter) \(siteName!)"
+            return String(format: "requests.add_site".localized, siteName!)
         case .change:
-            return "\("requests.change_for".localized.capitalizedFirstLetter) \(siteName!)"
+            return String(format: "requests.change_for".localized, siteName!)
         case .fill:
-            return "\("requests.fill_for".localized.capitalizedFirstLetter) \(siteName!)"
+            return String(format: "requests.fill_for".localized, siteName!)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -186,7 +186,7 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(site.name)", withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
                 var success = false
                 do {
                     defer {
@@ -213,6 +213,7 @@ class AuthorizationGuard {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
+        #warning("TODO: Use plurals")
         LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
             var success = false
             do {
