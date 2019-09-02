@@ -1132,7 +1132,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "for loc in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    cat $loc/Localized.yml | yq . | plutil -convert xml1 - -o $loc/Localized.plist\ndone\n\n";
+			shellScript = "for loc in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$loc/Localized.yml').to_json\" | plutil -convert xml1 - -o $loc/Localized.plist\ndone\n\n";
 		};
 		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
 			isa = PBXShellScriptBuildPhase;
