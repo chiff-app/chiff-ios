@@ -5,10 +5,10 @@
 import Foundation
 import TrustKit
 
-class APIKeyn: NSObject, API {
-    
-    var urlSession: URLSession!
-    static let shared = APIKeyn()
+class API: NSObject, APIProtocol {
+
+    private var urlSession: URLSession!
+    static var shared: APIProtocol = API()
     
     override init() {
         super.init()
@@ -41,7 +41,7 @@ class APIKeyn: NSObject, API {
         }
     }
     
-    func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
+    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = Properties.keynApi
@@ -73,7 +73,39 @@ class APIKeyn: NSObject, API {
         }
         return request
     }
-    
+
+    private func send(_ request: URLRequest, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        let task = urlSession.dataTask(with: request) { (result) in
+            do {
+                switch result {
+                case .success(let response, let data):
+                    if response.statusCode == 200 {
+                        guard let data = data, !data.isEmpty else {
+                            throw APIError.noData
+                        }
+                        let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
+                        guard let json = jsonData as? [String: Any] else {
+                            throw APIError.jsonSerialization
+                        }
+                        completionHandler(.success(json))
+                    } else {
+                        throw APIError.statusCode(response.statusCode)
+                    }
+                case .failure(let error): throw error
+                }
+            } catch {
+                print("API network error: \(error)")
+                completionHandler(.failure(error))
+            }
+
+        }
+        task.resume()
+    }
+
+}
+
+extension API: URLSessionDelegate {
+
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let validator = TrustKit.sharedInstance().pinningValidator
         if !(validator.handle(challenge, completionHandler: completionHandler)) {
