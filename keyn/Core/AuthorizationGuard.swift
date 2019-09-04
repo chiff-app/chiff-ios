@@ -59,28 +59,30 @@ class AuthorizationGuard {
 
     // MARK: - Handle request responses
 
-    func acceptRequest(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
+    func acceptRequest(completionHandler: @escaping (Result<Account?, Error>) -> Void) {
+        
+        func handleResult(_ result: Result<Void, Error>) {
+            switch result {
+            case .success(_): completionHandler(.success(nil))
+            case .failure(let error): completionHandler(.failure(error))
+            }
+        }
+        
         switch type {
         case .add, .register, .addAndLogin:
             guard Properties.canAddAccount else {
-                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                completionHandler(.failure(AuthorizationError.cannotAddAccount))
                 return
             }
-            addSite() { error in
-                completionHandler(nil, error)
-            }
+            addSite() { result in handleResult(result)}
         case .addToExisting:
-            addToExistingAccount() { error in
-                completionHandler(nil, error)
-            }
+            addToExistingAccount() { result in handleResult(result)}
         case .addBulk:
             guard Properties.canAddAccount else {
-                completionHandler(nil, AuthorizationError.cannotAddAccount)
+                completionHandler(.failure(AuthorizationError.cannotAddAccount))
                 return
             }
-            addBulkSites() { error in
-                completionHandler(nil, error)
-            }
+            addBulkSites() { result in handleResult(result)}
         case .login, .change, .fill:
             authorize(completionHandler: completionHandler)
         default:
@@ -103,27 +105,12 @@ class AuthorizationGuard {
     }
 
     // MARK: - Private functions
-
-    private func authorize(completionHandler: @escaping (_ account: Account?, _ error: Error?) -> Void) {
-        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+    
+    private func authorize(completionHandler: @escaping (Result<Account?, Error>) -> Void) {
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
             var success = false
-            do {
-                defer {
-                    AuthorizationGuard.authorizationInProgress = false
-                    switch self.type {
-                    case .login:
-                        Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
-                    case .change:
-                        Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
-                    case .fill:
-                        Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
-                    default:
-                        Logger.shared.warning("Authorize called on the wrong type?")
-                    }
-                }
-                if let error = error {
-                    throw error
-                }
+            
+            func onSuccess(context: LAContext?) throws {
                 guard let account = try Account.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
@@ -138,29 +125,43 @@ class AuthorizationGuard {
                 }
                 try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                 success = true
-                completionHandler(account, nil)
+                completionHandler(.success(account))
+            }
+            
+            do {
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                    switch self.type {
+                    case .login:
+                        Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
+                    case .change:
+                        Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
+                    case .fill:
+                        Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
+                    default:
+                        Logger.shared.warning("Authorize called on the wrong type?")
+                    }
+                }
+                switch result {
+                case .success(let context): try onSuccess(context: context)
+                case .failure(let error): throw error
+                }
             } catch {
-                completionHandler(nil, error)
+                completionHandler(.failure(error))
             }
         }
     }
 
-    private func addToExistingAccount(completionHandler: @escaping (_ error: Error?) -> Void) {
+    private func addToExistingAccount(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
-                do {
-                    defer {
-                        AuthorizationGuard.authorizationInProgress = false
-                        Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
-                    }
-                    if let error = error {
-                        throw error
-                    }
+                
+                func onSuccess(context: LAContext?) throws {
                     var account = try Account.get(accountID: self.accountId, context: context)
                     guard account != nil  else {
                         throw AccountError.notFound
@@ -171,58 +172,69 @@ class AuthorizationGuard {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
                     success = true
-                    completionHandler(nil)
+                    completionHandler(.success(()))
+                }
+                
+                do {
+                    defer {
+                        AuthorizationGuard.authorizationInProgress = false
+                        Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
+                    }
+                    switch result {
+                    case .success(let context): try onSuccess(context: context)
+                    case .failure(let error): throw error
+                    }
                 } catch {
-                    completionHandler(error)
+                    completionHandler(.failure(error))
                 }
             }
         })
 
     }
 
-    private func addSite(completionHandler: @escaping (_ error: Error?) -> Void) {
+    private func addSite(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
-                do {
-                    defer {
-                        Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
-                    }
-                    if let error = error {
-                        throw error
-                    }
+                
+                func onSuccess(context: LAContext?) throws {
                     let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
                     success = true
-                    completionHandler(nil)
+                    completionHandler(.success(()))
+                }
+                
+                do {
+                    defer {
+                        Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
+                    }
+                    switch result {
+                    case .success(let context): try onSuccess(context: context)
+                    case .failure(let error): throw error
+                    }
                 } catch {
-                    completionHandler(error)
+                    completionHandler(.failure(error))
                 }
             }
         })
     }
 
-    private func addBulkSites(completionHandler: @escaping (_ error: Error?) -> Void) {
+    private func addBulkSites(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
         #warning("TODO: Use plurals")
-        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (result) in
             var success = false
-            do {
-                defer {
-                    Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
-                }
-                if let error = error {
-                    throw error
-                }
+            
+            func onSuccess(context: LAContext?) throws {
                 #warning("TODO: Fetch PPD for each site")
                 for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
@@ -232,9 +244,18 @@ class AuthorizationGuard {
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
-                completionHandler(nil)
+                completionHandler(.success(()))
+            }
+            do {
+                defer {
+                    Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
+                }
+                switch result {
+                case .success(let context): try onSuccess(context: context)
+                case .failure(let error): throw error
+                }
             } catch {
-                completionHandler(error)
+                completionHandler(.failure(error))
             }
         }
     }
@@ -292,22 +313,21 @@ class AuthorizationGuard {
 
     // MARK: - Static authorization functionss
 
-    static func addOTP(token: Token, account: Account, completionHandler: @escaping (_: Error?)->()) throws {
+    static func addOTP(token: Token, account: Account, completionHandler: @escaping (Result<Void, Error>)->()) throws {
         authorizationInProgress = true
         let reason = account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
-        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (result) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
-            if context != nil {
-                completionHandler(nil)
-            } else if let error = error {
-                completionHandler(error)
+            switch result {
+            case .success(_): completionHandler(.success(()))
+            case .failure(let error): completionHandler(.failure(error))
             }
         }
     }
 
-    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (_: Session?, _: Error?) -> Void) {
+    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (Result<Session?, Error>) -> Void) {
         guard !authorizationInProgress else {
             return
         }
@@ -325,22 +345,22 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
-            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: false) { (context, error) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: false) { (result) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }
-                if context != nil {
+                switch result {
+                case .success(_):
                     authenticationCompletionHandler?()
-                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completion: completionHandler)
-                } else if let error = error {
-                    completionHandler(nil, error)
+                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completionHandler: completionHandler)
+                case .failure(let error): completionHandler(.failure(error))
                 }
             }
         } catch let error as KeychainError {
             Logger.shared.error("Keychain error retrieving session", error: error)
-            completionHandler(nil, SessionError.invalid)
+            completionHandler(.failure(SessionError.invalid))
         } catch {
-            completionHandler(nil, error)
+            completionHandler(.failure(error))
         }
     }
 

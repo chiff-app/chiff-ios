@@ -71,21 +71,23 @@ class StoreObserver: NSObject {
     /// This retrieves current subscription status for this seed from the Keyn server
     func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
-                if let error = error {
-                    completionHandler(error)
-                } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
-                    if subscriptions.count > 1 {
-                        Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
+            APIKeyn.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { result in
+                switch result {
+                case .success(let jsonObject):
+                    if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
+                        if subscriptions.count > 1 {
+                            Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
+                        }
+                        Properties.subscriptionExiryDate = longest.value
+                        Properties.subscriptionProduct = longest.key
+                        completionHandler(nil)
+                    } else {
+                        Properties.subscriptionExiryDate = 0
+                        Properties.subscriptionProduct = nil
+                        completionHandler(nil)
                     }
-                    Properties.subscriptionExiryDate = longest.value
-                    Properties.subscriptionProduct = longest.key
-                    completionHandler(nil)
-
-                } else {
-                    Properties.subscriptionExiryDate = 0
-                    Properties.subscriptionProduct = nil
-                    completionHandler(nil)
+                case .failure(let error):
+                    completionHandler(error)
                 }
             }
         } catch {
@@ -181,14 +183,17 @@ class StoreObserver: NSObject {
                     "data": receiptData.base64EncodedString()
                 ]
                 let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-                API.shared.signedRequest(endpoint: .iosSubscription , method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
-                    if let error = error {
+                APIKeyn.shared.signedRequest(endpoint: .iosSubscription, method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { result in
+                    switch result {
+                    case .success(let jsonObject):
+                        if let status = jsonObject["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = jsonObject["expires"] as? TimeInterval, let product = jsonObject["product"] as? String {
+                            completionHandler(validationResult, expires, product, nil)
+                        } else {
+                            completionHandler(.error, nil, nil, APIError.noResponse)
+                        }
+                    case .failure(let error):
                         Logger.shared.error("Error verifying receipt", error: error)
                         completionHandler(.error, nil, nil, error)
-                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = result?["expires"] as? TimeInterval, let product = result?["product"] as? String {
-                        completionHandler(validationResult, expires, product, nil)
-                    } else {
-                        completionHandler(.error, nil, nil, APIError.noResponse)
                     }
                 }
             } catch {

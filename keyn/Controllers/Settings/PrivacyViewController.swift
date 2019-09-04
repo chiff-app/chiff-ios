@@ -98,12 +98,11 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.delete_data".localized, message: "settings.delete_data_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            BackupManager.shared.deleteAllAccounts() { error in
+            BackupManager.shared.deleteAllAccounts() { result in
                 DispatchQueue.main.async {
-                    if let error = error {
-                        self.showError(message: "\("errors.deleting".localized): \(error)")
-                    } else {
-                        self.deleteLocalData()
+                    switch result {
+                    case .success(_): self.deleteLocalData()
+                    case .failure(let error): self.showError(message: "\("errors.deleting".localized): \(error)")
                     }
                 }
             }

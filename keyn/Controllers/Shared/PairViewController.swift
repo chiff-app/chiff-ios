@@ -40,18 +40,24 @@ class PairViewController: QRViewController {
     private func pair(url: URL) {
         AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: {
             self.pairContainerDelegate.startLoading()
-        }) { (session, error) in
+        }) { (result) in
             DispatchQueue.main.async {
                 self.pairContainerDelegate.finishLoading()
-                if let session = session {
-                    self.pairControllerDelegate.sessionCreated(session: session)
-                    Logger.shared.analytics(.paired)
-                } else if let error = error {
+                switch result {
+                case .success(let session):
+                    if let session = session {
+                        self.pairControllerDelegate.sessionCreated(session: session)
+                        Logger.shared.analytics(.paired)
+                    } else {
+                        self.recentlyScannedUrls.removeAll(keepingCapacity: false)
+                        self.qrFound = false
+                    }
+                case .failure(let error):
                     self.hideIcon()
                     switch error {
                     case is LAError, is KeychainError:
                         if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
-                             self.showError(message: authenticationError)
+                            self.showError(message: authenticationError)
                         }
                     case SessionError.invalid:
                         Logger.shared.error("Invalid QR-code scanned", error: error)
@@ -67,9 +73,6 @@ class PairViewController: QRViewController {
                         Logger.shared.error("Unhandled QR code error during pairing.", error: error)
                         self.showError(message: "errors.generic_error".localized)
                     }
-                    self.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                    self.qrFound = false
-                } else {
                     self.recentlyScannedUrls.removeAll(keepingCapacity: false)
                     self.qrFound = false
                 }

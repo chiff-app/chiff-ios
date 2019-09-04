@@ -101,15 +101,13 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         Groetjes!
         id: \(Properties.userId ?? "not set")
         """
-        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
-            if let error = error {
-                Logger.shared.warning("Error posting feedback", error: error)
+        APIKeyn.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (result) in
+            switch result {
+            case .success(_): break
+            case .failure(let error): Logger.shared.warning("Error posting feedback", error: error)
             }
-            DispatchQueue.main.async {
-                self.dismiss(animated: true, completion: nil)
-            }
+            self.dismiss(animated: true, completion: nil)
         }
-
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {

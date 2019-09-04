@@ -26,30 +26,24 @@ struct PPD: Codable {
     }
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
-        API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (dict, error) in
-            if let error = error {
-                Logger.shared.error("PPD retrieval problem.", error: error)
-                completionHandler(nil)
-                return
-            }
-
-            guard let dict = dict else {
-                Logger.shared.warning("PPD not found")
-                completionHandler(nil)
-                return
-            }
-
-            if let ppd = dict["ppds"] as? [Any] {
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
-                    let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
-                    completionHandler(ppd)
-                } catch {
-                    Logger.shared.error("Failed to decode PPD", error: error)
+        APIKeyn.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (result) in
+            switch result {
+            case .success(let dict):
+                if let ppd = dict["ppds"] as? [Any] {
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
+                        let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
+                        completionHandler(ppd)
+                    } catch {
+                        Logger.shared.error("Failed to decode PPD", error: error)
+                        completionHandler(nil)
+                    }
+                } else {
+                    Logger.shared.error("Failed to decode PPD")
                     completionHandler(nil)
                 }
-            } else {
-                Logger.shared.error("Failed to decode PPD")
+            case .failure(let error):
+                Logger.shared.error("PPD retrieval problem.", error: error)
                 completionHandler(nil)
             }
         }

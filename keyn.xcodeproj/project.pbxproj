@@ -17,6 +17,9 @@
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
 		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
+		42497C12231EE60900ECBDB4 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* API.swift */; };
+		42497C13231EF4AF00ECBDB4 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* API.swift */; };
+		42497C14231EF4B000ECBDB4 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* API.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
@@ -81,8 +84,8 @@
 		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
-		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
-		49721F9D2128EED00090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
+		49721F9C2128E5830090AF48 /* APIKeyn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* APIKeyn.swift */; };
+		49721F9D2128EED00090AF48 /* APIKeyn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* APIKeyn.swift */; };
 		4973BB7522F818470004E365 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7422F818470004E365 /* TermsViewController.swift */; };
 		4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7622F84C490004E365 /* AboutViewController.swift */; };
 		4973BB7922F866D90004E365 /* AccessoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */; };
@@ -179,7 +182,7 @@
 		611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */; };
 		611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		611F4B612146B63E00B35A89 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
-		611F4B622146B65200B35A89 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
+		611F4B622146B65200B35A89 /* APIKeyn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* APIKeyn.swift */; };
 		611F4B632146B65500B35A89 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		611F4B642146B66400B35A89 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
 		611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B652146C63F00B35A89 /* LoginViewController.swift */; };
@@ -262,6 +265,7 @@
 		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
+		42497C11231EE60900ECBDB4 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
@@ -311,7 +315,7 @@
 		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
-		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		49721F9B2128E5830090AF48 /* APIKeyn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyn.swift; sourceTree = "<group>"; };
 		4973BB7422F818470004E365 /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		4973BB7622F84C490004E365 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -703,7 +707,7 @@
 		49F2A1002214336900429875 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				49721F9B2128E5830090AF48 /* API.swift */,
+				49721F9B2128E5830090AF48 /* APIKeyn.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				49057730221AE04B006D98C0 /* AuthorizationGuard.swift */,
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
@@ -714,6 +718,7 @@
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
+				42497C11231EE60900ECBDB4 /* API.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1280,12 +1285,13 @@
 				493A35B32215660E002EB043 /* Constants.swift in Sources */,
 				49062C5B221449D200A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
+				42497C13231EF4AF00ECBDB4 /* API.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
 				49214B882103359B00C793DE /* Crypto.swift in Sources */,
 				4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */,
 				49F2A0FA2214321900429875 /* Extensions.swift in Sources */,
-				49721F9D2128EED00090AF48 /* API.swift in Sources */,
+				49721F9D2128EED00090AF48 /* APIKeyn.swift in Sources */,
 				613CFB07201360B300460CC6 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1302,6 +1308,7 @@
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
+				42497C12231EE60900ECBDB4 /* API.swift in Sources */,
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
@@ -1355,7 +1362,7 @@
 				4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */,
 				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
 				49774C122266035C0094D3ED /* SiteTableViewController.swift in Sources */,
-				49721F9C2128E5830090AF48 /* API.swift in Sources */,
+				49721F9C2128E5830090AF48 /* APIKeyn.swift in Sources */,
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				497B4E8C23101B0300ED7E4A /* UnderlinedButton.swift in Sources */,
@@ -1419,7 +1426,7 @@
 			files = (
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
-				611F4B622146B65200B35A89 /* API.swift in Sources */,
+				611F4B622146B65200B35A89 /* APIKeyn.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
 				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
@@ -1430,6 +1437,7 @@
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
 				49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */,
+				42497C14231EF4B000ECBDB4 /* API.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
 				611F4B642146B66400B35A89 /* Properties.swift in Sources */,

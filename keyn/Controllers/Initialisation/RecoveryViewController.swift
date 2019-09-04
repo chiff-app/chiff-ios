@@ -128,30 +128,32 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBAction func finish(_ sender: UIBarButtonItem) {
         view.endEditing(false)
         activityViewContainer.isHidden = false
-        LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (result) in
             do {
-                if let error = error {
-                    throw error
-                } else if let context = context {
-                    Seed.recover(context: context, mnemonic: self.mnemonic) { error in
-                        DispatchQueue.main.async {
-                            if error != nil {
-                                self.showError(message: "errors.seed_restore".localized)
-                                self.activityViewContainer.isHidden = true
-                            } else {
-                                StoreObserver.shared.updateSubscriptions() { error in
-                                    if let error = error {
-                                        Logger.shared.error("Error updating subscriptions", error: error)
+                switch result {
+                case .success(let context):
+                    if let context = context {
+                        Seed.recover(context: context, mnemonic: self.mnemonic) { error in
+                            DispatchQueue.main.async {
+                                if error != nil {
+                                    self.showError(message: "errors.seed_restore".localized)
+                                    self.activityViewContainer.isHidden = true
+                                } else {
+                                    StoreObserver.shared.updateSubscriptions() { error in
+                                        if let error = error {
+                                            Logger.shared.error("Error updating subscriptions", error: error)
+                                        }
+                                        Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+                                        self.registerForPushNotifications()
+                                        Logger.shared.analytics(.backupRestored)
                                     }
-                                    Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-                                    self.registerForPushNotifications()
-                                    Logger.shared.analytics(.backupRestored)
                                 }
                             }
                         }
+                    } else {
+                        throw RecoveryError.unauthenticated
                     }
-                } else {
-                    throw RecoveryError.unauthenticated
+                case .failure(let error): throw error
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -241,7 +243,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             AppDelegate.startupService.registerForPushNotifications() { result in
                 if result {
-                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
+                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
                 }
                 self.showRootController()
             }

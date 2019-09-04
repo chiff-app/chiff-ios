@@ -59,26 +59,29 @@ class RequestViewController: UIViewController {
     // MARK: - Private functions
 
     private func acceptRequest() {
-        authorizationGuard.acceptRequest { account, error in
+        authorizationGuard.acceptRequest { result in
             DispatchQueue.main.async {
-                if let error = error {
+                switch result {
+                case .success(let account):
+                    if let account = account, account.hasOtp() {
+                        AuthenticationGuard.shared.hideLockWindow()
+                        self.account = account
+                        self.showOtp()
+                    } else {
+                        AuthenticationGuard.shared.hideLockWindow()
+                        self.success()
+                    }
+                case .failure(let error):
                     if let error = error as? AuthorizationError {
                         switch error {
-                            case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
-                            case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+                        case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
+                        case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
                         }
                         AuthenticationGuard.shared.hideLockWindow()
                     } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                         self.showError(message: errorMessage)
                         Logger.shared.error("Error authorizing request", error: error)
                     }
-                } else if let account = account, account.hasOtp() {
-                    AuthenticationGuard.shared.hideLockWindow()
-                    self.account = account
-                    self.showOtp()
-                } else {
-                    AuthenticationGuard.shared.hideLockWindow()
-                    self.success()
                 }
             }
         }

@@ -72,24 +72,25 @@ class LoginViewController: ASCredentialProviderViewController {
 
     private func loadUsers() {
         let reason = credentialIdentity != nil ? String(format: "requests.login_with".localized, credentialIdentity!.user) : "requests.unlock_accounts".localized
-        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true) { (result) in
             do {
-                if let error = error {
-                    throw error
-                }
-                if let accountID = self.credentialIdentity?.recordIdentifier, let account = try Account.get(accountID: accountID, context: context) {
-                    let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: context))
-                    self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-                } else {
-                    let accounts = try Account.all(context: context)
-                    guard !accounts.isEmpty else {
-                        self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                        return
+                switch result {
+                case .success(let context):
+                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try Account.get(accountID: accountID, context: context) {
+                        let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: context))
+                        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+                    } else {
+                        let accounts = try Account.all(context: context)
+                        guard !accounts.isEmpty else {
+                            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                            return
+                        }
+                        DispatchQueue.main.async {
+                            self.accounts = accounts
+                            self.performSegue(withIdentifier: "showAccounts", sender: self)
+                        }
                     }
-                    DispatchQueue.main.async {
-                        self.accounts = accounts
-                        self.performSegue(withIdentifier: "showAccounts", sender: self)
-                    }
+                case .failure(let error): throw error
                 }
             } catch {
                 self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
