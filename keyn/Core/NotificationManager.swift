@@ -60,7 +60,7 @@ struct NotificationManager {
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint
         }
-        APIKeyn.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { result in
+        API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
             
             func onSuccess(dict: JSONObject) throws {
                 if let endpoint = dict["arn"] as? String {
@@ -95,7 +95,7 @@ struct NotificationManager {
         }
         
         do {
-            APIKeyn.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { result in
+            API.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 switch result {
                 case .success(_): return
                 case .failure(let error): Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
@@ -118,7 +118,7 @@ struct NotificationManager {
             "topic": topic
         ]
         do {
-            APIKeyn.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { result in
+            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
                     switch result {
                     case .success(let dict):
@@ -149,7 +149,7 @@ struct NotificationManager {
             guard let subscription = String(data: try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), encoding: .utf8) else {
                 throw CodingError.stringDecoding
             }
-            APIKeyn.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { result in
+            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
                     switch result {
                     case .success(_):

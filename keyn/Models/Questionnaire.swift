@@ -137,7 +137,7 @@ class Questionnaire: Codable {
             guard let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: []) else {
                 break
             }
-            APIKeyn.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .post, body: jsonData) { (result) in
+            API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .post, signature: nil, body: jsonData) { (result) in
                 switch result {
                 case .success(_): break
                 case .failure(let error):
@@ -186,7 +186,7 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        APIKeyn.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get) { (result) in
+        API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get, signature: nil, body: nil) { (result) in
             switch result {
             case .success(let dict):
                 if let questionnaires = dict["questionnaires"] as? [Any] {

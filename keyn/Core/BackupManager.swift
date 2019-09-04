@@ -59,7 +59,7 @@ struct BackupManager {
                 if let data = data {
                     message[MessageIdentifier.token] = data.base64EncodedString()
                 }
-                APIKeyn.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey) { result in
+                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey, body: nil) { result in
                     switch result {
                     case .success(_):
                         completionHandler(.success(()))
@@ -84,7 +84,7 @@ struct BackupManager {
                 MessageIdentifier.id: account.id,
                 MessageIdentifier.data: ciphertext.base64
             ]
-            APIKeyn.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey()) { result in
+            API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
                 switch result {
                 case .success(_):
                     completionHandler(true)
@@ -99,7 +99,7 @@ struct BackupManager {
     }
     
     func deleteAccount(accountId: String) throws {
-        APIKeyn.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey()) { result in
+        API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
             switch result {
             case .success(_): return
             case .failure(let error): Logger.shared.error("BackupManager cannot delete account.", error: error)
@@ -109,7 +109,7 @@ struct BackupManager {
 
     func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
-            APIKeyn.shared.signedRequest(endpoint: .backup, method: .delete, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey()) { result in
+            API.shared.signedRequest(endpoint: .backup, method: .delete, message: nil, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey(), body: nil) { result in
                 switch result {
                 case .success(_): completionHandler(.success(()))
                 case .failure(let error):
@@ -131,7 +131,7 @@ struct BackupManager {
         } else {
             pubKey = try publicKey()
         }
-        APIKeyn.shared.signedRequest(endpoint: .backup, method: .get, pubKey: pubKey, privKey: try privateKey()) { result in
+        API.shared.signedRequest(endpoint: .backup, method: .get, message: nil, pubKey: pubKey, privKey: try privateKey(), body: nil) { result in
             switch result {
             case .success(let dict):
                 for (id, data) in dict {
