@@ -3,102 +3,113 @@
  * All rights reserved.
  */
 import Foundation
+import TrustKit
 
-enum APIError: KeynError {
-    case url
-    case jsonSerialization
-    case request(error: Error)
-    case statusCode(Int)
-    case noResponse
-    case noData
-    case response
-    case wrongResponseType
-    case pinninigError
-}
+class API: NSObject, APIProtocol {
 
-enum APIEndpoint: String {
-    case accounts = "accounts"
-    case backup = "backup"
-    case device = "device"
-    case ppd = "ppd"
-    case analytics = "analytics"
-    case message = "message"
-    case pairing = "message/pairing"
-    case volatile = "message/volatile"
-    case persistentAppToBrowser = "message/persistent/app-to-browser"
-    case persistentBrowserToApp = "message/persistent/browser-to-app"
-    case push = "message/push"
-    case questionnaire = "questionnaire"
-    case subscription = "subscription"
-    case iosSubscription = "subscription/ios"
-
-    // This construcs the endpoint for the subscription
-    static func notificationSubscription(for pubkey: String) -> String {
-        return "\(pubkey)/subscription"
+    private var urlSession: URLSession!
+    static var shared: APIProtocol = API()
+    
+    override init() {
+        super.init()
+        urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
+    }
+    
+    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject? = nil, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        var message = message ?? [:]
+        message["httpMethod"] = method.rawValue
+        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
+            let parameters = [
+                "m": try Crypto.shared.convertToBase64(from: jsonData),
+                "s": "42"
+            ]
+            request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String? = nil, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        do {
+            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, signature: signature, method: method, body: body)
+            send(request, completionHandler: completionHandler)
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = Properties.keynApi
+        components.path = "/\(Properties.environment.path)/\(endpoint.rawValue)"
+        
+        if let path = path {
+            components.path += "/\(path)"
+        }
+        if let parameters = parameters {
+            var queryItems = [URLQueryItem]()
+            for (key, value) in parameters {
+                let item = URLQueryItem(name: key, value: value)
+                queryItems.append(item)
+            }
+            components.queryItems = queryItems
+        }
+        
+        guard let url = components.url else {
+            throw APIError.url
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        if let signature = signature {
+            request.setValue(signature, forHTTPHeaderField: "keyn-signature")
+        }
+        if let body = body {
+            request.httpBody = body
+        }
+        return request
     }
 
-    // This construcs the endpoint for deleting all backup data
-    static func deleteAll(for pubkey: String) -> String {
-        return "\(pubkey)/all"
+    private func send(_ request: URLRequest, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        let task = urlSession.dataTask(with: request) { (result) in
+            do {
+                switch result {
+                case .success(let response, let data):
+                    if response.statusCode == 200 {
+                        guard let data = data, !data.isEmpty else {
+                            throw APIError.noData
+                        }
+                        let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
+                        guard let json = jsonData as? [String: Any] else {
+                            throw APIError.jsonSerialization
+                        }
+                        completionHandler(.success(json))
+                    } else {
+                        throw APIError.statusCode(response.statusCode)
+                    }
+                case .failure(let error): throw error
+                }
+            } catch {
+                print("API network error: \(error)")
+                completionHandler(.failure(error))
+            }
+
+        }
+        task.resume()
     }
+
 }
 
-enum APIMethod: String {
-    case get = "GET"
-    case put = "PUT"
-    case post = "POST"
-    case delete = "DELETE"
-}
+extension API: URLSessionDelegate {
 
-extension URLSession {
-    func dataTask(with url: URLRequest, result: @escaping (Result<(HTTPURLResponse, Data?), Error>) -> Void) -> URLSessionDataTask {
-        return dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                return result(.failure(error))
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                Logger.shared.error("API error. Wrong Response type")
-                return result(.failure(APIError.wrongResponseType))
-            }
-            result(.success((httpResponse, data)))
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        let validator = TrustKit.sharedInstance().pinningValidator
+        if !(validator.handle(challenge, completionHandler: completionHandler)) {
+            completionHandler(URLSession.AuthChallengeDisposition.performDefaultHandling, nil)
         }
     }
 }
-
-typealias JSONObject = Dictionary<String, Any>
-typealias RequestParameters = Dictionary<String, String>?
-
-protocol APIProtocol {
-
-    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
-
-    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
-
-}
-
-// For example
-class MockAPI: APIProtocol {
-
-    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        // TODO: Implement
-    }
-
-    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        // TODO
-    }
-
-}
-
-// Testing:
-
-class SomeTest {
-
-    func setUp() {
-        API.shared = MockAPI()
-    }
-
-    func testblabla() {
-        // Any function calls that to the API will now execute the MockAPI implementation functions.
-    }
-}
-

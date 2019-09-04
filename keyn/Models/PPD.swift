@@ -26,7 +26,7 @@ struct PPD: Codable {
     }
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
-        APIKeyn.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get) { (result) in
+        API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get, signature: nil, body: nil) { (result) in
             switch result {
             case .success(let dict):
                 if let ppd = dict["ppds"] as? [Any] {
