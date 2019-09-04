@@ -68,46 +68,37 @@ extension URLSession {
 typealias JSONObject = Dictionary<String, Any>
 typealias RequestParameters = Dictionary<String, String>?
 
-protocol API: URLSessionDelegate {
-
-    var urlSession: URLSession! { get set }
+protocol APIProtocol {
 
     func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
 
     func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
 
-    func send(_ request: URLRequest, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
-
-    func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest
 }
 
-extension API {
-    
-    func send(_ request: URLRequest, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        let task = urlSession.dataTask(with: request) { (result) in
-            do {
-                switch result {
-                case .success(let response, let data):
-                    if response.statusCode == 200 {
-                        guard let data = data, !data.isEmpty else {
-                            throw APIError.noData
-                        }
-                        let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
-                        guard let json = jsonData as? [String: Any] else {
-                            throw APIError.jsonSerialization
-                        }
-                        completionHandler(.success(json))
-                    } else {
-                        throw APIError.statusCode(response.statusCode)
-                    }
-                case .failure(let error): throw error
-                }
-            } catch {
-                print("API network error: \(error)")
-                completionHandler(.failure(error))
-            }
-            
-        }
-        task.resume()
+// For example
+class MockAPI: APIProtocol {
+
+    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        // TODO: Implement
+    }
+
+    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+        // TODO
+    }
+
+}
+
+// Testing:
+
+class SomeTest {
+
+    func setUp() {
+        API.shared = MockAPI()
+    }
+
+    func testblabla() {
+        // Any function calls that to the API will now execute the MockAPI implementation functions.
     }
 }
+
