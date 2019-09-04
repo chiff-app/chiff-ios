@@ -44,27 +44,27 @@ class LocalAuthenticationManager {
             localAuthenticationQueue.addOperation(task)
         }
     }
-
-    func authenticate(reason: String, withMainContext: Bool, completion: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
+    
+    func authenticate(reason: String, withMainContext: Bool, completionHandler: @escaping (Result<LAContext?, Error>) -> Void) {
         do {
             if withMainContext {
                 try checkMainContext()
             }
             let context = withMainContext ? mainContext : LAContext()
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (result, error) in
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (evaluationResult, error) in
                 if let error = error {
-                    return completion(nil, error)
+                    return completionHandler(.failure(error))
                 }
-                if result {
+                if evaluationResult {
                     self.mainContext = context
-                    return completion(context, nil)
+                    return completionHandler(.success(context))
                 } else {
-                    return completion(nil, nil)
+                    return completionHandler(.success(nil))
                 }
             }
         } catch {
             Logger.shared.warning("Localauthentication failed")
-            completion(nil, error)
+            completionHandler(.failure(error))
         }
     }
 

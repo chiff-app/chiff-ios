@@ -81,15 +81,16 @@ class AuthenticationGuard {
 
     private func authenticateUser() {
         let localizedReason = "requests.unlock_keyn".localized
-        LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true) { (result) in
             do {
-                if let error = error {
-                    throw error
-                }
-                let accounts = try Account.all(context: context, sync: true)
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
-                    self.hideLockWindow()
+                switch result {
+                case .success(let context):
+                    let accounts = try Account.all(context: context, sync: true)
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
+                        self.hideLockWindow()
+                    }
+                case .failure(let error): throw error
                 }
             } catch let error as DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)

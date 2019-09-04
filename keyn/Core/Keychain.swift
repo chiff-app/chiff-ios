@@ -313,7 +313,7 @@ class Keychain {
     // MARK: - Authenticated Keychain operations
     // These operations ask the user to authenticate the operation if necessary. This is handled on a custom OperationQueue that is managed by LocalAuthenticationManager.shared
 
-    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType, completionHandler: @escaping (_ data: Data?, _ error: Error?) -> Void) {
+    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
@@ -328,22 +328,22 @@ class Keychain {
                 }
 
                 guard status != errSecItemNotFound else {
-                    return completionHandler(nil, KeychainError.notFound)
+                    return completionHandler(.failure(KeychainError.notFound))
                 }
                 guard status == noErr else {
-                    return completionHandler(nil, KeychainError.unhandledError(status))
+                    return completionHandler(.failure(KeychainError.unhandledError(status)))
                 }
                 guard let data = queryResult as? Data else {
-                    return completionHandler(nil, KeychainError.unexpectedData)
+                    return completionHandler(.failure(KeychainError.unexpectedData))
                 }
-                completionHandler(data, nil)
+                completionHandler(.success(data))
             }
         } catch {
-            completionHandler(nil, error) // These can be LocalAuthenticationErrors
+            completionHandler(.failure(error)) // These can be LocalAuthenticationErrors
         }
     }
 
-    func delete(id identifier: String, service: KeychainService, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (_ context: LAContext?, _ error: Error?) -> Void) {
+    func delete(id identifier: String, service: KeychainService, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (Result<LAContext, Error>) -> Void) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue]
@@ -353,15 +353,15 @@ class Keychain {
                 let status = SecItemDelete(query as CFDictionary)
 
                 guard status != errSecItemNotFound else {
-                    return completionHandler(nil, KeychainError.notFound)
+                    return completionHandler(.failure(KeychainError.notFound))
                 }
                 guard status == errSecSuccess else {
-                    return completionHandler(nil, KeychainError.unhandledError(status))
+                    return completionHandler(.failure(KeychainError.unhandledError(status)))
                 }
-                completionHandler(context, nil)
+                completionHandler(.success(context))
             }
         } catch {
-            completionHandler(nil,error)
+            completionHandler(.failure(error))
         }
     }
 

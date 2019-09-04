@@ -69,12 +69,11 @@ class InitialisationViewController: UIViewController {
     }
 
     private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
-        LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true) { (context, error) in
-            if let error = error {
-                completionHandler(error)
-                return
+        LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true) { (result) in
+            switch result {
+            case .success(let context): Seed.create(context: context, completionHandler: completionHandler)
+            case .failure(let error): completionHandler(error)
             }
-            Seed.create(context: context, completionHandler: completionHandler)
         }
     }
 

@@ -85,11 +85,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
         if sender.isOn {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
+            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    if let error = error {
+                    switch result {
+                    case .success(_): break
+                    case .failure(let error):
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.subscribing".localized): \(error)")
                     }
@@ -97,11 +99,13 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                 }
             }
         } else {
-            NotificationManager.shared.unsubscribe() { error in
+            NotificationManager.shared.unsubscribe() { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    if let error = error {
+                    switch result {
+                    case .success(_): break
+                    case .failure(let error):
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.unsubscribing".localized): \(error)")
                     }
