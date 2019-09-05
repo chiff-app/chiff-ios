@@ -133,12 +133,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 switch result {
                 case .success(let context):
                     if let context = context {
-                        Seed.recover(context: context, mnemonic: self.mnemonic) { error in
+                        Seed.recover(context: context, mnemonic: self.mnemonic) { result in
                             DispatchQueue.main.async {
-                                if error != nil {
-                                    self.showError(message: "errors.seed_restore".localized)
-                                    self.activityViewContainer.isHidden = true
-                                } else {
+                                switch result {
+                                case .success(_):
                                     StoreObserver.shared.updateSubscriptions() { error in
                                         if let error = error {
                                             Logger.shared.error("Error updating subscriptions", error: error)
@@ -147,6 +145,9 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                                         self.registerForPushNotifications()
                                         Logger.shared.analytics(.backupRestored)
                                     }
+                                case .failure(_):
+                                    self.showError(message: "errors.seed_restore".localized)
+                                    self.activityViewContainer.isHidden = true
                                 }
                             }
                         }
