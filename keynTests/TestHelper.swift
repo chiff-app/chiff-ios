@@ -20,7 +20,6 @@ class TestHelper {
 
     static let mnemonic = "wreck together kick tackle rely embrace enlist bright double happy group honey"
     static let base64seed = "_jx16O6LVpESsOBBrR2btg"
-    static let CRYPTO_CONTEXT = "keynseed"
     static let pairingQueueSeed = "0F5l3RTX8f0TUpC9aBe-dgOwzMqaPrjPGTmh60LULFs"
     static let browserPublicKeyBase64 = "uQ-JTC6gejxrz2dNw1sXO6JAQP32wNpXFPnJ2PgksuM"
     static let sessionID = "9d710842c9cc6df1b2f4f3ca2074bc1408e525e7ce46635ce21579c9fe6f01e7"
@@ -59,8 +58,8 @@ class TestHelper {
 
         do {
             let seed = base64seed.fromBase64!
-            let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
-            let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+            let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed")
+            let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: "keynseed")
             
             try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
             try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
@@ -77,7 +76,7 @@ class TestHelper {
             try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
             try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
             
-            let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: CRYPTO_CONTEXT)
+            let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: "keynback")
             try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
         } catch {
             fatalError(error.localizedDescription)
