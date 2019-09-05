@@ -16,16 +16,6 @@ struct NotificationManager {
         static let os = "os"
     }
 
-
-    private enum KeyIdentifier: String, Codable {
-        case subscription = "subscription"
-        case endpoint = "endpoint"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
-
     var endpoint: String? {
         guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {
             return nil
