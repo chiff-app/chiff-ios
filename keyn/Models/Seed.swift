@@ -30,16 +30,6 @@ struct Seed {
         }
     }
 
-    private enum KeyIdentifier: String, Codable {
-        case password = "password"
-        case backup = "backup"
-        case master = "master"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
-
     enum KeyType: UInt64 {
         case passwordSeed = 0
         case backupSeed = 1

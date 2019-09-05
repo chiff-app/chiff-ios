@@ -293,3 +293,23 @@ struct ProductIdentifiers {
         return NSArray(contentsOfFile: path) as? [String]
     }
 }
+
+enum KeyIdentifier: String, Codable {
+    // Seed
+    case password = "password"
+    case backup = "backup"
+    case master = "master"
+
+    // BackupManager
+    case priv = "priv"
+    case pub = "pub"
+    case encryption = "encryption"
+
+    // NotificationManager
+    case subscription = "subscription"
+    case endpoint = "endpoint"
+
+    func identifier(for keychainService: KeychainService) -> String {
+        return "\(keychainService.rawValue).\(self.rawValue)"
+    }
+}

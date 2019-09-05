@@ -92,17 +92,3 @@ class TestHelper {
     }
 
 }
-
-#warning("This should be defined in Core so we don't have repeated enums")
-enum KeyIdentifier: String, Codable {
-    case password = "password"
-    case backup = "backup"
-    case master = "master"
-    case priv = "priv"
-    case pub = "pub"
-    case encryption = "encryption"
-    
-    func identifier(for keychainService: KeychainService) -> String {
-        return "\(keychainService.rawValue).\(self.rawValue)"
-    }
-}

@@ -16,16 +16,6 @@ struct BackupManager {
         Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) &&
         Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
-
-    private enum KeyIdentifier: String, Codable {
-        case priv = "priv"
-        case pub = "pub"
-        case encryption = "encryption"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
     
     private enum MessageIdentifier {
         static let httpMethod = "httpMethod"

@@ -16,7 +16,7 @@ enum SessionError: KeynError {
     case destroyed
 }
 
-fileprivate enum KeyIdentifier: String, Codable {
+fileprivate enum SessionIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
 
@@ -62,8 +62,8 @@ class Session: Codable {
         } else { // App should delete the queues
             deleteQueuesAtAWS()
         }
-        try Keychain.shared.delete(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
-        try Keychain.shared.delete(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
+        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
 
     }
 
@@ -236,11 +236,11 @@ class Session: Codable {
     }
 
     static func exists(id: String) throws -> Bool {
-        return Keychain.shared.has(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
+        return Keychain.shared.has(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
     }
 
     static func get(id: String) throws -> Session? {
-        guard let sessionDict = try Keychain.shared.attributes(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey) else {
+        guard let sessionDict = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey) else {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
@@ -407,13 +407,13 @@ class Session: Codable {
     }
 
     private func sharedKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
+        return try Keychain.shared.get(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
     }
 
     private func save(key: Data, signingKeyPair: KeyPair) throws {
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey, secretData: key, objectData: sessionData)
-        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
+        try Keychain.shared.save(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey, secretData: key, objectData: sessionData)
+        try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
     }
 
     private func deleteQueuesAtAWS() {
@@ -433,7 +433,7 @@ class Session: Codable {
     }
 
     private func signingPrivKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+        return try Keychain.shared.get(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
     }
 
 }
