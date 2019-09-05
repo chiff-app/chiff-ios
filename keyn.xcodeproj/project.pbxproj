@@ -20,6 +20,7 @@
 		42497C12231EE60900ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
 		42497C13231EF4AF00ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
 		42497C14231EF4B000ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
+		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
@@ -266,6 +267,7 @@
 		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		42497C11231EE60900ECBDB4 /* APIProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProtocol.swift; sourceTree = "<group>"; };
+		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 			isa = PBXGroup;
 			children = (
 				49721F9B2128E5830090AF48 /* API.swift */,
+				42497C11231EE60900ECBDB4 /* APIProtocol.swift */,
 				4936049F20861286009E3029 /* AuthenticationGuard.swift */,
 				49057730221AE04B006D98C0 /* AuthorizationGuard.swift */,
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
@@ -718,7 +721,6 @@
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
-				42497C11231EE60900ECBDB4 /* APIProtocol.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -781,6 +783,7 @@
 				01B79AEE202C8E8000425BD5 /* CryptoTests.swift */,
 				611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */,
 				611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */,
+				42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1405,6 +1408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */,
 				611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */,
 				01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */,
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
