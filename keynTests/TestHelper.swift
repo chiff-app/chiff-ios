@@ -56,22 +56,31 @@ class TestHelper {
 
     static func createSeed() {
         deleteLocalData()
-        let seed = base64seed.fromBase64!
-        let passwordSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
-        let backupSeed = try! Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-        try! Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-        try! Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-        try! Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+        do {
+            let seed = base64seed.fromBase64!
+            let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+            let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
+            
+            try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+            try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+            try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+        } catch {
+            fatalError(error.localizedDescription)
+        }
     }
 
-    private enum KeyIdentifier: String, Codable {
-        case password = "password"
-        case backup = "backup"
-        case master = "master"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
+    static func createBackupKeys() {
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            let keyPair = try Crypto.shared.createSigningKeyPair(seed: backupSeed)
+            try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
+            try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
+            
+            let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: CRYPTO_CONTEXT)
+            try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
+        } catch {
+            fatalError(error.localizedDescription)
         }
     }
 
@@ -83,4 +92,18 @@ class TestHelper {
         BackupManager.shared.deleteAllKeys()
     }
 
+}
+
+#warning("This should be defined in Core so we don't have repeated enums")
+enum KeyIdentifier: String, Codable {
+    case password = "password"
+    case backup = "backup"
+    case master = "master"
+    case priv = "priv"
+    case pub = "pub"
+    case encryption = "encryption"
+    
+    func identifier(for keychainService: KeychainService) -> String {
+        return "\(keychainService.rawValue).\(self.rawValue)"
+    }
 }
