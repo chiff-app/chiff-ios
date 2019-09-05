@@ -142,6 +142,7 @@ struct BackupManager {
                             try Account.save(accountData: accountData, id: id, context: context)
                         } catch {
                             Logger.shared.error("Could not restore account.", error: error)
+                            completionHandler(.failure(error))
                         }
                     }
                 }
