@@ -279,16 +279,18 @@ class Session: Codable {
             let group = DispatchGroup()
             var groupError: Error?
             group.enter()
-            try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { error in
-                if groupError == nil {
-                    groupError = error
+            try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { result in
+                switch result {
+                case .success(_): break
+                case .failure(let error): groupError = error
                 }
                 group.leave()
             }
             group.enter()
-            try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { error in
-                if groupError == nil {
-                    groupError = error
+            try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
+                switch result {
+                case .success(_): break
+                case .failure(let error): groupError = error
                 }
                 group.leave()
             }
@@ -328,7 +330,7 @@ class Session: Codable {
         return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
     }
 
-    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
         guard let deviceEndpoint = NotificationManager.shared.endpoint else {
             throw SessionError.noEndpoint
         }
@@ -353,18 +355,18 @@ class Session: Codable {
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
             API.shared.request(endpoint: .message, path: nil, parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
                 switch result {
-                case .success(_): completion(nil)
+                case .success(_): completionHandler(.success(()))
                 case .failure(let error):
                     Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
-                    completion(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completion(error)
+            completionHandler(.failure(error))
         }
     }
 
-    private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
+    private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
         let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
@@ -375,10 +377,10 @@ class Session: Codable {
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { (result) in
             switch result {
-            case .success(_): completion(nil)
+            case .success(_): completionHandler(.success(()))
             case .failure(let error):
                 Logger.shared.error("Error sending pairing response.", error: error)
-                completion(error)
+                completionHandler(.failure(error))
             }
         }
     }
