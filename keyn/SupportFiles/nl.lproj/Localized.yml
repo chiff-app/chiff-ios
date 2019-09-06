@@ -88,10 +88,14 @@ errors:
   unsubscribing:
     value: Fout bij uitzetten infoberichten
   deleting:
-      value: Fout bij verwijderen backup data
+    value: Fout bij verwijderen backup data
+  deleting_account:
+    value: Fout bij verwijderen account
 
 popups:
   questions:
+    retrieve_password:
+      value: Ontsleutel wachtwoord voor %@
     camera_permission:
       value: Toegang vereist
     delete_corrupted:

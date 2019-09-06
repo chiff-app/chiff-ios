@@ -659,6 +659,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error deleting backup data</string>
 		</dict>
+		<key>deleting_account</key>
+		<dict>
+			<key>value</key>
+			<string>Error deleting account</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
@@ -1223,6 +1228,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<dict>
 				<key>value</key>
 				<string>Restore accounts</string>
+			</dict>
+			<key>retrieve_password</key>
+			<dict>
+				<key>value</key>
+				<string>Ontsleutel wachtwoord voor %@</string>
 			</dict>
 			<key>terms</key>
 			<dict>

@@ -51,26 +51,23 @@ struct NotificationManager {
             message[MessageIdentifier.endpoint] = endpoint
         }
         API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
-            
-            func onSuccess(dict: JSONObject) throws {
-                if let endpoint = dict["arn"] as? String {
+
+            do {
+                if let endpoint = try result.get()["arn"] as? String {
                     if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
                         try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     } else {
                         try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     }
                     if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-                        self.subscribe(topic: Properties.notificationTopic) { error in
-                            Properties.infoNotifications = error == nil ? .yes : .no
+                        self.subscribe(topic: Properties.notificationTopic) { result in
+                            if case .failure(_) = result {
+                                Properties.infoNotifications = .no
+                            } else {
+                                Properties.infoNotifications = .yes
+                            }
                         }
                     }
-                }
-            }
-            
-            do {
-                switch result {
-                case .success(let dict): try onSuccess(dict: dict)
-                case .failure(let error): throw error
                 }
             } catch {
                 Logger.shared.error("AWS cannot get arn.", error: error)
@@ -86,9 +83,8 @@ struct NotificationManager {
         
         do {
             API.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
-                switch result {
-                case .success(_): return
-                case .failure(let error): Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
+                if case let .failure(error) = result {
+                    Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
                 }
             }
         } catch {
@@ -110,13 +106,14 @@ struct NotificationManager {
         do {
             API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
-                    switch result {
-                    case .success(let dict):
-                        if let subscriptionArn = dict["arn"] as? String {
-                            try Keychain.shared.save(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws, secretData: subscriptionArn.data)
-                            completionHandler?(.success(()))
+                    if let subscriptionArn = try result.get()["arn"] as? String {
+                        let id = KeyIdentifier.subscription.identifier(for: .aws)
+                        if Keychain.shared.has(id: id, service: .aws) {
+                            try Keychain.shared.update(id: id, service: .aws, secretData: subscriptionArn.data)
+                        } else {
+                            try Keychain.shared.save(id: id, service: .aws, secretData: subscriptionArn.data)
                         }
-                    case .failure(let error): throw error
+                        completionHandler?(.success(()))
                     }
                 } catch {
                     Logger.shared.error("Failed to subscribe to topic ARN @ AWS.", error: error)
@@ -141,12 +138,9 @@ struct NotificationManager {
             }
             API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
-                    switch result {
-                    case .success(_):
-                        try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
-                        completionHandler(.success(()))
-                    case .failure(let error): throw error
-                    }
+                    let _ = try result.get()
+                    try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
+                    completionHandler(.success(()))
                 } catch {
                     Logger.shared.error("Failed to unsubscribe to topic ARN @ AWS.", error: error)
                     completionHandler(.failure(error))

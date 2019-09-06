@@ -89,9 +89,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    switch result {
-                    case .success(_): break
-                    case .failure(let error):
+                    if case let .failure(error) = result {
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.subscribing".localized): \(error)")
                     }
@@ -103,9 +101,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    switch result {
-                    case .success(_): break
-                    case .failure(let error):
+                    if case let .failure(error) = result {
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.unsubscribing".localized): \(error)")
                     }

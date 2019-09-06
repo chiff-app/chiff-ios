@@ -218,7 +218,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
 
     
     @IBAction func showPassword(_ sender: UIButton) {
-        account.password(reason: "Retrieve password for \(account.site.name)", context: nil, type: .ifNeeded) { (result) in
+        account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded) { (result) in
             switch result {
             case .success(let password):
                 DispatchQueue.main.async {

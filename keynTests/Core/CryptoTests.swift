@@ -81,7 +81,7 @@ class CryptoTests: XCTestCase {
         guard let seed = TestHelper.base64seed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: TestHelper.CRYPTO_CONTEXT).base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
+        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
     }
     
     func testConvertToBase64() {

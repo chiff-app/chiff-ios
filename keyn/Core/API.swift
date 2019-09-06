@@ -23,8 +23,7 @@ class API: NSObject, APIProtocol {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
             let parameters = [
-                "m": try Crypto.shared.convertToBase64(from: jsonData),
-                "s": "42"
+                "m": try Crypto.shared.convertToBase64(from: jsonData)
             ]
             request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
         } catch {

@@ -61,10 +61,11 @@ class AuthorizationGuard {
 
     func acceptRequest(completionHandler: @escaping (Result<Account?, Error>) -> Void) {
         
-        func handleResult(_ result: Result<Void, Error>) {
-            switch result {
-            case .success(_): completionHandler(.success(nil))
-            case .failure(let error): completionHandler(.failure(error))
+        func handleResult(_ error: Error?) {
+            if let error = error {
+                completionHandler(.failure(error))
+            } else {
+                completionHandler(.success(nil))
             }
         }
         
@@ -74,15 +75,15 @@ class AuthorizationGuard {
                 completionHandler(.failure(AuthorizationError.cannotAddAccount))
                 return
             }
-            addSite() { result in handleResult(result)}
+            addSite(completionHandler: handleResult)
         case .addToExisting:
-            addToExistingAccount() { result in handleResult(result)}
+            addToExistingAccount(completionHandler: handleResult)
         case .addBulk:
             guard Properties.canAddAccount else {
                 completionHandler(.failure(AuthorizationError.cannotAddAccount))
                 return
             }
-            addBulkSites() { result in handleResult(result)}
+            addBulkSites(completionHandler: handleResult)
         case .login, .change, .fill:
             authorize(completionHandler: completionHandler)
         default:
@@ -142,17 +143,14 @@ class AuthorizationGuard {
                         Logger.shared.warning("Authorize called on the wrong type?")
                     }
                 }
-                switch result {
-                case .success(let context): try onSuccess(context: context)
-                case .failure(let error): throw error
-                }
+                try onSuccess(context: result.get())
             } catch {
                 completionHandler(.failure(error))
             }
         }
     }
 
-    private func addToExistingAccount(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    private func addToExistingAccount(completionHandler: @escaping (Error?) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
@@ -172,7 +170,7 @@ class AuthorizationGuard {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
                     success = true
-                    completionHandler(.success(()))
+                    completionHandler(nil)
                 }
                 
                 do {
@@ -180,19 +178,16 @@ class AuthorizationGuard {
                         AuthorizationGuard.authorizationInProgress = false
                         Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
-                    switch result {
-                    case .success(let context): try onSuccess(context: context)
-                    case .failure(let error): throw error
-                    }
+                    try onSuccess(context: result.get())
                 } catch {
-                    completionHandler(.failure(error))
+                    completionHandler(error)
                 }
             }
         })
 
     }
 
-    private func addSite(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    private func addSite(completionHandler: @escaping (Error?) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false
@@ -208,25 +203,22 @@ class AuthorizationGuard {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                     }
                     success = true
-                    completionHandler(.success(()))
+                    completionHandler(nil)
                 }
                 
                 do {
                     defer {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
-                    switch result {
-                    case .success(let context): try onSuccess(context: context)
-                    case .failure(let error): throw error
-                    }
+                    try onSuccess(context: result.get())
                 } catch {
-                    completionHandler(.failure(error))
+                    completionHandler(error)
                 }
             }
         })
     }
 
-    private func addBulkSites(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    private func addBulkSites(completionHandler: @escaping (Error?) -> Void) {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
@@ -244,18 +236,15 @@ class AuthorizationGuard {
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
-                completionHandler(.success(()))
+                completionHandler(nil)
             }
             do {
                 defer {
                     Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
                 }
-                switch result {
-                case .success(let context): try onSuccess(context: context)
-                case .failure(let error): throw error
-                }
+                try onSuccess(context: result.get())
             } catch {
-                completionHandler(.failure(error))
+                completionHandler(error)
             }
         }
     }
