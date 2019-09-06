@@ -87,9 +87,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if BackupManager.shared.hasKeys {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 StoreObserver.shared.updateSubscriptions { (result) in
-                    switch result {
-                    case .failure(let error): Logger.shared.error("Error updating subsription status", error: error)
-                    case .success(_): break
+                    if case let .failure(error) = result {
+                        Logger.shared.error("Error updating subsription status", error: error)
                     }
                 }
             }

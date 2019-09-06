@@ -55,9 +55,8 @@ class Session: Codable {
         Logger.shared.analytics(.sessionDeleted)
         if notifyExtension {
             try sendByeToPersistentQueue() { (result) in
-                switch result {
-                case .success(_): break
-                case .failure(let error): Logger.shared.error("Error sending bye to persistent queue.", error: error)
+                if case let .failure(error) = result {
+                     Logger.shared.error("Error sending bye to persistent queue.", error: error)
                 }
             }
         } else { // App should delete the queues
@@ -119,9 +118,8 @@ class Session: Codable {
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
 
         try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
-            switch result {
-            case .failure(let error): Logger.shared.error("Error sending credentials", error: error)
-            case .success(_): break
+            if case let .failure(error) = result {
+                Logger.shared.error("Error sending credentials", error: error)
             }
         }
     }
@@ -280,17 +278,15 @@ class Session: Codable {
             var groupError: Error?
             group.enter()
             try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { result in
-                switch result {
-                case .success(_): break
-                case .failure(let error): groupError = error
+                if case let .failure(error) = result {
+                    groupError = error
                 }
                 group.leave()
             }
             group.enter()
             try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
-                switch result {
-                case .success(_): break
-                case .failure(let error): groupError = error
+                if case let .failure(error) = result {
+                    groupError = error
                 }
                 group.leave()
             }
