@@ -72,6 +72,10 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
+        // TODO: Test if this fixes the textLabel size on some devices.
+        if section == 1 {
+            footer.textLabel?.numberOfLines = 3
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
