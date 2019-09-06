@@ -200,7 +200,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             case .failure(let error):
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
-                return
             }
         }
     }

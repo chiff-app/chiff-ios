@@ -89,18 +89,16 @@ class KeychainTests: XCTestCase {
     func testGetAsync() {
         TestHelper.createSeed()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
-            switch result {
-            case .failure(let error): XCTFail(error.localizedDescription)
-            case .success(_): break
+            if case let .failure(error) = result {
+                XCTFail(error.localizedDescription)
             }
         }
     }
     
     func testGetAsyncFailsIfNoData() {
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
-            switch result {
-            case .failure(_): break
-            case .success(_): XCTFail("There must be an error")
+            if case .success(_) = result {
+                XCTFail("There must be an error")
             }
         }
     }
@@ -108,18 +106,16 @@ class KeychainTests: XCTestCase {
     func testDeleteAsync() {
         TestHelper.createSeed()
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
-            switch result {
-            case .failure(let error): XCTFail(error.localizedDescription)
-            case .success(_): break
+            if case let .failure(error) = result {
+                XCTFail(error.localizedDescription)
             }
         }
     }
     
     func testDeleteAsyncFailsIfNoData() {
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
-            switch result {
-            case .failure(_): break
-            case .success(_): XCTFail("There must be an error")
+            if case .success(_) = result {
+                XCTFail("There must be an error")
             }
         }
     }
@@ -191,9 +187,8 @@ class KeychainTests: XCTestCase {
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
-            switch result {
-            case .failure(let error): XCTFail(error.localizedDescription)
-            case .success(_): break
+            if case let .failure(error) = result {
+                XCTFail(error.localizedDescription)
             }
         }
     }
@@ -206,9 +201,8 @@ class KeychainTests: XCTestCase {
             case .failure(let error): XCTFail(error.localizedDescription)
             case .success(_):
                 Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
-                    switch result {
-                    case .failure(_): break
-                    case .success(_): XCTFail("There must be an error")
+                    if case .success(_) = result {
+                        XCTFail("There must be an error")
                     }
                 }
             }
