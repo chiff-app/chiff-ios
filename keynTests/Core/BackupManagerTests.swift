@@ -3,18 +3,8 @@
  * All rights reserved.
  */
 import XCTest
-import LocalAuthentication
 
 @testable import keyn
-
-class FakeLAContext: LAContext {
-    override func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
-        reply(true, nil)
-    }
-    override func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
-        return true
-    }
-}
 
 class BackupManagerTests: XCTestCase {
 
