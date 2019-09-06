@@ -69,7 +69,7 @@ class StoreObserver: NSObject {
     }
 
     /// This retrieves current subscription status for this seed from the Keyn server
-    func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func updateSubscriptions(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
             API.shared.signedRequest(endpoint: .subscription, method: .get, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 switch result {
@@ -80,18 +80,18 @@ class StoreObserver: NSObject {
                         }
                         Properties.subscriptionExiryDate = longest.value
                         Properties.subscriptionProduct = longest.key
-                        completionHandler(nil)
+                        completionHandler(.success(()))
                     } else {
                         Properties.subscriptionExiryDate = 0
                         Properties.subscriptionProduct = nil
-                        completionHandler(nil)
+                        completionHandler(.success(()))
                     }
                 case .failure(let error):
-                    completionHandler(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
 
