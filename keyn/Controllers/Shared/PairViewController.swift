@@ -42,13 +42,8 @@ class PairViewController: QRViewController {
                 self.pairContainerDelegate.finishLoading()
                 switch result {
                 case .success(let session):
-                    if let session = session {
-                        self.pairControllerDelegate.sessionCreated(session: session)
-                        Logger.shared.analytics(.paired)
-                    } else {
-                        self.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                        self.qrFound = false
-                    }
+                    self.pairControllerDelegate.sessionCreated(session: session)
+                    Logger.shared.analytics(.paired)
                 case .failure(let error):
                     self.hideIcon()
                     switch error {

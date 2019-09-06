@@ -54,9 +54,9 @@ class Session: Codable {
         Properties.sessionCount -= 1
         Logger.shared.analytics(.sessionDeleted)
         if notifyExtension {
-            try sendByeToPersistentQueue() { (_, error) in
-                if let error = error {
-                    Logger.shared.error("Error sending bye to persistent queue.", error: error)
+            try sendByeToPersistentQueue() { (result) in
+                if case let .failure(error) = result {
+                     Logger.shared.error("Error sending bye to persistent queue.", error: error)
                 }
             }
         } else { // App should delete the queues
@@ -75,14 +75,14 @@ class Session: Codable {
         return message
     }
 
-    func cancelRequest(reason: KeynMessageType, browserTab: Int, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) {
+    func cancelRequest(reason: KeynMessageType, browserTab: Int, completionHandler: @escaping (Result<[String: Any], Error>) -> Void) {
         do {
             let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             try sendToVolatileQueue(ciphertext: ciphertext, completionHandler: completionHandler)
         } catch {
-            completionHandler(nil, error)
+            completionHandler(.failure(error))
         }
     }
 
@@ -117,14 +117,14 @@ class Session: Codable {
         let message = try JSONEncoder().encode(response!)
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
 
-        try self.sendToVolatileQueue(ciphertext: ciphertext) { (_, error) in
-            if let error = error {
+        try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
+            if case let .failure(error) = result {
                 Logger.shared.error("Error sending credentials", error: error)
             }
         }
     }
 
-    func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (_ messages: [KeynPersistentQueueMessage]?, _ error: Error?) -> Void) {
+    func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (Result<[KeynPersistentQueueMessage], Error>) -> Void) {
         let message = [
             "waitTime": shortPolling ? "0" : "20"
         ]
@@ -144,15 +144,15 @@ class Session: Codable {
                             keynMessage.receiptHandle = receiptHandle
                             return keynMessage
                         })
-                        completionHandler(messages, nil)
+                        completionHandler(.success(messages))
                     case .failure(let error): throw error
                     }
                 } catch {
-                    completionHandler(nil, error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completionHandler(nil, error)
+            completionHandler(.failure(error))
         }
     }
 
@@ -264,7 +264,7 @@ class Session: Codable {
         Properties.sessionCount = 0
     }
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completionHandler: @escaping (Result<Session?, Error>) -> Void) {
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -277,15 +277,15 @@ class Session: Codable {
             let group = DispatchGroup()
             var groupError: Error?
             group.enter()
-            try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { error in
-                if groupError == nil {
+            try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { result in
+                if case let .failure(error) = result {
                     groupError = error
                 }
                 group.leave()
             }
             group.enter()
-            try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { error in
-                if groupError == nil {
+            try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
+                if case let .failure(error) = result {
                     groupError = error
                 }
                 group.leave()
@@ -326,7 +326,7 @@ class Session: Codable {
         return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
     }
 
-    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completion: @escaping (_ error: Error?) -> Void) throws {
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
         guard let deviceEndpoint = NotificationManager.shared.endpoint else {
             throw SessionError.noEndpoint
         }
@@ -351,18 +351,18 @@ class Session: Codable {
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
             API.shared.request(endpoint: .message, path: nil, parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
                 switch result {
-                case .success(_): completion(nil)
+                case .success(_): completionHandler(.success(()))
                 case .failure(let error):
                     Logger.shared.error("Cannot create SQS queues and SNS endpoint.", error: error)
-                    completion(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completion(error)
+            completionHandler(.failure(error))
         }
     }
 
-    private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
+    private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
         let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
@@ -373,34 +373,34 @@ class Session: Codable {
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { (result) in
             switch result {
-            case .success(_): completion(nil)
+            case .success(_): completionHandler(.success(()))
             case .failure(let error):
                 Logger.shared.error("Error sending pairing response.", error: error)
-                completion(error)
+                completionHandler(.failure(error))
             }
         }
     }
 
-    private func sendToVolatileQueue(ciphertext: Data, completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
+    private func sendToVolatileQueue(ciphertext: Data, completionHandler: @escaping (Result<[String: Any], Error>) -> Void) throws {
         let message = [
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
         API.shared.signedRequest(endpoint: .volatile, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { (result) in
             switch result {
-            case .success(let jsonObject): completionHandler(jsonObject, nil)
-            case .failure(let error): completionHandler(nil, error)
+            case .success(let jsonObject): completionHandler(.success(jsonObject))
+            case .failure(let error): completionHandler(.failure(error))
             }
         }
 //        API.shared.signedRequest(endpoint: .volatile, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), completionHandler: completionHandler)
     }
 
-    private func sendByeToPersistentQueue(completionHandler: @escaping (_ res: [String: Any]?, _ error: Error?) -> Void) throws {
+    private func sendByeToPersistentQueue(completionHandler: @escaping (Result<[String: Any], Error>) -> Void) throws {
         let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
         API.shared.signedRequest(endpoint: .persistentAppToBrowser, method: .post, message: ["data": ciphertext.base64], pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { (result) in
             switch result {
-            case .success(let jsonObject): completionHandler(jsonObject, nil)
-            case .failure(let error): completionHandler(nil, error)
+            case .success(let jsonObject): completionHandler(.success(jsonObject))
+            case .failure(let error): completionHandler(.failure(error))
             }
         }
 //        API.shared.signedRequest(endpoint: .persistentAppToBrowser, method: .post, message: ["data": ciphertext.base64], pubKey: signingPubKey, privKey: try signingPrivKey(), completionHandler: completionHandler)

@@ -61,10 +61,9 @@ struct NotificationManager {
                     }
                     if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
                         self.subscribe(topic: Properties.notificationTopic) { result in
-                            if case .failure(_) = result {
-                                Properties.infoNotifications = .no
-                            } else {
-                                Properties.infoNotifications = .yes
+                            switch result {
+                            case .success(_): Properties.infoNotifications = .yes
+                            case .failure(_): Properties.infoNotifications = .no
                             }
                         }
                     }

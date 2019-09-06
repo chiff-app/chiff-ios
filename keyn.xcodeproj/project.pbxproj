@@ -21,6 +21,8 @@
 		42497C13231EF4AF00ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
 		42497C14231EF4B000ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
 		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
+		428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D22321ACBA00DC70DF /* KeychainTests.swift */; };
+		428178D52321AE5800DC70DF /* FakeLAContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D42321AE5800DC70DF /* FakeLAContext.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
@@ -269,6 +271,8 @@
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		42497C11231EE60900ECBDB4 /* APIProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProtocol.swift; sourceTree = "<group>"; };
 		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
+		428178D22321ACBA00DC70DF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		428178D42321AE5800DC70DF /* FakeLAContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeLAContext.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
@@ -682,6 +686,7 @@
 				611733D2215D06D900F37B2A /* Core */,
 				0155742A202B173F00F97DA2 /* TestHelper.swift */,
 				49983444232131680007BF12 /* MockAPI.swift */,
+				428178D42321AE5800DC70DF /* FakeLAContext.swift */,
 				49E7666C1F7E6F420022C042 /* Info.plist */,
 			);
 			path = keynTests;
@@ -787,6 +792,7 @@
 				611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */,
 				611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */,
 				42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */,
+				428178D22321ACBA00DC70DF /* KeychainTests.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1420,6 +1426,8 @@
 				0155742B202B173F00F97DA2 /* TestHelper.swift in Sources */,
 				49983445232131680007BF12 /* MockAPI.swift in Sources */,
 				611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */,
+				428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */,
+				428178D52321AE5800DC70DF /* FakeLAContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
