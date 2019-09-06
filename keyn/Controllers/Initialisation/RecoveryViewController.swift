@@ -144,7 +144,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                         }
                     case .success(_):
                         StoreObserver.shared.updateSubscriptions() { error in
-                            if let error = error {
+                            if case let .failure(error) = result {
                                 Logger.shared.error("Error updating subscriptions", error: error)
                             }
                             Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
