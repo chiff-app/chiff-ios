@@ -144,10 +144,7 @@ class AuthorizationGuard {
                         Logger.shared.warning("Authorize called on the wrong type?")
                     }
                 }
-                switch result {
-                case .success(let context): try onSuccess(context: context)
-                case .failure(let error): throw error
-                }
+                try onSuccess(context: try result.get())
             } catch {
                 completionHandler(.failure(error))
             }
@@ -182,10 +179,7 @@ class AuthorizationGuard {
                         AuthorizationGuard.authorizationInProgress = false
                         Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
-                    switch result {
-                    case .success(let context): try onSuccess(context: context)
-                    case .failure(let error): throw error
-                    }
+                    try onSuccess(context: try result.get())
                 } catch {
                     completionHandler(.failure(error))
                 }
@@ -217,10 +211,7 @@ class AuthorizationGuard {
                     defer {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
-                    switch result {
-                    case .success(let context): try onSuccess(context: context)
-                    case .failure(let error): throw error
-                    }
+                    try onSuccess(context: try result.get())
                 } catch {
                     completionHandler(.failure(error))
                 }
@@ -252,10 +243,7 @@ class AuthorizationGuard {
                 defer {
                     Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
                 }
-                switch result {
-                case .success(let context): try onSuccess(context: context)
-                case .failure(let error): throw error
-                }
+                try onSuccess(context: try result.get())
             } catch {
                 completionHandler(.failure(error))
             }
