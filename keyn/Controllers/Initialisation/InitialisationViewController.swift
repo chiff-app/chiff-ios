@@ -41,7 +41,7 @@ class InitialisationViewController: UIViewController {
                     switch result {
                     case .success(_):
                         self.registerForPushNotifications()
-                        Logger.shared.analytics(.seedCreated)
+                        Logger.shared.analytics(.seedCreated, override: true)
                     case .failure(let error):
                         if let error = error as? LAError {
                             if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
