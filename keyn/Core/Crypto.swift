@@ -160,14 +160,6 @@ class Crypto {
         return plaintext.data
     }
 
-    func encrypt(_ plaintext: Data, pubKey: Data, privKey: Data) throws -> Data {
-        guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, recipientPublicKey: pubKey.bytes, senderSecretKey: privKey.bytes) else {
-            throw CryptoError.encryption
-        }
-
-        return ciphertext.data
-    }
-
     func encrypt(_ plaintext: Data, pubKey: Data) throws -> Data {
         guard let ciphertext: Bytes = sodium.box.seal(message: plaintext.bytes, recipientPublicKey: pubKey.bytes) else {
             throw CryptoError.encryption
@@ -192,16 +184,6 @@ class Crypto {
             throw CryptoError.decryption
         }
 
-        return (plaintext.data, nonce)
-    }
-
-    // This function should decrypt a password request with the sessions corresponding session / private key and check signature with browser's public key
-    func decrypt(_ ciphertext: Data, privKey: Data, pubKey: Data) throws -> (Data, Data) {
-        let nonce = ciphertext[..<Data.Index(sodium.box.NonceBytes)]
-        guard let plaintext: Bytes = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, senderPublicKey: pubKey.bytes, recipientSecretKey: privKey.bytes) else {
-            throw CryptoError.decryption
-        }
-        
         return (plaintext.data, nonce)
     }
 
