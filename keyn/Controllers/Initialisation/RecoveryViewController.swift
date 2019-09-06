@@ -23,7 +23,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     private var textFieldOffset: CGPoint!
     private var textFieldHeight: CGFloat!
-    private var keyboardHeight: CGFloat!
+    private var keyboardHeight: CGFloat?
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
@@ -97,7 +97,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height - keyboardHeightOffset
             UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += (self.keyboardHeight)
+                self.constraintContentHeight.constant += (self.keyboardHeight!) // Just assigned so it makes sense to force unwrap
             })
 
             let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
@@ -111,9 +111,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight)
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        if let keyboardHeight = keyboardHeight {
+            UIView.animate(withDuration: 0.3) {
+                self.constraintContentHeight.constant -= (keyboardHeight)
+                self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            }
         }
         
         keyboardHeight = nil
