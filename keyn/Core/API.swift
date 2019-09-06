@@ -80,7 +80,7 @@ class API: NSObject, APIProtocol {
                 switch result {
                 case .success(let response, let data):
                     if response.statusCode == 200 {
-                        guard let data = data, !data.isEmpty else {
+                        guard !data.isEmpty else {
                             throw APIError.noData
                         }
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: [])

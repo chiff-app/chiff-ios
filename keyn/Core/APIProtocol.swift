@@ -51,11 +51,16 @@ enum APIMethod: String {
 }
 
 extension URLSession {
-    func dataTask(with url: URLRequest, result: @escaping (Result<(HTTPURLResponse, Data?), Error>) -> Void) -> URLSessionDataTask {
+    func dataTask(with url: URLRequest, result: @escaping (Result<(HTTPURLResponse, Data), Error>) -> Void) -> URLSessionDataTask {
         return dataTask(with: url) { (data, response, error) in
             if let error = error {
                 return result(.failure(error))
             }
+            
+            guard let data = data else {
+                return result(.failure(APIError.noData))
+            }
+            
             guard let httpResponse = response as? HTTPURLResponse else {
                 Logger.shared.error("API error. Wrong Response type")
                 return result(.failure(APIError.wrongResponseType))
