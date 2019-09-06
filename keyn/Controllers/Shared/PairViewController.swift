@@ -22,15 +22,12 @@ class PairViewController: QRViewController {
     var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme else {
-            Logger.shared.analytics(.qrCodeScanned, properties: [.value: false])
-            return
-        }
-        guard scheme == "keyn" else {
+        guard (url.host == "keyn.app" && url.path == "/pair") || url.scheme == "keyn"  else {
             Logger.shared.analytics(.qrCodeScanned, properties: [
                 .value: false,
-                .scheme: scheme
+                .scheme: url.scheme ?? "no scheme"
             ])
+            showError(message: "errors.session_invalid".localized)
             return
         }
         Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
