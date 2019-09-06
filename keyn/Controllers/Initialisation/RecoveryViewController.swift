@@ -130,31 +130,26 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         activityViewContainer.isHidden = false
         LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (result) in
             do {
-                switch result {
-                case .success(let context):
-                    if let context = context {
-                        Seed.recover(context: context, mnemonic: self.mnemonic) { result in
-                            DispatchQueue.main.async {
-                                switch result {
-                                case .success(_):
-                                    StoreObserver.shared.updateSubscriptions() { error in
-                                        if let error = error {
-                                            Logger.shared.error("Error updating subscriptions", error: error)
-                                        }
-                                        Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-                                        self.registerForPushNotifications()
-                                        Logger.shared.analytics(.backupRestored)
-                                    }
-                                case .failure(_):
-                                    self.showError(message: "errors.seed_restore".localized)
-                                    self.activityViewContainer.isHidden = true
-                                }
-                            }
+                guard let context = try result.get() else {
+                    throw RecoveryError.unauthenticated
+                }
+                Seed.recover(context: context, mnemonic: self.mnemonic) { result in
+                    switch result {
+                    case .failure(_):
+                        DispatchQueue.main.async {
+                            self.showError(message: "errors.seed_restore".localized)
+                            self.activityViewContainer.isHidden = true
                         }
-                    } else {
-                        throw RecoveryError.unauthenticated
+                    case .success(_):
+                        StoreObserver.shared.updateSubscriptions() { error in
+                            if let error = error {
+                                Logger.shared.error("Error updating subscriptions", error: error)
+                            }
+                            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+                            self.registerForPushNotifications()
+                            Logger.shared.analytics(.backupRestored)
+                        }
                     }
-                case .failure(let error): throw error
                 }
             } catch {
                 DispatchQueue.main.async {

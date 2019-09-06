@@ -661,6 +661,11 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Fout bij verwijderen backup data</string>
 		</dict>
+		<key>deleting_account</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij verwijderen account</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
@@ -1227,6 +1232,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<dict>
 				<key>value</key>
 				<string>Herstel accounts</string>
+			</dict>
+			<key>retrieve_password</key>
+			<dict>
+				<key>value</key>
+				<string>Ontsleutel wachtwoord voor %@</string>
 			</dict>
 			<key>terms</key>
 			<dict>

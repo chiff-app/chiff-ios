@@ -235,8 +235,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                     self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
                     self.updateUi()
                 case .failure(let error):
-                    self.showError(message: "Error deleting account: \(error.localizedDescription)")
-                    return
+                    self.showError(message: error.localizedDescription, title: "errors.deleting_account".localized)
                 }
             }
         })

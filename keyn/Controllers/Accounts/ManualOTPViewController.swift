@@ -72,12 +72,9 @@ class ManualOTPViewController: UITableViewController, TokenController {
         try AuthorizationGuard.addOTP(token: token!, account: account) { (result) in
             DispatchQueue.main.async {
                 do {
-                    switch result {
-                    case .success(_):
-                        try self.account.setOtp(token: self.token!)
-                        self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
-                    case .failure(let error): throw error
-                    }
+                    let _ = try result.get()
+                    try self.account.setOtp(token: self.token!)
+                    self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
                     self.showError(message: "errors.add_otp".localized)
