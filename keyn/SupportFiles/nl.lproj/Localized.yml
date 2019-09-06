@@ -566,8 +566,9 @@ initialization:
   start_using_keyn:
     value: Start met Keyn
   byebye:
-    value: Dag wachtwoorden, hallo Keyn
-    start: 17
+    value: Bye bye forgetting passwords, hello Keyn
+    start: 30
+    end: 40
   welcome_text:
     value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
   how_keyn_works:

@@ -894,10 +894,12 @@ Thank you!</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
+			<key>end</key>
+			<integer>40</integer>
 			<key>start</key>
-			<integer>17</integer>
+			<integer>30</integer>
 			<key>value</key>
-			<string>Dag wachtwoorden, hallo Keyn</string>
+			<string>Bye bye forgetting passwords, hello Keyn</string>
 		</dict>
 		<key>change</key>
 		<dict>
