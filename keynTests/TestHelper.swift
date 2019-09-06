@@ -89,6 +89,12 @@ class TestHelper {
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         BackupManager.shared.deleteAllKeys()
+        // Wipe the keychain, keychain tests do not work without this
+        let secItemClasses =  [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
+        for itemClass in secItemClasses {
+            let spec: NSDictionary = [kSecClass: itemClass]
+            SecItemDelete(spec)
+        }
     }
 
 }

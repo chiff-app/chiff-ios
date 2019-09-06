@@ -41,12 +41,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: nil) { (result) in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let session):
-                    if let session = session {
-                        NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                    } else {
-                        Logger.shared.error("Error opening app from URL.")
-                    }
+                case .success(let session): NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
                 case .failure(let error): Logger.shared.error("Error creating session.", error: error)
                 }
             }
@@ -91,8 +86,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
         if BackupManager.shared.hasKeys {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                StoreObserver.shared.updateSubscriptions { (error) in
-                    if let error = error {
+                StoreObserver.shared.updateSubscriptions { (result) in
+                    if case let .failure(error) = result {
                         Logger.shared.error("Error updating subsription status", error: error)
                     }
                 }

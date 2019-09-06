@@ -36,19 +36,22 @@ class InitialisationViewController: UIViewController {
         if Seed.hasKeys && BackupManager.shared.hasKeys {
             registerForPushNotifications()
         } else {
-            initializeSeed { (error) in
+            initializeSeed { (result) in
                 DispatchQueue.main.async {
-                    if let error = error as? LAError {
-                        if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                            self.loadingView.isHidden = true
-                            self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
-                        }
-                    } else if let error = error {
-                        self.loadingView.isHidden = true
-                        self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
-                    } else {
+                    switch result {
+                    case .success(_):
                         self.registerForPushNotifications()
                         Logger.shared.analytics(.seedCreated)
+                    case .failure(let error):
+                        if let error = error as? LAError {
+                            if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                                self.loadingView.isHidden = true
+                                self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
+                            }
+                        } else {
+                            self.loadingView.isHidden = true
+                            self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
+                        }
                     }
                 }
             }
@@ -68,11 +71,11 @@ class InitialisationViewController: UIViewController {
         }
     }
 
-    private func initializeSeed(completionHandler: @escaping (_ error: Error?) -> Void) {
+    private func initializeSeed(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true) { (result) in
             switch result {
             case .success(let context): Seed.create(context: context, completionHandler: completionHandler)
-            case .failure(let error): completionHandler(error)
+            case .failure(let error): completionHandler(.failure(error))
             }
         }
     }

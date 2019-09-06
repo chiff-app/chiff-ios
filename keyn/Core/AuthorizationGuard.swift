@@ -97,9 +97,10 @@ class AuthorizationGuard {
         defer {
             AuthorizationGuard.authorizationInProgress = false
         }
-        session.cancelRequest(reason: .reject, browserTab: browserTab) { (_, error) in
-            if let error = error {
-                Logger.shared.error("Reject message could not be sent.", error: error)
+        session.cancelRequest(reason: .reject, browserTab: browserTab) { (result) in
+            switch result {
+            case .failure(let error): Logger.shared.error("Reject message could not be sent.", error: error)
+            case .success(_): break
             }
         }
         completionHandler()
@@ -117,9 +118,10 @@ class AuthorizationGuard {
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
-                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (_, error) in // TODO: Change to .disabled after implemented in extension
-                        if let error = error {
-                            Logger.shared.error("Error rejecting request", error: error)
+                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (result) in // TODO: Change to .disabled after implemented in extension
+                        switch result {
+                        case .failure(let error): Logger.shared.error("Error rejecting request", error: error)
+                        case .success(_): break
                         }
                     })
                     throw AuthorizationError.accountOverflow
@@ -289,9 +291,10 @@ class AuthorizationGuard {
             guard let sessionID = request.sessionID, let session = try Session.get(id: sessionID), let browserTab = request.browserTab else {
                 throw SessionError.doesntExist
             }
-            session.cancelRequest(reason: .expired, browserTab: browserTab) { (_, error) in
-                if let error = error {
-                    Logger.shared.error("Error rejecting request", error: error)
+            session.cancelRequest(reason: .expired, browserTab: browserTab) { (result) in
+                switch result {
+                case .failure(let error): Logger.shared.error("Error rejecting request", error: error)
+                case .success(_): break
                 }
             }
             showError(errorMessage: "requests.expired".localized)
@@ -316,7 +319,7 @@ class AuthorizationGuard {
         }
     }
 
-    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (Result<Session?, Error>) -> Void) {
+    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         guard !authorizationInProgress else {
             return
         }

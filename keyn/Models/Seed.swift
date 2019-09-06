@@ -35,9 +35,9 @@ struct Seed {
         case backupSeed = 1
     }
 
-    static func create(context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
+    static func create(context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         guard !hasKeys && !BackupManager.shared.hasKeys else {
-            completionHandler(SeedError.exists)
+            completionHandler(.failure(SeedError.exists))
             return
         }
         do {
@@ -53,22 +53,22 @@ struct Seed {
                         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
                         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
                         try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-                        completionHandler(nil)
+                        completionHandler(.success(()))
                     case .failure(let error): throw error
                     }
                 } catch {
                     BackupManager.shared.deleteAllKeys()
                     try? delete()
-                    completionHandler(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
             try? delete()
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
 
-    static func mnemonic(completionHandler: @escaping (_ mnemonic: [String]?, _ error: Error?) -> Void) {
+    static func mnemonic(completionHandler: @escaping (Result<[String], Error>) -> Void) {
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded) { (result) in
             do {
                 switch result {
@@ -77,11 +77,11 @@ struct Seed {
                     let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
                     let wordlist = try self.localizedWordlist()
                     let mnemonic = bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
-                    completionHandler(mnemonic, nil)
+                    completionHandler(.success(mnemonic))
                 case .failure(let error): throw error
                 }
             } catch {
-                completionHandler(nil, error)
+                completionHandler(.failure(error))
             }
         }
     }
