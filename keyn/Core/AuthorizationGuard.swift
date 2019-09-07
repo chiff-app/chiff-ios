@@ -307,7 +307,7 @@ class AuthorizationGuard {
 
     static func addOTP(token: Token, account: Account, completionHandler: @escaping (Result<Void, Error>)->()) throws {
         authorizationInProgress = true
-        let reason = account.hasOtp() ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
+        let reason = account.hasOtp ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
         LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (result) in
             defer {
                 AuthorizationGuard.authorizationInProgress = false

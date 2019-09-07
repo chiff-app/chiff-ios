@@ -43,6 +43,10 @@ struct Account {
         return true // Defaults to true to prevent infinite cycles when an error occurs
     }
 
+    var hasOtp: Bool {
+        return Keychain.shared.has(id: id, service: .otp)
+    }
+
     init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
@@ -105,16 +109,12 @@ struct Account {
         
         return Token(url: url, secret: secret)
     }
-    
-    func hasOtp() -> Bool {
-        return Keychain.shared.has(id: id, service: .otp)
-    }
 
     mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
         let tokenData = try token.toURL().absoluteString.data
 
-        if self.hasOtp() {
+        if self.hasOtp {
             try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
         } else {
             try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)

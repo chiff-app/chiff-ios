@@ -25,6 +25,7 @@ class TestHelper {
     static let sessionID = "9d710842c9cc6df1b2f4f3ca2074bc1408e525e7ce46635ce21579c9fe6f01e7"
     static let linkedInPPDHandle = "c53526a0b5fc33cb7d089d53a45a76044ed5f4aea170956d5799d01b2478cdfa"
     static let sharedKey = "cxwPChlS-B42jQveGPWp_Nxhtjk8a68lTZDTDSdRZAs"
+    static let hotpURL: URL! = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
 
     static var sampleSite: Site {
         let testPPD = samplePPD(minLength: 8, maxLength: 32)
@@ -47,10 +48,20 @@ class TestHelper {
         return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
 
-    static func token() -> Token {
-        let url = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
-        let token = Token(url: url!)
-        return token!
+    static func saveHOTPToken(id: String) {
+        do {
+            let token = Token(url: hotpURL)!
+            let secret = token.generator.secret
+            let tokenData = try token.toURL().absoluteString.data
+
+            if Keychain.shared.has(id: id, service: .otp) {
+                try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
+            } else {
+                try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
+            }
+        } catch {
+            fatalError("Failed to set the OTP token")
+        }
     }
 
     static func createSeed() {
