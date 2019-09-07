@@ -130,26 +130,19 @@ class Session: Codable {
         ]
         do {
             API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .get, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
-                do {
-                    switch result {
-                    case .success(let data):
-                        guard let sqsMessages = data["messages"] as? [[String:String]] else {
+                completionHandler(Result(catching: {
+                    guard let sqsMessages = try result.get()["messages"] as? [[String:String]] else {
+                        throw CodingError.missingData
+                    }
+                    return try sqsMessages.map({ (message) -> KeynPersistentQueueMessage in
+                        guard let body = message[MessageParameter.body], let receiptHandle = message[MessageParameter.receiptHandle] else {
                             throw CodingError.missingData
                         }
-                        let messages = try sqsMessages.map({ (message) -> KeynPersistentQueueMessage in
-                            guard let body = message[MessageParameter.body], let receiptHandle = message[MessageParameter.receiptHandle] else {
-                                throw CodingError.missingData
-                            }
-                            var keynMessage: KeynPersistentQueueMessage = try self.decrypt(message: body)
-                            keynMessage.receiptHandle = receiptHandle
-                            return keynMessage
-                        })
-                        completionHandler(.success(messages))
-                    case .failure(let error): throw error
-                    }
-                } catch {
-                    completionHandler(.failure(error))
-                }
+                        var keynMessage: KeynPersistentQueueMessage = try self.decrypt(message: body)
+                        keynMessage.receiptHandle = receiptHandle
+                        return keynMessage
+                    })
+                }))
             }
         } catch {
             completionHandler(.failure(error))
@@ -162,9 +155,8 @@ class Session: Codable {
         ]
         do {
             API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .delete, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
-                switch result {
-                case .success(_): return
-                case .failure(let error): Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
+                if case let .failure(error) = result {
+                    Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
                 }
             }
         } catch {
@@ -180,9 +172,8 @@ class Session: Codable {
             "data": ciphertext.base64
         ]
         API.shared.signedRequest(endpoint: .accounts, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
-            switch result {
-            case .success(_): return
-            case .failure(let error): Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
+            if case let .failure(error) = result {
+                Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
             }
         }
     }
@@ -190,9 +181,8 @@ class Session: Codable {
     func deleteAccount(accountId: String) {
         do {
             API.shared.signedRequest(endpoint: .accounts, method: .delete, message: ["id": accountId], pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
-                switch result {
-                case .success(_): return
-                case .failure(let error): Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
+                if case let .failure(error) = result {
+                    Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
                 }
             }
         } catch {
@@ -410,9 +400,8 @@ class Session: Codable {
                 "pubkey": signingPubKey
             ]
             API.shared.signedRequest(endpoint: .message, method: .delete, message: message, pubKey: nil, privKey: try signingPrivKey(), body: nil) { (result) in
-                switch result {
-                case .success(_): return
-                case .failure(let error): Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
+                if case let .failure(error) = result {
+                    Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
                 }
             }
         } catch {
