@@ -63,7 +63,7 @@ class RequestViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let account):
-                    if let account = account, account.hasOtp() {
+                    if let account = account, account.hasOtp {
                         AuthenticationGuard.shared.hideLockWindow()
                         self.account = account
                         self.showOtp()
