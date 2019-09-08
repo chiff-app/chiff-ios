@@ -503,9 +503,9 @@ requests:
   cannot_add:
     value: Upgrade nodig
   upgrade_keyn_for_request:
-    value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen
+    value: Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen
   upgrade_keyn_for_add:
-    value: Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
+    value: Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
   accounts_left_1:
     value: Je kan nog maar
     comment: Je kunt nog 1 account toevoegen. Check in code.
