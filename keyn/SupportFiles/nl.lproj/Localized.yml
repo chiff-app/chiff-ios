@@ -680,7 +680,7 @@ date_components:
     singular_unit:
       value: jaar
     plural_unit:
-      value: jaren
+      value: jaar
     future_singular:
       value: Volgend jaar
     past_singular:
@@ -716,7 +716,7 @@ date_components:
     singular_unit:
       value: uur
     plural_unit:
-      value: uren
+      value: uur
     future_singular:
       value: Over een uur
     past_singular:

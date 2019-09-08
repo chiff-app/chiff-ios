@@ -371,7 +371,7 @@
 			<key>plural_unit</key>
 			<dict>
 				<key>value</key>
-				<string>uren</string>
+				<string>uur</string>
 			</dict>
 			<key>singular_unit</key>
 			<dict>
@@ -501,7 +501,7 @@
 			<key>plural_unit</key>
 			<dict>
 				<key>value</key>
-				<string>jaren</string>
+				<string>jaar</string>
 			</dict>
 			<key>singular_unit</key>
 			<dict>
