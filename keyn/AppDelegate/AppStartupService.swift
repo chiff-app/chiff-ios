@@ -36,16 +36,25 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         return true
     }
 
-    // Open app from URL (e.g. QR code)
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: nil) { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let session): NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                case .failure(let error): Logger.shared.error("Error creating session.", error: error)
-                }
-            }
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let url = userActivity.webpageURL,
+            let scheme = url.scheme,
+            let host = url.host,
+            host == "keyn.app",
+            scheme == "https",
+            url.path == "/pair",
+            let params = url.queryParameters,
+            params.count == 4,
+            params.keys.contains("p"),
+            params.keys.contains("q"),
+            params.keys.contains("o"),
+            params.keys.contains("b") else {
+                // o and b are validated in authorizepairing, p and q are validated by libsodium
+                return false
         }
+
+        AuthenticationGuard.shared.pairingUrl = url
 
         return true
     }
