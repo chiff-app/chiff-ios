@@ -1535,12 +1535,12 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>upgrade_keyn_for_add</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan</string>
+			<string>Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan</string>
 		</dict>
 		<key>upgrade_keyn_for_request</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen</string>
+			<string>Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen</string>
 		</dict>
 	</dict>
 	<key>settings</key>
