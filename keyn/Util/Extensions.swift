@@ -484,6 +484,11 @@ extension SKProduct {
         formatter.locale = self.priceLocale
         return formatter.string(from: self.price)
     }
+
+    var euroPrice: NSDecimalNumber {
+        // For now just return price since we only have Euros. Fix this later
+        return self.price
+    }
 }
 
 extension Array where Iterator.Element == Account {
