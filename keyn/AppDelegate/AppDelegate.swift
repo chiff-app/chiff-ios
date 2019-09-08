@@ -46,12 +46,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    // This only executes if the app is opened from the keyn:// scheme
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         for service in services.values {
             let _ = service.application?(application, open: url, options: options)
         }
 
         return true
+    }
+
+    // This executes when opened from https://keyn.app/pair
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        for service in services.values {
+            if let result = service.application?(application, continue: userActivity, restorationHandler: restorationHandler) {
+                // If this method is implemented in the service, it should return the result of the method
+                return result
+            }
+        }
+
+        return false
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
