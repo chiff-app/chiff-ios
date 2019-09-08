@@ -96,6 +96,16 @@ struct Logger {
         }
         amplitude.logEvent(event: event, properties: properties)
     }
+
+    func revenue(productId: String, price: NSDecimalNumber) {
+        guard Properties.analyticsLogging else {
+            return
+        }
+        let revenue = AMPRevenue()
+        revenue.setProductIdentifier(productId)
+        revenue.setPrice(price)
+        amplitude.logRevenueV2(revenue)
+    }
     
     private func getNSError(_ error: Error) -> NSError {
         if let error = error as? KeynError {
