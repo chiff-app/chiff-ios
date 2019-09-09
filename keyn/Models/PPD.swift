@@ -43,7 +43,10 @@ struct PPD: Codable {
                     completionHandler(nil)
                 }
             case .failure(let error):
-                Logger.shared.error("PPD retrieval problem.", error: error)
+                guard case APIError.statusCode(404) = error else {
+                    Logger.shared.error("PPD retrieval problem", error: error)
+                    return
+                }
                 completionHandler(nil)
             }
         }
