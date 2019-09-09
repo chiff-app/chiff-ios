@@ -34,6 +34,7 @@ struct Logger {
         if let userId = Properties.userId {
             setUserId(userId: userId)
         }
+        crashlytics.setObjectValue(Properties.environment.rawValue, forKey: "environment")
     }
 
     func setAnalyticsLogging(value: Bool) {

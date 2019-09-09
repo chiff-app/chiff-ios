@@ -52,7 +52,9 @@ class AuthenticationGuard {
             }
         }
         authenticationInProgress = true
-        if let url = pairingUrl {
+
+        if let url = pairingUrl, false {
+            // Disabled for now, because opening from a QR-code may pose a security risk.
             pairingUrl = nil
             AuthorizationGuard.authorizePairing(url: url, mainContext: true, authenticationCompletionHandler: onAuthenticationResult) { (result) in
                 DispatchQueue.main.async {
@@ -110,8 +112,8 @@ class AuthenticationGuard {
                 (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
             }
         } catch {
-            Logger.shared.error("Error retrieving accounts", error: error)
             if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                Logger.shared.error(errorMessage, error: error)
                 DispatchQueue.main.async {
                     (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
                 }
