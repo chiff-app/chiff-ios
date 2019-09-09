@@ -70,12 +70,11 @@ class MockAPI: APIProtocol {
             mockData[pubKey] = [id: recoverData]
             return .success(JSONObject())
         case .put:
-            if let _ = mockData[pubKey] { // Check if the object exists so it updates, if not then it should fail
-                mockData[pubKey] = message
-                return .success(JSONObject())
-            } else {
+            guard let message = message, let id = message["userId"] as? String else {
                 return .failure(MockAPIError.noData)
             }
+            mockData[pubKey] = [id: JSONObject()]
+            return .success(JSONObject())
         }
     }
 }

@@ -23,6 +23,7 @@
 		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
 		428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D22321ACBA00DC70DF /* KeychainTests.swift */; };
 		428178D52321AE5800DC70DF /* FakeLAContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D42321AE5800DC70DF /* FakeLAContext.swift */; };
+		42B70B402322BEE40025109E /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B70B3F2322BEE40025109E /* SeedTests.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4905772D2215BA5C006D98C0 /* wordlist.txt */; };
@@ -273,6 +274,7 @@
 		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		428178D22321ACBA00DC70DF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		428178D42321AE5800DC70DF /* FakeLAContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeLAContext.swift; sourceTree = "<group>"; };
+		42B70B3F2322BEE40025109E /* SeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
@@ -491,6 +493,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		42B70B3E2322BEE40025109E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				42B70B3F2322BEE40025109E /* SeedTests.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		4919DAE520123FE50048B060 /* keynNotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +693,7 @@
 		49E766691F7E6F420022C042 /* keynTests */ = {
 			isa = PBXGroup;
 			children = (
+				42B70B3E2322BEE40025109E /* Models */,
 				611733D2215D06D900F37B2A /* Core */,
 				0155742A202B173F00F97DA2 /* TestHelper.swift */,
 				49983444232131680007BF12 /* MockAPI.swift */,
@@ -1427,6 +1438,7 @@
 				49983445232131680007BF12 /* MockAPI.swift in Sources */,
 				611733E0215D1B3500F37B2A /* PasswordValidatorTests.swift in Sources */,
 				428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */,
+				42B70B402322BEE40025109E /* SeedTests.swift in Sources */,
 				428178D52321AE5800DC70DF /* FakeLAContext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
