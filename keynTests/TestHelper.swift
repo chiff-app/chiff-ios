@@ -50,7 +50,9 @@ class TestHelper {
 
     static func saveHOTPToken(id: String) {
         do {
-            let token = Token(url: hotpURL)!
+            guard let token = Token(url: hotpURL) else {
+                fatalError("Failted to create token")
+            }
             let secret = token.generator.secret
             let tokenData = try token.toURL().absoluteString.data
 
