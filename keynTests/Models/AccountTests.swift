@@ -31,16 +31,16 @@ class AccountTests: XCTestCase {
         XCTAssertNoThrow(try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context))
     }
     
-    func testNextPasswordDoesntThrow() {
+    func testNextPassword() {
         let site = TestHelper.sampleSite
         do {
             account = try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context)
-            XCTAssertNoThrow(try account.nextPassword())
+            XCTAssertEqual(try account.nextPassword(), "[jh6eAX)og7A#nJ1:YDSrD6#61cf${\"A")
         } catch {
             XCTFail(error.localizedDescription)
         }
     }
-    
+
     func testOneTimePasswordToken() {
         let site = TestHelper.sampleSite
         do {
@@ -48,6 +48,8 @@ class AccountTests: XCTestCase {
             TestHelper.saveHOTPToken(id: account.id)
             let token = try account.oneTimePasswordToken()
             XCTAssertNotNil(token)
+            XCTAssertEqual(token!.currentPassword!, "780815")                   // First HOTP password
+            XCTAssertEqual(token!.updatedToken().currentPassword!, "405714")    // Second HOTP password
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -114,9 +116,16 @@ class AccountTests: XCTestCase {
     func testUpdate() {
         let site = TestHelper.sampleSite
         do {
+            let username = "test2@keyn.com"
+            let siteName = "Google"
+            let password = "testPassword"
+            let url = "www.google.com"
             account = try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context)
-            XCTAssertNoThrow(try account.update(username: username + "2", password: "testPassword", siteName: "Google", url: "www.google.com", askToLogin: true, askToChange: false, enabled: true, context: context))
-            XCTAssertEqual(account.username, username + "2")
+            XCTAssertNoThrow(try account.update(username: username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: false, enabled: true, context: context))
+            XCTAssertEqual(account.username, username)
+            XCTAssertEqual(try account.password(), password)
+            XCTAssertEqual(account.site.name, siteName)
+            XCTAssertEqual(account.site.url, url)
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -137,11 +146,16 @@ class AccountTests: XCTestCase {
         let site = TestHelper.sampleSite
         do {
             account = try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context)
+            let accountId = account.id
             account.delete { (result) in
-                if case let .failure(error) = result {
+                do {
+                    let _ = try result.get()
+                    XCTAssertNil(try Account.get(accountID: accountId, context: self.context))
+                } catch {
                     XCTFail(error.localizedDescription)
                 }
             }
+
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -178,14 +192,36 @@ class AccountTests: XCTestCase {
             return XCTFail("Error converting to data")
         }
         XCTAssertNoThrow(try Account.save(accountData: accountData, id: id, context: context))
+        XCTAssertNotNil(try Account.get(accountID: id, context: context))
     }
     
     func testAccountList() {
         XCTAssertNoThrow(try Account.accountList(context: context))
         XCTAssertTrue(try Account.accountList(context: context).isEmpty)
     }
+
+    func testDeleteAll() {
+        let site = TestHelper.sampleSite
+        XCTAssertNoThrow(try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context))
+        XCTAssertNoThrow(try Account(username: username + "2", sites: [site], passwordIndex: 0, password: nil, context: context))
+        Account.deleteAll()
+        XCTAssertEqual(try Account.all(context: context).count, 0)
+    }
     
     // MARK: - Integration Tests
+
+    func testUpdatePasswordAndConfirm() {
+        let site = TestHelper.sampleSite
+        do {
+            account = try Account(username: username, sites: [site], passwordIndex: 0, password: nil, context: context)
+            let newPassword = try account.nextPassword()
+            XCTAssertNotEqual(newPassword, try account.password())
+            XCTAssertNoThrow(try account.updatePasswordAfterConfirmation(context: context))
+            XCTAssertEqual(newPassword, try account.password())
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
     
     func testSetOtpAndDeleteOtp() {
         guard let token = Token(url: TestHelper.hotpURL) else {
