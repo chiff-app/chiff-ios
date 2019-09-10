@@ -48,20 +48,37 @@ class TestHelper {
         return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
 
-    static func saveHOTPToken(id: String) {
+    static func saveHOTPToken(id: String, includeData: Bool = true) {
         do {
-            let token = Token(url: hotpURL)!
+            guard let token = Token(url: hotpURL) else {
+                fatalError("Failted to create token")
+            }
             let secret = token.generator.secret
             let tokenData = try token.toURL().absoluteString.data
-
+            
             if Keychain.shared.has(id: id, service: .otp) {
-                try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
+                try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: includeData ? tokenData : nil)
             } else {
-                try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
+                try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: includeData ? tokenData : nil)
             }
         } catch {
             fatalError("Failed to set the OTP token")
         }
+    }
+    
+    static func createEmptySeed() {
+        let access = SecAccessControlCreateWithFlags(nil, // Use the default allocator.
+            kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+            .userPresence,
+            nil) // Ignore any error.
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: KeyIdentifier.master.identifier(for: .seed),
+            kSecAttrService as String: KeychainService.seed.rawValue,
+            kSecAttrAccessGroup as String: KeychainService.seed.accessGroup,
+            kSecAttrAccessControl as String: access as Any]
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == noErr else { fatalError(String(status)) }
     }
 
     static func createSeed() {
