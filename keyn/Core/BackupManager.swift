@@ -90,9 +90,8 @@ struct BackupManager {
     
     func deleteAccount(accountId: String) throws {
         API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
-            switch result {
-            case .success(_): return
-            case .failure(let error): Logger.shared.error("BackupManager cannot delete account.", error: error)
+            if case let .failure(error) = result {
+                Logger.shared.error("BackupManager cannot delete account.", error: error)
             }
         }
     }
