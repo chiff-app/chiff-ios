@@ -25,13 +25,30 @@ class KeychainTests: XCTestCase {
     
     func testSaveDoesntThrow() {
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: "secretKey".data))
+        XCTAssertNoThrow(try Keychain.shared.save(id: "signing", service: .signingSessionKey, secretData: "privateKey".data)) // To cover restricted
     }
     
-    func testGetThrowsIfNoData() {
+    func testSaveDuplicateSeedThrows() {
+        XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: "secretKey".data))
+        XCTAssertThrowsError(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: "secretKey".data))
+    }
+    
+    func testGetThrowsIfNoSeed() {
         XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
     }
     
-    func testHasFalseIfNoData() {
+    func testGetThrowsIfSeedDataIsEmpty() {
+        TestHelper.createEmptySeed()
+        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
+    }
+    
+    func testGetThrowsIfContextIsInvalid() {
+        let context = FakeLAContext()
+        context.invalidate()
+        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
+    }
+    
+    func testHasFalseIfNoSeed() {
         XCTAssertFalse(Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
     }
     
@@ -40,9 +57,20 @@ class KeychainTests: XCTestCase {
         XCTAssertTrue(Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
     }
     
-    func testAll() {
+    func testUpdateThrowsIfNoSeedToUpdate() {
+        let updatedData = "secretKeyUpdated".data
+        XCTAssertThrowsError(try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: updatedData, objectData: nil))
+    }
+    
+    func testAllNotNil() {
         TestHelper.createSeed()
-        XCTAssertNotNil(try Keychain.shared.all(service: .seed, context: FakeLAContext()))
+        XCTAssertNotNil(try Keychain.shared.all(service: .seed))
+    }
+    
+    func testAllThrowsIfInvalidContext() {
+        let context = FakeLAContext()
+        context.invalidate()
+        XCTAssertThrowsError(try Keychain.shared.all(service: .seed, context: context))
     }
     
     func testAttributesDoesntThrow() {
@@ -55,11 +83,17 @@ class KeychainTests: XCTestCase {
         XCTAssertNotNil(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
     }
     
-    func testAttributesNilIfNoData() {
+    func testAttributesNilIfNoSeed() {
         XCTAssertNil(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: FakeLAContext()))
     }
     
-    func testDeleteThrowsIfNoData() {
+    func testAttributesThrowIfInvalidContext() {
+        let context = FakeLAContext()
+        context.invalidate()
+        XCTAssertThrowsError(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
+    }
+    
+    func testDeleteThrowsIfNoSeed() {
         XCTAssertThrowsError(try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
@@ -68,22 +102,26 @@ class KeychainTests: XCTestCase {
         XCTAssertNoThrow(try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
-    func testIsSyncedThrowsIfNoData() {
+    func testIsSyncedThrowsIfNoSeed() {
         XCTAssertThrowsError(try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
     func testIsSynced() {
         TestHelper.createSeed()
-        do {
-            let isSynced = try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
-            XCTAssertTrue(isSynced)
-        } catch {
-            XCTFail("No Data available")
-        }
+        XCTAssertTrue(try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
-    func testSetSyncedThrowsIfNoData() {
+    func testSetSyncedThrowsIfNoSeed() {
         XCTAssertThrowsError(try Keychain.shared.setSynced(value: true, id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
+    }
+    
+    func testGetAsyncWithEmptySeed() {
+        TestHelper.createEmptySeed()
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded) { (result) in
+            if case .success(_) = result {
+                XCTFail("Should fail")
+            }
+        }
     }
     
     func testGetAsync() {
@@ -95,7 +133,17 @@ class KeychainTests: XCTestCase {
         }
     }
     
-    func testGetAsyncFailsIfNoData() {
+    func testGetAsyncThrowsIfInvalidContext() {
+        let context = FakeLAContext()
+        context.invalidate()
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: context, authenticationType: .ifNeeded) { (result) in
+            if case .success(_) = result {
+                XCTFail("Should fail")
+            }
+        }
+    }
+    
+    func testGetAsyncFailsIfNoSeed() {
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("There must be an error")
@@ -112,8 +160,18 @@ class KeychainTests: XCTestCase {
         }
     }
     
-    func testDeleteAsyncFailsIfNoData() {
-        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
+    func testDeleteAsyncFailsIfInvalidContext() {
+        let context = FakeLAContext()
+        context.invalidate()
+        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: context) { (result) in
+            if case .success(_) = result {
+                XCTFail("Should fail")
+            }
+        }
+    }
+    
+    func testDeleteAsyncFailsIfNoSeed() {
+        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("There must be an error")
             }
@@ -131,6 +189,21 @@ class KeychainTests: XCTestCase {
         } catch {
             XCTFail("Error getting data: \(error)")
         }
+    }
+    
+    func testSaveAndUpdateThrowsIfNoUpdateSeed() {
+        let initialData = "secretKey".data
+        XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
+        XCTAssertThrowsError(try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: nil, objectData: nil, context: FakeLAContext()))
+    }
+    
+    func testSaveAndUpdateThrowsIfInvalidContext() {
+        let initialData = "secretKey".data
+        XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
+        let context = FakeLAContext()
+        context.invalidate()
+        let updatedData = "secretKeyUpdated".data
+        XCTAssertThrowsError(try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: updatedData, objectData: nil, context: context))
     }
     
     func testSaveAndUpdateAndGet() {
