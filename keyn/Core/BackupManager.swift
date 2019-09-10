@@ -111,7 +111,7 @@ struct BackupManager {
         }
     }
     
-    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
+    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
@@ -123,6 +123,7 @@ struct BackupManager {
         API.shared.signedRequest(endpoint: .backup, method: .get, message: nil, pubKey: pubKey, privKey: try privateKey(), body: nil) { result in
             switch result {
             case .success(let dict):
+                var failedAccounts = [String]()
                 for (id, data) in dict {
                     if let base64Data = data as? String {
                         do {
@@ -130,13 +131,13 @@ struct BackupManager {
                             let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
                             try Account.save(accountData: accountData, id: id, context: context)
                         } catch {
+                            failedAccounts.append(id)
                             Logger.shared.error("Could not restore account.", error: error)
-                            completionHandler(.failure(error))
                         }
                     }
                 }
-                Properties.accountCount = dict.count
-                completionHandler(.success(()))
+                Properties.accountCount = dict.count - failedAccounts.count
+                completionHandler(.success((dict.count, failedAccounts.count)))
             case .failure(let error):
                 Logger.shared.error("BackupManager cannot get backup data.", error: error)
                 completionHandler(.failure(error))

@@ -664,6 +664,16 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error deleting account</string>
 		</dict>
+		<key>failed_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn was unable to restore %d of the %d accounts.</string>
+		</dict>
+		<key>failed_accounts_title</key>
+		<dict>
+			<key>value</key>
+			<string>Recovery error</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
