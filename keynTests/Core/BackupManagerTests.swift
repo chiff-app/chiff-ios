@@ -27,13 +27,80 @@ class BackupManagerTests: XCTestCase {
     }
 
     // MARK: - Unit tests
+    
+    func testInitializeFailsIfKeysAlreadyExist() {
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
 
+    func testInitializeDoesntFail() {
+        TestHelper.deleteLocalData()
+        TestHelper.createSeed()
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+                if case let .failure(error) = result {
+                    XCTFail(error.localizedDescription)
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func testInitializeFailsIfWrongSeed() {
+        TestHelper.deleteLocalData()
+        TestHelper.createSeed()
+        let backupSeed = "seed".data
+        BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+            if case .success(_) = result {
+                XCTFail("Should fail")
+            }
+        }
+    }
+    
+    func testInitializeFailsIfAPIFails() {
+        TestHelper.deleteLocalData()
+        TestHelper.createSeed()
+        let mockAPI = MockAPI(shouldFail: true)
+        API.shared = mockAPI
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
     func testBackup() {
         let site = TestHelper.sampleSite
         let account = Account(id: id, username: username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
         let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
+        }
+    }
+    
+    func testBackupFailsIfAPIFails() {
+        let site = TestHelper.sampleSite
+        let mockAPI = MockAPI(shouldFail: true)
+        API.shared = mockAPI
+        let account = Account(id: id, username: username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
+        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        BackupManager.shared.backup(account: backupAccount) { (result) in
+            XCTAssertFalse(result)
         }
     }
 
@@ -44,8 +111,20 @@ class BackupManagerTests: XCTestCase {
             API.shared = mockAPI
             let originalSize = mockAPI.mockData[pubKey.base64]!.count
             try BackupManager.shared.deleteAccount(accountId: id)
-            #warning("This is not the corrrect way I think, we should add a completionHandler to delete, so the test can fail based on that and most importantly the app should show that it wasn't possible to remove the account, deleteAllAccounts already does it")
             XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func testDeleteAccountFailsIfAPIFails() {
+        do {
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            let mockAPI = MockAPI(pubKey: pubKey.base64, account: [id: data], shouldFail: true)
+            API.shared = mockAPI
+            let originalSize = mockAPI.mockData[pubKey.base64]!.count
+            try BackupManager.shared.deleteAccount(accountId: id)
+            XCTAssertFalse(mockAPI.mockData[pubKey.base64]!.count < originalSize)
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -56,9 +135,38 @@ class BackupManagerTests: XCTestCase {
             let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
             API.shared = MockAPI(pubKey: pubKey.base64, account: [id: data])
             BackupManager.shared.deleteAllAccounts(completionHandler: { (result) in
-                switch result {
-                case .success(_): XCTAssertTrue(true)
-                case .failure(let error): XCTFail(error.localizedDescription)
+                if case let .failure(error) = result {
+                    XCTFail(error.localizedDescription)
+                }
+            })
+        } catch {
+            XCTFail("Failed getting pubKey")
+        }
+    }
+    
+    func testDeleteAllAccountsFailsIfAPIFails() {
+        do {
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            let mockAPI = MockAPI(pubKey: pubKey.base64, account: [id: data], shouldFail: true)
+            API.shared = mockAPI
+            BackupManager.shared.deleteAllAccounts(completionHandler: { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
+                }
+            })
+        } catch {
+            XCTFail("Failed getting pubKey")
+        }
+    }
+    
+    func testDeleteAllAccountsFailsIfNoPrivateKey() {
+        do {
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            API.shared = MockAPI(pubKey: pubKey.base64, account: [id: data])
+            TestHelper.deleteLocalData()
+            BackupManager.shared.deleteAllAccounts(completionHandler: { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
                 }
             })
         } catch {
@@ -67,11 +175,41 @@ class BackupManagerTests: XCTestCase {
     }
 
     func testGetBackupData() {
-        #warning("TODO: Perhaps we should add another tests that verifies if everything goes well in case the pubkey is not available in the Keychain.")
         do {
             let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
             let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
             API.shared = MockAPI(pubKey: pubKey.base64, account: [id: data])
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                if case let .failure(error) = result {
+                    XCTFail(error.localizedDescription)
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func testGetBackupDataFailsIfAPIFails() {
+        do {
+            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            let mockAPI = MockAPI(pubKey: pubKey.base64, account: [id: data], shouldFail: true)
+            API.shared = mockAPI
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func testGetBackupDataIfNoPubKey() {
+        TestHelper.deleteLocalData()
+        TestHelper.createSeed()
+        do {
+            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
             try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
