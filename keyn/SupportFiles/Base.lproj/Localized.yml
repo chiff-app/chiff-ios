@@ -12,6 +12,10 @@ numbers:
     value: '5'
 
 errors:
+  failed_accounts_title:
+    value: Recovery error
+  failed_accounts_message:
+    value: Keyn was unable to restore %d of the %d accounts.
   local_authentication:
     biometry_not_available:
       value: Authentication could not start, because biometry is not available on the device.

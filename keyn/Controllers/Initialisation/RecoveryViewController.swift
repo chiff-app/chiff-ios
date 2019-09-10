@@ -142,14 +142,15 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                             self.showError(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
                         }
-                    case .success(_):
-                        StoreObserver.shared.updateSubscriptions() { error in
-                            if case let .failure(error) = result {
-                                Logger.shared.error("Error updating subscriptions", error: error)
-                            }
-                            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-                            self.registerForPushNotifications()
-                            Logger.shared.analytics(.backupRestored)
+                    case .success(let (total, failed)):
+                        if failed > 0 {
+                            let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                self.onSeedRecorySuccess()
+                            }))
+                            self.present(alert, animated: true)
+                        } else {
+                            self.onSeedRecorySuccess()
                         }
                     }
                 }
@@ -164,6 +165,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Private
+
+    private func onSeedRecorySuccess() {
+        StoreObserver.shared.updateSubscriptions() { result in
+            if case let .failure(error) = result {
+                Logger.shared.error("Error updating subscriptions", error: error)
+            }
+            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+            self.registerForPushNotifications()
+            Logger.shared.analytics(.backupRestored)
+        }
+    }
 
     private func showRootController() {
         guard let window = UIApplication.shared.keyWindow else {

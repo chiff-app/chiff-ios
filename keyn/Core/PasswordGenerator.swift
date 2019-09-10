@@ -30,13 +30,7 @@ class PasswordGenerator {
         self.authenticationContext = context
         self.version = version
         if let characterSets = ppd?.characterSets {
-            self.characters = characterSets.reduce([Character](), { (result, characterSet) -> [Character] in
-                if let characters = characterSet.characters {
-                    return result + characters.sorted()
-                } else {
-                    return result
-                }
-            })
+            self.characters = characterSets.reduce([Character](), { $1.characters != nil ? $0 + $1.characters!.sorted() : $0 })
         } else {
             self.characters = PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
         }
@@ -80,8 +74,8 @@ class PasswordGenerator {
         
         let characters = Array(password)
         return (0..<length).map({ (index) -> Int in
-            // This assumes only characters from ppd.chars are used, will print wrong password otherwise. This is checked in guard statement above.
-            let charIndex = index < characters.count ? chars.firstIndex(of: characters[index]) ?? chars.count : chars.count 
+            // This assumes only characters from ppd.chars are used, will fail otherwise. This is checked in guard statement above.
+            let charIndex = index < characters.count ? chars.firstIndex(of: characters[index])! : chars.count
             return (charIndex - keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)) %% (chars.count + 1) }) %% (chars.count + 1)
         })
     }

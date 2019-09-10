@@ -12,6 +12,10 @@ numbers:
     value: '5'
 
 errors:
+  failed_accounts_title:
+    value: Fout
+  failed_accounts_message:
+    value: '%d van de %d accounts konden niet hersteld worden.'
   local_authentication:
     biometry_not_available:
       value: Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de telefoon.

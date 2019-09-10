@@ -93,9 +93,6 @@ class Crypto {
     }
     
     func deriveKey(keyData: Data, context: String, index: UInt64 = 0) throws ->  Data {
-        guard index >= 0 && index < UInt64.max else {
-            throw CryptoError.indexOutOfRange
-        }
         guard context.count <= 8 else {
             throw CryptoError.contextOverflow
         }
