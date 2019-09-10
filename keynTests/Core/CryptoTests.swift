@@ -35,9 +35,17 @@ class CryptoTests: XCTestCase {
         do {
             let seed = try Crypto.shared.generateSeed()
             XCTAssertNoThrow(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "0"))
+            XCTAssertThrowsError(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "200000000000"))
         } catch {
             XCTFail("Error during seed generation: \(error)")
         }
+    }
+    
+    func testDeriveKeyFromSeed() {
+        guard let seed = TestHelper.base64seed.fromBase64 else {
+            return XCTFail("Error getting data from base64 seed")
+        }
+        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
     }
     
     func testCreateSessionKeyPairDoesntThrow() {
@@ -49,6 +57,13 @@ class CryptoTests: XCTestCase {
             return XCTFail("Error getting data from base64 seed")
         }
         XCTAssertNoThrow(try Crypto.shared.createSigningKeyPair(seed: seed))
+    }
+    
+    func testCreateSigningKeyPairThrowsIfWrongSeed() {
+        guard let seed = "asdnaslkdjn-E-cJhAYw".fromBase64 else {
+            return XCTFail("Error getting data from base64 seed")
+        }
+        XCTAssertThrowsError(try Crypto.shared.createSigningKeyPair(seed: seed))
     }
     
     func testCreateSignInKeyPair() {
@@ -65,23 +80,27 @@ class CryptoTests: XCTestCase {
     }
     
     func testDeterministicRandomBytes() {
-        guard let seed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64 else {
+        guard let seed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64, let wrongSeed = "lasjndkjsnk".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
             let data = try Crypto.shared.deterministicRandomBytes(seed: seed, length: 64)
             XCTAssertEqual(data.count, 64)
             XCTAssertEqual(data.base64, "-ouKUXID1ysH-RP7YIRlcDoWR3nTz-nu6Nr9g9sRrX-XhvIXDmao8hpUHU4y_BUGSrAg9ADQfzxFIxFWC-dkWA")
+            XCTAssertThrowsError(try Crypto.shared.deterministicRandomBytes(seed: wrongSeed, length: 64))
         } catch {
             XCTFail("Error during random bytes generation: \(error)")
         }
     }
     
     func testDeriveKey() {
-        guard let seed = TestHelper.base64seed.fromBase64 else {
+        let sodium = Sodium()
+        guard let seed = TestHelper.base64seed.fromBase64, let seedHash = sodium.genericHash.hash(message: seed.bytes) else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
+        XCTAssertNoThrow(try Crypto.shared.deriveKey(keyData: seedHash.data, context: "0", index: 1))
+        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: seedHash.data, context: "asdadasdsada0", index: 1))
+        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: seed, context: "0", index: 1))
     }
     
     func testConvertToBase64() {
@@ -113,16 +132,25 @@ class CryptoTests: XCTestCase {
         }
     }
     
+    func testSignThrowsIfWrongSeed() {
+        let textToBeSigned = "Test string".data
+        guard let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
+            return XCTFail("Error getting data from base64 seed")
+        }
+        XCTAssertThrowsError(try Crypto.shared.sign(message: textToBeSigned, privKey: wrongSeed))
+    }
+    
     func testSignAndSignatureAndVerifySignature() {
         let sodium = Sodium()
         let textToBeSigned = "Test string".data
-        guard let pubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI".fromBase64, let privKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g".fromBase64 else {
+        guard let pubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI".fromBase64, let privKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g".fromBase64, let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
             let signedMessage = try Crypto.shared.sign(message: textToBeSigned, privKey: privKey)
             let signature = try Crypto.shared.signature(message: signedMessage, privKey: privKey)
             XCTAssertTrue(sodium.sign.verify(message: signedMessage.bytes, publicKey: pubKey.bytes, signature: signature.bytes))
+            XCTAssertThrowsError(try Crypto.shared.signature(message: signedMessage, privKey: wrongSeed))
         } catch {
             XCTFail("Error: \(error)")
         }
@@ -133,7 +161,12 @@ class CryptoTests: XCTestCase {
         guard let passwordSeed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertEqual( try Crypto.shared.encryptSymmetric(plainText.data, secretKey: passwordSeed).count, 67)
+        XCTAssertEqual(try Crypto.shared.encryptSymmetric(plainText.data, secretKey: passwordSeed).count, 67)
+    }
+    
+    func testEncryptSymmetricThrowsIfWrongKey() {
+        let plainText = "Test string to be encrypted"
+        XCTAssertThrowsError(try Crypto.shared.encryptSymmetric(plainText.data, secretKey: "passwordSeed".data))
     }
     
     func testDecryptSymmetric() {
@@ -147,6 +180,7 @@ class CryptoTests: XCTestCase {
         do {
             let decryptedText = try Crypto.shared.decryptSymmetric(cipherText, secretKey: passwordSeed)
             XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
+            XCTAssertThrowsError(try Crypto.shared.decryptSymmetric(cipherText, secretKey: "passwordSeed".data))
         } catch {
             XCTFail("Error decrypting text: \(error)")
         }
@@ -171,8 +205,18 @@ class CryptoTests: XCTestCase {
         guard let pubKey = "eFw3GjP7Tg1lEWjs8eHwO2DtSX6HC0neDWGF27im0Vs".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        let prueba = try! Crypto.shared.encrypt(plainText.data, pubKey: pubKey)
-        XCTAssertEqual(prueba.count, 75)
+        do {
+            let cipherText = try Crypto.shared.encrypt(plainText.data, pubKey: pubKey)
+            XCTAssertEqual(cipherText.count, 75)
+            XCTAssertThrowsError(try Crypto.shared.encrypt(plainText.data, pubKey: "pubKey".data))
+        } catch {
+            XCTFail("Error: \(error)")
+        }
+    }
+    
+    func testEncryptAssymetricAnonymousThrowsIfWrongKey() {
+        let plainText = "Test string to be encrypted"
+        XCTAssertThrowsError(try Crypto.shared.encrypt(plainText.data, pubKey: "pubKey".data))
     }
     
     func testEncryptAndDecryptAssymetricAnonymous() {
@@ -241,6 +285,11 @@ class CryptoTests: XCTestCase {
         }
     }
     
+    func testEncryptThrowsIfWrongKey() {
+        let plainText = "Test string not hashed"
+        XCTAssertThrowsError(try Crypto.shared.encrypt(plainText.data, key: "sharedKey".data))
+    }
+    
     // The ciphertext here was created without padding.
     func testDecryptWithSharedKey() {
         let plainText = "Test string not hashed"
@@ -252,8 +301,14 @@ class CryptoTests: XCTestCase {
         do {
             let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey)
             XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
+            XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: "sharedKey".data))
         } catch {
             XCTFail("Error decrypting: \(error)")
         }
+    }
+    
+    func testSha1() {
+        let hash = Crypto.shared.sha1(from: "String")
+        XCTAssertEqual(hash, "3df63b7acb0522da685dad5fe84b81fdd7b25264")
     }
 }
