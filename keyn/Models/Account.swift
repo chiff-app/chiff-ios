@@ -39,8 +39,8 @@ struct Account {
             return try Keychain.shared.isSynced(id: id, service: .account)
         } catch {
             Logger.shared.error("Error get account sync info", error: error)
+            return true // Defaults to true to prevent infinite cycles when an error occurs
         }
-        return true // Defaults to true to prevent infinite cycles when an error occurs
     }
 
     var hasOtp: Bool {
@@ -65,9 +65,6 @@ struct Account {
         let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
         self.passwordIndex = index  
         self.lastPasswordUpdateTryIndex = index
-        guard password == nil || generatedPassword == password else {
-            throw AccountError.passwordGeneration
-        }
 
         try save(password: generatedPassword)
     }
