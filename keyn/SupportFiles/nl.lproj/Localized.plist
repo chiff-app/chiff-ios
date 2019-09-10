@@ -666,6 +666,16 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Fout bij verwijderen account</string>
 		</dict>
+		<key>failed_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>%d van de %d accounts konden niet hersteld worden.</string>
+		</dict>
+		<key>failed_accounts_title</key>
+		<dict>
+			<key>value</key>
+			<string>Fout</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>

@@ -295,8 +295,10 @@ class BackupManagerTests: XCTestCase {
                 let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
                 try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
                     switch result {
-                    case .success(_):
+                    case .success(let (total, failed)):
                         do {
+                            XCTAssertEqual(total, 1)
+                            XCTAssertEqual(failed, 0)
                             // GetBackupData automatically stores the account in the Keychain, so we verify if it is created correctly.
                             guard let account = try Account.get(accountID: self.id, context: self.context) else {
                                 return XCTFail("Account not found")
@@ -313,5 +315,37 @@ class BackupManagerTests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
+    }
+
+    func testBackupAndGetBackupDataFailsIfAccountExists () {
+        do {
+            // Assure there currently no accounts in the Keychain
+            Account.deleteAll()
+            let site = TestHelper.sampleSite
+            let account = Account(id: id, username: username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
+            let data = try PropertyListEncoder().encode(account)
+            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
+            let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+            BackupManager.shared.backup(account: backupAccount) { (result) in
+                XCTAssertTrue(result)
+                do {
+                    let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+                    try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
+                        switch result {
+                        case .success(let (total, failed)):
+                            XCTAssertEqual(total, 1)
+                            XCTAssertEqual(failed, 1)
+                        case .failure(let error):
+                            XCTFail(error.localizedDescription)
+                        }
+                    }
+                } catch {
+                    XCTFail(error.localizedDescription)
+                }
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+
     }
 }
