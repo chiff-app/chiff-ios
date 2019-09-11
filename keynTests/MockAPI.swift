@@ -21,12 +21,14 @@ enum MockAPIError: Error {
 class MockAPI: APIProtocol {
     var mockData = [String: JSONObject]()
     var shouldFail: Bool
+    var customData: Any?
 
-    init(pubKey: String? = nil, account: [String: String]? = nil, shouldFail: Bool = false) {
+    init(pubKey: String? = nil, account: [String: String]? = nil, data: Any? = nil, shouldFail: Bool = false) {
         if let pubKey = pubKey, let account = account {
             mockData[pubKey] = account
         }
         self.shouldFail = shouldFail
+        customData = data
     }
 
     func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
@@ -34,24 +36,103 @@ class MockAPI: APIProtocol {
             completionHandler(.failure(MockAPIError.fakeError))
         } else {
             switch endpoint {
-            case .backup: completionHandler(backupCall(method: method, message: message, pubKey: pubKey, privKey: privKey, body: body))
+            case .backup: completionHandler(backupCallSigned(method: method, message: message, pubKey: pubKey, privKey: privKey, body: body))
+            case .pairing: completionHandler(pairingCallSigned(method: method, message: message, pubKey: pubKey, privKey: privKey, body: body))
+            case .volatile: completionHandler(volatileCallSigned())
+            case .persistentBrowserToApp: completionHandler(persistentBrowserToAppSignedCall())
             default: completionHandler(.failure(MockAPIError.notImplemented))
             }
         }
     }
 
     func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        // TODO
+        if shouldFail {
+            completionHandler(.failure(MockAPIError.fakeError))
+        } else {
+            switch endpoint {
+            case .message: completionHandler(messageCall(path: path, parameters: parameters, method: method, signature: signature, body: body))
+            case .ppd: completionHandler(ppdCall(id: path))
+            case .questionnaire: completionHandler(questionnaire(method: method))
+            default: completionHandler(.failure(MockAPIError.notImplemented))
+            }
+        }
+    }
+    
+    private func questionnaire(method: APIMethod) -> Result<JSONObject, Error> {
+        switch method {
+        case .post:
+            return .success(JSONObject())
+        case .get:
+            if let data = customData {
+                return .success(["nothing": data])
+            } else {
+                if let path = Bundle(for: type(of: self)).path(forResource: "questionnaire", ofType: "json") {
+                    do {
+                        let fileUrl = URL(fileURLWithPath: path)
+                        let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
+                        let jsonData = try JSONSerialization.jsonObject(with: data) as! JSONObject
+                        return .success(["questionnaires": [jsonData]])
+                    } catch {
+                        fatalError(error.localizedDescription)
+                    }
+                } else {
+                    return .success(JSONObject())
+                }
+            }
+        default:
+            fatalError("This method is not availble on the API")
+        }
+    }
+    
+    private func ppdCall(id: String?) -> Result<JSONObject, Error> {
+        if id == "1" {
+            if let path = Bundle(for: type(of: self)).path(forResource: "samplePPD", ofType: "json") {
+                do {
+                    let fileUrl = URL(fileURLWithPath: path)
+                    let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
+                    return .success(try JSONSerialization.jsonObject(with: data) as! JSONObject)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            } else {
+                return .success(JSONObject())
+            }
+        } else if id == "2" {
+            return .success(["ppds":[["wrong":"data"]]])
+        } else {
+            return .success(["nothing":[]])
+        }
     }
 
-    private func backupCall(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Result<JSONObject, Error> {
+    private func persistentBrowserToAppSignedCall() -> Result<JSONObject, Error> {
+        if let data = customData as? [[String: String]] {
+            return .success([
+                "messages": data
+                ])
+        }
+        return .success(JSONObject())
+    }
+    
+    private func volatileCallSigned() -> Result<JSONObject, Error> {
+        return .success(JSONObject())
+    }
+    
+    private func pairingCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Result<JSONObject, Error> {
+        return .success(JSONObject())
+    }
+    
+    private func messageCall(path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Result<JSONObject, Error> {
+        return .success(JSONObject())
+    }
+
+    private func backupCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Result<JSONObject, Error> {
         guard let pubKey = pubKey else {
             return .failure(MockAPIError.noPublicKey)
         }
         switch method {
         case .get:
             if mockData.isEmpty {
-                mockData[pubKey] = ["ed98282a25e0ee58019d15523ad779bc27f2c84a73a3d43ae38acbeeede1988e":"ZhOIrj7miy4fkGUtLE8-hMCcc9QHpvMqfvwUvS5qhwTzG-2DDq6tHWO17tKDNnNzE3XL-0HxWkAK8kXz__M_OYQ24Yci2hyBdW1xxTx1TDErSRokfkIbrneo6HIoHWoY7tmEfg8kOq3OY8iX3LkFxDAwW01_R_MCxS5xMhQLm_f_4XTsTmWP5mVZgPK8fc0MEW7u7YfGxZHuvHsseadb4gKrIHk7_Xtemg4bjLaxqh1POza_O7rZP2Q9wBKOLPMBp7MMOF41QQrdN-5MGVDnP7wJ3rKjnSLkhuSRxxVOGYUDyo-qLksoJ_D-TkO2zk8lDgnBQa43HPG9cbqNMW59dtsj4jE6JWaEU8zcqPGx54E5nzJzGrkGT1b9Q6llG4g8qfL-N1Cy_wmwGMHLdJfi0pFGcPURtsgs8Jbq4TbWEPwDavKvNHDJRaDYT-3umgJKR4CyYeovhWAuQphOeW7Zan6AtFEFI8nJXthiR90UN6CGPdOywrZhSIpC2yhwMhDQeViCM2S6FV_IpnT7D7CbkdVJko6DBuEpr3F2kw-CMPre5GRXsdaqXyY5bhqOWL074UrT3Y-HX3Uz7Zsc_3mMBUiP0ClrVScEHbeZ5VgtIJ9G-I1AwiW3fbxTYNXA0wE1Pxy5uvOtBqZ73R8Ow7fZOYMPEazNYDU-4CpGGMc1bP11BchC6MHPIjVMgwsiO5bpuNMTiAynTL8T5EGFXkHjAh-a0phSfM2B46hgwlRbFebQOlMz0isuaf4HxnxuRvdSnbAOnUFTIKuwPKYxF15qTj6qS7cluuVEHYde7HNeV_Ey70Jgd06ECkk59EqtmBV0gO0Y6rSeHWsQvAIZwmUkkgYCH4NTmpi4c6KkTyefRINeFSi_5Gah8-MCM7OD_OC3sdCuFBQBi6gSMcDEZg_khySRrFBSk1aUA2z7pEl9N0CLOrxQt-_7nRWxgiBZ7t1pxZ0yyQ7bVUhNdrdBdmoaaw-SNvOatOWDy0OCFQJvdKKrahPUwaEmc_P9cAnb-dznfQJHS8UCMiNvIUmx7UHPA_NvKq6gn9_9gUN00g"]
+                mockData[pubKey] = [TestHelper.userID:TestHelper.userData]
             }
             guard let data = mockData[pubKey] else {
                 return .failure(MockAPIError.noData)

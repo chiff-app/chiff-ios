@@ -210,14 +210,9 @@ class Session: Codable {
                 sessions.append(session)
             } catch {
                 Logger.shared.error("Can not decode session", error: error)
-                do {
-                    if let sessionId = dict[kSecAttrAccount as String] as? String {
-                        try Keychain.shared.delete(id: sessionId, service: .sharedSessionKey)
-                    } else {
-                        purgeSessionDataFromKeychain()
-                    }
-                } catch {
+                guard let sessionId = dict[kSecAttrAccount as String] as? String, let _ = try? Keychain.shared.delete(id: sessionId, service: .sharedSessionKey) else {
                     purgeSessionDataFromKeychain()
+                    return []
                 }
             }
         }
@@ -268,15 +263,19 @@ class Session: Codable {
             var groupError: Error?
             group.enter()
             try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey) { result in
-                if case let .failure(error) = result {
-                    groupError = error
+                if groupError == nil {
+                    if case let .failure(error) = result {
+                        groupError = error
+                    }
                 }
                 group.leave()
             }
             group.enter()
             try session.acknowledgeSessionStartToBrowser(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
-                if case let .failure(error) = result {
-                    groupError = error
+                if groupError == nil {
+                    if case let .failure(error) = result {
+                        groupError = error
+                    }
                 }
                 group.leave()
             }
@@ -305,6 +304,7 @@ class Session: Codable {
     static func purgeSessionDataFromKeychain() {
         Keychain.shared.deleteAll(service: .sharedSessionKey)
         Keychain.shared.deleteAll(service: .signingSessionKey)
+        Properties.sessionCount = 0
     }
 
 

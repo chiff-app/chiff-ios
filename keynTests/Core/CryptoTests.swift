@@ -45,7 +45,7 @@ class CryptoTests: XCTestCase {
         guard let seed = TestHelper.base64seed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
+        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, TestHelper.passwordSeed)
     }
     
     func testCreateSessionKeyPairDoesntThrow() {
@@ -53,7 +53,7 @@ class CryptoTests: XCTestCase {
     }
     
     func testCreateSigningKeyPairDoesntThrow() {
-        guard let seed = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw".fromBase64 else {
+        guard let seed = TestHelper.backupSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         XCTAssertNoThrow(try Crypto.shared.createSigningKeyPair(seed: seed))
@@ -67,7 +67,7 @@ class CryptoTests: XCTestCase {
     }
     
     func testCreateSignInKeyPair() {
-        guard let seed = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw".fromBase64, let pubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI".fromBase64, let privKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g".fromBase64 else {
+        guard let seed = TestHelper.backupSeed.fromBase64, let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -80,7 +80,7 @@ class CryptoTests: XCTestCase {
     }
     
     func testDeterministicRandomBytes() {
-        guard let seed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64, let wrongSeed = "lasjndkjsnk".fromBase64 else {
+        guard let seed = TestHelper.passwordSeed.fromBase64, let wrongSeed = "lasjndkjsnk".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -120,7 +120,7 @@ class CryptoTests: XCTestCase {
     
     func testSign() {
         let textToBeSigned = "Test string".data
-        guard let seed = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw".fromBase64 else {
+        guard let seed = TestHelper.backupSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -143,7 +143,7 @@ class CryptoTests: XCTestCase {
     func testSignAndSignatureAndVerifySignature() {
         let sodium = Sodium()
         let textToBeSigned = "Test string".data
-        guard let pubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI".fromBase64, let privKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g".fromBase64, let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
+        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivSeed.fromBase64, let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -158,7 +158,7 @@ class CryptoTests: XCTestCase {
     
     func testEncryptSymmetric() {
         let plainText = "Test string to be encrypted"
-        guard let passwordSeed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64 else {
+        guard let passwordSeed = TestHelper.passwordSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         XCTAssertEqual(try Crypto.shared.encryptSymmetric(plainText.data, secretKey: passwordSeed).count, 67)
@@ -174,7 +174,7 @@ class CryptoTests: XCTestCase {
         guard let cipherText = "OaJdyWCd4eE6YyRzreYhehklMaumW26KZdhfXa3Ro__wexZ-RZ10TPxgdPh4eInwUwYzFBlP7j3hrNiQToxVo8SDFQ".fromBase64 else {
             return XCTFail("Error getting encrypted text")
         }
-        guard let passwordSeed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64 else {
+        guard let passwordSeed = TestHelper.passwordSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -188,7 +188,7 @@ class CryptoTests: XCTestCase {
     
     func testEncryptAndDecryptSymmetric() {
         let plainText = "Test string to be encrypted"
-        guard let passwordSeed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0".fromBase64 else {
+        guard let passwordSeed = TestHelper.passwordSeed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -273,8 +273,8 @@ class CryptoTests: XCTestCase {
     }
     
     func testEncryptWithSharedKey() {
-        let plainText = "Test string not hashed"
-        guard let sharedKey = "msDAsyo_SFR0ixECH5zIM-X0aP87vKktwzeuH2r0A9M".fromBase64 else {
+        let plainText = "Test string not encrypted"
+        guard let sharedKey = TestHelper.sharedKey.fromBase64 else {
             return XCTFail("Error getting data from base64 string")
         }
         do {
@@ -292,10 +292,10 @@ class CryptoTests: XCTestCase {
     
     // The ciphertext here was created without padding.
     func testDecryptWithSharedKey() {
-        let plainText = "Test string not hashed"
+        let plainText = "Test string not encrypted"
         guard
-            let sharedKey = "msDAsyo_SFR0ixECH5zIM-X0aP87vKktwzeuH2r0A9M".fromBase64,
-            let cipherText = "KCKwr7w3vppYrNYqwHL6pyPL21bD31k2fVabRrBUhF8rGYbTRPjfpME_Bz3c0Yq0GtWx5d5ZipaKzF1vOiI".fromBase64 else {
+            let sharedKey = TestHelper.sharedKey.fromBase64,
+            let cipherText = "4fLDZ4hn6uZeV5jNJZSXNLswYeXiwnkUkXx-DQs-quZZUX3_BM7osdtdfZBcrvquZPzMaHb4RvzLwiLNeR7NBog".fromBase64 else {
                 return XCTFail("Error getting data from base64 string")
         }
         do {
