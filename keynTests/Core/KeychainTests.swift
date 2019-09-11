@@ -116,66 +116,87 @@ class KeychainTests: XCTestCase {
     }
     
     func testGetAsyncWithEmptySeed() {
+        let expectation = XCTestExpectation(description: "Finish testGetAsyncWithEmptySeed")
         TestHelper.createEmptySeed()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testGetAsync() {
+        let expectation = XCTestExpectation(description: "Finish testGetAsync")
         TestHelper.createSeed()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testGetAsyncThrowsIfInvalidContext() {
+        let expectation = XCTestExpectation(description: "Finish testGetAsyncThrowsIfInvalidContext")
         let context = FakeLAContext()
         context.invalidate()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: context, authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testGetAsyncFailsIfNoSeed() {
+        let expectation = XCTestExpectation(description: "Finish testGetAsyncFailsIfNoSeed")
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("There must be an error")
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testDeleteAsync() {
+        let expectation = XCTestExpectation(description: "Finish testDeleteAsync")
         TestHelper.createSeed()
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testDeleteAsyncFailsIfInvalidContext() {
+        let expectation = XCTestExpectation(description: "Finish testDeleteAsyncFailsIfInvalidContext")
         let context = FakeLAContext()
         context.invalidate()
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: context) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testDeleteAsyncFailsIfNoSeed() {
+        let expectation = XCTestExpectation(description: "Finish testDeleteAsyncFailsIfNoSeed")
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("There must be an error")
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     // MARK: - Integration Tests
@@ -257,29 +278,37 @@ class KeychainTests: XCTestCase {
     }
     
     func testSaveAndGetAsync() {
+        let expectation = XCTestExpectation(description: "Finish testSaveAndGetAsync")
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: FakeLAContext(), authenticationType: .ifNeeded) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testSaveAndDeleteAndGetAsync() {
+        let expectation = XCTestExpectation(description: "Finish testSaveAndGetAsync")
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
         Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
             switch result {
-            case .failure(let error): XCTFail(error.localizedDescription)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+                expectation.fulfill()
             case .success(_):
                 Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded, with: FakeLAContext()) { (result) in
                     if case .success(_) = result {
                         XCTFail("There must be an error")
                     }
+                    expectation.fulfill()
                 }
             }
         }
+        wait(for: [expectation], timeout: 3.0)
     }
     
 }

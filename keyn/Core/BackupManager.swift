@@ -33,6 +33,7 @@ struct BackupManager {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
+                completionHandler(.success(()))
                 return
             }
             deleteAllKeys()

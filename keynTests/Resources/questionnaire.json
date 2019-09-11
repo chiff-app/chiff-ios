@@ -1,0 +1,56 @@
+{
+  "id": "927fba5a-1382-4a8f-8945-1b8fccd76408",
+  "compulsory": false,
+  "delay": 1,
+  "questions": [
+    {
+        "id": "NUMBER_ACCOUNTS",
+        "type": "mpc",
+        "text": "How many accounts for websites do you have?",
+		"mpcOptions": ["Less than 10", "10-25", "25-50", "More than 50"]
+	},
+    {
+        "id": "AVG_PWD_LENGTH",
+        "type": "mpc",
+        "text": "What is the average length of you current passwords?",
+		"mpcOptions": ["8 or less", "9-12", "12-15", "More than 15"]
+	},
+    {
+        "id": "UNIQ_PWDS",
+        "type": "mpc",
+        "text": "How many unique passwords do you use?",
+		"mpcOptions": ["1", "2-5", "6-10", "More than 10"]
+	},
+    {
+        "id": "PWD_COMPLEXITY",
+        "type": "likert",
+        "text": "How secure do you think your password are?",
+		"minLabel": "Not secure",
+		"maxLabel": "Very secure"
+    },
+    {
+        "id": "PWD_BROWSER",
+        "type": "likert",
+        "text": "How often do you save passwords in your browser?",
+		"minLabel": "Never",
+		"maxLabel": "Always"
+    },
+    {
+        "id": "PWD_MNGR",
+        "type": "boolean",
+        "text": "Do you use a password manager?"
+    },
+    {
+        "id": "INFO_SEC",
+        "type": "likert",
+        "text": "How much do you care about your online safety?",
+		"minLabel": "Not at all",
+		"maxLabel": "Very much"
+    },
+    {
+        "id": "EXAMPLE",
+        "type": "text",
+        "text": "This is an example of a text-response question"
+    }
+  ]
+}

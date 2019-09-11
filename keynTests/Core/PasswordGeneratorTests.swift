@@ -9,8 +9,6 @@ import LocalAuthentication
 
 class PasswordGeneratorTests: XCTestCase {
 
-    var context: LAContext!
-
     override func setUp() {
         super.setUp()
         TestHelper.createSeed()

@@ -218,19 +218,7 @@ class Questionnaire: Codable {
             Logger.shared.error("Error creating questionnaire directory", error: error)
         }
     }
-    
-    static private func writeFile(questionnaire: Questionnaire) {
-        do {
-            let data = try JSONEncoder().encode(questionnaire)
-            let filemgr = FileManager.default
-            let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
-            let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(questionnaire.id).path
-            filemgr.createFile(atPath: questionnairePath, contents: data, attributes: nil)
-        } catch {
-            Logger.shared.warning("Could not write questionnaire", error: error)
-        }
-    }
-    
+
     static private func readFile(path: String) -> Questionnaire? {
         let filemgr = FileManager.default
         guard let data = filemgr.contents(atPath: path) else {
