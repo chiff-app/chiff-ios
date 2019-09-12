@@ -34,6 +34,7 @@ struct Logger {
         if let userId = Properties.userId {
             setUserId(userId: userId)
         }
+        crashlytics.setObjectValue(Properties.environment.rawValue, forKey: "environment")
     }
 
     func setAnalyticsLogging(value: Bool) {
@@ -69,11 +70,11 @@ struct Logger {
         }
     }
     
-    func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+    func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, override: Bool = false, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
         #if DEBUG
         print("--------- ☠️ ERROR: \(String(describing: error)). \(message) --------- ")
         #endif
-        guard Properties.errorLogging else {
+        guard Properties.errorLogging || override else {
             return
         }
         crashlytics.setObjectValue(message, forKey: "message")
@@ -89,12 +90,22 @@ struct Logger {
         }
     }
 
-    func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {
+    func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil, override: Bool = false) {
         print("ℹ️ EVENT: \(event)")
-        guard Properties.analyticsLogging else {
+        guard Properties.analyticsLogging || override else {
             return
         }
         amplitude.logEvent(event: event, properties: properties)
+    }
+
+    func revenue(productId: String, price: NSDecimalNumber) {
+        guard Properties.analyticsLogging else {
+            return
+        }
+        let revenue = AMPRevenue()
+        revenue.setProductIdentifier(productId)
+        revenue.setPrice(price)
+        amplitude.logRevenueV2(revenue)
     }
     
     private func getNSError(_ error: Error) -> NSError {

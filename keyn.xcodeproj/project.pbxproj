@@ -62,6 +62,8 @@
 		49236000231534F2003C4A0F /* terms_of_use.md in Resources */ = {isa = PBXBuildFile; fileRef = 49236002231534F2003C4A0F /* terms_of_use.md */; };
 		4923600523156893003C4A0F /* LocalizableBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4923600423156893003C4A0F /* LocalizableBarButton.swift */; };
 		4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
+		49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
+		49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
@@ -1325,6 +1327,7 @@
 			files = (
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
+				49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */,
@@ -1514,6 +1517,7 @@
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
+				49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
@@ -1768,7 +1772,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 39;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
@@ -1794,7 +1798,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 36;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

@@ -27,11 +27,20 @@ protocol StoreObserverDelegate: AnyObject {
     func storeObserverDidReceiveMessage(_ message: String)
 }
 
-enum ValidationResult: String {
+struct ValidationResult {
+    let status: ValidationStatus
+    let productId: String?
+    let expires: TimeInterval?
+}
+
+enum ValidationStatus: String {
     case success = "success"
     case failed = "failed"
-    case error = "error"
     case expired = "expired"
+}
+
+enum StoreObserverError: Error {
+    case missingStatus
 }
 
 class StoreObserver: NSObject {
@@ -96,19 +105,20 @@ class StoreObserver: NSObject {
     }
 
     fileprivate func handleRefreshedReceipt() {
-        validateReceipt { (result, expires, product, error) in
+        validateReceipt { result in
             DispatchQueue.main.async {
-                switch result {
-                case .error:
-                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
-                case .success:
-                    Properties.subscriptionExiryDate = expires!
-                    Properties.subscriptionProduct = product
-                    self.delegate?.storeObserverRestoreDidSucceed()
-                case .failed:
-                    self.delegate?.storeObserverRestoreDidFail()
-                case .expired:
-                    self.delegate?.storeObserverRestoreNoProducts()
+                do {
+                    let validationResult = try result.get()
+                    switch validationResult.status {
+                    case .success:
+                        Properties.subscriptionExiryDate = validationResult.expires!
+                        Properties.subscriptionProduct = validationResult.productId!
+                        self.delegate?.storeObserverRestoreDidSucceed()
+                    case .failed: self.delegate?.storeObserverRestoreDidFail()
+                    case .expired: self.delegate?.storeObserverRestoreNoProducts()
+                    }
+                } catch {
+                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
                 }
             }
 
@@ -121,17 +131,22 @@ class StoreObserver: NSObject {
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
 
-        validateReceipt { (result, expires, product, error) in
+        validateReceipt { result in
             DispatchQueue.main.async {
-                switch result {
-                case .error:
-                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
-                case .success:
-                    Properties.subscriptionExiryDate = expires!
-                    Properties.subscriptionProduct = product
-                    self.delegate?.storeObserverPurchaseDidSucceed()
-                case .failed, .expired:
-                    self.delegate?.storeObserverPurchaseDidFail()
+                do {
+                    let validationResult = try result.get()
+                    switch validationResult.status {
+                    case .success:
+                        Properties.subscriptionExiryDate = validationResult.expires!
+                        Properties.subscriptionProduct = validationResult.productId!
+                        self.delegate?.storeObserverPurchaseDidSucceed()
+                        let product = StoreManager.shared.availableProducts.first(where: { $0.productIdentifier == validationResult.productId })
+                        Logger.shared.revenue(productId: validationResult.productId!, price: product?.euroPrice ?? NSDecimalNumber(value: 0))
+                    case .failed, .expired:
+                        self.delegate?.storeObserverPurchaseDidFail()
+                    }
+                } catch {
+                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
                 }
             }
 
@@ -175,7 +190,7 @@ class StoreObserver: NSObject {
 //        SKPaymentQueue.default().finishTransaction(transaction)
 //    }
 
-    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ expires: TimeInterval?, _ product: String?, _ error: Error?) -> Void) {
+    private func validateReceipt(completionHandler: @escaping (Result<ValidationResult,Error>) -> Void) {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
@@ -186,19 +201,18 @@ class StoreObserver: NSObject {
                 API.shared.signedRequest(endpoint: .iosSubscription, method: .post, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { result in
                     switch result {
                     case .success(let jsonObject):
-                        if let status = jsonObject["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = jsonObject["expires"] as? TimeInterval, let product = jsonObject["product"] as? String {
-                            completionHandler(validationResult, expires, product, nil)
-                        } else {
-                            completionHandler(.error, nil, nil, APIError.noResponse)
+                        guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {
+                            return completionHandler(.failure(StoreObserverError.missingStatus))
                         }
+                        completionHandler(.success(ValidationResult(status: validationStatus, productId: jsonObject["product"] as? String, expires: jsonObject["expires"] as? TimeInterval)))
                     case .failure(let error):
                         Logger.shared.error("Error verifying receipt", error: error)
-                        completionHandler(.error, nil, nil, error)
+                        completionHandler(.failure(error))
                     }
                 }
             } catch {
                 Logger.shared.error("Couldn't read receipt data", error: error)
-                completionHandler(.error, nil, nil, error)
+                completionHandler(.failure(error))
             }
         }
     }

@@ -52,7 +52,6 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
         let cell = cell as! ProductCollectionViewCell
         cell.isFirst = indexPath.row == 0
         cell.showSelected()
-        print(product.localizedDescription)
         cell.title.text = product.localizedTitle
         if let price = product.regularPrice {
             cell.price.text = "\(price)"
