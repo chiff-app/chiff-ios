@@ -35,7 +35,7 @@ class PairViewController: QRViewController {
     }
 
     private func pair(url: URL) {
-        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: {
+        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: { _ in
             self.pairContainerDelegate.startLoading()
         }) { (result) in
             DispatchQueue.main.async {

@@ -319,7 +319,7 @@ class AuthorizationGuard {
         }
     }
 
-    static func authorizePairing(url: URL, authenticationCompletionHandler: (() -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func authorizePairing(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         guard !authorizationInProgress else {
             return
         }
@@ -337,15 +337,17 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
-            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: false) { (result) in
+            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: mainContext) { (result) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }
                 switch result {
                 case .success(_):
-                    authenticationCompletionHandler?()
+                    authenticationCompletionHandler?(result)
                     Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completionHandler: completionHandler)
-                case .failure(let error): completionHandler(.failure(error))
+                case .failure(let error):
+                    authenticationCompletionHandler?(result)
+                    completionHandler(.failure(error))
                 }
             }
         } catch let error as KeychainError {

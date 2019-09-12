@@ -48,7 +48,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
-        Logger.shared.analytics(.restoreBackupOpened)
+        Logger.shared.analytics(.restoreBackupOpened, override: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -173,7 +173,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             }
             Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
             self.registerForPushNotifications()
-            Logger.shared.analytics(.backupRestored)
+            Logger.shared.analytics(.backupRestored, override: true)
         }
     }
 
