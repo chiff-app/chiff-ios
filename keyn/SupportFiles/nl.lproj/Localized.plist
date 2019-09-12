@@ -371,7 +371,7 @@
 			<key>plural_unit</key>
 			<dict>
 				<key>value</key>
-				<string>uren</string>
+				<string>uur</string>
 			</dict>
 			<key>singular_unit</key>
 			<dict>
@@ -501,7 +501,7 @@
 			<key>plural_unit</key>
 			<dict>
 				<key>value</key>
-				<string>jaren</string>
+				<string>jaar</string>
 			</dict>
 			<key>singular_unit</key>
 			<dict>
@@ -660,6 +660,11 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<dict>
 			<key>value</key>
 			<string>Fout bij verwijderen backup data</string>
+		</dict>
+		<key>deleting_account</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij verwijderen account</string>
 		</dict>
 		<key>generic_error</key>
 		<dict>
@@ -889,10 +894,12 @@ Thank you!</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
+			<key>end</key>
+			<integer>40</integer>
 			<key>start</key>
-			<integer>17</integer>
+			<integer>30</integer>
 			<key>value</key>
-			<string>Dag wachtwoorden, hallo Keyn</string>
+			<string>Bye bye forgetting passwords, hello Keyn</string>
 		</dict>
 		<key>change</key>
 		<dict>
@@ -1228,6 +1235,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 				<key>value</key>
 				<string>Herstel accounts</string>
 			</dict>
+			<key>retrieve_password</key>
+			<dict>
+				<key>value</key>
+				<string>Ontsleutel wachtwoord voor %@</string>
+			</dict>
 			<key>terms</key>
 			<dict>
 				<key>value</key>
@@ -1523,12 +1535,12 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>upgrade_keyn_for_add</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan</string>
+			<string>Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan</string>
 		</dict>
 		<key>upgrade_keyn_for_request</key>
 		<dict>
 			<key>value</key>
-			<string>Je kunt maar 8 accounts gratis inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen</string>
+			<string>Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om weer met al je accounts in te loggen</string>
 		</dict>
 	</dict>
 	<key>settings</key>

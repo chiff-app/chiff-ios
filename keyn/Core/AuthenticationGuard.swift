@@ -18,6 +18,7 @@ class AuthenticationGuard {
     }
 
     var authenticationInProgress = false
+    var pairingUrl: URL?
 
     private init() {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
@@ -51,7 +52,22 @@ class AuthenticationGuard {
             }
         }
         authenticationInProgress = true
-        authenticateUser()
+
+        if let url = pairingUrl, false {
+            // Disabled for now, because opening from a QR-code may pose a security risk.
+            pairingUrl = nil
+            AuthorizationGuard.authorizePairing(url: url, mainContext: true, authenticationCompletionHandler: onAuthenticationResult) { (result) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let session): NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
+                    case .failure(let error): Logger.shared.error("Error creating session.", error: error)
+                    }
+                }
+            }
+        } else {
+            let localizedReason = "requests.unlock_keyn".localized
+            LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true, completionHandler: onAuthenticationResult(result:))
+        }
     }
 
     func hideLockWindow() {
@@ -79,29 +95,27 @@ class AuthenticationGuard {
 
     // MARK: - Private functions
 
-    private func authenticateUser() {
-        let localizedReason = "requests.unlock_keyn".localized
-        LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true) { (context, error) in
-            do {
-                if let error = error {
-                    throw error
-                }
+    private func onAuthenticationResult(result: Result<LAContext?, Error>) {
+        do {
+            switch result {
+            case .success(let context):
                 let accounts = try Account.all(context: context, sync: true)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()
                 }
-            } catch let error as DecodingError {
-                Logger.shared.error("Error decoding accounts", error: error)
+            case .failure(let error): throw error
+            }
+        } catch let error as DecodingError {
+            Logger.shared.error("Error decoding accounts", error: error)
+            DispatchQueue.main.async {
+                (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
+            }
+        } catch {
+            if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                Logger.shared.error(errorMessage, error: error)
                 DispatchQueue.main.async {
-                    (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
-                }
-            } catch {
-                Logger.shared.error("Error retrieving accounts", error: error)
-                if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                    DispatchQueue.main.async {
-                        (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
-                    }
+                    (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
                 }
             }
         }

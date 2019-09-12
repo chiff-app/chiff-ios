@@ -19,13 +19,14 @@ class StartBackupViewController: UIViewController {
 
     
     @IBAction func startBackup(_ sender: UIButton) {
-        Seed.mnemonic { (mnemonic, error) in
+        Seed.mnemonic { (result) in
             DispatchQueue.main.async {
-                if let error = error {
-                    self.showError(message: error.localizedDescription)
-                } else {
+                switch result {
+                case .success(let mnemonic):
                     self.mnemonic = mnemonic
                     self.performSegue(withIdentifier: "StartBackup", sender: self)
+                case .failure(let error):
+                    self.showError(message: error.localizedDescription)
                 }
             }
         }

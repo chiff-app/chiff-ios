@@ -153,20 +153,19 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         \(debugLogUser)
         id: \(Properties.userId ?? "not set")
         """
-        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, body: message.data) { (_, error) in
-            if let error = error {
-                Logger.shared.warning("Error posting feedback", error: error)
-            } else {
+        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, signature: nil, body: message.data) { (result) in
+            switch result {
+            case .success(_):
                 DispatchQueue.main.async {
                     self.nameTextField.text = ""
                     self.textView.text = "settings.feedback_submitted".localized
                 }
+            case .failure(let error): Logger.shared.warning("Error posting feedback", error: error)
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                 self.dismiss(animated: true, completion: nil)
             })
         }
-
     }
 
 }

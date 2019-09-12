@@ -22,15 +22,12 @@ class PairViewController: QRViewController {
     var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme else {
-            Logger.shared.analytics(.qrCodeScanned, properties: [.value: false])
-            return
-        }
-        guard scheme == "keyn" else {
+        guard (url.host == "keyn.app" && url.path == "/pair") || url.scheme == "keyn"  else {
             Logger.shared.analytics(.qrCodeScanned, properties: [
                 .value: false,
-                .scheme: scheme
+                .scheme: url.scheme ?? "no scheme"
             ])
+            showError(message: "errors.session_invalid".localized)
             return
         }
         Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
@@ -38,20 +35,21 @@ class PairViewController: QRViewController {
     }
 
     private func pair(url: URL) {
-        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: {
+        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: { _ in
             self.pairContainerDelegate.startLoading()
-        }) { (session, error) in
+        }) { (result) in
             DispatchQueue.main.async {
                 self.pairContainerDelegate.finishLoading()
-                if let session = session {
+                switch result {
+                case .success(let session):
                     self.pairControllerDelegate.sessionCreated(session: session)
                     Logger.shared.analytics(.paired)
-                } else if let error = error {
+                case .failure(let error):
                     self.hideIcon()
                     switch error {
                     case is LAError, is KeychainError:
                         if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
-                             self.showError(message: authenticationError)
+                            self.showError(message: authenticationError)
                         }
                     case SessionError.invalid:
                         Logger.shared.error("Invalid QR-code scanned", error: error)
@@ -67,9 +65,6 @@ class PairViewController: QRViewController {
                         Logger.shared.error("Unhandled QR code error during pairing.", error: error)
                         self.showError(message: "errors.generic_error".localized)
                     }
-                    self.recentlyScannedUrls.removeAll(keepingCapacity: false)
-                    self.qrFound = false
-                } else {
                     self.recentlyScannedUrls.removeAll(keepingCapacity: false)
                     self.qrFound = false
                 }

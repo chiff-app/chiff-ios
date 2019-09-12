@@ -218,21 +218,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
 
     
     @IBAction func showPassword(_ sender: UIButton) {
-        account.password(reason: "Retrieve password for \(account.site.name)", context: nil, type: .ifNeeded) { (password, error) in
-            if let error = error {
-                Logger.shared.error("Could not get account", error: error)
-            }
-            guard let password = password else {
-                Logger.shared.error("Account was nil")
-                return
-            }
-            DispatchQueue.main.async {
-                if self.userPasswordTextField.isEnabled {
-                    self.userPasswordTextField.text = password
-                    self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
-                } else {
-                    self.showHiddenPasswordPopup(password: password)
+        account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded) { (result) in
+            switch result {
+            case .success(let password):
+                DispatchQueue.main.async {
+                    if self.userPasswordTextField.isEnabled {
+                        self.userPasswordTextField.text = password
+                        self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+                    } else {
+                        self.showHiddenPasswordPopup(password: password)
+                    }
                 }
+            case .failure(let error):
+                Logger.shared.error("Could not get account", error: error)
             }
         }
     }

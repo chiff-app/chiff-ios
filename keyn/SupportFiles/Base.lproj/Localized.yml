@@ -88,10 +88,14 @@ errors:
   unsubscribing:
     value: Error unsubscribing to info notifications
   deleting:
-      value: Error deleting backup data
+    value: Error deleting backup data
+  deleting_account:
+    value: Error deleting account
 
 popups:
   questions:
+    retrieve_password:
+      value: Ontsleutel wachtwoord voor %@
     camera_permission:
       value: Permission needed
     delete_corrupted:

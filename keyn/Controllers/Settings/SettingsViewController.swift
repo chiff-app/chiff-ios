@@ -72,6 +72,10 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
+        // TODO: Test if this fixes the textLabel size on some devices.
+        if section == 1 {
+            footer.textLabel?.numberOfLines = 3
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -85,11 +89,11 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
         if sender.isOn {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { error in
+            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    if let error = error {
+                    if case let .failure(error) = result {
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.subscribing".localized): \(error)")
                     }
@@ -97,11 +101,11 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                 }
             }
         } else {
-            NotificationManager.shared.unsubscribe() { error in
+            NotificationManager.shared.unsubscribe() { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no
-                    if let error = error {
+                    if case let .failure(error) = result {
                         sender.isOn = subscribed
                         self.showError(message: "\("errors.unsubscribing".localized): \(error)")
                     }

@@ -27,11 +27,20 @@ protocol StoreObserverDelegate: AnyObject {
     func storeObserverDidReceiveMessage(_ message: String)
 }
 
-enum ValidationResult: String {
+struct ValidationResult {
+    let status: ValidationStatus
+    let productId: String?
+    let expires: TimeInterval?
+}
+
+enum ValidationStatus: String {
     case success = "success"
     case failed = "failed"
-    case error = "error"
     case expired = "expired"
+}
+
+enum StoreObserverError: Error {
+    case missingStatus
 }
 
 class StoreObserver: NSObject {
@@ -69,44 +78,47 @@ class StoreObserver: NSObject {
     }
 
     /// This retrieves current subscription status for this seed from the Keyn server
-    func updateSubscriptions(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func updateSubscriptions(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .subscription, method: .get, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (result, error) in
-                if let error = error {
-                    completionHandler(error)
-                } else if let subscriptions = result as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
-                    if subscriptions.count > 1 {
-                        Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
+            API.shared.signedRequest(endpoint: .subscription, method: .get, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+                switch result {
+                case .success(let jsonObject):
+                    if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
+                        if subscriptions.count > 1 {
+                            Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
+                        }
+                        Properties.subscriptionExiryDate = longest.value
+                        Properties.subscriptionProduct = longest.key
+                        completionHandler(.success(()))
+                    } else {
+                        Properties.subscriptionExiryDate = 0
+                        Properties.subscriptionProduct = nil
+                        completionHandler(.success(()))
                     }
-                    Properties.subscriptionExiryDate = longest.value
-                    Properties.subscriptionProduct = longest.key
-                    completionHandler(nil)
-
-                } else {
-                    Properties.subscriptionExiryDate = 0
-                    Properties.subscriptionProduct = nil
-                    completionHandler(nil)
+                case .failure(let error):
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
 
     fileprivate func handleRefreshedReceipt() {
-        validateReceipt { (result, expires, product, error) in
+        validateReceipt { result in
             DispatchQueue.main.async {
-                switch result {
-                case .error:
-                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
-                case .success:
-                    Properties.subscriptionExiryDate = expires!
-                    Properties.subscriptionProduct = product
-                    self.delegate?.storeObserverRestoreDidSucceed()
-                case .failed:
-                    self.delegate?.storeObserverRestoreDidFail()
-                case .expired:
-                    self.delegate?.storeObserverRestoreNoProducts()
+                do {
+                    let validationResult = try result.get()
+                    switch validationResult.status {
+                    case .success:
+                        Properties.subscriptionExiryDate = validationResult.expires!
+                        Properties.subscriptionProduct = validationResult.productId!
+                        self.delegate?.storeObserverRestoreDidSucceed()
+                    case .failed: self.delegate?.storeObserverRestoreDidFail()
+                    case .expired: self.delegate?.storeObserverRestoreNoProducts()
+                    }
+                } catch {
+                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
                 }
             }
 
@@ -119,17 +131,22 @@ class StoreObserver: NSObject {
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
 
-        validateReceipt { (result, expires, product, error) in
+        validateReceipt { result in
             DispatchQueue.main.async {
-                switch result {
-                case .error:
-                    self.delegate?.storeObserverDidReceiveMessage(error?.localizedDescription ?? "")
-                case .success:
-                    Properties.subscriptionExiryDate = expires!
-                    Properties.subscriptionProduct = product
-                    self.delegate?.storeObserverPurchaseDidSucceed()
-                case .failed, .expired:
-                    self.delegate?.storeObserverPurchaseDidFail()
+                do {
+                    let validationResult = try result.get()
+                    switch validationResult.status {
+                    case .success:
+                        Properties.subscriptionExiryDate = validationResult.expires!
+                        Properties.subscriptionProduct = validationResult.productId!
+                        self.delegate?.storeObserverPurchaseDidSucceed()
+                        let product = StoreManager.shared.availableProducts.first(where: { $0.productIdentifier == validationResult.productId })
+                        Logger.shared.revenue(productId: validationResult.productId!, price: product?.euroPrice ?? NSDecimalNumber(value: 0))
+                    case .failed, .expired:
+                        self.delegate?.storeObserverPurchaseDidFail()
+                    }
+                } catch {
+                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
                 }
             }
 
@@ -173,7 +190,7 @@ class StoreObserver: NSObject {
 //        SKPaymentQueue.default().finishTransaction(transaction)
 //    }
 
-    private func validateReceipt(completionHandler: @escaping (_ result: ValidationResult, _ expires: TimeInterval?, _ product: String?, _ error: Error?) -> Void) {
+    private func validateReceipt(completionHandler: @escaping (Result<ValidationResult,Error>) -> Void) {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             do {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
@@ -181,19 +198,21 @@ class StoreObserver: NSObject {
                     "data": receiptData.base64EncodedString()
                 ]
                 let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-                API.shared.signedRequest(endpoint: .iosSubscription , method: .post, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { (result, error) in
-                    if let error = error {
+                API.shared.signedRequest(endpoint: .iosSubscription, method: .post, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { result in
+                    switch result {
+                    case .success(let jsonObject):
+                        guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {
+                            return completionHandler(.failure(StoreObserverError.missingStatus))
+                        }
+                        completionHandler(.success(ValidationResult(status: validationStatus, productId: jsonObject["product"] as? String, expires: jsonObject["expires"] as? TimeInterval)))
+                    case .failure(let error):
                         Logger.shared.error("Error verifying receipt", error: error)
-                        completionHandler(.error, nil, nil, error)
-                    } else if let status = result?["status"] as? String, let validationResult = ValidationResult(rawValue: status), let expires = result?["expires"] as? TimeInterval, let product = result?["product"] as? String {
-                        completionHandler(validationResult, expires, product, nil)
-                    } else {
-                        completionHandler(.error, nil, nil, APIError.noResponse)
+                        completionHandler(.failure(error))
                     }
                 }
             } catch {
                 Logger.shared.error("Couldn't read receipt data", error: error)
-                completionHandler(.error, nil, nil, error)
+                completionHandler(.failure(error))
             }
         }
     }

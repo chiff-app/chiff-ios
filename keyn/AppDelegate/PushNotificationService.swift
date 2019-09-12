@@ -174,31 +174,32 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
-        session.getPersistentQueueMessages(shortPolling: shortPolling) { (messages, error) in
-            if let error = error {
+        session.getPersistentQueueMessages(shortPolling: shortPolling) { (result) in
+            switch result {
+            case .success(let messages):
+                do {
+                    guard !messages.isEmpty else {
+                        if (attempts > 1) {
+                            self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context, completionHandler: completionHandler)
+                        } else if let handler = completionHandler {
+                            handler(nil)
+                        }
+                        return
+                    }
+                    var accounts: [BulkAccount]?
+                    for message in messages {
+                        if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
+                            accounts = bulkAccounts
+                        }
+                    }
+                    if let handler = completionHandler {
+                        handler(accounts)
+                    }
+                } catch {
+                    Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
+                }
+            case .failure(let error):
                 Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
-                return
-            }
-            do {
-                guard let messages = messages, !messages.isEmpty else {
-                    if (attempts > 1) {
-                        self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context, completionHandler: completionHandler)
-                    } else if let handler = completionHandler {
-                        handler(nil)
-                    }
-                    return
-                }
-                var accounts: [BulkAccount]?
-                for message in messages {
-                    if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
-                        accounts = bulkAccounts
-                    }
-                }
-                if let handler = completionHandler {
-                    handler(accounts)
-                }
-            } catch {
-                Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
             }
         }
     }

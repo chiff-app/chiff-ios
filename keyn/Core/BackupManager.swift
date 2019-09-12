@@ -16,16 +16,6 @@ struct BackupManager {
         Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) &&
         Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
-
-    private enum KeyIdentifier: String, Codable {
-        case priv = "priv"
-        case pub = "pub"
-        case encryption = "encryption"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
     
     private enum MessageIdentifier {
         static let httpMethod = "httpMethod"
@@ -39,7 +29,7 @@ struct BackupManager {
     
     private init() {}
 
-    func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
+    func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
@@ -59,18 +49,19 @@ struct BackupManager {
                 if let data = data {
                     message[MessageIdentifier.token] = data.base64EncodedString()
                 }
-                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey) { (_, error) in
-                    if let error = error {
+                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey, body: nil) { result in
+                    switch result {
+                    case .success(_):
+                        completionHandler(.success(()))
+                    case .failure(let error):
                         Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                        completionHandler(error)
-                    } else {
-                        completionHandler(nil)
+                        completionHandler(.failure(error))
                     }
                 }
             }
         } catch {
             Logger.shared.error("Cannot initialize BackupManager.", error: error)
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
     
@@ -83,11 +74,14 @@ struct BackupManager {
                 MessageIdentifier.id: account.id,
                 MessageIdentifier.data: ciphertext.base64
             ]
-            API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
-                if let error = error {
+            API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
+                switch result {
+                case .success(_):
+                    completionHandler(true)
+                case .failure(let error):
                     Logger.shared.error("BackupManager cannot backup account data.", error: error)
+                    completionHandler(false)
                 }
-                completionHandler(error == nil)
             }
         } catch {
             completionHandler(false)
@@ -95,29 +89,30 @@ struct BackupManager {
     }
     
     func deleteAccount(accountId: String) throws {
-        API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey()) { (_, error) in
-            if let error = error {
-                Logger.shared.error("BackupManager cannot delete account.", error: error)
+        API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
+            switch result {
+            case .success(_): return
+            case .failure(let error): Logger.shared.error("BackupManager cannot delete account.", error: error)
             }
         }
     }
 
-    func deleteAllAccounts(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .backup, method: .delete, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey()) { (_, error) in
-                if let error = error {
+            API.shared.signedRequest(endpoint: .backup, method: .delete, message: nil, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey(), body: nil) { result in
+                switch result {
+                case .success(_): completionHandler(.success(()))
+                case .failure(let error):
                     Logger.shared.error("BackupManager cannot delete account.", error: error)
-                    completionHandler(error)
-                } else {
-                    completionHandler(nil)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
     
-    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (_ error: Error?) -> Void) throws {
+    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
@@ -126,31 +121,27 @@ struct BackupManager {
         } else {
             pubKey = try publicKey()
         }
-        API.shared.signedRequest(endpoint: .backup, method: .get, pubKey: pubKey, privKey: try privateKey()) { (dict, error) in
-            if let error = error {
-                Logger.shared.error("BackupManager cannot get backup data.", error: error)
-                completionHandler(error)
-                return
-            }
-
-            guard let dict = dict else {
-                completionHandler(CodingError.missingData)
-                return
-            }
-
-            for (id, data) in dict {
-                if let base64Data = data as? String {
-                    do {
-                        let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                        let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
-                        try Account.save(accountData: accountData, id: id, context: context)
-                    } catch {
-                        Logger.shared.error("Could not restore account.", error: error)
+        API.shared.signedRequest(endpoint: .backup, method: .get, message: nil, pubKey: pubKey, privKey: try privateKey(), body: nil) { result in
+            switch result {
+            case .success(let dict):
+                for (id, data) in dict {
+                    if let base64Data = data as? String {
+                        do {
+                            let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
+                            let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
+                            try Account.save(accountData: accountData, id: id, context: context)
+                        } catch {
+                            Logger.shared.error("Could not restore account.", error: error)
+                            completionHandler(.failure(error))
+                        }
                     }
                 }
+                Properties.accountCount = dict.count
+                completionHandler(.success(()))
+            case .failure(let error):
+                Logger.shared.error("BackupManager cannot get backup data.", error: error)
+                completionHandler(.failure(error))
             }
-            Properties.accountCount = dict.count
-            completionHandler(nil)
         }
     }
 

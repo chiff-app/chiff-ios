@@ -226,16 +226,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        account.delete(completionHandler: { (error) in
+        account.delete(completionHandler: { (result) in
             DispatchQueue.main.async {
-                if let error = error {
-                    self.showError(message: "Error deleting account: \(error.localizedDescription)")
-                    return
-                } else {
+                switch result {
+                case .success(_):
                     self.filteredAccounts.remove(at: filteredIndexPath.row)
                     self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
                     self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
                     self.updateUi()
+                case .failure(let error):
+                    self.showError(message: error.localizedDescription, title: "errors.deleting_account".localized)
                 }
             }
         })

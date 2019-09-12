@@ -132,15 +132,13 @@ class PasswordValidator {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                Logger.shared.warning("Error querying HIBP", error: error!)
+        let task = URLSession.shared.dataTask(with: request) { (result) in
+            switch result {
+            case .failure(let error):
+                Logger.shared.warning("Error querying HIBP", error: error)
                 completionHandler(0)
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse {
-                if httpStatus.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
+            case .success(let response, let data):
+                if response.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
                     var breachCount: Int? = nil
                     for line in responseString.lines {
                         let result = line.split(separator: ":")
@@ -149,10 +147,6 @@ class PasswordValidator {
                         }
                     }
                     completionHandler(breachCount ?? 0)
-                } else if let error = error {
-                    Logger.shared.warning("Error querying HIBP", error: error, userInfo: [
-                        "statusCode": httpStatus.statusCode
-                        ])
                 }
             }
         }
