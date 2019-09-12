@@ -137,8 +137,10 @@ class Questionnaire: Codable {
             guard let jsonData = try? JSONSerialization.data(withJSONObject: userInfo, options: []) else {
                 break
             }
-            API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .post, body: jsonData) { (_, error) in
-                if let error = error {
+            API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .post, signature: nil, body: jsonData) { (result) in
+                switch result {
+                case .success(_): break
+                case .failure(let error):
                     if let error = error as? APIError, case .noData = error {
                         return
                     }
@@ -184,28 +186,23 @@ class Questionnaire: Codable {
     }
     
     static func fetch() {
-        API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get) { (dict, error) in
-            if let error = error {
-                Logger.shared.error("Could not get questionnaire.", error: error)
-                return
-            }
-
-            guard let dict = dict else {
-                Logger.shared.warning("Could not get questionnaires")
-                return
-            }
-            if let questionnaires = dict["questionnaires"] as? [Any] {
-                for object in questionnaires {
-                    do {
-                        let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
-                        let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
-                        if !exists(id: questionnaire.id) {
-                            questionnaire.save()
+        API.shared.request(endpoint: .questionnaire, path: nil, parameters: nil, method: .get, signature: nil, body: nil) { (result) in
+            switch result {
+            case .success(let dict):
+                if let questionnaires = dict["questionnaires"] as? [Any] {
+                    for object in questionnaires {
+                        do {
+                            let jsonData = try JSONSerialization.data(withJSONObject: object, options: [])
+                            let questionnaire = try JSONDecoder().decode(Questionnaire.self, from: jsonData)
+                            if !exists(id: questionnaire.id) {
+                                questionnaire.save()
+                            }
+                        } catch {
+                            Logger.shared.error("Failed to decode questionnaire", error: error)
                         }
-                    } catch {
-                        Logger.shared.error("Failed to decode questionnaire", error: error)
                     }
                 }
+            case .failure(let error): Logger.shared.error("Could not get questionnaire.", error: error)
             }
         }
     }

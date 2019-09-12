@@ -15,6 +15,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     var window: UIWindow?
     var pushNotificationService: PushNotificationService!
+    var openedFromUrl: Bool = false
 
     // Open app normally
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -36,18 +37,27 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         return true
     }
 
-    // Open app from URL (e.g. QR code)
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: nil) { (session, error) in
-            DispatchQueue.main.async {
-                if let session = session {
-                    NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                } else if let error = error {
-                    Logger.shared.error("Error creating session.", error: error)
-                } else {
-                    Logger.shared.error("Error opening app from URL.")
-                }
-            }
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let url = userActivity.webpageURL,
+            let scheme = url.scheme,
+            let host = url.host,
+            host == "keyn.app",
+            scheme == "https",
+            url.path == "/pair",
+            let params = url.queryParameters,
+            params.count == 4,
+            params.keys.contains("p"),
+            params.keys.contains("q"),
+            params.keys.contains("o"),
+            params.keys.contains("b") else {
+                // o and b are validated in authorizepairing, p and q are validated by libsodium
+                return false
+        }
+        if let vc = self.window?.rootViewController as? RootViewController {
+            vc.selectedIndex = 1
+        } else {
+            openedFromUrl = true
         }
 
         return true
@@ -89,8 +99,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
         if BackupManager.shared.hasKeys {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                StoreObserver.shared.updateSubscriptions { (error) in
-                    if let error = error {
+                StoreObserver.shared.updateSubscriptions { (result) in
+                    if case let .failure(error) = result {
                         Logger.shared.error("Error updating subsription status", error: error)
                     }
                 }
@@ -149,7 +159,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ]) // TODO: Check date format
+            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ], override: true) // TODO: Check date format
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {
@@ -165,6 +175,11 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")
+                }
+                // We just open the devices tab instead of accounts when opened from a pairing url.
+                if self.openedFromUrl {
+                    vc.selectedIndex = 1
+                    self.openedFromUrl = false
                 }
                 self.window?.rootViewController = vc
                 self.window?.makeKeyAndVisible()

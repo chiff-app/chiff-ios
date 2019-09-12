@@ -23,7 +23,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     private var textFieldOffset: CGPoint!
     private var textFieldHeight: CGFloat!
-    private var keyboardHeight: CGFloat!
+    private var keyboardHeight: CGFloat?
     
     var mnemonic = Array<String>(repeating: "", count: 12) {
         didSet {
@@ -48,7 +48,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
-        Logger.shared.analytics(.restoreBackupOpened)
+        Logger.shared.analytics(.restoreBackupOpened, override: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -97,7 +97,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height - keyboardHeightOffset
             UIView.animate(withDuration: 0.3, animations: {
-                self.constraintContentHeight.constant += (self.keyboardHeight)
+                self.constraintContentHeight.constant += (self.keyboardHeight!) // Just assigned so it makes sense to force unwrap
             })
 
             let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
@@ -111,9 +111,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.3) {
-            self.constraintContentHeight.constant -= (self.keyboardHeight)
-            self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+        if let keyboardHeight = keyboardHeight {
+            UIView.animate(withDuration: 0.3) {
+                self.constraintContentHeight.constant -= (keyboardHeight)
+                self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            }
         }
         
         keyboardHeight = nil
@@ -128,30 +130,28 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     @IBAction func finish(_ sender: UIBarButtonItem) {
         view.endEditing(false)
         activityViewContainer.isHidden = false
-        LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (context, error) in
+        LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true) { (result) in
             do {
-                if let error = error {
-                    throw error
-                } else if let context = context {
-                    Seed.recover(context: context, mnemonic: self.mnemonic) { error in
+                guard let context = try result.get() else {
+                    throw RecoveryError.unauthenticated
+                }
+                Seed.recover(context: context, mnemonic: self.mnemonic) { result in
+                    switch result {
+                    case .failure(_):
                         DispatchQueue.main.async {
-                            if error != nil {
-                                self.showError(message: "errors.seed_restore".localized)
-                                self.activityViewContainer.isHidden = true
-                            } else {
-                                StoreObserver.shared.updateSubscriptions() { error in
-                                    if let error = error {
-                                        Logger.shared.error("Error updating subscriptions", error: error)
-                                    }
-                                    Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-                                    self.registerForPushNotifications()
-                                    Logger.shared.analytics(.backupRestored)
-                                }
+                            self.showError(message: "errors.seed_restore".localized)
+                            self.activityViewContainer.isHidden = true
+                        }
+                    case .success(_):
+                        StoreObserver.shared.updateSubscriptions() { error in
+                            if case let .failure(error) = result {
+                                Logger.shared.error("Error updating subscriptions", error: error)
                             }
+                            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+                            self.registerForPushNotifications()
+                            Logger.shared.analytics(.backupRestored, override: true)
                         }
                     }
-                } else {
-                    throw RecoveryError.unauthenticated
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -241,7 +241,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             AppDelegate.startupService.registerForPushNotifications() { result in
                 if result {
-                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completion: nil)
+                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
                 }
                 self.showRootController()
             }

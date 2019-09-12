@@ -201,21 +201,22 @@ struct Account {
         try Session.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
-    func delete(completionHandler: @escaping (_ error: Error?) -> Void) {
-        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (context, error) in
+    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
             do {
-                if let error = error {
-                    throw error
+                switch result {
+                case .success(_):
+                    try BackupManager.shared.deleteAccount(accountId: self.id)
+                    try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
+                    Account.deleteFromToIdentityStore(account: self)
+                    Logger.shared.analytics(.accountDeleted)
+                    Properties.accountCount -= 1
+                    completionHandler(.success(()))
+                case .failure(let error): throw error
                 }
-                try BackupManager.shared.deleteAccount(accountId: self.id)
-                try Session.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                Account.deleteFromToIdentityStore(account: self)
-                Logger.shared.analytics(.accountDeleted)
-                Properties.accountCount -= 1
-                completionHandler(nil)
             } catch {
                 Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(error)
+                return completionHandler(.failure(error))
             }
         }
     }
@@ -235,15 +236,16 @@ struct Account {
         }
     }
 
-    func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (_ password: String?, _ error: Error?) -> Void) {
-        Keychain.shared.get(id: id, service: .account, reason: reason, with: context, authenticationType: type) { (data, error) in
-            if let error = error {
-                return completionHandler(nil, error)
+    func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (Result<String, Error>) -> Void) {
+        Keychain.shared.get(id: id, service: .account, reason: reason, with: context, authenticationType: type) { (result) in
+            switch result {
+            case .success(let data):
+                guard let password = String(data: data, encoding: .utf8) else {
+                    return completionHandler(.failure(CodingError.stringEncoding))
+                }
+                completionHandler(.success(password))
+            case .failure(let error): completionHandler(.failure(error))
             }
-            guard let password = String(data: data!, encoding: .utf8) else {
-                return completionHandler(nil, CodingError.stringEncoding)
-            }
-            completionHandler(password, nil)
         }
     }
 

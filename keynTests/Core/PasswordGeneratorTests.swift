@@ -36,6 +36,20 @@ class PasswordGeneratorTests: XCTestCase {
         XCTAssertEqual("}a`]mSI]TRsO@juAxH0YHgDCP<v~THow", password)
         XCTAssertEqual(index, 0)
     }
+
+    func testGeneratePasswordShouldReturnPasswordv0NoPPD() throws {
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: nil, context: nil, version: 0)
+        let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
+        XCTAssertEqual("DstZRg8GDZsAxedLasMGbQ", password)
+        XCTAssertEqual(index, 0)
+    }
+
+    func testGeneratePasswordShouldReturnPasswordv1noPPD() throws {
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: nil, context: nil, version: 1)
+        let (password, index) = try passwordGenerator.generate(index: 0, offset: nil)
+        XCTAssertEqual("OA0e9zxU8CXjxosttUdcYQ", password)
+        XCTAssertEqual(index, 0)
+    }
     
     func testCalculatePasswordOffsetShouldResultInSamePassword() throws {
         let site = TestHelper.sampleSite
@@ -44,6 +58,20 @@ class PasswordGeneratorTests: XCTestCase {
         let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: nil)
         let (randomPassword, index) = try passwordGenerator.generate(index: randomIndex, offset: nil)
         
+        let offset = try passwordGenerator.calculateOffset(index: index, password: randomPassword)
+        let (calculatedPassword, newIndex) = try passwordGenerator.generate(index: index, offset: offset)
+
+        XCTAssertEqual(randomPassword, calculatedPassword)
+        XCTAssertEqual(index, newIndex)
+    }
+
+    func testCalculatePasswordOffsetShouldResultInSamePasswordNoPPD() throws {
+        let site = TestHelper.sampleSite
+        let randomIndex = Int(arc4random_uniform(100000000))
+        let username = "test"
+        let passwordGenerator = PasswordGenerator(username: username, siteId: site.id, ppd: nil, context: nil)
+        let (randomPassword, index) = try passwordGenerator.generate(index: randomIndex, offset: nil)
+
         let offset = try passwordGenerator.calculateOffset(index: index, password: randomPassword)
         let (calculatedPassword, newIndex) = try passwordGenerator.generate(index: index, offset: offset)
 

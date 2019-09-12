@@ -42,15 +42,12 @@ class OTPViewController: QRViewController, TokenController {
             return
         }
 
-        try AuthorizationGuard.addOTP(token: token!, account: account) { (error) in
+        try AuthorizationGuard.addOTP(token: token!, account: account) { (result) in
             DispatchQueue.main.async {
                 do {
-                    if let error = error {
-                        throw error
-                    } else {
-                        try self.account.setOtp(token: self.token!)
-                        self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
-                    }
+                    let _ = try result.get()
+                    try self.account.setOtp(token: self.token!)
+                    self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
                     self.showError(message: "errors.add_otp".localized)

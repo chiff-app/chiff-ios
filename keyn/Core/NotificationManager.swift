@@ -16,16 +16,6 @@ struct NotificationManager {
         static let os = "os"
     }
 
-
-    private enum KeyIdentifier: String, Codable {
-        case subscription = "subscription"
-        case endpoint = "endpoint"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
-
     var endpoint: String? {
         guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {
             return nil
@@ -60,29 +50,26 @@ struct NotificationManager {
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint
         }
-        API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
+        API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+
             do {
-                if let error = error {
-                    throw error
-                }
-                guard let dict = dict else {
-                    throw CodingError.missingData
-                }
-                if let endpoint = dict["arn"] as? String {
+                if let endpoint = try result.get()["arn"] as? String {
                     if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
                         try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     } else {
                         try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     }
                     if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-                        self.subscribe(topic: Properties.notificationTopic) { error in
-                            Properties.infoNotifications = error == nil ? .yes : .no
+                        self.subscribe(topic: Properties.notificationTopic) { result in
+                            switch result {
+                            case .success(_): Properties.infoNotifications = .yes
+                            case .failure(_): Properties.infoNotifications = .no
+                            }
                         }
                     }
                 }
             } catch {
                 Logger.shared.error("AWS cannot get arn.", error: error)
-                return
             }
         }
     }
@@ -92,9 +79,10 @@ struct NotificationManager {
             Logger.shared.warning("Tried to delete endpoint without endpoint present")
             return
         }
+        
         do {
-            API.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
-                if let error = error {
+            API.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+                if case let .failure(error) = result {
                     Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
                 }
             }
@@ -103,10 +91,11 @@ struct NotificationManager {
         }
     }
 
-    func subscribe(topic: String, completion: ((_ error: Error?) -> Void)?) {
+    func subscribe(topic: String, completionHandler: ((Result<Void, Error>) -> Void)?) {
         guard let endpoint = endpoint else {
             Logger.shared.warning("Tried to subscribe without endpoint present")
-            completion?(nil)
+            #warning("TODO: Should be considered as an error")
+            completionHandler?(.success(()))
             return
         }
         let message = [
@@ -114,50 +103,51 @@ struct NotificationManager {
             "topic": topic
         ]
         do {
-            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
+            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
-                    if let error = error {
-                        throw error
-                    } else if let subscriptionArn = dict?["arn"] as? String {
-                        try Keychain.shared.save(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws, secretData: subscriptionArn.data)
-                        completion?(nil)
+                    if let subscriptionArn = try result.get()["arn"] as? String {
+                        let id = KeyIdentifier.subscription.identifier(for: .aws)
+                        if Keychain.shared.has(id: id, service: .aws) {
+                            try Keychain.shared.update(id: id, service: .aws, secretData: subscriptionArn.data)
+                        } else {
+                            try Keychain.shared.save(id: id, service: .aws, secretData: subscriptionArn.data)
+                        }
+                        completionHandler?(.success(()))
                     }
                 } catch {
                     Logger.shared.error("Failed to subscribe to topic ARN @ AWS.", error: error)
-                    completion?(error)
+                    completionHandler?(.failure(error))
                 }
             }
         } catch {
             Logger.shared.error("Failed to get key from Keychain.", error: error)
-            completion?(error)
+            completionHandler?(.failure(error))
         }
     }
 
-    func unsubscribe(completion: @escaping (_ error: Error?) -> Void) {
+    func unsubscribe(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         guard isSubscribed else {
-            completion(nil)
+            #warning("TODO: Should be considered as an error")
+            completionHandler(.success(()))
             return
         }
         do {
             guard let subscription = String(data: try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), encoding: .utf8) else {
                 throw CodingError.stringDecoding
             }
-            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey()) { (dict, error) in
+            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
                 do {
-                    if let error = error {
-                        throw error
-                    } else {
-                        try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
-                        completion(nil)
-                    }
+                    let _ = try result.get()
+                    try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
+                    completionHandler(.success(()))
                 } catch {
                     Logger.shared.error("Failed to unsubscribe to topic ARN @ AWS.", error: error)
-                    completion(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
             Logger.shared.error("Failed to get key from Keychain.", error: error)
-            completion(error)
+            completionHandler(.failure(error))
         }
     }
 

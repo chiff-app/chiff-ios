@@ -30,24 +30,14 @@ struct Seed {
         }
     }
 
-    private enum KeyIdentifier: String, Codable {
-        case password = "password"
-        case backup = "backup"
-        case master = "master"
-
-        func identifier(for keychainService: KeychainService) -> String {
-            return "\(keychainService.rawValue).\(self.rawValue)"
-        }
-    }
-
     enum KeyType: UInt64 {
         case passwordSeed = 0
         case backupSeed = 1
     }
 
-    static func create(context: LAContext?, completionHandler: @escaping (_ error: Error?) -> Void) {
+    static func create(context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         guard !hasKeys && !BackupManager.shared.hasKeys else {
-            completionHandler(SeedError.exists)
+            completionHandler(.failure(SeedError.exists))
             return
         }
         do {
@@ -56,44 +46,42 @@ struct Seed {
             let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
             let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-            BackupManager.shared.initialize(seed: backupSeed, context: context) { error in
+            BackupManager.shared.initialize(seed: backupSeed, context: context) { result in
                 do {
-                    if let error = error {
-                        throw error
+                    switch result {
+                    case .success(_):
+                        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+                        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+                        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+                        completionHandler(.success(()))
+                    case .failure(let error): throw error
                     }
-                    try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-                    try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-                    try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-                    completionHandler(nil)
                 } catch {
                     BackupManager.shared.deleteAllKeys()
                     try? delete()
-                    completionHandler(error)
+                    completionHandler(.failure(error))
                 }
             }
         } catch {
             try? delete()
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
 
-    static func mnemonic(completionHandler: @escaping (_ mnemonic: [String]?, _ error: Error?) -> Void) {
-        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded) { (data, error) in
+    static func mnemonic(completionHandler: @escaping (Result<[String], Error>) -> Void) {
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded) { (result) in
             do {
-                if let error = error {
-                    throw error
+                switch result {
+                case .success(let seed):
+                    let checksumSize = seed.count / 4
+                    let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
+                    let wordlist = try self.localizedWordlist()
+                    let mnemonic = bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
+                    completionHandler(.success(mnemonic))
+                case .failure(let error): throw error
                 }
-                guard let seed = data else {
-                    throw SeedError.notFound
-                }
-                let checksumSize = seed.count / 4
-                let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
-                let wordlist = try self.localizedWordlist()
-                
-                let mnemonic = bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
-                completionHandler(mnemonic, nil)
             } catch {
-                completionHandler(nil, error)
+                completionHandler(.failure(error))
             }
         }
     }
@@ -107,9 +95,9 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (_ error: Error?) -> Void) {
+    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<Void, Error>) -> Void) {
         guard !hasKeys && !BackupManager.shared.hasKeys else {
-            completionHandler(SeedError.exists)
+            completionHandler(.failure(SeedError.exists))
             return
         }
         do {
@@ -131,7 +119,7 @@ struct Seed {
         } catch {
             BackupManager.shared.deleteAllKeys()
             try? delete()
-            completionHandler(error)
+            completionHandler(.failure(error))
         }
     }
 
