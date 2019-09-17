@@ -34,7 +34,7 @@ class NotificationProcessor {
         let siteName = keynRequest.siteName ?? "Unknown"
 
         switch keynRequest.type {
-        case .add, .addAndLogin, .addToExisting:
+        case .add, .addAndLogin:
             content.title = "notifications.add_account".localized
             content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
         case .addBulk:
@@ -46,7 +46,7 @@ class NotificationProcessor {
         case .change:
             content.title = "notifications.change_password".localized
             content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
-        case .login:
+        case .login, .addToExisting:
             content.title = "notifications.login".localized
             content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
         case .fill:
