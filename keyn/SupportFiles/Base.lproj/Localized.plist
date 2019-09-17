@@ -1085,6 +1085,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 	</dict>
 	<key>notifications</key>
 	<dict>
+		<key>accounts_from</key>
+		<dict>
+			<key>value</key>
+			<string>%@ accounts from %@ on %@</string>
+		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
@@ -1110,6 +1115,13 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Fill password</string>
 		</dict>
+		<key>in_on</key>
+		<dict>
+			<key>description</key>
+			<string>GitHub in Firefox on MacOS</string>
+			<key>value</key>
+			<string>%@ in %@ on %@.</string>
+		</dict>
 		<key>login</key>
 		<dict>
 			<key>value</key>
@@ -1119,6 +1131,13 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Pair</string>
+		</dict>
+		<key>this_on_that</key>
+		<dict>
+			<key>description</key>
+			<string>Chrome on MacOS</string>
+			<key>value</key>
+			<string>%@ on %@.</string>
 		</dict>
 	</dict>
 	<key>numbers</key>

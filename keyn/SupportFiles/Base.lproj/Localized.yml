@@ -538,11 +538,19 @@ notifications:
   change_password:
     value: Change password
   login:
-    value: Log in
+    value: Login
   fill_password:
     value: Fill password
   pairing:
     value: Pair
+  this_on_that:
+    value: '%@ on %@.'
+    description: Chrome on MacOS
+  in_on:
+    value: '%@ in %@ on %@.'
+    description: GitHub in Firefox on MacOS
+  accounts_from:
+    value: '%@ accounts from %@ on %@'
 
 registration:
   change_password_footer:
