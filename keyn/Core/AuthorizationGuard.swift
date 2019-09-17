@@ -28,9 +28,9 @@ class AuthorizationGuard {
 
     private var authenticationReason: String {
         switch type {
-        case .login:
+        case .login, .addToExisting:
             return String(format: "requests.login_to".localized, siteName!)
-        case .add, .register, .addAndLogin, .addToExisting:
+        case .add, .register, .addAndLogin:
             return String(format: "requests.add_site".localized, siteName!)
         case .change:
             return String(format: "requests.change_for".localized, siteName!)
@@ -160,27 +160,23 @@ class AuthorizationGuard {
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
-                
-                func onSuccess(context: LAContext?) throws {
-                    var account = try Account.get(accountID: self.accountId, context: context)
-                    guard account != nil  else {
-                        throw AccountError.notFound
-                    }
-                    try account!.addSite(site: site)
-                    try self.session.sendCredentials(account: account!, browserTab: self.browserTab, type: self.type, context: context!)
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                    }
-                    success = true
-                    completionHandler(nil)
-                }
-                
                 do {
                     defer {
                         AuthorizationGuard.authorizationInProgress = false
                         Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
-                    try onSuccess(context: result.get())
+                    let context = try result.get()
+                    guard var account = try Account.get(accountID: self.accountId, context: context) else {
+                        throw AccountError.notFound
+                    }
+                    try account.addSite(site: site)
+                    #warning("This seems off. Can this crash? Should LocalAuthenticationManager return the context non-optional")
+                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                    }
+                    success = true
+                    completionHandler(nil)
                 } catch {
                     completionHandler(error)
                 }
@@ -197,8 +193,11 @@ class AuthorizationGuard {
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
-                
-                func onSuccess(context: LAContext?) throws {
+                do {
+                    defer {
+                        Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
+                    }
+                    let context = try result.get()
                     let account = try Account(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
@@ -206,13 +205,6 @@ class AuthorizationGuard {
                     }
                     success = true
                     completionHandler(nil)
-                }
-                
-                do {
-                    defer {
-                        Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
-                    }
-                    try onSuccess(context: result.get())
                 } catch {
                     completionHandler(error)
                 }

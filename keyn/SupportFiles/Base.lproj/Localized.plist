@@ -1125,7 +1125,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>login</key>
 		<dict>
 			<key>value</key>
-			<string>Log in</string>
+			<string>Login</string>
 		</dict>
 		<key>pairing</key>
 		<dict>
