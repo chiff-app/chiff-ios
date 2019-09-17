@@ -543,6 +543,13 @@ notifications:
     value: Wachtwoord invullen
   pairing:
     value: Koppelen
+  this_on_that:
+    value: '%@ op %@.'
+  in_on:
+    value: '%@ in %@ op %@.'
+    description: GitHub in Firefox op MacOS
+  accounts_from:
+    value: '%@ accounts van %@ op %@'
 
 registration:
   change_password_footer:
