@@ -26,6 +26,7 @@ class Crypto {
     private let SEED_SIZE = 16
     private let KEY_SIZE = 32
     private let CONTEXT_SIZE = 8
+    private let PADDING_BLOCK_SIZE = 200
     static let shared = Crypto()
 
     private let sodium = Sodium()
@@ -167,7 +168,7 @@ class Crypto {
 
     func encrypt(_ plaintext: Data, key: Data) throws -> Data {
         var data = plaintext.bytes
-        sodium.utils.pad(bytes: &data, blockSize: 200)
+        sodium.utils.pad(bytes: &data, blockSize: PADDING_BLOCK_SIZE)
         guard let ciphertext: Bytes = sodium.box.seal(message: data, beforenm: key.bytes) else {
             throw CryptoError.encryption
         }
@@ -175,10 +176,13 @@ class Crypto {
         return ciphertext.data
     }
 
-    func decrypt(_ ciphertext: Data, key: Data) throws -> (Data, Data) {
+    func decrypt(_ ciphertext: Data, key: Data, version: Int) throws -> (Data, Data) {
         let nonce = ciphertext[..<Data.Index(sodium.box.NonceBytes)]
-        guard let plaintext: Bytes = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, beforenm: key.bytes) else {
+        guard var plaintext: Bytes = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, beforenm: key.bytes) else {
             throw CryptoError.decryption
+        }
+        if version > 0 {
+            sodium.utils.unpad(bytes: &plaintext, blockSize: PADDING_BLOCK_SIZE)
         }
 
         return (plaintext.data, nonce)

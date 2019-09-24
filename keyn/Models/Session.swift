@@ -41,13 +41,36 @@ class Session: Codable {
     let id: String
     let os: String
     let signingPubKey: String
+    let version: Int
 
-    init(id: String, signingPubKey: Data, browser: String, os: String) {
+    enum CodingKeys: CodingKey {
+        case backgroundTask
+        case browser
+        case creationDate
+        case id
+        case os
+        case signingPubKey
+        case version
+    }
+
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.browser = try values.decode(String.self, forKey: .browser)
+        self.os = try values.decode(String.self, forKey: .os)
+        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+    }
+
+    init(id: String, signingPubKey: Data, browser: String, os: String, version: Int) {
         self.creationDate = Date()
         self.id = id
         self.signingPubKey = signingPubKey.base64
         self.browser = browser
         self.os = os
+        self.version = version
     }
 
     func delete(notifyExtension: Bool) throws {
@@ -69,7 +92,7 @@ class Session: Codable {
 
     func decrypt(message message64: String) throws -> KeynRequest {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
         var message = try JSONDecoder().decode(KeynRequest.self, from: data)
         message.sessionID = id
         return message
@@ -249,7 +272,7 @@ class Session: Codable {
         Properties.sessionCount = 0
     }
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -258,7 +281,7 @@ class Session: Codable {
 
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
-            let session = Session(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os)
+            let session = Session(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os, version: version)
             let group = DispatchGroup()
             var groupError: Error?
             group.enter()
@@ -312,7 +335,7 @@ class Session: Codable {
 
     private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
         return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
     }
 
@@ -353,7 +376,7 @@ class Session: Codable {
     }
 
     private func acknowledgeSessionStartToBrowser(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completionHandler: @escaping (Result<Void, Error>) -> Void) throws {
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try Account.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: 1)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
