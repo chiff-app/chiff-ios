@@ -329,6 +329,10 @@ class AuthorizationGuard {
             guard try !Session.exists(id: browserPubKey.hash) else {
                 throw SessionError.exists
             }
+            var version: Int = 0
+            if let versionString = parameters["v"], let versionNumber = Int(versionString) {
+                version = versionNumber
+            }
             LocalAuthenticationManager.shared.authenticate(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", withMainContext: mainContext) { (result) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
@@ -336,7 +340,7 @@ class AuthorizationGuard {
                 switch result {
                 case .success(_):
                     authenticationCompletionHandler?(result)
-                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, completionHandler: completionHandler)
+                    Session.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
                 case .failure(let error):
                     authenticationCompletionHandler?(result)
                     completionHandler(.failure(error))
