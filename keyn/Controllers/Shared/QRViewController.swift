@@ -18,6 +18,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
 
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var qrIconImageView: UIImageView!
+    @IBOutlet weak var scanCheckmarkImageView: UIImageView!
 
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
@@ -61,8 +62,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         guard let url = URL(string: urlString) else {
                             throw CameraError.invalid
                         }
-                        self.qrIconImageView.image = UIImage(named: "scan_checkmark")
-                        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.qrIconImageView.alpha = 1.0 })
+                        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveLinear], animations: { self.scanCheckmarkImageView.alpha = 1.0 })
                         try self.handleURL(url: url)
                     } catch {
                         switch error {
@@ -85,7 +85,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     func hideIcon() {
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseOut], animations: { self.qrIconImageView.alpha = 0.0 })
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseOut], animations: { self.scanCheckmarkImageView.alpha = 0.0 })
     }
     
     func scanQR() throws {
@@ -114,6 +114,14 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         captureSession.startRunning()
     }
 
+    func errorHandler(_ action: UIAlertAction) {
+        DispatchQueue.main.async {
+            self.hideIcon()
+            self.recentlyScannedUrls.removeAll(keepingCapacity: false)
+            self.qrFound = false
+        }
+    }
+
     // MARK: - Private functions
 
     private func showCameraDeniedError() {
@@ -126,6 +134,5 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
 
 }
