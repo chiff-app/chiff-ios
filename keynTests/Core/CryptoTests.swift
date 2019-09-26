@@ -299,9 +299,9 @@ class CryptoTests: XCTestCase {
                 return XCTFail("Error getting data from base64 string")
         }
         do {
-            let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey)
+            let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 0)
             XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
-            XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: "sharedKey".data))
+            XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: "sharedKey".data, version: 0))
         } catch {
             XCTFail("Error decrypting: \(error)")
         }
