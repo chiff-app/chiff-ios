@@ -114,14 +114,14 @@ class SessionTests: XCTestCase {
     
     func testDecrypt() {
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         XCTAssertNoThrow(try session.decrypt(message: TestHelper.keynRequestEncrypted))
     }
     
     func testCancelRequest() {
         let expectation = XCTestExpectation(description: "Finish testCancelRequest")
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.cancelRequest(reason: .disabled, browserTab: 0) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
@@ -135,7 +135,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testCancelRequestFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.cancelRequest(reason: .disabled, browserTab: 0) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
@@ -149,7 +149,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessages")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI", "receiptHandle": "test"]])
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.getPersistentQueueMessages(shortPolling: true) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
@@ -162,7 +162,7 @@ class SessionTests: XCTestCase {
     func testGetPersistentQueueMessagesFailsWithoutData() {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsWithoutData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.getPersistentQueueMessages(shortPolling: true) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
@@ -176,7 +176,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfWrongData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI"]])
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.getPersistentQueueMessages(shortPolling: true) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
@@ -190,7 +190,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsIfNoKeys")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.getPersistentQueueMessages(shortPolling: true) { (result) in
             if case .success(_) = result {
                 XCTFail("Should fail")
@@ -203,7 +203,7 @@ class SessionTests: XCTestCase {
     func testDeleteFromPersistentQueue() {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter")
     }
     
@@ -211,7 +211,7 @@ class SessionTests: XCTestCase {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(shouldFail: true)
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter")
     }
     
@@ -219,14 +219,14 @@ class SessionTests: XCTestCase {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter")
     }
     
     func testDeleteAccount() {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteAccount(accountId: TestHelper.userID)
     }
     
@@ -234,7 +234,7 @@ class SessionTests: XCTestCase {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(shouldFail: true)
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteAccount(accountId: TestHelper.userID)
     }
     
@@ -242,7 +242,7 @@ class SessionTests: XCTestCase {
         // It doesn't really fails, as there is no completionHandler for deleteFromPersistentQueue
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
-        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os")
+        let session = Session(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
         session.deleteAccount(accountId: TestHelper.userID)
     }
     
