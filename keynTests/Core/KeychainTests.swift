@@ -12,8 +12,20 @@ import LocalAuthentication
 @testable import keyn
 
 class KeychainTests: XCTestCase {
+
+    var context: LAContext!
     
     override func setUp() {
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            switch result {
+                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
+                case .success(let context):
+                    self.context = context
+            }
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
         super.setUp()
     }
     
@@ -40,17 +52,11 @@ class KeychainTests: XCTestCase {
     
     func testGetThrowsIfSeedDataIsEmpty() {
         TestHelper.createEmptySeed()
-        let expectation = XCTestExpectation(description: "Finish testGetThrowsIfSeedDataIsEmpty")
-        let context = LAContext()
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
-            do {
-                try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context)
-            } catch let error {
-                XCTAssertEqual(error.localizedDescription, KeychainError.unexpectedData.localizedDescription)
-            }
-            expectation.fulfill()
+        do {
+            let _ = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context)
+        } catch let error {
+            XCTAssertEqual(error.localizedDescription, KeychainError.unexpectedData.localizedDescription)
         }
-        wait(for: [expectation], timeout: 10.0)
     }
     
     func testGetThrowsIfContextIsInvalid() {
@@ -75,17 +81,7 @@ class KeychainTests: XCTestCase {
     
     func testAllNotNil() {
         TestHelper.createSeed()
-        let expectation = XCTestExpectation(description: "Finish testAllNotNil")
-        let context = LAContext()
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
-            do {
-                XCTAssertNotNil(try Keychain.shared.all(service: .seed, context: context))
-            } catch {
-                XCTFail("Error getting data: \(error)")
-            }
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(try Keychain.shared.all(service: .seed, context: context))
     }
     
     func testAllThrowsIfInvalidContext() {
@@ -96,32 +92,12 @@ class KeychainTests: XCTestCase {
     
     func testAttributesDoesntThrow() {
         TestHelper.createSeed()
-        let expectation = XCTestExpectation(description: "Finish testAttributesDoesntThrow")
-        let context = LAContext()
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
-            do {
-                XCTAssertNoThrow(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
-            } catch {
-               XCTFail("Error getting data: \(error)")
-            }
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNoThrow(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
     }
     
     func testAttributesNotNil() {
         TestHelper.createSeed()
-        let expectation = XCTestExpectation(description: "Finish testAttributesNotNil")
-        let context = LAContext()
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
-            do {
-                XCTAssertNotNil(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
-            } catch {
-                XCTFail("Error getting data: \(error)")
-            }
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(try Keychain.shared.attributes(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
         
     }
     
@@ -173,7 +149,7 @@ class KeychainTests: XCTestCase {
     func testGetAsync() {
         let expectation = XCTestExpectation(description: "Finish testGetAsync")
         TestHelper.createSeed()
-        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: LAContext(), authenticationType: .ifNeeded) { (result) in
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: self.context, authenticationType: .ifNeeded) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
@@ -197,7 +173,7 @@ class KeychainTests: XCTestCase {
     
     func testGetAsyncFailsIfNoSeed() {
         let expectation = XCTestExpectation(description: "Finish testGetAsyncFailsIfNoSeed")
-        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: LAContext(), authenticationType: .ifNeeded) { (result) in
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: self.context, authenticationType: .ifNeeded) { (result) in
             if case .success(_) = result {
                 XCTFail("There must be an error")
             }
@@ -209,7 +185,7 @@ class KeychainTests: XCTestCase {
     func testDeleteAsync() {
         let expectation = XCTestExpectation(description: "Finish testDeleteAsync")
         TestHelper.createSeed()
-        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: LAContext()) { (result) in
+        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: self.context) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
@@ -248,10 +224,9 @@ class KeychainTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testSaveAndGet")
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
-        let context = LAContext()
         context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
             do {
-                let data = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context)
+                let data = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: self.context)
                 XCTAssertEqual(data, initialData)
             } catch {
                 XCTFail("Error getting data: \(error)")
@@ -280,12 +255,11 @@ class KeychainTests: XCTestCase {
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
         let expectation = XCTestExpectation(description: "Finish testSaveAndGet")
-        let context = LAContext()
         context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
             do {
                let updatedData = "secretKeyUpdated".data
-               XCTAssertNoThrow(try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: updatedData, objectData: nil, context: context))
-               let data = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context)
+                XCTAssertNoThrow(try Keychain.shared.update(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: updatedData, objectData: nil, context: self.context))
+                let data = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: self.context)
                XCTAssertEqual(data, updatedData)
            } catch {
                XCTFail("Error getting data: \(error)")
@@ -300,19 +274,12 @@ class KeychainTests: XCTestCase {
         let secondDataSample = "two".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: firstDataSample))
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .backup), service: .seed, secretData: secondDataSample))
-        
-        let expectation = XCTestExpectation(description: "Finish testSaveAndGet")
-        let context = LAContext()
-        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
-            do {
-                let data = try Keychain.shared.all(service: .seed, context: context)
-                XCTAssertNotNil(data)
-            } catch {
-                XCTFail("Error getting data: \(error)")
-            }
-            expectation.fulfill()
+        do {
+            let data = try Keychain.shared.all(service: .seed, context: self.context)
+            XCTAssertNotNil(data)
+        } catch {
+            XCTFail("Error getting data: \(error)")
         }
-        wait(for: [expectation], timeout: 10.0)
     }
     
     func testSaveAndDeleteAndGet() {
@@ -324,7 +291,6 @@ class KeychainTests: XCTestCase {
     
     func testSaveAndDeleteAllAndGet() {
         TestHelper.createSeed()
-        let context = LAContext()
         Keychain.shared.deleteAll(service: .seed)
         XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
         XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context))
@@ -342,7 +308,7 @@ class KeychainTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testSaveAndGetAsync")
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
-        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: LAContext(), authenticationType: .ifNeeded) { (result) in
+        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: context, authenticationType: .ifNeeded) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
@@ -355,13 +321,13 @@ class KeychainTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testSaveAndGetAsync")
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
-        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: LAContext()) { (result) in
+        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: context) { (result) in
             switch result {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
                 expectation.fulfill()
             case .success(_):
-                Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded, with: LAContext()) { (result) in
+                Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded, with: self.context) { (result) in
                     if case .success(_) = result {
                         XCTFail("There must be an error")
                     }

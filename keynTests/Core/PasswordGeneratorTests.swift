@@ -11,7 +11,15 @@ class PasswordGeneratorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        TestHelper.createSeed()
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            if case .failure(let error) = result {
+                fatalError("Failed to get context: \(error.localizedDescription)")
+            }
+            TestHelper.createSeed()
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
     }
 
     override func tearDown() {
