@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import XCTest
+import LocalAuthentication
 
 @testable import keyn
 
@@ -23,7 +24,7 @@ class SeedTests: XCTestCase {
     
     func testCreateSeed() {
         TestHelper.deleteLocalData()
-        Seed.create(context: FakeLAContext()) { (result) in
+        Seed.create(context: nil) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
@@ -75,7 +76,7 @@ class SeedTests: XCTestCase {
         }
         let expectation = XCTestExpectation(description: "Finish testRecover")
         API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-        Seed.recover(context: FakeLAContext(), mnemonic: TestHelper.mnemonic) { (result) in
+        Seed.recover(context: LAContext(), mnemonic: TestHelper.mnemonic) { (result) in
             if case let .failure(error) = result {
                 XCTFail(error.localizedDescription)
             }
@@ -85,39 +86,81 @@ class SeedTests: XCTestCase {
     }
 
     func testGetPasswordSeedDoesntThrow() {
-        XCTAssertNoThrow(try Seed.getPasswordSeed(context: FakeLAContext()))
+        let context = LAContext()
+        let expectation = XCTestExpectation(description: "Finish testGetPasswordSeedDoesntThrow")
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
+            do {
+                XCTAssertNoThrow(try Seed.getPasswordSeed(context: context))
+            } catch let error {
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testGetPasswordThrowsIfNoData() {
         TestHelper.deleteLocalData()
-        XCTAssertThrowsError(try Seed.getPasswordSeed(context: FakeLAContext()))
+        let context = LAContext()
+        let expectation = XCTestExpectation(description: "Finish testGetPasswordThrowsIfNoData")
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
+            do {
+                try Seed.getPasswordSeed(context: context)
+            } catch let error {
+                XCTAssertEqual(error.localizedDescription, KeychainError.notFound.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testGetPasswordSeed() {
-        do {
-            let passwordSeed = try Seed.getPasswordSeed(context: FakeLAContext())
-            XCTAssertEqual(passwordSeed.base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
-        } catch {
-            XCTFail("Error getting password seed: \(error)")
+        let context = LAContext()
+        let expectation = XCTestExpectation(description: "Finish testGetPasswordSeed")
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
+            do {
+                let passwordSeed = try Seed.getPasswordSeed(context: context)
+                XCTAssertEqual(passwordSeed.base64, "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0")
+            } catch {
+                XCTFail("Error getting password seed: \(error)")
+            }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testGetBackupSeedDoesntThrow() {
-        XCTAssertNoThrow(try Seed.getBackupSeed(context: FakeLAContext()))
+        let context = LAContext()
+        let expectation = XCTestExpectation(description: "Finish testGetBackupSeedDoesntThrow")
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
+            do {
+                XCTAssertNoThrow(try Seed.getBackupSeed(context: context))
+            } catch {
+                XCTFail("Error getting password seed: \(error)")
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testGetBackupThrowsIfNoData() {
         TestHelper.deleteLocalData()
-        XCTAssertThrowsError(try Seed.getBackupSeed(context: FakeLAContext()))
+        XCTAssertThrowsError(try Seed.getBackupSeed(context: nil))
     }
 
     func testGetBackupSeed() {
-        do {
-            let backupSeed = try Seed.getBackupSeed(context: FakeLAContext())
-            XCTAssertEqual(backupSeed.base64, "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw")
-        } catch {
-            XCTFail("Error getting password seed: \(error)")
+        let context = LAContext()
+        let expectation = XCTestExpectation(description: "Finish testGetBackupSeed")
+        context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Testing") { (_, _) in
+            do {
+                let backupSeed = try Seed.getBackupSeed(context: context)
+                XCTAssertEqual(backupSeed.base64, "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw")
+            } catch {
+                XCTFail("Error getting password seed: \(error)")
+            }
+            expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 10.0)
     }
 
     func testDelete() {
@@ -141,22 +184,29 @@ class SeedTests: XCTestCase {
         guard let pubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        let expectation = XCTestExpectation(description: "Finish testisBackedUp")
         API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-        Seed.recover(context: FakeLAContext(), mnemonic: TestHelper.mnemonic) { (result) in
-            do {
-                let _ = try result.get()
-                guard let account = try Account.get(accountID: TestHelper.userID, context: FakeLAContext()) else {
-                    return XCTFail("Account not found")
-                }
-                XCTAssertTrue(account.id == TestHelper.userID)
-                expectation.fulfill()
-            } catch {
+        let expectation = XCTestExpectation(description: "Finish testIsBackedUp")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
+            switch result {
+            case .failure(let error):
                 XCTFail(error.localizedDescription)
                 expectation.fulfill()
+            case .success(let context):
+                Seed.recover(context: context!, mnemonic: TestHelper.mnemonic) { (result) in
+                    do {
+                        let _ = try result.get()
+                        guard let account = try Account.get(accountID: TestHelper.userID, context: context) else {
+                            return XCTFail("Account not found")
+                        }
+                        XCTAssertTrue(account.id == TestHelper.userID)
+                    } catch {
+                        XCTFail(error.localizedDescription)
+                    }
+                    expectation.fulfill()
+                }
             }
         }
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 10.0)
     }
 
     // MARK: - Integration Tests
@@ -164,7 +214,7 @@ class SeedTests: XCTestCase {
     func testCreateAndMnemonicAndValidateAndDeleteAndRecover() {
         TestHelper.deleteLocalData()
         let expectation = XCTestExpectation(description: "Finish testCreateAndMnemonicAndValidateAndDeleteAndRecover")
-        Seed.create(context: FakeLAContext()) { (seedResult) in
+        Seed.create(context: LAContext()) { (seedResult) in
             switch seedResult {
             case .success(_):
                 Seed.mnemonic { (result) in
@@ -172,7 +222,7 @@ class SeedTests: XCTestCase {
                         let mnemonic = try result.get()
                         XCTAssertTrue(Seed.validate(mnemonic: mnemonic))
                         TestHelper.deleteLocalData()
-                        Seed.recover(context: FakeLAContext(), mnemonic: mnemonic, completionHandler: { (result) in
+                        Seed.recover(context: LAContext(), mnemonic: mnemonic, completionHandler: { (result) in
                             if case let .failure(error) = result {
                                 XCTFail(error.localizedDescription)
                             }
