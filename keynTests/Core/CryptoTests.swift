@@ -32,20 +32,18 @@ class CryptoTests: XCTestCase {
     }
 
     func testDeriveKeyFromSeedDoesntThrow() {
-        do {
-            let seed = try Crypto.shared.generateSeed()
-            XCTAssertNoThrow(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "0"))
-            XCTAssertThrowsError(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "200000000000"))
-        } catch {
-            XCTFail("Error during seed generation: \(error)")
+        guard let seed = TestHelper.base64seed.fromBase64 else {
+            return XCTFail("Error getting data from base64 seed")
         }
+        XCTAssertNoThrow(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: TestHelper.CRYPTO_CONTEXT))
+        XCTAssertThrowsError(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "200000000000"))
     }
     
     func testDeriveKeyFromSeed() {
         guard let seed = TestHelper.base64seed.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: "keynseed").base64, TestHelper.passwordSeed)
+        XCTAssertEqual(try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: TestHelper.CRYPTO_CONTEXT).base64, TestHelper.passwordSeed)
     }
     
     func testCreateSessionKeyPairDoesntThrow() {
@@ -67,7 +65,7 @@ class CryptoTests: XCTestCase {
     }
     
     func testCreateSignInKeyPair() {
-        guard let seed = TestHelper.backupSeed.fromBase64, let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivSeed.fromBase64 else {
+        guard let seed = TestHelper.backupSeed.fromBase64, let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivKey.fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
@@ -94,13 +92,13 @@ class CryptoTests: XCTestCase {
     }
     
     func testDeriveKey() {
-        let sodium = Sodium()
-        guard let seed = TestHelper.base64seed.fromBase64, let seedHash = sodium.genericHash.hash(message: seed.bytes) else {
+        guard let seed = TestHelper.passwordSeed.fromBase64, let wrongSeed = "lasjndkjsnk".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
-        XCTAssertNoThrow(try Crypto.shared.deriveKey(keyData: seedHash.data, context: "0", index: 1))
-        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: seedHash.data, context: "asdadasdsada0", index: 1))
-        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: seed, context: "0", index: 1))
+        XCTAssertNoThrow(try Crypto.shared.deriveKey(keyData: seed, context: TestHelper.CRYPTO_CONTEXT, index: 1))
+        XCTAssertEqual(try Crypto.shared.deriveKey(keyData: seed, context: TestHelper.CRYPTO_CONTEXT, index: 1).base64, "fk1VVbjJuj6klZBWrDieD_9J_4brbaoeaIJJavWBtnM")
+        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: seed, context: "asdadasdsada0", index: 1))
+        XCTAssertThrowsError(try Crypto.shared.deriveKey(keyData: wrongSeed, context: TestHelper.CRYPTO_CONTEXT, index: 1))
     }
     
     func testConvertToBase64() {
@@ -143,12 +141,13 @@ class CryptoTests: XCTestCase {
     func testSignAndSignatureAndVerifySignature() {
         let sodium = Sodium()
         let textToBeSigned = "Test string".data
-        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivSeed.fromBase64, let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
+        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivKey.fromBase64, let wrongSeed = "basdas-E-cJhAYw".fromBase64 else {
             return XCTFail("Error getting data from base64 seed")
         }
         do {
             let signedMessage = try Crypto.shared.sign(message: textToBeSigned, privKey: privKey)
             let signature = try Crypto.shared.signature(message: signedMessage, privKey: privKey)
+            print(signature.base64)
             XCTAssertTrue(sodium.sign.verify(message: signedMessage.bytes, publicKey: pubKey.bytes, signature: signature.bytes))
             XCTAssertThrowsError(try Crypto.shared.signature(message: signedMessage, privKey: wrongSeed))
         } catch {
@@ -310,5 +309,15 @@ class CryptoTests: XCTestCase {
     func testSha1() {
         let hash = Crypto.shared.sha1(from: "String")
         XCTAssertEqual(hash, "3df63b7acb0522da685dad5fe84b81fdd7b25264")
+    }
+    
+    func testSha256String() {
+        let hash = Crypto.shared.sha256(from: "String")
+        XCTAssertEqual(hash, "b2ef230e7f4f315a28cdcc863028da31f7110f3209feb76e76fed0f37b3d8580")
+    }
+    
+    func testSha256Data() {
+        let hash = Crypto.shared.sha256(from: "String".data)
+        XCTAssertEqual(hash, "su8jDn9PMVoozcyGMCjaMfcRDzIJ_rdudv7Q83s9hYA".fromBase64)
     }
 }

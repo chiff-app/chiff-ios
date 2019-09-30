@@ -60,7 +60,7 @@ class PasswordValidatorTests: XCTestCase {
         XCTAssertEqual(validator.validate(password: "Ver8aspdi€sd8na"), false)
     }
 
-    func testValidateReturnsFalseForTooManyConsecutiveCharacters() {
+    func testValidateReturnsFalseForTooMatestValidateReturnsFalseForUnallowedCharactersnyConsecutiveCharacters() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: 3)
         let validator = PasswordValidator(ppd: ppd)
         let password = "sod8na9p8d7snaaaa" // 4 consecutive characters
