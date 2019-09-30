@@ -19,10 +19,11 @@ import LocalAuthentication
 class TestHelper {
 
     static let base64seed = "_jx16O6LVpESsOBBrR2btg"
+    static let CRYPTO_CONTEXT = "keynseed"
     static let passwordSeed = "L0y8UIj15Tl2jm2k5cZU8avW45GzOQi4kpHD-PdrAT0"
     static let backupSeed = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYw"
     static let backupPubKey = "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI"
-    static let backupPrivSeed = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g"
+    static let backupPrivKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g"
     static let pairingQueueSeed = "0F5l3RTX8f0TUpC9aBe-dgOwzMqaPrjPGTmh60LULFs"
     static let browserPublicKeyBase64 = "uQ-JTC6gejxrz2dNw1sXO6JAQP32wNpXFPnJ2PgksuM"
     static let sessionID = "9d710842c9cc6df1b2f4f3ca2074bc1408e525e7ce46635ce21579c9fe6f01e7"
@@ -111,13 +112,12 @@ class TestHelper {
     }
 
     static func createBackupKeys() {
+        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivKey.fromBase64, let encryptionKey = "Qpx3K996cCvM4L7iZeGjHHDy2m1p0m3MTI7VRN9LrAk".fromBase64 else {
+            fatalError("Unable to get data from base 64 string")
+        }
         do {
-            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-            let keyPair = try Crypto.shared.createSigningKeyPair(seed: backupSeed)
-            try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
-            try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
-            
-            let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: "keynback")
+            try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: pubKey)
+            try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: privKey)
             try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
         } catch {
             fatalError(error.localizedDescription)

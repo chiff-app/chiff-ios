@@ -3,15 +3,28 @@
  * All rights reserved.
  */
 import XCTest
+import LocalAuthentication
 
 @testable import keyn
 
 class BackupManagerTests: XCTestCase {
 
+    var context: LAContext!
+
     override func setUp() {
         super.setUp()
-        TestHelper.createSeed()
-        TestHelper.createBackupKeys()
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            switch result {
+                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
+                case .success(let context):
+                    self.context = context
+                    TestHelper.createSeed()
+                    TestHelper.createBackupKeys()
+            }
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
     }
 
@@ -26,7 +39,7 @@ class BackupManagerTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testInitializeFailsIfKeysAlreadyExist")
         do {
             let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }
@@ -45,7 +58,7 @@ class BackupManagerTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testInitializeDoesntFail")
         do {
             let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }
@@ -63,9 +76,10 @@ class BackupManagerTests: XCTestCase {
         TestHelper.createSeed()
         let expectation = XCTestExpectation(description: "Finish testInitializeFailsIfWrongSeed")
         let backupSeed = "seed".data
-        BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
+        BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
+            switch result {
+            case .failure(let error): XCTAssertEqual(error.localizedDescription, CryptoError.keyDerivation.localizedDescription)
+            case .success(_): XCTFail("Must fail")
             }
             expectation.fulfill()
         }
@@ -80,7 +94,7 @@ class BackupManagerTests: XCTestCase {
         API.shared = mockAPI
         do {
             let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-            BackupManager.shared.initialize(seed: backupSeed, context: FakeLAContext()) { (result) in
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
                 if case .success(_) = result {
                     XCTFail("Should fail")
                 }
@@ -206,7 +220,7 @@ class BackupManagerTests: XCTestCase {
             let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
             let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-            try BackupManager.shared.getBackupData(seed: seed, context: FakeLAContext()) { (result) in
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }
@@ -226,7 +240,7 @@ class BackupManagerTests: XCTestCase {
             let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
             let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
             API.shared = mockAPI
-            try BackupManager.shared.getBackupData(seed: seed, context: FakeLAContext()) { (result) in
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
                 if case .success(_) = result {
                     XCTFail("Should fail")
                 }
@@ -245,7 +259,7 @@ class BackupManagerTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetBackupDataIfNoPubKey")
         do {
             let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-            try BackupManager.shared.getBackupData(seed: seed, context: FakeLAContext()) { (result) in
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }
@@ -274,11 +288,16 @@ class BackupManagerTests: XCTestCase {
     func testPrivateKeyDoesntThrow() {
         XCTAssertNoThrow(try BackupManager.shared.privateKey())
     }
+    
+    func testPrivateKeyThrows() {
+        TestHelper.deleteLocalData()
+        XCTAssertThrowsError(try BackupManager.shared.privateKey())
+    }
 
     func testPrivateKey() {
         do {
             let privateKey = try BackupManager.shared.privateKey()
-            guard let constantKey = "bOqw6X0TH1Xp5jh9eX2KkoLX6wDsgqbFg5-E-cJhAYxK_zd7VfAROrj5u5Nz19Tb2UfEKhE-XEDxevanGddB0g".fromBase64 else {
+            guard let constantKey = TestHelper.backupPrivKey.fromBase64 else {
                 return XCTFail("Imposible to get data from base64 string")
             }
             XCTAssertEqual(privateKey, constantKey)
@@ -302,11 +321,10 @@ class BackupManagerTests: XCTestCase {
                 let originalSize = mockAPI.mockData[pubKey.base64]!.count
                 try BackupManager.shared.deleteAccount(accountId: TestHelper.userID)
                 XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
-                expectation.fulfill()
             } catch {
                 XCTFail(error.localizedDescription)
-                expectation.fulfill()
             }
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -328,26 +346,25 @@ class BackupManagerTests: XCTestCase {
         wait(for: [expectation], timeout: 3.0)
     }
 
-    func testBackupAndGetBackupData() {
+       func testBackupAndGetBackupData() {
         // Assure there currently no accounts in the Keychain
         Account.deleteAll()
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupData")
         let account = Account(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
         let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
-        let context = FakeLAContext()
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
             do {
                 let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
                     switch result {
                     case .success(let (total, failed)):
                         do {
                             XCTAssertEqual(total, 1)
                             XCTAssertEqual(failed, 0)
                             // GetBackupData automatically stores the account in the Keychain, so we verify if it is created correctly.
-                            guard let account = try Account.get(accountID: TestHelper.userID, context: context) else {
+                            guard let account = try Account.get(accountID: TestHelper.userID, context: self.context) else {
                                 return XCTFail("Account not found")
                             }
                             XCTAssertTrue(account.id == TestHelper.userID)
@@ -384,7 +401,7 @@ class BackupManagerTests: XCTestCase {
                 XCTAssertTrue(result)
                 do {
                     let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    try BackupManager.shared.getBackupData(seed: seed, context: FakeLAContext()) { (result) in
+                    try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
                         switch result {
                         case .success(let (total, failed)):
                             XCTAssertEqual(total, 1)
