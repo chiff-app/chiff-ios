@@ -6,15 +6,28 @@
 //  Copyright © 2019 keyn. All rights reserved.
 //
 import XCTest
+import LocalAuthentication
 
 @testable import keyn
 
 class SessionTests: XCTestCase {
+
+    var context: LAContext!
     
     override func setUp() {
         super.setUp()
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            switch result {
+                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
+                case .success(let context):
+                    self.context = context
+                    TestHelper.createSeed()
+            }
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
-        TestHelper.createSeed()
     }
     
     override func tearDown() {
@@ -300,15 +313,15 @@ class SessionTests: XCTestCase {
         Session.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: "prueba", os: "prueba") { (result) in
             do {
                 let session = try result.get()
-                let account = try Account(username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, password: nil, context: FakeLAContext())
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: FakeLAContext()))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: FakeLAContext()))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: FakeLAContext()))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: FakeLAContext()))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: FakeLAContext()))
-                XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: FakeLAContext()))
+                let account = try Account(username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, password: nil, context: self.context)
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context))
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context))
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context))
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: self.context))
+                XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: self.context))
                 API.shared = MockAPI(shouldFail: true)
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: FakeLAContext()))
+                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
                 expectation.fulfill()
             } catch {
                 XCTFail(error.localizedDescription)
