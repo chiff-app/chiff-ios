@@ -9,10 +9,22 @@ import LocalAuthentication
 
 class BackupManagerTests: XCTestCase {
 
+    var context: LAContext!
+
     override func setUp() {
         super.setUp()
-        TestHelper.createSeed()
-        TestHelper.createBackupKeys()
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            switch result {
+                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
+                case .success(let context):
+                    self.context = context
+                    TestHelper.createSeed()
+                    TestHelper.createBackupKeys()
+            }
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
     }
 
@@ -24,55 +36,39 @@ class BackupManagerTests: XCTestCase {
     // MARK: - Unit tests
     
     func testInitializeIfKeysAlreadyExist() {
-        let expectation = XCTestExpectation(description: "Finish testInitializeIfKeysAlreadyExist")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    BackupManager.shared.initialize(seed: backupSeed, context: context) { (result) in
-                        if case let .failure(error) = result {
-                            XCTFail(error.localizedDescription)
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
+        let expectation = XCTestExpectation(description: "Finish testInitializeFailsIfKeysAlreadyExist")
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
+                if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
-                    expectation.fulfill()
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testInitializeDoesntFail() {
         TestHelper.deleteLocalData()
         TestHelper.createSeed()
         let expectation = XCTestExpectation(description: "Finish testInitializeDoesntFail")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    BackupManager.shared.initialize(seed: backupSeed, context: context) { (result) in
-                        if case let .failure(error) = result {
-                            XCTFail(error.localizedDescription)
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
+                if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
-                    expectation.fulfill()
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testInitializeFailsIfWrongSeed() {
@@ -94,29 +90,20 @@ class BackupManagerTests: XCTestCase {
         TestHelper.deleteLocalData()
         TestHelper.createSeed()
         let mockAPI = MockAPI(shouldFail: true)
+        let expectation = XCTestExpectation(description: "Finish testInitializeFailsIfAPIFails")
         API.shared = mockAPI
-        let expectation = XCTestExpectation(description: "Finish testInitializeIfKeysAlreadyExist")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context)
-                    BackupManager.shared.initialize(seed: backupSeed, context: context) { (result) in
-                        switch result {
-                        case .failure(let error): XCTAssertEqual(error.localizedDescription, MockAPIError.fakeError.localizedDescription)
-                        case .success(_): XCTFail("Must fail")
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
-                    XCTFail(error.localizedDescription)
+        do {
+            let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            BackupManager.shared.initialize(seed: backupSeed, context: nil) { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testBackup() {
@@ -229,85 +216,60 @@ class BackupManagerTests: XCTestCase {
 
     func testGetBackupData() {
         let expectation = XCTestExpectation(description: "Finish testGetBackupData")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
-                    API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-                    try BackupManager.shared.getBackupData(seed: seed, context: context!) { (result) in
-                        if case let .failure(error) = result {
-                            XCTFail(error.localizedDescription)
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
+        do {
+            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
-                    expectation.fulfill()
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testGetBackupDataFailsIfAPIFails() {
         let expectation = XCTestExpectation(description: "Finish testGetBackupDataFailsIfAPIFails")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
-                    let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
-                    API.shared = mockAPI
-                    try BackupManager.shared.getBackupData(seed: seed, context: context!) { (result) in
-                        if case .success(_) = result {
-                            XCTFail("Should fail")
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
-                    XCTFail(error.localizedDescription)
-                    expectation.fulfill()
+        do {
+            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+            let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
+            API.shared = mockAPI
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                if case .success(_) = result {
+                    XCTFail("Should fail")
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
     
     func testGetBackupDataIfNoPubKey() {
         TestHelper.deleteLocalData()
         TestHelper.createSeed()
         let expectation = XCTestExpectation(description: "Finish testGetBackupDataIfNoPubKey")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                do {
-                    let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                    try BackupManager.shared.getBackupData(seed: seed, context: context!) { (result) in
-                        if case let .failure(error) = result {
-                            XCTFail(error.localizedDescription)
-                        }
-                        expectation.fulfill()
-                    }
-                } catch {
+        do {
+            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+            try BackupManager.shared.getBackupData(seed: seed, context: context) { (result) in
+                if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
-                    expectation.fulfill()
                 }
+                expectation.fulfill()
             }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testPublicKeyDoesntThrow() {
@@ -384,81 +346,68 @@ class BackupManagerTests: XCTestCase {
         wait(for: [expectation], timeout: 3.0)
     }
 
-    func testBackupAndGetBackupData() {
+       func testBackupAndGetBackupData() {
         // Assure there currently no accounts in the Keychain
         Account.deleteAll()
         let site = TestHelper.sampleSite
+        let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupData")
         let account = Account(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
         let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
-        let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupData")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
-                BackupManager.shared.backup(account: backupAccount) { (result) in
-                    XCTAssertTrue(result)
-                    do {
-                        let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                        try BackupManager.shared.getBackupData(seed: seed, context: context!) { (result) in
-                            switch result {
-                            case .success(let (total, failed)):
-                                do {
-                                    XCTAssertEqual(total, 1)
-                                    XCTAssertEqual(failed, 0)
-                                    // GetBackupData automatically stores the account in the Keychain, so we verify if it is created correctly.
-                                    guard let account = try Account.get(accountID: TestHelper.userID, context: context) else {
-                                        return XCTFail("Account not found")
-                                    }
-                                    XCTAssertTrue(account.id == TestHelper.userID)
-                                    XCTAssertTrue(account.username == TestHelper.username)
-                                } catch {
-                                    XCTFail(error.localizedDescription)
-                                }
-                            case .failure(let error): XCTFail(error.localizedDescription)
+        BackupManager.shared.backup(account: backupAccount) { (result) in
+            XCTAssertTrue(result)
+            do {
+                let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+                try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
+                    switch result {
+                    case .success(let (total, failed)):
+                        do {
+                            XCTAssertEqual(total, 1)
+                            XCTAssertEqual(failed, 0)
+                            // GetBackupData automatically stores the account in the Keychain, so we verify if it is created correctly.
+                            guard let account = try Account.get(accountID: TestHelper.userID, context: self.context) else {
+                                return XCTFail("Account not found")
                             }
+                            XCTAssertTrue(account.id == TestHelper.userID)
+                            XCTAssertTrue(account.username == TestHelper.username)
+                            expectation.fulfill()
+                        } catch {
+                            XCTFail(error.localizedDescription)
                             expectation.fulfill()
                         }
-                    } catch {
+                    case .failure(let error):
                         XCTFail(error.localizedDescription)
                         expectation.fulfill()
                     }
                 }
+            } catch {
+                XCTFail(error.localizedDescription)
+                expectation.fulfill()
             }
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testBackupAndGetBackupDataFailsIfAccountExists () {
         let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupDataFailsIfAccountExists")
-        Account.deleteAll()
-        let site = TestHelper.sampleSite
-        let account = Account(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { (result) in
-            switch result {
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            case .success(let context):
+        do {
+            // Assure there currently no accounts in the Keychain
+            Account.deleteAll()
+            let site = TestHelper.sampleSite
+            let account = Account(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
+            let data = try PropertyListEncoder().encode(account)
+            try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
+            let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+            BackupManager.shared.backup(account: backupAccount) { (result) in
+                XCTAssertTrue(result)
                 do {
-                    let data = try PropertyListEncoder().encode(account)
-                    try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
-                    let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
-                    BackupManager.shared.backup(account: backupAccount) { (result) in
-                        XCTAssertTrue(result)
-                        do {
-                            let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-                            try BackupManager.shared.getBackupData(seed: seed, context: context!) { (result) in
-                                switch result {
-                                case .success(let (total, failed)):
-                                    XCTAssertEqual(total, 1)
-                                    XCTAssertEqual(failed, 1)
-                                case .failure(let error): XCTFail(error.localizedDescription)
-                                }
-                                expectation.fulfill()
-                            }
-                        } catch {
+                    let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
+                    try BackupManager.shared.getBackupData(seed: seed, context: self.context) { (result) in
+                        switch result {
+                        case .success(let (total, failed)):
+                            XCTAssertEqual(total, 1)
+                            XCTAssertEqual(failed, 1)
+                            expectation.fulfill()
+                        case .failure(let error):
                             XCTFail(error.localizedDescription)
                             expectation.fulfill()
                         }
@@ -468,7 +417,10 @@ class BackupManagerTests: XCTestCase {
                     expectation.fulfill()
                 }
             }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: 3.0)
     }
 }
