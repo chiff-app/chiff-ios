@@ -30,6 +30,9 @@ class RequestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if Properties.hasFaceID {
+            authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
+        }
         switch authorizationGuard.type {
         case .login, .addToExisting:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter

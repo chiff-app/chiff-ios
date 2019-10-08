@@ -81,18 +81,6 @@ class AuthenticationGuard {
         }
     }
 
-//    func hasFaceID() -> Bool {
-//        if #available(iOS 11.0, *) {
-//            let context = LAContext.init()
-//            var error: NSError?
-//            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-//                return context.biometryType == LABiometryType.faceID
-//            }
-//        }
-//
-//        return false
-//    }
-
     // MARK: - Private functions
 
     private func onAuthenticationResult(result: Result<LAContext?, Error>) {
