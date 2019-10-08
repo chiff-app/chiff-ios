@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import LocalAuthentication
 
 enum InfoNotificationStatus: Int {
     case notDecided
@@ -139,6 +140,18 @@ struct Properties {
     static let build: String? = {
         return Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     }()
+
+    static let hasFaceID: Bool = {
+        if #available(iOS 11.0, *) {
+            let context = LAContext()
+            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+                return context.biometryType == LABiometryType.faceID
+            }
+        }
+
+        return false
+    }()
+
 
     static let browsers = ["Chrome", "Edge", "Firefox", "Tor"]
 
