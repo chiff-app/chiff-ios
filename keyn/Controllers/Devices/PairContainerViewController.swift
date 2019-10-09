@@ -13,6 +13,11 @@ class PairContainerViewController: UIViewController, PairContainerDelegate {
     var pairControllerDelegate: PairControllerDelegate!
     @IBOutlet weak var activityView: UIView!
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        reEnableBarButtonFont() 
+    }
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
