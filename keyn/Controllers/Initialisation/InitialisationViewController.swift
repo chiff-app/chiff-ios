@@ -113,15 +113,15 @@ class InitialisationViewController: UIViewController {
     private func scheduleNudgeNotifications() {
         let now = Date()
         let calendar = Calendar.current
-        let askInEvening = calendar.date(bySettingHour: 16, minute: 0, second: 0, of: now)! < now
-        scheduleNotification(id: 0, askInEvening: askInEvening, body: notificationMessages[0], day: nil)
-        scheduleNotification(id: 1, askInEvening: !askInEvening, body: notificationMessages[1], day: 4)
-        scheduleNotification(id: 2, askInEvening: askInEvening, body: notificationMessages[2], day: 7)
+        let askInEvening = calendar.date(bySettingHour: 18, minute: 0, second: 0, of: now)! < now
+        scheduleNotification(id: 0, askInEvening: askInEvening, day: nil)
+        scheduleNotification(id: 1, askInEvening: !askInEvening, day: 3)
+        scheduleNotification(id: 2, askInEvening: askInEvening, day: 7)
     }
 
-    private func scheduleNotification(id: Int, askInEvening: Bool, body: String, day: Int?) {
+    private func scheduleNotification(id: Int, askInEvening: Bool, day: Int?) {
         let content = UNMutableNotificationContent()
-        content.body = body
+        content.body = notificationMessages[id]
         content.categoryIdentifier = NotificationCategory.ONBOARDING_NUDGE
 
         var date: DateComponents!
@@ -132,6 +132,7 @@ class InitialisationViewController: UIViewController {
         } else {
             date = DateComponents()
         }
+        // 1600 or 2030
         date.hour = askInEvening ? 20 : 16
         date.minute = askInEvening ? 30 : 0
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
