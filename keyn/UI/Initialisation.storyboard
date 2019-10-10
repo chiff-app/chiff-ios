@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="98" width="335" height="80"/>
+                                <rect key="frame" x="20" y="98" width="335" height="82"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="wFq-E5-qbT"/>
                                 </constraints>
@@ -42,7 +40,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="4ye-iw-xa2">
-                                <rect key="frame" x="0.0" y="314" width="375" height="213"/>
+                                <rect key="frame" x="0.0" y="270" width="375" height="213"/>
                             </imageView>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-Ka-Tah" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="96.5" y="563" width="182" height="44"/>
@@ -62,7 +60,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="28" y="183" width="319" height="78"/>
+                                <rect key="frame" x="28" y="210" width="319" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -398,7 +396,7 @@
                 <navigationController storyboardIdentifier="InitialisationViewController" automaticallyAdjustsScrollViewInsets="NO" id="uer-44-cz8" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Oie-l9-eJi">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </navigationBar>
@@ -416,11 +414,11 @@
             <objects>
                 <viewController id="lxx-hW-z2Y" customClass="LearnMoreViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kw5-0m-u7r">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NyX-GK-Zf6">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -428,7 +426,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cVw-x3-Mcr">
-                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <rect key="frame" x="169" y="305" width="37" height="37"/>
                                 <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
@@ -465,26 +463,26 @@
             <objects>
                 <viewController id="nXW-29-59c" customClass="TermsViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wwN-uw-Pks">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="591"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bQo-jV-3u6">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="539"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="527"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rIe-Is-zOc">
-                                <rect key="frame" x="0.0" y="483" width="375" height="120"/>
+                                <rect key="frame" x="0.0" y="471" width="375" height="120"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="tpc-nz-dhr"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="COX-AA-qfX">
-                                <rect key="frame" x="169" y="283" width="37" height="37"/>
+                                <rect key="frame" x="169" y="277" width="37" height="37"/>
                                 <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mGp-gb-OVx">
-                                <rect key="frame" x="40" y="539" width="295" height="44"/>
+                                <rect key="frame" x="40" y="527" width="295" height="44"/>
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YpQ-vr-qYc" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
@@ -568,7 +566,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="179"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How Keyn works on" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFy-QE-aSD" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="115" width="343" height="26"/>
+                                        <rect key="frame" x="16" y="115" width="343" height="27"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                         <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1310,7 +1308,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4aU-Ys-UHr" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bLN-jS-lIN">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.94901960780000005" green="0.94117647059999998" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -1361,7 +1359,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help us to improve Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="M8I-e3-aXB" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="113" width="335" height="82.5"/>
+                                <rect key="frame" x="20" y="113" width="335" height="103"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="26"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1373,7 +1371,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="210.5" width="335" height="126"/>
+                                <rect key="frame" x="20" y="231" width="335" height="85.5"/>
                                 <string key="text">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
 Sensitive data is never shared and everything is anonymous.</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -1387,7 +1385,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="522.5" width="335" height="22"/>
+                                <rect key="frame" x="20" y="502.5" width="335" height="17.5"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1399,7 +1397,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
-                                <rect key="frame" x="20" y="396.5" width="335" height="76"/>
+                                <rect key="frame" x="20" y="376.5" width="335" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duW-jH-tOo">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
@@ -1482,6 +1480,10 @@ Sensitive data is never shared and everything is anonymous.</string>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SKd-p7-vuQ"/>
                     </view>
+                    <connections>
+                        <outlet property="shareAnalyticsDataSwitch" destination="GBv-ex-Zlu" id="G9Z-0b-Vmr"/>
+                        <outlet property="shareErrorDataSwitch" destination="fhl-3Z-Rmq" id="9ZI-XO-vge"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vdc-n4-nxI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1493,7 +1495,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ydb-xL-bng" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Vkn-qR-tkX">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -66,6 +66,7 @@ enum AnalyticsEvent: String {
     // Settings
     case resetKeyn = "ResetKeyn"
     case deleteData = "DeleteData"
+    case analytics = "Analytics"
 
     // Questionnaire
     case questionnaireDeclined = "QuestionnaireDeclined"

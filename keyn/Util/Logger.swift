@@ -38,7 +38,16 @@ struct Logger {
     }
 
     func setAnalyticsLogging(value: Bool) {
+        if !value {
+            // Uploading setting change before opting out.
+            analytics(.analytics, properties: [.value: value], override: true)
+            uploadAnalytics()
+        }
         amplitude.optOut = !value
+        if value {
+            // Upload setting after opting in.
+            analytics(.analytics, properties: [.value: value])
+        }
     }
 
     func setUserId(userId: String?) {
