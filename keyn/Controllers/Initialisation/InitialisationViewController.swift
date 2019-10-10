@@ -7,11 +7,6 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
-    let notificationIdentifiers = [
-        "io.keyn.keyn.first_nudge",
-        "io.keyn.keyn.second_nudge",
-        "io.keyn.keyn.third_nudge"
-    ]
     let notificationMessages = [
         "notifications.onboarding_reminder_message.first".localized,
         "notifications.onboarding_reminder_message.second".localized,
@@ -60,7 +55,6 @@ class InitialisationViewController: UIViewController {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_):
-                        self.removeNotifications()
                         self.registerForPushNotifications()
                         Logger.shared.analytics(.seedCreated, override: true)
                     case .failure(let error):
@@ -117,7 +111,6 @@ class InitialisationViewController: UIViewController {
     }
 
     private func scheduleNudgeNotifications() {
-        removeNotifications()
         let now = Date()
         let calendar = Calendar.current
         let askInEvening = calendar.date(bySettingHour: 16, minute: 0, second: 0, of: now)! < now
@@ -142,7 +135,7 @@ class InitialisationViewController: UIViewController {
         date.hour = askInEvening ? 20 : 16
         date.minute = askInEvening ? 30 : 0
         let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
-        let request = UNNotificationRequest(identifier: notificationIdentifiers[id], content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: Properties.nudgeNotificationIdentifiers[id], content: content, trigger: trigger)
 
         // Schedule the request with the system.
         let notificationCenter = UNUserNotificationCenter.current()
@@ -152,11 +145,5 @@ class InitialisationViewController: UIViewController {
             }
         }
     }
-
-    private func removeNotifications() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIdentifiers)
-    }
-
 
 }

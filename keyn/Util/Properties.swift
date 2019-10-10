@@ -39,7 +39,13 @@ struct Properties {
     static private let accountCountFlag = "accountCount"
     static private let sessionCountFlag = "sessionCount"
     static private let agreedWithTermsFlag = "agreedWithTerms"
+    static private let firstPairingCompletedFlag = "firstPairingCompleted"
 
+
+    static var firstPairingCompleted: Bool {
+        get { return UserDefaults.standard.bool(forKey: firstPairingCompletedFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: firstPairingCompletedFlag) }
+    }
     static var agreedWithTerms: Bool {
         get { return UserDefaults.standard.bool(forKey: agreedWithTermsFlag) }
         set { UserDefaults.standard.set(newValue, forKey: agreedWithTermsFlag) }
@@ -167,6 +173,12 @@ struct Properties {
         production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
         sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
     )
+
+    static let nudgeNotificationIdentifiers = [
+        "io.keyn.keyn.first_nudge",
+        "io.keyn.keyn.second_nudge",
+        "io.keyn.keyn.third_nudge"
+    ]
 
     static var notificationTopic: String {
         switch environment {
