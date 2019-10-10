@@ -550,6 +550,13 @@ notifications:
     description: GitHub in Firefox op MacOS
   accounts_from:
     value: '%@ accounts van %@ op %@'
+  onboarding_reminder_message:
+    first:
+      value: Eerste herinnering
+    second:
+      value: Tweede herinnering
+    third:
+      value: Laatste herinnering
 
 registration:
   change_password_footer:

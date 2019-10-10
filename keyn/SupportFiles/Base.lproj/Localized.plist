@@ -1127,6 +1127,24 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Login</string>
 		</dict>
+		<key>onboarding_reminder_message</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>First reminder for Keyn</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Second reminder for Keyn</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Third reminder for Keyn</string>
+			</dict>
+		</dict>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>

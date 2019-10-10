@@ -7,7 +7,27 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
+    let notificationIdentifiers = [
+        "io.keyn.keyn.first_nudge",
+        "io.keyn.keyn.second_nudge",
+        "io.keyn.keyn.third_nudge"
+    ]
+    let notificationMessages = [
+        "notifications.onboarding_reminder_message.first".localized,
+        "notifications.onboarding_reminder_message.second".localized,
+        "notifications.onboarding_reminder_message.third".localized
+    ]
+
     @IBOutlet weak var loadingView: UIView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationManager.shared.requestAuthorization() { result in
+            if result {
+                self.scheduleNudgeNotifications()
+            }
+        }
+    }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
@@ -40,6 +60,7 @@ class InitialisationViewController: UIViewController {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_):
+                        self.removeNotifications()
                         self.registerForPushNotifications()
                         Logger.shared.analytics(.seedCreated, override: true)
                     case .failure(let error):
@@ -59,7 +80,7 @@ class InitialisationViewController: UIViewController {
     }
 
     private func registerForPushNotifications() {
-        AppDelegate.startupService.registerForPushNotifications() { result in
+        NotificationManager.shared.registerForPushNotifications() { result in
             DispatchQueue.main.async {
                 if result {
                     self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
@@ -94,5 +115,48 @@ class InitialisationViewController: UIViewController {
             }
         })
     }
+
+    private func scheduleNudgeNotifications() {
+        removeNotifications()
+        let now = Date()
+        let calendar = Calendar.current
+        let askInEvening = calendar.date(bySettingHour: 16, minute: 0, second: 0, of: now)! < now
+        scheduleNotification(id: 0, askInEvening: askInEvening, body: notificationMessages[0], day: nil)
+        scheduleNotification(id: 1, askInEvening: !askInEvening, body: notificationMessages[1], day: 4)
+        scheduleNotification(id: 2, askInEvening: askInEvening, body: notificationMessages[2], day: 7)
+    }
+
+    private func scheduleNotification(id: Int, askInEvening: Bool, body: String, day: Int?) {
+        let content = UNMutableNotificationContent()
+        content.body = body
+        content.categoryIdentifier = NotificationCategory.ONBOARDING_NUDGE
+
+        var date: DateComponents!
+        if let day = day {
+            let calendar = Calendar.current
+            let now = Date()
+            date = calendar.dateComponents([.day, .month, .year], from: now, to: calendar.date(byAdding: .day, value: day, to: now)!)
+        } else {
+            date = DateComponents()
+        }
+        date.hour = askInEvening ? 20 : 16
+        date.minute = askInEvening ? 30 : 0
+        let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
+        let request = UNNotificationRequest(identifier: notificationIdentifiers[id], content: content, trigger: trigger)
+
+        // Schedule the request with the system.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if let error = error {
+                Logger.shared.error("Error scheduling notification", error: error)
+            }
+        }
+    }
+
+    private func removeNotifications() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIdentifiers)
+    }
+
 
 }

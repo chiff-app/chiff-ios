@@ -177,6 +177,13 @@ struct Properties {
         }
     }
 
+    static var endpoint: String? {
+        guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {
+            return nil
+        }
+        return String(data: endpointData, encoding: .utf8)
+    }
+
     static var amplitudeToken: String {
         switch environment {
         case .dev:

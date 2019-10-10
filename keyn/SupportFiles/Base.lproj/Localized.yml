@@ -551,6 +551,13 @@ notifications:
     description: GitHub in Firefox on MacOS
   accounts_from:
     value: '%@ accounts from %@ on %@'
+  onboarding_reminder_message:
+    first:
+      value: First reminder for Keyn
+    second:
+      value: Second reminder for Keyn
+    third:
+      value: Third reminder for Keyn
 
 registration:
   change_password_footer:

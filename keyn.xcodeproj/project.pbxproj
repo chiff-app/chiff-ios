@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		013438C7220C460A000685B2 /* AppStartupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438C6220C460A000685B2 /* AppStartupService.swift */; };
-		013438C9220C46D6000685B2 /* MigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438C8220C46D6000685B2 /* MigrationService.swift */; };
 		013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438CA220C4922000685B2 /* PushNotificationService.swift */; };
 		013438CD220C583F000685B2 /* PasteboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013438CC220C583F000685B2 /* PasteboardService.swift */; };
 		0153C8B222119276001B6853 /* ErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0153C8B122119276001B6853 /* ErrorViewController.swift */; };
@@ -129,8 +128,6 @@
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
 		49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* WebViewController.swift */; };
 		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
-		49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
-		49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
@@ -263,7 +260,6 @@
 
 /* Begin PBXFileReference section */
 		013438C6220C460A000685B2 /* AppStartupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStartupService.swift; sourceTree = "<group>"; };
-		013438C8220C46D6000685B2 /* MigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationService.swift; sourceTree = "<group>"; };
 		013438CA220C4922000685B2 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		013438CC220C583F000685B2 /* PasteboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardService.swift; sourceTree = "<group>"; };
 		0153C8B122119276001B6853 /* ErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewController.swift; sourceTree = "<group>"; };
@@ -484,7 +480,6 @@
 			children = (
 				49E766531F7E6F420022C042 /* AppDelegate.swift */,
 				013438C6220C460A000685B2 /* AppStartupService.swift */,
-				013438C8220C46D6000685B2 /* MigrationService.swift */,
 				013438CA220C4922000685B2 /* PushNotificationService.swift */,
 				013438CC220C583F000685B2 /* PasteboardService.swift */,
 			);
@@ -1327,7 +1322,6 @@
 				49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
-				49B1C8A922882B16005ED5BF /* NotificationManager.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
@@ -1385,7 +1379,6 @@
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
-				013438C9220C46D6000685B2 /* MigrationService.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
 				492EC843224919A10088F73D /* PairingViewController.swift in Sources */,
@@ -1508,7 +1501,6 @@
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
-				49B1C8AB22882B2A005ED5BF /* NotificationManager.swift in Sources */,
 				49062C5A221449C700A30669 /* Session.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,

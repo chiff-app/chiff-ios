@@ -1133,6 +1133,24 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Inloggen</string>
 		</dict>
+		<key>onboarding_reminder_message</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Eerste herinnering</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Tweede herinnering</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Laatste herinnering</string>
+			</dict>
+		</dict>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
