@@ -44,6 +44,7 @@ class PairViewController: QRViewController {
                 case .success(let session):
                     self.pairControllerDelegate.sessionCreated(session: session)
                     Logger.shared.analytics(.paired)
+                    self.removeNotifications()
                 case .failure(let error):
                     switch error {
                     case is LAError, is KeychainError:
@@ -67,6 +68,13 @@ class PairViewController: QRViewController {
                 }
             }
         }
+    }
+
+    private func removeNotifications() {
+        if Properties.firstPairingCompleted { return }
+        Properties.firstPairingCompleted = true
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: Properties.nudgeNotificationIdentifiers)
     }
 
 }
