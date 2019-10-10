@@ -10,6 +10,9 @@ import UIKit
 
 class LoggingPreferenceViewController: UIViewController {
 
+    @IBOutlet weak var shareErrorDataSwitch: UISwitch!
+    @IBOutlet weak var shareAnalyticsDataSwitch: UISwitch!
+
     override func viewDidLoad() {
         self.navigationItem.setHidesBackButton(true, animated: true)
     }
@@ -25,6 +28,7 @@ class LoggingPreferenceViewController: UIViewController {
     }
 
     @IBAction func finish(_ sender: UIButton) {
+        Properties.analyticsLogging = shareAnalyticsDataSwitch.isOn
         UIApplication.shared.showRootController()
     }
 
