@@ -70,7 +70,6 @@ struct NotificationManager {
 
     func deleteEndpoint() {
         guard let endpoint = Properties.endpoint else {
-            Logger.shared.warning("Tried to delete endpoint without endpoint present")
             return
         }
         
