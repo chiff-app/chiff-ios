@@ -113,7 +113,7 @@ class InitialisationViewController: UIViewController {
     private func scheduleNudgeNotifications() {
         let now = Date()
         let calendar = Calendar.current
-        let askInEvening = calendar.date(bySettingHour: 18, minute: 0, second: 0, of: now)! < now
+        let askInEvening = calendar.dateComponents([.hour], from: now).hour! < 18
         scheduleNotification(id: 0, askInEvening: askInEvening, day: nil)
         scheduleNotification(id: 1, askInEvening: !askInEvening, day: 3)
         scheduleNotification(id: 2, askInEvening: askInEvening, day: 7)
