@@ -1914,5 +1914,18 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<string>Instellingen</string>
 		</dict>
 	</dict>
+	<key>urls</key>
+	<dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq_raw</string>
+		</dict>
+		<key>jailbreak</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq#jailbreak</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

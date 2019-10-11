@@ -799,3 +799,10 @@ feedback:
     value: Wil je nog iets toevoegen?
   feedback:
     value: Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.
+
+urls:
+  faq: 
+    value: 'https://keyn.app/nl/faq_raw'
+  jailbreak:
+    value: 'https://keyn.app/nl/faq#jailbreak'
+
