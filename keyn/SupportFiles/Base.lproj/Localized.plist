@@ -1908,5 +1908,18 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<string>Settings</string>
 		</dict>
 	</dict>
+	<key>urls</key>
+	<dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/faq_raw</string>
+		</dict>
+		<key>jailbreak</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/faq#jailbreak</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

@@ -155,7 +155,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             .foregroundColor: UIColor.primary,
             .font: UIFont.primaryMediumNormal!
             ])
-        let url = URL(string: "https://keyn.app/faq#jailbreak")!
+        let url = URL(string: "urls.jailbreak".localized)!
         
         attributedString.setAttributes([
             .link: url,

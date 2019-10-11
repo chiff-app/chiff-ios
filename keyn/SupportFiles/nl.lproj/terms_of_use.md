@@ -1,7 +1,7 @@
 ### ALGEMENE GEBRUIKERSVOORWAARDEN
 **van de besloten vennootschap met beperkte aansprakelijkheid Keyn B.V., ingeschreven in het Handelsregister van de Kamer van Koophandel onder nummer 72100419.**
 
-Deze algemene gebruikersvoorwaarden zijn van toepassing op alle diensten van Keyn, een applicatie gericht op het beheren van digitale wachtwoorden. Voor een goed gebruik van de applicatie verwijzen wij u naar de uitleg op de website [keyn.app](https://keyn.app).
+Deze algemene gebruikersvoorwaarden zijn van toepassing op alle diensten van Keyn, een applicatie gericht op het beheren van digitale wachtwoorden. Voor een goed gebruik van de applicatie verwijzen wij u naar de uitleg op de website [keyn.app](https://keyn.app/nl/).
 
 Lees deze gebruikersvoorwaarden aandachtig door voordat u de website of de applicatie gebruikt. Zodra u zich op de website begeeft of de applicatie downloadt, bent u gebonden aan deze algemene voorwaarden. Indien u met deze algemene voorwaarden niet akkoord gaat, dan is het u ook niet toegestaan om gebruik te maken van de applicatie en de website. U kunt deze gebruikersvoorwaarden niet overdragen aan een ander.
 
@@ -23,7 +23,7 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **1.13.** Paper Back-up: twaalf (12) woorden welke de Gebruiker dient te noteren na het installeren van de Mobiele Applicatie. De twaalf woorden vertegenwoordigen de unieke en willekeurig gegenereerde Random Seed;  
 **1.14.** Partijen: Keyn en Gebruiker gezamenlijk;  
 **1.15.** Random Seed: de willekeurig gegenereerde sleutel, waarvan de wachtwoorden van de Gebruiker van worden afgeleid met een deterministisch algoritme;  
-**1.16.** Website: de door Keyn ontwikkelde website [keyn.app](https:/keyn.app) om haar Diensten tot uitvoering te brengen.
+**1.16.** Website: de door Keyn ontwikkelde website [keyn.app](https:/keyn.app/nl/) om haar Diensten tot uitvoering te brengen.
 
 #### ARTIKEL 2: TOEPASSING ALGEMENE VOORWAARDEN
 
@@ -153,7 +153,7 @@ In deze algemene gebruikersvoorwaarden wordt verstaan onder:
 **13.4.** De voorkeur bestaat eerst de onderhavige klachtprocedure te doorlopen, alvorens een geschil wordt voorgelegd aan de daartoe bevoegde rechter.
 
 #### ARTIKEL 14: PRIVACY
-**14.1.** De gegevens die Keyn van de Gebruiker opvraagt worden verzameld, gebruikt, opgeslagen en verwijderd in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG) alsmede de overige toepasselijke wet- en/of regelgeving. Zie voor meer informatie hierover de [Privacyverklaring](https://keyn.app/privacy).  
+**14.1.** De gegevens die Keyn van de Gebruiker opvraagt worden verzameld, gebruikt, opgeslagen en verwijderd in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG) alsmede de overige toepasselijke wet- en/of regelgeving. Zie voor meer informatie hierover de [Privacyverklaring](https://keyn.app/nl/privacy).  
 **14.2.** Het kan voorkomen dat Keyn wettelijk verplicht is om (persoons-)gegevens te verstrekken aan bevoegde overheidsorganen, politie of opsporingsinstanties. 
 
 #### ARTIKEL 15: TOEPASSELIJK RECHT

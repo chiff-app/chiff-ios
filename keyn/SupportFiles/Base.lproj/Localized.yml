@@ -798,3 +798,10 @@ feedback:
     value: Anything you want to add?
   feedback:
     value: Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.
+
+urls:
+  faq:
+    value: 'https://keyn.app/faq_raw'
+  jailbreak: 
+    value: 'https://keyn.app/faq#jailbreak'
+
