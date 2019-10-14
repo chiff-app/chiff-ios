@@ -63,8 +63,8 @@ class AccountTests: XCTestCase {
             TestHelper.saveHOTPToken(id: account.id)
             let token = try account.oneTimePasswordToken()
             XCTAssertNotNil(token)
-            XCTAssertEqual(token!.currentPassword!, "780815")                   // First HOTP password
-            XCTAssertEqual(token!.updatedToken().currentPassword!, "405714")    // Second HOTP password
+            XCTAssertEqual(token!.currentPassword!, "876735")                   // First HOTP password
+            XCTAssertEqual(token!.updatedToken().currentPassword!, "086479")    // Second HOTP password
             TestHelper.deleteLocalData()
             TestHelper.saveHOTPToken(id: account.id, includeData: false)
             XCTAssertThrowsError(try account.oneTimePasswordToken())
