@@ -14,6 +14,13 @@ class LoginViewController: ASCredentialProviderViewController {
     var credentialIdentity: ASPasswordCredentialIdentity?
     var accounts: [String: Account]!
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if Properties.hasFaceID {
+            touchIDButton.setImage(UIImage(named: "face_id"), for: .normal)
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let username = credentialIdentity?.user {
