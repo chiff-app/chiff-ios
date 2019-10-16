@@ -26,7 +26,10 @@ struct Seed {
             return UserDefaults.standard.bool(forKey: paperBackupCompletedFlag)
         }
         set {
-            UserDefaults.standard.set(true, forKey: paperBackupCompletedFlag)
+            UserDefaults.standard.set(newValue, forKey: paperBackupCompletedFlag)
+            if newValue {
+                NotificationCenter.default.post(name: .backupCompleted, object: self)
+            }
         }
     }
 
@@ -132,6 +135,7 @@ struct Seed {
     }
 
     static func delete() throws {
+        UserDefaults.standard.removeObject(forKey: paperBackupCompletedFlag)
         try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
         try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
         try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
