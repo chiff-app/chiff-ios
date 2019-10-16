@@ -7,8 +7,9 @@ import UIKit
 class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     @IBOutlet weak var notificationSettingSwitch: UISwitch!
-    var securityFooterText = "\u{26A0} \("settings.backup_not_finished".localized)."
-    var justLoaded = true
+    var securityFooterText: String {
+        return Seed.paperBackupCompleted ? "settings.backup_completed_footer".localized : "\u{26A0} \("settings.backup_not_finished".localized)."
+    }
     @IBOutlet weak var paperBackupAlertIcon: UIImageView!
     @IBOutlet weak var jailbreakWarningTextView: UITextView!
     @IBOutlet weak var jailbreakStackView: UIStackView!
@@ -16,21 +17,18 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setFooterText()
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
         setJailbreakText()
+        NotificationCenter.default.addObserver(forName: .backupCompleted, object: nil, queue: OperationQueue.main, using: updateBackupFooter)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (tabBarController as! RootViewController).showGradient(true)
-        if !justLoaded {
-            setFooterText()
-        } else { justLoaded = false }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -132,9 +130,8 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     // MARK: - Private
 
-    private func setFooterText() {
-        tableView.reloadSections(IndexSet(integer: 1), with: .none)
-        securityFooterText = "settings.backup_completed_footer".localized
+    private func updateBackupFooter(notification: Notification) {
+        tableView.reloadData()
     }
 
     private func setJailbreakText() {
