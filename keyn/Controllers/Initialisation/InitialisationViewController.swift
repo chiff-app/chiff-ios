@@ -7,10 +7,11 @@ import LocalAuthentication
 
 class InitialisationViewController: UIViewController {
 
+    
     let notificationMessages = [
-        "notifications.onboarding_reminder_message.first".localized,
-        "notifications.onboarding_reminder_message.second".localized,
-        "notifications.onboarding_reminder_message.third".localized
+        ("notifications.onboarding_reminder_title.first".localized, "notifications.onboarding_reminder_message.first".localized),
+        ("notifications.onboarding_reminder_title.second".localized, "notifications.onboarding_reminder_message.second".localized),
+        ("notifications.onboarding_reminder_title.third".localized, "notifications.onboarding_reminder_message.third".localized)
     ]
 
     @IBOutlet weak var loadingView: UIView!
@@ -111,6 +112,7 @@ class InitialisationViewController: UIViewController {
     }
 
     private func scheduleNudgeNotifications() {
+        if Properties.firstPairingCompleted { return }
         let now = Date()
         let calendar = Calendar.current
         let askInEvening = calendar.dateComponents([.hour], from: now).hour! < 18
@@ -121,7 +123,7 @@ class InitialisationViewController: UIViewController {
 
     private func scheduleNotification(id: Int, askInEvening: Bool, day: Int?) {
         let content = UNMutableNotificationContent()
-        content.body = notificationMessages[id]
+        (content.title, content.body) = notificationMessages[id]
         content.categoryIdentifier = NotificationCategory.ONBOARDING_NUDGE
 
         var date: DateComponents!
@@ -132,6 +134,7 @@ class InitialisationViewController: UIViewController {
         } else {
             date = DateComponents()
         }
+
         // 1600 or 2030
         date.hour = askInEvening ? 20 : 16
         date.minute = askInEvening ? 30 : 0

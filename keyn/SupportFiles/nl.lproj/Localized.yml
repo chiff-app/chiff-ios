@@ -550,13 +550,20 @@ notifications:
     description: GitHub in Firefox op MacOS
   accounts_from:
     value: '%@ accounts van %@ op %@'
+  onboarding_reminder_title:
+    first:  
+      value: Je bent er bijna!
+    second:
+      value: Waar wacht je op?
+    third:
+      value: Ben je er nog?
   onboarding_reminder_message:
     first:
-      value: Eerste herinnering
+      value: Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! 🎉🎉
     second:
-      value: Tweede herinnering
+      value: Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden. 💪😃
     third:
-      value: Laatste herinnering
+      value: Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden kan beginnen! 🐣
 
 registration:
   change_password_footer:

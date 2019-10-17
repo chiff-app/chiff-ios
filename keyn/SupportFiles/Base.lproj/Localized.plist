@@ -1132,17 +1132,35 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>First reminder for Keyn</string>
+				<string>You only have to pair your phone with your computer and you can log in without passwords! 🎉🎉</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Second reminder for Keyn</string>
+				<string>You're only one step away from logging in without passwords. 💪😃</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Third reminder for Keyn</string>
+				<string>Connect your phone to your computer and start logging in without passwords! 🐣</string>
+			</dict>
+		</dict>
+		<key>onboarding_reminder_title</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Almost there!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>What are you waiting for?</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Are you still thre?</string>
 			</dict>
 		</dict>
 		<key>pairing</key>
