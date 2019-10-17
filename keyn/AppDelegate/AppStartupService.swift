@@ -119,14 +119,14 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     private func launchInitialView() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
-        if Properties.isFirstLaunch() {
+        if Properties.isFirstLaunch {
             // Purge Keychain
             Session.purgeSessionDataFromKeychain()
             Account.deleteAll()
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ], override: true) // TODO: Check date format
+            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {
@@ -143,6 +143,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")
                 }
+
                 // We just open the devices tab instead of accounts when opened from a pairing url.
                 if self.openedFromUrl {
                     vc.selectedIndex = 1

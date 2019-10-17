@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var notificationService: PushNotificationService {
         shared.services.first(where: { $0.key == .pushNotification })!.value as! PushNotificationService
     }
+    static var startupService: AppStartupService {
+        shared.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
+    }
+
 
     enum Service {
         case appStartup
