@@ -139,7 +139,9 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         let checkMarkImageView = UIImageView(image: UIImage(named: "checkmark_small"))
         checkMarkImageView.contentMode = UIView.ContentMode.center
         if let size = checkMarkImageView.image?.size {
-            checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
+            checkMarkImageView.translatesAutoresizingMaskIntoConstraints = false
+            checkMarkImageView.widthAnchor.constraint(equalToConstant: size.width + 40.0).isActive = true
+            checkMarkImageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
         }
 
         textfield.placeholder = "\(mnemonic[index].prefix(1))..."

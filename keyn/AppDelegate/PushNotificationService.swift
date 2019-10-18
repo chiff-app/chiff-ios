@@ -61,8 +61,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Only one calling function actually uses the returned presentation options.
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
-        if (notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION
-            || notification.request.content.categoryIdentifier == NotificationCategory.ONBOARDING_NUDGE) {
+        if notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION {
+            return [.alert]
+        }
+        if notification.request.content.categoryIdentifier == NotificationCategory.ONBOARDING_NUDGE {
+            if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
+                vc.selectedIndex = 1
+            }
             return [.alert]
         }
 

@@ -551,13 +551,20 @@ notifications:
     description: GitHub in Firefox on MacOS
   accounts_from:
     value: '%@ accounts from %@ on %@'
+  onboarding_reminder_title:
+    first:  
+      value: Almost there!
+    second:
+      value: What are you waiting for?
+    third:
+      value: Are you still thre?
   onboarding_reminder_message:
     first:
-      value: First reminder for Keyn
+      value: You only have to pair your phone with your computer and you can log in without passwords! 🎉🎉
     second:
-      value: Second reminder for Keyn
+      value: You're only one step away from logging in without passwords. 💪😃
     third:
-      value: Third reminder for Keyn
+      value: Connect your phone to your computer and start logging in without passwords! 🐣
 
 registration:
   change_password_footer:
@@ -798,3 +805,10 @@ feedback:
     value: Anything you want to add?
   feedback:
     value: Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements.
+
+urls:
+  faq:
+    value: 'https://keyn.app/faq_raw'
+  jailbreak: 
+    value: 'https://keyn.app/faq#jailbreak'
+

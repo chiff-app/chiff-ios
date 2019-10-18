@@ -40,7 +40,15 @@ struct Properties {
     static private let sessionCountFlag = "sessionCount"
     static private let agreedWithTermsFlag = "agreedWithTerms"
     static private let firstPairingCompletedFlag = "firstPairingCompleted"
+    static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
 
+    static var isFirstLaunch: Bool {
+        let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
+        if (isFirstLaunch) {
+            UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
+        }
+        return isFirstLaunch
+    }
 
     static var firstPairingCompleted: Bool {
         get { return UserDefaults.standard.bool(forKey: firstPairingCompletedFlag) }
@@ -111,6 +119,10 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
         UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
+        UserDefaults.standard.removeObject(forKey: userIdFlag)
+        UserDefaults.standard.removeObject(forKey: accountCountFlag)
+        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
+        // We're keeping: questionnaireDirPurgedFlag, subscriptionExiryDateFlag, subscriptionProductFlag, agreedWithTermsFlag, firstPairingCompletedFlag
     }
 
     static var deniedPushNotifications = false {
@@ -165,8 +177,6 @@ struct Properties {
 
     static let keynApi = "api.keyn.app"
     
-    static let logzioToken = "AZQteKGtxvKchdLHLomWvbIpELYAWVHB"
-
     static let accountCap = 8
     
     static let AWSSNSNotificationArn = (
@@ -209,28 +219,15 @@ struct Properties {
 
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
-    // IMPORTANT: If this flag is not present, all data will be deleted on App startup!
-    static func isFirstLaunch() -> Bool {
-        let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag"
-        let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
-
-        if (isFirstLaunch) {
-            UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
-        }
-
-        return isFirstLaunch
-    }
-
-    static func firstLaunchTimestamp() -> Date {
+    static var firstLaunchTimestamp: TimeInterval {
         #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
-
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
-            return installDate
+            return installDate.timeIntervalSince1970
         } else {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
-            return date
+            return date.timeIntervalSince1970
         }
     }
 
