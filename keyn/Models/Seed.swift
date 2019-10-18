@@ -26,7 +26,10 @@ struct Seed {
             return UserDefaults.standard.bool(forKey: paperBackupCompletedFlag)
         }
         set {
-            UserDefaults.standard.set(true, forKey: paperBackupCompletedFlag)
+            UserDefaults.standard.set(newValue, forKey: paperBackupCompletedFlag)
+            if newValue {
+                NotificationCenter.default.post(name: .backupCompleted, object: self)
+            }
         }
     }
 
@@ -95,7 +98,7 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) {
         guard !hasKeys && !BackupManager.shared.hasKeys else {
             completionHandler(.failure(SeedError.exists))
             return
@@ -132,6 +135,7 @@ struct Seed {
     }
 
     static func delete() throws {
+        UserDefaults.standard.removeObject(forKey: paperBackupCompletedFlag)
         try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
         try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
         try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)

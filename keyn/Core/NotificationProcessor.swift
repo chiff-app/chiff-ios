@@ -34,27 +34,27 @@ class NotificationProcessor {
         let siteName = keynRequest.siteName ?? "Unknown"
 
         switch keynRequest.type {
-        case .add, .addAndLogin, .addToExisting:
+        case .add, .addAndLogin:
             content.title = "notifications.add_account".localized
-            content.body = "\(siteName) on \(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
         case .addBulk:
             content.title = "notifications.add_accounts".localized
-            content.body = "\(keynRequest.count!) accounts from \(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.accounts_from".localized, keynRequest.count!, session.browser, session.os)
         case .end:
             content.title = "notifications.end_session".localized
-            content.body = "\(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
         case .change:
             content.title = "notifications.change_password".localized
-            content.body = "\(siteName) on \(session.browser) on \(session.os)."
-        case .login:
+            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
+        case .login, .addToExisting:
             content.title = "notifications.login".localized
-            content.body = "\(siteName) on \(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
         case .fill:
             content.title = "notifications.fill_password".localized
-            content.body = "\(siteName) on \(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
         case .pair:
             content.title = "notifications.pairing".localized
-            content.body = "\(session.browser) on \(session.os)."
+            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
         default:
             content.body = "Unknown request"
         }

@@ -250,6 +250,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         doneButton.style = .done
         
         navigationItem.setRightBarButton(doneButton, animated: true)
+        reEnableBarButtonFont()
         
         userNameTextField.isEnabled = true
         userPasswordTextField.isEnabled = true

@@ -43,8 +43,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
         // Observe keyboard change
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        nc.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main, using: keyboardWillShow)
+        nc.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: keyboardWillHide)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
@@ -89,32 +89,31 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         checkWord(for: textField)
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(notification: Notification) {
         guard keyboardHeight == nil else {
             return
         }
 
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height - keyboardHeightOffset
+            keyboardHeight = keyboardSize.height + view.safeAreaInsets.bottom
+            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardSize.height)
             UIView.animate(withDuration: 0.3, animations: {
                 self.constraintContentHeight.constant += (self.keyboardHeight!) // Just assigned so it makes sense to force unwrap
+                if distanceToKeyboard > 0 {
+                    self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: (distanceToKeyboard + self.lowerBoundaryOffset))
+                }
             })
-
-            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (self.scrollView.frame.size.height - keyboardSize.height) + lowerBoundaryOffset
-            if distanceToKeyboard > 0 {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: distanceToKeyboard)
-                })
-            }
-
         }
     }
     
-    @objc func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(notification: Notification) {
         if let keyboardHeight = keyboardHeight {
+            let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardHeight) + self.lowerBoundaryOffset
             UIView.animate(withDuration: 0.3) {
                 self.constraintContentHeight.constant -= (keyboardHeight)
-                self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+                if distanceToKeyboard > 0 {
+                    self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+                }
             }
         }
         
@@ -142,14 +141,15 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                             self.showError(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
                         }
-                    case .success(_):
-                        StoreObserver.shared.updateSubscriptions() { error in
-                            if case let .failure(error) = result {
-                                Logger.shared.error("Error updating subscriptions", error: error)
-                            }
-                            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-                            self.registerForPushNotifications()
-                            Logger.shared.analytics(.backupRestored, override: true)
+                    case .success(let (total, failed)):
+                        if failed > 0 {
+                            let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                self.onSeedRecorySuccess()
+                            }))
+                            self.present(alert, animated: true)
+                        } else {
+                            self.onSeedRecorySuccess()
                         }
                     }
                 }
@@ -164,6 +164,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Private
+
+    private func onSeedRecorySuccess() {
+        StoreObserver.shared.updateSubscriptions() { result in
+            if case let .failure(error) = result {
+                Logger.shared.error("Error updating subscriptions", error: error)
+            }
+            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+            self.registerForPushNotifications()
+            Logger.shared.analytics(.backupRestored, override: true)
+        }
+    }
 
     private func showRootController() {
         guard let window = UIApplication.shared.keyWindow else {
@@ -207,8 +218,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         let checkMarkImageView = UIImageView(image: UIImage(named: "checkmark_small"))
         checkMarkImageView.contentMode = UIView.ContentMode.center
         if let size = checkMarkImageView.image?.size {
-            checkMarkImageView.frame = CGRect(x: 0.0, y: 0.0, width: size.width + 40.0, height: size.height)
+            checkMarkImageView.translatesAutoresizingMaskIntoConstraints = false
+            checkMarkImageView.widthAnchor.constraint(equalToConstant: size.width + 40.0).isActive = true
+            checkMarkImageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
         }
+
 
         textfield.placeholder = "\("backup.word".localized.capitalizedFirstLetter) \(textfield.tag + 1)"
         textfield.rightViewMode = .always
@@ -239,7 +253,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private func registerForPushNotifications() {
         DispatchQueue.main.async {
-            AppDelegate.startupService.registerForPushNotifications() { result in
+            NotificationManager.shared.registerForPushNotifications() { result in
                 if result {
                     NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
                 }

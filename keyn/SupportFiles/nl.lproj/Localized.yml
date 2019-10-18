@@ -12,6 +12,10 @@ numbers:
     value: '5'
 
 errors:
+  failed_accounts_title:
+    value: Fout
+  failed_accounts_message:
+    value: '%d van de %d accounts konden niet hersteld worden.'
   local_authentication:
     biometry_not_available:
       value: Authenticatie kan niet gestart worden, omdat biometrie ontbreekt op de telefoon.
@@ -539,6 +543,27 @@ notifications:
     value: Wachtwoord invullen
   pairing:
     value: Koppelen
+  this_on_that:
+    value: '%@ op %@.'
+  in_on:
+    value: '%@ in %@ op %@.'
+    description: GitHub in Firefox op MacOS
+  accounts_from:
+    value: '%@ accounts van %@ op %@'
+  onboarding_reminder_title:
+    first:  
+      value: Je bent er bijna!
+    second:
+      value: Waar wacht je op?
+    third:
+      value: Ben je er nog?
+  onboarding_reminder_message:
+    first:
+      value: Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! 🎉🎉
+    second:
+      value: Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden. 💪😃
+    third:
+      value: Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden kan beginnen! 🐣
 
 registration:
   change_password_footer:
@@ -781,3 +806,10 @@ feedback:
     value: Wil je nog iets toevoegen?
   feedback:
     value: Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.
+
+urls:
+  faq: 
+    value: 'https://keyn.app/nl/faq_raw'
+  jailbreak:
+    value: 'https://keyn.app/nl/faq#jailbreak'
+

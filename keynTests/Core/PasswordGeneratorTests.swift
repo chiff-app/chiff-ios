@@ -9,11 +9,17 @@ import LocalAuthentication
 
 class PasswordGeneratorTests: XCTestCase {
 
-    var context: LAContext!
-
     override func setUp() {
         super.setUp()
-        TestHelper.createSeed()
+        let exp = expectation(description: "Get an authenticated context")
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
+            if case .failure(let error) = result {
+                fatalError("Failed to get context: \(error.localizedDescription)")
+            }
+            TestHelper.createSeed()
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 40, handler: nil)
     }
 
     override func tearDown() {
@@ -50,7 +56,22 @@ class PasswordGeneratorTests: XCTestCase {
         XCTAssertEqual("OA0e9zxU8CXjxosttUdcYQ", password)
         XCTAssertEqual(index, 0)
     }
-    
+
+    func testGeneratePasswordReturnsIndexGreaterThan0() {
+        var positionRestrictions = [PPDPositionRestriction]()
+        // Password should start with a captial
+        positionRestrictions.append(PPDPositionRestriction(positions: "0", minOccurs: 1, maxOccurs: nil, characterSet: "UpperLetters"))
+
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        do {
+            let (_, index) = try passwordGenerator.generate(index: 0, offset: nil)
+            XCTAssertEqual(index, 3)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+
     func testCalculatePasswordOffsetShouldResultInSamePassword() throws {
         let site = TestHelper.sampleSite
         let randomIndex = Int(arc4random_uniform(100000000))
@@ -79,13 +100,54 @@ class PasswordGeneratorTests: XCTestCase {
         XCTAssertEqual(index, newIndex)
     }
 
-    func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLong() {
+    func testGeneratePasswordThrowsForMinLengthPPD() {
+        let ppd = TestHelper.samplePPD(minLength: 3, maxLength: 7)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        XCTAssertThrowsError(try passwordGenerator.generate(index: 0, offset: nil)) { error in
+            XCTAssertEqual(error as! PasswordGenerationError, PasswordGenerationError.tooShort)
+        }
+    }
+
+    func testGeneratePasswordUseFallbackLengthForMaxLengthPPD() {
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 51)
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        do {
+            let (password, _) = try passwordGenerator.generate(index: 0, offset: nil)
+            XCTAssertEqual(password.count, 20)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+
+    func testDontFailForMissingCharacters() {
+        var characterSets = [PPDCharacterSet]()
+        characterSets.append(PPDCharacterSet(base: [String](), characters: nil, name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: "0123456789", name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: [String](), characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
+        let ppd = PPD(characterSets: characterSets, properties: nil, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        XCTAssertNoThrow(try passwordGenerator.generate(index: 0, offset: nil))
+    }
+
+    func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooShort() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
         let password = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
         XCTAssertThrowsError(
             try passwordGenerator.calculateOffset(index: 0, password: password)
         )
+    }
+
+    func testCalculatePasswordOffsetThrowsErrorWhenPasswordContainsUnallowedCharacter() {
+        let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
+        let password = "Ver8aspdisd8nad8*(€aVer8a"
+        let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, context: nil)
+        XCTAssertThrowsError(
+            try passwordGenerator.calculateOffset(index: 0, password: password)
+        ) { error in
+            XCTAssertEqual(error as! PasswordGenerationError, PasswordGenerationError.characterNotAllowed)
+        }
     }
 
     func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooLongUsingFallback() {

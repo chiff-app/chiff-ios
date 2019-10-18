@@ -13,17 +13,6 @@ struct PPD: Codable {
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String
-
-    func export() {
-        do {
-            let jsonData = try JSONEncoder().encode(self)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print(jsonString)
-            }
-        } catch {
-            Logger.shared.warning("PPD could not be decoded", error: error)
-        }
-    }
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
         API.shared.request(endpoint: .ppd, path: id, parameters: nil, method: .get, signature: nil, body: nil) { (result) in

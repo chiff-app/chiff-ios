@@ -666,6 +666,16 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Fout bij verwijderen account</string>
 		</dict>
+		<key>failed_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>%d van de %d accounts konden niet hersteld worden.</string>
+		</dict>
+		<key>failed_accounts_title</key>
+		<dict>
+			<key>value</key>
+			<string>Fout</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
@@ -1081,6 +1091,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 	</dict>
 	<key>notifications</key>
 	<dict>
+		<key>accounts_from</key>
+		<dict>
+			<key>value</key>
+			<string>%@ accounts van %@ op %@</string>
+		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
@@ -1106,15 +1121,63 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Wachtwoord invullen</string>
 		</dict>
+		<key>in_on</key>
+		<dict>
+			<key>description</key>
+			<string>GitHub in Firefox op MacOS</string>
+			<key>value</key>
+			<string>%@ in %@ op %@.</string>
+		</dict>
 		<key>login</key>
 		<dict>
 			<key>value</key>
 			<string>Inloggen</string>
 		</dict>
+		<key>onboarding_reminder_message</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! 🎉🎉</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden. 💪😃</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden kan beginnen! 🐣</string>
+			</dict>
+		</dict>
+		<key>onboarding_reminder_title</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Je bent er bijna!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Waar wacht je op?</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Ben je er nog?</string>
+			</dict>
+		</dict>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
 			<string>Koppelen</string>
+		</dict>
+		<key>this_on_that</key>
+		<dict>
+			<key>value</key>
+			<string>%@ op %@.</string>
 		</dict>
 	</dict>
 	<key>numbers</key>
@@ -1867,6 +1930,19 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Instellingen</string>
+		</dict>
+	</dict>
+	<key>urls</key>
+	<dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq_raw</string>
+		</dict>
+		<key>jailbreak</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq#jailbreak</string>
 		</dict>
 	</dict>
 </dict>

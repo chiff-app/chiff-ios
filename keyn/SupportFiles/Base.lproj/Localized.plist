@@ -664,6 +664,16 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error deleting account</string>
 		</dict>
+		<key>failed_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn was unable to restore %d of the %d accounts.</string>
+		</dict>
+		<key>failed_accounts_title</key>
+		<dict>
+			<key>value</key>
+			<string>Recovery error</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>
@@ -1075,6 +1085,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 	</dict>
 	<key>notifications</key>
 	<dict>
+		<key>accounts_from</key>
+		<dict>
+			<key>value</key>
+			<string>%@ accounts from %@ on %@</string>
+		</dict>
 		<key>add_account</key>
 		<dict>
 			<key>value</key>
@@ -1100,15 +1115,65 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Fill password</string>
 		</dict>
+		<key>in_on</key>
+		<dict>
+			<key>description</key>
+			<string>GitHub in Firefox on MacOS</string>
+			<key>value</key>
+			<string>%@ in %@ on %@.</string>
+		</dict>
 		<key>login</key>
 		<dict>
 			<key>value</key>
-			<string>Log in</string>
+			<string>Login</string>
+		</dict>
+		<key>onboarding_reminder_message</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>You only have to pair your phone with your computer and you can log in without passwords! 🎉🎉</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>You're only one step away from logging in without passwords. 💪😃</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Connect your phone to your computer and start logging in without passwords! 🐣</string>
+			</dict>
+		</dict>
+		<key>onboarding_reminder_title</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Almost there!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>What are you waiting for?</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Are you still thre?</string>
+			</dict>
 		</dict>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
 			<string>Pair</string>
+		</dict>
+		<key>this_on_that</key>
+		<dict>
+			<key>description</key>
+			<string>Chrome on MacOS</string>
+			<key>value</key>
+			<string>%@ on %@.</string>
 		</dict>
 	</dict>
 	<key>numbers</key>
@@ -1859,6 +1924,19 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Settings</string>
+		</dict>
+	</dict>
+	<key>urls</key>
+	<dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/faq_raw</string>
+		</dict>
+		<key>jailbreak</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/faq#jailbreak</string>
 		</dict>
 	</dict>
 </dict>

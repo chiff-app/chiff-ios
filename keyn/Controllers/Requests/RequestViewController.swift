@@ -30,11 +30,14 @@ class RequestViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if Properties.hasFaceID {
+            authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
+        }
         switch authorizationGuard.type {
-        case .login:
+        case .login, .addToExisting:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
             Logger.shared.analytics(.loginRequestOpened)
-        case .add, .addAndLogin, .addToExisting:
+        case .add, .addAndLogin:
             requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
             Logger.shared.analytics(.addSiteRequestOpened)
         case .addBulk:
@@ -63,7 +66,7 @@ class RequestViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let account):
-                    if let account = account, account.hasOtp() {
+                    if let account = account, account.hasOtp {
                         AuthenticationGuard.shared.hideLockWindow()
                         self.account = account
                         self.showOtp()
@@ -121,10 +124,10 @@ class RequestViewController: UIViewController {
     private func success() {
         var autoClose = true
         switch authorizationGuard.type {
-            case .login:
+            case .login, .addToExisting:
                 successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .add, .addToExisting, .addAndLogin:
+            case .add, .addAndLogin:
                 successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
                 successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
                 autoClose = setAccountsLeft()
