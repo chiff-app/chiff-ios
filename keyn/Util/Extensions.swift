@@ -174,7 +174,8 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
-    static let subscriptionUpdated = Notification.Name("SubscriptionUpdatetd")
+    static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
+    static let backupCompleted = Notification.Name("BackupCompleted")
 }
 
 extension Token {
@@ -215,9 +216,9 @@ extension UIViewController {
         }
     }
 
-    func showError(message: String, title: String = "Error") {
+    func showError(message: String, title: String = "Error", handler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: handler))
         self.present(alert, animated: true)
     }
 

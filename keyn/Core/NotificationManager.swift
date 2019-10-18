@@ -3,7 +3,8 @@
  * All rights reserved.
  */
 
-import Foundation
+import UIKit
+import UserNotifications
 
 struct NotificationManager {
 
@@ -16,13 +17,6 @@ struct NotificationManager {
         static let os = "os"
     }
 
-    var endpoint: String? {
-        guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {
-            return nil
-        }
-        return String(data: endpointData, encoding: .utf8)
-    }
-
     var isSubscribed: Bool {
         return Keychain.shared.has(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
     }
@@ -32,7 +26,7 @@ struct NotificationManager {
             let token = deviceToken.hexEncodedString()
             if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
                 // Get endpoint from Keychain
-                try updateEndpoint(token: token, pubKey: BackupManager.shared.publicKey(), endpoint: endpoint)
+                try updateEndpoint(token: token, pubKey: BackupManager.shared.publicKey(), endpoint: Properties.endpoint)
             } else {
                 // Create new endpoint if not found in storage
                 try updateEndpoint(token: token, pubKey: BackupManager.shared.publicKey(), endpoint: nil)
@@ -75,8 +69,7 @@ struct NotificationManager {
     }
 
     func deleteEndpoint() {
-        guard let endpoint = endpoint else {
-            Logger.shared.warning("Tried to delete endpoint without endpoint present")
+        guard let endpoint = Properties.endpoint else {
             return
         }
         
@@ -92,7 +85,7 @@ struct NotificationManager {
     }
 
     func subscribe(topic: String, completionHandler: ((Result<Void, Error>) -> Void)?) {
-        guard let endpoint = endpoint else {
+        guard let endpoint = Properties.endpoint else {
             Logger.shared.warning("Tried to subscribe without endpoint present")
             #warning("TODO: Should be considered as an error")
             completionHandler?(.success(()))
@@ -148,6 +141,53 @@ struct NotificationManager {
         } catch {
             Logger.shared.error("Failed to get key from Keychain.", error: error)
             completionHandler(.failure(error))
+        }
+    }
+
+    func registerForPushNotifications(completionHandler: @escaping (_ result: Bool) -> Void) {
+        requestAuthorization { (result) in
+            if result {
+                UIApplication.shared.registerForRemoteNotifications()
+                completionHandler(true)
+            } else {
+                completionHandler(false)
+            }
+        }
+    }
+
+    func requestAuthorization(completionHandler: @escaping (_ result: Bool) -> Void) {
+        let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
+                                                     actions: [],
+                                                     intentIdentifiers: [],
+                                                     options: .customDismissAction)
+        let endSession = UNNotificationCategory(identifier: NotificationCategory.END_SESSION,
+                                                actions: [],
+                                                intentIdentifiers: [],
+                                                options: UNNotificationCategoryOptions(rawValue: 0))
+        let passwordChangeConfirmation = UNNotificationCategory(identifier: NotificationCategory.CHANGE_CONFIRMATION,
+                                                                actions: [],
+                                                                intentIdentifiers: [],
+                                                                options: UNNotificationCategoryOptions(rawValue: 0))
+        let keyn = UNNotificationCategory(identifier: NotificationCategory.KEYN_NOTIFICATION,
+                                          actions: [],
+                                          intentIdentifiers: [],
+                                          options: .customDismissAction)
+        let nudge = UNNotificationCategory(identifier: NotificationCategory.ONBOARDING_NUDGE,
+                                           actions: [],
+                                           intentIdentifiers: [],
+                                           options: .customDismissAction)
+        let center = UNUserNotificationCenter.current()
+        center.delegate = AppDelegate.notificationService
+        center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn, nudge])
+        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            DispatchQueue.main.async {
+                Properties.deniedPushNotifications = !granted
+                if granted {
+                    completionHandler(true)
+                } else {
+                    completionHandler(false)
+                }
+            }
         }
     }
 

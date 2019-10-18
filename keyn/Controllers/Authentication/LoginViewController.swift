@@ -6,6 +6,15 @@ import UIKit
 import LocalAuthentication
 
 class LoginViewController: UIViewController {
+
+    @IBOutlet weak var authenticateButton: UIButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if Properties.hasFaceID {
+            authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
+        }
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.lightContent

@@ -114,52 +114,19 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         center.removeAllDeliveredNotifications()
     }
 
-    func registerForPushNotifications(completionHandler: @escaping (_ result: Bool) -> Void) {
-        let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
-                                                     actions: [],
-                                                     intentIdentifiers: [],
-                                                     options: .customDismissAction)
-        let endSession = UNNotificationCategory(identifier: NotificationCategory.END_SESSION,
-                                                actions: [],
-                                                intentIdentifiers: [],
-                                                options: UNNotificationCategoryOptions(rawValue: 0))
-        let passwordChangeConfirmation = UNNotificationCategory(identifier: NotificationCategory.CHANGE_CONFIRMATION,
-                                                                actions: [],
-                                                                intentIdentifiers: [],
-                                                                options: UNNotificationCategoryOptions(rawValue: 0))
-        let keyn = UNNotificationCategory(identifier: NotificationCategory.KEYN_NOTIFICATION,
-                                          actions: [],
-                                          intentIdentifiers: [],
-                                          options: .customDismissAction)
-        let center = UNUserNotificationCenter.current()
-        center.delegate = pushNotificationService
-        center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn])
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            DispatchQueue.main.async {
-                Properties.deniedPushNotifications = !granted
-                if granted {
-                    UIApplication.shared.registerForRemoteNotifications()
-                    completionHandler(true)
-                } else {
-                    completionHandler(false)
-                }
-            }
-        }
-    }
-
     // MARK: - Private
 
     private func launchInitialView() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
 
-        if Properties.isFirstLaunch() {
+        if Properties.isFirstLaunch {
             // Purge Keychain
             Session.purgeSessionDataFromKeychain()
             Account.deleteAll()
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             BackupManager.shared.deleteAllKeys()
-            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp() ], override: true) // TODO: Check date format
+            Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
         } else if !Properties.questionnaireDirPurged {
@@ -171,11 +138,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         if Seed.hasKeys && BackupManager.shared.hasKeys {
-            registerForPushNotifications { result in
+            NotificationManager.shared.registerForPushNotifications { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")
                 }
+
                 // We just open the devices tab instead of accounts when opened from a pairing url.
                 if self.openedFromUrl {
                     vc.selectedIndex = 1

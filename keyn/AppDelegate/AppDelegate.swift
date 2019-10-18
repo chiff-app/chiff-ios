@@ -13,13 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static let shared: AppDelegate = {
         UIApplication.shared.delegate as! AppDelegate
     }()
-    static let startupService: AppStartupService = {
+    static var notificationService: PushNotificationService {
+        shared.services.first(where: { $0.key == .pushNotification })!.value as! PushNotificationService
+    }
+    static var startupService: AppStartupService {
         shared.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
-    }()
+    }
+
 
     enum Service {
         case appStartup
-        case migration
         case pushNotification
         case pasteBoard
     }
@@ -27,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let services: [Service: UIApplicationDelegate] = [
         .pushNotification: PushNotificationService(),
         .appStartup: AppStartupService(),
-        .migration: MigrationService(),
         .pasteBoard: PasteboardService()
     ]
 
