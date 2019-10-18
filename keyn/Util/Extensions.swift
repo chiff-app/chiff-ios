@@ -174,7 +174,8 @@ extension Notification.Name {
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
-    static let subscriptionUpdated = Notification.Name("SubscriptionUpdatetd")
+    static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
+    static let backupCompleted = Notification.Name("BackupCompleted")
 }
 
 extension Token {

@@ -31,7 +31,7 @@ class TestHelper {
     static let sharedKey = "msDAsyo_SFR0ixECH5zIM-X0aP87vKktwzeuH2r0A9M"
     static let sharedPrivKey = "msDAsyo_SFR0ixECH5zIM-X0aP87vKktwzeuH2r0A9Nqcmit-ItzXCWC5AhVThDcqACzW0bbSXepc9rqiCLthQ"
     static let sharedPubKey = "anJorfiLc1wlguQIVU4Q3KgAs1tG20l3qXPa6ogi7YU"
-    static let hotpURL: URL! = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&amp;algorithm=SHA256&amp;digits=6&amp;period=30&amp;counter=0")
+    static let hotpURL: URL! = URL(string: "otpauth://hotp/Test:Test?secret=s2b3spmb7e3zlpzwsf5r7qylttrf45lbdgn3fyxm6cwqx2qlrixg2vgi&algorithm=SHA256&digits=6&period=30&counter=0")
     static let sharedKeyID = "4a53a184604181436f8f3f7c1ff1b5bf52bdee807c61d000b53fdf4e09c9a5eb-shared"
     static let signingPrivKeyID = "4a53a184604181436f8f3f7c1ff1b5bf52bdee807c61d000b53fdf4e09c9a5eb-signing"
     static let keynRequestEncrypted = "nzLY8eBUZgQ4WYILTebsRVHGu12Tx3w85A6GXk6M-p0wNFZhPwkfTZctlOyQQ6Y-PKk_ghKpbKhW2p7M8syYr344UEQCjiaZxXocdz7r9PjnJ-ZE8kfye6-8XXZu1qbA4YedY02m92AWYftv_lFCj7v_9tX_4Co571F_muLaW6JVrKZrNz9XXlaf4WcrSu_id9zG3kGAlc-sztITZv-5_lHsrb58ffaOApl-v1kO5g8p4YUhbGKvDqxBq2ci0tAA4QqYPL42l4C4m6YLtH55GCEK5i3NwnsUZDeMH40x-H662I2gCjv6qNdvJ9MG4Sr9B8hDkrs9YUZA7swrpMWhkx4-TBlptOgNcbf8cUoGcDrJmRJ8ca69ZO7__zoEKIp2Q-Ev_sGICl9URggw7ZJgtC8iB2NTqj5448hmB7e04dB_DrOIjKl-q3ire7eqSj3Nn0IlynazMMsn2DcEtEOLKyPHuqwbeq6mRn2QHWUnRiHkCIsYdN3DFZ2p7ao"

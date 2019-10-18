@@ -1138,17 +1138,35 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Eerste herinnering</string>
+				<string>Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! 🎉🎉</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Tweede herinnering</string>
+				<string>Je bent nog maar één stap verwijderd van inloggen zonder wachtwoorden. 💪😃</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Laatste herinnering</string>
+				<string>Koppel je telefoon aan je computer en het inloggen zonder wachtwoorden kan beginnen! 🐣</string>
+			</dict>
+		</dict>
+		<key>onboarding_reminder_title</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Je bent er bijna!</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Waar wacht je op?</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Ben je er nog?</string>
 			</dict>
 		</dict>
 		<key>pairing</key>
@@ -1912,6 +1930,19 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Instellingen</string>
+		</dict>
+	</dict>
+	<key>urls</key>
+	<dict>
+		<key>faq</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq_raw</string>
+		</dict>
+		<key>jailbreak</key>
+		<dict>
+			<key>value</key>
+			<string>https://keyn.app/nl/faq#jailbreak</string>
 		</dict>
 	</dict>
 </dict>
