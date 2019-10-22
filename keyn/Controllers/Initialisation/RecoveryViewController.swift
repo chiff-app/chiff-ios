@@ -243,7 +243,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 Account.deleteAll()
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
-                BackupManager.shared.deleteAllKeys()
+                NotificationManager.shared.deleteKeys()
+                BackupManager.shared.deleteKeys()
             } catch {
                 fatalError()
             }

@@ -36,7 +36,8 @@ struct BackupManager {
                 completionHandler(.success(()))
                 return
             }
-            deleteAllKeys()
+            deleteKeys()
+            NotificationManager.shared.deleteKeys()
             try createEncryptionKey(seed: seed)
             let (privKey, pubKey, userId) = try createSigningKeypair(seed: seed)
             DCDevice.current.generateToken { (data, error) in
@@ -146,8 +147,7 @@ struct BackupManager {
         }
     }
 
-    func deleteAllKeys() {
-        Keychain.shared.deleteAll(service: .aws)
+    func deleteKeys() {
         Keychain.shared.deleteAll(service: .backup)
     }
 
