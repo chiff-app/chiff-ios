@@ -113,7 +113,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
 //        try? Seed.delete()      // Uncomment if you want to force seed regeneration
 //        try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: .aws) // Uncomment to delete snsDeviceEndpointArn from Keychain
-//        BackupManager.shared.deleteAllKeys()
+//        NotificationManager.shared.deleteKeys()
+//        BackupManager.shared.deleteKeys()
 //        Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
         #endif

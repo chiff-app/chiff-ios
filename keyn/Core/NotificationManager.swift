@@ -191,4 +191,8 @@ struct NotificationManager {
         }
     }
 
+    func deleteKeys() {
+        Keychain.shared.deleteAll(service: .aws)
+    }
+
 }
