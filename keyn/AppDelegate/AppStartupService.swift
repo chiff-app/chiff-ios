@@ -139,7 +139,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         if Seed.hasKeys && BackupManager.shared.hasKeys {
-            NotificationManager.shared.registerForPushNotifications { result in
+            PushNotifications.register { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")

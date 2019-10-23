@@ -18,7 +18,7 @@ class InitialisationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationManager.shared.requestAuthorization() { result in
+        PushNotifications.requestAuthorization() { result in
             if result {
                 self.scheduleNudgeNotifications()
             }
@@ -75,7 +75,7 @@ class InitialisationViewController: UIViewController {
     }
 
     private func registerForPushNotifications() {
-        NotificationManager.shared.registerForPushNotifications() { result in
+        PushNotifications.register() { result in
             DispatchQueue.main.async {
                 if result {
                     self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)

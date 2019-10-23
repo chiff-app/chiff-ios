@@ -254,7 +254,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private func registerForPushNotifications() {
         DispatchQueue.main.async {
-            NotificationManager.shared.registerForPushNotifications() { result in
+            PushNotifications.register() { result in
                 if result {
                     NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
                 }
