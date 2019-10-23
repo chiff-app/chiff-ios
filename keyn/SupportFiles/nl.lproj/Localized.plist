@@ -836,7 +836,7 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<key>feedback</key>
 		<dict>
 			<key>value</key>
-			<string>Heb je een bug gevonden? Laat het ons weten? We horen ook graag je mening over keyn of suggesties voor verbeteringen.</string>
+			<string>Heb je een bug gevonden? Laat het ons weten! We horen ook graag je mening over keyn of suggesties voor verbeteringen.</string>
 		</dict>
 		<key>finish</key>
 		<dict>
