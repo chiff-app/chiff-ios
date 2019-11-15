@@ -995,7 +995,7 @@ Thank you!</string>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>To login on your phone, open Keyn.</string>
+				<string>To log in on your phone, open Keyn.</string>
 			</dict>
 			<key>second</key>
 			<dict>
@@ -1160,7 +1160,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Are you still thre?</string>
+				<string>Are you still there?</string>
 			</dict>
 		</dict>
 		<key>pairing</key>
