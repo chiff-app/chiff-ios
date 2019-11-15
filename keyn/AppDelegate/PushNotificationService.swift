@@ -105,10 +105,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return []
         }
 
-        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
-            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
-            return []
-        }
+        // This is disabled for now, because it causes requests to not appear if time of phone and device are not in sync
+//        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
+//            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
+//            return []
+//        }
 
         if keynRequest.type == .addBulk {
             do {

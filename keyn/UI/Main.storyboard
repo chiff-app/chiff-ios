@@ -1422,7 +1422,7 @@
                                 <rect key="frame" x="0.0" y="133.5" width="375" height="380.5"/>
                                 <subviews>
                                     <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="Zae-Q7-6CG">
-                                        <rect key="frame" x="99.5" y="105" width="176" height="171"/>
+                                        <rect key="frame" x="11.5" y="19.5" width="352" height="342"/>
                                     </imageView>
                                     <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="xbz-x7-7rr">
                                         <rect key="frame" x="139.5" y="142.5" width="96" height="96"/>
@@ -1492,7 +1492,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zRI-xO-cE1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="gnR-ED-PTq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3145" y="-940"/>
+            <point key="canvasLocation" x="3132" y="-940"/>
         </scene>
         <!--ManualOTP View Controller-->
         <scene sceneID="Jxr-Hx-wrr">
@@ -1601,7 +1601,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OYs-R4-1et" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="dnO-in-GRP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5009" y="-940"/>
+            <point key="canvasLocation" x="4924" y="-940"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="Fms-F8-WYy">
@@ -1715,7 +1715,7 @@
                                 <rect key="frame" x="0.0" y="166" width="375" height="331"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-7d-Dfy">
-                                        <rect key="frame" x="99.5" y="80" width="176" height="171"/>
+                                        <rect key="frame" x="11.5" y="30" width="352" height="271"/>
                                     </imageView>
                                     <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="GfM-za-dL9">
                                         <rect key="frame" x="139.5" y="117.5" width="96" height="96"/>

@@ -557,7 +557,7 @@ notifications:
     second:
       value: What are you waiting for?
     third:
-      value: Are you still thre?
+      value: Are you still there?
   onboarding_reminder_message:
     first:
       value: You only have to pair your phone with your computer and you can log in without passwords! 🎉🎉
@@ -647,7 +647,7 @@ initialization:
       value: You can login by authorizing the request.
   mobile_instruction_<iOS12:
     first:
-      value: To login on your phone, open Keyn.
+      value: To log in on your phone, open Keyn.
     second:
       value: Copy your password by simply tapping it.
     third:
