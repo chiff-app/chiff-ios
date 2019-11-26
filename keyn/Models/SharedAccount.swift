@@ -12,6 +12,7 @@ import AuthenticationServices
  * An account belongs to the user and can have one Site.
  */
 struct SharedAccount: Account {
+    
     let id: String
     var username: String
     var sites: [Site]
@@ -24,14 +25,16 @@ struct SharedAccount: Account {
     var askToChange: Bool? = false
     let enabled = true
     var synced = true
+    var version: Int
 
     static let keychainService: KeychainService = .sharedAccount
 
-    init(username: String, sites: [Site], passwordIndex: Int = 0, key: Data, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], passwordIndex: Int = 0, key: Data, context: LAContext? = nil, version: Int) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
         self.username = username
+        self.version = version
 
         let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: key)
         let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
@@ -40,13 +43,14 @@ struct SharedAccount: Account {
         try save(password: generatedPassword)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int) {
         self.id = id
         self.username = username
         self.sites = sites
         self.passwordIndex = passwordIndex
         self.passwordOffset = passwordOffset
         self.askToLogin = true
+        self.version = version
     }
 
     mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
@@ -66,21 +70,22 @@ struct SharedAccount: Account {
         return true
     }
 
-    func delete(completionHandler: @escaping (_ error: Error?) -> Void) {
-        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (context, error) in
+    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
             do {
-                if let error = error {
-                    throw error
+                switch result {
+                case .success(_):
+                    try BackupManager.shared.deleteAccount(accountId: self.id)
+                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+                    self.deleteFromToIdentityStore()
+                    Logger.shared.analytics(.accountDeleted)
+                    Properties.accountCount -= 1
+                    completionHandler(.success(()))
+                case .failure(let error): throw error
                 }
-                try BackupManager.shared.deleteAccount(accountId: self.id)
-                try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                self.deleteFromToIdentityStore()
-                Logger.shared.analytics(.accountDeleted)
-                Properties.accountCount -= 1
-                completionHandler(nil)
             } catch {
                 Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(error)
+                return completionHandler(.failure(error))
             }
         }
     }
@@ -98,7 +103,8 @@ struct SharedAccount: Account {
                                   username: backupAccount.username,
                                   sites: backupAccount.sites,
                                   passwordIndex: backupAccount.passwordIndex,
-                                  passwordOffset: backupAccount.passwordOffset)
+                                  passwordOffset: backupAccount.passwordOffset,
+                                  version: 1) // TODO: Version number?
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: key)
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
@@ -131,6 +137,7 @@ extension SharedAccount: Codable {
         case passwordOffset
         case askToLogin
         case askToChange
+        case version
     }
 
     init(from decoder: Decoder) throws {
@@ -141,6 +148,7 @@ extension SharedAccount: Codable {
         self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
     }
 
 }

@@ -115,8 +115,8 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
         UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
         UserDefaults.standard.removeObject(forKey: userIdFlag)
-        UserDefaults.standard.removeObject(forKey: accountCountFlag)
-        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
+//        UserDefaults.standard.removeObject(forKey: accountCountFlag)
+//        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
         // We're keeping: questionnaireDirPurgedFlag, subscriptionExiryDateFlag, subscriptionProductFlag, agreedWithTermsFlag, firstPairingCompletedFlag
     }
 

@@ -6,7 +6,6 @@ import UIKit
 import UserNotifications
 import LocalAuthentication
 
-
 /*
  * There is a non-codable part of session that is only stored in the Keychain.
  * That is: sharedKey and sigingKeyPair.privKey.
@@ -20,6 +19,15 @@ class BrowserSession: Session {
     let os: String
     let signingPubKey: String
     let version: Int
+    var title: String {
+        return "\(browser) on \(os)" // TODO: Localize
+    }
+    var logo: UIImage? {
+        return UIImage(named: browser.lowercased())
+    }
+    static var signingService: KeychainService = .signingSessionKey
+    static var encryptionService: KeychainService = .sharedSessionKey
+    static var sessionCountFlag = "sessionCount"
 
     enum CodingKeys: CodingKey {
         case backgroundTask
@@ -51,10 +59,10 @@ class BrowserSession: Session {
         self.version = version
     }
 
-    func delete(notifyExtension: Bool) throws {
-        Properties.sessionCount -= 1
+    func delete(notify: Bool) throws {
+        BrowserSession.count -= 1
         Logger.shared.analytics(.sessionDeleted)
-        if notifyExtension {
+        if notify {
             try sendByeToPersistentQueue() { (result) in
                 if case let .failure(error) = result {
                      Logger.shared.error("Error sending bye to persistent queue.", error: error)
@@ -68,9 +76,7 @@ class BrowserSession: Session {
     }
 
     func decrypt(message message64: String) throws -> KeynRequest {
-        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
-        var message = try JSONDecoder().decode(KeynRequest.self, from: data)
+        var message: KeynRequest = try decryptMessage(message: message64)
         message.sessionID = id
         return message
     }
@@ -154,8 +160,8 @@ class BrowserSession: Session {
             "receiptHandle": receiptHandle
         ]
         do {
-            API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .delete, message: message, pubKey: signingPubKey, privKey: try signingPrivKey()) { (_, error) in
-                if let error = error {
+            API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .delete, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+                if case let .failure(error) = result {
                     Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
                 }
             }
@@ -171,8 +177,8 @@ class BrowserSession: Session {
             "id": account.id,
             "data": ciphertext.base64
         ]
-        API.shared.signedRequest(endpoint: .accounts, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey()) { (_, error) in
-            if let error = error {
+        API.shared.signedRequest(endpoint: .accounts, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            if case let .failure(error) = result {
                 Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
             }
         }
@@ -192,8 +198,8 @@ class BrowserSession: Session {
 
     func save(key: Data, signingKeyPair: KeyPair) throws {
         let sessionData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: KeyIdentifier.sharedKey.identifier(for: id), service: BrowserSession.encryptionService, secretData: key, objectData: sessionData)
-        try Keychain.shared.save(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
+        try Keychain.shared.save(id: SessionIdentifier.sharedKey.identifier(for: id), service: BrowserSession.encryptionService, secretData: key, objectData: sessionData)
+        try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
     }
 
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
@@ -248,18 +254,13 @@ class BrowserSession: Session {
         }
     }
 
-    static func purgeSessionDataFromKeychain() {
-        Keychain.shared.deleteAll(service: .sharedSessionKey)
-        Keychain.shared.deleteAll(service: .signingSessionKey)
-        Properties.sessionCount = 0
-    }
-
     // MARK: - Private
 
     private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
-        let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
-        return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
+        // let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
+        // let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
+        // return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
+        return try decryptMessage(message: message64)
     }
 
 

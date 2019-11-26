@@ -16,7 +16,7 @@ enum SessionError: KeynError {
     case destroyed
 }
 
-fileprivate enum SessionIdentifier: String, Codable {
+enum SessionIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
     case passwordSeed = "passwordSeed"
@@ -45,7 +45,7 @@ protocol Session: Codable {
     static var signingService: KeychainService { get }
     static var sessionCountFlag: String { get }
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, completion: @escaping (_ session: Session?, _ error: Error?) -> Void)
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void)
 }
 
 
@@ -58,16 +58,16 @@ extension Session {
     }
 
     func signingPrivKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService)
+        return try Keychain.shared.get(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService)
     }
 
     func sharedKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
+        return try Keychain.shared.get(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
     }
 
     func decryptMessage<T: Decodable>(message: String) throws -> T {
         let ciphertext = try Crypto.shared.convertFromBase64(from: message)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey())
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
         return try JSONDecoder().decode(T.self, from: data)
     }
 
@@ -76,7 +76,7 @@ extension Session {
             let message = [
                 "pubkey": signingPubKey
             ]
-            API.shared.signedRequest(endpoint: .message, method: .delete, message: message, pubKey: nil, privKey: try signingPrivKey()), body: nil) { result in
+            API.shared.signedRequest(endpoint: .message, method: .delete, message: message, pubKey: nil, privKey: try signingPrivKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
                 }
@@ -86,9 +86,9 @@ extension Session {
         }
     }
 
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (_ error: Error?) -> Void) throws {
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
         // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -96,9 +96,11 @@ extension Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        API.shared.signedRequest(endpoint: .pairing, method: .post, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: nil) { result in
+        API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { result in
             if case let .failure(error) = result {
                 Logger.shared.error("Error sending pairing response.", error: error)
+            } else {
+                completion(.success(()))
             }
         }
     }
@@ -139,11 +141,11 @@ extension Session {
     }
 
     static func exists(id: String) throws -> Bool {
-        return Keychain.shared.has(id: KeyIdentifier.sharedKey.identifier(for: id), service: encryptionService)
+        return Keychain.shared.has(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService)
     }
 
     static func get(id: String) throws -> Self? {
-        guard let sessionDict = try Keychain.shared.attributes(id: KeyIdentifier.sharedKey.identifier(for: id), service: encryptionService) else {
+        guard let sessionDict = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService) else {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {
