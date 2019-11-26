@@ -187,7 +187,7 @@ struct UserAccount: Account {
                 case .success(_):
                     try BackupManager.shared.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                    Account.deleteFromToIdentityStore(account: self)
+                    self.deleteFromToIdentityStore()
                     Logger.shared.analytics(.accountDeleted)
                     Properties.accountCount -= 1
                     completionHandler(.success(()))
@@ -248,7 +248,7 @@ struct UserAccount: Account {
         let data = try PropertyListEncoder().encode(account)
 
         try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
-        account.saveToIdentityStore(account: account)
+        account.saveToIdentityStore()
     }
 
 }
@@ -293,7 +293,7 @@ extension UserAccount {
             return
         }
         do {
-            let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, context: context, version: 1)
+            let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: try Seed.getPasswordSeed(context: context), version: 1)
             passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password())
             version = 1
             let accountData = try PropertyListEncoder().encode(self)

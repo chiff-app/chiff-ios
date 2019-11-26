@@ -113,7 +113,7 @@ class AuthorizationGuard {
             var success = false
             
             func onSuccess(context: LAContext?) throws {
-                guard let account = try UserAccount.get(accountID: self.accountId, context: context) ?? SharedAccount.get(accountID: self.accountId, context: context) else {
+                guard let account: Account = try UserAccount.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -297,7 +297,7 @@ class AuthorizationGuard {
 
     // MARK: - Static authorization functionss
 
-    static func addOTP(token: Token, account: Account, completionHandler: @escaping (Result<Void, Error>)->()) throws {
+    static func addOTP(token: Token, account: UserAccount, completionHandler: @escaping (Result<Void, Error>)->()) throws {
         authorizationInProgress = true
         let reason = account.hasOtp ? "\("accounts.add_2fa_code".localized) \(account.site.name)" : "\("accounts.update_2fa_code".localized) \(account.site.name)"
         LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false) { (result) in

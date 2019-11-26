@@ -26,10 +26,11 @@ protocol Account: Codable {
     var askToChange: Bool? { get set }
     var synced: Bool { get }
     var enabled: Bool { get }
+    var version: Int { get }
     static var keychainService: KeychainService { get }
 
     func backup() throws
-    func delete(completionHandler: @escaping (_ error: Error?) -> Void)
+    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) 
 }
 
 extension Account {
@@ -116,9 +117,9 @@ extension Account {
             guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
                 throw CodingError.unexpectedData
             }
-            var account = try decoder.decode(Self.self, from: accountData)
+            let account = try decoder.decode(Self.self, from: accountData)
             if sync {
-                if account.version == 0 {
+                if var account = account as? UserAccount, account.version == 0 {
                     account.updateVersion(context: context)
                 } else if !account.synced {
                     try? account.backup()
@@ -141,6 +142,12 @@ extension Account {
 
         return try decoder.decode(Self.self, from: accountData)
     }
+
+    // TODO: kinda weird
+    static func getAny(accountID: String, context: LAContext?) throws -> Account? {
+        try UserAccount.get(accountID: accountID, context: context) ?? SharedAccount.get(accountID: accountID, context: context)
+    }
+
 
     static func accountList(context: LAContext? = nil) throws -> AccountList {
         return try allCombined(context: context).mapValues({ JSONAccount(account: $0) })
@@ -209,3 +216,4 @@ extension Account {
             }
         }
     }
+}
