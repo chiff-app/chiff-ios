@@ -372,6 +372,8 @@ settings:
     value: Lees meer
   premium_beta:
     value: Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma
+  premium_teams:
+    value: Keyn Premium is automatisch ingeschakeld omdate je een actieve Keyn voor Teams sessie hebt.
   success:
     value: Gelukt
   restore_successful:
