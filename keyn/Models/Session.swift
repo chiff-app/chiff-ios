@@ -138,6 +138,7 @@ extension Session {
     static func purgeSessionDataFromKeychain() {
         Keychain.shared.deleteAll(service: encryptionService)
         Keychain.shared.deleteAll(service: signingService)
+        Self.count = 0
     }
 
     static func exists(id: String) throws -> Bool {
@@ -166,7 +167,6 @@ extension Session {
 
         // To be sure
         purgeSessionDataFromKeychain()
-        Self.count = 0
     }
 
 }

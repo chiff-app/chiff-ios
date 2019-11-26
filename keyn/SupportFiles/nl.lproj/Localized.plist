@@ -1742,6 +1742,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma</string>
 		</dict>
+		<key>premium_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is automatisch ingeschakeld omdate je een actieve Keyn voor Teams sessie hebt.</string>
+		</dict>
 		<key>privacy</key>
 		<dict>
 			<key>comment</key>
