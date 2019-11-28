@@ -172,7 +172,7 @@ class SeedTests: XCTestCase {
         Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic) { (result) in
             do {
                 let _ = try result.get()
-                guard let account = try Account.get(accountID: TestHelper.userID, context: self.context) else {
+                guard let account = try UserAccount.get(accountID: TestHelper.userID, context: self.context) else {
                     return XCTFail("Account not found")
                 }
                 XCTAssertTrue(account.id == TestHelper.userID)
