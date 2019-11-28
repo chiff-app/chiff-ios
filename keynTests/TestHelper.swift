@@ -151,7 +151,7 @@ class TestHelper {
             fatalError("Error getting data from base64 string")
         }
         do {
-            let session = Session(id: sessionID, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
+            let session = BrowserSession(id: sessionID, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
             let encoder = PropertyListEncoder()
             try Keychain.shared.save(id: sharedKeyID, service: .sharedSessionKey, secretData: sharedKey, objectData: encoder.encode(session))
             try Keychain.shared.save(id: signingPrivKeyID, service: .signingSessionKey, secretData: privKey)
@@ -163,7 +163,7 @@ class TestHelper {
 
     static func deleteLocalData() {
         BrowserSession.deleteAll()
-        Account.deleteAll()
+        UserAccount.deleteAll()
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         NotificationManager.shared.deleteKeys()
