@@ -130,7 +130,7 @@ class PasswordGeneratorTests: XCTestCase {
         XCTAssertNoThrow(try passwordGenerator.generate(index: 0, offset: nil))
     }
 
-    func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooShort() {
+    func testCalculatePasswordOffsetThrowsErrorWhenPasswordTooBig() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
         let password = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
         let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, passwordSeed: TestHelper.passwordSeed.fromBase64!)
