@@ -535,6 +535,10 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
+			<key>begin</key>
+			<integer>17</integer>
+			<key>end</key>
+			<integer>21</integer>
 			<key>value</key>
 			<string>We don't want to push you...</string>
 		</dict>
@@ -900,6 +904,20 @@ Thank you!</string>
 			<key>value</key>
 			<string>Agree</string>
 		</dict>
+		<key>all_set_up</key>
+		<dict>
+			<key>value</key>
+			<string>You're all set up! 🎉</string>
+		</dict>
+		<key>begin_passwordless</key>
+		<dict>
+			<key>end</key>
+			<integer>29</integer>
+			<key>start</key>
+			<integer>17</integer>
+			<key>value</key>
+			<string>Let's begin your passwordless life.</string>
+		</dict>
 		<key>byebye</key>
 		<dict>
 			<key>end</key>
@@ -942,27 +960,35 @@ Thank you!</string>
 			<key>value</key>
 			<string>Disagree</string>
 		</dict>
+		<key>enable</key>
+		<dict>
+			<key>value</key>
+			<string>Enable</string>
+		</dict>
 		<key>enter_words</key>
 		<dict>
 			<key>value</key>
 			<string>Enter the words of your paper backup to recover your passwords</string>
+		</dict>
+		<key>face_id</key>
+		<dict>
+			<key>value</key>
+			<string>FaceID</string>
 		</dict>
 		<key>finish</key>
 		<dict>
 			<key>value</key>
 			<string>Finish</string>
 		</dict>
+		<key>from_today</key>
+		<dict>
+			<key>value</key>
+			<string> on any website from now on.</string>
+		</dict>
 		<key>get_started</key>
 		<dict>
 			<key>value</key>
 			<string>Let's get started</string>
-		</dict>
-		<key>help_improve</key>
-		<dict>
-			<key>start</key>
-			<integer>16</integer>
-			<key>value</key>
-			<string>Help us improve Keyn</string>
 		</dict>
 		<key>how_keyn_works</key>
 		<dict>
@@ -980,10 +1006,29 @@ Thank you!</string>
 			<key>value</key>
 			<string>Initialize encrypted storage</string>
 		</dict>
+		<key>keyn_uses_push</key>
+		<dict>
+			<key>begin</key>
+			<integer>18</integer>
+			<key>end</key>
+			<integer>26</integer>
+			<key>value</key>
+			<string>To log in to your computer, Keyn uses push notifications.</string>
+		</dict>
 		<key>learn_more</key>
 		<dict>
 			<key>value</key>
 			<string>Learn more</string>
+		</dict>
+		<key>lets_go</key>
+		<dict>
+			<key>value</key>
+			<string>Let's go!</string>
+		</dict>
+		<key>log_in_with</key>
+		<dict>
+			<key>value</key>
+			<string>Log in with </string>
 		</dict>
 		<key>mobile</key>
 		<dict>
@@ -1026,6 +1071,15 @@ Thank you!</string>
 				<string>You can login by authorizing the request.</string>
 			</dict>
 		</dict>
+		<key>no_pushing</key>
+		<dict>
+			<key>begin</key>
+			<integer>17</integer>
+			<key>end</key>
+			<integer>21</integer>
+			<key>value</key>
+			<string>We don't want to push you...</string>
+		</dict>
 		<key>one_minute_away</key>
 		<dict>
 			<key>end</key>
@@ -1038,7 +1092,7 @@ Thank you!</string>
 		<key>recover</key>
 		<dict>
 			<key>value</key>
-			<string>Recover from paper backup</string>
+			<string>Recover from backup</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -1065,6 +1119,11 @@ Thank you!</string>
 			<key>value</key>
 			<string>Start using Keyn</string>
 		</dict>
+		<key>touch_id</key>
+		<dict>
+			<key>value</key>
+			<string>TouchID</string>
+		</dict>
 		<key>try_later</key>
 		<dict>
 			<key>value</key>
@@ -1078,7 +1137,7 @@ Thank you!</string>
 		<key>working</key>
 		<dict>
 			<key>value</key>
-			<string>We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+			<string>You can greatly help us by sharing usage statistics and error data with us. 
 
 Sensitive data is never shared and everything is anonymous.</string>
 		</dict>

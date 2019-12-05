@@ -288,6 +288,8 @@ devices:
     value: Je kan met zoveel apparaten koppelen als je wilt.
   no_push_warning_title:
     value: We willen je niet pushen...
+    begin: 18
+    end: 24
   no_push_warning_text:
     value: |-
       Maar Keyn werkt helaas niet zonder pushberichten. 
@@ -586,6 +588,30 @@ initialization:
     value: Verder 
   scan_qr:
     value: Scan QR code
+  begin_passwordless:
+    value: Laat je leven zonder wachtwoorden beginnen.
+    begin: 21
+    end: 33
+  log_in_with:
+    value: 'Log vanaf nu in op elke website met '
+  touch_id:
+    value: TouchID
+  face_id:
+    value: FaceID
+  from_today:
+    value: '.'
+  lets_go:
+    value: Let's go!
+  no_pushing:
+    value: We willen je niet pushen...
+    begin: 18
+    end: 24
+  keyn_uses_push:
+    value: Om in te loggen op je computer maakt Keyn gebruik van push notifications.
+    begin: 22
+    end: 30
+  enable:
+    value: Zet aan
   try_later:
     value: Later
   start_using_keyn:
@@ -600,13 +626,11 @@ initialization:
     value: Hoe Keyn werkt op
     start: 4
     end: 8
-  help_improve:
-    value: Help Keyn te verbeteren
-    start: 5
-    end: 9
+  all_set_up:
+    value: Je bent helemaal klaar! 🎉
   working:
     value: |-
-      We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+      Help ons Keyn te verbeteren door gebruiksstatistieken en foutmeldingen te delen.
 
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
   change:
@@ -625,7 +649,7 @@ initialization:
     value: Initialiseer versleutelde opslag
     comment: This is provided as a reason for authenticating the first time.
   recover:
-    value: Herstel van paper backup
+    value: Herstel van backup
   enter_words:
     value: Voer de 12 woorden van je paper backup in
   mobile:

@@ -535,6 +535,10 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
+			<key>begin</key>
+			<integer>18</integer>
+			<key>end</key>
+			<integer>24</integer>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
 		</dict>
@@ -902,6 +906,20 @@ Thank you!</string>
 			<key>value</key>
 			<string>Akkoord</string>
 		</dict>
+		<key>all_set_up</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent helemaal klaar! 🎉</string>
+		</dict>
+		<key>begin_passwordless</key>
+		<dict>
+			<key>begin</key>
+			<integer>21</integer>
+			<key>end</key>
+			<integer>33</integer>
+			<key>value</key>
+			<string>Laat je leven zonder wachtwoorden beginnen.</string>
+		</dict>
 		<key>byebye</key>
 		<dict>
 			<key>end</key>
@@ -944,29 +962,35 @@ Thank you!</string>
 			<key>value</key>
 			<string>Niet akkoord</string>
 		</dict>
+		<key>enable</key>
+		<dict>
+			<key>value</key>
+			<string>Zet aan</string>
+		</dict>
 		<key>enter_words</key>
 		<dict>
 			<key>value</key>
 			<string>Voer de 12 woorden van je paper backup in</string>
+		</dict>
+		<key>face_id</key>
+		<dict>
+			<key>value</key>
+			<string>FaceID</string>
 		</dict>
 		<key>finish</key>
 		<dict>
 			<key>value</key>
 			<string>Gereed</string>
 		</dict>
+		<key>from_today</key>
+		<dict>
+			<key>value</key>
+			<string>.</string>
+		</dict>
 		<key>get_started</key>
 		<dict>
 			<key>value</key>
 			<string>Beginnen</string>
-		</dict>
-		<key>help_improve</key>
-		<dict>
-			<key>end</key>
-			<integer>9</integer>
-			<key>start</key>
-			<integer>5</integer>
-			<key>value</key>
-			<string>Help Keyn te verbeteren</string>
 		</dict>
 		<key>how_keyn_works</key>
 		<dict>
@@ -984,10 +1008,29 @@ Thank you!</string>
 			<key>value</key>
 			<string>Initialiseer versleutelde opslag</string>
 		</dict>
+		<key>keyn_uses_push</key>
+		<dict>
+			<key>begin</key>
+			<integer>22</integer>
+			<key>end</key>
+			<integer>30</integer>
+			<key>value</key>
+			<string>Om in te loggen op je computer maakt Keyn gebruik van push notifications.</string>
+		</dict>
 		<key>learn_more</key>
 		<dict>
 			<key>value</key>
 			<string>Meer info</string>
+		</dict>
+		<key>lets_go</key>
+		<dict>
+			<key>value</key>
+			<string>Let's go!</string>
+		</dict>
+		<key>log_in_with</key>
+		<dict>
+			<key>value</key>
+			<string>Log vanaf nu in op elke website met </string>
 		</dict>
 		<key>mobile</key>
 		<dict>
@@ -1030,6 +1073,15 @@ Thank you!</string>
 				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
 			</dict>
 		</dict>
+		<key>no_pushing</key>
+		<dict>
+			<key>begin</key>
+			<integer>18</integer>
+			<key>end</key>
+			<integer>24</integer>
+			<key>value</key>
+			<string>We willen je niet pushen...</string>
+		</dict>
 		<key>one_minute_away</key>
 		<dict>
 			<key>end</key>
@@ -1042,7 +1094,7 @@ Thank you!</string>
 		<key>recover</key>
 		<dict>
 			<key>value</key>
-			<string>Herstel van paper backup</string>
+			<string>Herstel van backup</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -1071,6 +1123,11 @@ Thank you!</string>
 			<key>value</key>
 			<string>Start met Keyn</string>
 		</dict>
+		<key>touch_id</key>
+		<dict>
+			<key>value</key>
+			<string>TouchID</string>
+		</dict>
 		<key>try_later</key>
 		<dict>
 			<key>value</key>
@@ -1084,7 +1141,7 @@ Thank you!</string>
 		<key>working</key>
 		<dict>
 			<key>value</key>
-			<string>We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+			<string>Help ons Keyn te verbeteren door gebruiksstatistieken en foutmeldingen te delen.
 
 Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</string>
 		</dict>
