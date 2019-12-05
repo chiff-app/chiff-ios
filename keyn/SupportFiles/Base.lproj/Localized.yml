@@ -287,6 +287,8 @@ devices:
     value: You can pair with as many devices as you want.
   no_push_warning_title:
     value: We don't want to push you...
+    begin: 17
+    end: 21
   no_push_warning_text:
     value: |- 
       But you can only use Keyn to log in to other devices if  you enable push notifications.
@@ -586,6 +588,30 @@ initialization:
     value: Setup Keyn
   scan_qr:
     value: Scan QR code
+  begin_passwordless:
+    value: Let's begin your passwordless life.
+    start: 17
+    end: 29
+  log_in_with:
+    value: 'Log in with '
+  touch_id:
+    value: TouchID
+  face_id:
+    value: FaceID
+  from_today:
+    value: ' on any website from now on.'
+  lets_go:
+    value: Let's go!
+  no_pushing:
+    value: We don't want to push you...
+    begin: 17
+    end: 21
+  keyn_uses_push:
+    value: To log in to your computer, Keyn uses push notifications.
+    begin: 18
+    end: 26
+  enable:
+    value: Enable
   try_later:
     value: Try later
   start_using_keyn:
@@ -600,12 +626,11 @@ initialization:
     value: How Keyn works on
     start: 4
     end: 8
-  help_improve:
-    value: Help us improve Keyn
-    start: 16
+  all_set_up:
+    value: You're all set up! 🎉
   working:
     value: |-
-      We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+      You can greatly help us by sharing usage statistics and error data with us. 
 
       Sensitive data is never shared and everything is anonymous.
   change:
@@ -624,7 +649,7 @@ initialization:
     value: Initialize encrypted storage
     comment: This is provided as a reason for authenticating the first time.
   recover:
-    value: Recover from paper backup
+    value: Recover from backup
   enter_words:
     value: Enter the words of your paper backup to recover your passwords
   mobile:
