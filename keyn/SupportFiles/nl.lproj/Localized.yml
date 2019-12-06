@@ -165,18 +165,18 @@ popups:
 
 accounts:
   didnt_save:
-    value: Je hebt nog geen accounts opgeslagen
+    value: Je hebt nog geen accounts opgeslagen.
   add_account:
     value: Voeg account toe
   adding_account:
     value: Een account toevoegen
   add_instructions:
     first:
-      value: Pak je computer.
+      value: Ga naar je computer.
     second:
       value: Log in zoals je normaal inlogt.
     third:
-      value: Keyn doet de rest!
+      value: Keyn vraagt om de website toe te voegen.
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
   website_details:
@@ -263,9 +263,9 @@ devices:
     value: Scan de QR-code.
   scan_qr:
     comment: Cell title for scanning qr code
-    value: Keyn op computer
+    value: Koppel nu
   start_pairing:
-    value: Je hebt Keyn nog niet op je computer.
+    value: Je bent nog niet gekoppeld met je computer.
   paired_devices:
     value: Mijn gekoppelde apparaten
   footer:
@@ -284,7 +284,7 @@ devices:
   open_settings:
     value: Open instellingen
   pairing:
-    value: Keyn op je computer
+    value: Koppelen met je computer
   'on':
     value: op
   
@@ -394,7 +394,7 @@ settings:
     first:
       value: Keyn vraagt in je browser of je wil inloggen.
     second:
-      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
+      value: Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.
     third:
       value: Keyn vult je inloggegevens in de juiste velden.
   mobile_instruction_iOS12:
@@ -604,15 +604,16 @@ initialization:
   scan_qr:
     value: Scan QR code
   begin_passwordless:
-    value: Laat je leven zonder wachtwoorden beginnen.
-    start: 21
-    end: 33
+    value: Je leven zonder wachtwoorden begint nu.
+    start: 16
+    end: 28
   log_in_with:
     value: 'Log vanaf nu in op elke website met '
   touch_id:
-    value: TouchID
+    value: je vingerafdruk
+    start: 3
   face_id:
-    value: FaceID
+    value: gezichtsherkenning
   from_today:
     value: '.'
   lets_go:
@@ -622,9 +623,9 @@ initialization:
     start: 18
     end: 24
   keyn_uses_push:
-    value: Om in te loggen op je computer maakt Keyn gebruik van push notifications.
-    begin: 22
-    end: 30
+    value: Om in te loggen op je computer maakt Keyn gebruik van pushberichten.
+    start: 54
+    end: 67
   enable:
     value: Zet aan
   try_later:
@@ -632,11 +633,10 @@ initialization:
   start_using_keyn:
     value: Start met Keyn
   byebye:
-    value: Bye bye forgetting passwords, hello Keyn
-    start: 30
-    end: 40
+    value: Dag wachtwoorden, hallo Keyn
+    start: 18
   welcome_text:
-    value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
+    value: Met Keyn kun je op elke website inloggen met je telefoon
   all_set_up:
     value: Je bent helemaal klaar! 🎉
   working:
@@ -657,7 +657,7 @@ initialization:
   finish:
     value: Gereed
   initialize_keyn:
-    value: Initialiseer versleutelde opslag
+    value: Zo log je voortaan in
     comment: This is provided as a reason for authenticating the first time.
   recover:
     value: Herstel van backup

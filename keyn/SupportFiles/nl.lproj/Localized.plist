@@ -39,7 +39,7 @@
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Pak je computer.</string>
+				<string>Ga naar je computer.</string>
 			</dict>
 			<key>second</key>
 			<dict>
@@ -49,7 +49,7 @@
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn doet de rest!</string>
+				<string>Keyn vraagt om de website toe te voegen.</string>
 			</dict>
 		</dict>
 		<key>adding_account</key>
@@ -564,7 +564,7 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>start</key>
 			<integer>8</integer>
 			<key>value</key>
-			<string>Ga naar keyn.app/go</string>
+			<string>Ga naar keyn.app/nl/go</string>
 		</dict>
 		<key>pairing_instruction_two</key>
 		<dict>
@@ -876,11 +876,11 @@ Thank you!</string>
 		<key>begin_passwordless</key>
 		<dict>
 			<key>end</key>
-			<integer>33</integer>
+			<integer>28</integer>
 			<key>start</key>
-			<integer>21</integer>
+			<integer>16</integer>
 			<key>value</key>
-			<string>Laat je leven zonder wachtwoorden beginnen.</string>
+			<string>Je leven zonder wachtwoorden begint nu.</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
@@ -914,7 +914,7 @@ Thank you!</string>
 		<key>face_id</key>
 		<dict>
 			<key>value</key>
-			<string>FaceID</string>
+			<string>gezichtsherkenning</string>
 		</dict>
 		<key>finish</key>
 		<dict>
@@ -936,16 +936,16 @@ Thank you!</string>
 			<key>comment</key>
 			<string>This is provided as a reason for authenticating the first time.</string>
 			<key>value</key>
-			<string>Initialiseer versleutelde opslag</string>
+			<string>Zo log je voortaan in</string>
 		</dict>
 		<key>keyn_uses_push</key>
 		<dict>
-			<key>begin</key>
-			<integer>22</integer>
 			<key>end</key>
-			<integer>30</integer>
+			<integer>67</integer>
+			<key>start</key>
+			<integer>54</integer>
 			<key>value</key>
-			<string>Om in te loggen op je computer maakt Keyn gebruik van push notifications.</string>
+			<string>Om in te loggen op je computer maakt Keyn gebruik van pushberichten.</string>
 		</dict>
 		<key>learn_more</key>
 		<dict>
@@ -1014,8 +1014,10 @@ Thank you!</string>
 		</dict>
 		<key>touch_id</key>
 		<dict>
+			<key>start</key>
+			<integer>3</integer>
 			<key>value</key>
-			<string>TouchID</string>
+			<string>je vingerafdruk</string>
 		</dict>
 		<key>try_later</key>
 		<dict>
@@ -1620,7 +1622,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.</string>
+				<string>Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.</string>
 			</dict>
 			<key>third</key>
 			<dict>
