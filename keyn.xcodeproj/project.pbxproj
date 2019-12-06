@@ -45,6 +45,7 @@
 		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
+		49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -297,6 +298,8 @@
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
+		49191EE4239AA2430034EEE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49191EE6239AA2450034EEE7 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -789,6 +792,7 @@
 				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
+				49191EE5239AA2430034EEE7 /* InfoPlist.strings */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
 			);
@@ -1099,6 +1103,7 @@
 				497C85E22315737100DC4F91 /* Request.storyboard in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
+				49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
 				49235FFD23152C73003C4A0F /* Montserrat-Bold.ttf in Resources */,
@@ -1573,6 +1578,15 @@
 				4933536C230D8D0600549DA5 /* nl */,
 			);
 			name = Localized.plist;
+			sourceTree = "<group>";
+		};
+		49191EE5239AA2430034EEE7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49191EE4239AA2430034EEE7 /* en */,
+				49191EE6239AA2450034EEE7 /* nl */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		49235FF523151BC3003C4A0F /* privacy_policy.md */ = {

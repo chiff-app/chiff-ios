@@ -87,7 +87,7 @@
 		<key>didnt_save</key>
 		<dict>
 			<key>value</key>
-			<string>Je hebt nog geen accounts opgeslagen</string>
+			<string>Je hebt nog geen accounts opgeslagen.</string>
 		</dict>
 		<key>enabled</key>
 		<dict>
@@ -555,7 +555,7 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
-			<string>Keyn op je computer</string>
+			<string>Koppelen met je computer</string>
 		</dict>
 		<key>pairing_instruction</key>
 		<dict>
@@ -576,12 +576,12 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>comment</key>
 			<string>Cell title for scanning qr code</string>
 			<key>value</key>
-			<string>Keyn op computer</string>
+			<string>Koppel nu</string>
 		</dict>
 		<key>start_pairing</key>
 		<dict>
 			<key>value</key>
-			<string>Je hebt Keyn nog niet op je computer.</string>
+			<string>Je bent nog niet gekoppeld met je computer.</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -884,12 +884,10 @@ Thank you!</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
-			<key>end</key>
-			<integer>40</integer>
 			<key>start</key>
-			<integer>30</integer>
+			<integer>18</integer>
 			<key>value</key>
-			<string>Bye bye forgetting passwords, hello Keyn</string>
+			<string>Dag wachtwoorden, hallo Keyn</string>
 		</dict>
 		<key>change</key>
 		<dict>
@@ -1027,7 +1025,7 @@ Thank you!</string>
 		<key>welcome_text</key>
 		<dict>
 			<key>value</key>
-			<string>Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger</string>
+			<string>Met Keyn kun je op elke website inloggen met je telefoon</string>
 		</dict>
 		<key>working</key>
 		<dict>

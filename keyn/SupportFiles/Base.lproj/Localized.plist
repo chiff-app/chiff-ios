@@ -1023,7 +1023,7 @@ Thank you!</string>
 		<key>welcome_text</key>
 		<dict>
 			<key>value</key>
-			<string>Keyn allows you to log in to any website using your phone, making it safer and simpler</string>
+			<string>Keyn allows you to log in to any website using your phone</string>
 		</dict>
 		<key>working</key>
 		<dict>
