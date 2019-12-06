@@ -114,6 +114,7 @@ class RequestViewController: UIViewController {
             successView.startCircleAnimation(duration: period, start: start)
         }
         successTextDetailLabel.text = "Enter your one-time password"
+        self.authorized = true
         self.showSuccessView()
     }
 
@@ -144,6 +145,7 @@ class RequestViewController: UIViewController {
             default:
                 requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
+        self.authorized = true
         self.showSuccessView()
         if autoClose {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -166,7 +168,6 @@ class RequestViewController: UIViewController {
     private func showSuccessView() {
         self.successView.alpha = 0.0
         self.successView.isHidden = false
-        self.authorized = true
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
     }
 

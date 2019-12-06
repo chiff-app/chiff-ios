@@ -67,7 +67,7 @@ class AboutViewController: UITableViewController {
         } else if indexPath.section == 0 && indexPath.row == 1 {
             let urlPath = Bundle.main.path(forResource: "privacy_policy", ofType: "md")
             performSegue(withIdentifier: "ShowWebView", sender: URL(fileURLWithPath: urlPath!))
-        } else if indexPath.section == 1 && indexPath.row == 0 {
+        } else if indexPath.section == 1 && indexPath.row == 1 {
             performSegue(withIdentifier: "ShowWebView", sender: URL(string: "urls.faq".localized))
         }
     }
