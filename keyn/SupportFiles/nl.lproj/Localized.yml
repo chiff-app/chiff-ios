@@ -396,6 +396,37 @@ settings:
     value: Reset Keyn
   version:
     value: Versie
+  how_keyn_works:
+    value: Hoe Keyn werkt
+  how_keyn_works_on:
+    value: Hoe Keyn werkt op
+    start: 4
+    end: 8
+  mobile:
+    value: Mobiel
+  desktop:
+    value: Desktop
+  desktop_instruction:
+    first:
+      value: Keyn vraagt in je browser of je wil inloggen.
+    second:
+      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
+    third:
+      value: Keyn vult je inloggegevens in de juiste velden.
+  mobile_instruction_iOS12:
+    first:
+      value: Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.
+    second:
+      value: Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.
+    third:
+      value: Je kan dan inloggen door het verzoek te autoriseren.
+  mobile_instruction_<iOS12:
+    first:
+      value: Open Keyn om in te loggen op je telefoon.
+    second:
+      value: Kopieer je wachtwoord door er op te tikken.
+    third:
+      value: Keer terug naar de website en plak je wachtwoord.
 
 backup:
   word:
@@ -622,10 +653,6 @@ initialization:
     end: 40
   welcome_text:
     value: Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger
-  how_keyn_works:
-    value: Hoe Keyn werkt op
-    start: 4
-    end: 8
   all_set_up:
     value: Je bent helemaal klaar! 🎉
   working:
@@ -652,31 +679,6 @@ initialization:
     value: Herstel van backup
   enter_words:
     value: Voer de 12 woorden van je paper backup in
-  mobile:
-    value: Mobiel
-  desktop:
-    value: Desktop
-  desktop_instruction:
-    first:
-      value: Keyn vraagt in je browser of je wil inloggen.
-    second:
-      value: Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.
-    third:
-      value: Keyn vult je inloggegevens in de juiste velden.
-  mobile_instruction_iOS12:
-    first:
-      value: Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.
-    second:
-      value: Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.
-    third:
-      value: Je kan dan inloggen door het verzoek te autoriseren.
-  mobile_instruction_<iOS12:
-    first:
-      value: Open Keyn om in te loggen op je telefoon.
-    second:
-      value: Kopieer je wachtwoord door er op te tikken.
-    third:
-      value: Keer terug naar de website en plak je wachtwoord.
   share_analytics:
     value: Deel gebruiksstatistieken
   share_errors:

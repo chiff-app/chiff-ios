@@ -934,29 +934,6 @@ Thank you!</string>
 			<key>value</key>
 			<string>Je kan dit altijd later veranderen in de instellingen.</string>
 		</dict>
-		<key>desktop</key>
-		<dict>
-			<key>value</key>
-			<string>Desktop</string>
-		</dict>
-		<key>desktop_instruction</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Keyn vraagt in je browser of je wil inloggen.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Keyn vult je inloggegevens in de juiste velden.</string>
-			</dict>
-		</dict>
 		<key>disagree</key>
 		<dict>
 			<key>value</key>
@@ -992,15 +969,6 @@ Thank you!</string>
 			<key>value</key>
 			<string>Beginnen</string>
 		</dict>
-		<key>how_keyn_works</key>
-		<dict>
-			<key>end</key>
-			<integer>8</integer>
-			<key>start</key>
-			<integer>4</integer>
-			<key>value</key>
-			<string>Hoe Keyn werkt op</string>
-		</dict>
 		<key>initialize_keyn</key>
 		<dict>
 			<key>comment</key>
@@ -1031,47 +999,6 @@ Thank you!</string>
 		<dict>
 			<key>value</key>
 			<string>Log vanaf nu in op elke website met </string>
-		</dict>
-		<key>mobile</key>
-		<dict>
-			<key>value</key>
-			<string>Mobiel</string>
-		</dict>
-		<key>mobile_instruction_&lt;iOS12</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Open Keyn om in te loggen op je telefoon.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Kopieer je wachtwoord door er op te tikken.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Keer terug naar de website en plak je wachtwoord.</string>
-			</dict>
-		</dict>
-		<key>mobile_instruction_iOS12</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
-			</dict>
 		</dict>
 		<key>no_pushing</key>
 		<dict>
@@ -1716,6 +1643,29 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!</string>
 		</dict>
+		<key>desktop</key>
+		<dict>
+			<key>value</key>
+			<string>Desktop</string>
+		</dict>
+		<key>desktop_instruction</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vraagt in je browser of je wil inloggen.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vult je inloggegevens in de juiste velden.</string>
+			</dict>
+		</dict>
 		<key>disclaimer</key>
 		<dict>
 			<key>value</key>
@@ -1762,6 +1712,20 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Help</string>
 		</dict>
+		<key>how_keyn_works</key>
+		<dict>
+			<key>value</key>
+			<string>Hoe Keyn werkt</string>
+		</dict>
+		<key>how_keyn_works_on</key>
+		<dict>
+			<key>end</key>
+			<integer>8</integer>
+			<key>start</key>
+			<integer>4</integer>
+			<key>value</key>
+			<string>Hoe Keyn werkt op</string>
+		</dict>
 		<key>jailbreak_warning</key>
 		<dict>
 			<key>value</key>
@@ -1778,6 +1742,47 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<string>The word for legal</string>
 			<key>value</key>
 			<string>Juridisch</string>
+		</dict>
+		<key>mobile</key>
+		<dict>
+			<key>value</key>
+			<string>Mobiel</string>
+		</dict>
+		<key>mobile_instruction_&lt;iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Open Keyn om in te loggen op je telefoon.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Kopieer je wachtwoord door er op te tikken.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keer terug naar de website en plak je wachtwoord.</string>
+			</dict>
+		</dict>
+		<key>mobile_instruction_iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
+			</dict>
 		</dict>
 		<key>news_from_keyn</key>
 		<dict>

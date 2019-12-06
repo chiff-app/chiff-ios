@@ -65,8 +65,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return [.alert]
         }
         if notification.request.content.categoryIdentifier == NotificationCategory.ONBOARDING_NUDGE {
-            if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
-                vc.selectedIndex = 1
+            DispatchQueue.main.async {
+                if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
+                    vc.selectedIndex = 1
+                }
             }
             return [.alert]
         }
