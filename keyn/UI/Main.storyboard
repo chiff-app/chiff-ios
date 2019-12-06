@@ -1690,7 +1690,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqO-8h-OgS" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="10" width="343" height="26"/>
+                                <rect key="frame" x="16" y="10" width="343" height="27"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1699,7 +1699,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxv-DB-HTy">
-                                <rect key="frame" x="24" y="60" width="335" height="70"/>
+                                <rect key="frame" x="24" y="61" width="335" height="70"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="btV-qL-bFf">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="26"/>
@@ -1721,7 +1721,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Go to keyn.app/go on your computer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="80C-8R-VcC" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="38" y="0.0" width="297" height="22"/>
+                                                <rect key="frame" x="38" y="0.0" width="297" height="20"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -1758,7 +1758,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Scan QR code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Gl-9s-KbW" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="38" y="0.0" width="297" height="22"/>
+                                                <rect key="frame" x="38" y="0.0" width="297" height="20"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -1785,13 +1785,13 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uC-YB-Cmv">
-                                <rect key="frame" x="0.0" y="154" width="375" height="343"/>
+                                <rect key="frame" x="0.0" y="155" width="375" height="342"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-7d-Dfy">
-                                        <rect key="frame" x="99.5" y="86" width="176" height="171"/>
+                                        <rect key="frame" x="99.5" y="85.5" width="176" height="171"/>
                                     </imageView>
                                     <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="GfM-za-dL9">
-                                        <rect key="frame" x="139.5" y="123.5" width="96" height="96"/>
+                                        <rect key="frame" x="139.5" y="123" width="96" height="96"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -1869,13 +1869,13 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="13u-Fb-Hui">
                                                                     <rect key="frame" x="77" y="20" width="199" height="40.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehs-SX-H4s">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ehs-SX-H4s">
                                                                             <rect key="frame" x="0.0" y="0.0" width="36.5" height="20"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmI-5F-s8M">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Timestamp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmI-5F-s8M">
                                                                             <rect key="frame" x="0.0" y="23" width="81" height="17.5"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1962,7 +1962,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="754" text="You didn’t save any of your accounts just yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SdO-Jd-sAW" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="31" y="319" width="313" height="56"/>
+                                        <rect key="frame" x="32" y="319" width="311" height="56"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
                                         <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
@@ -1974,7 +1974,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yz-CS-DB7" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="77.5" y="410" width="220" height="44"/>
+                                        <rect key="frame" x="77.5" y="415" width="220" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="220" id="GMg-4y-HUA"/>
@@ -1990,18 +1990,18 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="laptop" translatesAutoresizingMaskIntoConstraints="NO" id="SjD-DH-TX9">
-                                        <rect key="frame" x="22.5" y="-17" width="330" height="314"/>
+                                        <rect key="frame" x="105" y="134" width="165" height="157"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="top" secondItem="SjD-DH-TX9" secondAttribute="bottom" priority="249" constant="22" id="1Wg-lV-4K8"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="top" secondItem="SjD-DH-TX9" secondAttribute="bottom" priority="249" constant="28" id="1Wg-lV-4K8"/>
                                     <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SdO-Jd-sAW" secondAttribute="bottom" constant="28" id="B6x-Ca-3lJ"/>
                                     <constraint firstItem="SjD-DH-TX9" firstAttribute="centerX" secondItem="3aq-4W-jNG" secondAttribute="centerX" id="QAn-gV-tRk"/>
-                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="31" id="bg8-WC-GYW"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="32" id="bg8-WC-GYW"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9Yz-CS-DB7" secondAttribute="bottom" constant="45" id="dSl-el-qg2"/>
-                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="SdO-Jd-sAW" secondAttribute="bottom" priority="249" constant="35" id="e8Z-od-l4y"/>
-                                    <constraint firstAttribute="trailing" secondItem="SdO-Jd-sAW" secondAttribute="trailing" constant="31" id="ghV-uM-bg1"/>
+                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="SdO-Jd-sAW" secondAttribute="bottom" priority="249" constant="40" id="e8Z-od-l4y"/>
+                                    <constraint firstAttribute="trailing" secondItem="SdO-Jd-sAW" secondAttribute="trailing" constant="32" id="ghV-uM-bg1"/>
                                     <constraint firstItem="9Yz-CS-DB7" firstAttribute="centerX" secondItem="3aq-4W-jNG" secondAttribute="centerX" id="jjl-8i-BUX"/>
                                     <constraint firstItem="SdO-Jd-sAW" firstAttribute="centerY" secondItem="3aq-4W-jNG" secondAttribute="centerY" priority="750" constant="60" id="uNU-ZO-seg"/>
                                     <constraint firstItem="SdO-Jd-sAW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SjD-DH-TX9" secondAttribute="bottom" constant="5" id="xJN-SN-m0G"/>
@@ -2105,7 +2105,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="szR-bg-VMn" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="77.5" y="379.5" width="220" height="44"/>
+                                <rect key="frame" x="77.5" y="390.5" width="220" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="DwC-6i-Zec"/>
@@ -2124,10 +2124,10 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="yql-ng-dDJ">
-                                <rect key="frame" x="116.5" y="108.5" width="142" height="170"/>
+                                <rect key="frame" x="116.5" y="96.5" width="142" height="170"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="754" text="You didn’t save any of your accounts just yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZQ-ul-e5r" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="47" y="300.5" width="281" height="44"/>
+                                <rect key="frame" x="47" y="294.5" width="281" height="56"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -2141,13 +2141,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="szR-bg-VMn" firstAttribute="top" secondItem="6ZQ-ul-e5r" secondAttribute="bottom" priority="249" constant="35" id="2nk-vy-dkG"/>
+                            <constraint firstItem="szR-bg-VMn" firstAttribute="top" secondItem="6ZQ-ul-e5r" secondAttribute="bottom" priority="249" constant="40" id="2nk-vy-dkG"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="leading" secondItem="hxD-DE-Aqf" secondAttribute="leadingMargin" constant="31" id="8eG-hz-jOS"/>
                             <constraint firstItem="szR-bg-VMn" firstAttribute="centerX" secondItem="hxD-DE-Aqf" secondAttribute="centerX" id="HuO-gB-rRN"/>
                             <constraint firstItem="yql-ng-dDJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Jx5-KB-eKG" secondAttribute="top" constant="20" id="NlI-WQ-dph"/>
                             <constraint firstItem="yql-ng-dDJ" firstAttribute="centerX" secondItem="hxD-DE-Aqf" secondAttribute="centerX" id="VOl-Vu-z5h"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="centerY" secondItem="hxD-DE-Aqf" secondAttribute="centerY" priority="750" constant="60" id="kec-73-kKk"/>
-                            <constraint firstItem="6ZQ-ul-e5r" firstAttribute="top" secondItem="yql-ng-dDJ" secondAttribute="bottom" priority="249" constant="22" id="m9O-q1-NdN"/>
+                            <constraint firstItem="6ZQ-ul-e5r" firstAttribute="top" secondItem="yql-ng-dDJ" secondAttribute="bottom" priority="249" constant="28" id="m9O-q1-NdN"/>
                             <constraint firstItem="Jx5-KB-eKG" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="szR-bg-VMn" secondAttribute="bottom" constant="45" id="nZl-mE-jIY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6ZQ-ul-e5r" secondAttribute="trailing" constant="31" id="v0Y-7X-Ewu"/>
                             <constraint firstItem="6ZQ-ul-e5r" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yql-ng-dDJ" secondAttribute="bottom" constant="5" id="vFV-U6-Y0c"/>
@@ -3740,42 +3740,30 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hwy-Vi-sNP">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How Keyn works on" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrK-w2-Khd" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="94" width="343" height="26"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
-                                        <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.how_keyn_works_on"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.8980392157" green="0.88235294119999996" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="160" id="Gc9-gx-Rpr"/>
-                                    <constraint firstItem="nrK-w2-Khd" firstAttribute="leading" secondItem="Hwy-Vi-sNP" secondAttribute="leading" constant="16" id="JfX-Ur-Mls"/>
-                                    <constraint firstAttribute="bottom" secondItem="nrK-w2-Khd" secondAttribute="bottom" constant="40" id="mh4-lJ-I0z"/>
-                                    <constraint firstAttribute="trailing" secondItem="nrK-w2-Khd" secondAttribute="trailing" constant="16" id="xI4-Jo-rNq"/>
-                                </constraints>
-                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How Keyn works on" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrK-w2-Khd" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="16" y="99" width="343" height="26"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
+                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="settings.how_keyn_works_on"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kkt-ux-79L">
-                                <rect key="frame" x="0.0" y="160" width="375" height="458"/>
+                                <rect key="frame" x="0.0" y="165" width="375" height="502"/>
                                 <connections>
                                     <segue destination="rH3-za-va6" kind="embed" id="o4Z-WC-n9r"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.88235294117647056" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Hwy-Vi-sNP" firstAttribute="leading" secondItem="aVJ-n1-eNf" secondAttribute="leading" id="4x2-Uv-FiY"/>
-                            <constraint firstItem="Hwy-Vi-sNP" firstAttribute="top" secondItem="30k-ES-Mwg" secondAttribute="top" id="9gy-hd-MvK"/>
-                            <constraint firstItem="kkt-ux-79L" firstAttribute="top" secondItem="Hwy-Vi-sNP" secondAttribute="bottom" id="SDU-0N-JPH"/>
-                            <constraint firstItem="Hwy-Vi-sNP" firstAttribute="trailing" secondItem="aVJ-n1-eNf" secondAttribute="trailing" id="Uth-A7-ys3"/>
-                            <constraint firstItem="aVJ-n1-eNf" firstAttribute="bottom" secondItem="kkt-ux-79L" secondAttribute="bottom" id="m3C-6N-07H"/>
+                            <constraint firstItem="nrK-w2-Khd" firstAttribute="leading" secondItem="aVJ-n1-eNf" secondAttribute="leading" constant="16" id="Hw4-Z0-33K"/>
+                            <constraint firstItem="aVJ-n1-eNf" firstAttribute="trailing" secondItem="nrK-w2-Khd" secondAttribute="trailing" constant="16" id="QPN-1H-vQa"/>
+                            <constraint firstItem="kkt-ux-79L" firstAttribute="top" secondItem="nrK-w2-Khd" secondAttribute="bottom" constant="40" id="j8t-Bn-L5y"/>
+                            <constraint firstItem="nrK-w2-Khd" firstAttribute="top" secondItem="aVJ-n1-eNf" secondAttribute="top" constant="55" id="l4W-6L-2Zf"/>
+                            <constraint firstAttribute="bottom" secondItem="kkt-ux-79L" secondAttribute="bottom" id="m3C-6N-07H"/>
                             <constraint firstItem="kkt-ux-79L" firstAttribute="trailing" secondItem="aVJ-n1-eNf" secondAttribute="trailing" id="oWB-JE-d1Q"/>
                             <constraint firstItem="kkt-ux-79L" firstAttribute="leading" secondItem="aVJ-n1-eNf" secondAttribute="leading" id="tW1-Vq-hJd"/>
                         </constraints>
@@ -3792,7 +3780,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             <objects>
                 <viewController id="YfN-1z-Q2q" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="B7Y-3U-2WM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="458"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tX4-Pb-qlw">
@@ -3836,16 +3824,16 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="K3M-Qc-eE0">
-                                <rect key="frame" x="22" y="72" width="331" height="366"/>
+                                <rect key="frame" x="22" y="72" width="331" height="410"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="rpz-dO-ubn">
-                                        <rect key="frame" x="0.0" y="0.0" width="331" height="115.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="Boo-RK-Yu7">
-                                                <rect key="frame" x="0.0" y="24" width="101" height="67"/>
+                                                <rect key="frame" x="0.0" y="31.5" width="101" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn asks you in your browser if you want to login." lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ite-Pz-bdt" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="126" y="0.0" width="205" height="115.5"/>
+                                                <rect key="frame" x="126" y="0.0" width="205" height="130"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="205" id="2tr-QT-qcm"/>
                                                 </constraints>
@@ -3864,16 +3852,16 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="CBW-kZ-1ta">
-                                        <rect key="frame" x="0.0" y="125.5" width="331" height="115"/>
+                                        <rect key="frame" x="0.0" y="140" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="ve6-D9-T7T">
-                                                <rect key="frame" x="0.0" y="14.5" width="101" height="86"/>
+                                                <rect key="frame" x="0.0" y="22" width="101" height="86"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="86" id="ANl-Fa-y38"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="You receive a notification on your phone that asks you to authorize the request." lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUj-88-F3M" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="126" y="0.0" width="205" height="115"/>
+                                                <rect key="frame" x="126" y="0.0" width="205" height="130"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -3889,13 +3877,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Hyy-zR-fyx">
-                                        <rect key="frame" x="0.0" y="250.5" width="331" height="115.5"/>
+                                        <rect key="frame" x="0.0" y="280" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="kOK-0J-WKb">
-                                                <rect key="frame" x="0.0" y="24.5" width="101" height="67"/>
+                                                <rect key="frame" x="0.0" y="31.5" width="101" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn fills your credentials in the right fields." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nA0-1k-PL7" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="126" y="0.0" width="205" height="115.5"/>
+                                                <rect key="frame" x="126" y="0.0" width="205" height="130"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
@@ -3944,7 +3932,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             <objects>
                 <viewController id="Jv6-BR-q5d" customClass="MobileExplanationViewController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ISm-nw-Lxj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="458"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fbf-2w-WHd">
@@ -3993,16 +3981,16 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="c4w-pw-SgY">
-                                <rect key="frame" x="22" y="72" width="331" height="366"/>
+                                <rect key="frame" x="22" y="72" width="331" height="410"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="Da8-QK-Ond">
-                                        <rect key="frame" x="0.0" y="0.0" width="331" height="115.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_key" translatesAutoresizingMaskIntoConstraints="NO" id="hm4-aM-yMH">
-                                                <rect key="frame" x="0.0" y="14.5" width="91" height="86"/>
+                                                <rect key="frame" x="0.0" y="22" width="91" height="86"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQ2-8n-V5F">
-                                                <rect key="frame" x="116" y="0.0" width="215" height="115.5"/>
+                                                <rect key="frame" x="116" y="0.0" width="215" height="130"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="215" id="bJr-G1-xWg"/>
                                                 </constraints>
@@ -4024,13 +4012,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="qv3-h1-KIR">
-                                        <rect key="frame" x="0.0" y="125.5" width="331" height="115"/>
+                                        <rect key="frame" x="0.0" y="140" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_form" translatesAutoresizingMaskIntoConstraints="NO" id="Zbe-uS-H7G">
-                                                <rect key="frame" x="0.0" y="14.5" width="91" height="86"/>
+                                                <rect key="frame" x="0.0" y="22" width="91" height="86"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bR0-0p-9RS">
-                                                <rect key="frame" x="116" y="0.0" width="215" height="115"/>
+                                                <rect key="frame" x="116" y="0.0" width="215" height="130"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="When you want to login, iOS will automatically ask Keyn for your password.">
                                                         <attributes>
@@ -4049,13 +4037,13 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="B5Q-AA-uf0">
-                                        <rect key="frame" x="0.0" y="250.5" width="331" height="115.5"/>
+                                        <rect key="frame" x="0.0" y="280" width="331" height="130"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="phone_fingerprint" translatesAutoresizingMaskIntoConstraints="NO" id="OVY-4h-b9n">
-                                                <rect key="frame" x="0.0" y="15" width="91" height="86"/>
+                                                <rect key="frame" x="0.0" y="22" width="91" height="86"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="800" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXQ-il-BDE">
-                                                <rect key="frame" x="116" y="0.0" width="215" height="115.5"/>
+                                                <rect key="frame" x="116" y="0.0" width="215" height="130"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="You can login by authorizing the request.">
                                                         <attributes>
