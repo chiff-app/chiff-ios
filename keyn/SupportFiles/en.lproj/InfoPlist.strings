@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  keyn
+
+  Created by Bas Doorn on 06/12/2019.
+  Copyright © 2019 keyn. All rights reserved.
+*/
+
+"NSCameraUsageDescription" = "Keyn uses the camera to scan QR-codes";
+"NSFaceIDUsageDescription" = "Keyn uses FaceID to log you in to websites";
