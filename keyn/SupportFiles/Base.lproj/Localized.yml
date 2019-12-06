@@ -172,11 +172,11 @@ accounts:
     value: Adding an account
   add_instructions:
     first:
-      value: Get your computer.
+      value: Go to your computer.
     second:
-      value: Log in as you normally do.
+      value: Log in as you'd normally do.
     third:
-      value: Keyn does the rest!
+      value: Keyn asks you to add the website.
   alternative_add:
     value: Alternatively, you can add an account manually.
   website_details:
@@ -639,7 +639,7 @@ initialization:
     start: 30
     end: 40
   welcome_text:
-    value: Keyn allows you to log in to any website using your phone, making it safer and simpler
+    value: Keyn allows you to log in to any website using your phone
   all_set_up:
     value: You're all set up! 🎉
   working:
@@ -660,7 +660,7 @@ initialization:
   finish: 
     value: Finish
   initialize_keyn:
-    value: Initialize encrypted storage
+    value: This is how you log in from now on
     comment: This is provided as a reason for authenticating the first time.
   recover:
     value: Recover from backup

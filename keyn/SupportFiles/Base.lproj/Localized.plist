@@ -39,17 +39,17 @@
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Get your computer.</string>
+				<string>Go to your computer.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Log in as you normally do.</string>
+				<string>Log in as you'd normally do.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn does the rest!</string>
+				<string>Keyn asks you to add the website.</string>
 			</dict>
 		</dict>
 		<key>adding_account</key>
@@ -936,7 +936,7 @@ Thank you!</string>
 			<key>comment</key>
 			<string>This is provided as a reason for authenticating the first time.</string>
 			<key>value</key>
-			<string>Initialize encrypted storage</string>
+			<string>This is how you log in from now on</string>
 		</dict>
 		<key>keyn_uses_push</key>
 		<dict>
