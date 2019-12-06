@@ -641,15 +641,15 @@
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="bottom" secondItem="3w9-7v-dBp" secondAttribute="bottom" constant="30" id="Jxy-Lw-Dew"/>
                             <constraint firstItem="2en-HM-TBM" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="KSs-xo-wEi"/>
                             <constraint firstItem="gtL-jc-xa3" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="POJ-iA-FrM"/>
-                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="trailing" secondItem="n4m-XJ-WMR" secondAttribute="trailing" id="Qvi-U6-yHc"/>
+                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="trailing" secondItem="16g-My-AD4" secondAttribute="trailing" id="Qvi-U6-yHc"/>
                             <constraint firstItem="n4m-XJ-WMR" firstAttribute="trailing" secondItem="2en-HM-TBM" secondAttribute="trailing" constant="16" id="Rpo-QS-myk"/>
-                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="bottom" secondItem="n4m-XJ-WMR" secondAttribute="bottom" id="Szj-DH-iop"/>
+                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="bottom" secondItem="16g-My-AD4" secondAttribute="bottom" id="Szj-DH-iop"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LLJ-Au-4fr" secondAttribute="bottom" constant="8" id="X79-oX-U4s"/>
                             <constraint firstItem="gtL-jc-xa3" firstAttribute="top" secondItem="2en-HM-TBM" secondAttribute="bottom" constant="16" id="Z6W-td-jVA"/>
                             <constraint firstItem="3w9-7v-dBp" firstAttribute="top" secondItem="gtL-jc-xa3" secondAttribute="bottom" constant="16" id="bYG-fe-vc2"/>
                             <constraint firstItem="dGi-3I-tnJ" firstAttribute="top" secondItem="16g-My-AD4" secondAttribute="top" id="eC8-fI-3Ir"/>
                             <constraint firstItem="2en-HM-TBM" firstAttribute="centerY" secondItem="16g-My-AD4" secondAttribute="centerY" id="h8k-j4-XY4"/>
-                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" id="v6P-24-zXN"/>
+                            <constraint firstItem="dGi-3I-tnJ" firstAttribute="leading" secondItem="16g-My-AD4" secondAttribute="leading" id="v6P-24-zXN"/>
                             <constraint firstItem="2en-HM-TBM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O94-HQ-lRE" secondAttribute="bottom" constant="20" id="wih-qJ-C6S"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
                         </constraints>
@@ -816,7 +816,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help us to improve Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="M8I-e3-aXB" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="113" width="335" height="103"/>
+                                <rect key="frame" x="20" y="113" width="335" height="93"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="26"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -828,7 +828,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="231" width="335" height="85.5"/>
+                                <rect key="frame" x="20" y="221" width="335" height="105"/>
                                 <string key="text">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
 Sensitive data is never shared and everything is anonymous.</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -842,7 +842,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="502.5" width="335" height="17.5"/>
+                                <rect key="frame" x="20" y="512" width="335" height="22"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -854,7 +854,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
-                                <rect key="frame" x="20" y="376.5" width="335" height="76"/>
+                                <rect key="frame" x="20" y="386" width="335" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duW-jH-tOo">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
@@ -1008,7 +1008,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="DvO-Ut-DMi" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="133" width="343" height="54"/>
+                                <rect key="frame" x="16" y="133" width="343" height="26"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
