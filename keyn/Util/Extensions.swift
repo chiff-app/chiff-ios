@@ -397,6 +397,10 @@ extension UIFont {
     static var primaryBoldSmall: UIFont? = {
         return UIFont(name: "Montserrat-Bold", size: 12)
     }()
+
+    static func primaryBoldWith(size: CGFloat) -> UIFont? {
+        return UIFont(name: "Montserrat-Bold", size: size)
+    }
 }
 
 extension UIImage {

@@ -67,9 +67,10 @@ import UIKit
         style.alignment = self.textAlignment
         style.minimumLineHeight = lineHeight
         style.maximumLineHeight = lineHeight
-        self.attributedText = key.attributedLocalized(color: accentColor, font: accentIsBold ? UIFont.primaryBold : nil, attributes: [
+        let font = self.font ?? UIFont.primaryMediumNormal
+        self.attributedText = key.attributedLocalized(color: accentColor, font: accentIsBold ? UIFont.primaryBoldWith(size: font!.pointSize) : nil, attributes: [
             NSAttributedString.Key.foregroundColor: self.textColor ?? UIColor.textColor,
-            NSAttributedString.Key.font: self.font ?? UIFont.primaryMediumNormal as Any,
+            NSAttributedString.Key.font: font as Any,
             NSAttributedString.Key.paragraphStyle: style
         ])
         lineBreakMode = .byTruncatingTail

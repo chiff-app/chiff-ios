@@ -1690,7 +1690,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Pairing" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yqO-8h-OgS" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="22" width="343" height="27"/>
+                                <rect key="frame" x="16" y="10" width="343" height="26"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1698,27 +1698,100 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r95-U4-jiJ" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="40" y="69" width="295" height="51.5"/>
-                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_instruction_two"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="accentIsBold" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="accentColor">
-                                        <color key="value" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pxv-DB-HTy">
+                                <rect key="frame" x="24" y="60" width="335" height="70"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="btV-qL-bFf">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="26"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zV7-Pa-OcE" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="zV7-Pa-OcE" secondAttribute="height" multiplier="1:1" id="PsU-aa-64R"/>
+                                                    <constraint firstAttribute="height" constant="26" id="sud-MH-T6S"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="1">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.one"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Go to keyn.app/go on your computer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="80C-8R-VcC" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="38" y="0.0" width="297" height="22"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_instruction"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                        <real key="value" value="22"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="accentIsBold" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="accentColor">
+                                                        <color key="value" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="aGT-ga-Pln">
+                                        <rect key="frame" x="0.0" y="44" width="335" height="26"/>
+                                        <subviews>
+                                            <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKo-L3-rQ7" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="LKo-L3-rQ7" secondAttribute="height" multiplier="1:1" id="Fep-3J-E4N"/>
+                                                    <constraint firstAttribute="height" constant="26" id="Yay-BD-w1D"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="2">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.two"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Scan QR code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Gl-9s-KbW" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                                <rect key="frame" x="38" y="0.0" width="297" height="22"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_instruction_two"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                        <real key="value" value="22"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="btV-qL-bFf" secondAttribute="trailing" id="Jas-g6-tNe"/>
+                                    <constraint firstItem="btV-qL-bFf" firstAttribute="top" secondItem="pxv-DB-HTy" secondAttribute="top" id="RaI-Ln-CXZ"/>
+                                    <constraint firstAttribute="height" constant="70" id="RmJ-jT-sBO"/>
+                                    <constraint firstAttribute="trailing" secondItem="aGT-ga-Pln" secondAttribute="trailing" id="hDD-mt-nCx"/>
+                                    <constraint firstItem="aGT-ga-Pln" firstAttribute="leading" secondItem="pxv-DB-HTy" secondAttribute="leading" id="j80-6s-zQN"/>
+                                    <constraint firstItem="btV-qL-bFf" firstAttribute="leading" secondItem="pxv-DB-HTy" secondAttribute="leading" id="oez-81-yRt"/>
+                                    <constraint firstAttribute="bottom" secondItem="aGT-ga-Pln" secondAttribute="bottom" id="woc-zC-Jg8"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9uC-YB-Cmv">
-                                <rect key="frame" x="0.0" y="140.5" width="375" height="356.5"/>
+                                <rect key="frame" x="0.0" y="154" width="375" height="343"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="nHP-7d-Dfy">
-                                        <rect key="frame" x="99.5" y="93" width="176" height="171"/>
+                                        <rect key="frame" x="99.5" y="86" width="176" height="171"/>
                                     </imageView>
                                     <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1" image="scan_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="GfM-za-dL9">
-                                        <rect key="frame" x="139.5" y="130.5" width="96" height="96"/>
+                                        <rect key="frame" x="139.5" y="123.5" width="96" height="96"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
@@ -1733,18 +1806,17 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="r95-U4-jiJ" secondAttribute="trailing" constant="24" id="6Bv-lm-drN"/>
+                            <constraint firstItem="cZJ-Wd-3vh" firstAttribute="trailing" secondItem="pxv-DB-HTy" secondAttribute="trailing" constant="16" id="28K-ed-LKo"/>
                             <constraint firstItem="9uC-YB-Cmv" firstAttribute="leading" secondItem="kLW-Ki-aCj" secondAttribute="leading" id="7Sd-a1-Fow"/>
-                            <constraint firstItem="r95-U4-jiJ" firstAttribute="top" secondItem="yqO-8h-OgS" secondAttribute="bottom" priority="500" constant="20" id="FJF-ve-X79"/>
-                            <constraint firstItem="yqO-8h-OgS" firstAttribute="top" secondItem="cZJ-Wd-3vh" secondAttribute="top" priority="500" constant="22" id="K71-oE-ywr"/>
+                            <constraint firstItem="yqO-8h-OgS" firstAttribute="top" secondItem="cZJ-Wd-3vh" secondAttribute="top" priority="500" constant="10" id="K71-oE-ywr"/>
                             <constraint firstAttribute="trailing" secondItem="9uC-YB-Cmv" secondAttribute="trailing" id="KIU-Jd-Url"/>
                             <constraint firstItem="yqO-8h-OgS" firstAttribute="trailing" secondItem="kLW-Ki-aCj" secondAttribute="trailingMargin" id="RQm-88-4jp"/>
                             <constraint firstItem="yqO-8h-OgS" firstAttribute="leading" secondItem="kLW-Ki-aCj" secondAttribute="leadingMargin" id="Sqv-tl-aiK"/>
-                            <constraint firstItem="9uC-YB-Cmv" firstAttribute="top" secondItem="r95-U4-jiJ" secondAttribute="bottom" constant="20" id="bd9-m6-SLs"/>
+                            <constraint firstItem="pxv-DB-HTy" firstAttribute="leading" secondItem="cZJ-Wd-3vh" secondAttribute="leading" constant="24" id="VsQ-0V-D6U"/>
+                            <constraint firstItem="pxv-DB-HTy" firstAttribute="top" secondItem="yqO-8h-OgS" secondAttribute="bottom" constant="24" id="caE-hG-POZ"/>
                             <constraint firstItem="yqO-8h-OgS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cZJ-Wd-3vh" secondAttribute="top" id="e49-MY-IUv"/>
-                            <constraint firstItem="r95-U4-jiJ" firstAttribute="leading" secondItem="kLW-Ki-aCj" secondAttribute="leadingMargin" constant="24" id="edb-sg-BpE"/>
                             <constraint firstAttribute="bottom" secondItem="9uC-YB-Cmv" secondAttribute="bottom" id="gOC-be-CAU"/>
-                            <constraint firstItem="r95-U4-jiJ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yqO-8h-OgS" secondAttribute="bottom" id="wd2-BX-2uZ"/>
+                            <constraint firstItem="9uC-YB-Cmv" firstAttribute="top" secondItem="pxv-DB-HTy" secondAttribute="bottom" constant="24" id="kQq-9a-DUk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cZJ-Wd-3vh"/>
                     </view>
@@ -1756,7 +1828,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="20z-93-qzd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4030" y="0.0"/>
+            <point key="canvasLocation" x="4029.5999999999999" y="-0.44977511244377816"/>
         </scene>
         <!--Devices View Controller-->
         <scene sceneID="xkE-3l-MSN">
@@ -1783,7 +1855,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="80" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MeN-TK-t2q" customClass="SelfSizingTableView" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="45.5" width="335" height="423.5"/>
+                                                <rect key="frame" x="20" y="45.5" width="335" height="416.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <prototypes>
@@ -1851,7 +1923,7 @@
                                                 </prototypes>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can pair with as many devices as you want." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whe-o1-WxC" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="22" y="475" width="333" height="15"/>
+                                                <rect key="frame" x="22" y="468" width="333" height="22"/>
                                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="12"/>
                                                 <color key="textColor" red="0.61960784313725492" green="0.63529411764705879" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1889,137 +1961,20 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aq-4W-jNG" userLabel="Add session container">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Pair with your device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="TUs-d5-ogn" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="32" y="60" width="311" height="27"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
-                                        <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="754" text="You didn’t save any of your accounts just yet." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SdO-Jd-sAW" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
+                                        <rect key="frame" x="31" y="319" width="313" height="56"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="18"/>
+                                        <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pair_with_device"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.start_pairing"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                <real key="value" value="28"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yug-Lj-KvL">
-                                        <rect key="frame" x="16" y="147" width="327" height="280"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Sz7-bz-rl3">
-                                                <rect key="frame" x="0.0" y="0.0" width="327" height="99"/>
-                                                <subviews>
-                                                    <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VNK-ax-vJg" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="26" id="RvP-06-2Pp"/>
-                                                            <constraint firstAttribute="width" secondItem="VNK-ax-vJg" secondAttribute="height" multiplier="1:1" id="msk-3X-udc"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="1">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.one"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </button>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="JKN-a2-cCx">
-                                                        <rect key="frame" x="38" y="0.0" width="289" height="99"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Go to keyn.app/go on your computer" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9X5-6h-7s0" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="289" height="39.5"/>
-                                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
-                                                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.first"/>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
-                                                                        <real key="value" value="22"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer." lineBreakMode="clip" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uK0-96-LmX" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="47.5" width="289" height="51.5"/>
-                                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <nil key="highlightedColor"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.second"/>
-                                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="accentIsBold" value="YES"/>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="accentColor">
-                                                                        <color key="value" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
-                                                                        <real key="value" value="22"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="10" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="tDM-iD-tXF">
-                                                <rect key="frame" x="0.0" y="200.5" width="327" height="79.5"/>
-                                                <subviews>
-                                                    <button opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C5G-Ob-tmx" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="26" id="CPW-o1-9wS"/>
-                                                            <constraint firstAttribute="width" secondItem="C5G-Ob-tmx" secondAttribute="height" multiplier="1:1" id="ciF-4u-dQz"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
-                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="2">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="accent"/>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="numbers.two"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </button>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="uAc-y6-bmY">
-                                                        <rect key="frame" x="38" y="0.0" width="289" height="79.5"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Scan QR code" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qLD-iv-FxI" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="289" height="20"/>
-                                                                <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
-                                                                <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.third"/>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
-                                                                        <real key="value" value="22"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jY4-a6-Yqh" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="28" width="289" height="51.5"/>
-                                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
-                                                                <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <nil key="highlightedColor"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="devices.pairing_explanation.fourth"/>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
-                                                                        <real key="value" value="22"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstItem="tDM-iD-tXF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Sz7-bz-rl3" secondAttribute="bottom" constant="20" id="Ark-13-qVY"/>
-                                            <constraint firstItem="tDM-iD-tXF" firstAttribute="leading" secondItem="yug-Lj-KvL" secondAttribute="leading" id="ZzV-fg-FTE"/>
-                                            <constraint firstAttribute="trailing" secondItem="tDM-iD-tXF" secondAttribute="trailing" id="bXE-Pc-Caf"/>
-                                            <constraint firstAttribute="bottom" secondItem="tDM-iD-tXF" secondAttribute="bottom" id="fQR-So-Yrh"/>
-                                            <constraint firstItem="Sz7-bz-rl3" firstAttribute="top" secondItem="yug-Lj-KvL" secondAttribute="top" id="gvy-0G-Xfu"/>
-                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="280" id="mIQ-dN-lPw"/>
-                                            <constraint firstAttribute="trailing" secondItem="Sz7-bz-rl3" secondAttribute="trailing" id="pY9-ca-UnI"/>
-                                            <constraint firstItem="Sz7-bz-rl3" firstAttribute="leading" secondItem="yug-Lj-KvL" secondAttribute="leading" id="zv2-eh-jXy"/>
-                                        </constraints>
-                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yz-CS-DB7" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
-                                        <rect key="frame" x="77.5" y="487" width="220" height="44"/>
+                                        <rect key="frame" x="77.5" y="410" width="220" height="44"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="220" id="GMg-4y-HUA"/>
@@ -2034,22 +1989,22 @@
                                             <segue destination="MFW-eN-Fb7" kind="presentation" identifier="ShowAddSession" id="lY8-sq-1Op"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="laptop" translatesAutoresizingMaskIntoConstraints="NO" id="SjD-DH-TX9">
+                                        <rect key="frame" x="22.5" y="-17" width="330" height="314"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="TUs-d5-ogn" firstAttribute="top" secondItem="3aq-4W-jNG" secondAttribute="top" priority="740" constant="60" id="FF8-7m-YfX"/>
-                                    <constraint firstItem="TUs-d5-ogn" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="32" id="NOL-b1-bXC"/>
-                                    <constraint firstItem="yug-Lj-KvL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="TUs-d5-ogn" secondAttribute="bottom" constant="20" id="RHQ-YX-K5x"/>
-                                    <constraint firstItem="TUs-d5-ogn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3aq-4W-jNG" secondAttribute="top" constant="12" id="YlF-5A-cO0"/>
-                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="yug-Lj-KvL" secondAttribute="bottom" priority="740" constant="60" id="af5-ec-cZA"/>
-                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="yug-Lj-KvL" secondAttribute="bottom" constant="16" id="bHa-CK-I49"/>
-                                    <constraint firstAttribute="trailing" secondItem="TUs-d5-ogn" secondAttribute="trailing" constant="32" id="fBc-VL-ql6"/>
-                                    <constraint firstItem="yug-Lj-KvL" firstAttribute="top" secondItem="TUs-d5-ogn" secondAttribute="bottom" priority="700" constant="60" id="if2-79-20l"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="top" secondItem="SjD-DH-TX9" secondAttribute="bottom" priority="249" constant="22" id="1Wg-lV-4K8"/>
+                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SdO-Jd-sAW" secondAttribute="bottom" constant="28" id="B6x-Ca-3lJ"/>
+                                    <constraint firstItem="SjD-DH-TX9" firstAttribute="centerX" secondItem="3aq-4W-jNG" secondAttribute="centerX" id="QAn-gV-tRk"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="31" id="bg8-WC-GYW"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9Yz-CS-DB7" secondAttribute="bottom" constant="45" id="dSl-el-qg2"/>
+                                    <constraint firstItem="9Yz-CS-DB7" firstAttribute="top" secondItem="SdO-Jd-sAW" secondAttribute="bottom" priority="249" constant="35" id="e8Z-od-l4y"/>
+                                    <constraint firstAttribute="trailing" secondItem="SdO-Jd-sAW" secondAttribute="trailing" constant="31" id="ghV-uM-bg1"/>
                                     <constraint firstItem="9Yz-CS-DB7" firstAttribute="centerX" secondItem="3aq-4W-jNG" secondAttribute="centerX" id="jjl-8i-BUX"/>
-                                    <constraint firstItem="yug-Lj-KvL" firstAttribute="centerY" secondItem="3aq-4W-jNG" secondAttribute="centerY" priority="800" id="jrP-xW-2La"/>
-                                    <constraint firstItem="yug-Lj-KvL" firstAttribute="leading" secondItem="3aq-4W-jNG" secondAttribute="leading" constant="16" id="q2q-A3-aot"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9Yz-CS-DB7" secondAttribute="bottom" id="rCJ-Cc-j7A"/>
-                                    <constraint firstAttribute="trailing" secondItem="yug-Lj-KvL" secondAttribute="trailing" constant="32" id="yf1-2H-bS8"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="centerY" secondItem="3aq-4W-jNG" secondAttribute="centerY" priority="750" constant="60" id="uNU-ZO-seg"/>
+                                    <constraint firstItem="SdO-Jd-sAW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SjD-DH-TX9" secondAttribute="bottom" constant="5" id="xJN-SN-m0G"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="paY-RM-ytU">
@@ -2162,7 +2117,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="keynButtonType" value="tertiary"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.how_to_add"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.add_account"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="howToAddAnAccount:" destination="yEQ-dB-DTP" eventType="touchUpInside" id="JVa-q0-gl7"/>
@@ -2219,20 +2174,20 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="lIj-jV-k3b">
-                                <rect key="frame" x="25" y="138" width="330" height="383"/>
+                                <rect key="frame" x="25" y="137" width="330" height="384"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="mOD-6G-Agp">
-                                        <rect key="frame" x="0.0" y="0.0" width="330" height="107.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="330" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_form" translatesAutoresizingMaskIntoConstraints="NO" id="l7c-bA-Mh1">
                                                 <rect key="frame" x="0.0" y="20.5" width="100" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Go to a website on your computer and login as you’d normally do." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUt-Vv-asn" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="28" width="200" height="51.5"/>
+                                                <rect key="frame" x="130" y="24.5" width="200" height="59"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="1mE-BK-MR4"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -2243,14 +2198,14 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Qdj-Eb-efL">
-                                        <rect key="frame" x="0.0" y="137.5" width="330" height="108"/>
+                                        <rect key="frame" x="0.0" y="138" width="330" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_popup" translatesAutoresizingMaskIntoConstraints="NO" id="DQ0-gF-aQZ">
                                                 <rect key="frame" x="0.0" y="20.5" width="100" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn will automatically ask you to save the password. This will securely send the password to this phone. " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fil-0g-fNO" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="20" width="200" height="68.5"/>
-                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <rect key="frame" x="130" y="5" width="200" height="98"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -2261,14 +2216,14 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TGs-0c-M1t">
-                                        <rect key="frame" x="0.0" y="275.5" width="330" height="107.5"/>
+                                        <rect key="frame" x="0.0" y="276" width="330" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="48" verticalCompressionResistancePriority="48" image="desktop_login" translatesAutoresizingMaskIntoConstraints="NO" id="ESE-BG-Ccx">
-                                                <rect key="frame" x="0.0" y="20" width="100" height="67"/>
+                                                <rect key="frame" x="0.0" y="20.5" width="100" height="67"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Keyn will store the password on your phone. Next time you want to login, you can use Keyn." lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ML-a9-Tg7" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                                <rect key="frame" x="130" y="19.5" width="200" height="68.5"/>
-                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <rect key="frame" x="130" y="5" width="200" height="98"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
@@ -2285,7 +2240,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Adding an account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R9O-0N-DlN" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="91" width="335" height="27"/>
+                                <rect key="frame" x="20" y="91" width="335" height="26"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.27843137254901962" green="0.13333333333333333" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -4191,6 +4146,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="eye_logo" width="50" height="43"/>
         <image name="fingerprint" width="50" height="55"/>
         <image name="key_lock" width="80" height="47"/>
+        <image name="laptop" width="165" height="157"/>
         <image name="lock_small" width="10" height="13"/>
         <image name="logo" width="291" height="323"/>
         <image name="pen_checkmark" width="110" height="90"/>
@@ -4205,7 +4161,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
     <inferredMetricsTieBreakers>
         <segue reference="bFG-cG-0Z9"/>
         <segue reference="M0R-pk-Elo"/>
-        <segue reference="3VT-CT-bmu"/>
+        <segue reference="RlN-hs-OcW"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>
 </document>
