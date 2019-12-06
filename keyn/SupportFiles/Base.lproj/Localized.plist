@@ -29,27 +29,27 @@
 			<key>value</key>
 			<string>Add 2FA-code to</string>
 		</dict>
-		<key>add_an_account</key>
+		<key>add_account</key>
 		<dict>
 			<key>value</key>
-			<string>Add an account</string>
+			<string>Add account</string>
 		</dict>
 		<key>add_instructions</key>
 		<dict>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Go to a website on your computer and login as you’d normally do.</string>
+				<string>Get your computer.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn will automatically ask you to save the password. This will securely send the password to this phone.</string>
+				<string>Log in as you normally do.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn will store the password on your phone. Next time you want to login, you can use Keyn.</string>
+				<string>Keyn does the rest!</string>
 			</dict>
 		</dict>
 		<key>adding_account</key>
@@ -87,7 +87,7 @@
 		<key>didnt_save</key>
 		<dict>
 			<key>value</key>
-			<string>You didn’t save any of your accounts just yet.</string>
+			<string>You didn’t save any of your accounts yet.</string>
 		</dict>
 		<key>enabled</key>
 		<dict>
@@ -113,11 +113,6 @@
 		<dict>
 			<key>value</key>
 			<string>You can save as many accounts as you want.</string>
-		</dict>
-		<key>how_to_add</key>
-		<dict>
-			<key>value</key>
-			<string>How to add an account</string>
 		</dict>
 		<key>mode</key>
 		<dict>
@@ -552,11 +547,6 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Open settings</string>
 		</dict>
-		<key>pair_with_device</key>
-		<dict>
-			<key>value</key>
-			<string>Pair with your device</string>
-		</dict>
 		<key>paired_devices</key>
 		<dict>
 			<key>value</key>
@@ -567,57 +557,31 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Pairing</string>
 		</dict>
-		<key>pairing_explanation</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>end</key>
-				<integer>17</integer>
-				<key>start</key>
-				<integer>6</integer>
-				<key>value</key>
-				<string>Go to keyn.app/go on your computer</string>
-			</dict>
-			<key>fourth</key>
-			<dict>
-				<key>value</key>
-				<string>After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>end</key>
-				<integer>98</integer>
-				<key>start</key>
-				<integer>87</integer>
-				<key>value</key>
-				<string>To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Scan QR code</string>
-			</dict>
-		</dict>
 		<key>pairing_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
+			<key>start</key>
+			<integer>6</integer>
 			<key>value</key>
-			<string>Open the Keyn browser extension to display QR-code.</string>
+			<string>Go to keyn.app/go</string>
 		</dict>
 		<key>pairing_instruction_two</key>
 		<dict>
-			<key>start</key>
-			<integer>104</integer>
 			<key>value</key>
-			<string>Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go</string>
+			<string>Scan the QR-code.</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>comment</key>
 			<string>Cell title for scanning qr code</string>
 			<key>value</key>
-			<string>Scan QR</string>
+			<string>Set up computer</string>
+		</dict>
+		<key>start_pairing</key>
+		<dict>
+			<key>value</key>
+			<string>You haven't set up Keyn on your computer yet.</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -1000,10 +964,10 @@ Thank you!</string>
 		</dict>
 		<key>no_pushing</key>
 		<dict>
-			<key>begin</key>
-			<integer>17</integer>
 			<key>end</key>
 			<integer>21</integer>
+			<key>start</key>
+			<integer>17</integer>
 			<key>value</key>
 			<string>We don't want to push you...</string>
 		</dict>
@@ -1151,8 +1115,12 @@ Sensitive data is never shared and everything is anonymous.</string>
 		</dict>
 		<key>pairing</key>
 		<dict>
+			<key>end</key>
+			<integer>26</integer>
+			<key>start</key>
+			<integer>18</integer>
 			<key>value</key>
-			<string>Pair</string>
+			<string>Let's set up your computer!</string>
 		</dict>
 		<key>this_on_that</key>
 		<dict>

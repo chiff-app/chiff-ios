@@ -166,19 +166,17 @@ popups:
 accounts:
   didnt_save:
     value: Je hebt nog geen accounts opgeslagen
-  how_to_add:
-    value: Een account toevoegen
-  add_an_account:
-    value: Voeg een account toe
+  add_account:
+    value: Voeg account toe
   adding_account:
     value: Een account toevoegen
   add_instructions:
     first:
-      value: Ga naar een website op je computer en log in zoals je normaal zou doen.
+      value: Pak je computer.
     second:
-      value: Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd. 
+      value: Log in zoals je normaal inlogt.
     third:
-      value: Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.
+      value: Keyn doet de rest!
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
   website_details:
@@ -259,29 +257,15 @@ devices:
     value: Apparaten
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
-    value: Open Keyn's browserextensie om de QR-code weer te geven.
+    value: Ga naar keyn.app/nl/go
+    start: 8
   pairing_instruction_two:
-    value: Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.
-    start: 116
-    end: 127
+    value: Scan de QR-code.
   scan_qr:
     comment: Cell title for scanning qr code
-    value: Scan QR
-  pair_with_device:
-    value: Koppel met je computer
-  pairing_explanation:
-    first:
-      value: Ga naar keyn.app/go op je computer
-      start: 8
-      end: 19
-    second:
-      value: Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.
-      start: 88
-      end: 99
-    third:
-      value: Scan QR code
-    fourth:
-      value: Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!
+    value: Keyn op computer
+  start_pairing:
+    value: Je hebt Keyn nog niet op je computer.
   paired_devices:
     value: Mijn gekoppelde apparaten
   footer:
@@ -300,7 +284,7 @@ devices:
   open_settings:
     value: Open instellingen
   pairing:
-    value: Koppelen
+    value: Keyn op je computer
   'on':
     value: op
   
@@ -621,7 +605,7 @@ initialization:
     value: Scan QR code
   begin_passwordless:
     value: Laat je leven zonder wachtwoorden beginnen.
-    begin: 21
+    start: 21
     end: 33
   log_in_with:
     value: 'Log vanaf nu in op elke website met '
@@ -635,7 +619,7 @@ initialization:
     value: Let's go!
   no_pushing:
     value: We willen je niet pushen...
-    begin: 18
+    start: 18
     end: 24
   keyn_uses_push:
     value: Om in te loggen op je computer maakt Keyn gebruik van push notifications.

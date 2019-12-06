@@ -29,27 +29,27 @@
 			<key>value</key>
 			<string>Voeg 2FA-code toe</string>
 		</dict>
-		<key>add_an_account</key>
+		<key>add_account</key>
 		<dict>
 			<key>value</key>
-			<string>Voeg een account toe</string>
+			<string>Voeg account toe</string>
 		</dict>
 		<key>add_instructions</key>
 		<dict>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Ga naar een website op je computer en log in zoals je normaal zou doen.</string>
+				<string>Pak je computer.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd.</string>
+				<string>Log in zoals je normaal inlogt.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.</string>
+				<string>Keyn doet de rest!</string>
 			</dict>
 		</dict>
 		<key>adding_account</key>
@@ -113,11 +113,6 @@
 		<dict>
 			<key>value</key>
 			<string>Je kunt zoveel accounts toevoegen als je wilt.</string>
-		</dict>
-		<key>how_to_add</key>
-		<dict>
-			<key>value</key>
-			<string>Een account toevoegen</string>
 		</dict>
 		<key>mode</key>
 		<dict>
@@ -552,11 +547,6 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Open instellingen</string>
 		</dict>
-		<key>pair_with_device</key>
-		<dict>
-			<key>value</key>
-			<string>Koppel met je computer</string>
-		</dict>
 		<key>paired_devices</key>
 		<dict>
 			<key>value</key>
@@ -565,61 +555,33 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
-			<string>Koppelen</string>
-		</dict>
-		<key>pairing_explanation</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>end</key>
-				<integer>19</integer>
-				<key>start</key>
-				<integer>8</integer>
-				<key>value</key>
-				<string>Ga naar keyn.app/go op je computer</string>
-			</dict>
-			<key>fourth</key>
-			<dict>
-				<key>value</key>
-				<string>Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>end</key>
-				<integer>99</integer>
-				<key>start</key>
-				<integer>88</integer>
-				<key>value</key>
-				<string>Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Scan QR code</string>
-			</dict>
+			<string>Keyn op je computer</string>
 		</dict>
 		<key>pairing_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
+			<key>start</key>
+			<integer>8</integer>
 			<key>value</key>
-			<string>Open Keyn's browserextensie om de QR-code weer te geven.</string>
+			<string>Ga naar keyn.app/go</string>
 		</dict>
 		<key>pairing_instruction_two</key>
 		<dict>
-			<key>end</key>
-			<integer>127</integer>
-			<key>start</key>
-			<integer>116</integer>
 			<key>value</key>
-			<string>Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.</string>
+			<string>Scan de QR-code.</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>comment</key>
 			<string>Cell title for scanning qr code</string>
 			<key>value</key>
-			<string>Scan QR</string>
+			<string>Keyn op computer</string>
+		</dict>
+		<key>start_pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Je hebt Keyn nog niet op je computer.</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -913,10 +875,10 @@ Thank you!</string>
 		</dict>
 		<key>begin_passwordless</key>
 		<dict>
-			<key>begin</key>
-			<integer>21</integer>
 			<key>end</key>
 			<integer>33</integer>
+			<key>start</key>
+			<integer>21</integer>
 			<key>value</key>
 			<string>Laat je leven zonder wachtwoorden beginnen.</string>
 		</dict>
@@ -1002,10 +964,10 @@ Thank you!</string>
 		</dict>
 		<key>no_pushing</key>
 		<dict>
-			<key>begin</key>
-			<integer>18</integer>
 			<key>end</key>
 			<integer>24</integer>
+			<key>start</key>
+			<integer>18</integer>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
 		</dict>
