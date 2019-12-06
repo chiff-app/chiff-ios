@@ -517,7 +517,7 @@
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan met zoveel apparaten koppelen als je wilt.</string>
+			<string>Je kunt met zoveel apparaten koppelen als je wilt.</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -892,7 +892,7 @@ Thank you!</string>
 		<key>change</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan dit altijd later veranderen in de instellingen.</string>
+			<string>Je kunt dit altijd later veranderen in de instellingen.</string>
 		</dict>
 		<key>disagree</key>
 		<dict>
@@ -1368,7 +1368,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>comment</key>
 			<string>Je kunt nog 1 account toevoegen. Check in code.</string>
 			<key>value</key>
-			<string>Je kan nog maar</string>
+			<string>Je kunt nog maar</string>
 		</dict>
 		<key>accounts_left_2_plural</key>
 		<dict>
@@ -1745,7 +1745,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
+				<string>Je kunt dan inloggen door het verzoek te autoriseren.</string>
 			</dict>
 		</dict>
 		<key>news_from_keyn</key>
