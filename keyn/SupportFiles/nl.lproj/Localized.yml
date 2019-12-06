@@ -269,7 +269,7 @@ devices:
   paired_devices:
     value: Mijn gekoppelde apparaten
   footer:
-    value: Je kan met zoveel apparaten koppelen als je wilt.
+    value: Je kunt met zoveel apparaten koppelen als je wilt.
   no_push_warning_title:
     value: We willen je niet pushen...
     begin: 18
@@ -403,7 +403,7 @@ settings:
     second:
       value: Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.
     third:
-      value: Je kan dan inloggen door het verzoek te autoriseren.
+      value: Je kunt dan inloggen door het verzoek te autoriseren.
   mobile_instruction_<iOS12:
     first:
       value: Open Keyn om in te loggen op je telefoon.
@@ -528,7 +528,7 @@ requests:
   upgrade_keyn_for_add:
     value: Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade naar Keyn Premium om onbeperkt accounts op te slaan
   accounts_left_1:
-    value: Je kan nog maar
+    value: Je kunt nog maar
     comment: Je kunt nog 1 account toevoegen. Check in code.
   accounts_left_2_plural:
     value: extra accounts
@@ -646,7 +646,7 @@ initialization:
 
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
   change:
-    value: Je kan dit altijd later veranderen in de instellingen.
+    value: Je kunt dit altijd later veranderen in de instellingen.
   one_minute_away:
     value: Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden
     start: 8
