@@ -29,27 +29,27 @@
 			<key>value</key>
 			<string>Voeg 2FA-code toe</string>
 		</dict>
-		<key>add_an_account</key>
+		<key>add_account</key>
 		<dict>
 			<key>value</key>
-			<string>Voeg een account toe</string>
+			<string>Voeg account toe</string>
 		</dict>
 		<key>add_instructions</key>
 		<dict>
 			<key>first</key>
 			<dict>
 				<key>value</key>
-				<string>Ga naar een website op je computer en log in zoals je normaal zou doen.</string>
+				<string>Ga naar je computer.</string>
 			</dict>
 			<key>second</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn vraagt automatisch of je het wachtwoord wilt bewaren. Je wachtwoord wordt dan veilig naar je telefoon verstuurd.</string>
+				<string>Log in zoals je normaal inlogt.</string>
 			</dict>
 			<key>third</key>
 			<dict>
 				<key>value</key>
-				<string>Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt inloggen, kun je Keyn gebruiken.</string>
+				<string>Keyn vraagt om de website toe te voegen.</string>
 			</dict>
 		</dict>
 		<key>adding_account</key>
@@ -87,7 +87,7 @@
 		<key>didnt_save</key>
 		<dict>
 			<key>value</key>
-			<string>Je hebt nog geen accounts opgeslagen</string>
+			<string>Je hebt nog geen accounts opgeslagen.</string>
 		</dict>
 		<key>enabled</key>
 		<dict>
@@ -113,11 +113,6 @@
 		<dict>
 			<key>value</key>
 			<string>Je kunt zoveel accounts toevoegen als je wilt.</string>
-		</dict>
-		<key>how_to_add</key>
-		<dict>
-			<key>value</key>
-			<string>Een account toevoegen</string>
 		</dict>
 		<key>mode</key>
 		<dict>
@@ -522,7 +517,7 @@
 		<key>footer</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan met zoveel apparaten koppelen als je wilt.</string>
+			<string>Je kunt met zoveel apparaten koppelen als je wilt.</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -535,6 +530,10 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
+			<key>begin</key>
+			<integer>18</integer>
+			<key>end</key>
+			<integer>24</integer>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
 		</dict>
@@ -548,11 +547,6 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Open instellingen</string>
 		</dict>
-		<key>pair_with_device</key>
-		<dict>
-			<key>value</key>
-			<string>Koppel met je computer</string>
-		</dict>
 		<key>paired_devices</key>
 		<dict>
 			<key>value</key>
@@ -561,61 +555,33 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>pairing</key>
 		<dict>
 			<key>value</key>
-			<string>Koppelen</string>
-		</dict>
-		<key>pairing_explanation</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>end</key>
-				<integer>19</integer>
-				<key>start</key>
-				<integer>8</integer>
-				<key>value</key>
-				<string>Ga naar keyn.app/go op je computer</string>
-			</dict>
-			<key>fourth</key>
-			<dict>
-				<key>value</key>
-				<string>Nadat je Keyn in je browser hebt geïnstalleerd, zie je een QR code verschijnen. Scan 'm  om de installatie te voltooien!</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>end</key>
-				<integer>99</integer>
-				<key>start</key>
-				<integer>88</integer>
-				<key>value</key>
-				<string>Om Keyn te kunnen gebruiken, moet het eerst geïnstalleerd worden in je browser. Ga naar keyn.app/go op je computer.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Scan QR code</string>
-			</dict>
+			<string>Koppelen met je computer</string>
 		</dict>
 		<key>pairing_instruction</key>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
+			<key>start</key>
+			<integer>8</integer>
 			<key>value</key>
-			<string>Open Keyn's browserextensie om de QR-code weer te geven.</string>
+			<string>Ga naar keyn.app/nl/go</string>
 		</dict>
 		<key>pairing_instruction_two</key>
 		<dict>
-			<key>end</key>
-			<integer>127</integer>
-			<key>start</key>
-			<integer>116</integer>
 			<key>value</key>
-			<string>Scan de QR code die in de rechterbovenhoek van je browser verschijnt, nadat je de extensie hebt geïnstalleerd vanaf keyn.app/go.</string>
+			<string>Scan de QR-code.</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
 			<key>comment</key>
 			<string>Cell title for scanning qr code</string>
 			<key>value</key>
-			<string>Scan QR</string>
+			<string>Koppel nu</string>
+		</dict>
+		<key>start_pairing</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent nog niet gekoppeld met je computer.</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -902,133 +868,108 @@ Thank you!</string>
 			<key>value</key>
 			<string>Akkoord</string>
 		</dict>
-		<key>byebye</key>
+		<key>all_set_up</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent helemaal klaar! 🎉</string>
+		</dict>
+		<key>begin_passwordless</key>
 		<dict>
 			<key>end</key>
-			<integer>40</integer>
+			<integer>28</integer>
 			<key>start</key>
-			<integer>30</integer>
+			<integer>16</integer>
 			<key>value</key>
-			<string>Bye bye forgetting passwords, hello Keyn</string>
+			<string>Je leven zonder wachtwoorden begint nu.</string>
+		</dict>
+		<key>byebye</key>
+		<dict>
+			<key>start</key>
+			<integer>18</integer>
+			<key>value</key>
+			<string>Dag wachtwoorden, hallo Keyn</string>
 		</dict>
 		<key>change</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan dit altijd later veranderen in de instellingen.</string>
-		</dict>
-		<key>desktop</key>
-		<dict>
-			<key>value</key>
-			<string>Desktop</string>
-		</dict>
-		<key>desktop_instruction</key>
-		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Keyn vraagt in je browser of je wil inloggen.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Je ontvangt een push-bericht op je telefoon met de vraag of je wil inloggen.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Keyn vult je inloggegevens in de juiste velden.</string>
-			</dict>
+			<string>Je kunt dit altijd later veranderen in de instellingen.</string>
 		</dict>
 		<key>disagree</key>
 		<dict>
 			<key>value</key>
 			<string>Niet akkoord</string>
 		</dict>
+		<key>enable</key>
+		<dict>
+			<key>value</key>
+			<string>Zet aan</string>
+		</dict>
 		<key>enter_words</key>
 		<dict>
 			<key>value</key>
 			<string>Voer de 12 woorden van je paper backup in</string>
+		</dict>
+		<key>face_id</key>
+		<dict>
+			<key>start</key>
+			<integer>0</integer>
+			<key>value</key>
+			<string>gezichtsherkenning</string>
 		</dict>
 		<key>finish</key>
 		<dict>
 			<key>value</key>
 			<string>Gereed</string>
 		</dict>
+		<key>from_today</key>
+		<dict>
+			<key>value</key>
+			<string>.</string>
+		</dict>
 		<key>get_started</key>
 		<dict>
 			<key>value</key>
 			<string>Beginnen</string>
-		</dict>
-		<key>help_improve</key>
-		<dict>
-			<key>end</key>
-			<integer>9</integer>
-			<key>start</key>
-			<integer>5</integer>
-			<key>value</key>
-			<string>Help Keyn te verbeteren</string>
-		</dict>
-		<key>how_keyn_works</key>
-		<dict>
-			<key>end</key>
-			<integer>8</integer>
-			<key>start</key>
-			<integer>4</integer>
-			<key>value</key>
-			<string>Hoe Keyn werkt op</string>
 		</dict>
 		<key>initialize_keyn</key>
 		<dict>
 			<key>comment</key>
 			<string>This is provided as a reason for authenticating the first time.</string>
 			<key>value</key>
-			<string>Initialiseer versleutelde opslag</string>
+			<string>Zo log je voortaan in</string>
+		</dict>
+		<key>keyn_uses_push</key>
+		<dict>
+			<key>end</key>
+			<integer>67</integer>
+			<key>start</key>
+			<integer>54</integer>
+			<key>value</key>
+			<string>Om in te loggen op je computer maakt Keyn gebruik van pushberichten.</string>
 		</dict>
 		<key>learn_more</key>
 		<dict>
 			<key>value</key>
 			<string>Meer info</string>
 		</dict>
-		<key>mobile</key>
+		<key>lets_go</key>
 		<dict>
 			<key>value</key>
-			<string>Mobiel</string>
+			<string>Let's go!</string>
 		</dict>
-		<key>mobile_instruction_&lt;iOS12</key>
+		<key>log_in_with</key>
 		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Open Keyn om in te loggen op je telefoon.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Kopieer je wachtwoord door er op te tikken.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Keer terug naar de website en plak je wachtwoord.</string>
-			</dict>
+			<key>value</key>
+			<string>Log vanaf nu in op elke website met </string>
 		</dict>
-		<key>mobile_instruction_iOS12</key>
+		<key>no_pushing</key>
 		<dict>
-			<key>first</key>
-			<dict>
-				<key>value</key>
-				<string>Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.</string>
-			</dict>
-			<key>second</key>
-			<dict>
-				<key>value</key>
-				<string>Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.</string>
-			</dict>
-			<key>third</key>
-			<dict>
-				<key>value</key>
-				<string>Je kan dan inloggen door het verzoek te autoriseren.</string>
-			</dict>
+			<key>end</key>
+			<integer>24</integer>
+			<key>start</key>
+			<integer>18</integer>
+			<key>value</key>
+			<string>We willen je niet pushen...</string>
 		</dict>
 		<key>one_minute_away</key>
 		<dict>
@@ -1042,7 +983,7 @@ Thank you!</string>
 		<key>recover</key>
 		<dict>
 			<key>value</key>
-			<string>Herstel van paper backup</string>
+			<string>Herstel van backup</string>
 		</dict>
 		<key>scan_qr</key>
 		<dict>
@@ -1071,6 +1012,13 @@ Thank you!</string>
 			<key>value</key>
 			<string>Start met Keyn</string>
 		</dict>
+		<key>touch_id</key>
+		<dict>
+			<key>start</key>
+			<integer>3</integer>
+			<key>value</key>
+			<string>je vingerafdruk</string>
+		</dict>
 		<key>try_later</key>
 		<dict>
 			<key>value</key>
@@ -1079,12 +1027,12 @@ Thank you!</string>
 		<key>welcome_text</key>
 		<dict>
 			<key>value</key>
-			<string>Met Keyn kun je op elke website inloggen met je telefoon, dus makkelijker en veiliger</string>
+			<string>Met Keyn kun je op elke website inloggen met je telefoon</string>
 		</dict>
 		<key>working</key>
 		<dict>
 			<key>value</key>
-			<string>We werken constant om Keyn te verbeteren. Het delen van statistieken over het gebruik en informatie over fouten helpt ons hierbij.
+			<string>Help ons Keyn te verbeteren door gebruiksstatistieken en foutmeldingen te delen.
 
 Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</string>
 		</dict>
@@ -1420,7 +1368,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>comment</key>
 			<string>Je kunt nog 1 account toevoegen. Check in code.</string>
 			<key>value</key>
-			<string>Je kan nog maar</string>
+			<string>Je kunt nog maar</string>
 		</dict>
 		<key>accounts_left_2_plural</key>
 		<dict>
@@ -1659,6 +1607,29 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Hiermee verwijder je blijvend alle beschikbare data. Je kunt je accounts dus niet meer herstellen met de paper backup!</string>
 		</dict>
+		<key>desktop</key>
+		<dict>
+			<key>value</key>
+			<string>Desktop</string>
+		</dict>
+		<key>desktop_instruction</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vraagt in je browser of je wil inloggen.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Je ontvangt een pushbericht op je telefoon met de vraag of je wil inloggen.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keyn vult je inloggegevens in de juiste velden.</string>
+			</dict>
+		</dict>
 		<key>disclaimer</key>
 		<dict>
 			<key>value</key>
@@ -1705,6 +1676,20 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Help</string>
 		</dict>
+		<key>how_keyn_works</key>
+		<dict>
+			<key>value</key>
+			<string>Hoe Keyn werkt</string>
+		</dict>
+		<key>how_keyn_works_on</key>
+		<dict>
+			<key>end</key>
+			<integer>8</integer>
+			<key>start</key>
+			<integer>4</integer>
+			<key>value</key>
+			<string>Hoe Keyn werkt op</string>
+		</dict>
 		<key>jailbreak_warning</key>
 		<dict>
 			<key>value</key>
@@ -1721,6 +1706,47 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<string>The word for legal</string>
 			<key>value</key>
 			<string>Juridisch</string>
+		</dict>
+		<key>mobile</key>
+		<dict>
+			<key>value</key>
+			<string>Mobiel</string>
+		</dict>
+		<key>mobile_instruction_&lt;iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Open Keyn om in te loggen op je telefoon.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Kopieer je wachtwoord door er op te tikken.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Keer terug naar de website en plak je wachtwoord.</string>
+			</dict>
+		</dict>
+		<key>mobile_instruction_iOS12</key>
+		<dict>
+			<key>first</key>
+			<dict>
+				<key>value</key>
+				<string>Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.</string>
+			</dict>
+			<key>second</key>
+			<dict>
+				<key>value</key>
+				<string>Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je wachtwoord.</string>
+			</dict>
+			<key>third</key>
+			<dict>
+				<key>value</key>
+				<string>Je kunt dan inloggen door het verzoek te autoriseren.</string>
+			</dict>
 		</dict>
 		<key>news_from_keyn</key>
 		<dict>
