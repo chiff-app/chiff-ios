@@ -243,7 +243,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 Account.deleteAll()
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
-                BackupManager.shared.deleteAllKeys()
+                NotificationManager.shared.deleteKeys()
+                BackupManager.shared.deleteKeys()
             } catch {
                 fatalError()
             }
@@ -253,7 +254,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private func registerForPushNotifications() {
         DispatchQueue.main.async {
-            NotificationManager.shared.registerForPushNotifications() { result in
+            PushNotifications.register() { result in
                 if result {
                     NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
                 }

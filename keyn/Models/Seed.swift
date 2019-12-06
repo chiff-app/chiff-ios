@@ -60,7 +60,8 @@ struct Seed {
                     case .failure(let error): throw error
                     }
                 } catch {
-                    BackupManager.shared.deleteAllKeys()
+                    NotificationManager.shared.deleteKeys()
+                    BackupManager.shared.deleteKeys()
                     try? delete()
                     completionHandler(.failure(error))
                 }
@@ -120,7 +121,8 @@ struct Seed {
 
             try BackupManager.shared.getBackupData(seed: backupSeed, context: context, completionHandler: completionHandler)
         } catch {
-            BackupManager.shared.deleteAllKeys()
+            NotificationManager.shared.deleteKeys()
+            BackupManager.shared.deleteKeys()
             try? delete()
             completionHandler(.failure(error))
         }
