@@ -42,13 +42,12 @@ class InitialisationViewController: UIViewController {
                     self.performSegue(withIdentifier: "ShowPushView", sender: self)
                     Logger.shared.analytics(.seedCreated, override: true)
                 case .failure(let error):
+                    self.loadingView.isHidden = true
                     if let error = error as? LAError {
                         if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                            self.loadingView.isHidden = true
-                        self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
+                            self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
                         }
                     } else {
-                        self.loadingView.isHidden = true
                         self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
                     }
                 }
@@ -67,7 +66,10 @@ class InitialisationViewController: UIViewController {
 
     private func setLabel() {
         let attributedText = NSMutableAttributedString(string: "initialization.log_in_with".localized, attributes: [NSAttributedString.Key.foregroundColor: UIColor.textColor])
-        attributedText.append(NSMutableAttributedString(string: Properties.hasFaceID ? "initialization.face_id".localized : "initialization.touch_id".localized, attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondary]))
+        let key = Properties.hasFaceID ? "initialization.face_id" : "initialization.touch_id"
+        attributedText.append(key.attributedLocalized(color: UIColor.secondary, font: nil, attributes: [
+            NSAttributedString.Key.foregroundColor: UIColor.textColor
+        ]))
         attributedText.append(NSMutableAttributedString(string: "initialization.from_today".localized, attributes: [NSAttributedString.Key.foregroundColor: UIColor.textColor]))
         biometricLabel.attributedText = attributedText
     }

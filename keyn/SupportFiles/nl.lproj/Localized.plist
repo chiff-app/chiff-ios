@@ -911,6 +911,8 @@ Thank you!</string>
 		</dict>
 		<key>face_id</key>
 		<dict>
+			<key>start</key>
+			<integer>0</integer>
 			<key>value</key>
 			<string>gezichtsherkenning</string>
 		</dict>

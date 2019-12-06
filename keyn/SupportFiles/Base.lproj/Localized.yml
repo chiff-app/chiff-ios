@@ -613,9 +613,11 @@ initialization:
   log_in_with:
     value: 'Log in with '
   touch_id:
-    value: TouchID
+    value: your fingerprint
+    start: 5
   face_id:
-    value: FaceID
+    value: face recognition
+    start: 0
   from_today:
     value: ' on any website from now on.'
   lets_go:
