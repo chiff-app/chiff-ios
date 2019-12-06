@@ -62,6 +62,7 @@ class AuthorizationGuard {
     func acceptRequest(completionHandler: @escaping (Result<Account?, Error>) -> Void) {
         
         func handleResult(_ error: Error?) {
+            AuthorizationGuard.authorizationInProgress = false
             if let error = error {
                 completionHandler(.failure(error))
             } else {
@@ -72,7 +73,7 @@ class AuthorizationGuard {
         switch type {
         case .add, .register, .addAndLogin:
             guard Properties.canAddAccount else {
-                completionHandler(.failure(AuthorizationError.cannotAddAccount))
+                handleResult(AuthorizationError.cannotAddAccount)
                 return
             }
             addSite(completionHandler: handleResult)
@@ -80,12 +81,15 @@ class AuthorizationGuard {
             addToExistingAccount(completionHandler: handleResult)
         case .addBulk:
             guard Properties.canAddAccount else {
-                completionHandler(.failure(AuthorizationError.cannotAddAccount))
+                handleResult(AuthorizationError.cannotAddAccount)
                 return
             }
             addBulkSites(completionHandler: handleResult)
         case .login, .change, .fill:
-            authorize(completionHandler: completionHandler)
+            authorize() { result in
+                AuthorizationGuard.authorizationInProgress = false
+                completionHandler(result)
+            }
         default:
             AuthorizationGuard.authorizationInProgress = false
             return
@@ -130,21 +134,22 @@ class AuthorizationGuard {
                 success = true
                 completionHandler(.success(account))
             }
+
+            defer {
+                AuthorizationGuard.authorizationInProgress = false
+                switch self.type {
+                case .login:
+                    Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
+                case .change:
+                    Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
+                case .fill:
+                    Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
+                default:
+                    Logger.shared.warning("Authorize called on the wrong type?")
+                }
+            }
             
             do {
-                defer {
-                    AuthorizationGuard.authorizationInProgress = false
-                    switch self.type {
-                    case .login:
-                        Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
-                    case .change:
-                        Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
-                    case .fill:
-                        Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
-                    default:
-                        Logger.shared.warning("Authorize called on the wrong type?")
-                    }
-                }
                 try onSuccess(context: result.get())
             } catch {
                 completionHandler(.failure(error))
@@ -154,15 +159,11 @@ class AuthorizationGuard {
 
     private func addToExistingAccount(completionHandler: @escaping (Error?) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
-            defer {
-                AuthorizationGuard.authorizationInProgress = false
-            }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
                 do {
                     defer {
-                        AuthorizationGuard.authorizationInProgress = false
                         Logger.shared.analytics(.addSiteToExistingRequestAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
@@ -187,9 +188,6 @@ class AuthorizationGuard {
 
     private func addSite(completionHandler: @escaping (Error?) -> Void) {
         PPD.get(id: siteId, completionHandler: { (ppd) in
-            defer {
-                AuthorizationGuard.authorizationInProgress = false
-            }
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
                 var success = false
@@ -213,9 +211,6 @@ class AuthorizationGuard {
     }
 
     private func addBulkSites(completionHandler: @escaping (Error?) -> Void) {
-        defer {
-            AuthorizationGuard.authorizationInProgress = false
-        }
         #warning("TODO: Use plurals")
         LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false) { (result) in
             var success = false

@@ -125,7 +125,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Account.deleteAll()
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
-            BackupManager.shared.deleteAllKeys()
+            NotificationManager.shared.deleteKeys()
+            BackupManager.shared.deleteKeys()
             Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
@@ -138,7 +139,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         if Seed.hasKeys && BackupManager.shared.hasKeys {
-            NotificationManager.shared.registerForPushNotifications { result in
+            PushNotifications.register { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")

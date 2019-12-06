@@ -45,6 +45,7 @@
 		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
+		49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
 		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -68,7 +69,6 @@
 		492EC843224919A10088F73D /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC842224919A10088F73D /* PairingViewController.swift */; };
 		492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC8442249214E0088F73D /* PairContainerViewController.swift */; };
 		493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936049F20861286009E3029 /* AuthenticationGuard.swift */; };
-		4936E070225F77B3009B0A31 /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */; };
 		493A35B22215653F002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B32215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
 		493A35B42215660E002EB043 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A35B12215653F002EB043 /* Constants.swift */; };
@@ -120,11 +120,17 @@
 		49911E80231413DA007905DF /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
 		499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569BB1FED278B00D75848 /* InitialisationViewController.swift */; };
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
+		4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */; };
+		4995D48D23995CF900267E6A /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48C23995CF900267E6A /* PushNotificationViewController.swift */; };
+		4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */; };
 		49983445232131680007BF12 /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49983444232131680007BF12 /* MockAPI.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
+		49AC6E7723604BDC0010AC32 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AC6E7623604BDC0010AC32 /* PushNotifications.swift */; };
+		49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
+		49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497828852285712C00D30C42 /* NotificationManager.swift */; };
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
 		49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* WebViewController.swift */; };
 		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
@@ -292,6 +298,8 @@
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
+		49191EE4239AA2430034EEE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		49191EE6239AA2450034EEE7 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -315,7 +323,6 @@
 		4933536C230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Localized.plist; sourceTree = "<group>"; };
 		4933536D230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/wordlist.txt; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
-		4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
 		4950262D22BBA2DC00545118 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
@@ -355,11 +362,15 @@
 		49911E7F231413DA007905DF /* LocalizableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableButton.swift; sourceTree = "<group>"; };
 		499569BB1FED278B00D75848 /* InitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialisationViewController.swift; sourceTree = "<group>"; };
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
+		4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartInitialisationViewController.swift; sourceTree = "<group>"; };
+		4995D48C23995CF900267E6A /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
+		4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		49983444232131680007BF12 /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
+		49AC6E7623604BDC0010AC32 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		49B17339229ED29A0029FD2B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
@@ -610,6 +621,7 @@
 				49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */,
 				49B17339229ED29A0029FD2B /* WebViewController.swift */,
 				4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */,
+				4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -757,6 +769,7 @@
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 				49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */,
 				497828852285712C00D30C42 /* NotificationManager.swift */,
+				49AC6E7623604BDC0010AC32 /* PushNotifications.swift */,
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
@@ -779,6 +792,7 @@
 				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
 				613C8A16200D213F005C7D61 /* keyn.entitlements */,
+				49191EE5239AA2430034EEE7 /* InfoPlist.strings */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
 			);
@@ -789,10 +803,11 @@
 			isa = PBXGroup;
 			children = (
 				499569BB1FED278B00D75848 /* InitialisationViewController.swift */,
+				4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */,
 				499569C71FED5E0A00D75848 /* RecoveryViewController.swift */,
 				492EC842224919A10088F73D /* PairingViewController.swift */,
+				4995D48C23995CF900267E6A /* PushNotificationViewController.swift */,
 				49F273BB225F31F800FB9D7F /* LearnMoreViewController.swift */,
-				4936E06F225F77B3009B0A31 /* MobileExplanationViewController.swift */,
 				49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */,
 				4973BB7422F818470004E365 /* TermsViewController.swift */,
 			);
@@ -1088,6 +1103,7 @@
 				497C85E22315737100DC4F91 /* Request.storyboard in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
+				49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */,
 				491C485820249D3B00397071 /* Assets.xcassets in Resources */,
 				49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */,
 				49235FFD23152C73003C4A0F /* Montserrat-Bold.ttf in Resources */,
@@ -1322,6 +1338,7 @@
 				49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49214B7821032CFD00C793DE /* Session.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
+				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
@@ -1356,12 +1373,12 @@
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
+				4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */,
 				42497C12231EE60900ECBDB4 /* APIProtocol.swift in Sources */,
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
 				49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */,
-				4936E070225F77B3009B0A31 /* MobileExplanationViewController.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
 				49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */,
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
@@ -1390,6 +1407,7 @@
 				49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */,
 				4905E09B230ECD3B00EE380E /* KeynLabel.swift in Sources */,
 				496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */,
+				4995D48D23995CF900267E6A /* PushNotificationViewController.swift in Sources */,
 				49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */,
 				611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */,
 				0153C8B222119276001B6853 /* ErrorViewController.swift in Sources */,
@@ -1397,6 +1415,7 @@
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
+				4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */,
 				49062C6D2214679400A30669 /* Localizer.swift in Sources */,
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
@@ -1444,6 +1463,7 @@
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
 				497828862285712C00D30C42 /* NotificationManager.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,
+				49AC6E7723604BDC0010AC32 /* PushNotifications.swift in Sources */,
 				491968051FC0DC6400206B75 /* Crypto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1511,6 +1531,7 @@
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
+				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
 				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1557,6 +1578,15 @@
 				4933536C230D8D0600549DA5 /* nl */,
 			);
 			name = Localized.plist;
+			sourceTree = "<group>";
+		};
+		49191EE5239AA2430034EEE7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49191EE4239AA2430034EEE7 /* en */,
+				49191EE6239AA2450034EEE7 /* nl */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		49235FF523151BC3003C4A0F /* privacy_policy.md */ = {
@@ -1760,7 +1790,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 44;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
@@ -1786,7 +1816,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
