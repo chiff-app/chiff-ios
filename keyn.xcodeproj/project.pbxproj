@@ -121,6 +121,7 @@
 		499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499569C71FED5E0A00D75848 /* RecoveryViewController.swift */; };
 		4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */; };
 		4995D48D23995CF900267E6A /* PushNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48C23995CF900267E6A /* PushNotificationViewController.swift */; };
+		4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */; };
 		49983445232131680007BF12 /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49983444232131680007BF12 /* MockAPI.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
@@ -360,6 +361,7 @@
 		499569C71FED5E0A00D75848 /* RecoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryViewController.swift; sourceTree = "<group>"; };
 		4995D48A23995CE100267E6A /* StartInitialisationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartInitialisationViewController.swift; sourceTree = "<group>"; };
 		4995D48C23995CF900267E6A /* PushNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationViewController.swift; sourceTree = "<group>"; };
+		4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		49983444232131680007BF12 /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 				49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */,
 				49B17339229ED29A0029FD2B /* WebViewController.swift */,
 				4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */,
+				4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1407,6 +1410,7 @@
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
+				4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */,
 				49062C6D2214679400A30669 /* Localizer.swift in Sources */,
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
