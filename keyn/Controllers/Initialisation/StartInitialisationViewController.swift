@@ -19,7 +19,9 @@ class StartInitialisationViewController: UIViewController {
 
     @IBAction func unwindAndStartOnboarding(sender: UIStoryboardSegue) {
         Properties.agreedWithTerms = true
-        performSegue(withIdentifier: startOnboardingSegue, sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: self.startOnboardingSegue, sender: self)
+        }
     }
 
 }

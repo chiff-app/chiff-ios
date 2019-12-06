@@ -614,6 +614,7 @@ initialization:
     start: 3
   face_id:
     value: gezichtsherkenning
+    start: 0
   from_today:
     value: '.'
   lets_go:

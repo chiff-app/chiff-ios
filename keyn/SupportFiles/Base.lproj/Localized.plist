@@ -913,8 +913,10 @@ Thank you!</string>
 		</dict>
 		<key>face_id</key>
 		<dict>
+			<key>start</key>
+			<integer>0</integer>
 			<key>value</key>
-			<string>FaceID</string>
+			<string>face recognition</string>
 		</dict>
 		<key>finish</key>
 		<dict>
@@ -1012,8 +1014,10 @@ Thank you!</string>
 		</dict>
 		<key>touch_id</key>
 		<dict>
+			<key>start</key>
+			<integer>5</integer>
 			<key>value</key>
-			<string>TouchID</string>
+			<string>your fingerprint</string>
 		</dict>
 		<key>try_later</key>
 		<dict>
