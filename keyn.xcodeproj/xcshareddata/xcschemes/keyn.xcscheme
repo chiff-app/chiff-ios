@@ -20,6 +20,20 @@
                ReferencedContainer = "container:keyn.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49E766701F7E6F420022C042"
+               BuildableName = "keynUITests.xctest"
+               BlueprintName = "keynUITests"
+               ReferencedContainer = "container:keyn.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -55,16 +69,6 @@
                BlueprintIdentifier = "49E766651F7E6F420022C042"
                BuildableName = "keynTests.xctest"
                BlueprintName = "keynTests"
-               ReferencedContainer = "container:keyn.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "49E766701F7E6F420022C042"
-               BuildableName = "keynUITests.xctest"
-               BlueprintName = "keynUITests"
                ReferencedContainer = "container:keyn.xcodeproj">
             </BuildableReference>
          </TestableReference>
