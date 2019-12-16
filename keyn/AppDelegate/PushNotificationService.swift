@@ -42,12 +42,12 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 completionHandler(UIBackgroundFetchResult.failed)
                 return
             }
-            session.updateSharedAccounts { (error) in
-                if let error = error {
+            session.updateSharedAccounts { (result) in
+                switch result {
+                case .success(_): completionHandler(UIBackgroundFetchResult.newData)
+                case .failure(let error):
                     print(error)
                     completionHandler(UIBackgroundFetchResult.failed)
-                } else {
-                    completionHandler(UIBackgroundFetchResult.newData)
                 }
             }
         } catch {
@@ -203,8 +203,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
         do {
             for session in try TeamSession.all() {
-                session.updateSharedAccounts { (error) in
-                    if let error = error {
+                session.updateSharedAccounts { (result) in
+                    if case let .failure(error) = result {
                         print(error)
                     }
                 }

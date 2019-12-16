@@ -40,6 +40,7 @@ protocol Session: Codable {
     var version: Int { get }
 
     func delete(notify: Bool) throws
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws
 
     static var encryptionService: KeychainService { get }
     static var signingService: KeychainService { get }
@@ -83,25 +84,6 @@ extension Session {
             }
         } catch {
             Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-        }
-    }
-
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
-        // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
-        let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
-        let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
-        let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
-        let message = [
-            "data": signedCiphertext.base64
-        ]
-        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("Error sending pairing response.", error: error)
-            } else {
-                completion(.success(()))
-            }
         }
     }
 

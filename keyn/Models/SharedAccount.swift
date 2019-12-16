@@ -75,10 +75,8 @@ struct SharedAccount: Account {
             do {
                 switch result {
                 case .success(_):
-                    try BackupManager.shared.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
-                    Logger.shared.analytics(.accountDeleted)
                     Properties.accountCount -= 1
                     completionHandler(.success(()))
                 case .failure(let error): throw error
