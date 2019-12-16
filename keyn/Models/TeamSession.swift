@@ -37,40 +37,49 @@ class TeamSession: Session {
     }
 
     // TODO: Make this use Result
-    func updateSharedAccounts(completion: @escaping (_ error: Error?) -> Void) {
+    func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             API.shared.signedRequest(endpoint: .adminSession, method: .get, message: nil, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
                 var changed = false
                 do {
                     let dict = try result.get()
                     let key = try self.passwordSeed()
-                    #warning("TODO: Also delete account if it doesn't exist")
+                    #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+                    var currentAccounts = try SharedAccount.all(context: nil)
                     for (id, data) in dict {
+                        currentAccounts.removeValue(forKey: id)
                         if let base64Data = data as? String {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                             let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                            var account = try SharedAccount.get(accountID: id, context: nil)
-                            if account != nil { // Update existing account
-                                if try account!.update(accountData: accountData, key: key) {
-                                    changed = true
-                                }
+                            if var account = try SharedAccount.get(accountID: id, context: nil) {
+                                changed = try account.update(accountData: accountData, key: key)
                             } else { // New account added
                                 try SharedAccount.save(accountData: accountData, id: id, key: key, context: nil)
                                 changed = true
                             }
                         }
                     }
+                    for account in currentAccounts.values {
+                        account.delete { (result) in
+                            if case let .failure(error) = result {
+                                Logger.shared.error("Error deleting shared account", error: error)
+                            } else {
+
+                            }
+                        }
+                    }
                 } catch {
                     Logger.shared.error("Error retrieving accounts", error: error)
+                    completion(.failure(error))
                 }
                 if changed {
                     NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
                 }
-                completion(nil)
+                completion(.success(()))
             }
         } catch {
             Logger.shared.error("Error fetching shared accounts", error: error)
-            completion(error)
+            completion(.failure(error))
         }
     }
 
@@ -107,6 +116,28 @@ class TeamSession: Session {
             completionHandler(.failure(error))
         }
     }
+
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
+        guard let endpoint = Properties.endpoint else {
+            throw SessionError.noEndpoint
+        }
+        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, type: .pair, version: version, arn: endpoint)
+        let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
+        let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
+        let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
+        let message = [
+            "data": signedCiphertext.base64
+        ]
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { result in
+            if case let .failure(error) = result {
+                Logger.shared.error("Error sending pairing response.", error: error)
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
 
     func delete(notify: Bool) throws {
         // TODO, send notification to server

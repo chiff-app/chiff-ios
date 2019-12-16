@@ -154,6 +154,22 @@ struct KeynPairingResponse: Codable {
 }
 
 /*
+ * Keyn Responses.
+ *
+ * Direction: app -> browser
+ */
+struct KeynTeamPairingResponse: Codable {
+    let sessionID: String
+    let pubKey: String
+    let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
+    let userID: String
+    let environment: String
+    let type: KeynMessageType
+    let version: Int
+    let arn: String
+}
+
+/*
  * Keyn account list.
  *
  * Direction: app -> browser
