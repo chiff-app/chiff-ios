@@ -43,7 +43,7 @@ class API: NSObject, APIProtocol {
     private func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = endpoint == .adminSession ? "api.keyn.dev" : Properties.keynApi
+        components.host = (endpoint == .teamAccounts || endpoint == .backup || endpoint == .pairing) ? "api.keyn.dev" : Properties.keynApi
         components.path = "/\(Properties.environment.path)/\(endpoint.rawValue)"
         
         if let path = path {

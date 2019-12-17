@@ -36,10 +36,9 @@ class TeamSession: Session {
         self.version = version
     }
 
-    // TODO: Make this use Result
     func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .adminSession, method: .get, message: nil, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(endpoint: .teamAccounts, method: .get, message: nil, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
                 var changed = false
                 do {
                     let dict = try result.get()
