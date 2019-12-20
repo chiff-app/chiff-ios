@@ -292,7 +292,6 @@ class BrowserSession: Session {
         var message: [String: Any] = [
             "httpMethod": APIMethod.put.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "pubkey": keyPair.pubKey.base64,
             "deviceEndpoint": deviceEndpoint
         ]
         if let userId = Properties.userId {
@@ -307,7 +306,7 @@ class BrowserSession: Session {
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
-            API.shared.request(endpoint: .message, path: nil, parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
+            API.shared.request(endpoint: .message, path: keyPair.pubKey.base64, parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
                 switch result {
                 case .success(_): completionHandler(.success(()))
                 case .failure(let error):

@@ -88,6 +88,13 @@ struct SharedAccount: Account {
         }
     }
 
+    func delete() throws {
+        try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
+        try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
+        self.deleteFromToIdentityStore()
+        Properties.accountCount -= 1
+    }
+
     func backup() throws {
         // Intentionally not implemented
     }

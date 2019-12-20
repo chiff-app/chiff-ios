@@ -171,7 +171,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
             } catch {
-                showError(message: "errors.save_account: \(error)".localized)
+                showError(message: "\("errors.save_account".localized): \(error)")
                 Logger.shared.error("Account could not be saved", error: error)
             }
 

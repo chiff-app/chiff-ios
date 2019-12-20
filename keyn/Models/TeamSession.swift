@@ -59,13 +59,9 @@ class TeamSession: Session {
                         }
                     }
                     for account in currentAccounts.values {
-                        account.delete { (result) in
-                            if case let .failure(error) = result {
-                                Logger.shared.error("Error deleting shared account", error: error)
-                            } else {
-
-                            }
-                        }
+                        #warning("Check how to safely delete here in the background")
+                        try account.delete()
+                        changed = true
                     }
                 } catch {
                     Logger.shared.error("Error retrieving accounts", error: error)
