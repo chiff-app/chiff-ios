@@ -15,7 +15,7 @@ class API: NSObject, APIProtocol {
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
     
-    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject? = nil, pubKey: String?, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
@@ -25,30 +25,27 @@ class API: NSObject, APIProtocol {
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData)
             ]
-            request(endpoint: endpoint, path: pubKey, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
+            request(path: path, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
         } catch {
             completionHandler(.failure(error))
         }
     }
     
-    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String? = nil, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String? = nil, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
         do {
-            let request = try createRequest(endpoint: endpoint, path: path, parameters: parameters, signature: signature, method: method, body: body)
+            let request = try createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body)
             send(request, completionHandler: completionHandler)
         } catch {
             completionHandler(.failure(error))
         }
     }
     
-    private func createRequest(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
+    private func createRequest(path: String, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = (endpoint != .subscription && endpoint != .iosSubscription && endpoint != .ppd && endpoint != .questionnaire) ? "api.keyn.dev" : Properties.keynApi
-        components.path = "/\(Properties.environment.path)/\(endpoint.rawValue)"
-        
-        if let path = path {
-            components.path += "/\(path)"
-        }
+        components.host = Properties.keynApi
+        components.path = "/\(Properties.environment.path)/\(path)"
+
         if let parameters = parameters {
             var queryItems = [URLQueryItem]()
             for (key, value) in parameters {

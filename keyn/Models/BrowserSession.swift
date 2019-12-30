@@ -135,7 +135,7 @@ class BrowserSession: Session {
             "waitTime": shortPolling ? "0" : "20"
         ]
         do {
-            API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .get, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(method: .get, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil) { result in
                 completionHandler(Result(catching: {
                     guard let sqsMessages = try result.get()["messages"] as? [[String:String]] else {
                         throw CodingError.missingData
@@ -160,7 +160,7 @@ class BrowserSession: Session {
             "receiptHandle": receiptHandle
         ]
         do {
-            API.shared.signedRequest(endpoint: .persistentBrowserToApp, method: .delete, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.warning("Failed to delete password change confirmation from queue.", error: error)
                 }
@@ -177,7 +177,7 @@ class BrowserSession: Session {
             "id": account.id,
             "data": ciphertext.base64
         ]
-        API.shared.signedRequest(endpoint: .accounts, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+        API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil) { result in
             if case let .failure(error) = result {
                 Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
             }
@@ -186,7 +186,7 @@ class BrowserSession: Session {
 
     func deleteAccount(accountId: String) {
         do {
-            API.shared.signedRequest(endpoint: .accounts, method: .delete, message: ["id": accountId], pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: ["id": accountId], path: "sessions/\(signingPubKey)/accounts/\(accountId)", privKey: try signingPrivKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
                 }
@@ -212,7 +212,7 @@ class BrowserSession: Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { result in
+        API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData) { result in
             if case let .failure(error) = result {
                 Logger.shared.error("Error sending pairing response.", error: error)
             } else {
@@ -306,7 +306,7 @@ class BrowserSession: Session {
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
-            API.shared.request(endpoint: .message, path: keyPair.pubKey.base64, parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
+            API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
                 switch result {
                 case .success(_): completionHandler(.success(()))
                 case .failure(let error):
@@ -323,13 +323,13 @@ class BrowserSession: Session {
         let message = [
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
-        API.shared.signedRequest(endpoint: .volatile, method: .post, message: message, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
+        API.shared.signedRequest( method: .put, message: message, path: "session/\(signingPubKey)/volatile", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
     }
 
     private func sendByeToPersistentQueue(completionHandler: @escaping (Result<[String: Any], Error>) -> Void) throws {
         let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        API.shared.signedRequest(endpoint: .persistentAppToBrowser, method: .post, message: ["data": ciphertext.base64], pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
+        API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "session/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
     }
 
     //     private func save(key: Data, signingKeyPair: KeyPair) throws {
