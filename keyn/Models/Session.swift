@@ -74,10 +74,7 @@ extension Session {
 
     func deleteQueuesAtAWS() {
         do {
-            let message = [
-                "pubkey": signingPubKey
-            ]
-            API.shared.signedRequest(endpoint: .message, method: .delete, message: message, pubKey: nil, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
                 }

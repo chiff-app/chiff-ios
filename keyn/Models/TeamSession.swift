@@ -38,7 +38,7 @@ class TeamSession: Session {
 
     func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .teamAccounts, method: .get, message: nil, pubKey: signingPubKey, privKey: try signingPrivKey(), body: nil) { result in
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
                 var changed = false
                 do {
                     let dict = try result.get()
@@ -124,7 +124,7 @@ class TeamSession: Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        API.shared.signedRequest(endpoint: .pairing, method: .post, message: nil, pubKey: pairingKeyPair.pubKey.base64, privKey: pairingKeyPair.privKey, body: jsonData) { result in
+        API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData) { result in
             if case let .failure(error) = result {
                 Logger.shared.error("Error sending pairing response.", error: error)
             } else {
