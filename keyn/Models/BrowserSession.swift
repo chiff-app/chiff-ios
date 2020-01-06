@@ -171,7 +171,7 @@ class BrowserSession: Session {
     }
 
     func updateAccountList(account: Account) throws {
-        let accountData = try JSONEncoder().encode(JSONAccount(account: account))
+        let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
         let message = [
             "id": account.id,
@@ -204,7 +204,7 @@ class BrowserSession: Session {
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
         // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.accountList(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -290,7 +290,7 @@ class BrowserSession: Session {
         }
 
         var message: [String: Any] = [
-            "httpMethod": APIMethod.put.rawValue,
+            "httpMethod": APIMethod.post.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
             "deviceEndpoint": deviceEndpoint
         ]
@@ -299,14 +299,14 @@ class BrowserSession: Session {
         }
 
         do {
-            let encryptedAccounts = try UserAccount.accountList().mapValues { (account) -> String in
+            let encryptedAccounts = try UserAccount.combinedSessionAccounts().mapValues { (account) -> String in
                 let accountData = try JSONEncoder().encode(account)
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
             message["accountList"] = encryptedAccounts
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
-            API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .put, signature: signature, body: jsonData) { (result) in
+            API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .post, signature: signature, body: jsonData) { (result) in
                 switch result {
                 case .success(_): completionHandler(.success(()))
                 case .failure(let error):
@@ -323,13 +323,13 @@ class BrowserSession: Session {
         let message = [
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
-        API.shared.signedRequest( method: .put, message: message, path: "session/\(signingPubKey)/volatile", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
+        API.shared.signedRequest( method: .put, message: message, path: "sessions/\(signingPubKey)/volatile", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
     }
 
     private func sendByeToPersistentQueue(completionHandler: @escaping (Result<[String: Any], Error>) -> Void) throws {
         let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "session/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
+        API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "sessions/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
     }
 
     //     private func save(key: Data, signingKeyPair: KeyPair) throws {

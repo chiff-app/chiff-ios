@@ -75,14 +75,17 @@ class Keychain {
     // MARK: - Unauthenticated Keychain operations
     // These can be synchronous because they never call LocalAuthentication
 
-    func save(id identifier: String, service: KeychainService, secretData: Data, objectData: Data? = nil) throws {
+    func save(id identifier: String, service: KeychainService, secretData: Data, objectData: Data? = nil, label: String? = nil) throws {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
                                     kSecAttrAccessGroup as String: service.accessGroup,
                                     kSecValueData as String: secretData]
-        if objectData != nil {
+        if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
+        }
+        if let label = label {
+            query[kSecAttrLabel as String] = label
         }
     
         switch service.classification {
@@ -178,7 +181,7 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
     
-    func all(service: KeychainService, context: LAContext? = nil) throws -> [[String: Any]]? {
+    func all(service: KeychainService, context: LAContext? = nil, label: String? = nil) throws -> [[String: Any]]? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service.rawValue,
                                     kSecMatchLimit as String: kSecMatchLimitAll,
@@ -187,6 +190,9 @@ class Keychain {
 
         if let defaultContext = service.defaultContext {
             query[kSecUseAuthenticationContext as String] = context ?? defaultContext
+        }
+        if let label = label {
+            query[kSecAttrLabel as String] = label
         }
 
         var queryResult: AnyObject?
@@ -256,9 +262,12 @@ class Keychain {
         guard status == errSecSuccess else { throw KeychainError.unhandledError(status) }
     }
 
-    func deleteAll(service: KeychainService) {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+    func deleteAll(service: KeychainService, label: String? = nil) {
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service.rawValue]
+        if let label = label {
+            query[kSecAttrLabel as String] = label
+        }
         SecItemDelete(query as CFDictionary)
     }
 
@@ -287,7 +296,7 @@ class Keychain {
             throw KeychainError.unexpectedData
         }
 
-        if let label = dataArray[kSecAttrLabel as String] as? String {
+        if let label = dataArray[kSecAttrType as String] as? String {
             return label == "true"
         } else { // Not present, we'll assume it's synced
             try setSynced(value: true, id: identifier, service: service)
@@ -305,7 +314,7 @@ class Keychain {
             query[kSecUseAuthenticationContext as String] = defaultContext
         }
 
-        let attributes: [String: Any] = [kSecAttrLabel as String: value ? "true" : "false"]
+        let attributes: [String: Any] = [kSecAttrType as String: value ? "true" : "fals"] // Four characters
 
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
 

@@ -32,7 +32,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         guard let aps = userInfo["aps"] as? [AnyHashable : Any],
             let category = aps["category"] as? String,
-            category == "UPDATE_TEAM_SESSION",
             let pubkey = userInfo["pubkey"] as? String else {
                 completionHandler(UIBackgroundFetchResult.noData)
             return
@@ -42,13 +41,22 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 completionHandler(UIBackgroundFetchResult.failed)
                 return
             }
-            session.updateSharedAccounts { (result) in
-                switch result {
-                case .success(_): completionHandler(UIBackgroundFetchResult.newData)
-                case .failure(let error):
-                    print(error)
-                    completionHandler(UIBackgroundFetchResult.failed)
+            switch category {
+            case "DELETE_TEAM_SESSION":
+                try session.delete(notify: false)
+                NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                completionHandler(UIBackgroundFetchResult.newData)
+            case "UPDATE_TEAM_SESSION":
+                session.updateSharedAccounts { (result) in
+                    switch result {
+                    case .success(_): completionHandler(UIBackgroundFetchResult.newData)
+                    case .failure(let error):
+                        print(error)
+                        completionHandler(UIBackgroundFetchResult.failed)
+                    }
                 }
+            default:
+                completionHandler(UIBackgroundFetchResult.noData)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)

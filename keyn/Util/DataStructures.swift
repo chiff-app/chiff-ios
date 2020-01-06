@@ -146,7 +146,7 @@ struct KeynPairingResponse: Codable {
     let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
     let userID: String
     let environment: String
-    let accounts: AccountList
+    let accounts: [String: SessionAccount]
     let type: KeynMessageType
     let errorLogging: Bool
     let analyticsLogging: Bool
@@ -169,30 +169,23 @@ struct KeynTeamPairingResponse: Codable {
     let arn: String
 }
 
-/*
- * Keyn account list.
- *
- * Direction: app -> browser
- */
-typealias AccountList = [String:JSONAccount]
-
-struct JSONAccount: Codable {
+struct SessionAccount: Codable {
     let id: String
     let askToLogin: Bool?
     let askToChange: Bool?
     let username: String
-    let sites: [JSONSite]
+    let sites: [SessionSite]
 
     init(account: Account) {
         self.id = account.id
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
         self.username = account.username
-        self.sites = account.sites.map({ JSONSite(site: $0) })
+        self.sites = account.sites.map({ SessionSite(site: $0) })
     }
 }
 
-struct JSONSite: Codable {
+struct SessionSite: Codable {
     let id: String
     let url: String
     let name: String
@@ -204,7 +197,7 @@ struct JSONSite: Codable {
     }
 }
 
-struct SharedBackupAccount: Codable {
+struct BackupTeamAccount: Codable {
     let id: String
     var username: String
     var sites: [Site]
@@ -215,7 +208,7 @@ struct SharedBackupAccount: Codable {
 }
 
 
-struct BackupAccount: Codable {
+struct BackupUserAccount: Codable {
     let id: String
     var username: String
     var sites: [Site]

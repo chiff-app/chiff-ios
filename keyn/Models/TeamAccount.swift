@@ -11,51 +11,39 @@ import AuthenticationServices
 /*
  * An account belongs to the user and can have one Site.
  */
-struct SharedAccount: Account {
+struct TeamAccount: Account {
     
     let id: String
     var username: String
     var sites: [Site]
     var site: Site {
-        return sites[0]
+        return sites.first!
     }
     var passwordIndex: Int
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool? = false
     let enabled = true
+    let sessionPubKey: String
     var synced = true
     var version: Int
 
     static let keychainService: KeychainService = .sharedAccount
 
-    init(username: String, sites: [Site], passwordIndex: Int = 0, key: Data, context: LAContext? = nil, version: Int) throws {
-        id = "\(sites[0].id)_\(username)".hash
-
-        self.sites = sites
-        self.username = username
-        self.version = version
-
-        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: key)
-        let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
-        self.passwordIndex = index
-
-        try save(password: generatedPassword)
-    }
-
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionPubKey: String) {
         self.id = id
         self.username = username
         self.sites = sites
         self.passwordIndex = passwordIndex
         self.passwordOffset = passwordOffset
         self.askToLogin = true
+        self.sessionPubKey = sessionPubKey
         self.version = version
     }
 
     mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(SharedBackupAccount.self, from: accountData)
+        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
         guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
             return false
         }
@@ -71,7 +59,7 @@ struct SharedAccount: Account {
     }
 
     func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
+        Keychain.shared.delete(id: id, service: TeamAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
             do {
                 switch result {
                 case .success(_):
@@ -89,7 +77,7 @@ struct SharedAccount: Account {
     }
 
     func delete() throws {
-        try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
+        try Keychain.shared.delete(id: id, service: TeamAccount.keychainService)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
         Properties.accountCount -= 1
@@ -99,17 +87,27 @@ struct SharedAccount: Account {
         // Intentionally not implemented
     }
 
+    func save(password: String, sessionPubKey: String) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
+        try backup()
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        saveToIdentityStore()
+        Properties.accountCount += 1
+    }
+
     // MARK: - Static functions
 
-    static func save(accountData: Data, id: String, key: Data, context: LAContext?) throws {
+    static func save(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(SharedBackupAccount.self, from: accountData)
-        var account = SharedAccount(id: backupAccount.id,
+        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
+        var account = TeamAccount(id: backupAccount.id,
                                   username: backupAccount.username,
                                   sites: backupAccount.sites,
                                   passwordIndex: backupAccount.passwordIndex,
                                   passwordOffset: backupAccount.passwordOffset,
-                                  version: 1) // TODO: Version number?
+                                  version: 1,
+                                  sessionPubKey: sessionPubKey)
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: key)
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
@@ -122,17 +120,20 @@ struct SharedAccount: Account {
 
         let data = try PropertyListEncoder().encode(account)
 
-        try Keychain.shared.save(id: account.id, service: SharedAccount.keychainService, secretData: password.data, objectData: data)
+        try Keychain.shared.save(id: account.id, service: TeamAccount.keychainService, secretData: password.data, objectData: data, label: sessionPubKey)
         account.saveToIdentityStore()
     }
 
-    private static func getSharedPasswordSeed() throws {
-        
+    static func deleteAll(for sessionPubKey: String) {
+        Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
+//        if #available(iOS 12.0, *) {
+//            ASCredentialIdentityStore.shared.removeCredentialIdentities(<#T##credentialIdentities: [ASPasswordCredentialIdentity]##[ASPasswordCredentialIdentity]#>, completion: <#T##((Bool, Error?) -> Void)?##((Bool, Error?) -> Void)?##(Bool, Error?) -> Void#>)
+//        }
     }
 
 }
 
-extension SharedAccount: Codable {
+extension TeamAccount: Codable {
 
     enum CodingKeys: CodingKey {
         case id
@@ -142,6 +143,7 @@ extension SharedAccount: Codable {
         case passwordOffset
         case askToLogin
         case askToChange
+        case sessionPubKey
         case version
     }
 
@@ -154,6 +156,7 @@ extension SharedAccount: Codable {
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
     }
 
 }

@@ -67,7 +67,7 @@ struct BackupManager {
         }
     }
     
-    func backup(account: BackupAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
+    func backup(account: BackupUserAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
         do {
             let accountData = try JSONEncoder().encode(account)
             let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))

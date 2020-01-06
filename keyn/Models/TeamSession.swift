@@ -44,16 +44,16 @@ class TeamSession: Session {
                     let dict = try result.get()
                     let key = try self.passwordSeed()
                     #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-                    var currentAccounts = try SharedAccount.all(context: nil)
+                    var currentAccounts = try TeamAccount.all(context: nil, label: self.id)
                     for (id, data) in dict {
                         currentAccounts.removeValue(forKey: id)
                         if let base64Data = data as? String {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                             let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                            if var account = try SharedAccount.get(accountID: id, context: nil) {
+                            if var account = try TeamAccount.get(accountID: id, context: nil) {
                                 changed = try account.update(accountData: accountData, key: key)
                             } else { // New account added
-                                try SharedAccount.save(accountData: accountData, id: id, key: key, context: nil)
+                                try TeamAccount.save(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
                                 changed = true
                             }
                         }
@@ -136,10 +136,12 @@ class TeamSession: Session {
 
     func delete(notify: Bool) throws {
         // TODO, send notification to server
+        TeamAccount.deleteAll(for: id)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedTeamSessionKey)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingTeamSessionKey)
         TeamSession.count -= 1
         NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {

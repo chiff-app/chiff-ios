@@ -159,9 +159,9 @@
 		49E5FA132302E529009C964E /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA122302E529009C964E /* UserAccount.swift */; };
 		49E5FA142302E52F009C964E /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA122302E529009C964E /* UserAccount.swift */; };
 		49E5FA152302E52F009C964E /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA122302E529009C964E /* UserAccount.swift */; };
-		49E5FA172302E9DE009C964E /* SharedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* SharedAccount.swift */; };
-		49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* SharedAccount.swift */; };
-		49E5FA192302E9DE009C964E /* SharedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* SharedAccount.swift */; };
+		49E5FA172302E9DE009C964E /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* TeamAccount.swift */; };
+		49E5FA182302E9DE009C964E /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* TeamAccount.swift */; };
+		49E5FA192302E9DE009C964E /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E5FA162302E9DE009C964E /* TeamAccount.swift */; };
 		49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */; };
 		49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */; };
 		49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */; };
@@ -397,7 +397,7 @@
 		49E5FA0623015DEC009C964E /* TeamSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSession.swift; sourceTree = "<group>"; };
 		49E5FA0C2302C482009C964E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		49E5FA122302E529009C964E /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
-		49E5FA162302E9DE009C964E /* SharedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAccount.swift; sourceTree = "<group>"; };
+		49E5FA162302E9DE009C964E /* TeamAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccount.swift; sourceTree = "<group>"; };
 		49E75CA020FF282D00BC0D65 /* QuestionnaireController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireController.swift; sourceTree = "<group>"; };
 		49E75CA220FF2DD000BC0D65 /* LikertQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikertQuestionViewController.swift; sourceTree = "<group>"; };
 		49E75CA420FF2E2800BC0D65 /* BooleanQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooleanQuestionViewController.swift; sourceTree = "<group>"; };
@@ -757,7 +757,7 @@
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
 				49E5FA122302E529009C964E /* UserAccount.swift */,
-				49E5FA162302E9DE009C964E /* SharedAccount.swift */,
+				49E5FA162302E9DE009C964E /* TeamAccount.swift */,
 				49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */,
 				4908103520598AC700C770F1 /* PPD.swift */,
 				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
@@ -1348,7 +1348,7 @@
 				49214B7821032CFD00C793DE /* BrowserSession.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
-				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
+				49E5FA182302E9DE009C964E /* TeamAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
@@ -1465,7 +1465,7 @@
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				49E5FA0723015DEC009C964E /* TeamSession.swift in Sources */,
-				49E5FA172302E9DE009C964E /* SharedAccount.swift in Sources */,
+				49E5FA172302E9DE009C964E /* TeamAccount.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
 				4950262E22BBA2DC00545118 /* CircleView.swift in Sources */,
@@ -1525,7 +1525,7 @@
 				493A35B42215660E002EB043 /* Constants.swift in Sources */,
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
-				49E5FA192302E9DE009C964E /* SharedAccount.swift in Sources */,
+				49E5FA192302E9DE009C964E /* TeamAccount.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
 				49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */,
 				42497C14231EF4B000ECBDB4 /* APIProtocol.swift in Sources */,
