@@ -110,7 +110,7 @@ class BackupManagerTests: XCTestCase {
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackup")
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
             expectation.fulfill()
@@ -124,7 +124,7 @@ class BackupManagerTests: XCTestCase {
         API.shared = mockAPI
         let expectation = XCTestExpectation(description: "Finish testBackupFailsIfAPIFails")
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertFalse(result)
             expectation.fulfill()
@@ -313,7 +313,7 @@ class BackupManagerTests: XCTestCase {
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndDeleteAccount")
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
             do {
@@ -333,7 +333,7 @@ class BackupManagerTests: XCTestCase {
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndDeleteAllAccounts")
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
             BackupManager.shared.deleteAllAccounts(completionHandler: { (result) in
@@ -352,7 +352,7 @@ class BackupManagerTests: XCTestCase {
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupData")
         let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
-        let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+        let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.shared.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
             do {
@@ -396,7 +396,7 @@ class BackupManagerTests: XCTestCase {
             let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1)
             let data = try PropertyListEncoder().encode(account)
             try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
-            let backupAccount = BackupAccount(account: account, tokenURL: nil, tokenSecret: nil)
+            let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
             BackupManager.shared.backup(account: backupAccount) { (result) in
                 XCTAssertTrue(result)
                 do {

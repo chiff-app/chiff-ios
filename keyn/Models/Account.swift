@@ -95,18 +95,9 @@ extension Account {
         saveToIdentityStore()
     }
 
-    func save(password: String) throws {
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
-        try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
-        saveToIdentityStore()
-        Properties.accountCount += 1
-    }
-
     // MARK: - Static functions
 
-    static func all(context: LAContext?, sync: Bool = false) throws -> [String: Self] {
+    static func all(context: LAContext?, sync: Bool = false, label: String? = nil) throws -> [String: Self] {
         guard let dataArray = try Keychain.shared.all(service: Self.keychainService, context: context) else {
             return [:]
         }
@@ -145,12 +136,12 @@ extension Account {
 
     // TODO: kinda weird
     static func getAny(accountID: String, context: LAContext?) throws -> Account? {
-        try UserAccount.get(accountID: accountID, context: context) ?? SharedAccount.get(accountID: accountID, context: context)
+        try UserAccount.get(accountID: accountID, context: context) ?? TeamAccount.get(accountID: accountID, context: context)
     }
 
 
-    static func accountList(context: LAContext? = nil) throws -> AccountList {
-        return try allCombined(context: context).mapValues({ JSONAccount(account: $0) })
+    static func combinedSessionAccounts(context: LAContext? = nil) throws -> [String: SessionAccount] {
+        return try allCombined(context: context).mapValues({ SessionAccount(account: $0) })
     }
 
     static func deleteAll() {
@@ -164,7 +155,7 @@ extension Account {
 
     static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
         let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
-        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
+        return try userAccounts.merging(TeamAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
             return userAccount
         })
     }

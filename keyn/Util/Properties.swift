@@ -170,7 +170,7 @@ struct Properties {
 
     static let systems = ["Windows", "Mac OS", "Debian", "Ubuntu"]
 
-    static let keynApi = "api.keyn.app"
+    static let keynApi = "api.keyn.dev"
     
     static let accountCap = 8
     

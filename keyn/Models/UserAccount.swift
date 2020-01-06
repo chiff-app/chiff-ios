@@ -207,7 +207,7 @@ struct UserAccount: Account {
             tokenURL = try token.toURL()
             tokenSecret = token.generator.secret
         }
-        let account = BackupAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
+        let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
         BackupManager.shared.backup(account: account) { result in
             do {
                 try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
@@ -217,11 +217,20 @@ struct UserAccount: Account {
         }
     }
 
+    func save(password: String) throws {
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
+        try backup()
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        saveToIdentityStore()
+        Properties.accountCount += 1
+    }
+
     // MARK: - Static functions
 
     static func save(accountData: Data, id: String, context: LAContext?) throws {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupAccount.self, from: accountData)
+        let backupAccount = try decoder.decode(BackupUserAccount.self, from: accountData)
         let account = UserAccount(id: backupAccount.id,
                               username: backupAccount.username,
                               sites: backupAccount.sites,
