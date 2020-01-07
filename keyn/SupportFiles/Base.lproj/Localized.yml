@@ -79,6 +79,8 @@ errors:
     value: Error restoring backup
   session_invalid:
     value: This QR-code is invalid
+  session_delete:
+    value: Error deleting account
   token_creation:
     value: Error creating OTP token
   add_otp:

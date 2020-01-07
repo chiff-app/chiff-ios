@@ -127,19 +127,32 @@ class TeamSession: Session {
         API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData) { result in
             if case let .failure(error) = result {
                 Logger.shared.error("Error sending pairing response.", error: error)
+                completion(.failure(error))
             } else {
                 completion(.success(()))
             }
         }
     }
 
-    func delete(notify: Bool) throws {
-        // TODO, send notification to server
-        TeamAccount.deleteAll(for: signingPubKey)
-        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedTeamSessionKey)
-        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingTeamSessionKey)
-        TeamSession.count -= 1
-        NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+    func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            TeamAccount.deleteAll(for: signingPubKey)
+            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
+                do {
+                    let _ = try result.get()
+                    try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: .sharedTeamSessionKey)
+                    try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: .signingTeamSessionKey)
+                    TeamSession.count -= 1
+                    NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+                    completion(.success(()))
+                } catch {
+                    Logger.shared.error("Error deleting arn for team session", error: error)
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {

@@ -39,7 +39,7 @@ protocol Session: Codable {
     var logo: UIImage? { get }
     var version: Int { get }
 
-    func delete(notify: Bool) throws
+    func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void)
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws
 
     static var encryptionService: KeychainService { get }
@@ -72,11 +72,14 @@ extension Session {
         return try JSONDecoder().decode(T.self, from: data)
     }
 
-    func deleteQueuesAtAWS() {
+    func deleteQueuesAtAWS(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
                 }
             }
         } catch {
@@ -138,7 +141,11 @@ extension Session {
     static func deleteAll() {
         do {
             for session in try all() {
-                try session.delete(notify: true)
+                try session.delete(notify: true) { result in
+                    if case .failure(let error) = result {
+                        Logger.shared.warning("Error deleting sessions remotely.", error: error)
+                    }
+                }
             }
         } catch {
             Logger.shared.warning("Error deleting sessions.", error: error)

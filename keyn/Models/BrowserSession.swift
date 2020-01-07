@@ -59,20 +59,27 @@ class BrowserSession: Session {
         self.version = version
     }
 
-    func delete(notify: Bool) throws {
-        BrowserSession.count -= 1
-        Logger.shared.analytics(.sessionDeleted)
-        if notify {
-            try sendByeToPersistentQueue() { (result) in
-                if case let .failure(error) = result {
-                     Logger.shared.error("Error sending bye to persistent queue.", error: error)
-                }
+    func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+
+        func deleteSession(_ result: Result<Void, Error>) {
+            do {
+                let _ = try result.get()
+                BrowserSession.count -= 1
+                Logger.shared.analytics(.sessionDeleted)
+                try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
+                try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+                completion(.success(()))
+            } catch {
+                Logger.shared.error("Error deleting session", error: error)
+                completion(.failure(error))
             }
-        } else { // App should delete the queues
-            deleteQueuesAtAWS()
         }
-        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey)
-        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
+
+        if notify {
+            sendByeToPersistentQueue() { deleteSession($0) }
+        } else { // App should delete the queues
+            deleteQueuesAtAWS() { deleteSession($0) }
+        }
     }
 
     func decrypt(message message64: String) throws -> KeynRequest {
@@ -335,10 +342,21 @@ class BrowserSession: Session {
         API.shared.signedRequest( method: .put, message: message, path: "sessions/\(signingPubKey)/volatile", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
     }
 
-    private func sendByeToPersistentQueue(completionHandler: @escaping (Result<[String: Any], Error>) -> Void) throws {
-        let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
-        let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-        API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "sessions/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil, completionHandler: completionHandler)
+    private func sendByeToPersistentQueue(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
+            let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
+            API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "sessions/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil) { result in
+                switch result {
+                case .success(_): completionHandler(.success(()))
+                case .failure(let error):
+                    Logger.shared.error("Failed to send bye to persistent queue.", error: error)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch {
+            completionHandler(.failure(error))
+        }
     }
 
     //     private func save(key: Data, signingKeyPair: KeyPair) throws {
