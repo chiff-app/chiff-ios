@@ -167,20 +167,18 @@ popups:
 
 accounts:
   didnt_save:
-    value: You didn’t save any of your accounts just yet.
-  how_to_add:
-    value: How to add an account
-  add_an_account:
-    value: Add an account
+    value: You didn’t save any of your accounts yet.
+  add_account:
+    value: Add account
   adding_account:
     value: Adding an account
   add_instructions:
     first:
-      value: Go to a website on your computer and login as you’d normally do.
+      value: Go to your computer.
     second:
-      value: Keyn will automatically ask you to save the password. This will securely send the password to this phone. 
+      value: Log in as you'd normally do.
     third:
-      value: Keyn will store the password on your phone. Next time you want to login, you can use Keyn.
+      value: Keyn asks you to add the website.
   alternative_add:
     value: Alternatively, you can add an account manually.
   website_details:
@@ -261,34 +259,23 @@ devices:
     value: devices
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
-    value: Open the Keyn browser extension to display QR-code.
+    value: Go to keyn.app/go
+    start: 6
   pairing_instruction_two:
-    value: Scan the QR code that appears in the top right corner of your browser after installing the extension on keyn.app/go
-    start: 104
+    value: Scan the QR-code.
   scan_qr:
     comment: Cell title for scanning qr code
-    value: Scan QR
-  pair_with_device:
-    value: Pair with your device
-  pairing_explanation:
-    first:
-      value: Go to keyn.app/go on your computer
-      start: 6
-      end: 17
-    second:
-      value: To start using Keyn, you need to install Keyn in your browser. You do this by visiting keyn.app/go on your computer.
-      start: 87
-      end: 98
-    third:
-      value: Scan QR code
-    fourth:
-      value: After installing Keyn in your browser, you'll see a QR code appear. Scan it to finish the setup!
+    value: Set up computer
+  start_pairing:
+    value: You haven't set up Keyn on your computer yet.
   paired_devices:
     value: My paired devices
   footer:
     value: You can pair with as many devices as you want.
   no_push_warning_title:
     value: We don't want to push you...
+    begin: 17
+    end: 21
   no_push_warning_text:
     value: |- 
       But you can only use Keyn to log in to other devices if  you enable push notifications.
@@ -399,6 +386,37 @@ settings:
     value: Reset Keyn
   version:
     value: Version
+  how_keyn_works:
+    value: How Keyn works
+  how_keyn_works_on:
+    value: How Keyn works on
+    start: 4
+    end: 8
+  mobile:
+    value: Mobile
+  desktop:
+    value: Desktop
+  desktop_instruction:
+    first:
+      value: Keyn asks you in your browser if you want to log in.
+    second:
+      value: You receive a notification on your phone that asks you to authorize the request.
+    third:
+      value: Keyn fills your credentials in the right fields.
+  mobile_instruction_iOS12:
+    first:
+      value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.
+    second:
+      value: When you want to login, iOS will automatically ask Keyn for your password.
+    third:
+      value: You can login by authorizing the request.
+  mobile_instruction_<iOS12:
+    first:
+      value: To log in on your phone, open Keyn.
+    second:
+      value: Copy your password by simply tapping it.
+    third:
+      value: Return to the login fields and paste your password.
 
 backup:
   word:
@@ -546,7 +564,9 @@ notifications:
   fill_password:
     value: Fill password
   pairing:
-    value: Pair
+    value: Let's set up your computer!
+    start: 18
+    end: 26
   this_on_that:
     value: '%@ on %@.'
     description: Chrome on MacOS
@@ -590,6 +610,32 @@ initialization:
     value: Setup Keyn
   scan_qr:
     value: Scan QR code
+  begin_passwordless:
+    value: Let's begin your passwordless life.
+    start: 17
+    end: 29
+  log_in_with:
+    value: 'Log in with '
+  touch_id:
+    value: your fingerprint
+    start: 5
+  face_id:
+    value: face recognition
+    start: 0
+  from_today:
+    value: ' on any website from now on.'
+  lets_go:
+    value: Let's go!
+  no_pushing:
+    value: We don't want to push you...
+    start: 17
+    end: 21
+  keyn_uses_push:
+    value: To log in to your computer, Keyn uses push notifications.
+    begin: 18
+    end: 26
+  enable:
+    value: Enable
   try_later:
     value: Try later
   start_using_keyn:
@@ -599,17 +645,12 @@ initialization:
     start: 30
     end: 40
   welcome_text:
-    value: Keyn allows you to log in to any website using your phone, making it safer and simpler
-  how_keyn_works:
-    value: How Keyn works on
-    start: 4
-    end: 8
-  help_improve:
-    value: Help us improve Keyn
-    start: 16
+    value: Keyn allows you to log in to any website using your phone
+  all_set_up:
+    value: You're all set up! 🎉
   working:
     value: |-
-      We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
+      You can greatly help us by sharing usage statistics and error data with us. 
 
       Sensitive data is never shared and everything is anonymous.
   change:
@@ -625,37 +666,12 @@ initialization:
   finish: 
     value: Finish
   initialize_keyn:
-    value: Initialize encrypted storage
+    value: This is how you log in from now on
     comment: This is provided as a reason for authenticating the first time.
   recover:
-    value: Recover from paper backup
+    value: Recover from backup
   enter_words:
     value: Enter the words of your paper backup to recover your passwords
-  mobile:
-    value: Mobile
-  desktop:
-    value: Desktop
-  desktop_instruction:
-    first:
-      value: Keyn asks you in your browser if you want to log in.
-    second:
-      value: You receive a notification on your phone that asks you to authorize the request.
-    third:
-      value: Keyn fills your credentials in the right fields.
-  mobile_instruction_iOS12:
-    first:
-      value: To use Keyn on your phone, you need to tell iOS that Keyn manages your passwords.
-    second:
-      value: When you want to login, iOS will automatically ask Keyn for your password.
-    third:
-      value: You can login by authorizing the request.
-  mobile_instruction_<iOS12:
-    first:
-      value: To log in on your phone, open Keyn.
-    second:
-      value: Copy your password by simply tapping it.
-    third:
-      value: Return to the login fields and paste your password.
   share_analytics:
     value: Share usage statistics
   share_errors:
