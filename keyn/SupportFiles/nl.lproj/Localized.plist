@@ -781,6 +781,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>value</key>
 			<string>Fout bij herstellen backup</string>
 		</dict>
+		<key>session_delete</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij verwijderen van de sessie</string>
+		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
 			<key>comment</key>

@@ -51,17 +51,19 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-                do {
-                    try self.sessions[indexPath.row].delete(notify: true)
+                self.sessions[indexPath.row].delete(notify: true) { result in
                     DispatchQueue.main.async {
-                        self.sessions.remove(at: indexPath.row)
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        if self.sessions.isEmpty {
-                            self.updateUi()
+                        if case .failure(let error) = result {
+                            Logger.shared.error("Could not delete session.", error: error)
+                            self.showError(message: "errors.session_delete".localized)
+                        } else {
+                            self.sessions.remove(at: indexPath.row)
+                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                            if self.sessions.isEmpty {
+                                self.updateUi()
+                            }
                         }
                     }
-                } catch {
-                    Logger.shared.error("Could not delete session.", error: error)
                 }
             }))
             self.present(alert, animated: true, completion: nil)

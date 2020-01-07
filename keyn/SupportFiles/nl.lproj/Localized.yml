@@ -79,6 +79,8 @@ errors:
     value: Fout bij herstellen backup
   session_invalid:
     value: Deze QR-code is ongeldig
+  session_delete:
+    value: Fout bij verwijderen van de sessie
   token_creation:
     value: Fout bij aanmaken OTP token
   add_otp:

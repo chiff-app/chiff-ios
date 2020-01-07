@@ -43,11 +43,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch category {
             case "DELETE_TEAM_SESSION":
-                try session.delete(notify: false)
-                NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
-                completionHandler(UIBackgroundFetchResult.newData)
+                session.delete(notify: false) { result in
+                    switch result {
+                    case .success(_):
+                        NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                        completionHandler(UIBackgroundFetchResult.newData)
+                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
+                    }
+                }
             case "UPDATE_TEAM_SESSION":
-                session.updateSharedAccounts { (result) in
+                session.updateSharedAccounts { result in
                     switch result {
                     case .success(_): completionHandler(UIBackgroundFetchResult.newData)
                     case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
@@ -121,8 +126,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         if keynRequest.type == .end {
             do {
                 if let sessionID = keynRequest.sessionID {
-                    try BrowserSession.get(id: sessionID)?.delete(notify: false)
-                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                    try BrowserSession.get(id: sessionID)?.delete(notify: false) { result in
+                        if case .failure(let error) = result {
+                            Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
+                        } else {
+                            NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                        }
+                    }
                 }
             } catch {
                 let error = content.userInfo["error"] as? String

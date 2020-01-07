@@ -779,6 +779,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<key>value</key>
 			<string>Error restoring backup</string>
 		</dict>
+		<key>session_delete</key>
+		<dict>
+			<key>value</key>
+			<string>Error deleting account</string>
+		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
 			<key>comment</key>
