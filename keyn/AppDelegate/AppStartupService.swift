@@ -97,7 +97,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 }
             }
         }
-        if BackupManager.shared.hasKeys {
+        if BackupManager.hasKeys {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 StoreObserver.shared.updateSubscriptions { (result) in
                     if case let .failure(error) = result {
@@ -126,7 +126,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             try? Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             NotificationManager.shared.deleteKeys()
-            BackupManager.shared.deleteKeys()
+            BackupManager.deleteKeys()
             Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
@@ -134,11 +134,11 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.cleanFolder()
             Properties.questionnaireDirPurged = true
         }
-        guard Seed.hasKeys == BackupManager.shared.hasKeys else {
+        guard Seed.hasKeys == BackupManager.hasKeys else {
             launchErrorView("Inconsistency between seed and backup keys.")
             return
         }
-        if Seed.hasKeys && BackupManager.shared.hasKeys {
+        if Seed.hasKeys && BackupManager.hasKeys {
             PushNotifications.register { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")

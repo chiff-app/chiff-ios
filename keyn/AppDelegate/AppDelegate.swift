@@ -114,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         //try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
         //NotificationManager.shared.deleteKeys()
-        //BackupManager.shared.deleteAll()
+        //BackupManager.deleteAll()
         //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
         #endif

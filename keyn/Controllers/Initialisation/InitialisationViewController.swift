@@ -49,7 +49,7 @@ class InitialisationViewController: UIViewController {
 
     private func setupKeyn() {
         loadingView.isHidden = false
-        if Seed.hasKeys && BackupManager.shared.hasKeys {
+        if Seed.hasKeys && BackupManager.hasKeys {
             registerForPushNotifications()
         } else {
             initializeSeed { (result) in
