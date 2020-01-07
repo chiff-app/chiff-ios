@@ -98,7 +98,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
         if sender.isOn {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { result in
+            NotificationManager.shared.subscribe() { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no

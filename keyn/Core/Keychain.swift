@@ -203,7 +203,10 @@ class Keychain {
         if status == errSecItemNotFound {
             return nil
         }
-
+        if status == -26276 || status == errSecInteractionNotAllowed {
+            throw KeychainError.interactionNotAllowed
+        }
+        
         guard status == noErr else {
             throw KeychainError.unhandledError(status)
         }

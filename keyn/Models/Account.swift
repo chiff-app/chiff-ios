@@ -192,19 +192,24 @@ extension Account {
                     let identity = ASPasswordCredentialIdentity(serviceIdentifier: service, user: self.username, recordIdentifier: self.id)
                     ASCredentialIdentityStore.shared.removeCredentialIdentities([identity], completion: nil)
                 } else {
-                    ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
-                        if let error = error {
-                            Logger.shared.error("Error deleting credentials from identity store", error: error)
-                        } else if result, let accounts = try? Self.all(context: nil) {
-                            let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
-                                let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
-                                return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
-                            }
-                            ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
-                        }
-                    })
+                    Self.reloadIdentityStore()
                 }
             }
         }
+    }
+
+    @available(iOS 12.0, *)
+    static func reloadIdentityStore() {
+        ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
+            if let error = error {
+                Logger.shared.error("Error deleting credentials from identity store", error: error)
+            } else if result, let accounts = try? Self.all(context: nil) {
+                let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
+                    let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
+                    return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
+                }
+                ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
+            }
+        })
     }
 }

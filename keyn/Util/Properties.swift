@@ -39,6 +39,7 @@ struct Properties {
     static private let accountCountFlag = "accountCount"
     static private let agreedWithTermsFlag = "agreedWithTerms"
     static private let firstPairingCompletedFlag = "firstPairingCompleted"
+    static private let reloadAccountsFlag = "reloadAccountsFlag"
     static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
 
     static var isFirstLaunch: Bool {
@@ -49,6 +50,10 @@ struct Properties {
         return isFirstLaunch
     }
 
+    static var reloadAccounts: Bool {
+        get { return UserDefaults.standard.bool(forKey: reloadAccountsFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: reloadAccountsFlag) }
+    }
     static var firstPairingCompleted: Bool {
         get { return UserDefaults.standard.bool(forKey: firstPairingCompletedFlag) }
         set { UserDefaults.standard.set(newValue, forKey: firstPairingCompletedFlag) }
@@ -173,26 +178,12 @@ struct Properties {
     static let keynApi = "api.keyn.dev"
     
     static let accountCap = 8
-    
-    static let AWSSNSNotificationArn = (
-        production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
-        sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
-    )
 
     static let nudgeNotificationIdentifiers = [
         "io.keyn.keyn.first_nudge",
         "io.keyn.keyn.second_nudge",
         "io.keyn.keyn.third_nudge"
     ]
-
-    static var notificationTopic: String {
-        switch environment {
-        case .dev:
-            return AWSSNSNotificationArn.sandbox
-        case .beta, .prod:
-            return AWSSNSNotificationArn.production
-        }
-    }
 
     static var endpoint: String? {
         guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {

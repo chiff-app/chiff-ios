@@ -39,8 +39,8 @@ class TeamSession: Session {
     func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
-                var changed = false
                 do {
+                    var changed = false
                     let dict = try result.get()
                     let key = try self.passwordSeed()
                     #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
@@ -63,17 +63,17 @@ class TeamSession: Session {
                         try account.delete()
                         changed = true
                     }
+                    if changed {
+                        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+                    }
+                    completion(.success(()))
                 } catch {
                     Logger.shared.error("Error retrieving accounts", error: error)
                     completion(.failure(error))
                 }
-                if changed {
-                    NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
-                }
-                completion(.success(()))
             }
         } catch {
-            Logger.shared.error("Error fetching shared accounts", error: error)
+            Logger.shared.error("Error to get key to fetch accounts", error: error)
             completion(.failure(error))
         }
     }
@@ -133,15 +133,13 @@ class TeamSession: Session {
         }
     }
 
-
     func delete(notify: Bool) throws {
         // TODO, send notification to server
-        TeamAccount.deleteAll(for: id)
+        TeamAccount.deleteAll(for: signingPubKey)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedTeamSessionKey)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingTeamSessionKey)
         TeamSession.count -= 1
         NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
-        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {
