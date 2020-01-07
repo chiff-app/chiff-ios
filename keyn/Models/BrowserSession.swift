@@ -173,10 +173,13 @@ class BrowserSession: Session {
     func updateAccountList(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
-        let message = [
+        var message = [
             "id": account.id,
             "data": ciphertext.base64
         ]
+        if let teamAccount = account as? TeamAccount {
+            message["sessionPubKey"] = teamAccount.sessionPubKey
+        }
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil) { result in
             if case let .failure(error) = result {
                 Logger.shared.warning("Failed to send account list to persistent queue.", error: error)
@@ -299,11 +302,17 @@ class BrowserSession: Session {
         }
 
         do {
-            let encryptedAccounts = try UserAccount.combinedSessionAccounts().mapValues { (account) -> String in
-                let accountData = try JSONEncoder().encode(account)
+            message["userAccounts"] = try UserAccount.all(context: nil).mapValues { (account) -> String in
+                let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
-            message["accountList"] = encryptedAccounts
+            message["teamAccounts"] = try TeamAccount.all(context: nil).mapValues { (account) -> [String: String] in
+                let accountData = try JSONEncoder().encode(SessionAccount(account: account))
+                return [
+                    "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,
+                    "sessionPubKey": account.sessionPubKey
+                ]
+            }
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
             API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .post, signature: signature, body: jsonData) { (result) in
