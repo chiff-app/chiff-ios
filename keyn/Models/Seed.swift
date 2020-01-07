@@ -39,7 +39,7 @@ struct Seed {
     }
 
     static func create(context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        guard !hasKeys && !BackupManager.shared.hasKeys else {
+        guard !hasKeys && !BackupManager.hasKeys else {
             completionHandler(.failure(SeedError.exists))
             return
         }
@@ -49,7 +49,7 @@ struct Seed {
             let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
             let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-            BackupManager.shared.initialize(seed: backupSeed, context: context) { result in
+            BackupManager.initialize(seed: backupSeed, context: context) { result in
                 do {
                     switch result {
                     case .success(_):
@@ -61,7 +61,7 @@ struct Seed {
                     }
                 } catch {
                     NotificationManager.shared.deleteKeys()
-                    BackupManager.shared.deleteKeys()
+                    BackupManager.deleteKeys()
                     try? delete()
                     completionHandler(.failure(error))
                 }
@@ -100,7 +100,7 @@ struct Seed {
     }
     
     static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) {
-        guard !hasKeys && !BackupManager.shared.hasKeys else {
+        guard !hasKeys && !BackupManager.hasKeys else {
             completionHandler(.failure(SeedError.exists))
             return
         }
@@ -119,10 +119,10 @@ struct Seed {
             try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
             paperBackupCompleted = true
 
-            try BackupManager.shared.getBackupData(seed: backupSeed, context: context, completionHandler: completionHandler)
+            try BackupManager.getBackupData(seed: backupSeed, context: context, completionHandler: completionHandler)
         } catch {
             NotificationManager.shared.deleteKeys()
-            BackupManager.shared.deleteKeys()
+            BackupManager.deleteKeys()
             try? delete()
             completionHandler(.failure(error))
         }

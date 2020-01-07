@@ -185,7 +185,7 @@ struct UserAccount: Account {
             do {
                 switch result {
                 case .success(_):
-                    try BackupManager.shared.deleteAccount(accountId: self.id)
+                    try BackupManager.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
                     Logger.shared.analytics(.accountDeleted)
@@ -208,7 +208,7 @@ struct UserAccount: Account {
             tokenSecret = token.generator.secret
         }
         let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
-        BackupManager.shared.backup(account: account) { result in
+        BackupManager.backup(account: account) { result in
             do {
                 try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
             } catch {

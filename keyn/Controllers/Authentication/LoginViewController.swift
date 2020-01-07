@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()
-                BackupManager.shared.deleteKeys()
+                BackupManager.deleteKeys()
                 Logger.shared.warning("Keyn reset after corrupted data", error: error)
                 let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
                 UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")

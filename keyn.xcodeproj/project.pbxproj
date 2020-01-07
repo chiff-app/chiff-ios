@@ -756,14 +756,14 @@
 			isa = PBXGroup;
 			children = (
 				01839A701FACA93A00698B69 /* Account.swift */,
-				49E5FA122302E529009C964E /* UserAccount.swift */,
-				49E5FA162302E9DE009C964E /* TeamAccount.swift */,
 				49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */,
+				49E5FA122302E529009C964E /* UserAccount.swift */,
 				4908103520598AC700C770F1 /* PPD.swift */,
 				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
 				49E5FA0C2302C482009C964E /* Session.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
+				49E5FA162302E9DE009C964E /* TeamAccount.swift */,
 				49E5FA0623015DEC009C964E /* TeamSession.swift */,
 			);
 			path = Models;
