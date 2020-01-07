@@ -23,16 +23,16 @@ class MobileExplanationViewController: UIViewController {
             firstImage.image = UIImage(named: "phone_key")
             secondImage.image = UIImage(named: "phone_form")
             thirdImage.image = UIImage(named: "phone_fingerprint")
-            firstLabel.text = "initialization.mobile_instruction_iOS12.first".localized
-            secondLabel.text = "initialization.mobile_instruction_iOS12.second".localized
-            thirdLabel.text = "initialization.mobile_instruction_iOS12.third".localized
+            firstLabel.text = "settings.mobile_instruction_iOS12.first".localized
+            secondLabel.text = "settings.mobile_instruction_iOS12.second".localized
+            thirdLabel.text = "settings.mobile_instruction_iOS12.third".localized
         } else {
             firstImage.image = UIImage(named: "phone_form")
             secondImage.image = UIImage(named: "phone_fingerprint")
             thirdImage.image = UIImage(named: "phone_form_filled")
-            firstLabel.text = "initialization.mobile_instruction_<iOS12.first".localized
-            secondLabel.text = "initialization.mobile_instruction_<iOS12.second".localized
-            thirdLabel.text = "initialization.mobile_instruction_<iOS12.third".localized
+            firstLabel.text = "settings.mobile_instruction_<iOS12.first".localized
+            secondLabel.text = "settings.mobile_instruction_<iOS12.second".localized
+            thirdLabel.text = "settings.mobile_instruction_<iOS12.third".localized
         }
     }
 
