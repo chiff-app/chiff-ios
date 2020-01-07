@@ -53,7 +53,7 @@ struct NotificationManager {
                         try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     }
                     if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-                        self.subscribe(topic: Properties.notificationTopic) { result in
+                        self.subscribe() { result in
                             switch result {
                             case .success(_): Properties.infoNotifications = .yes
                             case .failure(_): Properties.infoNotifications = .no
@@ -83,7 +83,7 @@ struct NotificationManager {
         }
     }
 
-    func subscribe(topic: String, completionHandler: ((Result<Void, Error>) -> Void)?) {
+    func subscribe(completionHandler: ((Result<Void, Error>) -> Void)?) {
         guard let endpoint = Properties.endpoint else {
             Logger.shared.warning("Tried to subscribe without endpoint present")
             #warning("TODO: Should be considered as an error")
@@ -91,8 +91,7 @@ struct NotificationManager {
             return
         }
         let message = [
-            "endpoint": endpoint,
-            "topic": topic
+            "endpoint": endpoint
         ]
         do {
             API.shared.signedRequest(method: .post, message: message, path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in

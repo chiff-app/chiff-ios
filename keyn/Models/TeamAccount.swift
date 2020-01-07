@@ -119,16 +119,16 @@ struct TeamAccount: Account {
         }
 
         let data = try PropertyListEncoder().encode(account)
-
         try Keychain.shared.save(id: account.id, service: TeamAccount.keychainService, secretData: password.data, objectData: data, label: sessionPubKey)
         account.saveToIdentityStore()
     }
 
     static func deleteAll(for sessionPubKey: String) {
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
-//        if #available(iOS 12.0, *) {
-//            ASCredentialIdentityStore.shared.removeCredentialIdentities(<#T##credentialIdentities: [ASPasswordCredentialIdentity]##[ASPasswordCredentialIdentity]#>, completion: <#T##((Bool, Error?) -> Void)?##((Bool, Error?) -> Void)?##(Bool, Error?) -> Void#>)
-//        }
+        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+        if #available(iOS 12.0, *) {
+            Properties.reloadAccounts = true
+        }
     }
 
 }

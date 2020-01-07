@@ -50,9 +50,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 session.updateSharedAccounts { (result) in
                     switch result {
                     case .success(_): completionHandler(UIBackgroundFetchResult.newData)
-                    case .failure(let error):
-                        print(error)
-                        completionHandler(UIBackgroundFetchResult.failed)
+                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
                     }
                 }
             default:
