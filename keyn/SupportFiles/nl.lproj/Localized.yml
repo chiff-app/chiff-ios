@@ -459,6 +459,8 @@ backup:
     value: Paper backup ontsleutelen
 
 requests:
+  keyn_for_teams:
+    value: Keyn voor teams
   accounts:
     value: accounts
     comment: The word for 'accounts'
@@ -562,6 +564,8 @@ notifications:
     value: Inloggen
   fill_password:
     value: Wachtwoord invullen
+  team_admin_login:
+    value: Inloggen Keyn voor teams
   pairing:
     value: Koppelen
   this_on_that:

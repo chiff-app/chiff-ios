@@ -34,7 +34,7 @@ class RequestViewController: UIViewController {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         switch authorizationGuard.type {
-        case .login, .addToExisting:
+        case .login, .addToExisting, .adminLogin:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
             Logger.shared.analytics(.loginRequestOpened)
         case .add, .addAndLogin:
@@ -125,25 +125,25 @@ class RequestViewController: UIViewController {
     private func success() {
         var autoClose = true
         switch authorizationGuard.type {
-            case .login, .addToExisting:
-                successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .add, .addAndLogin:
-                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-                autoClose = setAccountsLeft()
-            case .addBulk:
-                successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-                autoClose = setAccountsLeft()
-            case .change:
-                successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
-            case .fill:
-                successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            default:
-                requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
+        case .login, .addToExisting, .adminLogin:
+            successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        case .add, .addAndLogin:
+            successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
+            autoClose = setAccountsLeft()
+        case .addBulk:
+            successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
+            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
+            autoClose = setAccountsLeft()
+        case .change:
+            successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
+        case .fill:
+            successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        default:
+            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         self.authorized = true
         self.showSuccessView()

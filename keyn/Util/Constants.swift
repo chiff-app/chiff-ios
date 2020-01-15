@@ -131,4 +131,5 @@ enum KeynMessageType: Int, Codable {
     case preferences = 12
     case addToExisting = 13
     case disabled = 14
+    case adminLogin = 15
 }

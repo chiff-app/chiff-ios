@@ -76,6 +76,12 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because subsequent don't apply to addBulk request
+        case .adminLogin:
+            guard browserTab != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no browser tab.")
+                return false
+            }
+            return true // Return here because subsequent don't apply to adminLogin request
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false

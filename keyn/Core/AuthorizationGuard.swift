@@ -36,6 +36,8 @@ class AuthorizationGuard {
             return String(format: "requests.change_for".localized, siteName!)
         case .fill:
             return String(format: "requests.fill_for".localized, siteName!)
+        case .adminLogin:
+            return String(format: "requests.login_to".localized, "requests.keyn_for_teams".localized)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -90,6 +92,8 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
                 completionHandler(result)
             }
+        case .adminLogin:
+            teamAdminLogin(completionHandler: handleResult)
         default:
             AuthorizationGuard.authorizationInProgress = false
             return
@@ -122,7 +126,7 @@ class AuthorizationGuard {
                 }
                 NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
-                    self.session.cancelRequest(reason: .reject, browserTab: self.browserTab, completionHandler: { (result) in // TODO: Change to .disabled after implemented in extension
+                    self.session.cancelRequest(reason: .disabled, browserTab: self.browserTab, completionHandler: { (result) in
                         switch result {
                         case .failure(let error): Logger.shared.error("Error rejecting request", error: error)
                         case .success(_): break
@@ -231,6 +235,30 @@ class AuthorizationGuard {
                 defer {
                     Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
                 }
+                try onSuccess(context: result.get())
+            } catch {
+                completionHandler(error)
+            }
+        }
+    }
+
+    private func teamAdminLogin(completionHandler: @escaping (Error?) -> Void) {
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
+            var success = false
+
+            func onSuccess(context: LAContext?) throws {
+                // Check if there's a team session
+                // TODO: What if there's more than 1?
+                // Call backend to fetch secret
+                // Decrypt
+                completionHandler(nil)
+            }
+
+            defer {
+                AuthorizationGuard.authorizationInProgress = false
+            }
+
+            do {
                 try onSuccess(context: result.get())
             } catch {
                 completionHandler(error)

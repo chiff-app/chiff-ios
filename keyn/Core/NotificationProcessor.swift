@@ -55,6 +55,9 @@ class NotificationProcessor {
         case .pair:
             content.title = "notifications.pairing".localized
             content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
+        case .adminLogin:
+            content.title = "notifications.team_admin_login".localized
+            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
         default:
             content.body = "Unknown request"
         }
