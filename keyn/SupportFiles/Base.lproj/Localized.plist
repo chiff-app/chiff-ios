@@ -1131,6 +1131,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Let's set up your computer!</string>
 		</dict>
+		<key>team_admin_login</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams login</string>
+		</dict>
 		<key>this_on_that</key>
 		<dict>
 			<key>description</key>
@@ -1459,6 +1464,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Fill password successful</string>
+		</dict>
+		<key>keyn_for_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams</string>
 		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>

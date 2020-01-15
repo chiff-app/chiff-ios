@@ -1127,6 +1127,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Koppelen</string>
 		</dict>
+		<key>team_admin_login</key>
+		<dict>
+			<key>value</key>
+			<string>Inloggen Keyn voor teams</string>
+		</dict>
 		<key>this_on_that</key>
 		<dict>
 			<key>value</key>
@@ -1455,6 +1460,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Wachtwoord invullen gelukt</string>
+		</dict>
+		<key>keyn_for_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn voor teams</string>
 		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>

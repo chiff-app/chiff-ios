@@ -167,7 +167,7 @@ class TestHelper {
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         NotificationManager.shared.deleteKeys()
-        BackupManager.shared.deleteKeys()
+        BackupManager.deleteKeys()
         // Wipe the keychain, keychain tests do not work without this
         let secItemClasses =  [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         for itemClass in secItemClasses {

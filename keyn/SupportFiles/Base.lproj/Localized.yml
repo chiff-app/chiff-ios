@@ -461,6 +461,8 @@ backup:
     value: Retrieve paper backup
 
 requests:
+  keyn_for_teams:
+    value: Keyn for teams
   accounts:
     value: accounts
     comment: The word for 'accounts'
@@ -567,6 +569,8 @@ notifications:
     value: Let's set up your computer!
     start: 18
     end: 26
+  team_admin_login:
+    value: Keyn for teams login
   this_on_that:
     value: '%@ on %@.'
     description: Chrome on MacOS
