@@ -98,7 +98,7 @@ struct TeamAccount: Account {
 
     // MARK: - Static functions
 
-    static func save(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
+    static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
         var account = TeamAccount(id: backupAccount.id,
@@ -118,9 +118,7 @@ struct TeamAccount: Account {
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
 
-        let data = try PropertyListEncoder().encode(account)
-        try Keychain.shared.save(id: account.id, service: TeamAccount.keychainService, secretData: password.data, objectData: data, label: sessionPubKey)
-        account.saveToIdentityStore()
+        try account.save(password: password, sessionPubKey: sessionPubKey)
     }
 
     static func deleteAll(for sessionPubKey: String) {

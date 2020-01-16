@@ -228,7 +228,7 @@ struct UserAccount: Account {
 
     // MARK: - Static functions
 
-    static func save(accountData: Data, id: String, context: LAContext?) throws {
+    static func restore(accountData: Data, id: String, context: LAContext?) throws {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupUserAccount.self, from: accountData)
         let account = UserAccount(id: backupAccount.id,

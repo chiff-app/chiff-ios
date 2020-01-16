@@ -9,6 +9,8 @@ import LocalAuthentication
 enum AuthorizationError: KeynError {
     case accountOverflow
     case cannotAddAccount
+    case noTeamSessionFound
+    case notAdmin
 }
 
 class AuthorizationGuard {
@@ -247,11 +249,24 @@ class AuthorizationGuard {
             var success = false
 
             func onSuccess(context: LAContext?) throws {
-                // Check if there's a team session
-                // TODO: What if there's more than 1?
-                // Call backend to fetch secret
-                // Decrypt
-                completionHandler(nil)
+                guard let teamSession = try TeamSession.all().first else {
+                    throw AuthorizationError.noTeamSessionFound
+                } // TODO: What if there's more than 1?
+                print(teamSession.signingPubKey)
+                API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
+                    do {
+                        let dict = try result.get()
+                        guard let teamSeed = dict["team_seed"] as? String else {
+                            throw CodingError.unexpectedData
+                        }
+                        let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
+                        print(seed.base64)
+                        self.session.sendTeamSeed(seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
+                    } catch {
+                        print(error)
+                        completionHandler(error)
+                    }
+                }
             }
 
             defer {

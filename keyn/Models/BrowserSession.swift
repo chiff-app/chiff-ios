@@ -137,6 +137,23 @@ class BrowserSession: Session {
         }
     }
 
+    func sendTeamSeed(seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
+        do {
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: seed, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin))
+            let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
+            try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
+                if case let .failure(error) = result {
+                    Logger.shared.error("Error sending credentials", error: error)
+                    completionHandler(error)
+                } else {
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            completionHandler(error)
+        }
+    }
+
     func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (Result<[KeynPersistentQueueMessage], Error>) -> Void) {
         let message = [
             "waitTime": shortPolling ? "0" : "20"

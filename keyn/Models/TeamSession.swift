@@ -27,57 +27,6 @@ class TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    init(id: String, signingPubKey: Data, role: String, company: String, version: Int) {
-        self.creationDate = Date()
-        self.id = id
-        self.signingPubKey = signingPubKey.base64
-        self.role = role
-        self.company = company
-        self.version = version
-    }
-
-    func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
-                do {
-                    var changed = false
-                    let dict = try result.get()
-                    let key = try self.passwordSeed()
-                    #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-                    var currentAccounts = try TeamAccount.all(context: nil, label: self.id)
-                    for (id, data) in dict {
-                        currentAccounts.removeValue(forKey: id)
-                        if let base64Data = data as? String {
-                            let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                            let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                            if var account = try TeamAccount.get(accountID: id, context: nil) {
-                                changed = try account.update(accountData: accountData, key: key)
-                            } else { // New account added
-                                try TeamAccount.save(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
-                                changed = true
-                            }
-                        }
-                    }
-                    for account in currentAccounts.values {
-                        #warning("Check how to safely delete here in the background")
-                        try account.delete()
-                        changed = true
-                    }
-                    if changed {
-                        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
-                    }
-                    completion(.success(()))
-                } catch {
-                    Logger.shared.error("Error retrieving accounts", error: error)
-                    completion(.failure(error))
-                }
-            }
-        } catch {
-            Logger.shared.error("Error to get key to fetch accounts", error: error)
-            completion(.failure(error))
-        }
-    }
-
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
@@ -109,6 +58,57 @@ class TeamSession: Session {
         } catch {
             Logger.shared.error("Error initiating session", error: error)
             completionHandler(.failure(error))
+        }
+    }
+
+    init(id: String, signingPubKey: Data, role: String, company: String, version: Int) {
+        self.creationDate = Date()
+        self.id = id
+        self.signingPubKey = signingPubKey.base64
+        self.role = role
+        self.company = company
+        self.version = version
+    }
+
+    func updateSharedAccounts(completion: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
+                do {
+                    var changed = false
+                    let dict = try result.get()
+                    let key = try self.passwordSeed()
+                    #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+                    var currentAccounts = try TeamAccount.all(context: nil, label: self.id)
+                    for (id, data) in dict {
+                        currentAccounts.removeValue(forKey: id)
+                        if let base64Data = data as? String {
+                            let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
+                            let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+                            if var account = try TeamAccount.get(accountID: id, context: nil) {
+                                changed = try account.update(accountData: accountData, key: key)
+                            } else { // New account added
+                                try TeamAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+                                changed = true
+                            }
+                        }
+                    }
+                    for account in currentAccounts.values {
+                        #warning("Check how to safely delete here in the background")
+                        try account.delete()
+                        changed = true
+                    }
+                    if changed {
+                        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+                    }
+                    completion(.success(()))
+                } catch {
+                    Logger.shared.error("Error retrieving accounts", error: error)
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            Logger.shared.error("Error to get key to fetch accounts", error: error)
+            completion(.failure(error))
         }
     }
 
@@ -164,6 +164,12 @@ class TeamSession: Session {
 
     func passwordSeed() throws -> Data {
         return try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
+    }
+
+    func decryptAdminSeed(seed: String) throws -> Data {
+        let ciphertext = try Crypto.shared.convertFromBase64(from: seed)
+        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+        return data
     }
 
 }
