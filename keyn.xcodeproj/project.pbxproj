@@ -928,6 +928,7 @@
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
+				4995B38F23D4C90100A28026 /* SwiftLint */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
@@ -1222,6 +1223,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "for loc in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$loc/Localized.yml').to_json\" | plutil -convert xml1 - -o $loc/Localized.plist\ndone\n\n";
+		};
+		4995B38F23D4C90100A28026 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
 			isa = PBXShellScriptBuildPhase;
