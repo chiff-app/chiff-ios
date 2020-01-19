@@ -14,6 +14,7 @@ def shared_pods
   pod 'TrustKit'
   pod 'Firebase/Core'
   pod 'Amplitude-iOS', '~> 4.5'
+  pod 'SwiftLint'
 end
 
 target 'keyn' do
