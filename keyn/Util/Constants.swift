@@ -95,6 +95,8 @@ enum NotificationCategory {
     static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
     static let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
     static let ONBOARDING_NUDGE = "ONBOARDING_NUDGE"
+    static let UPDATE_TEAM_SESSION = "UPDATE_TEAM_SESSION"
+    static let DELETE_TEAM_SESSION = "DELETE_TEAM_SESSION"
 }
 
 enum NotificationContentKey {

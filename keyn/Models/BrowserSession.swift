@@ -137,9 +137,9 @@ class BrowserSession: Session {
         }
     }
 
-    func sendTeamSeed(seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
+    func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: seed, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
                 if case let .failure(error) = result {
