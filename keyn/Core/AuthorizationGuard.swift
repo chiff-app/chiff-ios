@@ -252,7 +252,6 @@ class AuthorizationGuard {
                 guard let teamSession = try TeamSession.all().first else {
                     throw AuthorizationError.noTeamSessionFound
                 } // TODO: What if there's more than 1?
-                print(teamSession.signingPubKey)
                 API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
                     do {
                         let dict = try result.get()
@@ -260,8 +259,7 @@ class AuthorizationGuard {
                             throw CodingError.unexpectedData
                         }
                         let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
-                        print(seed.base64)
-                        self.session.sendTeamSeed(seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
+                        self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
                     } catch {
                         print(error)
                         completionHandler(error)

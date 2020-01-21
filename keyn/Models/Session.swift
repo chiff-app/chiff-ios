@@ -87,6 +87,11 @@ extension Session {
         }
     }
 
+    func update() throws {
+        let sessionData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
+    }
+
     // MARK: Static functions
 
 
@@ -141,7 +146,7 @@ extension Session {
     static func deleteAll() {
         do {
             for session in try all() {
-                try session.delete(notify: true) { result in
+                session.delete(notify: true) { result in
                     if case .failure(let error) = result {
                         Logger.shared.warning("Error deleting sessions remotely.", error: error)
                     }

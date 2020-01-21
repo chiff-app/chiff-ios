@@ -98,7 +98,7 @@ extension Account {
     // MARK: - Static functions
 
     static func all(context: LAContext?, sync: Bool = false, label: String? = nil) throws -> [String: Self] {
-        guard let dataArray = try Keychain.shared.all(service: Self.keychainService, context: context) else {
+        guard let dataArray = try Keychain.shared.all(service: Self.keychainService, context: context, label: label) else {
             return [:]
         }
         Properties.accountCount = dataArray.count

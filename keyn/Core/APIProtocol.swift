@@ -16,68 +16,6 @@ enum APIError: KeynError {
     case pinninigError
 }
 
-//enum APIEndpoint: String {
-//    case devices = "devices"
-//    case users = "users"
-//    case sessions = "sessions"
-//    case teams = "teams"
-//    case teamsUsers = "teams/users"
-//    case news = "news"
-//    case questionnaire = "questionnaires"
-//    case subscriptions = "subscriptions"
-//    case iosSubscriptions = "subscription/ios"
-//    case ppd = "ppd"
-//    case analytics = "analytics"
-//    case pairing = "pairing"
-//    case volatile = "volatile"
-//    case appToBrowser = "app-to-browser"
-//    case browserToApp = "browser-to-app"
-//    case userAccounts
-//
-//    static func path(endpoint: APIEndpoint, for pubkey: String, id: String?) -> String {
-//        switch endpoint {
-//        case userAccounts:
-//            if let id = id {
-//                return "\(APIEndpoint.users.rawValue)/\(pubkey)/accounts/\(id)"
-//            } else {
-//                return "\(APIEndpoint.users.rawValue)/\(pubkey)/accounts"
-//            }
-//        }
-//    }
-//
-//    static func usersAccounts(for pubkey: String, id: String?) -> String {
-//        if let id = id {
-//            return "\(APIEndpoint.users.rawValue)/\(pubkey)/accounts/\(id)"
-//        } else {
-//            return "\(APIEndpoint.users.rawValue)/\(pubkey)/accounts"
-//        }
-//    }
-//
-//    static func sessionsAccounts(for pubkey: String, id: String?) -> String {
-//        if let id = id {
-//            return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/accounts/\(id)"
-//        } else {
-//            return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/accounts"
-//        }
-//    }
-//
-//    static func pairing(for pubkey: String) -> String {
-//        return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/pairing"
-//    }
-//
-//    static func volatile(for pubkey: String) -> String {
-//        return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/volatile"
-//    }
-//
-//    static func appToBrowser(for pubkey: String) -> String {
-//        return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/app-to-browser"
-//    }
-//
-//    static func browserToApp(for pubkey: String) -> String {
-//        return "\(APIEndpoint.sessions.rawValue)/\(pubkey)/browser-to-app"
-//    }
-//
-//}
 
 enum APIMethod: String {
     case get = "GET"

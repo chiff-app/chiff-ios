@@ -42,7 +42,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 return
             }
             switch category {
-            case "DELETE_TEAM_SESSION":
+            case NotificationCategory.DELETE_TEAM_SESSION:
                 session.delete(notify: false) { result in
                     switch result {
                     case .success(_):
@@ -51,8 +51,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
                     }
                 }
-            case "UPDATE_TEAM_SESSION":
-                session.updateSharedAccounts { result in
+            case NotificationCategory.UPDATE_TEAM_SESSION:
+                session.updateSharedAccounts(pushed: true) { result in
                     switch result {
                     case .success(_): completionHandler(UIBackgroundFetchResult.newData)
                     case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
@@ -95,17 +95,23 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Only one calling function actually uses the returned presentation options.
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
-        if notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION {
+        switch notification.request.content.categoryIdentifier {
+        case NotificationCategory.KEYN_NOTIFICATION:
             return [.alert]
-        }
-        if notification.request.content.categoryIdentifier == NotificationCategory.ONBOARDING_NUDGE {
+        case NotificationCategory.ONBOARDING_NUDGE:
             DispatchQueue.main.async {
                 if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
                     vc.selectedIndex = 1
                 }
             }
             return [.alert]
+        case NotificationCategory.UPDATE_TEAM_SESSION,
+             NotificationCategory.DELETE_TEAM_SESSION:
+            return []
+        default:
+            print("nada")
         }
+
 
         var content: UNNotificationContent = notification.request.content
         if !content.isProcessed() {
