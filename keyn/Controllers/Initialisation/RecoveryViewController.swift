@@ -135,21 +135,21 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                     throw RecoveryError.unauthenticated
                 }
                 Seed.recover(context: context, mnemonic: self.mnemonic) { result in
+                    DispatchQueue.main.async {
                     switch result {
-                    case .failure(_):
-                        DispatchQueue.main.async {
+                        case .failure(_):
                             self.showError(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
-                        }
-                    case .success(let (total, failed)):
-                        if failed > 0 {
-                            let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                        case .success(let (total, failed)):
+                            if failed > 0 {
+                                let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                    self.onSeedRecorySuccess()
+                                }))
+                                self.present(alert, animated: true)
+                            } else {
                                 self.onSeedRecorySuccess()
-                            }))
-                            self.present(alert, animated: true)
-                        } else {
-                            self.onSeedRecorySuccess()
+                            }
                         }
                     }
                 }
