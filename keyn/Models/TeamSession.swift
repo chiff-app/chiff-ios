@@ -27,6 +27,9 @@ class TeamSession: Session {
     var logo: UIImage? {
         return UIImage(named: "logo_purple") // TODO: get logo from somewhere? Team db?
     }
+    var sessionImage: UIImage? {
+        return UIImage(named: "keyn_laptop")
+    }
 
     static let CRYPTO_CONTEXT = "keynteam"
     static var signingService: KeychainService = .signingTeamSessionKey

@@ -38,6 +38,7 @@ protocol Session: Codable {
     var title: String { get }
     var logo: UIImage? { get }
     var version: Int { get }
+    var sessionImage: UIImage? { get }
 
     func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void)
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws

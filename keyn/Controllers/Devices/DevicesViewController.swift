@@ -113,6 +113,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination.contents as? PairContainerViewController {
             destination.pairControllerDelegate = self
+        } else if let destination = segue.destination.contents as? SessionDetailViewController {
+            guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { fatalError() }
+            destination.session = sessions[indexPath.row]
         }
     }
 

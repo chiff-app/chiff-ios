@@ -87,7 +87,7 @@ DEPENDENCIES:
   - TrustKit
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Amplitude-iOS
     - Base32
     - Crashlytics
@@ -107,9 +107,8 @@ SPEC REPOS:
     - nanopb
     - OneTimePassword
     - Sodium
-    - TrustKit
-  trunk:
     - SwiftLint
+    - TrustKit
 
 SPEC CHECKSUMS:
   Amplitude-iOS: 6e2a21000b89aaa428a45cd22e56caed5e2360bf
@@ -136,4 +135,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4e2c673fbf4a1db270ad76fbb778640879a17c37
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.8.4
