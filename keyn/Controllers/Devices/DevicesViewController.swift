@@ -87,7 +87,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sessions.count
     }
@@ -134,6 +133,26 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func openSettings(_ sender: UIButton) {
         if let url = URL.init(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+
+    @IBAction func unwindToDevicesOverview(sender: UIStoryboardSegue) {
+        if sender.identifier == "DeleteSession", let sourceViewController = sender.source as? SessionDetailViewController, let session = sourceViewController.session {
+            session.delete(notify: true) { result in
+                DispatchQueue.main.async {
+                    if case .failure(let error) = result {
+                        Logger.shared.error("Could not delete session.", error: error)
+                        self.showError(message: "errors.session_delete".localized)
+                    } else if let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.sessions.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if self.sessions.isEmpty {
+                            self.updateUi()
+                        }
+                    }
+                }
+            }
         }
     }
 

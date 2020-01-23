@@ -507,12 +507,27 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Laatste activiteit:</string>
+		</dict>
+		<key>created</key>
+		<dict>
+			<key>value</key>
+			<string>Aangemaakt:</string>
+		</dict>
 		<key>devices</key>
 		<dict>
 			<key>comment</key>
 			<string>Section title for devices</string>
 			<key>value</key>
 			<string>Apparaten</string>
+		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>Beïndig sessie</string>
 		</dict>
 		<key>footer</key>
 		<dict>
@@ -578,10 +593,45 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Koppel nu</string>
 		</dict>
+		<key>session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can always pair again with your device by scanning the QR-code.</string>
+		</dict>
+		<key>session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Sessie details</string>
+		</dict>
+		<key>session_name</key>
+		<dict>
+			<key>value</key>
+			<string>Naam</string>
+		</dict>
+		<key>session_name_example</key>
+		<dict>
+			<key>value</key>
+			<string>Voorbeeld @ werk</string>
+		</dict>
 		<key>start_pairing</key>
 		<dict>
 			<key>value</key>
 			<string>Je bent nog niet gekoppeld met je computer.</string>
+		</dict>
+		<key>team_auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Team accounts:</string>
+		</dict>
+		<key>team_session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You will lose access to all shared accounts by ending the team session.</string>
+		</dict>
+		<key>team_session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Team details</string>
 		</dict>
 	</dict>
 	<key>errors</key>

@@ -289,6 +289,26 @@ devices:
     value: Koppelen met je computer
   'on':
     value: op
+  session_name:
+    value: Naam
+  end_session:
+    value: Beïndig sessie
+  created:
+    value: 'Aangemaakt:'
+  auxiliary_title:
+    value: 'Laatste activiteit:'
+  team_auxiliary_title:
+    value: 'Team accounts:'
+  session_detail_header:
+    value: Sessie details
+  team_session_detail_header:
+    value: Team details
+  session_detail_footer:
+    value: You can always pair again with your device by scanning the QR-code.
+  team_session_detail_footer:
+    value: You will lose access to all shared accounts by ending the team session.
+  session_name_example:
+    value: Voorbeeld @ werk
   
 settings:
   settings:
