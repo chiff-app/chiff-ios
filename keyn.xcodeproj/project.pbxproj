@@ -16,7 +16,6 @@
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
 		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
-		421F368523D999CA008D971C /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421F368423D999CA008D971C /* TextFieldTableViewCell.swift */; };
 		4240A4072325EAB4002EBD4E /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4062325EAB4002EBD4E /* SeedTests.swift */; };
 		4240A4092325EAC2002EBD4E /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4082325EAC2002EBD4E /* AccountTests.swift */; };
 		42481A4823293ADE00EA3C3C /* PPDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42481A4723293ADD00EA3C3C /* PPDTests.swift */; };
@@ -28,7 +27,6 @@
 		42497C14231EF4B000ECBDB4 /* APIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42497C11231EE60900ECBDB4 /* APIProtocol.swift */; };
 		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
 		4275BC2323D898090060506D /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275BC2223D898090060506D /* SessionDetailViewController.swift */; };
-		4275BC2523D89DE70060506D /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275BC2423D89DE70060506D /* SessionDetailView.swift */; };
 		428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D22321ACBA00DC70DF /* KeychainTests.swift */; };
 		42F203A42327E52A00F7B62E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F203A32327E52A00F7B62E /* SessionTests.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
@@ -294,7 +292,6 @@
 		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
 		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
 		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
-		421F368423D999CA008D971C /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		4240A4062325EAB4002EBD4E /* SeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
 		4240A4082325EAC2002EBD4E /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		42481A4723293ADD00EA3C3C /* PPDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPDTests.swift; sourceTree = "<group>"; };
@@ -304,7 +301,6 @@
 		42497C11231EE60900ECBDB4 /* APIProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIProtocol.swift; sourceTree = "<group>"; };
 		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		4275BC2223D898090060506D /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
-		4275BC2423D89DE70060506D /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 		428178D22321ACBA00DC70DF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		42F203A32327E52A00F7B62E /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
@@ -671,8 +667,6 @@
 				497C85DC2315737100DC4F91 /* LaunchScreen.storyboard */,
 				497C85DB2315737100DC4F91 /* Main.storyboard */,
 				497C85DD2315737100DC4F91 /* Request.storyboard */,
-				4275BC2423D89DE70060506D /* SessionDetailView.swift */,
-				421F368423D999CA008D971C /* TextFieldTableViewCell.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1460,7 +1454,6 @@
 				49E75CA720FF32B300BC0D65 /* QuestionViewController.swift in Sources */,
 				6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */,
 				4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */,
-				4275BC2523D89DE70060506D /* SessionDetailView.swift in Sources */,
 				4986D7832272E42800917B05 /* AddAccountHelpViewController.swift in Sources */,
 				61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */,
 				49774C122266035C0094D3ED /* SiteTableViewController.swift in Sources */,
@@ -1499,7 +1492,6 @@
 				49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */,
 				49F2A0F722142F0400429875 /* FormTextField.swift in Sources */,
 				495E5B5A1FAC9887002E6AC6 /* AccountViewController.swift in Sources */,
-				421F368523D999CA008D971C /* TextFieldTableViewCell.swift in Sources */,
 				49E5FA0D2302C482009C964E /* Session.swift in Sources */,
 				497828862285712C00D30C42 /* NotificationManager.swift in Sources */,
 				495E5B581FAC8F49002E6AC6 /* RootViewController.swift in Sources */,

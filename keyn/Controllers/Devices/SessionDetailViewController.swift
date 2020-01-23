@@ -8,95 +8,80 @@
 
 import UIKit
 
-let buttonCell = "ButtonCell"
-
-class SessionDetailViewController: UIViewController {
-    var session: Session?
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var tableView: UITableView!
+class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
+    var session: Session! {
+        didSet {
+            sessionDetailHeader = session is TeamSession ? "devices.team_session_detail_header".localized : "devices.session_detail_header".localized
+            sessionDetailFooter = session is TeamSession ? "devices.team_session_detail_footer".localized : "devices.session_detail_footer".localized
+        }
+    }
+    var sessionDetailHeader = "devices.session_detail_header".localized
+    var sessionDetailFooter = "devices.session_detail_footer".localized
+    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var createdValueLabel: UILabel!
     @IBOutlet weak var auxiliaryLabel: UILabel!
     @IBOutlet weak var auxiliaryValueLabel: UILabel!
+    @IBOutlet weak var sessionNameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareSubview()
-    }
-
-    func prepareSubview() {
-        tableView.isScrollEnabled = false
+        tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
+        tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
-        tableView.allowsSelection = false
-        if let session = session {
-            imageView.image = session.sessionImage
-        }
-//
-//        sessionDetailView.tableView.dataSource = self
-//        sessionDetailView.tableView.delegate = self
-//        sessionDetailView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: buttonCell)
-//        sessionDetailView.tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
-    }
-}
-
-extension SessionDetailViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: UITableViewCell
-        if (indexPath.section == 1) {
-            cell = tableView.dequeueReusableCell(withIdentifier: buttonCell, for: indexPath)
-            cell.textLabel?.text = "Prueba"
-            cell.textLabel?.textAlignment = .center
-            cell.textLabel?.textColor = UIColor.red
+        sessionNameTextField.delegate = self
+        sessionNameTextField.text = session.title
+        createdLabel.text = "devices.created".localized
+        createdValueLabel.text = session.creationDate.timeAgoSinceNow()
+        if let session = session as? TeamSession {
+            auxiliaryLabel.text = "devices.team_auxiliary_title".localized
+            auxiliaryValueLabel.text = "42"
         } else {
-            guard let textFieldCell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath) as? TextFieldTableViewCell else { fatalError() }
-            textFieldCell.label.text = "Name"
-            textFieldCell.textField.placeholder = "Name"
-            cell = textFieldCell
+            auxiliaryLabel.text = "devices.auxiliary_title".localized
+            auxiliaryValueLabel.text = "laatst nog"
         }
-        return cell
     }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "settings.privacy".localized : nil
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 1 ? "settings.reset_warning".localized : nil
-    }
-}
 
-extension SessionDetailViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? sessionDetailHeader : nil
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return section == 1 ? sessionDetailFooter : nil
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard section == 0 else {
-            return
+             return
         }
-
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        header.textLabel?.text = "settings.privacy".localized
+        header.textLabel?.text = sessionDetailHeader
     }
-    
-    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         guard section == 1 else {
             return
         }
-
         let footer = view as! UITableViewHeaderFooterView
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = "settings.reset_warning".localized
+        footer.textLabel?.text = sessionDetailFooter
     }
+
+    @IBAction func deleteDevice(_ sender: UIButton) {
+        let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            self.performSegue(withIdentifier: "DeleteSession", sender: self)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+
 }
