@@ -33,21 +33,23 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0: return "settings.premium".localized
-        case 1: return "settings.settings".localized
-        default: fatalError("Too many sections")
-        }
+        return "settings.settings".localized
+//        switch section {
+//        case 0: return "settings.premium".localized
+//        case 0: return "settings.settings".localized
+//        default: fatalError("Too many sections")
+//        }
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if Properties.environment == .beta {
-            return section == 1 ? securityFooterText : "settings.premium_beta".localized
-        } else if TeamSession.count > 0 {
-            return section == 1 ? securityFooterText : "settings.premium_teams".localized
-        } else {
-            return section == 1 ? securityFooterText : nil
-        }
+        return securityFooterText
+//        if Properties.environment == .beta {
+//            return section == 1 ? securityFooterText : "settings.premium_beta".localized
+//        } else if TeamSession.count > 0 {
+//            return section == 1 ? securityFooterText : "settings.premium_teams".localized
+//        } else {
+//            return section == 1 ? securityFooterText : nil
+//        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -56,11 +58,12 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
         header.textLabel?.frame = header.frame
-        switch section {
-            case 0: header.textLabel?.text = "settings.premium".localized
-            case 1: header.textLabel?.text = "settings.settings".localized
-            default: fatalError("Too many sections")
-        }
+        header.textLabel?.text = "settings.settings".localized
+//        switch section {
+//            case 0: header.textLabel?.text = "settings.premium".localized
+//            case 1: header.textLabel?.text = "settings.settings".localized
+//            default: fatalError("Too many sections")
+//        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -69,23 +72,25 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        if section == 0 {
-            if Properties.environment == .beta {
-                footer.textLabel?.text = "settings.premium_beta".localized
-            } else if TeamSession.count > 0 {
-                footer.textLabel?.text = "settings.premium_teams".localized
-            }
-        } else {
-            footer.textLabel?.text = securityFooterText
-            footer.textLabel?.numberOfLines = 3
-        }
+        footer.textLabel?.text = securityFooterText
+        footer.textLabel?.numberOfLines = 3
+//        if section == 0 {
+//            if Properties.environment == .beta {
+//                footer.textLabel?.text = "settings.premium_beta".localized
+//            } else if TeamSession.count > 0 {
+//                footer.textLabel?.text = "settings.premium_teams".localized
+//            }
+//        } else {
+//            footer.textLabel?.text = securityFooterText
+//            footer.textLabel?.numberOfLines = 3
+//        }
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 && indexPath.row == 0 && Properties.environment == .beta, let cell = cell as? AccessoryTableViewCell {
-            cell.enabled = false
-        }
-    }
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.section == 0 && indexPath.row == 0 && Properties.environment == .beta, let cell = cell as? AccessoryTableViewCell {
+//            cell.enabled = false
+//        }
+//    }
 
     private func updateSubscriptionStatus(notification: Notification) {
         DispatchQueue.main.async {

@@ -24,10 +24,10 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         let _ = Logger.shared
         let _ = AuthenticationGuard.shared
 
-        StoreObserver.shared.enable()
-        if StoreObserver.shared.isAuthorizedForPayments {
-            StoreManager.shared.startProductRequest()
-        }
+//        StoreObserver.shared.enable()
+//        if StoreObserver.shared.isAuthorizedForPayments {
+//            StoreManager.shared.startProductRequest()
+//        }
         Questionnaire.fetch()
         UIFixes()
 
@@ -97,16 +97,16 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 }
             }
         }
-        if BackupManager.hasKeys {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                StoreObserver.shared.updateSubscriptions { (result) in
-                    if case let .failure(error) = result {
-                        Logger.shared.error("Error updating subsription status", error: error)
-                    }
-                }
-            }
-
-        }
+//        if BackupManager.hasKeys {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+//                StoreObserver.shared.updateSubscriptions { (result) in
+//                    if case let .failure(error) = result {
+//                        Logger.shared.error("Error updating subsription status", error: error)
+//                    }
+//                }
+//            }
+//
+//        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
