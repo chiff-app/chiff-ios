@@ -25,6 +25,9 @@ class BrowserSession: Session {
     var logo: UIImage? {
         return UIImage(named: browser.lowercased())
     }
+    var sessionImage: UIImage? {
+        return UIImage(named: browser.lowercased() + "_laptop")
+    }
     static var signingService: KeychainService = .signingSessionKey
     static var encryptionService: KeychainService = .sharedSessionKey
     static var sessionCountFlag = "sessionCount"
