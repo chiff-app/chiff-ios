@@ -4171,7 +4171,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                             <rect key="frame" x="1.5" y="-1" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chrome" translatesAutoresizingMaskIntoConstraints="NO" id="tzs-8H-mIy">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="tzs-8H-mIy">
                                             <rect key="frame" x="48" y="23" width="32" height="32"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="tzs-8H-mIy" secondAttribute="height" multiplier="1:1" id="kIS-oC-G9j"/>
@@ -4362,7 +4362,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="book_pen" width="97" height="100"/>
         <image name="chevron.left" catalog="system" width="48" height="64"/>
         <image name="chevron_right" width="7" height="11"/>
-        <image name="chrome" width="36" height="36"/>
         <image name="close_button" width="39" height="39"/>
         <image name="desktop_form" width="105" height="67"/>
         <image name="desktop_login" width="105" height="67"/>
@@ -4375,6 +4374,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="laptop_blank" width="124" height="118"/>
         <image name="lock_small" width="10" height="13"/>
         <image name="logo" width="291" height="323"/>
+        <image name="logo_purple" width="52" height="58"/>
         <image name="pen_checkmark" width="110" height="90"/>
         <image name="phone_checkmark" width="71" height="86"/>
         <image name="phone_fingerprint" width="72" height="86"/>

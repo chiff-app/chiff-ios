@@ -21,7 +21,7 @@ class TeamSession: Session {
     var version: Int
     var title: String
     var logo: UIImage? {
-        return UIImage(named: "logo_purple") // TODO: get logo from somewhere? Team db?
+        return UIImage(contentsOfFile: "team_logo_\(id).png")
     }
     var accountCount: Int {
         return Properties.getTeamAccountCount(teamId: id)
@@ -120,9 +120,9 @@ class TeamSession: Session {
                     if self.isAdmin != isAdmin {
                         self.isAdmin = isAdmin
                         try self.update()
-                        NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self])
+                        changed = true
                     }
-                    var currentAccounts = try TeamAccount.all(context: nil, label: self.id)
+                    var currentAccounts = try TeamAccount.all(context: nil, label: self.signingPubKey)
                     for (id, data) in accounts {
                         currentAccounts.removeValue(forKey: id)
                         let ciphertext = try Crypto.shared.convertFromBase64(from: data)
@@ -139,10 +139,11 @@ class TeamSession: Session {
                         try account.delete()
                         changed = true
                     }
+                    Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
                     if changed {
                         NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+                        NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
                     }
-                    Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
                     completion(.success(()))
                 } catch APIError.statusCode(404) {
                     guard self.created else {

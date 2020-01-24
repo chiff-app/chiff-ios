@@ -82,6 +82,7 @@ extension Session {
             }
         } catch {
             Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
+            completion(.failure(error))
         }
     }
 
