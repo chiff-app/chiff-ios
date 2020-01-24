@@ -17,7 +17,7 @@ class OTPViewController: QRViewController, TokenController {
     
     @IBOutlet weak var instructionLabel: UILabel!
 
-    var account: Account!
+    var account: UserAccount!
     var token: Token?
 
     override func viewDidLoad() {

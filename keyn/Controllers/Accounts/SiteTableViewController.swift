@@ -9,14 +9,14 @@
 import UIKit
 
 protocol SitesDelegate {
-    func updateAccount(account: Account)
+    func updateAccount(account: UserAccount)
 }
 
 class SiteTableViewController: UITableViewController, UITextFieldDelegate {
 
     var editButton: UIBarButtonItem!
     var editingMode: Bool = false
-    var account: Account!
+    var account: UserAccount!
     var tap: UITapGestureRecognizer!
     var delegate: SitesDelegate!
 

@@ -87,7 +87,11 @@ class AuthenticationGuard {
         do {
             switch result {
             case .success(let context):
-                let accounts = try Account.all(context: context, sync: true)
+                let accounts = try UserAccount.allCombined(context: context, sync: true)
+                if #available(iOS 12.0, *), Properties.reloadAccounts {
+                    UserAccount.reloadIdentityStore()
+                    Properties.reloadAccounts = false
+                }
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()

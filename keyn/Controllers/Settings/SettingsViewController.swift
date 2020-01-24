@@ -24,6 +24,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
         setJailbreakText()
         NotificationCenter.default.addObserver(forName: .backupCompleted, object: nil, queue: OperationQueue.main, using: updateBackupFooter)
+        NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +43,8 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if Properties.environment == .beta {
             return section == 1 ? securityFooterText : "settings.premium_beta".localized
+        } else if TeamSession.count > 0 {
+            return section == 1 ? securityFooterText : "settings.premium_teams".localized
         } else {
             return section == 1 ? securityFooterText : nil
         }
@@ -61,17 +64,19 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == 1 || Properties.environment == .beta else {
-            return
-        }
         let footer = view as! UITableViewHeaderFooterView
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = (Properties.environment == .beta && section == 0) ? "settings.premium_beta".localized : securityFooterText
-        // TODO: Test if this fixes the textLabel size on some devices.
-        if section == 1 {
+        if section == 0 {
+            if Properties.environment == .beta {
+                footer.textLabel?.text = "settings.premium_beta".localized
+            } else if TeamSession.count > 0 {
+                footer.textLabel?.text = "settings.premium_teams".localized
+            }
+        } else {
+            footer.textLabel?.text = securityFooterText
             footer.textLabel?.numberOfLines = 3
         }
     }
@@ -82,12 +87,18 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         }
     }
 
+    private func updateSubscriptionStatus(notification: Notification) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
     // MARK: - Actions
 
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
         if sender.isOn {
-            NotificationManager.shared.subscribe(topic: Properties.notificationTopic) { result in
+            NotificationManager.shared.subscribe() { result in
                 DispatchQueue.main.async {
                     let subscribed = NotificationManager.shared.isSubscribed
                     Properties.infoNotifications = subscribed ? .yes : .no

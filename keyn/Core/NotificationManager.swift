@@ -25,10 +25,10 @@ struct NotificationManager {
             let token = deviceToken.hexEncodedString()
             if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
                 // Get endpoint from Keychain
-                try updateEndpoint(token: token, pubKey: BackupManager.shared.publicKey(), endpoint: Properties.endpoint)
+                try updateEndpoint(token: token, pubKey: BackupManager.publicKey(), endpoint: Properties.endpoint)
             } else {
                 // Create new endpoint if not found in storage
-                try updateEndpoint(token: token, pubKey: BackupManager.shared.publicKey(), endpoint: nil)
+                try updateEndpoint(token: token, pubKey: BackupManager.publicKey(), endpoint: nil)
             }
         } catch {
             Logger.shared.error("Error updating endpoint", error: error)
@@ -43,7 +43,7 @@ struct NotificationManager {
         if let endpoint = endpoint {
             message[MessageIdentifier.endpoint] = endpoint
         }
-        API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+        API.shared.signedRequest(method: .post, message: message, path: "devices/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
 
             do {
                 if let endpoint = try result.get()["arn"] as? String {
@@ -53,7 +53,7 @@ struct NotificationManager {
                         try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
                     }
                     if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-                        self.subscribe(topic: Properties.notificationTopic) { result in
+                        self.subscribe() { result in
                             switch result {
                             case .success(_): Properties.infoNotifications = .yes
                             case .failure(_): Properties.infoNotifications = .no
@@ -73,7 +73,7 @@ struct NotificationManager {
         }
         
         do {
-            API.shared.signedRequest(endpoint: .device, method: .delete, message: [MessageIdentifier.endpoint: endpoint], pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: [MessageIdentifier.endpoint: endpoint], path: "devices/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
                 if case let .failure(error) = result {
                     Logger.shared.error("Failed to delete ARN @ AWS.", error: error)
                 }
@@ -83,7 +83,7 @@ struct NotificationManager {
         }
     }
 
-    func subscribe(topic: String, completionHandler: ((Result<Void, Error>) -> Void)?) {
+    func subscribe(completionHandler: ((Result<Void, Error>) -> Void)?) {
         guard let endpoint = Properties.endpoint else {
             Logger.shared.warning("Tried to subscribe without endpoint present")
             #warning("TODO: Should be considered as an error")
@@ -91,11 +91,10 @@ struct NotificationManager {
             return
         }
         let message = [
-            "endpoint": endpoint,
-            "topic": topic
+            "endpoint": endpoint
         ]
         do {
-            API.shared.signedRequest(endpoint: .device, method: .post, message: message, pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .post, message: message, path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
                 do {
                     if let subscriptionArn = try result.get()["arn"] as? String {
                         let id = KeyIdentifier.subscription.identifier(for: .aws)
@@ -127,7 +126,7 @@ struct NotificationManager {
             guard let subscription = String(data: try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), encoding: .utf8) else {
                 throw CodingError.stringDecoding
             }
-            API.shared.signedRequest(endpoint: .device, method: .delete, message: ["arn": subscription], pubKey: APIEndpoint.notificationSubscription(for: try BackupManager.shared.publicKey()), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
                 do {
                     let _ = try result.get()
                     try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)

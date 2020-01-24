@@ -507,6 +507,16 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Last activity:</string>
+		</dict>
+		<key>created</key>
+		<dict>
+			<key>value</key>
+			<string>Created:</string>
+		</dict>
 		<key>devices</key>
 		<dict>
 			<key>comment</key>
@@ -514,10 +524,20 @@
 			<key>value</key>
 			<string>devices</string>
 		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>End session</string>
+		</dict>
 		<key>footer</key>
 		<dict>
 			<key>value</key>
 			<string>You can pair with as many devices as you want.</string>
+		</dict>
+		<key>never</key>
+		<dict>
+			<key>value</key>
+			<string>nooit</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -578,10 +598,50 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Set up computer</string>
 		</dict>
+		<key>session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can always pair again with your device by scanning the QR-code.</string>
+		</dict>
+		<key>session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Session details</string>
+		</dict>
+		<key>session_name</key>
+		<dict>
+			<key>value</key>
+			<string>Name</string>
+		</dict>
+		<key>session_name_example</key>
+		<dict>
+			<key>value</key>
+			<string>Example @ work</string>
+		</dict>
 		<key>start_pairing</key>
 		<dict>
 			<key>value</key>
 			<string>You haven't set up Keyn on your computer yet.</string>
+		</dict>
+		<key>team_auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Team accounts:</string>
+		</dict>
+		<key>team_session_admin_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You are the admin of this team 🎉.\nIf you don't want this burden, you can end the session in the admin panel.</string>
+		</dict>
+		<key>team_session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You will lose access to all shared accounts by ending the team session.</string>
+		</dict>
+		<key>team_session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Team details</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -746,6 +806,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>Error restoring backup</string>
+		</dict>
+		<key>session_delete</key>
+		<dict>
+			<key>value</key>
+			<string>Error deleting account</string>
 		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
@@ -1042,7 +1107,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>accounts_from</key>
 		<dict>
 			<key>value</key>
-			<string>%@ accounts from %@ on %@</string>
+			<string>%@ accounts from %@.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -1068,13 +1133,6 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Fill password</string>
-		</dict>
-		<key>in_on</key>
-		<dict>
-			<key>description</key>
-			<string>GitHub in Firefox on MacOS</string>
-			<key>value</key>
-			<string>%@ in %@ on %@.</string>
 		</dict>
 		<key>login</key>
 		<dict>
@@ -1125,6 +1183,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<integer>18</integer>
 			<key>value</key>
 			<string>Let's set up your computer!</string>
+		</dict>
+		<key>team_admin_login</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams login</string>
 		</dict>
 		<key>this_on_that</key>
 		<dict>
@@ -1455,6 +1518,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Fill password successful</string>
 		</dict>
+		<key>keyn_for_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams</string>
+		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>
 			<key>value</key>
@@ -1771,6 +1839,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Keyn Premium is already enabled if you're participating in the beta program</string>
+		</dict>
+		<key>premium_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is already enabled because you have an active Keyn for Teams session.</string>
 		</dict>
 		<key>privacy</key>
 		<dict>
