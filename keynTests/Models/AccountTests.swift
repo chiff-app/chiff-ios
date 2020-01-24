@@ -234,8 +234,8 @@ class AccountTests: XCTestCase {
     }
     
     func testAccountList() {
-        XCTAssertNoThrow(try UserAccount.accountList())
-        XCTAssertTrue(try UserAccount.accountList().isEmpty)
+        XCTAssertNoThrow(try UserAccount.combinedSessionAccounts())
+        XCTAssertTrue(try UserAccount.combinedSessionAccounts().isEmpty)
     }
 
     func testDeleteAll() {
