@@ -1,0 +1,1 @@
+"use strict";function setPrivacyEmailAddress(){var e=["cy","pri",64,"n.app","key","va"],r=e[1]+e[5]+e[0]+String.fromCharCode(e[2])+e[4]+e[3];document.querySelector("#privacy-policy a").textContent=r,document.querySelector("#privacy-policy a").href="mailto:"+r}$(function(){setPrivacyEmailAddress()});

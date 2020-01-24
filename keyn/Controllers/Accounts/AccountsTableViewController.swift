@@ -24,10 +24,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let accountDict = try? Account.all(context: nil) {
+        if let accountDict = try? UserAccount.all(context: nil) {
             unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         } else {
-            unfilteredAccounts = [Account]()
+            unfilteredAccounts = [UserAccount]()
         }
         filteredAccounts = unfilteredAccounts
         updateUi()
@@ -44,6 +44,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.definesPresentationContext = true
 //        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
+        NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
@@ -66,7 +67,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func loadAccounts(notification: Notification) {
         DispatchQueue.main.async {
-            if let accounts = try? notification.userInfo as? [String: Account] ?? Account.all(context: nil) {
+            if let accounts = try? notification.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.filteredAccounts = self.unfilteredAccounts
                 self.tableView.reloadData()
@@ -185,7 +186,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func updateAccount(notification: Notification) {
-        guard let account = notification.userInfo?["account"] as? Account else {
+        guard let account = notification.userInfo?["account"] as? UserAccount else {
             return
         }
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
@@ -199,7 +200,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
 
-    func addAccount(account: Account) {
+    func addAccount(account: UserAccount) {
         unfilteredAccounts.append(account)
         filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {

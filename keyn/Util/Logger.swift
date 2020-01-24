@@ -26,7 +26,7 @@ struct Logger {
         amplitude.disableLocationListening()
         amplitude.set(userProperties: [
             .accountCount: Properties.accountCount,
-            .pairingCount: Properties.sessionCount,
+            .pairingCount: BrowserSession.count,
             .subscribed: Properties.hasValidSubscription,
             .infoNotifications: Properties.infoNotifications,
             .backupCompleted: Seed.paperBackupCompleted

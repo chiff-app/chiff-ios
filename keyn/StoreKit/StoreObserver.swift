@@ -80,7 +80,7 @@ class StoreObserver: NSObject {
     /// This retrieves current subscription status for this seed from the Keyn server
     func updateSubscriptions(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .subscription, method: .get, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
                 switch result {
                 case .success(let jsonObject):
                     if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
@@ -198,7 +198,7 @@ class StoreObserver: NSObject {
                     "data": receiptData.base64EncodedString()
                 ]
                 let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-                API.shared.signedRequest(endpoint: .iosSubscription, method: .post, message: nil, pubKey: try BackupManager.shared.publicKey(), privKey: try BackupManager.shared.privateKey(), body: jsonData) { result in
+                API.shared.signedRequest(method: .post, message: nil, path: "subscriptions/ios/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: jsonData) { result in
                     switch result {
                     case .success(let jsonObject):
                         guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {

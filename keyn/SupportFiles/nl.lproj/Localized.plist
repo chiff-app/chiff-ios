@@ -507,6 +507,16 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Laatste activiteit:</string>
+		</dict>
+		<key>created</key>
+		<dict>
+			<key>value</key>
+			<string>Aangemaakt:</string>
+		</dict>
 		<key>devices</key>
 		<dict>
 			<key>comment</key>
@@ -514,10 +524,20 @@
 			<key>value</key>
 			<string>Apparaten</string>
 		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>Beïndig sessie</string>
+		</dict>
 		<key>footer</key>
 		<dict>
 			<key>value</key>
 			<string>Je kunt met zoveel apparaten koppelen als je wilt.</string>
+		</dict>
+		<key>never</key>
+		<dict>
+			<key>value</key>
+			<string>never</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -578,10 +598,51 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Koppel nu</string>
 		</dict>
+		<key>session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.</string>
+		</dict>
+		<key>session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Sessie details</string>
+		</dict>
+		<key>session_name</key>
+		<dict>
+			<key>value</key>
+			<string>Naam</string>
+		</dict>
+		<key>session_name_example</key>
+		<dict>
+			<key>value</key>
+			<string>Voorbeeld @ werk</string>
+		</dict>
 		<key>start_pairing</key>
 		<dict>
 			<key>value</key>
 			<string>Je bent nog niet gekoppeld met je computer.</string>
+		</dict>
+		<key>team_auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Team accounts:</string>
+		</dict>
+		<key>team_session_admin_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent admin van dit team 🎉.
+Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel.</string>
+		</dict>
+		<key>team_session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je raakt toegang tot al je team-accounts kwijt als je deze sessie beëindigt.</string>
+		</dict>
+		<key>team_session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Team details</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -746,6 +807,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<dict>
 			<key>value</key>
 			<string>Fout bij herstellen backup</string>
+		</dict>
+		<key>session_delete</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij verwijderen van de sessie</string>
 		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
@@ -1042,7 +1108,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>accounts_from</key>
 		<dict>
 			<key>value</key>
-			<string>%@ accounts van %@ op %@</string>
+			<string>%@ accounts van %@.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -1068,13 +1134,6 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Wachtwoord invullen</string>
-		</dict>
-		<key>in_on</key>
-		<dict>
-			<key>description</key>
-			<string>GitHub in Firefox op MacOS</string>
-			<key>value</key>
-			<string>%@ in %@ op %@.</string>
 		</dict>
 		<key>login</key>
 		<dict>
@@ -1122,8 +1181,15 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Koppelen</string>
 		</dict>
+		<key>team_admin_login</key>
+		<dict>
+			<key>value</key>
+			<string>Inloggen Keyn voor teams</string>
+		</dict>
 		<key>this_on_that</key>
 		<dict>
+			<key>description</key>
+			<string>GitHub in Firefox op MacOS</string>
 			<key>value</key>
 			<string>%@ op %@.</string>
 		</dict>
@@ -1451,6 +1517,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Wachtwoord invullen gelukt</string>
 		</dict>
+		<key>keyn_for_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn voor teams</string>
+		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>
 			<key>value</key>
@@ -1767,6 +1838,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma</string>
+		</dict>
+		<key>premium_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is automatisch ingeschakeld omdate je een actieve Keyn voor Teams sessie hebt.</string>
 		</dict>
 		<key>privacy</key>
 		<dict>

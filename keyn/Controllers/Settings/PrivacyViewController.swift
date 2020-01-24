@@ -98,7 +98,7 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.delete_data".localized, message: "settings.delete_data_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            BackupManager.shared.deleteAllAccounts() { result in
+            BackupManager.deleteAllAccounts() { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_): self.deleteLocalData()
@@ -125,12 +125,12 @@ class PrivacyViewController: UITableViewController {
     // MARK: - Private functions
 
     private func deleteLocalData() {
-        Session.deleteAll()
-        Account.deleteAll()
+        BrowserSession.deleteAll()
+        UserAccount.deleteAll()
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         NotificationManager.shared.deleteKeys()
-        BackupManager.shared.deleteKeys()
+        BackupManager.deleteKeys()
         Properties.purgePreferences()
     }
 

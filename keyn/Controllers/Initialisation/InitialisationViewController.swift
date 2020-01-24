@@ -31,7 +31,7 @@ class InitialisationViewController: UIViewController {
 
     private func setupKeyn() {
         loadingView.isHidden = false
-        guard !Seed.hasKeys && !BackupManager.shared.hasKeys else {
+        guard !Seed.hasKeys && !BackupManager.hasKeys else {
             self.performSegue(withIdentifier: "ShowPushView", sender: self)
             return
         }
