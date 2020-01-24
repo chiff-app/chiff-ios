@@ -103,7 +103,8 @@ struct Properties {
         set { UserDefaults.standard.set(newValue, forKey: subscriptionProductFlag) }
     }
     static var hasValidSubscription: Bool {
-        return environment == .beta || TeamSession.count > 0 || subscriptionExiryDate > Date.now
+        return true
+//        return environment == .beta || TeamSession.count > 0 || subscriptionExiryDate > Date.now
     }
     static var accountCount: Int {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }

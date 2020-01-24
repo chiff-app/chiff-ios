@@ -166,14 +166,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Private
 
     private func onSeedRecorySuccess() {
-        StoreObserver.shared.updateSubscriptions() { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("Error updating subscriptions", error: error)
-            }
-            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-            self.registerForPushNotifications()
-            Logger.shared.analytics(.backupRestored, override: true)
-        }
+//        StoreObserver.shared.updateSubscriptions() { result in
+//            if case let .failure(error) = result {
+//                Logger.shared.error("Error updating subscriptions", error: error)
+//            }
+//            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+//            self.registerForPushNotifications()
+//            Logger.shared.analytics(.backupRestored, override: true)
+//        }
+        Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+        self.registerForPushNotifications()
+        Logger.shared.analytics(.backupRestored, override: true)
     }
 
     private func showRootController() {
