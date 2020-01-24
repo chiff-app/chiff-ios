@@ -377,8 +377,12 @@ class AuthorizationGuard {
                 case .success(_):
                     authenticationCompletionHandler?(result)
                     if let type = parameters["t"], type == "1" {
-                        TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
+                        TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version, completionHandler: completionHandler)
                     } else {
+                        guard let browser = Browser(rawValue: browser.lowercased()) else {
+                            completionHandler(.failure(SessionError.unknownType))
+                            return
+                        }
                         BrowserSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version, completionHandler: completionHandler)
                     }
                     

@@ -28,7 +28,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if StoreObserver.shared.isAuthorizedForPayments {
             StoreManager.shared.startProductRequest()
         }
-        Questionnaire.fetch()
+//        Questionnaire.fetch()
         UIFixes()
 
         launchInitialView()

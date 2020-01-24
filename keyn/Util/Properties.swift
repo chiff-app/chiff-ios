@@ -37,6 +37,7 @@ struct Properties {
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
     static private let subscriptionProductFlag = "subscriptionProduct"
     static private let accountCountFlag = "accountCount"
+    static private let teamAccountCountFlag = "accountCount"
     static private let agreedWithTermsFlag = "agreedWithTerms"
     static private let firstPairingCompletedFlag = "firstPairingCompleted"
     static private let reloadAccountsFlag = "reloadAccountsFlag"
@@ -108,6 +109,22 @@ struct Properties {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
         set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
     }
+    static func getTeamAccountCount(teamId: String) -> Int {
+        if let data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
+            return data[teamId] ?? 0
+        } else {
+            return 0
+        }
+    }
+    static func setTeamAccountCount(teamId: String, count: Int) {
+        if var data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
+            data[teamId] = count
+            UserDefaults.standard.set(data, forKey: teamAccountCountFlag)
+        } else {
+            UserDefaults.standard.set([teamId: count], forKey: teamAccountCountFlag)
+        }
+    }
+
     static var accountOverflow: Bool {
         return accountCount > accountCap
     }

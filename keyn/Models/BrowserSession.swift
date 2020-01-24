@@ -6,28 +6,30 @@ import UIKit
 import UserNotifications
 import LocalAuthentication
 
+enum Browser: String, Codable {
+    case firefox = "firefox"
+    case chrome = "chrome"
+    case edge = "edge"
+    case safari = "safari"
+}
+
 /*
  * There is a non-codable part of session that is only stored in the Keychain.
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 class BrowserSession: Session {
-
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
-    let browser: String
+    let browser: Browser
     let creationDate: Date
     let id: String
-    let os: String
     let signingPubKey: String
     let version: Int
-    var title: String {
-        return "\(browser) on \(os)" // TODO: Localize
-    }
+    var title: String
     var logo: UIImage? {
-        return UIImage(named: browser.lowercased())
+        return UIImage(named: browser.rawValue)
     }
-    var sessionImage: UIImage? {
-        return UIImage(named: browser.lowercased() + "_laptop")
-    }
+    var lastRequest: Date?
+
     static var signingService: KeychainService = .signingSessionKey
     static var encryptionService: KeychainService = .sharedSessionKey
     static var sessionCountFlag = "sessionCount"
@@ -37,28 +39,45 @@ class BrowserSession: Session {
         case browser
         case creationDate
         case id
-        case os
         case signingPubKey
         case version
+        case title
+        case lastRequest
+    }
+
+    enum LegacyCodingKey: CodingKey {
+        case os
     }
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
-        self.browser = try values.decode(String.self, forKey: .browser)
-        self.os = try values.decode(String.self, forKey: .os)
+        self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
         self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
+        let browser = try values.decode(Browser.self, forKey: .browser)
+        self.browser = browser
+        if let title = try values.decodeIfPresent(String.self, forKey: .title) {
+            self.title = title
+        } else {
+            let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
+            if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
+                self.title = "\(browser.rawValue) on \(os)"
+            } else {
+                self.title = browser.rawValue
+            }
+        }
     }
 
-    init(id: String, signingPubKey: Data, browser: String, os: String, version: Int) {
+    init(id: String, signingPubKey: Data, browser: Browser, title: String, version: Int) {
         self.creationDate = Date()
         self.id = id
         self.signingPubKey = signingPubKey.base64
         self.browser = browser
-        self.os = os
+        self.title = title
         self.version = version
     }
 
@@ -138,6 +157,7 @@ class BrowserSession: Session {
                 Logger.shared.error("Error sending credentials", error: error)
             }
         }
+        try updateLastRequest()
     }
 
     func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
@@ -152,6 +172,7 @@ class BrowserSession: Session {
                     completionHandler(nil)
                 }
             }
+            try updateLastRequest()
         } catch {
             completionHandler(error)
         }
@@ -252,7 +273,7 @@ class BrowserSession: Session {
     }
 
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: Browser, os: String, version: Int = 0, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -261,7 +282,7 @@ class BrowserSession: Session {
 
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
-            let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, os: os, version: version)
+            let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
             let group = DispatchGroup()
             var groupError: Error?
             group.enter()
@@ -379,28 +400,9 @@ class BrowserSession: Session {
         }
     }
 
-    //     private func save(key: Data, signingKeyPair: KeyPair) throws {
-    //     let sessionData = try PropertyListEncoder().encode(self)
-    //     try Keychain.shared.save(id: SessionIdentifier.sharedKey.identifier(for: id), service: .sharedSessionKey, secretData: key, objectData: sessionData)
-    //     try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey, secretData: signingKeyPair.privKey)
-    // }
-
-    // private func deleteQueuesAtAWS() {
-    //     do {
-    //         let message = [
-    //             "pubkey": signingPubKey
-    //         ]
-    //         API.shared.signedRequest(endpoint: .message, method: .delete, message: message, pubKey: nil, privKey: try signingPrivKey(), body: nil) { (result) in
-    //             if case let .failure(error) = result {
-    //                 Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-    //             }
-    //         }
-    //     } catch {
-    //         Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-    //     }
-    // }
-
-    // private func signingPrivKey() throws -> Data {
-    //     return try Keychain.shared.get(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: .signingSessionKey)
-    // }
+    private func updateLastRequest() throws {
+        lastRequest = Date()
+        try update()
+        NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self])
+    }
 }

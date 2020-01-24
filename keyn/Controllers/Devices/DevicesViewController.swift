@@ -20,6 +20,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let nc = NotificationCenter.default
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
+        nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
         nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (notification) in
             DispatchQueue.main.async {
                 self.updateUi()
@@ -137,13 +138,16 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func unwindToDevicesOverview(sender: UIStoryboardSegue) {
-        if sender.identifier == "DeleteSession", let sourceViewController = sender.source as? SessionDetailViewController, let session = sourceViewController.session {
+        guard let sourceViewController = sender.source as? SessionDetailViewController, var session = sourceViewController.session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
+            return
+        }
+        if sender.identifier == "DeleteSession" {
             session.delete(notify: true) { result in
                 DispatchQueue.main.async {
                     if case .failure(let error) = result {
                         Logger.shared.error("Could not delete session.", error: error)
                         self.showError(message: "errors.session_delete".localized)
-                    } else if let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
+                    } else {
                         let indexPath = IndexPath(row: index, section: 0)
                         self.sessions.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -153,6 +157,11 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                 }
             }
+        } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
+            session.title = title
+            try? session.update()
+            sessions[index] = session
+            tableView.reloadData()
         }
     }
 
@@ -167,6 +176,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Private functions
+
+    private func reloadData(notification: Notification) {
+        guard let session = notification.userInfo?["session"] as? Session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
+            return
+        }
+        sessions[index] = session
+        tableView.reloadData()
+    }
 
     private func updateUi() {
         guard !Properties.deniedPushNotifications else {

@@ -39,28 +39,28 @@ class NotificationProcessor {
         switch keynRequest.type {
         case .add, .addAndLogin:
             content.title = "notifications.add_account".localized
-            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
+            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .addBulk:
             content.title = "notifications.add_accounts".localized
-            content.body = String(format: "notifications.accounts_from".localized, keynRequest.count!, session.browser, session.os)
+            content.body = String(format: "notifications.accounts_from".localized, keynRequest.count!, session.title)
         case .end:
             content.title = "notifications.end_session".localized
-            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
+            content.body = session.title
         case .change:
             content.title = "notifications.change_password".localized
-            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
+            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .login, .addToExisting:
             content.title = "notifications.login".localized
-            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
+            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .fill:
             content.title = "notifications.fill_password".localized
-            content.body = String(format: "notifications.in_on".localized, siteName, session.browser, session.os)
+            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .pair:
             content.title = "notifications.pairing".localized
-            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
+            content.body = session.title
         case .adminLogin:
             content.title = "notifications.team_admin_login".localized
-            content.body = String(format: "notifications.this_on_that".localized, session.browser, session.os)
+            content.body = session.title
         default:
             content.body = "Unknown request"
         }

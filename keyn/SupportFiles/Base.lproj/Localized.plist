@@ -534,6 +534,11 @@
 			<key>value</key>
 			<string>You can pair with as many devices as you want.</string>
 		</dict>
+		<key>never</key>
+		<dict>
+			<key>value</key>
+			<string>nooit</string>
+		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
 			<key>value</key>
@@ -622,6 +627,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		<dict>
 			<key>value</key>
 			<string>Team accounts:</string>
+		</dict>
+		<key>team_session_admin_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You are the admin of this team 🎉.\nIf you don't want this burden, you can end the session in the admin panel.</string>
 		</dict>
 		<key>team_session_detail_footer</key>
 		<dict>
@@ -1097,7 +1107,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>accounts_from</key>
 		<dict>
 			<key>value</key>
-			<string>%@ accounts from %@ on %@</string>
+			<string>%@ accounts from %@.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -1123,13 +1133,6 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Fill password</string>
-		</dict>
-		<key>in_on</key>
-		<dict>
-			<key>description</key>
-			<string>GitHub in Firefox on MacOS</string>
-			<key>value</key>
-			<string>%@ in %@ on %@.</string>
 		</dict>
 		<key>login</key>
 		<dict>

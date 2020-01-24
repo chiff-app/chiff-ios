@@ -65,7 +65,6 @@ struct TeamAccount: Account {
                 case .success(_):
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
-                    Properties.accountCount -= 1
                     completionHandler(.success(()))
                 case .failure(let error): throw error
                 }
@@ -80,7 +79,6 @@ struct TeamAccount: Account {
         try Keychain.shared.delete(id: id, service: TeamAccount.keychainService)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
-        Properties.accountCount -= 1
     }
 
     func backup() throws {
@@ -93,7 +91,6 @@ struct TeamAccount: Account {
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
-        Properties.accountCount += 1
     }
 
     // MARK: - Static functions
