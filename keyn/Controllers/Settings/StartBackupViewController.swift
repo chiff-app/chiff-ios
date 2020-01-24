@@ -11,12 +11,6 @@ class StartBackupViewController: UIViewController {
     override func viewDidLoad() {
         Logger.shared.analytics(.backupExplanationOpened)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as? RootViewController)?.showGradient(false)
-    }
-
     
     @IBAction func startBackup(_ sender: UIButton) {
         Seed.mnemonic { (result) in

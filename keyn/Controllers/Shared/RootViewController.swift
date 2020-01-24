@@ -32,9 +32,9 @@ class RootViewController: UITabBarController {
         }
     }
 
-    func showGradient(_ value: Bool) {
-        (tabBar as! KeynTabBar).gradientView.isHidden = !value
-    }
+//    func showGradient(_ value: Bool) {
+//        (tabBar as! KeynTabBar).gradientView.isHidden = !value
+//    }
     
     // MARK: - Private functions
 
