@@ -102,7 +102,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let cell = cell as? DevicesViewCell {
             cell.titleLabel.text = session.title
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-            cell.deviceLogo.image = session.logo
+            cell.deviceLogo.image = session.logo ?? UIImage(named: "logo_purple")
         } else {
             Logger.shared.warning("Unknown browser")
         }

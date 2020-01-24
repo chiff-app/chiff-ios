@@ -37,14 +37,10 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         sessionNameTextField.text = session.title
         createdLabel.text = "devices.created".localized
         createdValueLabel.text = session.creationDate.timeAgoSinceNow()
-        if let session = session as? TeamSession {
-            auxiliaryLabel.text = "devices.team_auxiliary_title".localized
-            auxiliaryValueLabel.text = "\(session.accountCount)"
-        } else if let session = session as? BrowserSession {
-            auxiliaryLabel.text = "devices.auxiliary_title".localized
-            auxiliaryValueLabel.text = session.lastRequest?.timeAgoSinceNow() ?? "devices.never".localized.capitalizedFirstLetter
-        }
+        iconView.image = session.logo ?? UIImage(named: "logo_purple")
+        setAuxiliaryLabel(count: nil)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        NotificationCenter.default.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -98,6 +94,25 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
             self.performSegue(withIdentifier: "DeleteSession", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func reloadData(notification: Notification) {
+        guard let session = notification.userInfo?["session"] as? Session else {
+            return
+        }
+        self.session = session
+        setAuxiliaryLabel(count: notification.userInfo?["count"] as? Int)
+        self.tableView.reloadData()
+    }
+
+    private func setAuxiliaryLabel(count: Int?) {
+        if let session = session as? TeamSession {
+            auxiliaryLabel.text = "devices.team_auxiliary_title".localized
+            auxiliaryValueLabel.text = "\(count ?? session.accountCount)"
+        } else if let session = session as? BrowserSession {
+            auxiliaryLabel.text = "devices.auxiliary_title".localized
+            auxiliaryValueLabel.text = session.lastRequest?.timeAgoSinceNow() ?? "devices.never".localized.capitalizedFirstLetter
+        }
     }
     
 
