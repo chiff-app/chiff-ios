@@ -304,11 +304,17 @@ devices:
   team_session_detail_header:
     value: Team details
   session_detail_footer:
-    value: You can always pair again with your device by scanning the QR-code.
+    value: Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.
   team_session_detail_footer:
-    value: You will lose access to all shared accounts by ending the team session.
+    value: Je raakt toegang tot al je team-accounts kwijt als je deze sessie beëindigt.
+  team_session_admin_detail_footer:
+    value: |-
+      Je bent admin van dit team 🎉.
+      Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel.
   session_name_example:
     value: Voorbeeld @ werk
+  never:
+    value: never
   
 settings:
   settings:
@@ -590,11 +596,9 @@ notifications:
     value: Koppelen
   this_on_that:
     value: '%@ op %@.'
-  in_on:
-    value: '%@ in %@ op %@.'
     description: GitHub in Firefox op MacOS
   accounts_from:
-    value: '%@ accounts van %@ op %@'
+    value: '%@ accounts van %@.'
   onboarding_reminder_title:
     first:  
       value: Je bent er bijna!

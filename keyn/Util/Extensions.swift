@@ -170,6 +170,7 @@ extension TimeInterval {
 extension Notification.Name {
     static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
     static let sessionStarted = Notification.Name("SessionStarted")
+    static let sessionUpdated = Notification.Name("SessionUpdated")
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
     static let sharedAccountsChanged = Notification.Name("SharedAccountsChanged")

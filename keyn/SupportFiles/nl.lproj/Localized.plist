@@ -534,6 +534,11 @@
 			<key>value</key>
 			<string>Je kunt met zoveel apparaten koppelen als je wilt.</string>
 		</dict>
+		<key>never</key>
+		<dict>
+			<key>value</key>
+			<string>never</string>
+		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
 			<key>value</key>
@@ -596,7 +601,7 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>session_detail_footer</key>
 		<dict>
 			<key>value</key>
-			<string>You can always pair again with your device by scanning the QR-code.</string>
+			<string>Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.</string>
 		</dict>
 		<key>session_detail_header</key>
 		<dict>
@@ -623,10 +628,16 @@ Kies dan 'Sta berichtgeving toe'.</string>
 			<key>value</key>
 			<string>Team accounts:</string>
 		</dict>
+		<key>team_session_admin_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent admin van dit team 🎉.
+Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel.</string>
+		</dict>
 		<key>team_session_detail_footer</key>
 		<dict>
 			<key>value</key>
-			<string>You will lose access to all shared accounts by ending the team session.</string>
+			<string>Je raakt toegang tot al je team-accounts kwijt als je deze sessie beëindigt.</string>
 		</dict>
 		<key>team_session_detail_header</key>
 		<dict>
@@ -1097,7 +1108,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>accounts_from</key>
 		<dict>
 			<key>value</key>
-			<string>%@ accounts van %@ op %@</string>
+			<string>%@ accounts van %@.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -1123,13 +1134,6 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Wachtwoord invullen</string>
-		</dict>
-		<key>in_on</key>
-		<dict>
-			<key>description</key>
-			<string>GitHub in Firefox op MacOS</string>
-			<key>value</key>
-			<string>%@ in %@ op %@.</string>
 		</dict>
 		<key>login</key>
 		<dict>
@@ -1184,6 +1188,8 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		</dict>
 		<key>this_on_that</key>
 		<dict>
+			<key>description</key>
+			<string>GitHub in Firefox op MacOS</string>
 			<key>value</key>
 			<string>%@ op %@.</string>
 		</dict>

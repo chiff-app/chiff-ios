@@ -12,7 +12,11 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     var session: Session! {
         didSet {
             sessionDetailHeader = session is TeamSession ? "devices.team_session_detail_header".localized : "devices.session_detail_header".localized
-            sessionDetailFooter = session is TeamSession ? "devices.team_session_detail_footer".localized : "devices.session_detail_footer".localized
+            if let session = session as? TeamSession {
+                sessionDetailFooter = session.isAdmin ? "devices.team_session_admin_detail_footer".localized : "devices.team_session_detail_footer".localized
+            } else {
+                sessionDetailFooter = "devices.session_detail_footer".localized
+            }
         }
     }
     var sessionDetailHeader = "devices.session_detail_header".localized
@@ -35,10 +39,19 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         createdValueLabel.text = session.creationDate.timeAgoSinceNow()
         if let session = session as? TeamSession {
             auxiliaryLabel.text = "devices.team_auxiliary_title".localized
-            auxiliaryValueLabel.text = "42"
-        } else {
+            auxiliaryValueLabel.text = "\(session.accountCount)"
+        } else if let session = session as? BrowserSession {
             auxiliaryLabel.text = "devices.auxiliary_title".localized
-            auxiliaryValueLabel.text = "laatst nog"
+            auxiliaryValueLabel.text = session.lastRequest?.timeAgoSinceNow() ?? "devices.never".localized.capitalizedFirstLetter
+        }
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if let session = session as? TeamSession, session.isAdmin {
+            return 1
+        } else {
+            return 2
         }
     }
 
@@ -47,7 +60,11 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return section == 1 ? sessionDetailFooter : nil
+        if let session = session as? TeamSession, session.isAdmin {
+            return sessionDetailFooter
+        } else {
+            return section == 1 ? sessionDetailFooter : nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -63,7 +80,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == 1 else {
+        guard (session as? TeamSession)?.isAdmin ?? false || section == 1 else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView

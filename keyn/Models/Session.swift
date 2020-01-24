@@ -35,10 +35,9 @@ protocol Session: Codable {
     var creationDate: Date { get }
     var id: String { get }
     var signingPubKey: String { get }
-    var title: String { get }
+    var title: String { get set }
     var logo: UIImage? { get }
     var version: Int { get }
-    var sessionImage: UIImage? { get }
 
     func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void)
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws
@@ -46,8 +45,6 @@ protocol Session: Codable {
     static var encryptionService: KeychainService { get }
     static var signingService: KeychainService { get }
     static var sessionCountFlag: String { get }
-
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void)
 }
 
 
@@ -89,7 +86,7 @@ extension Session {
     }
 
     func update() throws {
-        let sessionData = try PropertyListEncoder().encode(self)
+        let sessionData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
     }
 

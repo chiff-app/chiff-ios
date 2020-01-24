@@ -307,8 +307,12 @@ devices:
     value: You can always pair again with your device by scanning the QR-code.
   team_session_detail_footer:
     value: You will lose access to all shared accounts by ending the team session.
+  team_session_admin_detail_footer:
+    value: You are the admin of this team 🎉.\nIf you don't want this burden, you can end the session in the admin panel.
   session_name_example:
     value: Example @ work
+  never:
+    value: nooit
 
 settings:
   settings:
@@ -594,11 +598,8 @@ notifications:
   this_on_that:
     value: '%@ on %@.'
     description: Chrome on MacOS
-  in_on:
-    value: '%@ in %@ on %@.'
-    description: GitHub in Firefox on MacOS
   accounts_from:
-    value: '%@ accounts from %@ on %@'
+    value: '%@ accounts from %@.'
   onboarding_reminder_title:
     first:  
       value: Almost there!

@@ -13,22 +13,18 @@ enum TeamSessionError: Error {
 class TeamSession: Session {
 
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
-    let role: String
     let creationDate: Date
     let id: String
-    let company: String
     let signingPubKey: String
     var created: Bool
     var isAdmin: Bool
     var version: Int
-    var title: String {
-        return "\(role) at \(company)" // TODO: Localize
-    }
+    var title: String
     var logo: UIImage? {
         return UIImage(named: "logo_purple") // TODO: get logo from somewhere? Team db?
     }
-    var sessionImage: UIImage? {
-        return UIImage(named: "keyn_laptop")
+    var accountCount: Int {
+        return Properties.getTeamAccountCount(teamId: id)
     }
 
     static let CRYPTO_CONTEXT = "keynteam"
@@ -36,7 +32,30 @@ class TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: String, os: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    enum CodingKeys: CodingKey {
+        case creationDate
+        case id
+        case signingPubKey
+        case created
+        case isAdmin
+        case version
+        case title
+//        case logo
+    }
+
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        self.id = try values.decode(String.self, forKey: .id)
+        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+        self.created = try values.decode(Bool.self, forKey: .created)
+        self.isAdmin = try values.decode(Bool.self, forKey: .isAdmin)
+        self.version = try values.decode(Int.self, forKey: .version)
+        self.title = try values.decode(String.self, forKey: .title)
+    }
+
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
@@ -48,7 +67,7 @@ class TeamSession: Session {
 
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
 
-            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, role: browser, company: os, version: 2, isAdmin: false)
+            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
             try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
                 do {
                     let _ = try result.get()
@@ -70,13 +89,12 @@ class TeamSession: Session {
         }
     }
 
-    init(id: String, signingPubKey: Data, role: String, company: String, version: Int, isAdmin: Bool) {
+    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool) {
         self.creationDate = Date()
         self.id = id
         self.signingPubKey = signingPubKey.base64
-        self.role = role
-        self.company = company
         self.version = version
+        self.title = title
         self.isAdmin = isAdmin
         self.created = false
     }
@@ -102,6 +120,7 @@ class TeamSession: Session {
                     if self.isAdmin != isAdmin {
                         self.isAdmin = isAdmin
                         try self.update()
+                        NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self])
                     }
                     var currentAccounts = try TeamAccount.all(context: nil, label: self.id)
                     for (id, data) in accounts {
@@ -123,6 +142,7 @@ class TeamSession: Session {
                     if changed {
                         NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
                     }
+                    Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
                     completion(.success(()))
                 } catch APIError.statusCode(404) {
                     guard self.created else {
