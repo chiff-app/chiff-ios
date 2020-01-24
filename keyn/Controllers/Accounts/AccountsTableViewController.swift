@@ -51,12 +51,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         setFooter()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as? RootViewController)?.showGradient(!unfilteredAccounts.isEmpty)
-    }
-
-
     @objc func showAddAccount() {
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
@@ -81,9 +75,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
-                (tabBarController as! RootViewController).showGradient(true)
-            }
             addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
             setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
@@ -92,9 +83,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
-            if (tabBarController as! RootViewController).selectedViewController?.contents == self {
-                (tabBarController as! RootViewController).showGradient(false)
-            }
             addAccountContainerView.isHidden = false
         }
     }
