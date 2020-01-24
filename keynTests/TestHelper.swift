@@ -151,7 +151,7 @@ class TestHelper {
             fatalError("Error getting data from base64 string")
         }
         do {
-            let session = BrowserSession(id: sessionID, signingPubKey: pubKey, browser: "browser", os: "os", version: 0)
+            let session = BrowserSession(id: sessionID, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
             let encoder = PropertyListEncoder()
             try Keychain.shared.save(id: sharedKeyID, service: .sharedSessionKey, secretData: sharedKey, objectData: encoder.encode(session))
             try Keychain.shared.save(id: signingPrivKeyID, service: .signingSessionKey, secretData: privKey)
