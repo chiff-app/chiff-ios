@@ -31,12 +31,12 @@ class LoginViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             do {
-                Session.deleteAll()
-                Account.deleteAll()
+                BrowserSession.deleteAll()
+                UserAccount.deleteAll()
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()
-                BackupManager.shared.deleteKeys()
+                BackupManager.deleteKeys()
                 Logger.shared.warning("Keyn reset after corrupted data", error: error)
                 let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
                 UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")

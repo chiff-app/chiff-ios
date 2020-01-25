@@ -170,8 +170,10 @@ extension TimeInterval {
 extension Notification.Name {
     static let passwordChangeConfirmation = Notification.Name("PasswordChangeConfirmation")
     static let sessionStarted = Notification.Name("SessionStarted")
+    static let sessionUpdated = Notification.Name("SessionUpdated")
     static let sessionEnded = Notification.Name("SessionEnded")
     static let accountsLoaded = Notification.Name("AccountsLoaded")
+    static let sharedAccountsChanged = Notification.Name("SharedAccountsChanged")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
     static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
@@ -216,7 +218,7 @@ extension UIViewController {
         }
     }
 
-    func showError(message: String, title: String = "Error", handler: ((UIAlertAction) -> Void)? = nil) {
+    func showAlert(message: String, title: String = "errors.error".localized, handler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: handler))
         self.present(alert, animated: true)
@@ -496,7 +498,7 @@ extension SKProduct {
     }
 }
 
-extension Array where Iterator.Element == Account {
+extension Array where Iterator.Element == UserAccount {
     var enabledCount: Int {
         return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }

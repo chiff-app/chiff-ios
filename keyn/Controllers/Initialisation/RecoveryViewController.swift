@@ -135,21 +135,21 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                     throw RecoveryError.unauthenticated
                 }
                 Seed.recover(context: context, mnemonic: self.mnemonic) { result in
+                    DispatchQueue.main.async {
                     switch result {
-                    case .failure(_):
-                        DispatchQueue.main.async {
-                            self.showError(message: "errors.seed_restore".localized)
+                        case .failure(_):
+                            self.showAlert(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
-                        }
-                    case .success(let (total, failed)):
-                        if failed > 0 {
-                            let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
-                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                        case .success(let (total, failed)):
+                            if failed > 0 {
+                                let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                                    self.onSeedRecorySuccess()
+                                }))
+                                self.present(alert, animated: true)
+                            } else {
                                 self.onSeedRecorySuccess()
-                            }))
-                            self.present(alert, animated: true)
-                        } else {
-                            self.onSeedRecorySuccess()
+                            }
                         }
                     }
                 }
@@ -166,14 +166,17 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Private
 
     private func onSeedRecorySuccess() {
-        StoreObserver.shared.updateSubscriptions() { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("Error updating subscriptions", error: error)
-            }
-            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-            self.registerForPushNotifications()
-            Logger.shared.analytics(.backupRestored, override: true)
-        }
+//        StoreObserver.shared.updateSubscriptions() { result in
+//            if case let .failure(error) = result {
+//                Logger.shared.error("Error updating subscriptions", error: error)
+//            }
+//            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+//            self.registerForPushNotifications()
+//            Logger.shared.analytics(.backupRestored, override: true)
+//        }
+        Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
+        self.registerForPushNotifications()
+        Logger.shared.analytics(.backupRestored, override: true)
     }
 
     private func showRootController() {
@@ -239,12 +242,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             do {
-                Session.deleteAll()
-                Account.deleteAll()
+                BrowserSession.deleteAll()
+                UserAccount.deleteAll()
                 try Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()
-                BackupManager.shared.deleteKeys()
+                BackupManager.deleteKeys()
             } catch {
                 fatalError()
             }
@@ -256,7 +259,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.async {
             PushNotifications.register() { result in
                 if result {
-                    NotificationManager.shared.subscribe(topic: Properties.notificationTopic, completionHandler: nil)
+                    NotificationManager.shared.subscribe(completionHandler: nil)
                 }
                 self.showRootController()
             }

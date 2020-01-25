@@ -12,6 +12,8 @@ numbers:
     value: '5'
 
 errors:
+  error:
+    value: Error
   failed_accounts_title:
     value: Recovery error
   failed_accounts_message:
@@ -79,6 +81,8 @@ errors:
     value: Error restoring backup
   session_invalid:
     value: This QR-code is invalid
+  session_delete:
+    value: Error deleting account
   token_creation:
     value: Error creating OTP token
   add_otp:
@@ -95,6 +99,8 @@ errors:
     value: Error deleting backup data
   deleting_account:
     value: Error deleting account
+  moving_data:
+    value: Error moving backup data.
 
 popups:
   questions:
@@ -117,6 +123,9 @@ popups:
     reset_keyn:
       comment: Resets Keyn and deletes all data
       value: Reset Keyn?
+    move_data:
+      comment: Resets Keyn and deletes all data
+      value: Move data?
     delete_data:
       comment: Delete local and remote data
       value: Delete data?
@@ -126,6 +135,9 @@ popups:
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: This will delete the seed and all passwords.
+    move_data_description:
+      comment: This will delete the seed and all passwords.
+      value: This moves your backup data to the production database. Use this if you want to switch to the App Store version of Keyn.
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Do you have time to answer a few questions? It'll only take a moment.
@@ -162,6 +174,12 @@ popups:
       value: No, thanks
     settings:
       value: Open settings
+    data_move_success:
+      value: The backup data was successfully moved. You can now install the App Store version of Keyn.
+    data_move_success_title:
+      value: Succeeded!
+    move:
+      value: Move
 
 accounts:
   didnt_save:
@@ -287,6 +305,30 @@ devices:
     value: Pairing
   'on':
     value: 'on'
+  session_name:
+    value: Name
+  end_session:
+    value: End session
+  created:
+    value: 'Created:'
+  auxiliary_title:
+    value: 'Last activity:'
+  team_auxiliary_title:
+    value: 'Team accounts:'
+  session_detail_header:
+    value: Session details
+  team_session_detail_header:
+    value: Team details
+  session_detail_footer:
+    value: You can always pair again with your device by scanning the QR-code.
+  team_session_detail_footer:
+    value: You will lose access to all shared accounts by ending the team session.
+  team_session_admin_detail_footer:
+    value: You are the admin of this team 🎉.\nIf you don't want this burden, you can end the session in the admin panel.
+  session_name_example:
+    value: Example @ work
+  never:
+    value: nooit
 
 settings:
   settings:
@@ -313,6 +355,8 @@ settings:
     value: About
   paper_backup:
     value: Paper backup
+  move_data:
+    value: Move backup data
   terms_of_use:
     value: Terms of use
   privacy_policy:
@@ -360,6 +404,8 @@ settings:
     value: Read more
   premium_beta:
     value: Keyn Premium is already enabled if you're participating in the beta program
+  premium_teams:
+    value: Keyn Premium is already enabled because you have an active Keyn for Teams session.
   success:
     value: Success
   restore_successful:
@@ -457,6 +503,8 @@ backup:
     value: Retrieve paper backup
 
 requests:
+  keyn_for_teams:
+    value: Keyn for teams
   accounts:
     value: accounts
     comment: The word for 'accounts'
@@ -563,14 +611,13 @@ notifications:
     value: Let's set up your computer!
     start: 18
     end: 26
+  team_admin_login:
+    value: Keyn for teams login
   this_on_that:
     value: '%@ on %@.'
     description: Chrome on MacOS
-  in_on:
-    value: '%@ in %@ on %@.'
-    description: GitHub in Firefox on MacOS
   accounts_from:
-    value: '%@ accounts from %@ on %@'
+    value: '%@ accounts from %@.'
   onboarding_reminder_title:
     first:  
       value: Almost there!

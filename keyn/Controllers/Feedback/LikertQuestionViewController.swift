@@ -12,7 +12,7 @@ class LikertQuestionViewController: QuestionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let font = UIFont(name: "Montserrat-Bold", size: 20.0)
-        likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
+        likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font as Any], for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {

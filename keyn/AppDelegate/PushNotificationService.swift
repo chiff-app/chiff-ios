@@ -30,7 +30,41 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        completionHandler(UIBackgroundFetchResult.noData)
+        guard let aps = userInfo["aps"] as? [AnyHashable : Any],
+            let category = aps["category"] as? String,
+            let pubkey = userInfo["pubkey"] as? String else {
+                completionHandler(UIBackgroundFetchResult.noData)
+            return
+        }
+        do {
+            guard let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
+                completionHandler(UIBackgroundFetchResult.failed)
+                return
+            }
+            switch category {
+            case NotificationCategory.DELETE_TEAM_SESSION:
+                session.delete(notify: false) { result in
+                    switch result {
+                    case .success(_):
+                        NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                        completionHandler(UIBackgroundFetchResult.newData)
+                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
+                    }
+                }
+            case NotificationCategory.UPDATE_TEAM_SESSION:
+                session.updateSharedAccounts(pushed: true) { result in
+                    switch result {
+                    case .success(_): completionHandler(UIBackgroundFetchResult.newData)
+                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
+                    }
+                }
+            default:
+                completionHandler(UIBackgroundFetchResult.noData)
+            }
+        } catch {
+            Logger.shared.error("Could not get sessions.", error: error)
+            completionHandler(UIBackgroundFetchResult.failed)
+        }
     }
 
     /*
@@ -61,17 +95,23 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Only one calling function actually uses the returned presentation options.
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
-        if notification.request.content.categoryIdentifier == NotificationCategory.KEYN_NOTIFICATION {
+        switch notification.request.content.categoryIdentifier {
+        case NotificationCategory.KEYN_NOTIFICATION:
             return [.alert]
-        }
-        if notification.request.content.categoryIdentifier == NotificationCategory.ONBOARDING_NUDGE {
+        case NotificationCategory.ONBOARDING_NUDGE:
             DispatchQueue.main.async {
                 if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
                     vc.selectedIndex = 1
                 }
             }
             return [.alert]
+        case NotificationCategory.UPDATE_TEAM_SESSION,
+             NotificationCategory.DELETE_TEAM_SESSION:
+            return []
+        default:
+            print("nada")
         }
+
 
         var content: UNNotificationContent = notification.request.content
         if !content.isProcessed() {
@@ -92,8 +132,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         if keynRequest.type == .end {
             do {
                 if let sessionID = keynRequest.sessionID {
-                    try Session.get(id: sessionID)?.delete(notifyExtension: false)
-                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                    try BrowserSession.get(id: sessionID)?.delete(notify: false) { result in
+                        if case .failure(let error) = result {
+                            Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
+                        } else {
+                            NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                        }
+                    }
                 }
             } catch {
                 let error = content.userInfo["error"] as? String
@@ -115,7 +160,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .addBulk {
             do {
-                guard let sessionID = keynRequest.sessionID, let session = try Session.get(id: sessionID) else {
+                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) else {
                     throw CodingError.missingData
                 }
                 #warning("TODO: Improve this by using background fetching in notification processor.")
@@ -149,7 +194,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func waitForPasswordChangeConfirmation(notification: Notification) {
-        guard let session = notification.object as? Session else {
+        guard let session = notification.object as? BrowserSession else {
             Logger.shared.warning("Received notification from unexpected object")
             return
         }
@@ -174,15 +219,26 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
     private func checkPersistentQueue(notification: Notification) {
         do {
-            for session in try Session.all() {
+            for session in try BrowserSession.all() {
                 self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil, completionHandler: nil)
+            }
+        } catch {
+            Logger.shared.error("Could not get sessions.", error: error)
+        }
+        do {
+            for session in try TeamSession.all() {
+                session.updateSharedAccounts { (result) in
+                    if case let .failure(error) = result {
+                        print(error)
+                    }
+                }
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
     }
 
-    private func pollQueue(attempts: Int, session: Session, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
+    private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
         session.getPersistentQueueMessages(shortPolling: shortPolling) { (result) in
             switch result {
             case .success(let messages):
@@ -213,7 +269,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
     }
 
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: Session, context: LAContext?) throws -> [BulkAccount]? {
+    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> [BulkAccount]? {
         guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
@@ -223,7 +279,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try Account.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(accountID: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
@@ -237,7 +293,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try Account.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(accountID: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }

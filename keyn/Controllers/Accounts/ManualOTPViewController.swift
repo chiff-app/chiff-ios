@@ -18,7 +18,7 @@ class ManualOTPViewController: UITableViewController, TokenController {
     @IBOutlet weak var timeBasedSwitch: UISwitch!
     @IBOutlet weak var errorLabel: UILabel!
 
-    var account: Account!
+    var account: UserAccount!
     var token: Token?
 
     override func viewDidLoad() {
@@ -77,7 +77,7 @@ class ManualOTPViewController: UITableViewController, TokenController {
                     self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
-                    self.showError(message: "errors.add_otp".localized)
+                    self.showAlert(message: "errors.add_otp".localized)
                 }
             }
         }

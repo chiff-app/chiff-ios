@@ -20,6 +20,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let nc = NotificationCenter.default
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
+        nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
         nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (notification) in
             DispatchQueue.main.async {
                 self.updateUi()
@@ -32,7 +33,8 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.definesPresentationContext = true
 
         do {
-            sessions = try Session.all()
+            sessions = try BrowserSession.all()
+            sessions.append(contentsOf: try TeamSession.all())
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
@@ -47,20 +49,22 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let buttonPosition = sender.convert(CGPoint(), to:tableView)
         if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
             let session = sessions[indexPath.row]
-            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.browser) \("devices.on".localized) \(session.os)?", message: nil, preferredStyle: .actionSheet)
+            let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-                do {
-                    try self.sessions[indexPath.row].delete(notifyExtension: true)
+                self.sessions[indexPath.row].delete(notify: true) { result in
                     DispatchQueue.main.async {
-                        self.sessions.remove(at: indexPath.row)
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        if self.sessions.isEmpty {
-                            self.updateUi()
+                        if case .failure(let error) = result {
+                            Logger.shared.error("Could not delete session.", error: error)
+                            self.showAlert(message: "errors.session_delete".localized)
+                        } else {
+                            self.sessions.remove(at: indexPath.row)
+                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                            if self.sessions.isEmpty {
+                                self.updateUi()
+                            }
                         }
                     }
-                } catch {
-                    Logger.shared.error("Could not delete session.", error: error)
                 }
             }))
             self.present(alert, animated: true, completion: nil)
@@ -84,7 +88,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sessions.count
     }
@@ -96,10 +99,10 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
-        if let cell = cell as? DevicesViewCell, Properties.browsers.contains(session.browser) {
-            cell.titleLabel.text = "\(session.browser) \("devices.on".localized) \(session.os)"
+        if let cell = cell as? DevicesViewCell {
+            cell.titleLabel.text = session.title
             cell.timestampLabel.text = session.creationDate.timeAgoSinceNow()
-            cell.deviceLogo.image = UIImage(named: session.browser.lowercased())
+            cell.deviceLogo.image = session.logo ?? UIImage(named: "logo_purple")
         } else {
             Logger.shared.warning("Unknown browser")
         }
@@ -110,13 +113,16 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination.contents as? PairContainerViewController {
             destination.pairControllerDelegate = self
+        } else if let destination = segue.destination.contents as? SessionDetailViewController {
+            guard let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { fatalError() }
+            destination.session = sessions[indexPath.row]
         }
     }
 
     // MARK: - Actions
 
     func addSession(notification: Notification) {
-        guard let session = notification.userInfo?["session"] as? Session else {
+        guard let session = notification.userInfo?["session"] as? BrowserSession else {
             Logger.shared.warning("Session was nil when trying to add it to the devices view.")
             return
         }
@@ -128,6 +134,34 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBAction func openSettings(_ sender: UIButton) {
         if let url = URL.init(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+
+    @IBAction func unwindToDevicesOverview(sender: UIStoryboardSegue) {
+        guard let sourceViewController = sender.source as? SessionDetailViewController, var session = sourceViewController.session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
+            return
+        }
+        if sender.identifier == "DeleteSession" {
+            session.delete(notify: true) { result in
+                DispatchQueue.main.async {
+                    if case .failure(let error) = result {
+                        Logger.shared.error("Could not delete session.", error: error)
+                        self.showAlert(message: "errors.session_delete".localized)
+                    } else {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.sessions.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if self.sessions.isEmpty {
+                            self.updateUi()
+                        }
+                    }
+                }
+            }
+        } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
+            session.title = title
+            try? session.update()
+            sessions[index] = session
+            tableView.reloadData()
         }
     }
 
@@ -143,23 +177,28 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     // MARK: - Private functions
 
+    private func reloadData(notification: Notification) {
+        guard let session = notification.userInfo?["session"] as? Session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
+            return
+        }
+        sessions[index] = session
+        tableView.reloadData()
+    }
+
     private func updateUi() {
         guard !Properties.deniedPushNotifications else {
             pushNotificationWarning.isHidden = false
             navigationItem.rightBarButtonItem = nil
-            (tabBarController as! RootViewController).showGradient(false)
             return
         }
         pushNotificationWarning.isHidden = true
         if !sessions.isEmpty {
             addSessionContainer.isHidden = true
             tableViewContainer.isHidden = false
-            (tabBarController as! RootViewController).showGradient(true)
             addAddButton()
         } else {
             addSessionContainer.isHidden = false
             tableViewContainer.isHidden = true
-            (tabBarController as! RootViewController).showGradient(false)
             navigationItem.rightBarButtonItem = nil
         }
     }

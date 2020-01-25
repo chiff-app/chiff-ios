@@ -35,7 +35,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
             @unknown default: throw CameraError.unknown
             }
         } catch {
-            showError(message: "errors.no_camera".localized)
+            showAlert(message: "errors.no_camera".localized)
             Logger.shared.warning("Camera not available.", error: error)
         }
     }
@@ -67,13 +67,13 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                     } catch {
                         switch error {
                         case SessionError.exists:
-                            showError(message: "errors.qr_scanned_twice".localized)
+                            showAlert(message: "errors.qr_scanned_twice".localized)
                         case SessionError.invalid:
                             Logger.shared.warning("Invalid QR code scanned", error: error)
-                            showError(message: "errors.undecodable_qr".localized)
+                            showAlert(message: "errors.undecodable_qr".localized)
                         default:
                             Logger.shared.error("Unhandled pairing error.", error: error)
-                            showError(message: "errors.generic_error".localized)
+                            showAlert(message: "errors.generic_error".localized)
                         }
                         self.qrFound = false
                     }

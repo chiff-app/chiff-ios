@@ -17,7 +17,7 @@ class OTPViewController: QRViewController, TokenController {
     
     @IBOutlet weak var instructionLabel: UILabel!
 
-    var account: Account!
+    var account: UserAccount!
     var token: Token?
 
     override func viewDidLoad() {
@@ -33,13 +33,13 @@ class OTPViewController: QRViewController, TokenController {
     
     override func handleURL(url: URL) throws {
         guard let scheme = url.scheme, scheme == OTP_URL_SCHEME else {
-            showError(message: "errors.session_invalid".localized, handler: errorHandler)
+            showAlert(message: "errors.session_invalid".localized, handler: errorHandler)
             return
         }
         self.token = Token(url: url)
         guard token != nil else {
             Logger.shared.error("Error creating OTP token")
-            showError(message: "errors.token_creation".localized, handler: errorHandler)
+            showAlert(message: "errors.token_creation".localized, handler: errorHandler)
             return
         }
 
@@ -51,7 +51,7 @@ class OTPViewController: QRViewController, TokenController {
                     self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
-                    self.showError(message: "errors.add_otp".localized, handler: super.errorHandler)
+                    self.showAlert(message: "errors.add_otp".localized, handler: super.errorHandler)
                 }
             }
         }

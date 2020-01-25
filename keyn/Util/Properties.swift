@@ -37,9 +37,10 @@ struct Properties {
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
     static private let subscriptionProductFlag = "subscriptionProduct"
     static private let accountCountFlag = "accountCount"
-    static private let sessionCountFlag = "sessionCount"
+    static private let teamAccountCountFlag = "accountCount"
     static private let agreedWithTermsFlag = "agreedWithTerms"
     static private let firstPairingCompletedFlag = "firstPairingCompleted"
+    static private let reloadAccountsFlag = "reloadAccountsFlag"
     static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
 
     static var isFirstLaunch: Bool {
@@ -50,6 +51,10 @@ struct Properties {
         return isFirstLaunch
     }
 
+    static var reloadAccounts: Bool {
+        get { return UserDefaults.standard.bool(forKey: reloadAccountsFlag) }
+        set { UserDefaults.standard.set(newValue, forKey: reloadAccountsFlag) }
+    }
     static var firstPairingCompleted: Bool {
         get { return UserDefaults.standard.bool(forKey: firstPairingCompletedFlag) }
         set { UserDefaults.standard.set(newValue, forKey: firstPairingCompletedFlag) }
@@ -98,16 +103,29 @@ struct Properties {
         set { UserDefaults.standard.set(newValue, forKey: subscriptionProductFlag) }
     }
     static var hasValidSubscription: Bool {
-        return environment == .beta || subscriptionExiryDate > Date.now
+        return true
+//        return environment == .beta || TeamSession.count > 0 || subscriptionExiryDate > Date.now
     }
     static var accountCount: Int {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
         set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
     }
-    static var sessionCount: Int {
-        get { return UserDefaults.standard.integer(forKey: sessionCountFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: sessionCountFlag) }
+    static func getTeamAccountCount(teamId: String) -> Int {
+        if let data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
+            return data[teamId] ?? 0
+        } else {
+            return 0
+        }
     }
+    static func setTeamAccountCount(teamId: String, count: Int) {
+        if var data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
+            data[teamId] = count
+            UserDefaults.standard.set(data, forKey: teamAccountCountFlag)
+        } else {
+            UserDefaults.standard.set([teamId: count], forKey: teamAccountCountFlag)
+        }
+    }
+
     static var accountOverflow: Bool {
         return accountCount > accountCap
     }
@@ -120,8 +138,8 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
         UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
         UserDefaults.standard.removeObject(forKey: userIdFlag)
-        UserDefaults.standard.removeObject(forKey: accountCountFlag)
-        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
+//        UserDefaults.standard.removeObject(forKey: accountCountFlag)
+//        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
         // We're keeping: questionnaireDirPurgedFlag, subscriptionExiryDateFlag, subscriptionProductFlag, agreedWithTermsFlag, firstPairingCompletedFlag
     }
 
@@ -175,29 +193,15 @@ struct Properties {
 
     static let systems = ["Windows", "Mac OS", "Debian", "Ubuntu"]
 
-    static let keynApi = "api.keyn.app"
+    static let keynApi = "api.keyn.dev"
     
     static let accountCap = 8
-    
-    static let AWSSNSNotificationArn = (
-        production: "arn:aws:sns:eu-central-1:589716660077:KeynNotifications",
-        sandbox: "arn:aws:sns:eu-central-1:589716660077:KeynNotificationsSandbox"
-    )
 
     static let nudgeNotificationIdentifiers = [
         "io.keyn.keyn.first_nudge",
         "io.keyn.keyn.second_nudge",
         "io.keyn.keyn.third_nudge"
     ]
-
-    static var notificationTopic: String {
-        switch environment {
-        case .dev:
-            return AWSSNSNotificationArn.sandbox
-        case .beta, .prod:
-            return AWSSNSNotificationArn.production
-        }
-    }
 
     static var endpoint: String? {
         guard let endpointData = try? Keychain.shared.get(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) else {

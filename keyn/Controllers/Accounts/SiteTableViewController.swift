@@ -9,14 +9,14 @@
 import UIKit
 
 protocol SitesDelegate {
-    func updateAccount(account: Account)
+    func updateAccount(account: UserAccount)
 }
 
 class SiteTableViewController: UITableViewController, UITextFieldDelegate {
 
     var editButton: UIBarButtonItem!
     var editingMode: Bool = false
-    var account: Account!
+    var account: UserAccount!
     var tap: UITapGestureRecognizer!
     var delegate: SitesDelegate!
 
@@ -29,11 +29,6 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as? RootViewController)?.showGradient(true)
     }
 
     // MARK: - Table view data source
@@ -92,7 +87,7 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 delegate.updateAccount(account: account)
             } catch {
-                showError(message: "errors.delete_url".localized.capitalizedFirstLetter)
+                showAlert(message: "errors.delete_url".localized.capitalizedFirstLetter)
             }
         }
     }

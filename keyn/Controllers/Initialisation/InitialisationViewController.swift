@@ -31,7 +31,7 @@ class InitialisationViewController: UIViewController {
 
     private func setupKeyn() {
         loadingView.isHidden = false
-        guard !Seed.hasKeys && !BackupManager.shared.hasKeys else {
+        guard !Seed.hasKeys && !BackupManager.hasKeys else {
             self.performSegue(withIdentifier: "ShowPushView", sender: self)
             return
         }
@@ -45,10 +45,10 @@ class InitialisationViewController: UIViewController {
                     self.loadingView.isHidden = true
                     if let error = error as? LAError {
                         if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                            self.showError(message:"\("errors.seed_creation".localized): \(errorMessage)")
+                            self.showAlert(message:"\("errors.seed_creation".localized): \(errorMessage)")
                         }
                     } else {
-                        self.showError(message: error.localizedDescription, title: "errors.seed_creation".localized)
+                        self.showAlert(message: error.localizedDescription, title: "errors.seed_creation".localized)
                     }
                 }
             }

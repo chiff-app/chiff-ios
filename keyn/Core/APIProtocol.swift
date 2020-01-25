@@ -16,38 +16,13 @@ enum APIError: KeynError {
     case pinninigError
 }
 
-enum APIEndpoint: String {
-    case accounts = "accounts"
-    case backup = "backup"
-    case device = "device"
-    case ppd = "ppd"
-    case analytics = "analytics"
-    case message = "message"
-    case pairing = "message/pairing"
-    case volatile = "message/volatile"
-    case persistentAppToBrowser = "message/persistent/app-to-browser"
-    case persistentBrowserToApp = "message/persistent/browser-to-app"
-    case push = "message/push"
-    case questionnaire = "questionnaire"
-    case subscription = "subscription"
-    case iosSubscription = "subscription/ios"
-
-    // This construcs the endpoint for the subscription
-    static func notificationSubscription(for pubkey: String) -> String {
-        return "\(pubkey)/subscription"
-    }
-
-    // This construcs the endpoint for deleting all backup data
-    static func deleteAll(for pubkey: String) -> String {
-        return "\(pubkey)/all"
-    }
-}
 
 enum APIMethod: String {
     case get = "GET"
     case put = "PUT"
     case post = "POST"
     case delete = "DELETE"
+    case patch = "PATCH"
 }
 
 extension URLSession {
@@ -75,8 +50,8 @@ typealias RequestParameters = Dictionary<String, String>?
 
 protocol APIProtocol {
 
-    func signedRequest(endpoint: APIEndpoint, method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
 
-    func request(endpoint: APIEndpoint, path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
+    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
 
 }

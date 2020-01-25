@@ -21,7 +21,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
     private let ppd: PPD? = nil
     private var passwordValidator: PasswordValidator? = nil
     private var passwordIsHidden = true
-    var account: Account?
+    var account: UserAccount?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -167,11 +167,11 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let id = url!.absoluteString.sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
-                self.account = try Account(username: username, sites: [site], password: password, context: nil)
+                self.account = try UserAccount(username: username, sites: [site], password: password, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
             } catch {
-                showError(message: "errors.save_account: \(error)".localized)
+                showAlert(message: "\("errors.save_account".localized): \(error)")
                 Logger.shared.error("Account could not be saved", error: error)
             }
 
