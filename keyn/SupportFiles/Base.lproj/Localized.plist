@@ -692,6 +692,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error deleting account</string>
 		</dict>
+		<key>error</key>
+		<dict>
+			<key>value</key>
+			<string>Error</string>
+		</dict>
 		<key>failed_accounts_message</key>
 		<dict>
 			<key>value</key>
@@ -738,6 +743,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 				<key>value</key>
 				<string>Authentication could not start, because passcode is not set on the device.</string>
 			</dict>
+		</dict>
+		<key>moving_data</key>
+		<dict>
+			<key>value</key>
+			<string>Error moving backup data.</string>
 		</dict>
 		<key>no_camera</key>
 		<dict>
@@ -1282,6 +1292,20 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<key>value</key>
 				<string>You are trying to restore a backup while Keyn has already been initialized. Do you want to delete Keyn's current data?</string>
 			</dict>
+			<key>move_data</key>
+			<dict>
+				<key>comment</key>
+				<string>Resets Keyn and deletes all data</string>
+				<key>value</key>
+				<string>Move data?</string>
+			</dict>
+			<key>move_data_description</key>
+			<dict>
+				<key>comment</key>
+				<string>This will delete the seed and all passwords.</string>
+				<key>value</key>
+				<string>This moves your backup data to the production database. Use this if you want to switch to the App Store version of Keyn.</string>
+			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
 				<key>comment</key>
@@ -1342,12 +1366,27 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<key>value</key>
 				<string>Continue</string>
 			</dict>
+			<key>data_move_success</key>
+			<dict>
+				<key>value</key>
+				<string>The backup data was successfully moved. You can now install the App Store version of Keyn.</string>
+			</dict>
+			<key>data_move_success_title</key>
+			<dict>
+				<key>value</key>
+				<string>Succeeded!</string>
+			</dict>
 			<key>delete</key>
 			<dict>
 				<key>comment</key>
 				<string>Deletes something</string>
 				<key>value</key>
 				<string>Delete</string>
+			</dict>
+			<key>move</key>
+			<dict>
+				<key>value</key>
+				<string>Move</string>
 			</dict>
 			<key>no</key>
 			<dict>
@@ -1819,6 +1858,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<key>value</key>
 				<string>You can login by authorizing the request.</string>
 			</dict>
+		</dict>
+		<key>move_data</key>
+		<dict>
+			<key>value</key>
+			<string>Move backup data</string>
 		</dict>
 		<key>news_from_keyn</key>
 		<dict>

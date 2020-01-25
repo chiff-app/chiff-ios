@@ -70,7 +70,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             userNameTextField.delegate = self
             userPasswordTextField.delegate = self
         } catch {
-            showError(message: "errors.otp_fetch".localized)
+            showAlert(message: "errors.otp_fetch".localized)
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
     }

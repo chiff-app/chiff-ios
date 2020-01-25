@@ -56,7 +56,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     DispatchQueue.main.async {
                         if case .failure(let error) = result {
                             Logger.shared.error("Could not delete session.", error: error)
-                            self.showError(message: "errors.session_delete".localized)
+                            self.showAlert(message: "errors.session_delete".localized)
                         } else {
                             self.sessions.remove(at: indexPath.row)
                             self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -146,7 +146,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 DispatchQueue.main.async {
                     if case .failure(let error) = result {
                         Logger.shared.error("Could not delete session.", error: error)
-                        self.showError(message: "errors.session_delete".localized)
+                        self.showAlert(message: "errors.session_delete".localized)
                     } else {
                         let indexPath = IndexPath(row: index, section: 0)
                         self.sessions.remove(at: indexPath.row)

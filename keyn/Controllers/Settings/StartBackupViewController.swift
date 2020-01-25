@@ -20,7 +20,7 @@ class StartBackupViewController: UIViewController {
                     self.mnemonic = mnemonic
                     self.performSegue(withIdentifier: "StartBackup", sender: self)
                 case .failure(let error):
-                    self.showError(message: error.localizedDescription)
+                    self.showAlert(message: error.localizedDescription)
                 }
             }
         }
