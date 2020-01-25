@@ -314,7 +314,7 @@ devices:
   session_name_example:
     value: Voorbeeld @ werk
   never:
-    value: never
+    value: nooit
   
 settings:
   settings:
