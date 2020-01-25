@@ -12,6 +12,8 @@ numbers:
     value: '5'
 
 errors:
+  error:
+    value: Error
   failed_accounts_title:
     value: Recovery error
   failed_accounts_message:
@@ -97,6 +99,8 @@ errors:
     value: Error deleting backup data
   deleting_account:
     value: Error deleting account
+  moving_data:
+    value: Error moving backup data.
 
 popups:
   questions:
@@ -119,6 +123,9 @@ popups:
     reset_keyn:
       comment: Resets Keyn and deletes all data
       value: Reset Keyn?
+    move_data:
+      comment: Resets Keyn and deletes all data
+      value: Move data?
     delete_data:
       comment: Delete local and remote data
       value: Delete data?
@@ -128,6 +135,9 @@ popups:
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: This will delete the seed and all passwords.
+    move_data_description:
+      comment: This will delete the seed and all passwords.
+      value: This moves your backup data to the production database. Use this if you want to switch to the App Store version of Keyn.
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Do you have time to answer a few questions? It'll only take a moment.
@@ -164,6 +174,12 @@ popups:
       value: No, thanks
     settings:
       value: Open settings
+    data_move_success:
+      value: The backup data was successfully moved. You can now install the App Store version of Keyn.
+    data_move_success_title:
+      value: Succeeded!
+    move:
+      value: Move
 
 accounts:
   didnt_save:
@@ -339,6 +355,8 @@ settings:
     value: About
   paper_backup:
     value: Paper backup
+  move_data:
+    value: Move backup data
   terms_of_use:
     value: Terms of use
   privacy_policy:

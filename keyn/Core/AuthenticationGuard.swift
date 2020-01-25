@@ -107,7 +107,7 @@ class AuthenticationGuard {
             if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                 Logger.shared.error(errorMessage, error: error)
                 DispatchQueue.main.async {
-                    (self.lockWindow.rootViewController as? LoginViewController)?.showError(message: errorMessage)
+                    (self.lockWindow.rootViewController as? LoginViewController)?.showAlert(message: errorMessage)
                 }
             }
         }

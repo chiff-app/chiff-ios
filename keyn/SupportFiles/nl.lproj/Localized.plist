@@ -693,6 +693,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<key>value</key>
 			<string>Fout bij verwijderen account</string>
 		</dict>
+		<key>error</key>
+		<dict>
+			<key>value</key>
+			<string>Fout</string>
+		</dict>
 		<key>failed_accounts_message</key>
 		<dict>
 			<key>value</key>
@@ -739,6 +744,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 				<key>value</key>
 				<string>Authenticatie kan niet gestart worden, omdat de toegangscode niet is ingesteld op de telefoon.</string>
 			</dict>
+		</dict>
+		<key>moving_data</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij verhuizen backup data.</string>
 		</dict>
 		<key>no_camera</key>
 		<dict>
@@ -1279,6 +1289,20 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 				<key>value</key>
 				<string>Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd. Wil je Keyn's huidige data verwijderen?</string>
 			</dict>
+			<key>move_data</key>
+			<dict>
+				<key>comment</key>
+				<string>Resets Keyn and deletes all data</string>
+				<key>value</key>
+				<string>Verhuis data?</string>
+			</dict>
+			<key>move_data_description</key>
+			<dict>
+				<key>comment</key>
+				<string>This will delete the seed and all passwords.</string>
+				<key>value</key>
+				<string>Verhuis je backup data naar de productie database. Gebruik deze functie als je de App Store versie van Keyn wilt gaan gebruiken.</string>
+			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
 				<key>comment</key>
@@ -1339,12 +1363,27 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 				<key>value</key>
 				<string>Doorgaan</string>
 			</dict>
+			<key>data_move_success</key>
+			<dict>
+				<key>value</key>
+				<string>De backup data is succesvol verhuisd. Je kunt nu de App Store versie van Keyn installeren.</string>
+			</dict>
+			<key>data_move_success_title</key>
+			<dict>
+				<key>value</key>
+				<string>Gelukt!</string>
+			</dict>
 			<key>delete</key>
 			<dict>
 				<key>comment</key>
 				<string>Deletes something</string>
 				<key>value</key>
 				<string>Verwijder</string>
+			</dict>
+			<key>move</key>
+			<dict>
+				<key>value</key>
+				<string>Verhuis</string>
 			</dict>
 			<key>no</key>
 			<dict>
@@ -1818,6 +1857,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 				<key>value</key>
 				<string>Je kunt dan inloggen door het verzoek te autoriseren.</string>
 			</dict>
+		</dict>
+		<key>move_data</key>
+		<dict>
+			<key>value</key>
+			<string>Verhuis backup data</string>
 		</dict>
 		<key>news_from_keyn</key>
 		<dict>

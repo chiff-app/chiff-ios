@@ -27,6 +27,10 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
     }
 
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Properties.environment == .prod ? 4 : 5
+    }
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "settings.settings".localized
 //        switch section {
@@ -95,6 +99,23 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     // MARK: - Actions
 
+    @IBAction func moveBackupData(_ sender: UIButton) {
+        let alert = UIAlertController(title: "popups.questions.move_data".localized, message: "popups.questions.move_data_description".localized, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
+            BackupManager.moveToProduction { (error) in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        self.showAlert(message: "\("errors.moving_data".localized): \(error.localizedDescription)")
+                    } else {
+                        self.showAlert(message: "popups.responses.data_move_success".localized, title: "popups.responses.data_move_success_title".localized)
+                    }
+                }
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
         if sender.isOn {
@@ -104,7 +125,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                     Properties.infoNotifications = subscribed ? .yes : .no
                     if case let .failure(error) = result {
                         sender.isOn = subscribed
-                        self.showError(message: "\("errors.subscribing".localized): \(error)")
+                        self.showAlert(message: "\("errors.subscribing".localized): \(error)")
                     }
                     sender.isUserInteractionEnabled = true
                 }
@@ -116,7 +137,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
                     Properties.infoNotifications = subscribed ? .yes : .no
                     if case let .failure(error) = result {
                         sender.isOn = subscribed
-                        self.showError(message: "\("errors.unsubscribing".localized): \(error)")
+                        self.showAlert(message: "\("errors.unsubscribing".localized): \(error)")
                     }
                     sender.isUserInteractionEnabled = true
                 }

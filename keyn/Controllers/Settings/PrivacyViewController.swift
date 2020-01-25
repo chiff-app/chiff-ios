@@ -97,7 +97,7 @@ class PrivacyViewController: UITableViewController {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_): self.deleteLocalData()
-                    case .failure(let error): self.showError(message: "\("errors.deleting".localized): \(error)")
+                    case .failure(let error): self.showAlert(message: "\("errors.deleting".localized): \(error)")
                     }
                 }
             }

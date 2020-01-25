@@ -87,7 +87,7 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 delegate.updateAccount(account: account)
             } catch {
-                showError(message: "errors.delete_url".localized.capitalizedFirstLetter)
+                showAlert(message: "errors.delete_url".localized.capitalizedFirstLetter)
             }
         }
     }
