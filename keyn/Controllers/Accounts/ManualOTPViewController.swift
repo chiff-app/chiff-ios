@@ -77,7 +77,7 @@ class ManualOTPViewController: UITableViewController, TokenController {
                     self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
                 } catch {
                     Logger.shared.error("Error adding OTP", error: error)
-                    self.showError(message: "errors.add_otp".localized)
+                    self.showAlert(message: "errors.add_otp".localized)
                 }
             }
         }

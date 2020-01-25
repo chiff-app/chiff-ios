@@ -55,11 +55,6 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         reEnableBarButtonFont()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as? RootViewController)?.showGradient(true)
-    }
-
     private func loadAccountData() {
         do {
             websiteNameTextField.text = account.site.name
@@ -75,7 +70,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             userNameTextField.delegate = self
             userPasswordTextField.delegate = self
         } catch {
-            showError(message: "errors.otp_fetch".localized)
+            showAlert(message: "errors.otp_fetch".localized)
             Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
         }
     }

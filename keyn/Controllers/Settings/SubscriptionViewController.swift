@@ -144,7 +144,7 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             StoreManager.shared.startProductRequest()
         } else {
             // Warn the user that they are not allowed to make purchases.
-            showError(message: "Not authorized")
+            showAlert(message: "Not authorized")
         }
     }
 
@@ -216,7 +216,7 @@ extension SubscriptionViewController: StoreManagerDelegate {
 
     func storeManagerDidReceiveMessage(_ message: String) {
         activityView.stopAnimating()
-        showError(message: message)
+        showAlert(message: message)
     }
 
 }
@@ -230,7 +230,7 @@ extension SubscriptionViewController: StoreObserverDelegate {
 
     func storeObserverDidReceiveMessage(_ message: String) {
         upgradeButton.hideLoading()
-        showError(message: message)
+        showAlert(message: message)
     }
 
     func storeObserverPurchaseDidSucceed() {
@@ -245,17 +245,17 @@ extension SubscriptionViewController: StoreObserverDelegate {
 
     func storeObserverRestoreNoProducts() {
         upgradeButton.hideLoading()
-        showError(message: "settings.restore_failed".localized)
+        showAlert(message: "settings.restore_failed".localized)
     }
 
     func storeObserverPurchaseDidFail() {
         upgradeButton.hideLoading()
-        showError(message: "settings.purchase_failed".localized)
+        showAlert(message: "settings.purchase_failed".localized)
     }
 
     func storeObserverRestoreDidFail() {
         upgradeButton.hideLoading()
-        showError(message: "settings.restore_failed".localized)
+        showAlert(message: "settings.restore_failed".localized)
     }
 
     func storeObserverPurchaseCancelled() {

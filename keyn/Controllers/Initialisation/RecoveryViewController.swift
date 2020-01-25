@@ -138,7 +138,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                     DispatchQueue.main.async {
                     switch result {
                         case .failure(_):
-                            self.showError(message: "errors.seed_restore".localized)
+                            self.showAlert(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
                         case .success(let (total, failed)):
                             if failed > 0 {
