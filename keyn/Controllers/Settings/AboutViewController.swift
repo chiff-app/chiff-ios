@@ -19,12 +19,7 @@ class AboutViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         setVersionText()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(true)
-    }
-
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0: return "settings.legal".localized

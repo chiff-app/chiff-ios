@@ -11,7 +11,9 @@ numbers:
   five: 
     value: '5'
 
-errors:
+errors:  
+  error:
+    value: Fout
   failed_accounts_title:
     value: Fout
   failed_accounts_message:
@@ -97,6 +99,8 @@ errors:
     value: Fout bij verwijderen backup data
   deleting_account:
     value: Fout bij verwijderen account
+  moving_data:
+    value: Fout bij verhuizen backup data.
 
 popups:
   questions:
@@ -119,6 +123,9 @@ popups:
     reset_keyn:
       comment: Resets Keyn and deletes all data
       value: Reset Keyn?
+    move_data:
+      comment: Resets Keyn and deletes all data
+      value: Verhuis data?
     delete_data:
       comment: Delete local and remote data
       value: Verwijder data?
@@ -128,6 +135,9 @@ popups:
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: Dit verwijdert de seed en alle wachtwoorden.
+    move_data_description:
+      comment: This will delete the seed and all passwords.
+      value: Verhuis je backup data naar de productie database. Gebruik deze functie als je de App Store versie van Keyn wilt gaan gebruiken.
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.
@@ -164,6 +174,12 @@ popups:
       value: Nee, bedankt
     settings:
       value: Open instellingen
+    data_move_success:
+      value: De backup data is succesvol verhuisd. Je kunt nu de App Store versie van Keyn installeren.
+    data_move_success_title:
+      value: Gelukt!
+    move:
+      value: Verhuis
 
 accounts:
   didnt_save:
@@ -314,7 +330,7 @@ devices:
   session_name_example:
     value: Voorbeeld @ werk
   never:
-    value: never
+    value: nooit
   
 settings:
   settings:
@@ -339,6 +355,8 @@ settings:
     value: Over Keyn
   paper_backup:
     value: Paper backup
+  move_data:
+    value: Verhuis backup data
   terms_of_use:
     value: Algemene voorwaarden
   privacy_policy:

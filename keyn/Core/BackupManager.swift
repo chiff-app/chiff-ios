@@ -144,6 +144,22 @@ struct BackupManager {
         }
     }
 
+    static func moveToProduction(completionHandler: @escaping ((Error?) -> Void)) {
+        do {
+            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil) { (result) in
+                if case .failure(let error) = result {
+                    Logger.shared.error("BackupManager cannot move backup data.", error: error)
+                    completionHandler(error)
+                } else {
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            Logger.shared.error("BackupManager cannot move backup data.", error: error)
+            completionHandler(error)
+        }
+    }
+
     static func deleteKeys() {
         Keychain.shared.deleteAll(service: .backup)
     }

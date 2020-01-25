@@ -26,11 +26,6 @@ class PrivacyViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(true)
-    }
-
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "settings.privacy".localized : nil
     }
@@ -102,7 +97,7 @@ class PrivacyViewController: UITableViewController {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_): self.deleteLocalData()
-                    case .failure(let error): self.showError(message: "\("errors.deleting".localized): \(error)")
+                    case .failure(let error): self.showAlert(message: "\("errors.deleting".localized): \(error)")
                     }
                 }
             }

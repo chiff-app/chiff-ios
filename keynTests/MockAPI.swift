@@ -181,6 +181,8 @@ class MockAPI: APIProtocol {
             }
             mockData[pubKey] = [id: JSONObject()]
             return .success(JSONObject())
+        case .patch:
+            return .failure(MockAPIError.notImplemented)
         }
     }
 }

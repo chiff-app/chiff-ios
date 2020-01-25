@@ -30,7 +30,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
             } catch {
                 loadingActivity.stopAnimating()
                 Logger.shared.error("Error paring markdown")
-                showError(message: "Error parsing data")
+                showAlert(message: "Error parsing data")
             }
         } else {
             webView = WKWebView(frame: containerView.frame)
