@@ -6,8 +6,9 @@ import UIKit
 import UserNotifications
 import LocalAuthentication
 
-enum TeamSessionError: Error {
+enum TeamSessionError: KeynError {
     case adminDelete
+    case logoPathNotFound
 }
 
 class TeamSession: Session {
@@ -20,8 +21,15 @@ class TeamSession: Session {
     var isAdmin: Bool
     var version: Int
     var title: String
+    var logoPath: String? {
+        let filemgr = FileManager.default
+        return filemgr.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("team_logo_\(id).png").path
+    }
     var logo: UIImage? {
-        return UIImage(contentsOfFile: "team_logo_\(id).png")
+        guard let path = logoPath else {
+            return nil
+        }
+        return UIImage(contentsOfFile: path)
     }
     var accountCount: Int {
         return Properties.getTeamAccountCount(teamId: id)
@@ -40,7 +48,6 @@ class TeamSession: Session {
         case isAdmin
         case version
         case title
-//        case logo
     }
 
     required init(from decoder: Decoder) throws {
@@ -234,6 +241,41 @@ class TeamSession: Session {
         let ciphertext = try Crypto.shared.convertFromBase64(from: seed)
         let (data, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
         return data
+    }
+
+    func updateLogo() {
+        do {
+            let filemgr = FileManager.default
+//            var headers: [String:String]? = nil
+            guard let path = logoPath else {
+                throw TeamSessionError.logoPathNotFound
+            }
+//            if filemgr.fileExists(atPath: path), let creationDate = (try? filemgr.attributesOfItem(atPath: path) as NSDictionary)?.fileCreationDate() {
+//                headers = ["modified-since": "\(creationDate.timeIntervalSince1970)"]
+//                let rfcDateFormat = DateFormatter()
+//                rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+//                headers["modified-since"] = rfcDateFormat.string(from: creationDate)
+//            }
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/logo", privKey: try signingPrivKey(), body: nil) { result in
+                do {
+                    let dict = try result.get()
+                    guard let logo = dict["logo"] as? String else {
+                        return
+                    }
+                    guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
+                        throw CodingError.unexpectedData
+                    }
+                    if filemgr.fileExists(atPath: path) {
+                        try filemgr.removeItem(atPath: path)
+                    }
+                    filemgr.createFile(atPath: path, contents: data, attributes: nil)
+                } catch {
+                    Logger.shared.error("Error retrieving logo", error: error)
+                }
+            }
+        } catch {
+            Logger.shared.error("Error retrieving logo", error: error)
+        }
     }
 
 }
