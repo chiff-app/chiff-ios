@@ -76,6 +76,12 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because subsequent don't apply to addBulk request
+        case .adminLogin:
+            guard browserTab != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no browser tab.")
+                return false
+            }
+            return true // Return here because subsequent don't apply to adminLogin request
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
@@ -146,7 +152,7 @@ struct KeynPairingResponse: Codable {
     let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
     let userID: String
     let environment: String
-    let accounts: AccountList
+    let accounts: [String: SessionAccount]
     let type: KeynMessageType
     let errorLogging: Bool
     let analyticsLogging: Bool
@@ -154,27 +160,38 @@ struct KeynPairingResponse: Codable {
 }
 
 /*
- * Keyn account list.
+ * Keyn Responses.
  *
  * Direction: app -> browser
  */
-typealias AccountList = [String:JSONAccount]
+struct KeynTeamPairingResponse: Codable {
+    let sessionID: String
+    let pubKey: String
+    let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
+    let userID: String
+    let environment: String
+    let type: KeynMessageType
+    let version: Int
+    let arn: String
+}
 
-struct JSONAccount: Codable {
+struct SessionAccount: Codable {
+    let id: String
     let askToLogin: Bool?
     let askToChange: Bool?
     let username: String
-    let sites: [JSONSite]
+    let sites: [SessionSite]
 
     init(account: Account) {
+        self.id = account.id
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
         self.username = account.username
-        self.sites = account.sites.map({ JSONSite(site: $0) })
+        self.sites = account.sites.map({ SessionSite(site: $0) })
     }
 }
 
-struct JSONSite: Codable {
+struct SessionSite: Codable {
     let id: String
     let url: String
     let name: String
@@ -186,7 +203,18 @@ struct JSONSite: Codable {
     }
 }
 
-struct BackupAccount: Codable {
+struct BackupTeamAccount: Codable {
+    let id: String
+    var username: String
+    var sites: [Site]
+    var passwordIndex: Int
+    var passwordOffset: [Int]?
+    var tokenURL: URL?
+    var tokenSecret: Data?
+}
+
+
+struct BackupUserAccount: Codable {
     let id: String
     var username: String
     var sites: [Site]
@@ -215,7 +243,7 @@ struct BackupAccount: Codable {
         case version
     }
 
-    init(account: Account, tokenURL: URL?, tokenSecret: Data?) {
+    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites

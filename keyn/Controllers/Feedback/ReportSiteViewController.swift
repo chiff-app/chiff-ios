@@ -101,7 +101,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         Groetjes!
         id: \(Properties.userId ?? "not set")
         """
-        API.shared.request(endpoint: .analytics, path: nil, parameters: nil, method: .post, signature: nil, body: message.data) { (result) in
+        API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data) { (result) in
             if case let .failure(error) = result {
                 Logger.shared.warning("Error posting feedback", error: error)
             }

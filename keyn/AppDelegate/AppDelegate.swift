@@ -109,13 +109,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func clearUserData() {
         #if DEBUG
         // FOR TESTING PURPOSES
-        //Session.deleteAll() // Uncomment if session keys should be cleaned before startup
-//        Account.deleteAll()   // Uncomment if passwords should be cleaned before startup
-//        try? Seed.delete()      // Uncomment if you want to force seed regeneration
-//        try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: .aws) // Uncomment to delete snsDeviceEndpointArn from Keychain
-//        NotificationManager.shared.deleteKeys()
-//        BackupManager.shared.deleteKeys()
-//        Questionnaire.cleanFolder()
+        //TeamSession.deleteAll() // Uncomment if session keys should be cleaned before startup
+        //UserAccount.deleteAll()   // Uncomment if passwords should be cleaned before startup
+        //try? Seed.delete()      // Uncomment if you want to force seed regeneration
+        //try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
+        //NotificationManager.shared.deleteKeys()
+        //BackupManager.deleteAll()
+        //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
         #endif
     }

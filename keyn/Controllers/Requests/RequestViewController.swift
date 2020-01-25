@@ -34,7 +34,7 @@ class RequestViewController: UIViewController {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         switch authorizationGuard.type {
-        case .login, .addToExisting:
+        case .login, .addToExisting, .adminLogin:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
             Logger.shared.analytics(.loginRequestOpened)
         case .add, .addAndLogin:
@@ -66,7 +66,7 @@ class RequestViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let account):
-                    if let account = account, account.hasOtp {
+                    if let account = account as? UserAccount, account.hasOtp {
                         AuthenticationGuard.shared.hideLockWindow()
                         self.account = account
                         self.showOtp()
@@ -79,10 +79,14 @@ class RequestViewController: UIViewController {
                         switch error {
                         case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
                         case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+                        case .noTeamSessionFound:
+                            self.showAlert(message: "You are not part of a team.")
+                        case .notAdmin:
+                            self.showAlert(message: "You are not the team admin.")
                         }
                         AuthenticationGuard.shared.hideLockWindow()
                     } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                        self.showError(message: errorMessage)
+                        self.showAlert(message: errorMessage)
                         Logger.shared.error("Error authorizing request", error: error)
                     }
                 }
@@ -125,25 +129,25 @@ class RequestViewController: UIViewController {
     private func success() {
         var autoClose = true
         switch authorizationGuard.type {
-            case .login, .addToExisting:
-                successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            case .add, .addAndLogin:
-                successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-                autoClose = setAccountsLeft()
-            case .addBulk:
-                successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
-                successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-                autoClose = setAccountsLeft()
-            case .change:
-                successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
-            case .fill:
-                successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
-                successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-            default:
-                requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
+        case .login, .addToExisting, .adminLogin:
+            successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        case .add, .addAndLogin:
+            successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
+            autoClose = setAccountsLeft()
+        case .addBulk:
+            successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
+            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
+            autoClose = setAccountsLeft()
+        case .change:
+            successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
+        case .fill:
+            successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        default:
+            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
         self.authorized = true
         self.showSuccessView()
@@ -196,7 +200,8 @@ class RequestViewController: UIViewController {
     @IBAction func authenticate(_ sender: UIButton) {
         if let factor = token?.generator.factor, case .counter(_) = factor, let newToken = token?.updatedToken() {
             self.token = newToken
-            try? account?.setOtp(token: newToken)
+            var userAccount = account as? UserAccount
+            try? userAccount?.setOtp(token: newToken)
             successTextLabel.text = newToken.currentPasswordSpaced
         } else {
             acceptRequest()

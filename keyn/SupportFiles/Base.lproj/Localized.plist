@@ -507,6 +507,16 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Last activity:</string>
+		</dict>
+		<key>created</key>
+		<dict>
+			<key>value</key>
+			<string>Created:</string>
+		</dict>
 		<key>devices</key>
 		<dict>
 			<key>comment</key>
@@ -514,10 +524,20 @@
 			<key>value</key>
 			<string>devices</string>
 		</dict>
+		<key>end_session</key>
+		<dict>
+			<key>value</key>
+			<string>End session</string>
+		</dict>
 		<key>footer</key>
 		<dict>
 			<key>value</key>
 			<string>You can pair with as many devices as you want.</string>
+		</dict>
+		<key>never</key>
+		<dict>
+			<key>value</key>
+			<string>nooit</string>
 		</dict>
 		<key>no_push_warning_text</key>
 		<dict>
@@ -578,10 +598,50 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Set up computer</string>
 		</dict>
+		<key>session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You can always pair again with your device by scanning the QR-code.</string>
+		</dict>
+		<key>session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Session details</string>
+		</dict>
+		<key>session_name</key>
+		<dict>
+			<key>value</key>
+			<string>Name</string>
+		</dict>
+		<key>session_name_example</key>
+		<dict>
+			<key>value</key>
+			<string>Example @ work</string>
+		</dict>
 		<key>start_pairing</key>
 		<dict>
 			<key>value</key>
 			<string>You haven't set up Keyn on your computer yet.</string>
+		</dict>
+		<key>team_auxiliary_title</key>
+		<dict>
+			<key>value</key>
+			<string>Team accounts:</string>
+		</dict>
+		<key>team_session_admin_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You are the admin of this team 🎉.\nIf you don't want this burden, you can end the session in the admin panel.</string>
+		</dict>
+		<key>team_session_detail_footer</key>
+		<dict>
+			<key>value</key>
+			<string>You will lose access to all shared accounts by ending the team session.</string>
+		</dict>
+		<key>team_session_detail_header</key>
+		<dict>
+			<key>value</key>
+			<string>Team details</string>
 		</dict>
 	</dict>
 	<key>errors</key>
@@ -632,6 +692,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error deleting account</string>
 		</dict>
+		<key>error</key>
+		<dict>
+			<key>value</key>
+			<string>Error</string>
+		</dict>
 		<key>failed_accounts_message</key>
 		<dict>
 			<key>value</key>
@@ -678,6 +743,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 				<key>value</key>
 				<string>Authentication could not start, because passcode is not set on the device.</string>
 			</dict>
+		</dict>
+		<key>moving_data</key>
+		<dict>
+			<key>value</key>
+			<string>Error moving backup data.</string>
 		</dict>
 		<key>no_camera</key>
 		<dict>
@@ -746,6 +816,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>Error restoring backup</string>
+		</dict>
+		<key>session_delete</key>
+		<dict>
+			<key>value</key>
+			<string>Error deleting account</string>
 		</dict>
 		<key>session_error_no_endpoint</key>
 		<dict>
@@ -1042,7 +1117,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>accounts_from</key>
 		<dict>
 			<key>value</key>
-			<string>%@ accounts from %@ on %@</string>
+			<string>%@ accounts from %@.</string>
 		</dict>
 		<key>add_account</key>
 		<dict>
@@ -1068,13 +1143,6 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Fill password</string>
-		</dict>
-		<key>in_on</key>
-		<dict>
-			<key>description</key>
-			<string>GitHub in Firefox on MacOS</string>
-			<key>value</key>
-			<string>%@ in %@ on %@.</string>
 		</dict>
 		<key>login</key>
 		<dict>
@@ -1125,6 +1193,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<integer>18</integer>
 			<key>value</key>
 			<string>Let's set up your computer!</string>
+		</dict>
+		<key>team_admin_login</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams login</string>
 		</dict>
 		<key>this_on_that</key>
 		<dict>
@@ -1219,6 +1292,20 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<key>value</key>
 				<string>You are trying to restore a backup while Keyn has already been initialized. Do you want to delete Keyn's current data?</string>
 			</dict>
+			<key>move_data</key>
+			<dict>
+				<key>comment</key>
+				<string>Resets Keyn and deletes all data</string>
+				<key>value</key>
+				<string>Move data?</string>
+			</dict>
+			<key>move_data_description</key>
+			<dict>
+				<key>comment</key>
+				<string>This will delete the seed and all passwords.</string>
+				<key>value</key>
+				<string>This moves your backup data to the production database. Use this if you want to switch to the App Store version of Keyn.</string>
+			</dict>
 			<key>questionnaire_permission</key>
 			<dict>
 				<key>comment</key>
@@ -1279,12 +1366,27 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<key>value</key>
 				<string>Continue</string>
 			</dict>
+			<key>data_move_success</key>
+			<dict>
+				<key>value</key>
+				<string>The backup data was successfully moved. You can now install the App Store version of Keyn.</string>
+			</dict>
+			<key>data_move_success_title</key>
+			<dict>
+				<key>value</key>
+				<string>Succeeded!</string>
+			</dict>
 			<key>delete</key>
 			<dict>
 				<key>comment</key>
 				<string>Deletes something</string>
 				<key>value</key>
 				<string>Delete</string>
+			</dict>
+			<key>move</key>
+			<dict>
+				<key>value</key>
+				<string>Move</string>
 			</dict>
 			<key>no</key>
 			<dict>
@@ -1454,6 +1556,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Fill password successful</string>
+		</dict>
+		<key>keyn_for_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn for teams</string>
 		</dict>
 		<key>login_keyn_next_time</key>
 		<dict>
@@ -1752,6 +1859,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 				<string>You can login by authorizing the request.</string>
 			</dict>
 		</dict>
+		<key>move_data</key>
+		<dict>
+			<key>value</key>
+			<string>Move backup data</string>
+		</dict>
 		<key>news_from_keyn</key>
 		<dict>
 			<key>value</key>
@@ -1771,6 +1883,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Keyn Premium is already enabled if you're participating in the beta program</string>
+		</dict>
+		<key>premium_teams</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn Premium is already enabled because you have an active Keyn for Teams session.</string>
 		</dict>
 		<key>privacy</key>
 		<dict>

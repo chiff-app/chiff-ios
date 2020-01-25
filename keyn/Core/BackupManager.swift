@@ -8,15 +8,14 @@ import DeviceCheck
 
 struct BackupManager {
 
-    private let CRYPTO_CONTEXT = "keynback"
-    static let shared = BackupManager()
-    
-    var hasKeys: Bool {
+    static var hasKeys: Bool {
         return Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) &&
         Keychain.shared.has(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) &&
         Keychain.shared.has(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup)
     }
-    
+
+    private static let CRYPTO_CONTEXT = "keynback"
+
     private enum MessageIdentifier {
         static let httpMethod = "httpMethod"
         static let timestamp = "timestamp"
@@ -26,10 +25,8 @@ struct BackupManager {
         static let endpoint = "endpoint"
         static let environment = "environment"
     }
-    
-    private init() {}
 
-    func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
@@ -51,7 +48,7 @@ struct BackupManager {
                 if let data = data {
                     message[MessageIdentifier.token] = data.base64EncodedString()
                 }
-                API.shared.signedRequest(endpoint: .backup, method: .put, message: message, pubKey: pubKey, privKey: privKey, body: nil) { result in
+                API.shared.signedRequest(method: .post, message: message, path: "users/\(pubKey)", privKey: privKey, body: nil) { result in
                     switch result {
                     case .success(_):
                         completionHandler(.success(()))
@@ -67,7 +64,7 @@ struct BackupManager {
         }
     }
     
-    func backup(account: BackupAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
+    static func backup(account: BackupUserAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
         do {
             let accountData = try JSONEncoder().encode(account)
             let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
@@ -76,7 +73,7 @@ struct BackupManager {
                 MessageIdentifier.id: account.id,
                 MessageIdentifier.data: ciphertext.base64
             ]
-            API.shared.signedRequest(endpoint: .backup, method: .post, message: message, pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .put, message: message, path: "users/\(try publicKey())/accounts/\(account.id)", privKey: try privateKey(), body: nil) { result in
                 switch result {
                 case .success(_):
                     completionHandler(true)
@@ -90,17 +87,17 @@ struct BackupManager {
         }
     }
     
-    func deleteAccount(accountId: String) throws {
-        API.shared.signedRequest(endpoint: .backup, method: .delete, message: [MessageIdentifier.id: accountId], pubKey: try publicKey(), privKey: try privateKey(), body: nil) { result in
+    static func deleteAccount(accountId: String) throws {
+        API.shared.signedRequest(method: .delete, message: [MessageIdentifier.id: accountId], path: "users/\(try publicKey())/accounts/\(accountId)", privKey: try privateKey(), body: nil) { result in
             if case let .failure(error) = result {
                 Logger.shared.error("BackupManager cannot delete account.", error: error)
             }
         }
     }
 
-    func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
-            API.shared.signedRequest(endpoint: .backup, method: .delete, message: nil, pubKey: APIEndpoint.deleteAll(for: try publicKey()), privKey: try privateKey(), body: nil) { result in
+            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil) { result in
                 switch result {
                 case .success(_): completionHandler(.success(()))
                 case .failure(let error):
@@ -113,7 +110,7 @@ struct BackupManager {
         }
     }
     
-    func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) throws {
+    static func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
@@ -122,7 +119,7 @@ struct BackupManager {
         } else {
             pubKey = try publicKey()
         }
-        API.shared.signedRequest(endpoint: .backup, method: .get, message: nil, pubKey: pubKey, privKey: try privateKey(), body: nil) { result in
+        API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/accounts", privKey: try privateKey(), body: nil) { result in
             switch result {
             case .success(let dict):
                 var failedAccounts = [String]()
@@ -131,7 +128,7 @@ struct BackupManager {
                         do {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
                             let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
-                            try Account.save(accountData: accountData, id: id, context: context)
+                            try UserAccount.restore(accountData: accountData, id: id, context: context)
                         } catch {
                             failedAccounts.append(id)
                             Logger.shared.error("Could not restore account.", error: error)
@@ -147,23 +144,39 @@ struct BackupManager {
         }
     }
 
-    func deleteKeys() {
+    static func moveToProduction(completionHandler: @escaping ((Error?) -> Void)) {
+        do {
+            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil) { (result) in
+                if case .failure(let error) = result {
+                    Logger.shared.error("BackupManager cannot move backup data.", error: error)
+                    completionHandler(error)
+                } else {
+                    completionHandler(nil)
+                }
+            }
+        } catch {
+            Logger.shared.error("BackupManager cannot move backup data.", error: error)
+            completionHandler(error)
+        }
+    }
+
+    static func deleteKeys() {
         Keychain.shared.deleteAll(service: .backup)
     }
 
-    func publicKey() throws -> String {
+    static func publicKey() throws -> String {
         let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
         let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
-    func privateKey() throws -> Data {
+    static func privateKey() throws -> Data {
         return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
     }
 
     // MARK: - Private
     
-    private func createSigningKeypair(seed: Data) throws -> (Data, String, String) {
+    private static func createSigningKeypair(seed: Data) throws -> (Data, String, String) {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)
         try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: keyPair.privKey)
@@ -173,7 +186,7 @@ struct BackupManager {
         return (keyPair.privKey, base64PubKey, userId)
     }
     
-    private func createEncryptionKey(seed: Data) throws {
+    private static func createEncryptionKey(seed: Data) throws {
         let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT)
         try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
     }

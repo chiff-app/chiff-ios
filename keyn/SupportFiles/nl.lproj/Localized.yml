@@ -11,7 +11,9 @@ numbers:
   five: 
     value: '5'
 
-errors:
+errors:  
+  error:
+    value: Fout
   failed_accounts_title:
     value: Fout
   failed_accounts_message:
@@ -79,6 +81,8 @@ errors:
     value: Fout bij herstellen backup
   session_invalid:
     value: Deze QR-code is ongeldig
+  session_delete:
+    value: Fout bij verwijderen van de sessie
   token_creation:
     value: Fout bij aanmaken OTP token
   add_otp:
@@ -95,6 +99,8 @@ errors:
     value: Fout bij verwijderen backup data
   deleting_account:
     value: Fout bij verwijderen account
+  moving_data:
+    value: Fout bij verhuizen backup data.
 
 popups:
   questions:
@@ -117,6 +123,9 @@ popups:
     reset_keyn:
       comment: Resets Keyn and deletes all data
       value: Reset Keyn?
+    move_data:
+      comment: Resets Keyn and deletes all data
+      value: Verhuis data?
     delete_data:
       comment: Delete local and remote data
       value: Verwijder data?
@@ -126,6 +135,9 @@ popups:
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: Dit verwijdert de seed en alle wachtwoorden.
+    move_data_description:
+      comment: This will delete the seed and all passwords.
+      value: Verhuis je backup data naar de productie database. Gebruik deze functie als je de App Store versie van Keyn wilt gaan gebruiken.
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.
@@ -162,6 +174,12 @@ popups:
       value: Nee, bedankt
     settings:
       value: Open instellingen
+    data_move_success:
+      value: De backup data is succesvol verhuisd. Je kunt nu de App Store versie van Keyn installeren.
+    data_move_success_title:
+      value: Gelukt!
+    move:
+      value: Verhuis
 
 accounts:
   didnt_save:
@@ -287,6 +305,32 @@ devices:
     value: Koppelen met je computer
   'on':
     value: op
+  session_name:
+    value: Naam
+  end_session:
+    value: Beïndig sessie
+  created:
+    value: 'Aangemaakt:'
+  auxiliary_title:
+    value: 'Laatste activiteit:'
+  team_auxiliary_title:
+    value: 'Team accounts:'
+  session_detail_header:
+    value: Sessie details
+  team_session_detail_header:
+    value: Team details
+  session_detail_footer:
+    value: Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.
+  team_session_detail_footer:
+    value: Je raakt toegang tot al je team-accounts kwijt als je deze sessie beëindigt.
+  team_session_admin_detail_footer:
+    value: |-
+      Je bent admin van dit team 🎉.
+      Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel.
+  session_name_example:
+    value: Voorbeeld @ werk
+  never:
+    value: nooit
   
 settings:
   settings:
@@ -311,6 +355,8 @@ settings:
     value: Over Keyn
   paper_backup:
     value: Paper backup
+  move_data:
+    value: Verhuis backup data
   terms_of_use:
     value: Algemene voorwaarden
   privacy_policy:
@@ -358,6 +404,8 @@ settings:
     value: Lees meer
   premium_beta:
     value: Keyn Premium is automatisch ingeschakeld als je deelneemt aan het betaprogramma
+  premium_teams:
+    value: Keyn Premium is automatisch ingeschakeld omdate je een actieve Keyn voor Teams sessie hebt.
   success:
     value: Gelukt
   restore_successful:
@@ -455,6 +503,8 @@ backup:
     value: Paper backup ontsleutelen
 
 requests:
+  keyn_for_teams:
+    value: Keyn voor teams
   accounts:
     value: accounts
     comment: The word for 'accounts'
@@ -558,15 +608,15 @@ notifications:
     value: Inloggen
   fill_password:
     value: Wachtwoord invullen
+  team_admin_login:
+    value: Inloggen Keyn voor teams
   pairing:
     value: Koppelen
   this_on_that:
     value: '%@ op %@.'
-  in_on:
-    value: '%@ in %@ op %@.'
     description: GitHub in Firefox op MacOS
   accounts_from:
-    value: '%@ accounts van %@ op %@'
+    value: '%@ accounts van %@.'
   onboarding_reminder_title:
     first:  
       value: Je bent er bijna!

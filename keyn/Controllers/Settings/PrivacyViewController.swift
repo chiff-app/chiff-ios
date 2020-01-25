@@ -26,11 +26,6 @@ class PrivacyViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        (tabBarController as! RootViewController).showGradient(true)
-    }
-
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "settings.privacy".localized : nil
     }
@@ -98,11 +93,11 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.delete_data".localized, message: "settings.delete_data_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            BackupManager.shared.deleteAllAccounts() { result in
+            BackupManager.deleteAllAccounts() { result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(_): self.deleteLocalData()
-                    case .failure(let error): self.showError(message: "\("errors.deleting".localized): \(error)")
+                    case .failure(let error): self.showAlert(message: "\("errors.deleting".localized): \(error)")
                     }
                 }
             }
@@ -125,12 +120,13 @@ class PrivacyViewController: UITableViewController {
     // MARK: - Private functions
 
     private func deleteLocalData() {
-        Session.deleteAll()
-        Account.deleteAll()
+        BrowserSession.deleteAll()
+        TeamSession.deleteAll()
+        UserAccount.deleteAll()
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()
         NotificationManager.shared.deleteKeys()
-        BackupManager.shared.deleteKeys()
+        BackupManager.deleteKeys()
         Properties.purgePreferences()
     }
 
