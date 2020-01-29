@@ -245,37 +245,45 @@ class AuthorizationGuard {
     }
 
     private func teamAdminLogin(completionHandler: @escaping (Error?) -> Void) {
-        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
-            var success = false
+        do {
+            guard let teamSession = try TeamSession.all().first else {
+                throw AuthorizationError.noTeamSessionFound
+            } // TODO: What if there's more than 1?
+            if (teamSession.isAdmin) {
+                LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
+                    var success = false
 
-            func onSuccess(context: LAContext?) throws {
-                guard let teamSession = try TeamSession.all().first else {
-                    throw AuthorizationError.noTeamSessionFound
-                } // TODO: What if there's more than 1?
-                API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
-                    do {
-                        let dict = try result.get()
-                        guard let teamSeed = dict["team_seed"] as? String else {
-                            throw CodingError.unexpectedData
+                    func onSuccess(context: LAContext?) throws {
+                        API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
+                            do {
+                                let dict = try result.get()
+                                guard let teamSeed = dict["team_seed"] as? String else {
+                                    throw CodingError.unexpectedData
+                                }
+                                let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
+                                self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
+                            } catch {
+                                print(error)
+                                completionHandler(error)
+                            }
                         }
-                        let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
-                        self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
+                    }
+
+                    defer {
+                        AuthorizationGuard.authorizationInProgress = false
+                    }
+
+                    do {
+                        try onSuccess(context: result.get())
                     } catch {
-                        print(error)
                         completionHandler(error)
                     }
                 }
+            } else {
+                AuthorizationGuard.showError(errorMessage: "errors.only_admins".localized)
             }
-
-            defer {
-                AuthorizationGuard.authorizationInProgress = false
-            }
-
-            do {
-                try onSuccess(context: result.get())
-            } catch {
-                completionHandler(error)
-            }
+        } catch {
+            AuthorizationGuard.showError(errorMessage: "errors.session_not_found".localized)
         }
     }
 
