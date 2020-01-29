@@ -101,6 +101,10 @@ errors:
     value: Error deleting account
   moving_data:
     value: Error moving backup data.
+  only_admins:
+    value: Only admins are allowed to perform this action.
+  session_not_found:
+    value: Session was not found.
 
 popups:
   questions:
