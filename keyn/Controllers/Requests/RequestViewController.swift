@@ -85,8 +85,12 @@ class RequestViewController: UIViewController {
                             self.showAlert(message: "You are not the team admin.")
                         }
                         AuthenticationGuard.shared.hideLockWindow()
+                    } else if let error = error as? APIError {
+                        Logger.shared.error("APIError authorizing request", error: error)
                     } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                         self.showAlert(message: errorMessage)
+                        Logger.shared.error("Error authorizing request", error: error)
+                    } else {
                         Logger.shared.error("Error authorizing request", error: error)
                     }
                 }
