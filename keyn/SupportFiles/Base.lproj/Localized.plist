@@ -303,8 +303,6 @@
 		</dict>
 		<key>what_if</key>
 		<dict>
-			<key>start</key>
-			<integer>24</integer>
 			<key>value</key>
 			<string>What if your phone gets lost or stolen?</string>
 		</dict>
@@ -550,10 +548,6 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
-			<key>begin</key>
-			<integer>17</integer>
-			<key>end</key>
-			<integer>21</integer>
 			<key>value</key>
 			<string>We don't want to push you...</string>
 		</dict>
@@ -581,8 +575,6 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
-			<key>start</key>
-			<integer>6</integer>
 			<key>value</key>
 			<string>Go to keyn.app/go</string>
 		</dict>
@@ -749,6 +741,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Error moving backup data.</string>
 		</dict>
+		<key>no_admin</key>
+		<dict>
+			<key>value</key>
+			<string>You are not the team admin.</string>
+		</dict>
 		<key>no_camera</key>
 		<dict>
 			<key>comment</key>
@@ -764,6 +761,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<string>Unfortunately, Keyn doesn't work without push notifications :(
 
 Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt; Notifications.</string>
+		</dict>
+		<key>no_team</key>
+		<dict>
+			<key>value</key>
+			<string>You are not part of a team.</string>
 		</dict>
 		<key>otp_fetch</key>
 		<dict>
@@ -950,19 +952,11 @@ Thank you!</string>
 		</dict>
 		<key>begin_passwordless</key>
 		<dict>
-			<key>end</key>
-			<integer>29</integer>
-			<key>start</key>
-			<integer>17</integer>
 			<key>value</key>
 			<string>Let's begin your passwordless life.</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
-			<key>end</key>
-			<integer>40</integer>
-			<key>start</key>
-			<integer>30</integer>
 			<key>value</key>
 			<string>Bye bye forgetting passwords, hello Keyn</string>
 		</dict>
@@ -988,8 +982,6 @@ Thank you!</string>
 		</dict>
 		<key>face_id</key>
 		<dict>
-			<key>start</key>
-			<integer>0</integer>
 			<key>value</key>
 			<string>face recognition</string>
 		</dict>
@@ -1017,10 +1009,6 @@ Thank you!</string>
 		</dict>
 		<key>keyn_uses_push</key>
 		<dict>
-			<key>begin</key>
-			<integer>18</integer>
-			<key>end</key>
-			<integer>26</integer>
 			<key>value</key>
 			<string>To log in to your computer, Keyn uses push notifications.</string>
 		</dict>
@@ -1041,19 +1029,11 @@ Thank you!</string>
 		</dict>
 		<key>no_pushing</key>
 		<dict>
-			<key>end</key>
-			<integer>21</integer>
-			<key>start</key>
-			<integer>17</integer>
 			<key>value</key>
 			<string>We don't want to push you...</string>
 		</dict>
 		<key>one_minute_away</key>
 		<dict>
-			<key>end</key>
-			<integer>15</integer>
-			<key>start</key>
-			<integer>6</integer>
 			<key>value</key>
 			<string>You're 1 minute away from forgetting your passwords</string>
 		</dict>
@@ -1069,6 +1049,8 @@ Thank you!</string>
 		</dict>
 		<key>setup_keyn</key>
 		<dict>
+			<key>comment</key>
+			<string></string>
 			<key>value</key>
 			<string>Setup Keyn</string>
 		</dict>
@@ -1089,8 +1071,6 @@ Thank you!</string>
 		</dict>
 		<key>touch_id</key>
 		<dict>
-			<key>start</key>
-			<integer>5</integer>
 			<key>value</key>
 			<string>your fingerprint</string>
 		</dict>
@@ -1187,10 +1167,6 @@ Sensitive data is never shared and everything is anonymous.</string>
 		</dict>
 		<key>pairing</key>
 		<dict>
-			<key>end</key>
-			<integer>26</integer>
-			<key>start</key>
-			<integer>18</integer>
 			<key>value</key>
 			<string>Let's set up your computer!</string>
 		</dict>
@@ -1473,6 +1449,8 @@ Sensitive data is never shared and everything is anonymous.</string>
 		</dict>
 		<key>accounts_left_1</key>
 		<dict>
+			<key>comment</key>
+			<string></string>
 			<key>value</key>
 			<string>You can only add</string>
 		</dict>
@@ -1794,10 +1772,6 @@ Sensitive data is never shared and everything is anonymous.</string>
 		</dict>
 		<key>how_keyn_works_on</key>
 		<dict>
-			<key>end</key>
-			<integer>8</integer>
-			<key>start</key>
-			<integer>4</integer>
 			<key>value</key>
 			<string>How Keyn works on</string>
 		</dict>
@@ -1909,7 +1883,7 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<key>privacy_policy</key>
 		<dict>
 			<key>value</key>
-			<string>Privacy policy</string>
+			<string>Privacy Policy</string>
 		</dict>
 		<key>read_more</key>
 		<dict>

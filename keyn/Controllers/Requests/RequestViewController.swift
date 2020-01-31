@@ -80,9 +80,9 @@ class RequestViewController: UIViewController {
                         case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
                         case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
                         case .noTeamSessionFound:
-                            self.showAlert(message: "You are not part of a team.")
+                            self.showAlert(message: "errors.no_team".localized)
                         case .notAdmin:
-                            self.showAlert(message: "You are not the team admin.")
+                            self.showAlert(message: "errors.no_admin".localized)
                         }
                         AuthenticationGuard.shared.hideLockWindow()
                     } else if let error = error as? APIError {
