@@ -224,7 +224,7 @@ devices:
     comment: Section title for devices
     value: Apparaten
   end_session:
-    value: Beïndig sessie
+    value: Beëindig sessie
   footer:
     value: Je kunt met zoveel apparaten koppelen als je wilt.
   never:
@@ -255,7 +255,7 @@ devices:
     comment: Cell title for scanning qr code
     value: Koppel nu
   session_detail_footer:
-    value: Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.
+    value: Je kunt je apparaat altijd opnieuw koppelen door de QR-code te scannen.
   session_detail_header:
     value: Sessie details
   session_name:
@@ -325,6 +325,8 @@ errors:
         ingesteld op de telefoon.
   moving_data:
     value: Fout bij verhuizen backup data.
+  no_admin:
+    value: Je bent geen beheerder van dit team.
   no_camera:
     comment: The camera is not available
     value: Camera niet beschikbaar
@@ -336,6 +338,8 @@ errors:
 
       Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via
       Instellingen > Keyn > Berichtgeving.
+  no_team:
+    value: Je bent geen onderdeel van een team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Fout bij ophalen OTP-code

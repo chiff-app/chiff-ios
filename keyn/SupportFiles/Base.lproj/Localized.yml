@@ -325,6 +325,8 @@ errors:
         device.
   moving_data:
     value: Error moving backup data.
+  no_admin:
+    value: You are not the team admin.
   no_camera:
     comment: The camera is not available
     value: Camera not available
@@ -336,6 +338,8 @@ errors:
 
       Turn them on if you want to use Keyn. You can do this in Settings > Keyn >
       Notifications.
+  no_team:
+    value: You are not part of a team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Error retrieving the OTP-code
