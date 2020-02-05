@@ -36,6 +36,7 @@ class TeamSession: Session {
     }
 
     static let CRYPTO_CONTEXT = "keynteam"
+    static let TEAM_SEED_CONTEXT = "teamseed"
     static var signingService: KeychainService = .signingTeamSessionKey
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
@@ -64,14 +65,8 @@ class TeamSession: Session {
 
     static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
-            let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
-
-            let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
-            let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
-            let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
-            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
-
+            let (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair, _) = try createTeamSessionKeys(browserPubKey: browserPubKeyData)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
 
             let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
@@ -94,6 +89,62 @@ class TeamSession: Session {
             Logger.shared.error("Error initiating session", error: error)
             completionHandler(.failure(error))
         }
+    }
+
+    static func createTeam(token: String, name: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+        do {
+            // Generate team seed
+            let teamSeed = try Crypto.shared.generateSeed(length: 32)
+            let teamBackupKey = try Crypto.shared.deriveKey(keyData: teamSeed, context: TEAM_SEED_CONTEXT, index: 1)
+            let teamEncryptionKey = try Crypto.shared.deriveKey(keyData: teamBackupKey, context: TEAM_SEED_CONTEXT, index: 0)
+            let teamKeyPair = try Crypto.shared.createSigningKeyPair(seed: teamBackupKey)
+
+            // Create admin user
+            let browserKeyPair = try Crypto.shared.createSessionKeyPair()
+            let (passwordSeed, encryptionKey, _, signingKeyPair, sharedSeed) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
+            guard let endpoint = Properties.endpoint else {
+                throw SessionError.noEndpoint
+            }
+            let user = TeamAdminUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint)
+            let role = TeamAdminRole(id: try Crypto.shared.generateRandomId(), users: [signingKeyPair.pubKey.base64])
+            let message = [
+                "name": name,
+                "token": token,
+                "roleId": role.id,
+                "userPubkey": user.pubkey,
+                "arn": user.arn,
+                "roleData": try role.encrypt(key: teamEncryptionKey),
+                "userData": try user.encrypt(key: teamEncryptionKey),
+                "seed": (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
+            ]
+            API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil) { (result) in
+                do {
+                    let _ = try result.get()
+                    let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "Admin @ \(name)", version: 2, isAdmin: true)
+                    try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+                    TeamSession.count += 1
+                    completionHandler(.success(session))
+                } catch is KeychainError {
+                    completionHandler(.failure(SessionError.exists))
+                } catch is CryptoError {
+                    completionHandler(.failure(SessionError.invalid))
+                } catch {
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch {
+            Logger.shared.error("Error creating team", error: error)
+            completionHandler(.failure(error))
+        }
+    }
+
+    static private func createTeamSessionKeys(browserPubKey: Data) throws -> (Data, Data, KeyPair, KeyPair, Data) {
+        let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
+        let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKey, privKey: keyPairForSharedKey.privKey)
+        let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
+        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
+        return (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair, sharedSeed)
     }
 
     init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool) {
@@ -273,6 +324,8 @@ class TeamSession: Session {
                     Logger.shared.error("Error retrieving logo", error: error)
                 }
             }
+        } catch APIError.statusCode(404) {
+            Logger.shared.warning("Logo not found")
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
         }

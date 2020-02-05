@@ -35,12 +35,19 @@ class Crypto {
 
     // MARK: - Key generation functions
 
-    func generateSeed() throws -> Data {
-        guard let seed = sodium.randomBytes.buf(length: SEED_SIZE) else {
+    func generateSeed(length: Int? = nil) throws -> Data {
+        guard let seed = sodium.randomBytes.buf(length: length ?? SEED_SIZE) else {
             throw CryptoError.randomGeneration
         }
 
         return seed.data
+    }
+
+    func generateRandomId() throws -> String {
+        guard let seed = sodium.randomBytes.buf(length: KEY_SIZE), let id = sodium.utils.bin2hex(seed) else {
+            throw CryptoError.randomGeneration
+        }
+        return id
     }
 
     func deriveKeyFromSeed(seed: Data, keyType: KeyType, context: String) throws -> Data {

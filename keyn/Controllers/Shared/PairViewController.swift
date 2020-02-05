@@ -22,7 +22,17 @@ class PairViewController: QRViewController {
     var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
-        guard (url.host == "keyn.app" && url.path == "/pair") || url.scheme == "keyn"  else {
+        if url.scheme == "keyn" { // legacy
+            Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
+            self.pair(url: url)
+        } else if url.host == "keyn.app" {
+            if url.path == "/pair" {
+                Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
+                self.pair(url: url)
+            } else if url.path == "/team" {
+                self.createTeam(url: url)
+            }
+        } else {
             Logger.shared.analytics(.qrCodeScanned, properties: [
                 .value: false,
                 .scheme: url.scheme ?? "no scheme"
@@ -30,13 +40,13 @@ class PairViewController: QRViewController {
             showAlert(message: "errors.session_invalid".localized, handler: super.errorHandler)
             return
         }
-        Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
-        self.pair(url: url)
     }
 
     private func pair(url: URL) {
         AuthorizationGuard.authorizePairing(url: url, authenticationCompletionHandler: { _ in
-            self.pairContainerDelegate.startLoading()
+            DispatchQueue.main.async {
+                self.pairContainerDelegate.startLoading()
+            }
         }) { (result) in
             DispatchQueue.main.async {
                 self.pairContainerDelegate.finishLoading()
@@ -67,6 +77,33 @@ class PairViewController: QRViewController {
                     }
                 }
             }
+        }
+    }
+
+    private func createTeam(url: URL) {
+        AuthorizationGuard.authorizeTeamCreation(url: url, authenticationCompletionHandler: { _ in
+            DispatchQueue.main.async {
+                self.pairContainerDelegate.startLoading()
+            }
+        }) { result in
+            DispatchQueue.main.async {
+                self.pairContainerDelegate.finishLoading()
+                switch result {
+                case .success(let session):
+                    self.pairControllerDelegate.sessionCreated(session: session)
+                case .failure(let error):
+                    switch error {
+                    case is LAError, is KeychainError:
+                        if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
+                            self.showAlert(message: authenticationError, handler: super.errorHandler)
+                        }
+                    default:
+                        Logger.shared.error("Unhandled QR code error during pairing.", error: error)
+                        self.showAlert(message: "errors.generic_error".localized, handler: super.errorHandler)
+                    }
+                }
+            }
+
         }
     }
 
