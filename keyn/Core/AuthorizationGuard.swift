@@ -347,6 +347,39 @@ class AuthorizationGuard {
         }
     }
 
+    static func authorizeTeamCreation(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+        guard !authorizationInProgress else {
+            return
+        }
+        defer {
+            authorizationInProgress = false
+        }
+        authorizationInProgress = true
+        do {
+            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"] else {
+                throw SessionError.invalid
+            }
+            LocalAuthenticationManager.shared.authenticate(reason: "Create team", withMainContext: mainContext) { (result) in
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
+                switch result {
+                case .success(_):
+                    authenticationCompletionHandler?(result)
+                    TeamSession.createTeam(token: token, name: name, completionHandler: completionHandler)
+                case .failure(let error):
+                    authenticationCompletionHandler?(result)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch let error as KeychainError {
+            Logger.shared.error("Keychain error retrieving session", error: error)
+            completionHandler(.failure(SessionError.invalid))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+
     static func authorizePairing(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         guard !authorizationInProgress else {
             return
