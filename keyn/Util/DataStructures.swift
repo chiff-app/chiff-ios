@@ -213,11 +213,11 @@ struct BackupTeamAccount: Codable {
     var tokenSecret: Data?
 }
 
-struct TeamAdminRole: Codable {
+struct TeamRole: Codable {
     let id: String
-    let name = "Admins"
-    let admins = true
-    let users: [String]
+    let name: String
+    let admins: Bool
+    var users: [String]
 
     func encrypt(key: Data) throws -> String {
         let data = try JSONEncoder().encode(self)
