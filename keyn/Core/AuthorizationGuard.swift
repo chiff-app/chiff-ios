@@ -366,7 +366,40 @@ class AuthorizationGuard {
                 switch result {
                 case .success(_):
                     authenticationCompletionHandler?(result)
-                    TeamSession.createTeam(token: token, name: name, completionHandler: completionHandler)
+                    Team().create(token: token, name: name, completionHandler: completionHandler)
+                case .failure(let error):
+                    authenticationCompletionHandler?(result)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch let error as KeychainError {
+            Logger.shared.error("Keychain error retrieving session", error: error)
+            completionHandler(.failure(SessionError.invalid))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+
+    static func authorizeTeamRestore(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+        guard !authorizationInProgress else {
+            return
+        }
+        defer {
+            authorizationInProgress = false
+        }
+        authorizationInProgress = true
+        do {
+            guard let parameters = url.queryParameters, let seed = parameters["s"] else {
+                throw SessionError.invalid
+            }
+            LocalAuthenticationManager.shared.authenticate(reason: "Restore team", withMainContext: mainContext) { (result) in
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
+                switch result {
+                case .success(_):
+                    authenticationCompletionHandler?(result)
+                    Team().restore(teamSeed64: seed, completionHandler: completionHandler)
                 case .failure(let error):
                     authenticationCompletionHandler?(result)
                     completionHandler(.failure(error))

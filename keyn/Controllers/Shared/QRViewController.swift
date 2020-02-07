@@ -66,6 +66,8 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         try self.handleURL(url: url)
                     } catch {
                         switch error {
+                        case is URLError:
+                            showAlert(message: "errors.undecodable_qr".localized)
                         case SessionError.exists:
                             showAlert(message: "errors.qr_scanned_twice".localized)
                         case SessionError.invalid:
