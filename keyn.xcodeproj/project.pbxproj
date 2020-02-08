@@ -933,10 +933,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
+				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
-				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,

@@ -35,7 +35,7 @@ class PairViewController: QRViewController {
                 throw URLError.invalidHost
             }
             switch url.pathComponents[1] {
-            case "pair": self.pair(url: url)
+            case "adduser", "pair": self.pair(url: url)
             case "team":
                 switch url.pathComponents[2] {
                 case "create": self.createTeam(url: url)

@@ -781,6 +781,7 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>You are not part of a team.</string>
+		</dict>
 		<key>only_admins</key>
 		<dict>
 			<key>value</key>
