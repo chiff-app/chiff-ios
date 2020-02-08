@@ -505,6 +505,11 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>admin</key>
+		<dict>
+			<key>value</key>
+			<string>Beheerder</string>
+		</dict>
 		<key>auxiliary_title</key>
 		<dict>
 			<key>value</key>
@@ -636,6 +641,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<key>value</key>
 			<string>Team details</string>
 		</dict>
+		<key>unknown</key>
+		<dict>
+			<key>value</key>
+			<string>Onbekend</string>
+		</dict>
 	</dict>
 	<key>errors</key>
 	<dict>
@@ -667,6 +677,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 		<dict>
 			<key>value</key>
 			<string>Onleesbare data fout</string>
+		</dict>
+		<key>creating_team</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij het maken van team</string>
 		</dict>
 		<key>delete_url</key>
 		<dict>
@@ -795,6 +810,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<string>This QR-code was already scanned.</string>
 			<key>value</key>
 			<string>Deze QR-code is al gescand.</string>
+		</dict>
+		<key>restoring_team</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij herstellen van team</string>
 		</dict>
 		<key>save_account</key>
 		<dict>
@@ -1514,6 +1534,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Bevestig verzoek</string>
 		</dict>
+		<key>create_team</key>
+		<dict>
+			<key>value</key>
+			<string>Creëer team</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -1586,6 +1611,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Koppel met</string>
+		</dict>
+		<key>restore_team</key>
+		<dict>
+			<key>value</key>
+			<string>Herstel team</string>
 		</dict>
 		<key>return</key>
 		<dict>

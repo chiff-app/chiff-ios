@@ -214,6 +214,8 @@ date_components:
     singular_unit:
       value: year
 devices:
+  admin:
+    value: Admin
   auxiliary_title:
     value: 'Last activity:'
   created:
@@ -274,6 +276,8 @@ devices:
     value: You will lose access to all shared accounts by ending the team session.
   team_session_detail_header:
     value: Team details
+  unknown:
+    value: Unknown
 errors:
   add_otp:
     value: Error adding OTP token
@@ -289,6 +293,8 @@ errors:
       in Settings.
   corrupted_data:
     value: Unreadable data error
+  creating_team:
+    value: Error creating team
   delete_url:
     comment: Error deleting url
     value: Error deleting URL
@@ -352,6 +358,8 @@ errors:
   qr_scanned_twice:
     comment: This QR-code was already scanned.
     value: This QR-code was already scanned.
+  restoring_team:
+    value: Error restoring team
   save_account:
     comment: Error saving account
     value: Error saving account
@@ -666,6 +674,8 @@ requests:
     value: Confirm login
   confirm_request:
     value: Confirm request
+  create_team:
+    value: Create team
   expired:
     value: >-
       The request that was received expired. This means it was sent more than
@@ -700,6 +710,8 @@ requests:
     value: 'on'
   pair_with:
     value: Pair with
+  restore_team:
+    value: Restore team
   return:
     value: Return
   return_to_computer:

@@ -48,7 +48,7 @@ class Team {
 
             }
         } catch {
-            Logger.shared.error("Error creating team", error: error)
+            Logger.shared.error("errors.creating_team".localized, error: error)
             completionHandler(.failure(error))
         }
     }
@@ -71,7 +71,7 @@ class Team {
                     guard let roleData = teamData["roles"] as? [String: String] else {
                         throw CodingError.missingData
                     }
-                    let name = teamData["name"] as? String ?? "unknown"
+                    let name = teamData["name"] as? String ?? "devices.unknown".localized
                     
                     self.updateRole(roleData: roleData, key: teamEncryptionKey, keyPair: teamKeyPair, pubkey: user.pubkey)
                     self.createAdminUser(user: user, seed: (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64, key: teamEncryptionKey, keyPair: teamKeyPair)
@@ -87,7 +87,7 @@ class Team {
                 }
             }
         } catch {
-            Logger.shared.error("Error restoring team", error: error)
+            Logger.shared.error("errors.restoring_team".localized, error: error)
             completionHandler(.failure(error))
         }
 
@@ -164,7 +164,7 @@ class Team {
             if let error = self.groupError {
                 throw error
             }
-            let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "Admin @ \(name)", version: 2, isAdmin: true)
+            let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true)
             session.created = true
             try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: seed)
             TeamSession.count += 1

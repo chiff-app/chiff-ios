@@ -505,6 +505,11 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>admin</key>
+		<dict>
+			<key>value</key>
+			<string>Admin</string>
+		</dict>
 		<key>auxiliary_title</key>
 		<dict>
 			<key>value</key>
@@ -635,6 +640,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Team details</string>
 		</dict>
+		<key>unknown</key>
+		<dict>
+			<key>value</key>
+			<string>Unknown</string>
+		</dict>
 	</dict>
 	<key>errors</key>
 	<dict>
@@ -666,6 +676,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		<dict>
 			<key>value</key>
 			<string>Unreadable data error</string>
+		</dict>
+		<key>creating_team</key>
+		<dict>
+			<key>value</key>
+			<string>Error creating team</string>
 		</dict>
 		<key>delete_url</key>
 		<dict>
@@ -794,6 +809,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 			<string>This QR-code was already scanned.</string>
 			<key>value</key>
 			<string>This QR-code was already scanned.</string>
+		</dict>
+		<key>restoring_team</key>
+		<dict>
+			<key>value</key>
+			<string>Error restoring team</string>
 		</dict>
 		<key>save_account</key>
 		<dict>
@@ -1513,6 +1533,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 			<key>value</key>
 			<string>Confirm request</string>
 		</dict>
+		<key>create_team</key>
+		<dict>
+			<key>value</key>
+			<string>Create team</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -1585,6 +1610,11 @@ Sensitive data is never shared and everything is anonymous.</string>
 		<dict>
 			<key>value</key>
 			<string>Pair with</string>
+		</dict>
+		<key>restore_team</key>
+		<dict>
+			<key>value</key>
+			<string>Restore team</string>
 		</dict>
 		<key>return</key>
 		<dict>
