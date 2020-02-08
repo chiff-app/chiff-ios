@@ -86,9 +86,9 @@ platform :ios do
     end
 
     desc 'Start hotfix version'
-    lane :start_hotfix do |options|
+    lane :start_hotfix do
         version = increment_version_number(bump_type: 'patch')
-        `git stash;git flow hotfix start #{options[:name]};git stash pop;git add ..`
+        `git stash;git flow hotfix start #{version};git stash pop;git add ..`
         commit_version_bump(xcodeproj: project)
     end
 
