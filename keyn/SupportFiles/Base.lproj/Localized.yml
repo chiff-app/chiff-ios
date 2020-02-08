@@ -346,6 +346,8 @@ errors:
       Notifications.
   no_team:
     value: You are not part of a team.
+  only_admins:
+    value: Only admins are allowed to perform this action.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Error retrieving the OTP-code
@@ -377,6 +379,8 @@ errors:
     value: There is no AWS endpoint in the session data.
   session_invalid:
     value: This QR-code is invalid
+  session_not_found:
+    value: Session was not found.
   subscribing:
     value: Error subscribing to info notifications
   token_creation:

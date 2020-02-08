@@ -346,6 +346,8 @@ errors:
       Instellingen > Keyn > Berichtgeving.
   no_team:
     value: Je bent geen onderdeel van een team.
+  only_admins:
+    value: Alleen beheerders mogen deze actie uitvoeren.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Fout bij ophalen OTP-code
@@ -377,6 +379,8 @@ errors:
     value: Er is geen AWS endpoint in de sessiegegevens.
   session_invalid:
     value: Deze QR-code is ongeldig
+  session_not_found:
+    value: Sessie is niet gevonden.
   subscribing:
     value: Fout bij aanzetten infoberichten
   token_creation:

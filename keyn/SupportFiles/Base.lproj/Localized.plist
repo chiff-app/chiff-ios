@@ -781,6 +781,10 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>You are not part of a team.</string>
+		<key>only_admins</key>
+		<dict>
+			<key>value</key>
+			<string>Only admins are allowed to perform this action.</string>
 		</dict>
 		<key>otp_fetch</key>
 		<dict>
@@ -855,6 +859,11 @@ Turn them on if you want to use Keyn. You can do this in Settings &gt; Keyn &gt;
 		<dict>
 			<key>value</key>
 			<string>This QR-code is invalid</string>
+		</dict>
+		<key>session_not_found</key>
+		<dict>
+			<key>value</key>
+			<string>Session was not found.</string>
 		</dict>
 		<key>subscribing</key>
 		<dict>
