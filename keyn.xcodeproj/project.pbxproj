@@ -191,6 +191,7 @@
 		49F2A0FF2214322700429875 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F8221431C700429875 /* DataStructures.swift */; };
 		49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		49F6F23323EDA60D0093AD56 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49FA7F761FB9E08E00EDB367 /* BrowserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
@@ -428,6 +429,7 @@
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		49F2A0F622142F0400429875 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
+		49F6F23223EDA60D0093AD56 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSession.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
@@ -775,6 +777,7 @@
 				01839A721FACA94300698B69 /* Site.swift */,
 				49E5FA162302E9DE009C964E /* TeamAccount.swift */,
 				49E5FA0623015DEC009C964E /* TeamSession.swift */,
+				49F6F23223EDA60D0093AD56 /* Team.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -930,10 +933,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
+				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
-				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
@@ -1424,6 +1427,7 @@
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
+				49F6F23323EDA60D0093AD56 /* Team.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
 				4908103620598AC700C770F1 /* PPD.swift in Sources */,
 				492EC843224919A10088F73D /* PairingViewController.swift in Sources */,
@@ -1826,7 +1830,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
@@ -1852,7 +1856,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

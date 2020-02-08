@@ -108,6 +108,25 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let session = sessions[indexPath.row]
+        if session is BrowserSession {
+            return true
+        } else if let session = session as? TeamSession, !session.isAdmin {
+            return true
+        }
+        return false
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let session = sessions[indexPath.row]
+        if session is BrowserSession {
+            deleteSession(at: indexPath)
+        } else if let session = session as? TeamSession, !session.isAdmin {
+            deleteSession(at: indexPath)
+        }
+    }
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -120,6 +139,26 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Actions
+    
+    func deleteSession(at indexPath: IndexPath) {
+        let session = sessions[indexPath.row]
+        let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            session.delete(notify: true) { (result) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(_):
+                        self.sessions.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .fade)
+                    case .failure(let error):
+                        self.showAlert(message: error.localizedDescription, title: "errors.session_delete".localized)
+                    }
+                }
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     func addSession(notification: Notification) {
         guard let session = notification.userInfo?["session"] as? BrowserSession else {

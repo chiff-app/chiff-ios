@@ -213,6 +213,33 @@ struct BackupTeamAccount: Codable {
     var tokenSecret: Data?
 }
 
+struct TeamRole: Codable {
+    let id: String
+    let name: String
+    let admins: Bool
+    var users: [String]
+
+    func encrypt(key: Data) throws -> String {
+        let data = try JSONEncoder().encode(self)
+        let ciphertext = try Crypto.shared.encryptSymmetric(data, secretKey: key)
+        return try Crypto.shared.convertToBase64(from: ciphertext)
+    }
+}
+
+struct TeamAdminUser: Codable {
+    let pubkey: String
+    let key: String
+    let created: TimeInterval
+    let arn: String
+    let isAdmin = true
+    let name = "Admin"
+
+    func encrypt(key: Data) throws -> String {
+        let data = try JSONEncoder().encode(self)
+        let ciphertext = try Crypto.shared.encryptSymmetric(data, secretKey: key)
+        return try Crypto.shared.convertToBase64(from: ciphertext)
+    }
+}
 
 struct BackupUserAccount: Codable {
     let id: String
