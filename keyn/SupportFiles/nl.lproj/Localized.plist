@@ -783,6 +783,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<key>value</key>
 			<string>Je bent geen onderdeel van een team.</string>
 		</dict>
+		<key>only_admins</key>
+		<dict>
+			<key>value</key>
+			<string>Alleen beheerders mogen deze actie uitvoeren.</string>
+		</dict>
 		<key>otp_fetch</key>
 		<dict>
 			<key>comment</key>
@@ -856,6 +861,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<dict>
 			<key>value</key>
 			<string>Deze QR-code is ongeldig</string>
+		</dict>
+		<key>session_not_found</key>
+		<dict>
+			<key>value</key>
+			<string>Sessie is niet gevonden.</string>
 		</dict>
 		<key>subscribing</key>
 		<dict>

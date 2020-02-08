@@ -207,6 +207,11 @@ class TeamSession: Session {
                         TeamAccount.deleteAll(for: self.signingPubKey)
                         try self.deleteLocally()
                         completion(.success(()))
+                    } catch APIError.statusCode(404) {
+                        // Team is already deleted just delete locally
+                        TeamAccount.deleteAll(for: self.signingPubKey)
+                        try? self.deleteLocally()
+                        completion(.success(()))
                     } catch {
                         Logger.shared.error("Error deleting arn for team session", error: error)
                         completion(.failure(error))
