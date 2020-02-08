@@ -34,8 +34,8 @@ private class Localizer {
 
         // When the localizable is a Dictionary with at least a 'value' item
         guard let localizedString = localizableGroup["value"] as? String else {
-            assertionFailure("Missing translation for: \(string)")
-            return ""
+            Logger.shared.error("Missing translation for: \(string)")
+            return "(Translation missing)"
         }
         return localizedString
     }
@@ -66,7 +66,7 @@ private class Localizer {
 
         for component in components {
             guard let localizedValue = localizableGroup[component] as? NSDictionary else {
-                assertionFailure("Missing translation for: \(string)")
+                Logger.shared.error("Missing translation for: \(string)")
                 return NSDictionary()
             }
             localizableGroup = localizedValue
