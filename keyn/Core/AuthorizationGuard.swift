@@ -359,7 +359,7 @@ class AuthorizationGuard {
             guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"] else {
                 throw SessionError.invalid
             }
-            LocalAuthenticationManager.shared.authenticate(reason: "Create team", withMainContext: mainContext) { (result) in
+            LocalAuthenticationManager.shared.authenticate(reason: "request.create_team".localized, withMainContext: mainContext) { (result) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }
@@ -392,7 +392,7 @@ class AuthorizationGuard {
             guard let parameters = url.queryParameters, let seed = parameters["s"] else {
                 throw SessionError.invalid
             }
-            LocalAuthenticationManager.shared.authenticate(reason: "Restore team", withMainContext: mainContext) { (result) in
+            LocalAuthenticationManager.shared.authenticate(reason: "requests.restore_team".localized, withMainContext: mainContext) { (result) in
                 defer {
                     AuthorizationGuard.authorizationInProgress = false
                 }

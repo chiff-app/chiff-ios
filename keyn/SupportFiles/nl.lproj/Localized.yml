@@ -216,6 +216,8 @@ date_components:
     singular_unit:
       value: jaar
 devices:
+  admin:
+    value: Beheerder
   auxiliary_title:
     value: 'Laatste activiteit:'
   created:
@@ -274,6 +276,8 @@ devices:
       beëindigt.
   team_session_detail_header:
     value: Team details
+  unknown:
+    value: Onbekend
 errors:
   add_otp:
     value: Fout bij toevoegen OTP token
@@ -289,6 +293,8 @@ errors:
       Dit kun je doen via Instellingen.
   corrupted_data:
     value: Onleesbare data fout
+  creating_team:
+    value: Fout bij het maken van team
   delete_url:
     comment: Error deleting url
     value: Fout bij verwijderen URL
@@ -352,6 +358,8 @@ errors:
   qr_scanned_twice:
     comment: This QR-code was already scanned.
     value: Deze QR-code is al gescand.
+  restoring_team:
+    value: Fout bij herstellen van team
   save_account:
     comment: Error saving account
     value: Fout bij opslaan account
@@ -668,6 +676,8 @@ requests:
     value: Bevestig login
   confirm_request:
     value: Bevestig verzoek
+  create_team:
+    value: Creëer team
   expired:
     value: >-
       Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
@@ -702,6 +712,8 @@ requests:
     value: op
   pair_with:
     value: Koppel met
+  restore_team:
+    value: Herstel team
   return:
     value: Terug
   return_to_computer:
