@@ -64,14 +64,8 @@ class TeamSession: Session {
 
     static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
-            let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
-
-            let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
-            let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
-            let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
-            let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
-
+            let (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserPubKeyData)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
 
             let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
@@ -94,6 +88,15 @@ class TeamSession: Session {
             Logger.shared.error("Error initiating session", error: error)
             completionHandler(.failure(error))
         }
+    }
+
+    static private func createTeamSessionKeys(browserPubKey: Data) throws -> (Data, Data, KeyPair, KeyPair) {
+        let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
+        let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKey, privKey: keyPairForSharedKey.privKey)
+        let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
+        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
+        return (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair)
     }
 
     init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool) {
@@ -204,6 +207,11 @@ class TeamSession: Session {
                         TeamAccount.deleteAll(for: self.signingPubKey)
                         try self.deleteLocally()
                         completion(.success(()))
+                    } catch APIError.statusCode(404) {
+                        // Team is already deleted just delete locally
+                        TeamAccount.deleteAll(for: self.signingPubKey)
+                        try? self.deleteLocally()
+                        completion(.success(()))
                     } catch {
                         Logger.shared.error("Error deleting arn for team session", error: error)
                         completion(.failure(error))
@@ -273,6 +281,8 @@ class TeamSession: Session {
                     Logger.shared.error("Error retrieving logo", error: error)
                 }
             }
+        } catch APIError.statusCode(404) {
+            Logger.shared.warning("Logo not found")
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
         }

@@ -245,13 +245,18 @@ class AuthorizationGuard {
     }
 
     private func teamAdminLogin(completionHandler: @escaping (Error?) -> Void) {
+        guard let teamSession = try? TeamSession.all().first else {
+            AuthorizationGuard.showError(errorMessage: "errors.session_not_found".localized)
+            return
+        } // TODO: What if there's more than 1?
+        guard teamSession.isAdmin else {
+            AuthorizationGuard.showError(errorMessage: "errors.only_admins".localized)
+            return
+        }
         LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
             var success = false
 
             func onSuccess(context: LAContext?) throws {
-                guard let teamSession = try TeamSession.all().first else {
-                    throw AuthorizationError.noTeamSessionFound
-                } // TODO: What if there's more than 1?
                 API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
                     do {
                         let dict = try result.get()
@@ -261,7 +266,7 @@ class AuthorizationGuard {
                         let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
                         self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
                     } catch {
-                        print(error)
+                        Logger.shared.error("Error getting admin seed", error: error)
                         completionHandler(error)
                     }
                 }
@@ -270,7 +275,6 @@ class AuthorizationGuard {
             defer {
                 AuthorizationGuard.authorizationInProgress = false
             }
-
             do {
                 try onSuccess(context: result.get())
             } catch {
@@ -344,6 +348,72 @@ class AuthorizationGuard {
             case .success(_): completionHandler(.success(()))
             case .failure(let error): completionHandler(.failure(error))
             }
+        }
+    }
+
+    static func authorizeTeamCreation(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+        guard !authorizationInProgress else {
+            return
+        }
+        defer {
+            authorizationInProgress = false
+        }
+        authorizationInProgress = true
+        do {
+            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"] else {
+                throw SessionError.invalid
+            }
+            LocalAuthenticationManager.shared.authenticate(reason: "request.create_team".localized, withMainContext: mainContext) { (result) in
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
+                switch result {
+                case .success(_):
+                    authenticationCompletionHandler?(result)
+                    Team().create(token: token, name: name, completionHandler: completionHandler)
+                case .failure(let error):
+                    authenticationCompletionHandler?(result)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch let error as KeychainError {
+            Logger.shared.error("Keychain error retrieving session", error: error)
+            completionHandler(.failure(SessionError.invalid))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+
+    static func authorizeTeamRestore(url: URL, mainContext: Bool = false, authenticationCompletionHandler: ((Result<LAContext?, Error>) -> Void)?, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+        guard !authorizationInProgress else {
+            return
+        }
+        defer {
+            authorizationInProgress = false
+        }
+        authorizationInProgress = true
+        do {
+            guard let parameters = url.queryParameters, let seed = parameters["s"] else {
+                throw SessionError.invalid
+            }
+            LocalAuthenticationManager.shared.authenticate(reason: "requests.restore_team".localized, withMainContext: mainContext) { (result) in
+                defer {
+                    AuthorizationGuard.authorizationInProgress = false
+                }
+                switch result {
+                case .success(_):
+                    authenticationCompletionHandler?(result)
+                    Team().restore(teamSeed64: seed, completionHandler: completionHandler)
+                case .failure(let error):
+                    authenticationCompletionHandler?(result)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch let error as KeychainError {
+            Logger.shared.error("Keychain error retrieving session", error: error)
+            completionHandler(.failure(SessionError.invalid))
+        } catch {
+            completionHandler(.failure(error))
         }
     }
 

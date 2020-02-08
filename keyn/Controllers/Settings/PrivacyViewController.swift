@@ -122,6 +122,7 @@ class PrivacyViewController: UITableViewController {
     private func deleteLocalData() {
         BrowserSession.deleteAll()
         TeamSession.deleteAll()
+        TeamAccount.deleteAll()
         UserAccount.deleteAll()
         try? Seed.delete()
         NotificationManager.shared.deleteEndpoint()

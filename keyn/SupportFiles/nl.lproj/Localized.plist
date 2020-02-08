@@ -303,8 +303,6 @@
 		</dict>
 		<key>what_if</key>
 		<dict>
-			<key>start</key>
-			<integer>23</integer>
 			<key>value</key>
 			<string>Wat als je je telefoon kwijtraakt?</string>
 		</dict>
@@ -507,6 +505,11 @@
 	</dict>
 	<key>devices</key>
 	<dict>
+		<key>admin</key>
+		<dict>
+			<key>value</key>
+			<string>Beheerder</string>
+		</dict>
 		<key>auxiliary_title</key>
 		<dict>
 			<key>value</key>
@@ -527,7 +530,7 @@
 		<key>end_session</key>
 		<dict>
 			<key>value</key>
-			<string>Beïndig sessie</string>
+			<string>Beëindig sessie</string>
 		</dict>
 		<key>footer</key>
 		<dict>
@@ -550,10 +553,6 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		</dict>
 		<key>no_push_warning_title</key>
 		<dict>
-			<key>begin</key>
-			<integer>18</integer>
-			<key>end</key>
-			<integer>24</integer>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
 		</dict>
@@ -581,8 +580,6 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<dict>
 			<key>comment</key>
 			<string>Instruction shown above the qr-code scanner</string>
-			<key>start</key>
-			<integer>8</integer>
 			<key>value</key>
 			<string>Ga naar keyn.app/nl/go</string>
 		</dict>
@@ -601,7 +598,7 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>session_detail_footer</key>
 		<dict>
 			<key>value</key>
-			<string>Je kan je apparaat altijd opnieuw koppelen door de QR-code te scannen.</string>
+			<string>Je kunt je apparaat altijd opnieuw koppelen door de QR-code te scannen.</string>
 		</dict>
 		<key>session_detail_header</key>
 		<dict>
@@ -644,6 +641,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<key>value</key>
 			<string>Team details</string>
 		</dict>
+		<key>unknown</key>
+		<dict>
+			<key>value</key>
+			<string>Onbekend</string>
+		</dict>
 	</dict>
 	<key>errors</key>
 	<dict>
@@ -675,6 +677,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 		<dict>
 			<key>value</key>
 			<string>Onleesbare data fout</string>
+		</dict>
+		<key>creating_team</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij het maken van team</string>
 		</dict>
 		<key>delete_url</key>
 		<dict>
@@ -750,6 +757,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<key>value</key>
 			<string>Fout bij verhuizen backup data.</string>
 		</dict>
+		<key>no_admin</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent geen beheerder van dit team.</string>
+		</dict>
 		<key>no_camera</key>
 		<dict>
 			<key>comment</key>
@@ -765,6 +777,16 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<string>Helaas werkt Keyn niet zonder pushberichten :(
 
 Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt; Keyn &gt; Berichtgeving.</string>
+		</dict>
+		<key>no_team</key>
+		<dict>
+			<key>value</key>
+			<string>Je bent geen onderdeel van een team.</string>
+		</dict>
+		<key>only_admins</key>
+		<dict>
+			<key>value</key>
+			<string>Alleen beheerders mogen deze actie uitvoeren.</string>
 		</dict>
 		<key>otp_fetch</key>
 		<dict>
@@ -793,6 +815,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 			<string>This QR-code was already scanned.</string>
 			<key>value</key>
 			<string>Deze QR-code is al gescand.</string>
+		</dict>
+		<key>restoring_team</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij herstellen van team</string>
 		</dict>
 		<key>save_account</key>
 		<dict>
@@ -834,6 +861,11 @@ Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via Instellingen &gt
 		<dict>
 			<key>value</key>
 			<string>Deze QR-code is ongeldig</string>
+		</dict>
+		<key>session_not_found</key>
+		<dict>
+			<key>value</key>
+			<string>Sessie is niet gevonden.</string>
 		</dict>
 		<key>subscribing</key>
 		<dict>
@@ -951,17 +983,11 @@ Thank you!</string>
 		</dict>
 		<key>begin_passwordless</key>
 		<dict>
-			<key>end</key>
-			<integer>28</integer>
-			<key>start</key>
-			<integer>16</integer>
 			<key>value</key>
 			<string>Je leven zonder wachtwoorden begint nu.</string>
 		</dict>
 		<key>byebye</key>
 		<dict>
-			<key>start</key>
-			<integer>18</integer>
 			<key>value</key>
 			<string>Dag wachtwoorden, hallo Keyn</string>
 		</dict>
@@ -987,8 +1013,6 @@ Thank you!</string>
 		</dict>
 		<key>face_id</key>
 		<dict>
-			<key>start</key>
-			<integer>0</integer>
 			<key>value</key>
 			<string>gezichtsherkenning</string>
 		</dict>
@@ -1016,10 +1040,6 @@ Thank you!</string>
 		</dict>
 		<key>keyn_uses_push</key>
 		<dict>
-			<key>end</key>
-			<integer>67</integer>
-			<key>start</key>
-			<integer>54</integer>
 			<key>value</key>
 			<string>Om in te loggen op je computer maakt Keyn gebruik van pushberichten.</string>
 		</dict>
@@ -1040,19 +1060,11 @@ Thank you!</string>
 		</dict>
 		<key>no_pushing</key>
 		<dict>
-			<key>end</key>
-			<integer>24</integer>
-			<key>start</key>
-			<integer>18</integer>
 			<key>value</key>
 			<string>We willen je niet pushen...</string>
 		</dict>
 		<key>one_minute_away</key>
 		<dict>
-			<key>end</key>
-			<integer>16</integer>
-			<key>start</key>
-			<integer>8</integer>
 			<key>value</key>
 			<string>Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden</string>
 		</dict>
@@ -1090,8 +1102,6 @@ Thank you!</string>
 		</dict>
 		<key>touch_id</key>
 		<dict>
-			<key>start</key>
-			<integer>3</integer>
 			<key>value</key>
 			<string>je vingerafdruk</string>
 		</dict>
@@ -1534,6 +1544,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 			<key>value</key>
 			<string>Bevestig verzoek</string>
 		</dict>
+		<key>create_team</key>
+		<dict>
+			<key>value</key>
+			<string>Creëer team</string>
+		</dict>
 		<key>expired</key>
 		<dict>
 			<key>value</key>
@@ -1549,7 +1564,7 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<key>fill_password</key>
 		<dict>
 			<key>value</key>
-			<string>Vul wachtwoord in</string>
+			<string>Wachtwoord invullen</string>
 		</dict>
 		<key>fill_password_successful</key>
 		<dict>
@@ -1606,6 +1621,11 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		<dict>
 			<key>value</key>
 			<string>Koppel met</string>
+		</dict>
+		<key>restore_team</key>
+		<dict>
+			<key>value</key>
+			<string>Herstel team</string>
 		</dict>
 		<key>return</key>
 		<dict>
@@ -1793,10 +1813,6 @@ Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.</stri
 		</dict>
 		<key>how_keyn_works_on</key>
 		<dict>
-			<key>end</key>
-			<integer>8</integer>
-			<key>start</key>
-			<integer>4</integer>
 			<key>value</key>
 			<string>Hoe Keyn werkt op</string>
 		</dict>
