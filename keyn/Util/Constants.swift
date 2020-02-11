@@ -134,4 +134,6 @@ enum KeynMessageType: Int, Codable {
     case addToExisting = 13
     case disabled = 14
     case adminLogin = 15
+    case webauthnCreate = 16
+    case webauthnLogin = 17
 }

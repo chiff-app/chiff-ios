@@ -156,7 +156,7 @@ extension Session {
         }
 
         // To be sure
-        purgeSessionDataFromKeychain()
+        //purgeSessionDataFromKeychain()
     }
 
 }

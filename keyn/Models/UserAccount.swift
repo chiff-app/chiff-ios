@@ -60,7 +60,7 @@ struct UserAccount: Account {
         self.passwordIndex = index  
         self.lastPasswordUpdateTryIndex = index
 
-        try save(password: generatedPassword)
+        try save(password: generatedPassword, keyPair: nil)
     }
 
     init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int) {
@@ -185,6 +185,7 @@ struct UserAccount: Account {
             do {
                 switch result {
                 case .success(_):
+                    try? Keychain.shared.delete(id: self.id, service: .webauthn)
                     try BackupManager.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
@@ -217,9 +218,12 @@ struct UserAccount: Account {
         }
     }
 
-    func save(password: String) throws {
+    func save(password: String, keyPair: KeyPair?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
+//        if let keyPair = keyPair {
+//            try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+//        }
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
@@ -258,6 +262,13 @@ struct UserAccount: Account {
 
         try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
         account.saveToIdentityStore()
+    }
+
+    static func create(username: String, sites: [Site], keyPair: KeyPair, context: LAContext? = nil) throws -> UserAccount {
+        let id = "\(sites[0].id)_\(username)".hash
+        let account = UserAccount(id: id, username: username, sites: sites, passwordIndex: -1, lastPasswordTryIndex: -1, passwordOffset: nil, askToLogin: nil, askToChange: false, enabled: true, version: 1)
+        try account.save(password: "", keyPair: keyPair)
+        return account
     }
 
 }

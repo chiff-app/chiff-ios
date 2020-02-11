@@ -85,11 +85,10 @@ class Crypto {
         return sharedKey.data
     }
 
-    func createSigningKeyPair(seed: Data) throws -> KeyPair {
-        guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
+    func createSigningKeyPair(seed: Data?) throws -> KeyPair {
+        guard let keyPair = (seed != nil) ? sodium.sign.keyPair(seed: seed!.bytes) : sodium.sign.keyPair() else {
             throw CryptoError.keyGeneration
         }
-
         return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
 

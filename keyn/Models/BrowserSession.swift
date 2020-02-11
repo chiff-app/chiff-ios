@@ -112,7 +112,7 @@ class BrowserSession: Session {
 
     func cancelRequest(reason: KeynMessageType, browserTab: Int, completionHandler: @escaping (Result<[String: Any], Error>) -> Void) {
         do {
-            let response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason)
+            let response = KeynCredentialsResponse(u: nil, p: nil, c: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason, pk: nil)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             try sendToVolatileQueue(ciphertext: ciphertext, completionHandler: completionHandler)
@@ -135,16 +135,16 @@ class BrowserSession: Session {
             guard var account = account as? UserAccount else {
                 throw SessionError.unknownType
             }
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), c: nil, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change, pk: nil)
             NotificationCenter.default.post(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add, .addAndLogin, .addToExisting:
-            response = KeynCredentialsResponse(u: nil, p: nil, np: nil, b: browserTab, a: nil, o: nil, t: type)
+            response = KeynCredentialsResponse(u: nil, p: nil, c: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil)
         case .login:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), c: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login, pk: nil)
         case .fill:
-            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .fill)
+            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), c: nil, np: nil, b: browserTab, a: nil, o: nil, t: .fill, pk: nil)
         case .register:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), np: nil, b: browserTab, a: nil, o: nil, t: .register)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), c: nil, np: nil, b: browserTab, a: nil, o: nil, t: .register, pk: nil)
         default:
             throw SessionError.unknownType
         }
@@ -162,7 +162,7 @@ class BrowserSession: Session {
 
     func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, c: nil, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin, pk: nil))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
                 if case let .failure(error) = result {
@@ -176,6 +176,28 @@ class BrowserSession: Session {
         } catch {
             completionHandler(error)
         }
+    }
+
+    func sendWebAuthnResponse(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext, challenge: String?, pubkey: String?) throws {
+        var response: KeynCredentialsResponse!
+        switch type {
+        case .webauthnCreate:
+            response = KeynCredentialsResponse(u: account.username, p: nil, c: challenge, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnCreate, pk: pubkey)
+        case .webauthnLogin:
+            response = KeynCredentialsResponse(u: account.username, p: nil, c: challenge, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnLogin, pk: nil)
+        default:
+            throw SessionError.unknownType
+        }
+
+        let message = try JSONEncoder().encode(response)
+        let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
+
+        try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
+            if case let .failure(error) = result {
+                Logger.shared.error("Error sending credentials", error: error)
+            }
+        }
+        try updateLastRequest()
     }
 
     func getPersistentQueueMessages(shortPolling: Bool, completionHandler: @escaping (Result<[KeynPersistentQueueMessage], Error>) -> Void) {

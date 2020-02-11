@@ -27,12 +27,13 @@ class AuthorizationGuard {
     private let siteId: String!         // Should be present for add site requests
     private let password: String!       // Should be present for add site requests
     private let username: String!       // Should be present for add site requests
+    private let challenge: String!      // Should be present for webauthn requests
 
     private var authenticationReason: String {
         switch type {
-        case .login, .addToExisting:
+        case .login, .addToExisting, .webauthnLogin:
             return String(format: "requests.login_to".localized, siteName!)
-        case .add, .register, .addAndLogin:
+        case .add, .register, .addAndLogin, .webauthnCreate:
             return String(format: "requests.add_site".localized, siteName!)
         case .change:
             return String(format: "requests.change_for".localized, siteName!)
@@ -59,6 +60,7 @@ class AuthorizationGuard {
         self.username = request.username
         self.accountId = request.accountID
         self.accounts = request.accounts
+        self.challenge = request.challenge
     }
 
     // MARK: - Handle request responses
@@ -96,6 +98,10 @@ class AuthorizationGuard {
             }
         case .adminLogin:
             teamAdminLogin(completionHandler: handleResult)
+        case .webauthnCreate:
+            webAuthnCreate(completionHandler: handleResult)
+        case .webauthnLogin:
+            webAuthnLogin(completionHandler: handleResult)
         default:
             AuthorizationGuard.authorizationInProgress = false
             return
@@ -202,7 +208,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, context: context)
+                    let account = try   UserAccount(username: self.username, sites: [site], password: self.password, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -281,6 +287,36 @@ class AuthorizationGuard {
                 completionHandler(error)
             }
         }
+    }
+
+    private func webAuthnCreate(completionHandler: @escaping (Error?) -> Void) {
+        let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
+            var success = false
+            do {
+                defer {
+                    // Logging
+                }
+                let context = try result.get()
+                let keyPair = try Crypto.shared.createSigningKeyPair(seed: nil)
+                let challengeData = try Crypto.shared.convertFromBase64(from: self.challenge)
+                // pubkey, id, signature
+                let signedChallenge = try Crypto.shared.sign(message: challengeData, privKey: keyPair.privKey)
+                let account = try UserAccount.create(username: self.username, sites: [site], keyPair: keyPair)
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, challenge: signedChallenge.base64, pubkey: keyPair.pubKey.base64)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                }
+                success = true
+                completionHandler(nil)
+            } catch {
+                completionHandler(error)
+            }
+        }
+    }
+
+    private func webAuthnLogin(completionHandler: @escaping (Error?) -> Void) {
+
     }
 
 

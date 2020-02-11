@@ -34,10 +34,10 @@ class RequestViewController: UIViewController {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin:
+        case .login, .addToExisting, .adminLogin, .webauthnLogin:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
             Logger.shared.analytics(.loginRequestOpened)
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .webauthnCreate:
             requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
             Logger.shared.analytics(.addSiteRequestOpened)
         case .addBulk:

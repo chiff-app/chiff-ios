@@ -146,6 +146,7 @@ extension Account {
 
     static func deleteAll() {
         Keychain.shared.deleteAll(service: Self.keychainService)
+        Keychain.shared.deleteAll(service: .webauthn)
         #warning("Also fix otp keychain service")
         Keychain.shared.deleteAll(service: .otp)
         if #available(iOS 12.0, *) {
