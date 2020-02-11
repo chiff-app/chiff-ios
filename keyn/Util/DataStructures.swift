@@ -12,6 +12,7 @@ import Foundation
 struct KeynRequest: Codable {
     let accountID: String?
     let browserTab: Int?
+    let challenge: String?
     let password: String?
     let passwordSuccessfullyChanged: Bool?
     let siteID: String?
@@ -27,6 +28,7 @@ struct KeynRequest: Codable {
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
         case browserTab = "b"
+        case challenge = "c"
         case password = "p"
         case passwordSuccessfullyChanged = "v"
         case sessionID = "i"
@@ -37,7 +39,7 @@ struct KeynRequest: Codable {
         case username = "u"
         case sentTimestamp = "z"
         case count = "x"
-        case accounts = "c"
+        case accounts = "t"
     }
 
     /// This checks if the appropriate variables are set for the type of of this request
@@ -82,6 +84,11 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because subsequent don't apply to adminLogin request
+        case .webauthnCreate:
+            guard challenge != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn challenge.")
+                return false
+            }
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
@@ -306,11 +313,13 @@ struct BackupUserAccount: Codable {
 struct KeynCredentialsResponse: Codable {
     let u: String?          // Username
     let p: String?          // Password
+    let c: String?          // Challenge
     let np: String?         // New password (for reset only! When registering p will be set)
     let b: Int              // Browser tab id
     let a: String?          // Account id (Only used with changePasswordRequests
     let o: String?          // OTP code
     let t: KeynMessageType  // One of the message types Keyn understands
+    let pk: String?         // Webauthn pubkey
 }
 
 enum KeyType: UInt64 {
