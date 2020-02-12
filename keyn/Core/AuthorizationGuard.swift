@@ -265,6 +265,9 @@ class AuthorizationGuard {
                         }
                         let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
                         self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                        }
                     } catch {
                         Logger.shared.error("Error getting admin seed", error: error)
                         completionHandler(error)
