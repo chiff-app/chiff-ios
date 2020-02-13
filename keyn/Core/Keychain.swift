@@ -76,14 +76,19 @@ class Keychain {
     // MARK: - Unauthenticated Keychain operations
     // These can be synchronous because they never call LocalAuthentication
 
-    func save(id identifier: String, service: KeychainService, secretData: Data, objectData: Data? = nil, label: String? = nil) throws {
+    func save(id identifier: String, service: KeychainService, secretData: Data?, objectData: Data? = nil, label: String? = nil) throws {
+        guard secretData != nil || objectData != nil else {
+            throw KeychainError.noData
+        }
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
-                                    kSecAttrAccessGroup as String: service.accessGroup,
-                                    kSecValueData as String: secretData]
+                                    kSecAttrAccessGroup as String: service.accessGroup]
         if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
+        }
+        if let secretData = secretData {
+            query[kSecValueData as String] = secretData
         }
         if let label = label {
             query[kSecAttrLabel as String] = label
@@ -108,7 +113,7 @@ class Keychain {
         }
     }
 
-    func get(id identifier: String, service: KeychainService, context: LAContext? = nil) throws -> Data {
+    func get(id identifier: String, service: KeychainService, context: LAContext? = nil) throws -> Data? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
@@ -126,9 +131,11 @@ class Keychain {
         }
 
         guard status != errSecInteractionNotAllowed else { throw KeychainError.interactionNotAllowed }
-        guard status != errSecItemNotFound else { throw KeychainError.notFound }
+        guard status != errSecItemNotFound else { return nil }
         guard status == noErr else { throw KeychainError.unhandledError(status) }
-
+        if queryResult == nil {
+            return nil
+        }
         guard let data = queryResult as? Data else {
             throw KeychainError.unexpectedData
         }
@@ -329,7 +336,7 @@ class Keychain {
     // MARK: - Authenticated Keychain operations
     // These operations ask the user to authenticate the operation if necessary. This is handled on a custom OperationQueue that is managed by LocalAuthenticationManager.shared
 
-    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType, completionHandler: @escaping (Result<Data, Error>) -> Void) {
+    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType, completionHandler: @escaping (Result<Data?, Error>) -> Void) {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
@@ -344,10 +351,13 @@ class Keychain {
                 }
 
                 guard status != errSecItemNotFound else {
-                    return completionHandler(.failure(KeychainError.notFound))
+                    return completionHandler(.success(nil))
                 }
                 guard status == noErr else {
                     return completionHandler(.failure(KeychainError.unhandledError(status)))
+                }
+                if queryResult == nil {
+                    return completionHandler(.success(nil))
                 }
                 guard let data = queryResult as? Data else {
                     return completionHandler(.failure(KeychainError.unexpectedData))

@@ -56,22 +56,31 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     }
 
     private func loadAccountData() {
+        websiteNameTextField.text = account.site.name
+        websiteURLTextField.text = account.site.url
+        userNameTextField.text = account.username
+        enabledSwitch.isOn = account.enabled
+        enabledSwitch.isEnabled = account.enabled || canEnableAccount
+        websiteNameTextField.delegate = self
+        websiteURLTextField.delegate = self
+        userNameTextField.delegate = self
+        userPasswordTextField.delegate = self
         do {
-            websiteNameTextField.text = account.site.name
-            websiteURLTextField.text = account.site.url
-            userNameTextField.text = account.username
-            userPasswordTextField.text = password ?? "22characterplaceholder"
+            if let password = try account.password() {
+                userPasswordTextField.text = password
+                userPasswordTextField.isSecureTextEntry = true
+            } else {
+                userPasswordTextField.placeholder = "accounts.no_password".localized
+                userPasswordTextField.isSecureTextEntry = false
+                showPasswordButton.isHidden = true
+                showPasswordButton.isEnabled = false
+            }
             token = try account.oneTimePasswordToken()
-            enabledSwitch.isOn = account.enabled
-            enabledSwitch.isEnabled = account.enabled || canEnableAccount
             updateOTPUI()
-            websiteNameTextField.delegate = self
-            websiteURLTextField.delegate = self
-            userNameTextField.delegate = self
-            userPasswordTextField.delegate = self
-        } catch {
+        } catch AccountError.tokenRetrieval {
             showAlert(message: "errors.otp_fetch".localized)
-            Logger.shared.error("AccountViewController could not get an OTP token.", error: error)
+        } catch {
+            Logger.shared.error("Error loading accountData", error: error)
         }
     }
 
@@ -180,7 +189,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
                 performSegue(withIdentifier: "ShowSiteOverview", sender: self)
             }
         } else if indexPath.section == 1 {
-            if indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled) {
+            if (indexPath.row == 1 || (indexPath.row == 2 && !qrEnabled)) && password != nil {
                 copyToPasteboard(indexPath)
             } else if indexPath.row == 2 && qrEnabled && account is UserAccount {
                 performSegue(withIdentifier: "showQR", sender: self)
@@ -221,6 +230,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
 
     
     @IBAction func showPassword(_ sender: UIButton) {
+        //TODO: THis function should be disabled if there's no password
         account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded) { (result) in
             switch result {
             case .success(let password):
@@ -229,7 +239,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
                         self.userPasswordTextField.text = password
                         self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
                     } else {
-                        self.showHiddenPasswordPopup(password: password)
+                        self.showHiddenPasswordPopup(password: password ?? "This account has no password")
                     }
                 }
             case .failure(let error):
@@ -287,6 +297,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             let newSiteName = websiteNameTextField.text != account.site.name ? websiteNameTextField.text : nil
             if let oldPassword: String = password {
                 newPassword = userPasswordTextField.text != oldPassword ? userPasswordTextField.text : nil
+            } else {
+                newPassword = userPasswordTextField.text
             }
             let newUrl = websiteURLTextField.text != account.site.url ? websiteURLTextField.text : nil
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
@@ -294,6 +306,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             }
             try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
             NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+            if newPassword != nil {
+                showPasswordButton.isHidden = false
+                showPasswordButton.isEnabled = true
+            }
             Logger.shared.analytics(.accountUpdated, properties: [
                 .username: newUsername != nil,
                 .password: newPassword != nil,

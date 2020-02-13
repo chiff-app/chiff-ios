@@ -269,6 +269,7 @@ struct BackupUserAccount: Codable {
     var tokenURL: URL?
     var tokenSecret: Data?
     var version: Int
+    var webAuthnIndex: Int
 
     enum CodingKeys: CodingKey {
         case id
@@ -283,6 +284,7 @@ struct BackupUserAccount: Codable {
         case tokenURL
         case tokenSecret
         case version
+        case webAuthnIndex
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -298,6 +300,7 @@ struct BackupUserAccount: Codable {
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
         self.version = account.version
+        self.webAuthnIndex = account.webAuthnIndex
     }
 
     init(from decoder: Decoder) throws {
@@ -314,6 +317,7 @@ struct BackupUserAccount: Codable {
         self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.webAuthnIndex = try values.decodeIfPresent(Int.self, forKey: .webAuthnIndex) ?? 0
     }
 
 }
@@ -332,7 +336,7 @@ struct KeynCredentialsResponse: Codable {
 }
 
 enum KeyType: UInt64 {
-    case passwordSeed, backupSeed
+    case passwordSeed, backupSeed, webAuthnSeed
 }
 
 enum CodingError: KeynError {
@@ -373,6 +377,7 @@ enum KeyIdentifier: String, Codable {
     case password = "password"
     case backup = "backup"
     case master = "master"
+    case webauthn = "webauthn"
 
     // BackupManager
     case priv = "priv"

@@ -210,7 +210,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    let account = try   UserAccount(username: self.username, sites: [site], password: self.password, context: context)
+                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, keyPair: nil, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -233,7 +233,7 @@ class AuthorizationGuard {
                 #warning("TODO: Fetch PPD for each site")
                 for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
-                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, context: context)
+                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, keyPair: nil, context: context)
                 }
                 success = true
                 DispatchQueue.main.async {
@@ -301,7 +301,7 @@ class AuthorizationGuard {
                 }
                 let context = try result.get()
                 let keyPair = try Crypto.shared.createSigningKeyPair(seed: nil)
-                let account = try UserAccount.create(username: self.username, sites: [site], keyPair: keyPair)
+                let account = try UserAccount(username: self.username, sites: [site], password: nil, keyPair: keyPair, context: context)
                 try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil, pubkey: keyPair.pubKey.base64)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)

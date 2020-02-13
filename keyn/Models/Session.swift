@@ -57,11 +57,17 @@ extension Session {
     }
 
     func signingPrivKey() throws -> Data {
-        return try Keychain.shared.get(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService)
+        guard let key = try Keychain.shared.get(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService) else {
+            throw KeychainError.notFound
+        }
+        return key
     }
 
     func sharedKey() throws -> Data {
-        return try Keychain.shared.get(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService)
+        guard let key = try Keychain.shared.get(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService) else {
+            throw KeychainError.notFound
+        }
+        return key
     }
 
     func decryptMessage<T: Decodable>(message: String) throws -> T {

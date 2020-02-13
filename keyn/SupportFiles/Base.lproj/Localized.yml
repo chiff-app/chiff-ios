@@ -59,6 +59,8 @@ accounts:
     value: My accounts
   name:
     value: Name
+  no_password:
+    value: No password set
   password:
     value: Password
   report:
