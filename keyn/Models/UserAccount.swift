@@ -27,6 +27,7 @@ struct UserAccount: Account {
     var enabled: Bool
     var version: Int
     var webAuthnIndex: Int
+    var webAuthnCounter: Int
 
     var synced: Bool {
         do {
@@ -41,6 +42,7 @@ struct UserAccount: Account {
         return Keychain.shared.has(id: id, service: .otp)
     }
     static let keychainService: KeychainService = .account
+    static let WEBAUTHN_CRYPTO_CONTEXT = "webauthn"
 
     init(username: String, sites: [Site], password: String?, keyPair: KeyPair?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
@@ -52,6 +54,7 @@ struct UserAccount: Account {
         self.passwordIndex = 0
         self.lastPasswordUpdateTryIndex = 0
         self.webAuthnIndex = 0
+        self.webAuthnCounter = 0
 
         if let password = password {
             let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
@@ -61,7 +64,7 @@ struct UserAccount: Account {
         try save(password: password, keyPair: keyPair)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthnIndex: Int) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthnIndex: Int, webAuthnCounter: Int) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -73,6 +76,7 @@ struct UserAccount: Account {
         self.enabled = enabled
         self.version = version
         self.webAuthnIndex = webAuthnIndex
+        self.webAuthnCounter = webAuthnCounter
     }
 
 
@@ -111,14 +115,14 @@ struct UserAccount: Account {
             throw KeychainError.notFound
         }
 
-        webAuthnIndex += 1
+        webAuthnCounter += 1
         var data = Data()
         data.append(rpId.sha256Data)
         data.append(0x05) // UP + UV flags
-        data.append(UInt8((webAuthnIndex >> 24) & 0xff))
-        data.append(UInt8((webAuthnIndex >> 16) & 0xff))
-        data.append(UInt8((webAuthnIndex >> 8) & 0xff))
-        data.append(UInt8((webAuthnIndex >> 0) & 0xff))
+        data.append(UInt8((webAuthnCounter >> 24) & 0xff))
+        data.append(UInt8((webAuthnCounter >> 16) & 0xff))
+        data.append(UInt8((webAuthnCounter >> 8) & 0xff))
+        data.append(UInt8((webAuthnCounter >> 0) & 0xff))
         data.append(challengeData)
         let signature = try Crypto.shared.signature(message: data, privKey: privKey)
 
@@ -254,6 +258,15 @@ struct UserAccount: Account {
 
     // MARK: - Static functions
 
+    static func create(username: String, site: Site, context: LAContext?) throws -> (UserAccount, Data) {
+        var value: UInt64 = 0
+        _ = withUnsafeMutableBytes(of: &value, { site.id.sha256Data.copyBytes(to: $0, from: 0..<8) } )
+        let siteKey = try Crypto.shared.deriveKey(keyData: try Seed.getWebAuthnSeed(context: context), context: WEBAUTHN_CRYPTO_CONTEXT, index: value)
+        let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(username.sha256Data.base64.prefix(8)), index: 0)
+        let keyPair = try Crypto.shared.createSigningKeyPair(seed: key)
+        return (try UserAccount(username: username, sites: [site], password: nil, keyPair: keyPair, context: context), keyPair.pubKey)
+    }
+
     static func restore(accountData: Data, id: String, context: LAContext?) throws {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupUserAccount.self, from: accountData)
@@ -267,7 +280,8 @@ struct UserAccount: Account {
                               askToChange: backupAccount.askToChange,
                               enabled: backupAccount.enabled,
                               version: backupAccount.version,
-                              webAuthnIndex: backupAccount.webAuthnIndex)
+                              webAuthnIndex: backupAccount.webAuthnIndex,
+                              webAuthnCounter: backupAccount.webAuthnCounter)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
         let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
@@ -303,6 +317,7 @@ extension UserAccount: Codable {
         case enabled
         case version
         case webAuthnIndex
+        case webAuthnCounter
     }
 
     init(from decoder: Decoder) throws {
@@ -318,6 +333,7 @@ extension UserAccount: Codable {
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthnIndex = try values.decodeIfPresent(Int.self, forKey: .webAuthnIndex) ?? 0
+        self.webAuthnCounter = try values.decodeIfPresent(Int.self, forKey: .webAuthnCounter) ?? 0
     }
 
 }

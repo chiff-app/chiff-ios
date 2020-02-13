@@ -270,6 +270,7 @@ struct BackupUserAccount: Codable {
     var tokenSecret: Data?
     var version: Int
     var webAuthnIndex: Int
+    var webAuthnCounter: Int
 
     enum CodingKeys: CodingKey {
         case id
@@ -285,6 +286,7 @@ struct BackupUserAccount: Codable {
         case tokenSecret
         case version
         case webAuthnIndex
+        case webAuthnCounter
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -301,6 +303,7 @@ struct BackupUserAccount: Codable {
         self.tokenSecret = tokenSecret
         self.version = account.version
         self.webAuthnIndex = account.webAuthnIndex
+        self.webAuthnCounter = account.webAuthnCounter
     }
 
     init(from decoder: Decoder) throws {
@@ -318,6 +321,7 @@ struct BackupUserAccount: Codable {
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthnIndex = try values.decodeIfPresent(Int.self, forKey: .webAuthnIndex) ?? 0
+        self.webAuthnCounter = try values.decodeIfPresent(Int.self, forKey: .webAuthnCounter) ?? 0
     }
 
 }
