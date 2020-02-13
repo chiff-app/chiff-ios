@@ -26,7 +26,7 @@ struct UserAccount: Account {
     var askToChange: Bool?
     var enabled: Bool
     var version: Int
-    var counter: Int
+    var webAuthnIndex: Int
 
     var synced: Bool {
         do {
@@ -42,30 +42,26 @@ struct UserAccount: Account {
     }
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, keyPair: KeyPair?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
         self.username = username
         self.enabled = false
         self.version = 1
-        self.counter = 0
+        self.passwordIndex = 0
+        self.lastPasswordUpdateTryIndex = 0
+        self.webAuthnIndex = 0
 
-        let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
         if let password = password {
-            passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
-        } else {
-            askToChange = false
+            let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            passwordOffset = try passwordGenerator.calculateOffset(index: self.passwordIndex, password: password)
         }
 
-        let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
-        self.passwordIndex = index  
-        self.lastPasswordUpdateTryIndex = index
-
-        try save(password: generatedPassword, keyPair: nil)
+        try save(password: password, keyPair: keyPair)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthnIndex: Int) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -76,7 +72,7 @@ struct UserAccount: Account {
         self.askToChange = askToChange
         self.enabled = enabled
         self.version = version
-        self.counter = 0
+        self.webAuthnIndex = webAuthnIndex
     }
 
 
@@ -111,23 +107,25 @@ struct UserAccount: Account {
 
     mutating func signWebAuthnChallenge(rpId: String, challenge: String) throws -> (String, Int) {
         let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
-        let privKey = try Keychain.shared.get(id: id, service: .webauthn)
+        guard let privKey = try Keychain.shared.get(id: id, service: .webauthn) else {
+            throw KeychainError.notFound
+        }
 
-        counter += 1
+        webAuthnIndex += 1
         var data = Data()
         data.append(rpId.sha256Data)
         data.append(0x05) // UP + UV flags
-        data.append(UInt8((counter >> 24) & 0xff))
-        data.append(UInt8((counter >> 16) & 0xff))
-        data.append(UInt8((counter >> 8) & 0xff))
-        data.append(UInt8((counter >> 0) & 0xff))
+        data.append(UInt8((webAuthnIndex >> 24) & 0xff))
+        data.append(UInt8((webAuthnIndex >> 16) & 0xff))
+        data.append(UInt8((webAuthnIndex >> 8) & 0xff))
+        data.append(UInt8((webAuthnIndex >> 0) & 0xff))
         data.append(challengeData)
         let signature = try Crypto.shared.signature(message: data, privKey: privKey)
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData)
         try backup()
-        return (signature.base64, self.counter)
+        return (signature.base64, webAuthnIndex)
     }
 
     mutating func addSite(site: Site) throws {
@@ -174,9 +172,9 @@ struct UserAccount: Account {
             self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
-        } else if let newUsername = newUsername {
+        } else if let newUsername = newUsername, let oldPassword = try self.password(context: context) {
             let passwordGenerator = try PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(context: context))
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: oldPassword)
         }
 
         try update(secret: newPassword?.data)
@@ -242,9 +240,9 @@ struct UserAccount: Account {
         }
     }
 
-    func save(password: String, keyPair: KeyPair?) throws {
+    func save(password: String?, keyPair: KeyPair?) throws {
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
         if let keyPair = keyPair {
             try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
         }
@@ -268,7 +266,8 @@ struct UserAccount: Account {
                               askToLogin: backupAccount.askToLogin,
                               askToChange: backupAccount.askToChange,
                               enabled: backupAccount.enabled,
-                              version: backupAccount.version)
+                              version: backupAccount.version,
+                              webAuthnIndex: backupAccount.webAuthnIndex)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
         let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
@@ -288,13 +287,6 @@ struct UserAccount: Account {
         account.saveToIdentityStore()
     }
 
-    static func create(username: String, sites: [Site], keyPair: KeyPair, context: LAContext? = nil) throws -> UserAccount {
-        let id = "\(sites[0].id)_\(username)".hash
-        let account = UserAccount(id: id, username: username, sites: sites, passwordIndex: -1, lastPasswordTryIndex: -1, passwordOffset: nil, askToLogin: nil, askToChange: false, enabled: true, version: 1)
-        try account.save(password: "", keyPair: keyPair)
-        return account
-    }
-
 }
 
 extension UserAccount: Codable {
@@ -310,7 +302,7 @@ extension UserAccount: Codable {
         case askToChange
         case enabled
         case version
-        case counter
+        case webAuthnIndex
     }
 
     init(from decoder: Decoder) throws {
@@ -325,7 +317,7 @@ extension UserAccount: Codable {
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-        self.counter = try values.decodeIfPresent(Int.self, forKey: .counter) ?? 0
+        self.webAuthnIndex = try values.decodeIfPresent(Int.self, forKey: .webAuthnIndex) ?? 0
     }
 
 }
@@ -339,8 +331,11 @@ extension UserAccount {
             return
         }
         do {
+            guard let password = try password() else {
+                throw KeychainError.notFound
+            }
             let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: try Seed.getPasswordSeed(context: context), version: 1)
-            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password())
+            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password)
             version = 1
             let accountData = try PropertyListEncoder().encode(self)
             try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)

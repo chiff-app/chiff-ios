@@ -242,7 +242,10 @@ class TeamSession: Session {
     }
 
     func passwordSeed() throws -> Data {
-        return try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
+        guard let seed = try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService) else {
+            throw KeychainError.notFound
+        }
+        return seed
     }
 
     func decryptAdminSeed(seed: String) throws -> Data {

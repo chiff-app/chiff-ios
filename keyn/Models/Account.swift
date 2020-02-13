@@ -13,6 +13,7 @@ enum AccountError: KeynError {
     case notFound
     case missingContext
     case passwordGeneration
+    case tokenRetrieval
 }
 
 protocol Account: Codable {
@@ -35,16 +36,11 @@ protocol Account: Codable {
 
 extension Account {
 
-    func password(context: LAContext? = nil) throws -> String {
+    func password(context: LAContext? = nil) throws -> String? {
         do {
-
-    //         return try Keychain.shared.isSynced(id: id, service: .account)
-    //     } catch {
-    //         Logger.shared.error("Error get account sync info", error: error)
-    //         return true // Defaults to true to prevent infinite cycles when an error occurs
-    //     }
-
-            let data = try Keychain.shared.get(id: id, service: Self.keychainService, context: context)
+            guard let data = try Keychain.shared.get(id: id, service: Self.keychainService, context: context) else {
+                return nil
+            }
 
             guard let password = String(data: data, encoding: .utf8) else {
                 throw CodingError.stringEncoding
@@ -57,10 +53,13 @@ extension Account {
         }
     }
 
-    func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (Result<String, Error>) -> Void) {
+    func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (Result<String?, Error>) -> Void) {
         Keychain.shared.get(id: id, service: Self.keychainService, reason: reason, with: context, authenticationType: type) { (result) in
             switch result {
             case .success(let data):
+                guard let data = data else {
+                    return completionHandler(.success(nil))
+                }
                 guard let password = String(data: data, encoding: .utf8) else {
                     return completionHandler(.failure(CodingError.stringEncoding))
                 }
@@ -71,16 +70,20 @@ extension Account {
     }
 
     func oneTimePasswordToken() throws -> Token? {
-        guard let urlDataDict = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
-            return nil
-        }
-        let secret = try Keychain.shared.get(id: id, service: .otp, context: nil)
-        guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
-            let url = URL(string: urlString) else {
-                throw CodingError.unexpectedData
-        }
+        do {
+            guard let urlDataDict = try Keychain.shared.attributes(id: id, service: .otp, context: nil) else {
+                return nil
+            }
+            let secret = try Keychain.shared.get(id: id, service: .otp, context: nil)
+            guard let urlData = urlDataDict[kSecAttrGeneric as String] as? Data, let urlString = String(data: urlData, encoding: .utf8),
+                let url = URL(string: urlString) else {
+                    throw CodingError.unexpectedData
+            }
 
-        return Token(url: url, secret: secret)
+            return Token(url: url, secret: secret)
+        } catch {
+            throw AccountError.tokenRetrieval
+        }
     }
 
     func hasOtp() -> Bool {
