@@ -28,6 +28,7 @@ class AuthorizationGuard {
     private let password: String!       // Should be present for add site requests
     private let username: String!       // Should be present for add site requests
     private let challenge: String!      // Should be present for webauthn requests
+    private let rpId: String!      // Should be present for webauthn requests
 
     private var authenticationReason: String {
         switch type {
@@ -61,6 +62,7 @@ class AuthorizationGuard {
         self.accountId = request.accountID
         self.accounts = request.accounts
         self.challenge = request.challenge
+        self.rpId = request.relyingPartyId
     }
 
     // MARK: - Handle request responses
@@ -299,11 +301,8 @@ class AuthorizationGuard {
                 }
                 let context = try result.get()
                 let keyPair = try Crypto.shared.createSigningKeyPair(seed: nil)
-                let challengeData = try Crypto.shared.convertFromBase64(from: self.challenge)
-                // pubkey, id, signature
-                let signedChallenge = try Crypto.shared.sign(message: challengeData, privKey: keyPair.privKey)
                 let account = try UserAccount.create(username: self.username, sites: [site], keyPair: keyPair)
-                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, challenge: signedChallenge.base64, pubkey: keyPair.pubKey.base64)
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil, pubkey: keyPair.pubKey.base64)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
@@ -316,7 +315,27 @@ class AuthorizationGuard {
     }
 
     private func webAuthnLogin(completionHandler: @escaping (Error?) -> Void) {
-
+        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
+            var success = false
+            do {
+                defer {
+                    // Logging
+                }
+                let context = try result.get()
+                guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
+                    throw AccountError.notFound
+                }
+                let (signature, counter) = try account.signWebAuthnChallenge(rpId: self.rpId, challenge: self.challenge)
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: signature, counter: counter, pubkey: nil)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .accountsLoaded, object: nil)
+                }
+                success = true
+                completionHandler(nil)
+            } catch {
+                completionHandler(error)
+            }
+        }
     }
 
 

@@ -133,10 +133,10 @@ class RequestViewController: UIViewController {
     private func success() {
         var autoClose = true
         switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin:
+        case .login, .addToExisting, .adminLogin, .webauthnLogin:
             successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .webauthnCreate:
             successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             autoClose = setAccountsLeft()

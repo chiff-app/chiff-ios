@@ -19,6 +19,7 @@ struct KeynRequest: Codable {
     let siteName: String?
     let siteURL: String?
     let type: KeynMessageType
+    let relyingPartyId: String?
     let username: String?
     let sentTimestamp: TimeInterval
     let count: Int?
@@ -36,6 +37,7 @@ struct KeynRequest: Codable {
         case siteName = "n"
         case siteURL = "l"
         case type = "r"
+        case relyingPartyId = "rp"
         case username = "u"
         case sentTimestamp = "z"
         case count = "x"
@@ -84,11 +86,17 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because subsequent don't apply to adminLogin request
-        case .webauthnCreate:
+        case .webauthnLogin:
             guard challenge != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn challenge.")
                 return false
             }
+            guard relyingPartyId != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
+                return false
+            }
+        case .webauthnCreate:
+            break
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
@@ -313,7 +321,8 @@ struct BackupUserAccount: Codable {
 struct KeynCredentialsResponse: Codable {
     let u: String?          // Username
     let p: String?          // Password
-    let c: String?          // Challenge
+    let s: String?          // Signagure
+    let n: Int?             // Counter
     let np: String?         // New password (for reset only! When registering p will be set)
     let b: Int              // Browser tab id
     let a: String?          // Account id (Only used with changePasswordRequests

@@ -26,6 +26,7 @@ struct UserAccount: Account {
     var askToChange: Bool?
     var enabled: Bool
     var version: Int
+    var counter: Int
 
     var synced: Bool {
         do {
@@ -48,6 +49,7 @@ struct UserAccount: Account {
         self.username = username
         self.enabled = false
         self.version = 1
+        self.counter = 0
 
         let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
         if let password = password {
@@ -74,6 +76,7 @@ struct UserAccount: Account {
         self.askToChange = askToChange
         self.enabled = enabled
         self.version = version
+        self.counter = 0
     }
 
 
@@ -104,6 +107,27 @@ struct UserAccount: Account {
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
+    }
+
+    mutating func signWebAuthnChallenge(rpId: String, challenge: String) throws -> (String, Int) {
+        let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
+        let privKey = try Keychain.shared.get(id: id, service: .webauthn)
+
+        counter += 1
+        var data = Data()
+        data.append(rpId.sha256Data)
+        data.append(0x05) // UP + UV flags
+        data.append(UInt8((counter >> 24) & 0xff))
+        data.append(UInt8((counter >> 16) & 0xff))
+        data.append(UInt8((counter >> 8) & 0xff))
+        data.append(UInt8((counter >> 0) & 0xff))
+        data.append(challengeData)
+        let signature = try Crypto.shared.signature(message: data, privKey: privKey)
+
+        let accountData = try PropertyListEncoder().encode(self)
+        try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData)
+        try backup()
+        return (signature.base64, self.counter)
     }
 
     mutating func addSite(site: Site) throws {
@@ -221,9 +245,9 @@ struct UserAccount: Account {
     func save(password: String, keyPair: KeyPair?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
-//        if let keyPair = keyPair {
-//            try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
-//        }
+        if let keyPair = keyPair {
+            try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+        }
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
@@ -286,6 +310,7 @@ extension UserAccount: Codable {
         case askToChange
         case enabled
         case version
+        case counter
     }
 
     init(from decoder: Decoder) throws {
@@ -300,6 +325,7 @@ extension UserAccount: Codable {
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.counter = try values.decodeIfPresent(Int.self, forKey: .counter) ?? 0
     }
 
 }
