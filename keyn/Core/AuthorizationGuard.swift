@@ -300,9 +300,8 @@ class AuthorizationGuard {
                     // Logging
                 }
                 let context = try result.get()
-                let keyPair = try Crypto.shared.createSigningKeyPair(seed: nil)
-                let account = try UserAccount(username: self.username, sites: [site], password: nil, keyPair: keyPair, context: context)
-                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil, pubkey: keyPair.pubKey.base64)
+                let (account, pubKey) = try UserAccount.create(username: self.username, site: site, context: context)
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil, pubkey: pubKey.base64)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
