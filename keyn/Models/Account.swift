@@ -14,6 +14,8 @@ enum AccountError: KeynError {
     case missingContext
     case passwordGeneration
     case tokenRetrieval
+    case wrongRpId
+    case noWebAuthn
 }
 
 protocol Account: Codable {

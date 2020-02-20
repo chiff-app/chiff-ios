@@ -178,11 +178,11 @@ class BrowserSession: Session {
         }
     }
 
-    func sendWebAuthnResponse(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext, signature: String?, counter: Int?, pubkey: String?) throws {
+    func sendWebAuthnResponse(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext, signature: String?, counter: Int?) throws {
         var response: KeynCredentialsResponse!
         switch type {
         case .webauthnCreate:
-            response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, np: nil, b: browserTab, a: account.id, o: nil, t: .webauthnCreate, pk: pubkey)
+            response = try KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, np: nil, b: browserTab, a: account.id, o: nil, t: .webauthnCreate, pk: account.webAuthnPubKey())
         case .webauthnLogin:
             response = KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnLogin, pk: nil)
         default:
@@ -277,7 +277,7 @@ class BrowserSession: Session {
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
         // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: Properties.endpoint!)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

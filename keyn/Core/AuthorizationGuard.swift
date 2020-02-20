@@ -210,7 +210,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, keyPair: nil, context: context)
+                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithm: nil, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -233,7 +233,7 @@ class AuthorizationGuard {
                 #warning("TODO: Fetch PPD for each site")
                 for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
-                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, keyPair: nil, context: context)
+                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithm: nil, context: context)
                 }
                 success = true
                 DispatchQueue.main.async {
@@ -292,7 +292,6 @@ class AuthorizationGuard {
     }
 
     private func webAuthnCreate(completionHandler: @escaping (Error?) -> Void) {
-        let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
         LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
             var success = false
             do {
@@ -300,8 +299,16 @@ class AuthorizationGuard {
                     // Logging
                 }
                 let context = try result.get()
-                let (account, pubKey) = try UserAccount.create(username: self.username, site: site, context: context)
-                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil, pubkey: pubKey.base64)
+                // TODO: We should probably disallow if there's not siteURL
+                if let id = self.accountId {
+                    // An account already exists: collect an authorization gesture confirming user consent for creating a new credential. The authorization gesture MUST include a test of user presence. If the user confirms: resturn InvalidStateError, else Reject
+                    print(id)
+                }
+                let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
+                // TODO: Get preferred algorithm from request
+                let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithm: .EdDSA, context: context)
+                // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }
@@ -324,8 +331,8 @@ class AuthorizationGuard {
                 guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
                     throw AccountError.notFound
                 }
-                let (signature, counter) = try account.signWebAuthnChallenge(rpId: self.rpId, challenge: self.challenge)
-                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: signature, counter: counter, pubkey: nil)
+                let (signature, counter) = try account.webAuthnSign(challenge: self.challenge, rpId: self.rpId)
+                try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: signature, counter: counter)
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                 }

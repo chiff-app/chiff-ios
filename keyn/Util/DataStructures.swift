@@ -96,7 +96,10 @@ struct KeynRequest: Codable {
                 return false
             }
         case .webauthnCreate:
-            break
+            guard relyingPartyId != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
+                return false
+            }
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
@@ -172,6 +175,7 @@ struct KeynPairingResponse: Codable {
     let errorLogging: Bool
     let analyticsLogging: Bool
     let version: Int
+    let arn: String
 }
 
 /*
@@ -269,8 +273,7 @@ struct BackupUserAccount: Codable {
     var tokenURL: URL?
     var tokenSecret: Data?
     var version: Int
-    var webAuthnIndex: Int
-    var webAuthnCounter: Int
+    var webAuthn: WebAuthn?
 
     enum CodingKeys: CodingKey {
         case id
@@ -285,8 +288,7 @@ struct BackupUserAccount: Codable {
         case tokenURL
         case tokenSecret
         case version
-        case webAuthnIndex
-        case webAuthnCounter
+        case webAuthn
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -302,8 +304,7 @@ struct BackupUserAccount: Codable {
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
         self.version = account.version
-        self.webAuthnIndex = account.webAuthnIndex
-        self.webAuthnCounter = account.webAuthnCounter
+        self.webAuthn = account.webAuthn
     }
 
     init(from decoder: Decoder) throws {
@@ -320,8 +321,7 @@ struct BackupUserAccount: Codable {
         self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-        self.webAuthnIndex = try values.decodeIfPresent(Int.self, forKey: .webAuthnIndex) ?? 0
-        self.webAuthnCounter = try values.decodeIfPresent(Int.self, forKey: .webAuthnCounter) ?? 0
+        self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
     }
 
 }

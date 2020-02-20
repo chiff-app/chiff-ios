@@ -15,6 +15,7 @@ enum CryptoError: KeynError {
     case encryption
     case decryption
     case convertToHex
+    case convertFromHex
     case hashing
     case signing
     case indexOutOfRange
@@ -213,6 +214,13 @@ class Crypto {
         }
 
         return hash
+    }
+
+    func fromHex(_ message: String) throws -> Data {
+        guard let data = sodium.utils.hex2bin(message)?.data else {
+            throw CryptoError.convertFromHex
+        }
+        return data
     }
 
     func sha1(from string: String) -> String {
