@@ -29,6 +29,7 @@ class LoggingPreferenceViewController: UIViewController {
 
     @IBAction func finish(_ sender: UIButton) {
         Properties.analyticsLogging = shareAnalyticsDataSwitch.isOn
+        Properties.errorLogging = shareErrorDataSwitch.isOn
         UIApplication.shared.showRootController()
     }
 
