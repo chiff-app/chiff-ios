@@ -255,7 +255,10 @@ class BrowserSession: Session {
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
         // TODO: Differentiate this for session type?
-        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version)
+        guard let endpoint = Properties.endpoint else {
+            throw SessionError.noEndpoint
+        }
+        let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

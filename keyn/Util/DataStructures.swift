@@ -157,6 +157,7 @@ struct KeynPairingResponse: Codable {
     let errorLogging: Bool
     let analyticsLogging: Bool
     let version: Int
+    let arn: String
 }
 
 /*
