@@ -200,6 +200,7 @@ struct SessionAccount: Codable {
     let askToChange: Bool?
     let username: String
     let sites: [SessionSite]
+    let rpId: String?
 
     init(account: Account) {
         self.id = account.id
@@ -207,6 +208,7 @@ struct SessionAccount: Codable {
         self.askToChange = account.askToChange
         self.username = account.username
         self.sites = account.sites.map({ SessionSite(site: $0) })
+        self.rpId = (account as? UserAccount)?.webAuthn?.id
     }
 }
 

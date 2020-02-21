@@ -48,7 +48,7 @@ struct WebAuthn: Codable {
         }
         let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
         let data = try createAuthenticatorData() + challengeData
-        let signature = try Crypto.shared.signature(message: data, privKey: data)
+        let signature = try Crypto.shared.signature(message: data, privKey: privKey)
         return (signature.base64, counter)
     }
 

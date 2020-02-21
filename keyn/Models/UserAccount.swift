@@ -224,6 +224,7 @@ struct UserAccount: Account {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
         if let keyPair = keyPair {
+            print(keyPair.privKey.base64)
             try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
         }
         try backup()
@@ -242,9 +243,10 @@ struct UserAccount: Account {
         guard let privKey = try Keychain.shared.get(id: id, service: .webauthn) else {
             throw KeychainError.notFound
         }
+        print(privKey.base64)
         let (signature, counter) = try self.webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: nil, objectData: accountData)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: nil, objectData: accountData)
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         return (signature, counter)
