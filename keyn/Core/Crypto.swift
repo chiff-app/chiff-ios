@@ -5,6 +5,7 @@
 import Foundation
 import Sodium
 import CommonCrypto
+import CryptoKit
 
 enum CryptoError: KeynError {
     case randomGeneration
@@ -246,4 +247,19 @@ class Crypto {
         }
         return digest.data
     }
+}
+
+@available(iOS 13.0, *)
+extension Crypto {
+
+    func createECDSASigningKeyPair(seed: Data?) throws -> KeyPair {
+        var privKey: P256.Signing.PrivateKey
+        if let seed = seed {
+            privKey = try P256.Signing.PrivateKey(rawRepresentation: seed)
+        } else {
+            privKey = P256.Signing.PrivateKey()
+        }
+        return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+    }
+
 }

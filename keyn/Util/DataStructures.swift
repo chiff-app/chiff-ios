@@ -20,6 +20,7 @@ struct KeynRequest: Codable {
     let siteURL: String?
     let type: KeynMessageType
     let relyingPartyId: String?
+    let algorithms: [WebAuthnAlgorithm]?
     let username: String?
     let sentTimestamp: TimeInterval
     let count: Int?
@@ -37,6 +38,7 @@ struct KeynRequest: Codable {
         case siteName = "n"
         case siteURL = "l"
         case type = "r"
+        case algorithms = "g"
         case relyingPartyId = "rp"
         case username = "u"
         case sentTimestamp = "z"
@@ -98,6 +100,10 @@ struct KeynRequest: Codable {
         case .webauthnCreate:
             guard relyingPartyId != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
+                return false
+            }
+            guard let algorithms = algorithms, !algorithms.isEmpty else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn algorithm.")
                 return false
             }
         default:
@@ -329,16 +335,17 @@ struct BackupUserAccount: Codable {
 }
 
 struct KeynCredentialsResponse: Codable {
-    let u: String?          // Username
-    let p: String?          // Password
-    let s: String?          // Signagure
-    let n: Int?             // Counter
-    let np: String?         // New password (for reset only! When registering p will be set)
-    let b: Int              // Browser tab id
-    let a: String?          // Account id (Only used with changePasswordRequests
-    let o: String?          // OTP code
-    let t: KeynMessageType  // One of the message types Keyn understands
-    let pk: String?         // Webauthn pubkey
+    let u: String?            // Username
+    let p: String?            // Password
+    let s: String?            // Signagure
+    let n: Int?               // Counter
+    let g: WebAuthnAlgorithm? // Algorithm COSE identifier
+    let np: String?           // New password (for reset only! When registering p will be set)
+    let b: Int                // Browser tab id
+    let a: String?            // Account id (Only used with changePasswordRequests
+    let o: String?            // OTP code
+    let t: KeynMessageType    // One of the message types Keyn understands
+    let pk: String?           // Webauthn pubkey
 }
 
 enum KeyType: UInt64 {

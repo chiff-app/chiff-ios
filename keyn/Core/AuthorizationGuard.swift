@@ -28,7 +28,8 @@ class AuthorizationGuard {
     private let password: String!       // Should be present for add site requests
     private let username: String!       // Should be present for add site requests
     private let challenge: String!      // Should be present for webauthn requests
-    private let rpId: String!      // Should be present for webauthn requests
+    private let rpId: String!           // Should be present for webauthn requests
+    private let algorithms: [WebAuthnAlgorithm]! // Should be present for webauthn create requests
 
     private var authenticationReason: String {
         switch type {
@@ -63,6 +64,7 @@ class AuthorizationGuard {
         self.accounts = request.accounts
         self.challenge = request.challenge
         self.rpId = request.relyingPartyId
+        self.algorithms = request.algorithms
     }
 
     // MARK: - Handle request responses
@@ -210,7 +212,7 @@ class AuthorizationGuard {
                         Logger.shared.analytics(.addSiteRequstAuthorized, properties: [.value: success])
                     }
                     let context = try result.get()
-                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithm: nil, context: context)
+                    let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, context: context)
                     try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .accountsLoaded, object: nil)
@@ -233,7 +235,7 @@ class AuthorizationGuard {
                 #warning("TODO: Fetch PPD for each site")
                 for bulkAccount in self.accounts {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
-                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithm: nil, context: context)
+                    let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, context: context)
                 }
                 success = true
                 DispatchQueue.main.async {
@@ -306,7 +308,7 @@ class AuthorizationGuard {
                 }
                 let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
                 // TODO: Get preferred algorithm from request
-                let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithm: .EdDSA, context: context)
+                let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, context: context)
                 // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
                 try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
                 DispatchQueue.main.async {
