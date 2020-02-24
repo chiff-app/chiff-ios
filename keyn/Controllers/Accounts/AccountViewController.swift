@@ -35,6 +35,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var password: String? {
         return try? account.password()
     }
+
+    var webAuthnEnabled: Bool {
+        if let account = account as? UserAccount {
+            return account.webAuthn != nil
+        } else {
+            return false
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,14 +74,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         userNameTextField.delegate = self
         userPasswordTextField.delegate = self
         do {
-            if let password = try account.password() {
-                userPasswordTextField.text = password
-                userPasswordTextField.isSecureTextEntry = true
-            } else {
+            if !account.hasPassword {
                 userPasswordTextField.placeholder = "accounts.no_password".localized
                 userPasswordTextField.isSecureTextEntry = false
                 showPasswordButton.isHidden = true
                 showPasswordButton.isEnabled = false
+            } else {
+                userPasswordTextField.text = password ?? "22characterplaceholder"
+                userPasswordTextField.isSecureTextEntry = true
             }
             token = try account.oneTimePasswordToken()
             updateOTPUI()
@@ -110,7 +118,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "accounts.url_warning".localized.capitalizedFirstLetter
+            return webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
         case 1:
             return "accounts.2fa_description".localized.capitalizedFirstLetter
         case 2:
@@ -144,8 +152,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         footer.textLabel?.frame = footer.frame
         switch section {
         case 0:
-            footer.textLabel?.text = "accounts.url_warning".localized.capitalizedFirstLetter
-            footer.textLabel?.isHidden = !tableView.isEditing
+            footer.textLabel?.text = webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
+            footer.textLabel?.isHidden = !(webAuthnEnabled || tableView.isEditing)
         case 1:
             footer.textLabel?.isHidden = false
             footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter

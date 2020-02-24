@@ -280,12 +280,12 @@ class TeamSession: Session {
                         try filemgr.removeItem(atPath: path)
                     }
                     filemgr.createFile(atPath: path, contents: data, attributes: nil)
+                } catch APIError.statusCode(404) {
+                    return
                 } catch {
                     Logger.shared.error("Error retrieving logo", error: error)
                 }
             }
-        } catch APIError.statusCode(404) {
-            Logger.shared.warning("Logo not found")
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
         }

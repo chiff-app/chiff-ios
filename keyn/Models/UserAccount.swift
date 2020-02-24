@@ -17,9 +17,6 @@ struct UserAccount: Account {
     let id: String
     var username: String
     var sites: [Site]
-    var site: Site {
-        return sites[0]
-    }
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
@@ -28,6 +25,14 @@ struct UserAccount: Account {
     var enabled: Bool
     var version: Int
     var webAuthn: WebAuthn?
+
+    var hasPassword: Bool {
+        return passwordIndex >= 0
+    }
+
+    var site: Site {
+        return sites[0]
+    }
 
     var synced: Bool {
         do {
@@ -50,16 +55,19 @@ struct UserAccount: Account {
         self.username = username
         self.enabled = false
         self.version = 1
-        self.passwordIndex = 0
-        self.lastPasswordUpdateTryIndex = 0
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
         }
         let keyPair = try webAuthn?.generateKeyPair(accountId: id, context: context)
 
         if let password = password {
+            self.passwordIndex = 0
+            self.lastPasswordUpdateTryIndex = 0
             let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
             passwordOffset = try passwordGenerator.calculateOffset(index: self.passwordIndex, password: password)
+        } else {
+            self.passwordIndex = -1
+            self.lastPasswordUpdateTryIndex = -1
         }
 
         try save(password: password, keyPair: keyPair)
@@ -327,10 +335,11 @@ struct UserAccount: Account {
                               webAuthn: backupAccount.webAuthn)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
-        let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-        let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
-
-        assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
+        var password: String? = nil
+        if account.passwordIndex >= 0 {
+            let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            (password, _) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
+        }
 
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
@@ -338,9 +347,24 @@ struct UserAccount: Account {
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
 
+        // Webauthn
+        if let webAuthn = account.webAuthn {
+            let keyPair = try webAuthn.generateKeyPair(accountId: account.id, context: context)
+            switch webAuthn.algorithm {
+            case .EdDSA:
+                try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+            case .ECDSA:
+                guard #available(iOS 13.0, *) else {
+                    throw WebAuthnError.notSupported
+                }
+                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+                try Keychain.shared.saveKey(id: id, key: privKey)
+            }
+        }
+
         let data = try PropertyListEncoder().encode(account)
 
-        try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
+        try Keychain.shared.save(id: account.id, service: .account, secretData: password?.data, objectData: data)
         account.saveToIdentityStore()
     }
 
