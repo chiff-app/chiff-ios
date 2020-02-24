@@ -109,7 +109,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
              NotificationCategory.DELETE_TEAM_SESSION:
             return []
         default:
-            print("nada")
+            break
         }
 
 

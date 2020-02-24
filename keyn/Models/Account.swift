@@ -30,6 +30,7 @@ protocol Account: Codable {
     var synced: Bool { get }
     var enabled: Bool { get }
     var version: Int { get }
+    var hasPassword: Bool { get }
     static var keychainService: KeychainService { get }
 
     func backup() throws

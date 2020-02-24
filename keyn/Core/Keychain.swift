@@ -139,7 +139,7 @@ struct Keychain {
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
-        guard SecItemAdd(query as CFDictionary, nil) == errSecSuccess else {
+        guard status == errSecSuccess else {
             throw KeychainError.unhandledError(status.message)
         }
     }
@@ -158,7 +158,7 @@ struct Keychain {
 
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-        case noErr: break
+        case errSecSuccess: break
         case errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case errSecItemNotFound:
@@ -239,7 +239,7 @@ struct Keychain {
 
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-        case noErr: break
+        case errSecSuccess: break
         case errSecItemNotFound: return nil
         case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
@@ -268,7 +268,7 @@ struct Keychain {
 
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-        case noErr: break
+        case errSecSuccess: break
         case errSecItemNotFound: return nil
         case errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
@@ -318,7 +318,7 @@ struct Keychain {
 
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-        case noErr: break
+        case errSecSuccess: break
         case errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case errSecItemNotFound:
@@ -485,7 +485,9 @@ extension Keychain {
                                     kSecAttrApplicationLabel as String: identifier]
         
         switch SecItemDelete(query as CFDictionary) {
-        case errSecItemNotFound, errSecSuccess: break // Ignore these.
+        case errSecSuccess: break
+        case errSecItemNotFound:
+            throw KeychainError.notFound
         case let status:
             throw KeychainError.unhandledError(status.message)
         }
