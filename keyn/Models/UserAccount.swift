@@ -119,6 +119,20 @@ struct UserAccount: Account {
         try update(secret: nil)
     }
 
+    mutating func removeWebAuthn() throws {
+        guard let webAuthn = webAuthn else {
+            return
+        }
+        switch webAuthn.algorithm {
+        case .EdDSA:
+            try Keychain.shared.delete(id: id, service: .webauthn)
+        case .ECDSA:
+            try Keychain.shared.deleteKey(id: id)
+        }
+        self.webAuthn = nil
+        try update(secret: nil)
+    }
+
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
         try update(secret: nil)
@@ -265,10 +279,7 @@ struct UserAccount: Account {
             }
             (signature, counter) = try webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
         }
-        let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: nil, objectData: accountData)
-        try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try update(secret: nil)
         return (signature, counter)
     }
 

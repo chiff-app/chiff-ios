@@ -139,7 +139,7 @@ struct Keychain {
         }
 
         let status = SecItemAdd(query as CFDictionary, nil)
-        guard status == errSecSuccess else {
+        guard SecItemAdd(query as CFDictionary, nil) == errSecSuccess else {
             throw KeychainError.unhandledError(status.message)
         }
     }
@@ -157,14 +157,16 @@ struct Keychain {
         }
 
         var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+        case noErr: break
+        case errSecInteractionNotAllowed:
+            throw KeychainError.interactionNotAllowed
+        case errSecItemNotFound:
+            return nil
+        case let status:
+            throw KeychainError.unhandledError(status.message)
         }
-
-        guard status != errSecInteractionNotAllowed else { throw KeychainError.interactionNotAllowed }
-        guard status != errSecItemNotFound else { return nil }
-        guard status == noErr else { throw KeychainError.unhandledError(status.message) }
-        if queryResult == nil {
+        guard queryResult != nil else {
             return nil
         }
         guard let data = queryResult as? Data else {
@@ -185,9 +187,7 @@ struct Keychain {
             query[kSecUseAuthenticationContext as String] = context ?? defaultContext
         }
 
-        let status = SecItemCopyMatching(query as CFDictionary, nil)
-
-        return status != errSecItemNotFound
+        return SecItemCopyMatching(query as CFDictionary, nil) != errSecItemNotFound
     }
 
     func update(id identifier: String, service: KeychainService, secretData: Data? = nil, objectData: Data? = nil, context: LAContext? = nil) throws {
@@ -214,10 +214,13 @@ struct Keychain {
             attributes[kSecAttrGeneric as String] = objectData
         }
 
-        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-
-        guard status != errSecItemNotFound else { throw KeychainError.notFound }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status.message) }
+        switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
+        case errSecSuccess: return
+        case errSecItemNotFound:
+            throw KeychainError.notFound
+        case let status:
+            throw KeychainError.unhandledError(status.message)
+        }
     }
     
     func all(service: KeychainService, context: LAContext? = nil, label: String? = nil) throws -> [[String: Any]]? {
@@ -235,21 +238,15 @@ struct Keychain {
         }
 
         var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
-        }
-        
-        if status == errSecItemNotFound {
-            return nil
-        }
-        if status == -26276 || status == errSecInteractionNotAllowed {
+        switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+        case noErr: break
+        case errSecItemNotFound: return nil
+        case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
-        }
-        
-        guard status == noErr else {
+        case let status:
             throw KeychainError.unhandledError(status.message)
         }
-        
+
         guard let dataArray = queryResult as? [[String: Any]] else {
             throw KeychainError.unexpectedData
         }
@@ -270,26 +267,18 @@ struct Keychain {
         }
 
         var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
-        }
-
-        if status == errSecItemNotFound {
-            return nil
-        }
-
-        guard status != errSecInteractionNotAllowed else {
+        switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+        case noErr: break
+        case errSecItemNotFound: return nil
+        case errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
-        }
-
-        guard status == noErr else {
+        case let status:
             throw KeychainError.unhandledError(status.message)
         }
 
         guard let dataArray = queryResult as? [String: Any] else {
             throw KeychainError.unexpectedData
         }
-
         return dataArray
     }
 
@@ -298,10 +287,12 @@ struct Keychain {
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue]
 
-        let status = SecItemDelete(query as CFDictionary)
-
-        guard status != errSecItemNotFound else { throw KeychainError.notFound }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status.message) }
+        switch SecItemDelete(query as CFDictionary) {
+        case errSecSuccess: break
+        case errSecItemNotFound: throw KeychainError.notFound
+        case let status:
+            throw KeychainError.unhandledError(status.message)
+        }
     }
 
     func deleteAll(service: KeychainService, label: String? = nil) {
@@ -326,18 +317,19 @@ struct Keychain {
         }
 
         var queryResult: AnyObject?
-        let status = withUnsafeMutablePointer(to: &queryResult) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+        switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+        case noErr: break
+        case errSecInteractionNotAllowed:
+            throw KeychainError.interactionNotAllowed
+        case errSecItemNotFound:
+            throw KeychainError.notFound
+        case let status:
+            throw KeychainError.unhandledError(status.message)
         }
-
-        guard status != errSecInteractionNotAllowed else { throw KeychainError.interactionNotAllowed }
-        guard status != errSecItemNotFound else { throw KeychainError.notFound }
-        guard status == noErr else { throw KeychainError.unhandledError(status.message) }
 
         guard let dataArray = queryResult as? [String: Any] else {
             throw KeychainError.unexpectedData
         }
-
         if let label = dataArray[kSecAttrType as String] as? String {
             return label == "true"
         } else { // Not present, we'll assume it's synced
@@ -358,10 +350,12 @@ struct Keychain {
 
         let attributes: [String: Any] = [kSecAttrType as String: value ? "true" : "fals"] // Four characters
 
-        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-
-        guard status != errSecItemNotFound else { throw KeychainError.notFound }
-        guard status == errSecSuccess else { throw KeychainError.unhandledError(status.message) }
+        switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
+        case errSecSuccess: return
+        case errSecItemNotFound: throw KeychainError.notFound
+        case let status:
+            throw KeychainError.unhandledError(status.message)
+        }
     }
 
     // MARK: - Authenticated Keychain operations
@@ -377,20 +371,20 @@ struct Keychain {
         do {
             try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
                 var queryResult: AnyObject?
-                let status = withUnsafeMutablePointer(to: &queryResult) {
-                    SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+                switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+                    case errSecSuccess: break
+                    case errSecItemNotFound:
+                        completionHandler(.success(nil))
+                    case errSecInteractionNotAllowed:
+                        completionHandler(.failure(KeychainError.interactionNotAllowed))
+                    case let status:
+                        completionHandler(.failure(KeychainError.unhandledError(status.message)))
                 }
 
-                guard status != errSecItemNotFound else {
+                guard let result = queryResult else {
                     return completionHandler(.success(nil))
                 }
-                guard status == noErr else {
-                    return completionHandler(.failure(KeychainError.unhandledError(status.message)))
-                }
-                if queryResult == nil {
-                    return completionHandler(.success(nil))
-                }
-                guard let data = queryResult as? Data else {
+                guard let data = result as? Data else {
                     return completionHandler(.failure(KeychainError.unexpectedData))
                 }
                 completionHandler(.success(data))
@@ -407,15 +401,14 @@ struct Keychain {
 
         do {
             try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, context) in
-                let status = SecItemDelete(query as CFDictionary)
-
-                guard status != errSecItemNotFound else {
-                    return completionHandler(.failure(KeychainError.notFound))
+                switch SecItemDelete(query as CFDictionary) {
+                case errSecItemNotFound:
+                    completionHandler(.failure(KeychainError.notFound))
+                case errSecSuccess:
+                    completionHandler(.success(context))
+                case let status:
+                    completionHandler(.failure(KeychainError.unhandledError(status.message)))
                 }
-                guard status == errSecSuccess else {
-                    return completionHandler(.failure(KeychainError.unhandledError(status.message)))
-                }
-                completionHandler(.success(context))
             }
         } catch {
             completionHandler(.failure(error))
@@ -424,12 +417,12 @@ struct Keychain {
 
 }
 
-@available(iOS 13.0, *)
 extension Keychain {
 
     // MARK: - SecKey operations
 
     /// Stores a CryptoKit key in the keychain as a SecKey instance.
+    @available(iOS 13.0, *)
     func saveKey<T: SecKeyConvertible>(id identifier: String, key: T) throws {
         // Describe the key.
         let attributes = [kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom,
@@ -459,6 +452,7 @@ extension Keychain {
     }
 
     /// Reads a CryptoKit key from the keychain as a SecKey instance.
+    @available(iOS 13.0, *)
     func getKey<T: SecKeyConvertible>(id identifier: String, context: LAContext?) throws -> T? {
 
         // Seek an elliptic-curve key with a given label.
@@ -484,6 +478,17 @@ extension Keychain {
             throw KeychainError.unexpectedData
         }
         return try T(x963Representation: data)
+    }
+
+    func deleteKey(id identifier: String) throws {
+        let query: [String: Any] = [kSecClass as String: kSecClassKey,
+                                    kSecAttrApplicationLabel as String: identifier]
+        
+        switch SecItemDelete(query as CFDictionary) {
+        case errSecItemNotFound, errSecSuccess: break // Ignore these.
+        case let status:
+            throw KeychainError.unhandledError(status.message)
+        }
     }
 
 }
