@@ -12,12 +12,15 @@ import Foundation
 struct KeynRequest: Codable {
     let accountID: String?
     let browserTab: Int?
+    let challenge: String?
     let password: String?
     let passwordSuccessfullyChanged: Bool?
     let siteID: String?
     let siteName: String?
     let siteURL: String?
     let type: KeynMessageType
+    let relyingPartyId: String?
+    let algorithms: [WebAuthnAlgorithm]?
     let username: String?
     let sentTimestamp: TimeInterval
     let count: Int?
@@ -27,6 +30,7 @@ struct KeynRequest: Codable {
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
         case browserTab = "b"
+        case challenge = "c"
         case password = "p"
         case passwordSuccessfullyChanged = "v"
         case sessionID = "i"
@@ -34,10 +38,12 @@ struct KeynRequest: Codable {
         case siteName = "n"
         case siteURL = "l"
         case type = "r"
+        case algorithms = "g"
+        case relyingPartyId = "rp"
         case username = "u"
         case sentTimestamp = "z"
         case count = "x"
-        case accounts = "c"
+        case accounts = "t"
     }
 
     /// This checks if the appropriate variables are set for the type of of this request
@@ -82,6 +88,24 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because subsequent don't apply to adminLogin request
+        case .webauthnLogin:
+            guard challenge != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn challenge.")
+                return false
+            }
+            guard relyingPartyId != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
+                return false
+            }
+        case .webauthnCreate:
+            guard relyingPartyId != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
+                return false
+            }
+            guard let algorithms = algorithms, !algorithms.isEmpty else {
+                Logger.shared.error("VerifyIntegrity failed because there is no webauthn algorithm.")
+                return false
+            }
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false
@@ -182,6 +206,8 @@ struct SessionAccount: Codable {
     let askToChange: Bool?
     let username: String
     let sites: [SessionSite]
+    let hasPassword: Bool
+    let rpId: String?
 
     init(account: Account) {
         self.id = account.id
@@ -189,6 +215,8 @@ struct SessionAccount: Codable {
         self.askToChange = account.askToChange
         self.username = account.username
         self.sites = account.sites.map({ SessionSite(site: $0) })
+        self.rpId = (account as? UserAccount)?.webAuthn?.id
+        self.hasPassword = account.hasPassword
     }
 }
 
@@ -255,6 +283,7 @@ struct BackupUserAccount: Codable {
     var tokenURL: URL?
     var tokenSecret: Data?
     var version: Int
+    var webAuthn: WebAuthn?
 
     enum CodingKeys: CodingKey {
         case id
@@ -269,6 +298,7 @@ struct BackupUserAccount: Codable {
         case tokenURL
         case tokenSecret
         case version
+        case webAuthn
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -284,6 +314,7 @@ struct BackupUserAccount: Codable {
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
         self.version = account.version
+        self.webAuthn = account.webAuthn
     }
 
     init(from decoder: Decoder) throws {
@@ -300,22 +331,27 @@ struct BackupUserAccount: Codable {
         self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
     }
 
 }
 
 struct KeynCredentialsResponse: Codable {
-    let u: String?          // Username
-    let p: String?          // Password
-    let np: String?         // New password (for reset only! When registering p will be set)
-    let b: Int              // Browser tab id
-    let a: String?          // Account id (Only used with changePasswordRequests
-    let o: String?          // OTP code
-    let t: KeynMessageType  // One of the message types Keyn understands
+    let u: String?            // Username
+    let p: String?            // Password
+    let s: String?            // Signagure
+    let n: Int?               // Counter
+    let g: WebAuthnAlgorithm? // Algorithm COSE identifier
+    let np: String?           // New password (for reset only! When registering p will be set)
+    let b: Int                // Browser tab id
+    let a: String?            // Account id (Only used with changePasswordRequests
+    let o: String?            // OTP code
+    let t: KeynMessageType    // One of the message types Keyn understands
+    let pk: String?           // Webauthn pubkey
 }
 
 enum KeyType: UInt64 {
-    case passwordSeed, backupSeed
+    case passwordSeed, backupSeed, webAuthnSeed
 }
 
 enum CodingError: KeynError {
@@ -356,6 +392,7 @@ enum KeyIdentifier: String, Codable {
     case password = "password"
     case backup = "backup"
     case master = "master"
+    case webauthn = "webauthn"
 
     // BackupManager
     case priv = "priv"

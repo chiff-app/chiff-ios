@@ -539,3 +539,16 @@ extension UIPrintPageRenderer {
 
 }
 
+extension OSStatus {
+
+    /// A human readable message for the status.
+    var message: String {
+        if #available(iOS 13.0, *) {
+            return (SecCopyErrorMessageString(self, nil) as String?) ?? String(self)
+        } else {
+            return String(self)
+        }
+    }
+}
+
+

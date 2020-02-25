@@ -33,11 +33,6 @@ struct Seed {
         }
     }
 
-    enum KeyType: UInt64 {
-        case passwordSeed = 0
-        case backupSeed = 1
-    }
-
     static func create(context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
         guard !hasKeys && !BackupManager.hasKeys else {
             completionHandler(.failure(SeedError.exists))
@@ -47,6 +42,7 @@ struct Seed {
 
             let seed = try Crypto.shared.generateSeed()
             let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
+            let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .webAuthnSeed, context: CRYPTO_CONTEXT)
             let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
             BackupManager.initialize(seed: backupSeed, context: context) { result in
@@ -56,18 +52,19 @@ struct Seed {
                         try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
                         try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
                         try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+                        try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
                         completionHandler(.success(()))
                     case .failure(let error): throw error
                     }
                 } catch {
                     NotificationManager.shared.deleteKeys()
                     BackupManager.deleteKeys()
-                    try? delete()
+                    delete()
                     completionHandler(.failure(error))
                 }
             }
         } catch {
-            try? delete()
+            delete()
             completionHandler(.failure(error))
         }
     }
@@ -77,6 +74,9 @@ struct Seed {
             do {
                 switch result {
                 case .success(let seed):
+                    guard let seed = seed else {
+                        throw SeedError.notFound
+                    }
                     let checksumSize = seed.count / 4
                     let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
                     let wordlist = try self.localizedWordlist()
@@ -123,24 +123,40 @@ struct Seed {
         } catch {
             NotificationManager.shared.deleteKeys()
             BackupManager.deleteKeys()
-            try? delete()
+            delete()
             completionHandler(.failure(error))
         }
     }
 
     static func getPasswordSeed(context: LAContext?) throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context)
+        guard let seed = try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context) else {
+            throw SeedError.notFound
+        }
+        return seed
     }
 
     static func getBackupSeed(context: LAContext?) throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context)
+        guard let seed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context) else {
+            throw SeedError.notFound
+        }
+        return seed
     }
 
-    static func delete() throws {
+    static func getWebAuthnSeed(context: LAContext?) throws -> Data {
+        guard let seed = try Keychain.shared.get(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, context: context) else {
+            guard let masterSeed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context) else {
+                throw SeedError.notFound
+            }
+            let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: CRYPTO_CONTEXT)
+            try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
+            return webAuthnSeed
+        }
+        return seed
+    }
+
+    static func delete() {
         UserDefaults.standard.removeObject(forKey: paperBackupCompletedFlag)
-        try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed)
-        try Keychain.shared.delete(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed)
-        try Keychain.shared.delete(id: KeyIdentifier.password.identifier(for: .seed), service: .seed)
+        Keychain.shared.deleteAll(service: .seed)
     }
 
     // MARK: - Private

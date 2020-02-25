@@ -167,7 +167,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let id = url!.absoluteString.sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
-                self.account = try UserAccount(username: username, sites: [site], password: password, context: nil)
+                self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
             } catch {
