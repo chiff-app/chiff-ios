@@ -36,8 +36,10 @@ enum AnalyticsEvent: String {
     case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
     case changePasswordRequestOpened = "ChangePasswordRequestOpened"
     case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
-    case fillPassworddRequestOpened = "FillPassworddRequestOpened"
-    case fillPassworddRequestAuthorized = "FillPassworddRequestAuthorized"
+    case fillPassworddRequestOpened = "FillPasswordRequestOpened"
+    case fillPassworddRequestAuthorized = "FillPasswordRequestAuthorized"
+    case webAuthnCreateRequestAuthorized = "WebAuthnCreateRequestAuthorized"
+    case webAuthnLoginRequestAuthorized = "WebAuthnLoginRequestAuthorized"
 
     // Local login
     case passwordCopied = "PasswordCopied"
