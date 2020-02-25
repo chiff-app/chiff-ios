@@ -6,6 +6,7 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
+import CryptoKit
 
 
 /*
@@ -16,9 +17,6 @@ struct UserAccount: Account {
     let id: String
     var username: String
     var sites: [Site]
-    var site: Site {
-        return sites[0]
-    }
     var passwordIndex: Int
     var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
@@ -26,6 +24,15 @@ struct UserAccount: Account {
     var askToChange: Bool?
     var enabled: Bool
     var version: Int
+    var webAuthn: WebAuthn?
+
+    var hasPassword: Bool {
+        return passwordIndex >= 0
+    }
+
+    var site: Site {
+        return sites[0]
+    }
 
     var synced: Bool {
         do {
@@ -41,29 +48,32 @@ struct UserAccount: Account {
     }
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], passwordIndex: Int = 0, password: String?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
         self.username = username
         self.enabled = false
         self.version = 1
+        if let rpId = rpId, let algorithms = algorithms {
+            self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
+        }
+        let keyPair = try webAuthn?.generateKeyPair(accountId: id, context: context)
 
-        let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
         if let password = password {
-            passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: password)
+            self.passwordIndex = 0
+            self.lastPasswordUpdateTryIndex = 0
+            let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            passwordOffset = try passwordGenerator.calculateOffset(index: self.passwordIndex, password: password)
         } else {
-            askToChange = false
+            self.passwordIndex = -1
+            self.lastPasswordUpdateTryIndex = -1
         }
 
-        let (generatedPassword, index) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
-        self.passwordIndex = index  
-        self.lastPasswordUpdateTryIndex = index
-
-        try save(password: generatedPassword)
+        try save(password: password, keyPair: keyPair)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -74,6 +84,7 @@ struct UserAccount: Account {
         self.askToChange = askToChange
         self.enabled = enabled
         self.version = version
+        self.webAuthn = webAuthn
     }
 
 
@@ -116,6 +127,20 @@ struct UserAccount: Account {
         try update(secret: nil)
     }
 
+    mutating func removeWebAuthn() throws {
+        guard let webAuthn = webAuthn else {
+            return
+        }
+        switch webAuthn.algorithm {
+        case .EdDSA:
+            try Keychain.shared.delete(id: id, service: .webauthn)
+        case .ECDSA:
+            try Keychain.shared.deleteKey(id: id)
+        }
+        self.webAuthn = nil
+        try update(secret: nil)
+    }
+
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
         try update(secret: nil)
@@ -150,9 +175,9 @@ struct UserAccount: Account {
             self.passwordOffset = try passwordGenerator.calculateOffset(index: newIndex, password: newPassword)
             self.passwordIndex = newIndex
             self.lastPasswordUpdateTryIndex = newIndex
-        } else if let newUsername = newUsername {
+        } else if let newUsername = newUsername, let oldPassword = try self.password(context: context) {
             let passwordGenerator = try PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: try self.password(context: context))
+            self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: oldPassword)
         }
 
         try update(secret: newPassword?.data)
@@ -185,6 +210,7 @@ struct UserAccount: Account {
             do {
                 switch result {
                 case .success(_):
+                    try? Keychain.shared.delete(id: self.id, service: .webauthn)
                     try BackupManager.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
@@ -217,16 +243,81 @@ struct UserAccount: Account {
         }
     }
 
-    func save(password: String) throws {
+    func save(password: String?, keyPair: KeyPair?) throws {
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
+        if let keyPair = keyPair, let webAuthn = webAuthn {
+            switch webAuthn.algorithm {
+            case .EdDSA: try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+            case .ECDSA:
+                guard #available(iOS 13.0, *) else {
+                    throw WebAuthnError.notSupported
+                }
+                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+                try Keychain.shared.saveKey(id: id, key: privKey)
+            }
+        }
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
         Properties.accountCount += 1
     }
 
+
+    // MARK: - WebAuthn functions
+
+    mutating func webAuthnSign(challenge: String, rpId: String) throws -> (String, Int) {
+        guard webAuthn != nil else {
+            throw AccountError.noWebAuthn
+        }
+        var signature: String
+        var counter: Int
+        switch webAuthn!.algorithm {
+        case .EdDSA:
+            guard let privKey: Data = try Keychain.shared.get(id: id, service: .webauthn) else {
+                throw KeychainError.notFound
+            }
+            (signature, counter) = try webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            guard let privKey: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: id, context: nil) else {
+                throw KeychainError.notFound
+            }
+            (signature, counter) = try webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
+        }
+        try update(secret: nil)
+        return (signature, counter)
+    }
+
+    func webAuthnPubKey() throws -> String {
+        guard let webAuthn = webAuthn else {
+            throw AccountError.noWebAuthn
+        }
+        switch webAuthn.algorithm {
+        case .EdDSA:
+            guard let dict = try Keychain.shared.attributes(id: id, service: .webauthn) else {
+                throw KeychainError.notFound
+            }
+            guard let pubKey = dict[kSecAttrGeneric as String] as? Data else {
+                throw CodingError.unexpectedData
+            }
+            return try Crypto.shared.convertToBase64(from: pubKey)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            guard let key: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: id, context: nil) else {
+                throw KeychainError.notFound
+            }
+            return try Crypto.shared.convertToBase64(from: key.publicKey.rawRepresentation)
+        }
+    }
+
+
     // MARK: - Static functions
+
 
     static func restore(accountData: Data, id: String, context: LAContext?) throws {
         let decoder = JSONDecoder()
@@ -240,13 +331,15 @@ struct UserAccount: Account {
                               askToLogin: backupAccount.askToLogin,
                               askToChange: backupAccount.askToChange,
                               enabled: backupAccount.enabled,
-                              version: backupAccount.version)
+                              version: backupAccount.version,
+                              webAuthn: backupAccount.webAuthn)
         assert(account.id == id, "Account restoring went wrong. Different id")
 
-        let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-        let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
-
-        assert(index == account.passwordIndex, "Password wasn't properly generated. Different index")
+        var password: String? = nil
+        if account.passwordIndex >= 0 {
+            let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            (password, _) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
+        }
 
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
@@ -254,9 +347,24 @@ struct UserAccount: Account {
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
 
+        // Webauthn
+        if let webAuthn = account.webAuthn {
+            let keyPair = try webAuthn.generateKeyPair(accountId: account.id, context: context)
+            switch webAuthn.algorithm {
+            case .EdDSA:
+                try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+            case .ECDSA:
+                guard #available(iOS 13.0, *) else {
+                    throw WebAuthnError.notSupported
+                }
+                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+                try Keychain.shared.saveKey(id: id, key: privKey)
+            }
+        }
+
         let data = try PropertyListEncoder().encode(account)
 
-        try Keychain.shared.save(id: account.id, service: .account, secretData: password.data, objectData: data)
+        try Keychain.shared.save(id: account.id, service: .account, secretData: password?.data, objectData: data)
         account.saveToIdentityStore()
     }
 
@@ -275,6 +383,7 @@ extension UserAccount: Codable {
         case askToChange
         case enabled
         case version
+        case webAuthn
     }
 
     init(from decoder: Decoder) throws {
@@ -289,6 +398,7 @@ extension UserAccount: Codable {
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
     }
 
 }
@@ -302,8 +412,11 @@ extension UserAccount {
             return
         }
         do {
+            guard let password = try password() else {
+                throw KeychainError.notFound
+            }
             let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: try Seed.getPasswordSeed(context: context), version: 1)
-            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password())
+            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password)
             version = 1
             let accountData = try PropertyListEncoder().encode(self)
             try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)

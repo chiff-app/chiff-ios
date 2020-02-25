@@ -90,7 +90,6 @@ class API: NSObject, APIProtocol {
                 case .failure(let error): throw error
                 }
             } catch {
-                print("API network error: \(error)")
                 completionHandler(.failure(error))
             }
 

@@ -90,6 +90,9 @@
 		495E72BB22118717003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BC22118F9D003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
 		495E72BD22118F9E003132ED /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E72BA22118717003132ED /* Logger.swift */; };
+		4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
+		4966FF1823FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
+		4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
 		4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
@@ -350,6 +353,7 @@
 		495E5B571FAC8F49002E6AC6 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		4966FF1623FEDAF300D7C232 /* WebAuthn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthn.swift; sourceTree = "<group>"; };
 		4967F425225CC7100069330D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/Localized.yml; sourceTree = "<group>"; };
 		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -778,6 +782,7 @@
 				49E5FA162302E9DE009C964E /* TeamAccount.swift */,
 				49E5FA0623015DEC009C964E /* TeamSession.swift */,
 				49F6F23223EDA60D0093AD56 /* Team.swift */,
+				4966FF1623FEDAF300D7C232 /* WebAuthn.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1378,6 +1383,7 @@
 				49062C5B221449D200A30669 /* DateComponentUnitFormatter.swift in Sources */,
 				497D21CC205AB1FC0040E0C0 /* PasswordGenerator.swift in Sources */,
 				42497C13231EF4AF00ECBDB4 /* APIProtocol.swift in Sources */,
+				4966FF1823FEE2C800D7C232 /* WebAuthn.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
 				49E5FA142302E52F009C964E /* UserAccount.swift in Sources */,
@@ -1472,6 +1478,7 @@
 				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */,
 				4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */,
+				4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
@@ -1545,6 +1552,7 @@
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
 				493A35B42215660E002EB043 /* Constants.swift in Sources */,
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
+				4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				49E5FA192302E9DE009C964E /* TeamAccount.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,
@@ -1836,6 +1844,68 @@
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Amplitude_iOS\"",
+					"-framework",
+					"\"Base32\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Crashlytics\"",
+					"-framework",
+					"\"Down\"",
+					"-framework",
+					"\"FIRAnalyticsConnector\"",
+					"-framework",
+					"\"Fabric\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreDiagnostics\"",
+					"-framework",
+					"\"FirebaseInstanceID\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleDataTransportCCTSupport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"OneTimePassword\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sodium\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"TrustKit\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"nanopb\"",
+					"-weak_framework",
+					Cryptokit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1853,7 +1923,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 48;
@@ -1861,6 +1931,68 @@
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+					"-framework",
+					"\"Amplitude_iOS\"",
+					"-framework",
+					"\"Base32\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Crashlytics\"",
+					"-framework",
+					"\"Down\"",
+					"-framework",
+					"\"FIRAnalyticsConnector\"",
+					"-framework",
+					"\"Fabric\"",
+					"-framework",
+					"\"FirebaseAnalytics\"",
+					"-framework",
+					"\"FirebaseCore\"",
+					"-framework",
+					"\"FirebaseCoreDiagnostics\"",
+					"-framework",
+					"\"FirebaseInstanceID\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleAppMeasurement\"",
+					"-framework",
+					"\"GoogleDataTransport\"",
+					"-framework",
+					"\"GoogleDataTransportCCTSupport\"",
+					"-framework",
+					"\"GoogleUtilities\"",
+					"-framework",
+					"\"MBProgressHUD\"",
+					"-framework",
+					"\"OneTimePassword\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sodium\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"TrustKit\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"nanopb\"",
+					"-weak_framework",
+					Cryptokit,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

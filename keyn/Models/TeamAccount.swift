@@ -16,9 +16,6 @@ struct TeamAccount: Account {
     let id: String
     var username: String
     var sites: [Site]
-    var site: Site {
-        return sites.first!
-    }
     var passwordIndex: Int
     var passwordOffset: [Int]?
     var askToLogin: Bool?
@@ -27,6 +24,13 @@ struct TeamAccount: Account {
     let sessionPubKey: String
     var synced = true
     var version: Int
+
+    var site: Site {
+        return sites.first!
+    }
+    var hasPassword: Bool {
+        return true
+    }
 
     static let keychainService: KeychainService = .sharedAccount
 

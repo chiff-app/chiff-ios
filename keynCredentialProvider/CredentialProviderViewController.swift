@@ -83,7 +83,10 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
             do {
-                let password = try account.password(context: nil)
+                guard let password = try account.password(context: nil) else {
+                    credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                    return
+                }
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 credentialExtensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } catch {
