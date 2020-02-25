@@ -298,16 +298,10 @@ class AuthorizationGuard {
             var success = false
             do {
                 defer {
-                    // Logging
+                    Logger.shared.analytics(.webAuthnCreateRequestAuthorized, properties: [.value: success])
                 }
                 let context = try result.get()
-                // TODO: We should probably disallow if there's not siteURL
-                if let id = self.accountId {
-                    // An account already exists: collect an authorization gesture confirming user consent for creating a new credential. The authorization gesture MUST include a test of user presence. If the user confirms: resturn InvalidStateError, else Reject
-                    print(id)
-                }
                 let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
-                // TODO: Get preferred algorithm from request
                 let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, context: context)
                 // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
                 try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
@@ -327,7 +321,7 @@ class AuthorizationGuard {
             var success = false
             do {
                 defer {
-                    // Logging
+                    Logger.shared.analytics(.webAuthnLoginRequestAuthorized, properties: [.value: success])
                 }
                 let context = try result.get()
                 guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
