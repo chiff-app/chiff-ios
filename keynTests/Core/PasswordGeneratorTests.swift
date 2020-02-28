@@ -121,11 +121,11 @@ class PasswordGeneratorTests: XCTestCase {
 
     func testDontFailForMissingCharacters() {
         var characterSets = [PPDCharacterSet]()
-        characterSets.append(PPDCharacterSet(base: [String](), characters: nil, name: "LowerLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "0123456789", name: "Numbers"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
-        let ppd = PPD(characterSets: characterSets, properties: nil, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        characterSets.append(PPDCharacterSet(base: nil, characters: nil, name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "0123456789", name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
+        let ppd = PPD(characterSets: characterSets, properties: nil, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
         let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, passwordSeed: TestHelper.passwordSeed.fromBase64!)
         XCTAssertNoThrow(try passwordGenerator.generate(index: 0, offset: nil))
     }
