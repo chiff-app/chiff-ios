@@ -146,12 +146,7 @@ class SeedTests: XCTestCase {
     func testDelete() {
         Keychain.shared.deleteAll(service: .seed)
         TestHelper.createSeed()
-        XCTAssertNoThrow(try Seed.delete())
-    }
-
-    func testDeleteThrowsIfNoData() {
-        TestHelper.deleteLocalData()
-        XCTAssertThrowsError(try Seed.delete())
+        XCTAssertNoThrow(Seed.delete())
     }
 
     func testSetBackedUp() {
