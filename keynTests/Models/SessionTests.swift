@@ -325,7 +325,7 @@ class SessionTests: XCTestCase {
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
             do {
                 let session = try result.get() as! BrowserSession
-                let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, password: nil, context: self.context)
+                let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, context: self.context)
                 XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context))
                 XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context))
                 XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context))
@@ -456,7 +456,7 @@ class SessionTests: XCTestCase {
 
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
-            throw KeychainError.unhandledError(status)
+            throw KeychainError.unhandledError(status.message)
         }
     }
 }

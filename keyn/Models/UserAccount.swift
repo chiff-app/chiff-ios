@@ -60,17 +60,21 @@ struct UserAccount: Account {
         }
         let keyPair = try webAuthn?.generateKeyPair(accountId: id, context: context)
 
+        var generatedPassword = password
         if let password = password {
-            self.passwordIndex = 0
-            self.lastPasswordUpdateTryIndex = 0
             let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-            passwordOffset = try passwordGenerator.calculateOffset(index: self.passwordIndex, password: password)
-        } else {
+            passwordOffset = try passwordGenerator.calculateOffset(index: 0, password: password)
+            (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: passwordOffset)
+        } else if rpId != nil && algorithms != nil {
+            // Initiate the account without a password
             self.passwordIndex = -1
             self.lastPasswordUpdateTryIndex = -1
+        } else {
+            let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
-
-        try save(password: password, keyPair: keyPair)
+        self.lastPasswordUpdateTryIndex = self.passwordIndex
+        try save(password: generatedPassword, keyPair: keyPair)
     }
 
     init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?) {
