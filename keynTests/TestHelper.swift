@@ -47,12 +47,17 @@ class TestHelper {
         return Site(name: "Example", id: "example.com".sha256, url: "example.com", ppd: testPPD)
     }
 
+    static var sampleSiteV1_1: Site {
+        let testPPD = samplePPDV1_1(minLength: 8, maxLength: 32)
+        return Site(name: "Example", id: "example.com".sha256, url: "example.com", ppd: testPPD)
+    }
+
     static func samplePPD(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
         var characterSets = [PPDCharacterSet]()
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "0123456789", name: "Numbers"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "0123456789", name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
 
         var ppdCharacterSettings: PPDCharacterSettings?
         if characterSetSettings != nil || positionRestrictions != nil || requirementGroups != nil {
@@ -60,7 +65,23 @@ class TestHelper {
         }
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
-        return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+    }
+
+    static func samplePPDV1_1(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
+        var characterSets = [PPDCharacterSet]()
+        characterSets.append(PPDCharacterSet(base: .lowerLetters, characters: nil, name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: .upperLetters, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: .numbers, characters: nil, name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: .specials, characters: " ", name: "Specials"))
+
+        var ppdCharacterSettings: PPDCharacterSettings?
+        if characterSetSettings != nil || positionRestrictions != nil || requirementGroups != nil {
+            ppdCharacterSettings = PPDCharacterSettings(characterSetSettings: characterSetSettings, requirementGroups: requirementGroups, positionRestrictions: positionRestrictions)
+        }
+
+        let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_1, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
 
     static func saveHOTPToken(id: String, includeData: Bool = true) {

@@ -56,6 +56,16 @@ class AccountTests: XCTestCase {
         }
     }
 
+    func testNextPasswordV1_1() {
+        let site = TestHelper.sampleSiteV1_1
+        do {
+            var account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil)
+            XCTAssertEqual(try account.nextPassword(), "-S1tV2470vfm^9c[u{=*@zI7;FC>t+}t")
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+
     func testOneTimePasswordToken() {
         let site = TestHelper.sampleSite
         do {
@@ -202,6 +212,24 @@ class AccountTests: XCTestCase {
                 switch result {
                 case .failure(let error): XCTFail(error.localizedDescription)
                 case .success(let password): XCTAssertEqual(password, "vGx$85gzsLZ/eK23ngx[afwG^0?#y%]C")
+                }
+                expectation.fulfill()
+            }
+        } catch {
+            XCTFail(error.localizedDescription)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10.0)
+    }
+
+    func testPasswordV1_1() {
+        let expectation = XCTestExpectation(description: "Finish testPassword")
+        do {
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSiteV1_1], password: nil, rpId: nil, algorithms: nil)
+            account.password(reason: "Testing", type: .ifNeeded) { (result) in
+                switch result {
+                case .failure(let error): XCTFail(error.localizedDescription)
+                case .success(let password): XCTAssertEqual(password, "{W(1s?wt_3b<Y.V`tzltDEW%(OmR17~R")
                 }
                 expectation.fulfill()
             }

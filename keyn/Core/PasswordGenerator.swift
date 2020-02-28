@@ -30,7 +30,21 @@ class PasswordGenerator {
         self.seed = passwordSeed
         self.version = version
         if let characterSets = ppd?.characterSets {
-            self.characters = characterSets.reduce([Character](), { $1.characters != nil ? $0 + $1.characters!.sorted() : $0 })
+            if ppd?.version == .v1_0 {
+                self.characters = characterSets.reduce([Character](), { $1.characters != nil ? $0 + $1.characters!.sorted() : $0 })
+                return
+            } else {
+                self.characters = characterSets.reduce(Set<Character>(), { (characters, characterSet) in
+                    var chars = characters
+                    if let baseCharacters = characterSet.base?.characters {
+                        chars.formUnion(baseCharacters.sorted())
+                    }
+                    if let additionalCharacters = characterSet.characters {
+                        chars.formUnion(additionalCharacters.sorted())
+                    }
+                    return chars
+                }).sorted()
+            }
         } else {
             self.characters = PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
         }
