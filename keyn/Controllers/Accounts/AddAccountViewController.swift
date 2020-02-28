@@ -164,7 +164,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
     private func createAccount() {
         if let websiteName = siteNameField.text, let websiteURL = siteURLField.text, let username = usernameField.text, let password = passwordField.text {
             let url = URL(string: websiteURL)
-            let id = url!.absoluteString.sha256
+            let id = url!.absoluteString.lowercased().sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
                 self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, context: nil)
