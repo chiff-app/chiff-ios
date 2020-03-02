@@ -15,6 +15,7 @@ import Foundation
  */
 struct KeynRequest: Codable {
     let accountID: String?
+    let accountIDs: [Int: String]?
     let browserTab: Int?
     let challenge: String?
     let password: String?
@@ -33,6 +34,7 @@ struct KeynRequest: Codable {
 
     enum CodingKeys: String, CodingKey {
         case accountID = "a"
+        case accountIDs = "an"
         case browserTab = "b"
         case challenge = "c"
         case password = "p"
@@ -101,6 +103,12 @@ struct KeynRequest: Codable {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
                 return false
             }
+        case .bulkLogin:
+            guard accountIDs != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there are not accountIds")
+                return false
+            }
+            return true // Return here because subsequent don't apply to adminLogin request
         case .webauthnCreate:
             guard relyingPartyId != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn relying party ID.")
