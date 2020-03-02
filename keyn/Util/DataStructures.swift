@@ -4,6 +4,16 @@
  */
 import Foundation
 
+struct BulkLoginAccount: Codable {
+    let username: String
+    let password: String
+
+    enum CodingKeys: String, CodingKey {
+        case username = "u"
+        case password = "p"
+    }
+}
+
 struct BulkAccount: Codable {
     let username: String
     let password: String
@@ -132,6 +142,7 @@ struct KeynCredentialsResponse: Codable {
     let o: String?            // OTP code
     let t: KeynMessageType    // One of the message types Keyn understands
     let pk: String?           // Webauthn pubkey
+    let d: [Int: BulkLoginAccount?]?
 }
 
 enum KeyType: UInt64 {

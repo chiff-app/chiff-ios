@@ -35,7 +35,7 @@ class RequestViewController: UIViewController {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
         switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin, .webauthnLogin:
+        case .login, .addToExisting, .adminLogin, .webauthnLogin, .bulkLogin:
             requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
             Logger.shared.analytics(.loginRequestOpened)
         case .add, .addAndLogin, .webauthnCreate:
@@ -137,7 +137,7 @@ class RequestViewController: UIViewController {
     private func success() {
         var autoClose = true
         switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin, .webauthnLogin:
+        case .login, .addToExisting, .adminLogin, .webauthnLogin, .bulkLogin:
             successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         case .add, .addAndLogin, .webauthnCreate:
