@@ -264,8 +264,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
                 }
             case .failure(let error):
-                Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
+                if case APIError.statusCode(404) = error {
+                    // Queue doesn't exist anymore, delete
+                    session.delete(notify: false) { result in
+                        Logger.shared.warning("Session was deleted because the queue didn't exist.")
+                    }
+                } else {
+                    Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
+                }
             }
+
         }
     }
 
