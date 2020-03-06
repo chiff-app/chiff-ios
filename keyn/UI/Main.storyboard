@@ -956,7 +956,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="335" height="48"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="R4x-S1-A6g">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="R4x-S1-A6g">
                                                                     <rect key="frame" x="20" y="0.0" width="295" height="48"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="4IM-sB-Tlc">
@@ -966,11 +966,18 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnq-cd-K12">
-                                                                            <rect key="frame" x="24" y="0.0" width="249" height="48"/>
+                                                                            <rect key="frame" x="22" y="0.0" width="214" height="48"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Osi-FW-uRQ">
+                                                                            <rect key="frame" x="248" y="0.0" width="27" height="48"/>
+                                                                            <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="27" id="aj2-fa-Aqa"/>
+                                                                            </constraints>
+                                                                        </imageView>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oGj-DD-c4F">
                                                                             <rect key="frame" x="287" y="0.0" width="8" height="48"/>
                                                                             <constraints>
@@ -993,6 +1000,8 @@
                                                         </tableViewCellContentView>
                                                         <connections>
                                                             <outlet property="icon" destination="4IM-sB-Tlc" id="s8y-kl-N5P"/>
+                                                            <outlet property="teamIcon" destination="Osi-FW-uRQ" id="JUc-lu-i5K"/>
+                                                            <outlet property="teamIconWidthConstraint" destination="aj2-fa-Aqa" id="kSK-3Z-vek"/>
                                                             <outlet property="titleLabel" destination="Jnq-cd-K12" id="1L5-lP-WZd"/>
                                                             <segue destination="UWD-YS-l0e" kind="show" identifier="ShowAccount" id="1Un-yp-Smy"/>
                                                         </connections>
@@ -1092,7 +1101,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWw-9J-QyK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="814" y="-940"/>
+            <point key="canvasLocation" x="813.60000000000002" y="-940.47976011994012"/>
         </scene>
         <!--Keyn Navigation Controller-->
         <scene sceneID="85X-Xm-p3i">
@@ -4379,10 +4388,11 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="scan_checkmark" width="96" height="96"/>
         <image name="scan_overlay" width="176" height="171"/>
         <image name="settings_tab" width="25" height="25"/>
+        <image name="team_icon" width="25" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bFG-cG-0Z9"/>
-        <segue reference="RlN-hs-OcW"/>
+        <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>
 </document>
