@@ -70,7 +70,4 @@ class QuestionnaireTests: XCTestCase {
         XCTAssertTrue(Questionnaire.all().isEmpty)
     }
 
-    func testWouter() {
-        XCTAssertTrue("wouter".pad(toSize: 200).count == 200, "Having not 199 tests instead of 200 upsets Wouter")
-    }
 }

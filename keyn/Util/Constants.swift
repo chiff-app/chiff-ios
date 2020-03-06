@@ -36,8 +36,10 @@ enum AnalyticsEvent: String {
     case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
     case changePasswordRequestOpened = "ChangePasswordRequestOpened"
     case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
-    case fillPassworddRequestOpened = "FillPassworddRequestOpened"
-    case fillPassworddRequestAuthorized = "FillPassworddRequestAuthorized"
+    case fillPassworddRequestOpened = "FillPasswordRequestOpened"
+    case fillPassworddRequestAuthorized = "FillPasswordRequestAuthorized"
+    case webAuthnCreateRequestAuthorized = "WebAuthnCreateRequestAuthorized"
+    case webAuthnLoginRequestAuthorized = "WebAuthnLoginRequestAuthorized"
 
     // Local login
     case passwordCopied = "PasswordCopied"
@@ -134,4 +136,6 @@ enum KeynMessageType: Int, Codable {
     case addToExisting = 13
     case disabled = 14
     case adminLogin = 15
+    case webauthnCreate = 16
+    case webauthnLogin = 17
 }

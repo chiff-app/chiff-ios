@@ -134,6 +134,11 @@
 			<key>value</key>
 			<string>Name</string>
 		</dict>
+		<key>no_password</key>
+		<dict>
+			<key>value</key>
+			<string>No password set</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>
@@ -212,6 +217,11 @@
 		<dict>
 			<key>value</key>
 			<string>Username</string>
+		</dict>
+		<key>webauthn_enabled</key>
+		<dict>
+			<key>value</key>
+			<string>WebAuthn is enabled ⭐ 🗝️</string>
 		</dict>
 		<key>website_details</key>
 		<dict>

@@ -242,7 +242,10 @@ class TeamSession: Session {
     }
 
     func passwordSeed() throws -> Data {
-        return try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
+        guard let seed = try Keychain.shared.get(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService) else {
+            throw KeychainError.notFound
+        }
+        return seed
     }
 
     func decryptAdminSeed(seed: String) throws -> Data {
@@ -277,12 +280,12 @@ class TeamSession: Session {
                         try filemgr.removeItem(atPath: path)
                     }
                     filemgr.createFile(atPath: path, contents: data, attributes: nil)
+                } catch APIError.statusCode(404) {
+                    return
                 } catch {
                     Logger.shared.error("Error retrieving logo", error: error)
                 }
             }
-        } catch APIError.statusCode(404) {
-            Logger.shared.warning("Logo not found")
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
         }

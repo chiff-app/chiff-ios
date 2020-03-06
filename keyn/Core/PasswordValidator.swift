@@ -19,11 +19,27 @@ class PasswordValidator {
         self.ppd = ppd
 
         if let characterSets = ppd?.characterSets {
-            for characterSet in characterSets {
-                if let characters = characterSet.characters {
-                    self.characters += String(characters.sorted())
+            if ppd?.version == .v1_0 {
+                for characterSet in characterSets {
+                    if let characters = characterSet.characters {
+                        self.characters += String(characters.sorted())
+                        characterSetDictionary[characterSet.name] = characterSet.characters
+                    }
                 }
-                characterSetDictionary[characterSet.name] = characterSet.characters
+            } else {
+                var chars = Set<Character>()
+                for characterSet in characterSets {
+                    var setChars = Set<Character>()
+                    if let baseCharacters = characterSet.base?.characters {
+                        setChars.formUnion(baseCharacters.sorted())
+                    }
+                    if let additionalCharacters = characterSet.characters {
+                        setChars.formUnion(additionalCharacters.sorted())
+                    }
+                    characterSetDictionary[characterSet.name] = String(setChars.sorted())
+                    chars.formUnion(setChars)
+                }
+                self.characters = String(chars.sorted())
             }
         } else {
             characters += PasswordValidator.OPTIMAL_CHARACTER_SET

@@ -59,6 +59,8 @@ accounts:
     value: My accounts
   name:
     value: Name
+  no_password:
+    value: No password set
   password:
     value: Password
   report:
@@ -91,6 +93,8 @@ accounts:
     value: User details
   username:
     value: Username
+  webauthn_enabled:
+    value: "WebAuthn is enabled ⭐ \U0001F5DD️"
   website_details:
     value: Website details
 backup:

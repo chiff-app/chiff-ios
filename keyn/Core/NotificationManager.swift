@@ -123,7 +123,7 @@ struct NotificationManager {
             return
         }
         do {
-            guard let subscription = String(data: try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), encoding: .utf8) else {
+            guard let data = try Keychain.shared.get(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws), let subscription = String(data: data, encoding: .utf8) else {
                 throw CodingError.stringDecoding
             }
             API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in

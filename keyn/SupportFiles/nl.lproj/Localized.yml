@@ -59,6 +59,8 @@ accounts:
     value: Mijn accounts
   name:
     value: Naam
+  no_password:
+    value: Geen wachtwoord ingesteld
   password:
     value: Wachtwoord
   report:
@@ -91,6 +93,8 @@ accounts:
     value: Gebruikersgegevens
   username:
     value: Naam
+  webauthn_enabled:
+    value: "WebAuthn is ingeschakeld ⭐ \U0001F5DD️ "
   website_details:
     value: Websitegegevens
 backup:

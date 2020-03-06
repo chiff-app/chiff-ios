@@ -58,11 +58,11 @@ class LoginViewController: ASCredentialProviderViewController {
 
     override func provideCredentialWithoutUserInteraction(for credentialIdentity: ASPasswordCredentialIdentity) {
         do {
-            guard let account = try UserAccount.getAny(accountID: credentialIdentity.recordIdentifier!, context: nil) else {
+            guard let account = try UserAccount.getAny(accountID: credentialIdentity.recordIdentifier!, context: nil), let password = try account.password(context: nil) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
             
-            let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: nil))
+            let passwordCredential = ASPasswordCredential(user: account.username, password: password)
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
         } catch KeychainError.interactionNotAllowed {
             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userInteractionRequired.rawValue))
@@ -83,8 +83,8 @@ class LoginViewController: ASCredentialProviderViewController {
             do {
                 switch result {
                 case .success(let context):
-                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.get(accountID: accountID, context: context) {
-                        let passwordCredential = ASPasswordCredential(user: account.username, password: try account.password(context: context))
+                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.get(accountID: accountID, context: context), let password = try account.password(context: context) {
+                        let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                         self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
                     } else {
                         let accounts = try UserAccount.allCombined(context: context)

@@ -47,7 +47,7 @@ class KeychainTests: XCTestCase {
     }
     
     func testGetThrowsIfNoSeed() {
-        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
     func testGetThrowsIfSeedDataIsEmpty() {
@@ -138,8 +138,8 @@ class KeychainTests: XCTestCase {
         TestHelper.createEmptySeed()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", authenticationType: .ifNeeded) { (result) in
             switch result {
-            case .success(_): XCTFail("Should fail")
-            case .failure(let error): XCTAssertEqual(error.localizedDescription, KeychainError.unexpectedData.localizedDescription)
+            case .success(let value): XCTAssertNil(value)
+            case .failure(let error): XCTFail(error.localizedDescription)
             }
             expectation.fulfill()
         }
@@ -163,8 +163,9 @@ class KeychainTests: XCTestCase {
         let context = LAContext()
         context.invalidate()
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: context, authenticationType: .ifNeeded) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
+            switch result {
+            case .success(let value): XCTAssertNil(value)
+            case .failure(let error): XCTFail(error.localizedDescription)
             }
             expectation.fulfill()
         }
@@ -174,8 +175,9 @@ class KeychainTests: XCTestCase {
     func testGetAsyncFailsIfNoSeed() {
         let expectation = XCTestExpectation(description: "Finish testGetAsyncFailsIfNoSeed")
         Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Retrieve password", with: self.context, authenticationType: .ifNeeded) { (result) in
-            if case .success(_) = result {
-                XCTFail("There must be an error")
+            switch result {
+            case .success(let value): XCTAssertNil(value)
+            case .failure(let error): XCTFail(error.localizedDescription)
             }
             expectation.fulfill()
         }
@@ -286,15 +288,15 @@ class KeychainTests: XCTestCase {
         let initialData = "secretKey".data
         XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
         XCTAssertNoThrow(try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
-        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: LAContext()))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: LAContext()))
     }
     
     func testSaveAndDeleteAllAndGet() {
         TestHelper.createSeed()
         Keychain.shared.deleteAll(service: .seed)
-        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
-        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context))
-        XCTAssertThrowsError(try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context))
+        XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context))
     }
     
     func testSaveAndSetSyncAndIsSync() {
