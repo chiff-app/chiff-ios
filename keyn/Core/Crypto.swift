@@ -5,6 +5,7 @@
 import Foundation
 import Sodium
 import CommonCrypto
+import CryptoKit
 
 enum CryptoError: KeynError {
     case randomGeneration
@@ -15,6 +16,7 @@ enum CryptoError: KeynError {
     case encryption
     case decryption
     case convertToHex
+    case convertFromHex
     case hashing
     case signing
     case indexOutOfRange
@@ -85,11 +87,10 @@ class Crypto {
         return sharedKey.data
     }
 
-    func createSigningKeyPair(seed: Data) throws -> KeyPair {
-        guard let keyPair = sodium.sign.keyPair(seed: seed.bytes) else {
+    func createSigningKeyPair(seed: Data?) throws -> KeyPair {
+        guard let keyPair = (seed != nil) ? sodium.sign.keyPair(seed: seed!.bytes) : sodium.sign.keyPair() else {
             throw CryptoError.keyGeneration
         }
-
         return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
 
@@ -216,6 +217,13 @@ class Crypto {
         return hash
     }
 
+    func fromHex(_ message: String) throws -> Data {
+        guard let data = sodium.utils.hex2bin(message)?.data else {
+            throw CryptoError.convertFromHex
+        }
+        return data
+    }
+
     func sha1(from string: String) -> String {
         var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
         _ = digest.withUnsafeMutableBytes { digestBytes in
@@ -239,4 +247,19 @@ class Crypto {
         }
         return digest.data
     }
+}
+
+@available(iOS 13.0, *)
+extension Crypto {
+
+    func createECDSASigningKeyPair(seed: Data?) throws -> KeyPair {
+        var privKey: P256.Signing.PrivateKey
+        if let seed = seed {
+            privKey = try P256.Signing.PrivateKey(rawRepresentation: seed)
+        } else {
+            privKey = P256.Signing.PrivateKey()
+        }
+        return KeyPair(pubKey: privKey.publicKey.rawRepresentation, privKey: privKey.rawRepresentation)
+    }
+
 }

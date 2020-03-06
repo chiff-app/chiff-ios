@@ -151,6 +151,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     case .success(_):
                         self.sessions.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .fade)
+                        if self.sessions.isEmpty {
+                            self.updateUi()
+                        }
                     case .failure(let error):
                         self.showAlert(message: error.localizedDescription, title: "errors.session_delete".localized)
                     }

@@ -35,7 +35,7 @@ class TestHelper {
     static let sharedKeyID = "4a53a184604181436f8f3f7c1ff1b5bf52bdee807c61d000b53fdf4e09c9a5eb-shared"
     static let signingPrivKeyID = "4a53a184604181436f8f3f7c1ff1b5bf52bdee807c61d000b53fdf4e09c9a5eb-signing"
     static let keynRequestEncrypted = "nzLY8eBUZgQ4WYILTebsRVHGu12Tx3w85A6GXk6M-p0wNFZhPwkfTZctlOyQQ6Y-PKk_ghKpbKhW2p7M8syYr344UEQCjiaZxXocdz7r9PjnJ-ZE8kfye6-8XXZu1qbA4YedY02m92AWYftv_lFCj7v_9tX_4Co571F_muLaW6JVrKZrNz9XXlaf4WcrSu_id9zG3kGAlc-sztITZv-5_lHsrb58ffaOApl-v1kO5g8p4YUhbGKvDqxBq2ci0tAA4QqYPL42l4C4m6YLtH55GCEK5i3NwnsUZDeMH40x-H662I2gCjv6qNdvJ9MG4Sr9B8hDkrs9YUZA7swrpMWhkx4-TBlptOgNcbf8cUoGcDrJmRJ8ca69ZO7__zoEKIp2Q-Ev_sGICl9URggw7ZJgtC8iB2NTqj5448hmB7e04dB_DrOIjKl-q3ire7eqSj3Nn0IlynazMMsn2DcEtEOLKyPHuqwbeq6mRn2QHWUnRiHkCIsYdN3DFZ2p7ao"
-    static let keynRequest = KeynRequest(accountID: TestHelper.userID, browserTab: 0, password: "[jh6eAX)og7A#nJ1:YDSrD6#61cf${\"A", passwordSuccessfullyChanged: false, siteID: TestHelper.sampleSite.id, siteName: TestHelper.sampleSite.name, siteURL: TestHelper.sampleSite.url, type: .add, username: TestHelper.username, sentTimestamp: TimeInterval(), count: 0, sessionID: TestHelper.sessionID, accounts: nil)
+    static let keynRequest = KeynRequest(accountID: TestHelper.userID, browserTab: 0, challenge: "tnlOysO9SoL_PAXiEuqgSNZdnZ_BfJ_ri_9UnF4B5nM", password: "[jh6eAX)og7A#nJ1:YDSrD6#61cf${\"A", passwordSuccessfullyChanged: false, siteID: TestHelper.sampleSite.id, siteName: TestHelper.sampleSite.name, siteURL: TestHelper.sampleSite.url, type: .add, relyingPartyId: "test.com", algorithms: nil, username: TestHelper.username, sentTimestamp: TimeInterval(), count: 0, sessionID: TestHelper.sessionID, accounts: nil) // Challenge is SHA256({"challenge":"3rEAfh7LQeqrLBiQjZM5284v54xIWEWV-tGOulwoDTE","clientExtensions":{},"hashAlgorithm":"SHA-256","origin":"http://localhost:9005","type":"webauthn.get"})
     static let userID = "ed98282a25e0ee58019d15523ad779bc27f2c84a73a3d43ae38acbeeede1988e"
     static let username = "test@keyn.com"
     static let userData = "ZhOIrj7miy4fkGUtLE8-hMCcc9QHpvMqfvwUvS5qhwTzG-2DDq6tHWO17tKDNnNzE3XL-0HxWkAK8kXz__M_OYQ24Yci2hyBdW1xxTx1TDErSRokfkIbrneo6HIoHWoY7tmEfg8kOq3OY8iX3LkFxDAwW01_R_MCxS5xMhQLm_f_4XTsTmWP5mVZgPK8fc0MEW7u7YfGxZHuvHsseadb4gKrIHk7_Xtemg4bjLaxqh1POza_O7rZP2Q9wBKOLPMBp7MMOF41QQrdN-5MGVDnP7wJ3rKjnSLkhuSRxxVOGYUDyo-qLksoJ_D-TkO2zk8lDgnBQa43HPG9cbqNMW59dtsj4jE6JWaEU8zcqPGx54E5nzJzGrkGT1b9Q6llG4g8qfL-N1Cy_wmwGMHLdJfi0pFGcPURtsgs8Jbq4TbWEPwDavKvNHDJRaDYT-3umgJKR4CyYeovhWAuQphOeW7Zan6AtFEFI8nJXthiR90UN6CGPdOywrZhSIpC2yhwMhDQeViCM2S6FV_IpnT7D7CbkdVJko6DBuEpr3F2kw-CMPre5GRXsdaqXyY5bhqOWL074UrT3Y-HX3Uz7Zsc_3mMBUiP0ClrVScEHbeZ5VgtIJ9G-I1AwiW3fbxTYNXA0wE1Pxy5uvOtBqZ73R8Ow7fZOYMPEazNYDU-4CpGGMc1bP11BchC6MHPIjVMgwsiO5bpuNMTiAynTL8T5EGFXkHjAh-a0phSfM2B46hgwlRbFebQOlMz0isuaf4HxnxuRvdSnbAOnUFTIKuwPKYxF15qTj6qS7cluuVEHYde7HNeV_Ey70Jgd06ECkk59EqtmBV0gO0Y6rSeHWsQvAIZwmUkkgYCH4NTmpi4c6KkTyefRINeFSi_5Gah8-MCM7OD_OC3sdCuFBQBi6gSMcDEZg_khySRrFBSk1aUA2z7pEl9N0CLOrxQt-_7nRWxgiBZ7t1pxZ0yyQ7bVUhNdrdBdmoaaw-SNvOatOWDy0OCFQJvdKKrahPUwaEmc_P9cAnb-dznfQJHS8UCMiNvIUmx7UHPA_NvKq6gn9_9gUN00g"
@@ -47,12 +47,17 @@ class TestHelper {
         return Site(name: "Example", id: "example.com".sha256, url: "example.com", ppd: testPPD)
     }
 
+    static var sampleSiteV1_1: Site {
+        let testPPD = samplePPDV1_1(minLength: 8, maxLength: 32)
+        return Site(name: "Example", id: "example.com".sha256, url: "example.com", ppd: testPPD)
+    }
+
     static func samplePPD(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
         var characterSets = [PPDCharacterSet]()
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: "0123456789", name: "Numbers"))
-        characterSets.append(PPDCharacterSet(base: [String](), characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "abcdefghijklmnopqrstuvwxyz", name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: "0123456789", name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: nil, characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
 
         var ppdCharacterSettings: PPDCharacterSettings?
         if characterSetSettings != nil || positionRestrictions != nil || requirementGroups != nil {
@@ -60,13 +65,29 @@ class TestHelper {
         }
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
-        return PPD(characterSets: characterSets, properties: properties, service: nil, version: "1.0", timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+    }
+
+    static func samplePPDV1_1(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
+        var characterSets = [PPDCharacterSet]()
+        characterSets.append(PPDCharacterSet(base: .lowerLetters, characters: nil, name: "LowerLetters"))
+        characterSets.append(PPDCharacterSet(base: .upperLetters, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
+        characterSets.append(PPDCharacterSet(base: .numbers, characters: nil, name: "Numbers"))
+        characterSets.append(PPDCharacterSet(base: .specials, characters: " ", name: "Specials"))
+
+        var ppdCharacterSettings: PPDCharacterSettings?
+        if characterSetSettings != nil || positionRestrictions != nil || requirementGroups != nil {
+            ppdCharacterSettings = PPDCharacterSettings(characterSetSettings: characterSetSettings, requirementGroups: requirementGroups, positionRestrictions: positionRestrictions)
+        }
+
+        let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_1, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
     }
 
     static func saveHOTPToken(id: String, includeData: Bool = true) {
         do {
             guard let token = Token(url: hotpURL) else {
-                fatalError("Failted to create token")
+                fatalError("Failed to create token")
             }
             let secret = token.generator.secret
             let tokenData = try token.toURL().absoluteString.data

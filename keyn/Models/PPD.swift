@@ -4,18 +4,43 @@
  */
 import Foundation
 
+enum PPDBaseCharacterSet: String, Codable {
+    case upperLetters = "UpperLetters"
+    case lowerLetters = "LowerLetters"
+    case letters = "Letters"
+    case numbers = "Numbers"
+    case specials = "Specials"
+    case spaces = "Spaces"
+
+    var characters: String {
+        switch self {
+        case .upperLetters: return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        case .lowerLetters: return "abcdefghijklmnopqrstuvwxyz"
+        case .letters: return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        case .numbers: return "0123456789"
+        case .specials: return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+        case .spaces: return " "
+        }
+    }
+}
+
+enum PPDVersion: String, Codable {
+    case v1_0 = "1.0"
+    case v1_1 = "1.1"
+}
+
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
     let properties: PPDProperties? // Required. Represents the properties of the password.
     let service: PPDService? // Holds information related to the service the password is used for.
-    let version: String? // The current version of the PPD.
+    let version: PPDVersion // The current version of the PPD.
     let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String
     
     static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
-        API.shared.request(path: "ppd/\(id)", parameters: nil, method: .get, signature: nil, body: nil) { (result) in
+        API.shared.request(path: "ppd/\(id)", parameters: ["v": PPDVersion.v1_1.rawValue], method: .get, signature: nil, body: nil) { (result) in
             switch result {
             case .success(let dict):
                 if let ppd = dict["ppds"] as? [Any] {
@@ -40,12 +65,73 @@ struct PPD: Codable {
             }
         }
     }
+
+    enum CodingKeys: CodingKey {
+        case characterSets
+        case properties
+        case service
+        case version
+        case timestamp
+        case url
+        case redirect
+        case name
+    }
+
+    init(characterSets: [PPDCharacterSet]?, properties: PPDProperties?, service: PPDService?, version: PPDVersion?, timestamp: Date?, url: String, redirect: String?, name: String) {
+        self.characterSets = characterSets
+        self.properties = properties
+        self.service = service
+        self.version = version ?? .v1_0
+        self.timestamp = timestamp
+        self.url = url
+        self.redirect = redirect
+        self.name = name
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.characterSets = try values.decodeIfPresent([PPDCharacterSet].self, forKey: .characterSets)
+        self.properties = try values.decodeIfPresent(PPDProperties.self, forKey: .properties)
+        self.service = try values.decodeIfPresent(PPDService.self, forKey: .service)
+        do {
+            self.version = try values.decodeIfPresent(PPDVersion.self, forKey: .version) ?? .v1_0
+        } catch is DecodingError {
+            self.version = .v1_0
+        }
+        self.timestamp = try values.decodeIfPresent(Date.self, forKey: .timestamp)
+        self.url = try values.decode(String.self, forKey: .url)
+        self.redirect = try values.decodeIfPresent(String.self, forKey: .redirect)
+        self.name = try values.decode(String.self, forKey: .name)
+    }
 }
 
 struct PPDCharacterSet: Codable {
-    let base: [String]? // Reference to an already defined character set. All characters from the character set referenced by this element will be added to the character set this element is a child of.
+    let base: PPDBaseCharacterSet?
     let characters: String? // String containing all characters that will be added to the character set.
     let name: String
+
+    init(base: PPDBaseCharacterSet?, characters: String?, name: String) {
+        self.base = base
+        self.characters = characters
+        self.name = name
+    }
+
+    enum CodingKeys: CodingKey {
+        case base
+        case characters
+        case name
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        do {
+            self.base = try values.decodeIfPresent(PPDBaseCharacterSet.self, forKey: .base)
+        } catch is DecodingError {
+            self.base = nil
+        }
+        self.characters = try values.decodeIfPresent(String.self, forKey: .characters)
+        self.name = try values.decode(String.self, forKey: .name)
+    }
 }
 
 struct PPDProperties: Codable {

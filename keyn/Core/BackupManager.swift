@@ -67,7 +67,10 @@ struct BackupManager {
     static func backup(account: BackupUserAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
         do {
             let accountData = try JSONEncoder().encode(account)
-            let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
+            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                throw KeychainError.notFound
+            }
+            let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: key)
 
             let message = [
                 MessageIdentifier.id: account.id,
@@ -127,7 +130,10 @@ struct BackupManager {
                     if let base64Data = data as? String {
                         do {
                             let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                            let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup))
+                            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                                throw KeychainError.notFound
+                            }
+                            let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
                             try UserAccount.restore(accountData: accountData, id: id, context: context)
                         } catch {
                             failedAccounts.append(id)
@@ -165,13 +171,18 @@ struct BackupManager {
     }
 
     static func publicKey() throws -> String {
-        let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup)
+        guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
+            throw KeychainError.notFound
+        }
         let base64PubKey = try Crypto.shared.convertToBase64(from: pubKey)
         return base64PubKey
     }
     
     static func privateKey() throws -> Data {
-        return try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup)
+        guard let privKey = try Keychain.shared.get(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup) else {
+            throw KeychainError.notFound
+        }
+        return privKey
     }
 
     // MARK: - Private
