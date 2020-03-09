@@ -214,7 +214,7 @@ struct UserAccount: Account {
             do {
                 switch result {
                 case .success(_):
-                    try? Keychain.shared.delete(id: self.id, service: .webauthn)
+                    try self.webAuthn?.delete(accountId: self.id)
                     try BackupManager.deleteAccount(accountId: self.id)
                     try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
                     self.deleteFromToIdentityStore()
@@ -250,16 +250,8 @@ struct UserAccount: Account {
     func save(password: String?, keyPair: KeyPair?) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
-        if let keyPair = keyPair, let webAuthn = webAuthn {
-            switch webAuthn.algorithm {
-            case .EdDSA: try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
-            case .ECDSA:
-                guard #available(iOS 13.0, *) else {
-                    throw WebAuthnError.notSupported
-                }
-                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                try Keychain.shared.saveKey(id: id, key: privKey)
-            }
+        if let keyPair = keyPair {
+            try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
@@ -274,23 +266,7 @@ struct UserAccount: Account {
         guard webAuthn != nil else {
             throw AccountError.noWebAuthn
         }
-        var signature: String
-        var counter: Int
-        switch webAuthn!.algorithm {
-        case .EdDSA:
-            guard let privKey: Data = try Keychain.shared.get(id: id, service: .webauthn) else {
-                throw KeychainError.notFound
-            }
-            (signature, counter) = try webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
-        case .ECDSA:
-            guard #available(iOS 13.0, *) else {
-                throw WebAuthnError.notSupported
-            }
-            guard let privKey: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: id, context: nil) else {
-                throw KeychainError.notFound
-            }
-            (signature, counter) = try webAuthn!.sign(challenge: challenge, rpId: rpId, privKey: privKey)
-        }
+        let (signature, counter) = try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId)
         try update(secret: nil)
         return (signature, counter)
     }
@@ -299,24 +275,7 @@ struct UserAccount: Account {
         guard let webAuthn = webAuthn else {
             throw AccountError.noWebAuthn
         }
-        switch webAuthn.algorithm {
-        case .EdDSA:
-            guard let dict = try Keychain.shared.attributes(id: id, service: .webauthn) else {
-                throw KeychainError.notFound
-            }
-            guard let pubKey = dict[kSecAttrGeneric as String] as? Data else {
-                throw CodingError.unexpectedData
-            }
-            return try Crypto.shared.convertToBase64(from: pubKey)
-        case .ECDSA:
-            guard #available(iOS 13.0, *) else {
-                throw WebAuthnError.notSupported
-            }
-            guard let key: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: id, context: nil) else {
-                throw KeychainError.notFound
-            }
-            return try Crypto.shared.convertToBase64(from: key.publicKey.rawRepresentation)
-        }
+        return try webAuthn.pubKey(accountId: self.id)
     }
 
 
