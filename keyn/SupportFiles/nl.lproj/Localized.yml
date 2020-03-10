@@ -312,6 +312,10 @@ errors:
     value: '%d van de %d accounts konden niet hersteld worden.'
   failed_accounts_title:
     value: Fout
+  failed_teams_and_accounts_message:
+    value: '%d van de %d accounts en %d van de %d teams konden niet hersteld worden.'
+  failed_teams_message:
+    value: '%d van de %d teams konden niet hersteld worden.'
   generic_error:
     comment: A generic error description
     value: Er is een fout opgetreden.

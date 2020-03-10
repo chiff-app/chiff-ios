@@ -725,6 +725,16 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 			<key>value</key>
 			<string>Fout</string>
 		</dict>
+		<key>failed_teams_and_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>%d van de %d accounts en %d van de %d teams konden niet hersteld worden.</string>
+		</dict>
+		<key>failed_teams_message</key>
+		<dict>
+			<key>value</key>
+			<string>%d van de %d teams konden niet hersteld worden.</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>

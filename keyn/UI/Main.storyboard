@@ -4391,7 +4391,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="team_icon" width="25" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="bFG-cG-0Z9"/>
+        <segue reference="hce-pK-xEM"/>
         <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>

@@ -383,7 +383,7 @@ class BackupManagerTests: XCTestCase {
                 }
                 try BackupManager.getBackupData(seed: seed, context: self.context) { (result) in
                     switch result {
-                    case .success(let (total, failed)):
+                    case .success(let (total, failed, _, _)):
                         do {
                             XCTAssertEqual(total, 1)
                             XCTAssertEqual(failed, 0)
@@ -429,8 +429,8 @@ class BackupManagerTests: XCTestCase {
                     }
                     try BackupManager.getBackupData(seed: seed, context: self.context) { (result) in
                         switch result {
-                        case .success(let (total, failed)):
-                            XCTAssertEqual(total, 1)
+                        case .success(let (succeeded, failed, _, _)):
+                            XCTAssertEqual(succeeded, 1)
                             XCTAssertEqual(failed, 1)
                             expectation.fulfill()
                         case .failure(let error):
