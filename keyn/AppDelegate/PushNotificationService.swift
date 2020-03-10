@@ -43,13 +43,12 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch category {
             case NotificationCategory.DELETE_TEAM_SESSION:
-                session.delete(notify: false) { result in
-                    switch result {
-                    case .success(_):
-                        NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
-                        completionHandler(UIBackgroundFetchResult.newData)
-                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
-                    }
+                do {
+                    try session.delete()
+                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                    completionHandler(UIBackgroundFetchResult.newData)
+                } catch {
+                    completionHandler(UIBackgroundFetchResult.failed)
                 }
             case NotificationCategory.UPDATE_TEAM_SESSION:
                 session.updateSharedAccounts(pushed: true) { result in

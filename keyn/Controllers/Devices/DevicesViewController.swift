@@ -145,20 +145,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            session.delete(notify: true) { (result) in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(_):
-                        self.sessions.remove(at: indexPath.row)
-                        self.tableView.deleteRows(at: [indexPath], with: .fade)
-                        if self.sessions.isEmpty {
-                            self.updateUi()
-                        }
-                    case .failure(let error):
-                        self.showAlert(message: error.localizedDescription, title: "errors.session_delete".localized)
-                    }
-                }
-            }
+            self.deleteSession(session: session, indexPath: indexPath)
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -184,21 +171,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
         if sender.identifier == "DeleteSession" {
-            session.delete(notify: true) { result in
-                DispatchQueue.main.async {
-                    if case .failure(let error) = result {
-                        Logger.shared.error("Could not delete session.", error: error)
-                        self.showAlert(message: "errors.session_delete".localized)
-                    } else {
-                        let indexPath = IndexPath(row: index, section: 0)
-                        self.sessions.remove(at: indexPath.row)
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        if self.sessions.isEmpty {
-                            self.updateUi()
-                        }
-                    }
-                }
-            }
+            deleteSession(session: session, indexPath: IndexPath(row: index, section: 0))
         } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
             session.title = title
             try? session.update()
@@ -259,5 +232,25 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @objc private func showAddSession() {
         performSegue(withIdentifier: "ShowAddSession", sender: self)
         Logger.shared.analytics(.addSessionOpened)
+    }
+
+    private func deleteSession(session: Session, indexPath: IndexPath) {
+        if let session = session as? TeamSession, session.isAdmin {
+            self.showAlert(message: "errors.session_delete".localized)
+        }
+        session.delete(notify: true) { result in
+            DispatchQueue.main.async {
+                if case .failure(let error) = result {
+                    Logger.shared.error("Could not delete session.", error: error)
+                    self.showAlert(message: "errors.session_delete".localized)
+                } else {
+                    self.sessions.remove(at: indexPath.row)
+                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    if self.sessions.isEmpty {
+                        self.updateUi()
+                    }
+                }
+            }
+        }
     }
 }

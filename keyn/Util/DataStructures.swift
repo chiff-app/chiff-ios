@@ -336,6 +336,13 @@ struct BackupUserAccount: Codable {
 
 }
 
+struct BackupTeamSession: Codable {
+    let id: String
+    let seed: Data
+    let title: String
+    let version: Int
+}
+
 struct KeynCredentialsResponse: Codable {
     let u: String?            // Username
     let p: String?            // Password

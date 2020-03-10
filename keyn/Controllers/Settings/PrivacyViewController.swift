@@ -81,10 +81,15 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_keyn_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
-            self.deleteLocalData()
-            Logger.shared.analytics(.resetKeyn)
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            self.deleteLocalData() {
+                DispatchQueue.main.async {
+                    Logger.shared.analytics(.resetKeyn)
+                    let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+                    UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+                }
+            }
+
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -92,19 +97,7 @@ class PrivacyViewController: UITableViewController {
     @IBAction func deleteData(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.delete_data".localized, message: "settings.delete_data_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            BackupManager.deleteAllAccounts() { result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(_): self.deleteLocalData()
-                    case .failure(let error): self.showAlert(message: "\("errors.deleting".localized): \(error)")
-                    }
-                }
-            }
-            Logger.shared.analytics(.deleteData)
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-        }))
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: self.deleteRemoteData))
         self.present(alert, animated: true, completion: nil)
     }
 
@@ -119,16 +112,53 @@ class PrivacyViewController: UITableViewController {
 
     // MARK: - Private functions
 
-    private func deleteLocalData() {
-        BrowserSession.deleteAll()
-        TeamSession.deleteAll()
-        TeamAccount.deleteAll()
-        UserAccount.deleteAll()
-        try? Seed.delete()
-        NotificationManager.shared.deleteEndpoint()
-        NotificationManager.shared.deleteKeys()
-        BackupManager.deleteKeys()
-        Properties.purgePreferences()
+    private func deleteRemoteData(action: UIAlertAction) -> Void {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let group = DispatchGroup()
+        var groupError: Error?
+        group.enter()
+        BackupManager.deleteBackupData() { result in
+            if case .failure(let error) = result {
+                groupError = error
+            }
+            group.leave()
+        }
+        group.enter()
+        TeamSession.deleteAll() {
+            group.leave()
+        }
+        group.notify(queue: .main) {
+            if let error = groupError {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.showAlert(message: "\("errors.deleting".localized): \(error)")
+            } else {
+                self.deleteLocalData() {
+                    DispatchQueue.main.async {
+                        Logger.shared.analytics(.deleteData)
+                        let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+                        UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    }
+                }
+            }
+        }
+    }
+
+    private func deleteLocalData(completion: @escaping () -> Void) {
+        // Browser sessions are gracefully ended
+        BrowserSession.deleteAll() {
+            // Since we back up the team sessions, we just purge the Keychain
+            TeamSession.purgeSessionDataFromKeychain()
+            // The corresponding team accounts are deleted here.
+            TeamAccount.deleteAll()
+            UserAccount.deleteAll()
+            Seed.delete()
+            NotificationManager.shared.deleteEndpoint()
+            NotificationManager.shared.deleteKeys()
+            BackupManager.deleteKeys()
+            Properties.purgePreferences()
+            completion()
+        }
     }
 
 }

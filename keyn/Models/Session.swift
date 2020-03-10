@@ -20,6 +20,7 @@ enum SessionIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
     case passwordSeed = "passwordSeed"
+    case sharedSeed = "sharedSeed"
 
     func identifier(for id: String) -> String {
         return "\(id)-\(self.rawValue)"
@@ -148,21 +149,22 @@ extension Session {
         return try decoder.decode(Self.self, from: sessionData)
     }
 
-    static func deleteAll() {
+    static func deleteAll(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
         do {
             for session in try all() {
+                group.enter()
                 session.delete(notify: true) { result in
                     if case .failure(let error) = result {
                         Logger.shared.warning("Error deleting sessions remotely.", error: error)
                     }
+                    group.leave()
                 }
             }
         } catch {
             Logger.shared.warning("Error deleting sessions.", error: error)
         }
-
-        // To be sure
-        //purgeSessionDataFromKeychain()
+        group.notify(queue: .main, execute: completion)
     }
 
 }

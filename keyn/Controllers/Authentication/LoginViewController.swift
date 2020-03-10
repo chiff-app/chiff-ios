@@ -30,20 +30,17 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: "errors.corrupted_data".localized, message: "popups.questions.delete_corrupted".localized, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            do {
-                BrowserSession.deleteAll()
-                UserAccount.deleteAll()
-                try Seed.delete()
-                NotificationManager.shared.deleteEndpoint()
-                NotificationManager.shared.deleteKeys()
-                BackupManager.deleteKeys()
-                Logger.shared.warning("Keyn reset after corrupted data", error: error)
-                let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-                UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-                AuthenticationGuard.shared.hideLockWindow()
-            } catch {
-                fatalError()
-            }
+            BrowserSession.deleteAll() {}
+            TeamSession.purgeSessionDataFromKeychain()
+            UserAccount.deleteAll()
+            Seed.delete()
+            NotificationManager.shared.deleteEndpoint()
+            NotificationManager.shared.deleteKeys()
+            BackupManager.deleteKeys()
+            Logger.shared.warning("Keyn reset after corrupted data", error: error)
+            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            AuthenticationGuard.shared.hideLockWindow()
         }))
         self.present(alert, animated: true, completion: nil)
     }

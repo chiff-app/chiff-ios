@@ -364,7 +364,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldReturnNilOnWrongId() {
-        BrowserSession.deleteAll()
+        BrowserSession.deleteAll() {}
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -381,7 +381,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldThrowOnSingleUndecodableSession() {
-        BrowserSession.deleteAll()
+        BrowserSession.deleteAll() {}
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -398,7 +398,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldThrowOnSingleIfUnfixable() {
-        BrowserSession.deleteAll()
+        BrowserSession.deleteAll() {}
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -414,7 +414,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldPurgeAllIfUnfixable() {
-        BrowserSession.deleteAll()
+        BrowserSession.deleteAll() {}
         struct NotASession: Codable {
             let id: String
             let cookie: String

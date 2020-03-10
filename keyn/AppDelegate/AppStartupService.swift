@@ -34,11 +34,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
 
-        (try? TeamSession.all())?.forEach {
-            $0.updateLogo()
-            $0.updateSharedAccounts(pushed: false) { _ in }
-        }
-
         return true
     }
 
@@ -127,6 +122,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if Properties.isFirstLaunch {
             // Purge Keychain
             BrowserSession.purgeSessionDataFromKeychain()
+            TeamSession.purgeSessionDataFromKeychain()
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()

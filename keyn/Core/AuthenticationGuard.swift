@@ -96,6 +96,11 @@ class AuthenticationGuard {
                     NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
                     self.hideLockWindow()
                 }
+                (try? TeamSession.all())?.forEach {
+                    $0.updateLogo()
+                    $0.updateSharedAccounts(pushed: false) { _ in }
+                    $0.backup(seed: nil)
+                }
             case .failure(let error): throw error
             }
         } catch let error as DecodingError {
