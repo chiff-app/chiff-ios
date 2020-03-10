@@ -34,11 +34,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
 
-        (try? TeamSession.all())?.forEach {
-            $0.updateLogo()
-            $0.updateSharedAccounts(pushed: false) { _ in }
-        }
-
         return true
     }
 
