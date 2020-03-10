@@ -11,7 +11,7 @@ enum TeamSessionError: KeynError {
     case logoPathNotFound
 }
 
-class TeamSession: Session {
+final class TeamSession: Session, Restorable {
 
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let creationDate: Date
@@ -62,17 +62,31 @@ class TeamSession: Session {
         self.title = try values.decode(String.self, forKey: .title)
     }
 
+    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false) {
+        self.creationDate = Date()
+        self.id = id
+        self.signingPubKey = signingPubKey.base64
+        self.version = version
+        self.title = title
+        self.isAdmin = isAdmin
+        self.created = created
+    }
+
+    // MARK: - Static functions
+
     static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
         do {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
-            let (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserPubKeyData)
+            let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
+            let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
+            let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-
             let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
             try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
                 do {
                     let _ = try result.get()
                     try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+                    try session.backup(seed: sharedSeed)
                     TeamSession.count += 1
                     NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     completionHandler(.success(session))
@@ -90,23 +104,20 @@ class TeamSession: Session {
         }
     }
 
-    static private func createTeamSessionKeys(browserPubKey: Data) throws -> (Data, Data, KeyPair, KeyPair) {
-        let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
-        let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKey, privKey: keyPairForSharedKey.privKey)
-        let passwordSeed =  try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
-        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: sharedSeed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
-        return (passwordSeed, encryptionKey, keyPairForSharedKey, signingKeyPair)
+    static func restore(data: Data, id: String, context: LAContext?) throws -> TeamSession {
+        let decoder = JSONDecoder()
+        let backupSession = try decoder.decode(BackupTeamSession.self, from: data)
+        let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: backupSession.seed)
+        let session = TeamSession(id: backupSession.id, signingPubKey: signingKeyPair.pubKey, title: backupSession.title, version: backupSession.version, isAdmin: false, created: true)
+        try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+        return session
     }
 
-    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool) {
-        self.creationDate = Date()
-        self.id = id
-        self.signingPubKey = signingPubKey.base64
-        self.version = version
-        self.title = title
-        self.isAdmin = isAdmin
-        self.created = false
+    static private func createTeamSessionKeys(seed: Data) throws -> (Data, Data, KeyPair) {
+        let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
+        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
+        return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
     func updateSharedAccounts(pushed: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -160,7 +171,7 @@ class TeamSession: Session {
                         return
                     }
                     TeamAccount.deleteAll(for: self.signingPubKey)
-                    try? self.deleteLocally()
+                    try? self.delete()
                     NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
                 } catch {
                     Logger.shared.error("Error retrieving accounts", error: error)
@@ -197,41 +208,33 @@ class TeamSession: Session {
 
     func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            if notify {
-                guard !isAdmin else {
-                    throw TeamSessionError.adminDelete
+            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
+                do {
+                    _ = try result.get()
+                    try self.delete()
+                    completion(.success(()))
+                } catch APIError.statusCode(404) {
+                    // Team is already deleted just delete locally + backup
+                    try? self.delete()
+                    completion(.success(()))
+                } catch {
+                    Logger.shared.error("Error deleting arn for team session", error: error)
+                    completion(.failure(error))
                 }
-                API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
-                    do {
-                        _ = try result.get()
-                        TeamAccount.deleteAll(for: self.signingPubKey)
-                        try self.deleteLocally()
-                        completion(.success(()))
-                    } catch APIError.statusCode(404) {
-                        // Team is already deleted just delete locally
-                        TeamAccount.deleteAll(for: self.signingPubKey)
-                        try? self.deleteLocally()
-                        completion(.success(()))
-                    } catch {
-                        Logger.shared.error("Error deleting arn for team session", error: error)
-                        completion(.failure(error))
-                    }
-                }
-            } else {
-                TeamAccount.deleteAll(for: signingPubKey)
-                try self.deleteLocally()
-                completion(.success(()))
             }
         } catch {
             completion(.failure(error))
         }
     }
 
-    func deleteLocally() throws {
-        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: .sharedTeamSessionKey)
-        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: .signingTeamSessionKey)
+    func delete() throws {
+        TeamAccount.deleteAll(for: self.signingPubKey)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
+        try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
         NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+        try BackupManager.deleteSession(sessionId: id)
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {
@@ -289,6 +292,17 @@ class TeamSession: Session {
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
         }
+    }
+
+    func backup(seed: Data) throws {
+        let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
+        BackupManager.backup(session: backupSession, completionHandler: { (result) in
+            do {
+                try Keychain.shared.setSynced(value: result, id: SessionIdentifier.sharedKey.identifier(for: self.id), service: .sharedTeamSessionKey)
+            } catch {
+                Logger.shared.error("Error session account sync info", error: error)
+            }
+        })
     }
 
 }

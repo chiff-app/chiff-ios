@@ -89,6 +89,33 @@ struct BackupManager {
             completionHandler(false)
         }
     }
+
+    static func backup(session: BackupTeamSession, completionHandler: @escaping (_ result: Bool) -> Void) {
+        do {
+            let sessionData = try JSONEncoder().encode(session)
+            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                throw KeychainError.notFound
+            }
+            let ciphertext = try Crypto.shared.encryptSymmetric(sessionData, secretKey: key)
+
+            let message = [
+                MessageIdentifier.id: session.id,
+                MessageIdentifier.data: ciphertext.base64
+            ]
+            API.shared.signedRequest(method: .put, message: message, path: "users/\(try publicKey())/sessions/\(session.id)", privKey: try privateKey(), body: nil) { result in
+                switch result {
+                case .success(_):
+                    completionHandler(true)
+                case .failure(let error):
+                    Logger.shared.error("BackupManager cannot backup account data.", error: error)
+                    completionHandler(false)
+                }
+            }
+        } catch {
+            completionHandler(false)
+        }
+    }
+
     
     static func deleteAccount(accountId: String) throws {
         API.shared.signedRequest(method: .delete, message: [MessageIdentifier.id: accountId], path: "users/\(try publicKey())/accounts/\(accountId)", privKey: try privateKey(), body: nil) { result in
@@ -98,7 +125,15 @@ struct BackupManager {
         }
     }
 
-    static func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func deleteSession(sessionId: String) throws {
+        API.shared.signedRequest(method: .delete, message: [MessageIdentifier.id: sessionId], path: "users/\(try publicKey())/sessions/\(sessionId)", privKey: try privateKey(), body: nil) { result in
+            if case let .failure(error) = result {
+                Logger.shared.error("BackupManager cannot delete account.", error: error)
+            }
+        }
+    }
+
+    static func deleteBackupData(completionHandler: @escaping (Result<Void, Error>) -> Void) {
         do {
             API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil) { result in
                 switch result {
@@ -113,7 +148,7 @@ struct BackupManager {
         }
     }
     
-    static func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) throws {
+    static func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int,Int,Int), Error>) -> Void) throws {
         var pubKey: String
 
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
@@ -122,30 +157,44 @@ struct BackupManager {
         } else {
             pubKey = try publicKey()
         }
+        let group = DispatchGroup()
+        var accounts: [UserAccount] = []
+        var failedAccounts: Int = 0
+        var sessions: [TeamSession] = []
+        var failedSessions: Int = 0
+        var groupError: Error?
+        group.enter()
         API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/accounts", privKey: try privateKey(), body: nil) { result in
-            switch result {
-            case .success(let dict):
-                var failedAccounts = [String]()
-                for (id, data) in dict {
-                    if let base64Data = data as? String {
-                        do {
-                            let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                                throw KeychainError.notFound
-                            }
-                            let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                            try UserAccount.restore(accountData: accountData, id: id, context: context)
-                        } catch {
-                            failedAccounts.append(id)
-                            Logger.shared.error("Could not restore account.", error: error)
-                        }
-                    }
+            do {
+                (accounts, failedAccounts) = try self.backupDataHandler(result, context: context)
+            } catch {
+                if groupError == nil {
+                    groupError = error
                 }
-                Properties.accountCount = dict.count - failedAccounts.count
-                completionHandler(.success((dict.count, failedAccounts.count)))
-            case .failure(let error):
-                Logger.shared.error("BackupManager cannot get backup data.", error: error)
+            }
+            group.leave()
+        }
+        group.enter()
+        API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/sessions", privKey: try privateKey(), body: nil) { result in
+            do {
+                (sessions, failedSessions) = try self.backupDataHandler(result, context: context)
+                sessions.forEach {
+                    $0.updateLogo()
+                    $0.updateSharedAccounts(pushed: false) { _ in }
+                }
+            } catch {
+                if groupError == nil {
+                    groupError = error
+                }
+            }
+            group.leave()
+        }
+        group.notify(queue: .main) {
+            if let error = groupError {
                 completionHandler(.failure(error))
+            } else {
+                Properties.accountCount = accounts.count - failedAccounts
+                completionHandler(.success((accounts.count, failedAccounts, sessions.count, failedSessions)))
             }
         }
     }
@@ -186,6 +235,33 @@ struct BackupManager {
     }
 
     // MARK: - Private
+
+    private static func backupDataHandler<T: Restorable>(_ result: Result<JSONObject, Error>, context: LAContext) throws -> ([T], Int) {
+        switch result {
+        case .success(let dict):
+            var failed = [String]()
+            let objects = dict.compactMap { (id, data) -> T? in
+                if let base64Data = data as? String {
+                    do {
+                        let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
+                        guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                            throw KeychainError.notFound
+                        }
+                        let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
+                        return try T.restore(data: data, id: id, context: context)
+                    } catch {
+                        failed.append(id)
+                        Logger.shared.error("Could not restore data.", error: error)
+                    }
+                }
+                return nil
+            }
+            return (objects, failed.count)
+        case .failure(let error):
+            Logger.shared.error("BackupManager cannot get backup data.", error: error)
+            throw error
+        }
+    }
     
     private static func createSigningKeypair(seed: Data) throws -> (Data, String, String) {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)

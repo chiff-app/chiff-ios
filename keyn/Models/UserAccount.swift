@@ -8,11 +8,14 @@ import LocalAuthentication
 import AuthenticationServices
 import CryptoKit
 
+protocol Restorable {
+    static func restore(data: Data, id: String, context: LAContext?) throws -> Self
+}
 
 /*
  * An account belongs to the user and can have one Site.
  */
-struct UserAccount: Account {
+struct UserAccount: Account, Restorable {
 
     let id: String
     var username: String
@@ -282,9 +285,9 @@ struct UserAccount: Account {
     // MARK: - Static functions
 
 
-    static func restore(accountData: Data, id: String, context: LAContext?) throws {
+    static func restore(data: Data, id: String, context: LAContext?) throws -> UserAccount {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupUserAccount.self, from: accountData)
+        let backupAccount = try decoder.decode(BackupUserAccount.self, from: data)
         let account = UserAccount(id: backupAccount.id,
                               username: backupAccount.username,
                               sites: backupAccount.sites,
@@ -329,6 +332,7 @@ struct UserAccount: Account {
 
         try Keychain.shared.save(id: account.id, service: .account, secretData: password?.data, objectData: data)
         account.saveToIdentityStore()
+        return account
     }
 
 }
