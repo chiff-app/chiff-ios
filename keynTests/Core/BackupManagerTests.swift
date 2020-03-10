@@ -175,7 +175,7 @@ class BackupManagerTests: XCTestCase {
                 throw KeychainError.notFound
             }
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-            BackupManager.deleteAllAccounts(completionHandler: { (result) in
+            BackupManager.deleteBackupData(completionHandler: { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }
@@ -196,7 +196,7 @@ class BackupManagerTests: XCTestCase {
             }
             let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
             API.shared = mockAPI
-            BackupManager.deleteAllAccounts(completionHandler: { (result) in
+            BackupManager.deleteBackupData(completionHandler: { (result) in
                 if case .success(_) = result {
                     XCTFail("Should fail")
                 }
@@ -217,7 +217,7 @@ class BackupManagerTests: XCTestCase {
             }
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
             TestHelper.deleteLocalData()
-            BackupManager.deleteAllAccounts(completionHandler: { (result) in
+            BackupManager.deleteBackupData(completionHandler: { (result) in
                 if case .success(_) = result {
                     XCTFail("Should fail")
                 }
@@ -358,7 +358,7 @@ class BackupManagerTests: XCTestCase {
         let backupAccount = BackupUserAccount(account: account, tokenURL: nil, tokenSecret: nil)
         BackupManager.backup(account: backupAccount) { (result) in
             XCTAssertTrue(result)
-            BackupManager.deleteAllAccounts(completionHandler: { (result) in
+            BackupManager.deleteBackupData(completionHandler: { (result) in
                 if case let .failure(error) = result {
                     XCTFail(error.localizedDescription)
                 }

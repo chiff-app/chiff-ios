@@ -127,6 +127,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if Properties.isFirstLaunch {
             // Purge Keychain
             BrowserSession.purgeSessionDataFromKeychain()
+            TeamSession.purgeSessionDataFromKeychain()
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
