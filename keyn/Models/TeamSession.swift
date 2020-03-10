@@ -86,7 +86,7 @@ final class TeamSession: Session, Restorable {
                 do {
                     let _ = try result.get()
                     try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
-                    try session.backup(seed: sharedSeed)
+                    session.backup(seed: sharedSeed)
                     TeamSession.count += 1
                     NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     completionHandler(.success(session))
@@ -294,15 +294,35 @@ final class TeamSession: Session, Restorable {
         }
     }
 
-    func backup(seed: Data) throws {
-        let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
-        BackupManager.backup(session: backupSession, completionHandler: { (result) in
-            do {
-                try Keychain.shared.setSynced(value: result, id: SessionIdentifier.sharedKey.identifier(for: self.id), service: .sharedTeamSessionKey)
-            } catch {
-                Logger.shared.error("Error session account sync info", error: error)
+    func backup(seed generatedSeed: Data?) {
+        do {
+            let keychainSeed: Data? = generatedSeed == nil ? try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey) : nil
+            guard let seed = generatedSeed ?? keychainSeed else {
+                // Backup complete
+                return
             }
-        })
+            let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
+            BackupManager.backup(session: backupSession, completionHandler: { (result) in
+                do {
+                    if result {
+                        // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
+                        if keychainSeed != nil {
+                            try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
+                        }
+                    } else {
+                        // Occurs if backup failed now, so we can try next time
+                        if keychainSeed == nil {
+                            try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
+                        }
+                    }
+                } catch {
+                    Logger.shared.error("Error updating team session backup state", error: error)
+                }
+            })
+        } catch {
+            Logger.shared.error("Error updating team session backup state", error: error)
+        }
+
     }
 
 }

@@ -273,7 +273,7 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "Je bent admin van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel."
+    value: "Je bent beheerder van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in de beheer-applicatie."
   team_session_detail_footer:
     value: >-
       Je raakt toegang tot al je team-accounts kwijt als je deze sessie

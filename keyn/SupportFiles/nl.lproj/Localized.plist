@@ -638,8 +638,8 @@ Kies dan 'Sta berichtgeving toe'.</string>
 		<key>team_session_admin_detail_footer</key>
 		<dict>
 			<key>value</key>
-			<string>Je bent admin van dit team 🎉.
-Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel.</string>
+			<string>Je bent beheerder van dit team 🎉.
+Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in de beheer-applicatie.</string>
 		</dict>
 		<key>team_session_detail_footer</key>
 		<dict>
