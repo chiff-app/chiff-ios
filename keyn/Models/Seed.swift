@@ -99,7 +99,7 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) {
+    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<(Int,Int,Int,Int), Error>) -> Void) {
         guard !hasKeys && !BackupManager.hasKeys else {
             completionHandler(.failure(SeedError.exists))
             return

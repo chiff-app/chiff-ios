@@ -273,7 +273,7 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "Je bent admin van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel."
+    value: "Je bent beheerder van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in de beheer-applicatie."
   team_session_detail_footer:
     value: >-
       Je raakt toegang tot al je team-accounts kwijt als je deze sessie
@@ -312,6 +312,10 @@ errors:
     value: '%d van de %d accounts konden niet hersteld worden.'
   failed_accounts_title:
     value: Fout
+  failed_teams_and_accounts_message:
+    value: '%d van de %d accounts en %d van de %d teams konden niet hersteld worden.'
+  failed_teams_message:
+    value: '%d van de %d teams konden niet hersteld worden.'
   generic_error:
     comment: A generic error description
     value: Er is een fout opgetreden.

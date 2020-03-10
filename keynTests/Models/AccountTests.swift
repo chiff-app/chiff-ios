@@ -257,7 +257,7 @@ class AccountTests: XCTestCase {
         guard let accountData = TestHelper.backupData.fromBase64 else {
             return XCTFail("Error converting to data")
         }
-        XCTAssertNoThrow(try UserAccount.restore(accountData: accountData, id: TestHelper.userID, context: nil))
+        XCTAssertNoThrow(try UserAccount.restore(data: accountData, id: TestHelper.userID, context: nil))
         XCTAssertNotNil(try UserAccount.get(accountID: TestHelper.userID, context: nil))
     }
     

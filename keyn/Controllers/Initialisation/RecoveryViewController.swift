@@ -140,15 +140,23 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                         case .failure(_):
                             self.showAlert(message: "errors.seed_restore".localized)
                             self.activityViewContainer.isHidden = true
-                        case .success(let (total, failed)):
-                            if failed > 0 {
-                                let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: String(format: "errors.failed_accounts_message".localized, failed, total), preferredStyle: .alert)
+                        case .success(let (accounts, accountsFailed, teams, teamsFailed)):
+                            var message: String? = nil
+                            if accountsFailed > 0 && teamsFailed > 0 {
+                                message = String(format: "errors.failed_teams_and_accounts_message".localized, accountsFailed, accounts, teamsFailed, teams)
+                            } else if accountsFailed > 0 {
+                                message = String(format: "errors.failed_accounts_message".localized, accountsFailed, accounts)
+                            } else if teamsFailed > 0 {
+                                message = String(format: "errors.failed_teams_message".localized, teamsFailed, teams)
+                            }
+                            if let message = message {
+                                let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: message, preferredStyle: .alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                                    self.onSeedRecorySuccess()
+                                    self.onSeedRecoverySuccess()
                                 }))
                                 self.present(alert, animated: true)
                             } else {
-                                self.onSeedRecorySuccess()
+                                self.onSeedRecoverySuccess()
                             }
                         }
                     }
@@ -165,7 +173,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Private
 
-    private func onSeedRecorySuccess() {
+    private func onSeedRecoverySuccess() {
 //        StoreObserver.shared.updateSubscriptions() { result in
 //            if case let .failure(error) = result {
 //                Logger.shared.error("Error updating subscriptions", error: error)
@@ -241,15 +249,13 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             self.navigationController?.popViewController(animated: true)
         }))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            do {
-                BrowserSession.deleteAll()
+            BrowserSession.deleteAll() {
+                TeamSession.purgeSessionDataFromKeychain()
                 UserAccount.deleteAll()
-                try Seed.delete()
+                Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()
                 BackupManager.deleteKeys()
-            } catch {
-                fatalError()
             }
         }))
         self.present(alert, animated: true, completion: nil)
