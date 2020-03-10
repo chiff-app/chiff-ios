@@ -81,6 +81,7 @@ class PrivacyViewController: UITableViewController {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_keyn_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             self.deleteLocalData() {
                 DispatchQueue.main.async {
                     Logger.shared.analytics(.resetKeyn)
@@ -112,6 +113,7 @@ class PrivacyViewController: UITableViewController {
     // MARK: - Private functions
 
     private func deleteRemoteData(action: UIAlertAction) -> Void {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let group = DispatchGroup()
         var groupError: Error?
         group.enter()
@@ -127,6 +129,7 @@ class PrivacyViewController: UITableViewController {
         }
         group.notify(queue: .main) {
             if let error = groupError {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.showAlert(message: "\("errors.deleting".localized): \(error)")
             } else {
                 self.deleteLocalData() {
@@ -134,6 +137,7 @@ class PrivacyViewController: UITableViewController {
                         Logger.shared.analytics(.deleteData)
                         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
                         UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     }
                 }
             }

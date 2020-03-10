@@ -194,7 +194,7 @@ struct BackupManager {
                 completionHandler(.failure(error))
             } else {
                 Properties.accountCount = accounts.count - failedAccounts
-                completionHandler(.success((accounts.count, failedAccounts, sessions.count, failedSessions)))
+                completionHandler(.success((accounts.count + failedAccounts, failedAccounts, sessions.count + failedSessions, failedSessions)))
             }
         }
     }

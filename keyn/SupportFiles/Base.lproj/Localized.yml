@@ -312,6 +312,10 @@ errors:
     value: Keyn was unable to restore %d of the %d accounts.
   failed_accounts_title:
     value: Recovery error
+  failed_teams_and_accounts_message:
+    value: Keyn was unable to restore %d of the %d accounts and  %d of the %d teams.
+  failed_teams_message:
+    value: Keyn was unable to restore %d of the %d teams.
   generic_error:
     comment: A generic error description
     value: An error occured.

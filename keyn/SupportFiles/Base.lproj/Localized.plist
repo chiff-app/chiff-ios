@@ -724,6 +724,16 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 			<key>value</key>
 			<string>Recovery error</string>
 		</dict>
+		<key>failed_teams_and_accounts_message</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn was unable to restore %d of the %d accounts and  %d of the %d teams.</string>
+		</dict>
+		<key>failed_teams_message</key>
+		<dict>
+			<key>value</key>
+			<string>Keyn was unable to restore %d of the %d teams.</string>
+		</dict>
 		<key>generic_error</key>
 		<dict>
 			<key>comment</key>

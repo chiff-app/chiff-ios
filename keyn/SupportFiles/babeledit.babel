@@ -3153,6 +3153,50 @@
                         </children>
                     </folder_node>
                     <folder_node>
+                        <name>failed_teams_and_accounts_message</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
+                        <name>failed_teams_message</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
                         <name>generic_error</name>
                         <children>
                             <concept_node>
