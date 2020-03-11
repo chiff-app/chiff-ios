@@ -52,6 +52,11 @@
 				<string>Keyn asks you to add the website.</string>
 			</dict>
 		</dict>
+		<key>add_to_team</key>
+		<dict>
+			<key>value</key>
+			<string>Add to team</string>
+		</dict>
 		<key>adding_account</key>
 		<dict>
 			<key>value</key>

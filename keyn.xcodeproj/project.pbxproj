@@ -148,6 +148,7 @@
 		49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */; };
 		49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
+		49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */; };
 		49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
 		49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */; };
@@ -402,6 +403,7 @@
 		49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubscriptionViewController.swift; sourceTree = "<group>"; };
 		49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccountViewController.swift; sourceTree = "<group>"; };
 		49E2FE0222D347E1001AA622 /* StoreObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
 		49E2FE0422D35A39001AA622 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
@@ -857,6 +859,7 @@
 				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
 				49774C112266035C0094D3ED /* SiteTableViewController.swift */,
 				49774C132266044D0094D3ED /* SiteTableViewCell.swift */,
+				49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1406,6 +1409,7 @@
 				49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */,
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
+				49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,

@@ -20,6 +20,8 @@ accounts:
       value: Log in zoals je normaal inlogt.
     third:
       value: Keyn vraagt om de website toe te voegen.
+  add_to_team:
+    value: Voeg toe aan team
   adding_account:
     value: Een account toevoegen
   alternative_add:

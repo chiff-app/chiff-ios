@@ -178,9 +178,11 @@ struct BackupManager {
         API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/sessions", privKey: try privateKey(), body: nil) { result in
             do {
                 (sessions, failedSessions) = try self.backupDataHandler(result, context: context)
-                sessions.forEach {
-                    $0.updateLogo()
-                    $0.updateSharedAccounts(pushed: false) { _ in }
+                TeamSession.updateTeamSessions(pushed: false, logo: true, backup: false) { (result) in
+                    if case .failure(let error) = result {
+                        groupError = error
+                    }
+                    group.leave()
                 }
             } catch {
                 if groupError == nil {

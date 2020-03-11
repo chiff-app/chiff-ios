@@ -11,7 +11,17 @@ enum TeamSessionError: KeynError {
     case logoPathNotFound
 }
 
-final class TeamSession: Session, Restorable {
+protocol TeamSessionProtocol {
+    static var sessionCountFlag: String { get }
+    var isAdmin: Bool { get set }
+}
+
+
+protocol AdminSessionProtocol {
+    func test() -> Bool
+}
+
+struct TeamSession: Session {
 
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let creationDate: Date
@@ -39,28 +49,6 @@ final class TeamSession: Session, Restorable {
     static var signingService: KeychainService = .signingTeamSessionKey
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
-
-    enum CodingKeys: CodingKey {
-        case creationDate
-        case id
-        case signingPubKey
-        case created
-        case isAdmin
-        case version
-        case title
-    }
-
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-        self.id = try values.decode(String.self, forKey: .id)
-        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
-        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-        self.created = try values.decode(Bool.self, forKey: .created)
-        self.isAdmin = try values.decode(Bool.self, forKey: .isAdmin)
-        self.version = try values.decode(Int.self, forKey: .version)
-        self.title = try values.decode(String.self, forKey: .title)
-    }
 
     init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false) {
         self.creationDate = Date()
@@ -104,15 +92,6 @@ final class TeamSession: Session, Restorable {
         }
     }
 
-    static func restore(data: Data, id: String, context: LAContext?) throws -> TeamSession {
-        let decoder = JSONDecoder()
-        let backupSession = try decoder.decode(BackupTeamSession.self, from: data)
-        let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: backupSession.seed)
-        let session = TeamSession(id: backupSession.id, signingPubKey: signingKeyPair.pubKey, title: backupSession.title, version: backupSession.version, isAdmin: false, created: true)
-        try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
-        return session
-    }
-
     static private func createTeamSessionKeys(seed: Data) throws -> (Data, Data, KeyPair) {
         let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
         let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
@@ -120,67 +99,111 @@ final class TeamSession: Session, Restorable {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    func updateSharedAccounts(pushed: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
+    static func updateTeamSessions(pushed: Bool, logo: Bool, backup: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            if !created && pushed {
-                created = true
-                try self.update()
+            let group = DispatchGroup()
+            var groupError: Error? = nil
+            for session in try TeamSession.all() {
+                group.enter()
+                updateTeamSession(session: session) { result in
+                    if case .failure(let error) = result {
+                        groupError = error
+                    }
+                    group.leave()
+                }
+                if logo {
+                    group.enter()
+                    do {
+                        try session.updateLogo(group: group)
+                    } catch {
+                        groupError = error
+                    }
+                }
+                if backup {
+                    group.enter()
+                    session.backup(seed: nil, group: group)
+                }
             }
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
+            group.notify(queue: .main) {
+                if let error = groupError {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    static func updateTeamSession(session: TeamSession, pushed: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            var session = session
+            if !session.created && pushed {
+                session.created = true
+                try session.update()
+            }
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil) { result in
                 do {
-                    var changed = false
                     let dict = try result.get()
-                    let key = try self.passwordSeed()
-                    #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
                     guard let accounts = dict["accounts"] as? [String: String] else {
                         throw CodingError.missingData
                     }
                     guard let isAdmin = dict["admin"] as? Bool else {
                         throw CodingError.missingData
                     }
-                    if self.isAdmin != isAdmin {
-                        self.isAdmin = isAdmin
-                        try self.update()
+                    var changed = false
+                    if session.isAdmin != isAdmin {
+                        session.isAdmin = isAdmin
                         changed = true
+                        try session.update()
                     }
-                    var currentAccounts = try TeamAccount.all(context: nil, label: self.signingPubKey)
-                    for (id, data) in accounts {
-                        currentAccounts.removeValue(forKey: id)
-                        let ciphertext = try Crypto.shared.convertFromBase64(from: data)
-                        let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                        if var account = try TeamAccount.get(accountID: id, context: nil) {
-                            changed = try account.update(accountData: accountData, key: key)
-                        } else { // New account added
-                            try TeamAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
-                            changed = true
-                        }
-                    }
-                    for account in currentAccounts.values {
-                        #warning("Check how to safely delete here in the background")
-                        try account.delete()
-                        changed = true
-                    }
-                    Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
-                    if changed {
+                    if try changed || session.updateSharedAccounts(accounts: accounts){
                         NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
                         NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
                     }
                     completion(.success(()))
-                } catch APIError.statusCode(404) {
-                    guard self.created else {
-                        return
-                    }
-                    TeamAccount.deleteAll(for: self.signingPubKey)
-                    try? self.delete()
-                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
                 } catch {
-                    Logger.shared.error("Error retrieving accounts", error: error)
                     completion(.failure(error))
                 }
             }
         } catch {
-            Logger.shared.error("Error to get key to fetch accounts", error: error)
             completion(.failure(error))
+        }
+    }
+
+    mutating func updateSharedAccounts(accounts: [String: String]) throws -> Bool {
+        var changed = false
+        do {
+            let key = try self.passwordSeed()
+            #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+            var currentAccounts = try TeamAccount.all(context: nil, label: self.signingPubKey)
+            for (id, data) in accounts {
+                currentAccounts.removeValue(forKey: id)
+                let ciphertext = try Crypto.shared.convertFromBase64(from: data)
+                let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+                if var account = try TeamAccount.get(accountID: id, context: nil) {
+                    changed = try account.update(accountData: accountData, key: key)
+                } else { // New account added
+                    try TeamAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+                    changed = true
+                }
+            }
+            for account in currentAccounts.values {
+                #warning("Check how to safely delete here in the background")
+                try account.delete()
+                changed = true
+            }
+            Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
+            return changed
+        } catch APIError.statusCode(404) {
+            guard self.created else {
+                return false
+            }
+            TeamAccount.deleteAll(for: self.signingPubKey)
+            try? self.delete()
+            NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
+            return true
         }
     }
 
@@ -257,7 +280,7 @@ final class TeamSession: Session, Restorable {
         return data
     }
 
-    func updateLogo() {
+    func updateLogo(group: DispatchGroup) throws {
         do {
             let filemgr = FileManager.default
 //            var headers: [String:String]? = nil
@@ -274,6 +297,7 @@ final class TeamSession: Session, Restorable {
                 do {
                     let dict = try result.get()
                     guard let logo = dict["logo"] as? String else {
+                        group.leave()
                         return
                     }
                     guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
@@ -284,21 +308,25 @@ final class TeamSession: Session, Restorable {
                     }
                     filemgr.createFile(atPath: path, contents: data, attributes: nil)
                 } catch APIError.statusCode(404) {
+                    group.leave()
                     return
                 } catch {
                     Logger.shared.error("Error retrieving logo", error: error)
                 }
+                group.leave()
             }
         } catch {
             Logger.shared.error("Error retrieving logo", error: error)
+            group.leave()
         }
     }
 
-    func backup(seed generatedSeed: Data?) {
+    func backup(seed generatedSeed: Data?, group: DispatchGroup? = nil) {
         do {
             let keychainSeed: Data? = generatedSeed == nil ? try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey) : nil
             guard let seed = generatedSeed ?? keychainSeed else {
                 // Backup complete
+                group?.leave()
                 return
             }
             let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
@@ -318,11 +346,57 @@ final class TeamSession: Session, Restorable {
                 } catch {
                     Logger.shared.error("Error updating team session backup state", error: error)
                 }
+                group?.leave()
             })
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
+            group?.leave()
         }
 
     }
 
+}
+
+extension TeamSession: AdminSessionProtocol {
+    func test() -> Bool {
+        return true
+    }
+}
+
+extension TeamSession: Restorable {
+
+    static func restore(data: Data, id: String, context: LAContext?) throws -> TeamSession {
+        let decoder = JSONDecoder()
+        let backupSession = try decoder.decode(BackupTeamSession.self, from: data)
+        let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: backupSession.seed)
+        let session = TeamSession(id: backupSession.id, signingPubKey: signingKeyPair.pubKey, title: backupSession.title, version: backupSession.version, isAdmin: false, created: true)
+        try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+        return session
+    }
+
+}
+
+extension TeamSession: Codable {
+
+    enum CodingKeys: CodingKey {
+        case creationDate
+        case id
+        case signingPubKey
+        case created
+        case isAdmin
+        case version
+        case title
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        self.id = try values.decode(String.self, forKey: .id)
+        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+        self.created = try values.decode(Bool.self, forKey: .created)
+        self.isAdmin = try values.decode(Bool.self, forKey: .isAdmin)
+        self.version = try values.decode(Int.self, forKey: .version)
+        self.title = try values.decode(String.self, forKey: .title)
+    }
 }
