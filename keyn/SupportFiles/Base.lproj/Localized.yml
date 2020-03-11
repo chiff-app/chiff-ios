@@ -20,6 +20,8 @@ accounts:
       value: Log in as you'd normally do.
     third:
       value: Keyn asks you to add the website.
+  add_to_team:
+    value: Add to team
   adding_account:
     value: Adding an account
   alternative_add:

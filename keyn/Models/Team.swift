@@ -164,7 +164,7 @@ class Team {
             if let error = self.groupError {
                 throw error
             }
-            let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true)
+            var session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true)
             session.created = true
             try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: seed)
             TeamSession.count += 1

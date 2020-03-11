@@ -20,6 +20,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var enabledSwitch: UISwitch!
     @IBOutlet weak var bottomSpacer: UIView!
+    @IBOutlet weak var addToTeamButton: KeynButton!
 
     var editButton: UIBarButtonItem!
     var account: Account!
@@ -31,6 +32,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var loadingCircle: FilledCircle?
     var showAccountEnableButton: Bool = false
     var canEnableAccount: Bool = true
+    var session: TeamSession? // Only set if user is admin
 
     var password: String? {
         return try? account.password()
@@ -55,7 +57,17 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         tableView.layer.borderWidth = 1.0
 
         tableView.separatorColor = UIColor.primaryTransparant
-        bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+        // TODO: Handle situation where there are multiple admin sessions
+        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
+            addToTeamButton.isHidden = false
+            addToTeamButton.isEnabled = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
+            self.session = session
+        } else {
+            addToTeamButton.isEnabled = false
+            addToTeamButton.isHidden = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+        }
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
@@ -256,6 +268,14 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }
     }
     
+    @IBAction func addToTeam(_ sender: KeynButton) {
+        sender.showLoading()
+        guard let session = session else {
+            fatalError("Session must exist if this action is called")
+            return
+        }
+    }
+
     @IBAction func deleteAccount(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -264,7 +284,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     @objc func edit() {
         tableView.setEditing(true, animated: true)
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(update))
@@ -489,6 +509,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             }
             destination.account = account
             destination.delegate = self
+        } else if segue.identifier == "AddToTeam", let destination = segue.destination.contents as? TeamAccountViewController {
+            destination.session = session!
         }
     }
 }

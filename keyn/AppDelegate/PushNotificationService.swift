@@ -51,7 +51,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     completionHandler(UIBackgroundFetchResult.failed)
                 }
             case NotificationCategory.UPDATE_TEAM_SESSION:
-                session.updateSharedAccounts(pushed: true) { result in
+                TeamSession.updateTeamSession(session: session, pushed: true) { result in
                     switch result {
                     case .success(_): completionHandler(UIBackgroundFetchResult.newData)
                     case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
@@ -224,16 +224,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-        do {
-            for session in try TeamSession.all() {
-                session.updateSharedAccounts { (result) in
-                    if case let .failure(error) = result {
-                        print(error)
-                    }
-                }
+        TeamSession.updateTeamSessions(pushed: false, logo: false, backup: false) { (result) in
+            if case let .failure(error) = result {
+                Logger.shared.error("Could not update sessions.", error: error)
             }
-        } catch {
-            Logger.shared.error("Could not get sessions.", error: error)
         }
     }
 
