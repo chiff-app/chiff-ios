@@ -32,7 +32,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var loadingCircle: FilledCircle?
     var showAccountEnableButton: Bool = false
     var canEnableAccount: Bool = true
-    var session: TeamSession? // Only set if user is admin
+    var session: TeamSession?   // Only set if user is team admin
+    var team: Team?             // Only set if user is team admin
 
     var password: String? {
         return try? account.password()
@@ -272,7 +273,23 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         sender.showLoading()
         guard let session = session else {
             fatalError("Session must exist if this action is called")
-            return
+        }
+        session.getTeamSeed { result in
+            switch result {
+            case .success(let seed): Team.get(seed: seed) { result in
+                sender.hideLoading()
+                switch result {
+                case .success(let team):
+                    self.team = team
+                    self.performSegue(withIdentifier: "AddToTeam", sender: self)
+                case .failure(let error):
+                    self.showAlert(message: "Localized error message: \(error)")
+                }
+            }
+            case .failure(let error):
+                sender.hideLoading()
+                self.showAlert(message: "Localized error message: \(error)")
+            }
         }
     }
 
@@ -511,6 +528,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             destination.delegate = self
         } else if segue.identifier == "AddToTeam", let destination = segue.destination.contents as? TeamAccountViewController {
             destination.session = session!
+            destination.team = team!
         }
     }
 }

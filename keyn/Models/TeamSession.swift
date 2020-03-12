@@ -9,16 +9,7 @@ import LocalAuthentication
 enum TeamSessionError: KeynError {
     case adminDelete
     case logoPathNotFound
-}
-
-protocol TeamSessionProtocol {
-    static var sessionCountFlag: String { get }
-    var isAdmin: Bool { get set }
-}
-
-
-protocol AdminSessionProtocol {
-    func test() -> Bool
+    case notAdmin
 }
 
 struct TeamSession: Session {
@@ -92,7 +83,7 @@ struct TeamSession: Session {
         }
     }
 
-    static private func createTeamSessionKeys(seed: Data) throws -> (Data, Data, KeyPair) {
+    static func createTeamSessionKeys(seed: Data) throws -> (Data, Data, KeyPair) {
         let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
         let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
         let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
@@ -274,12 +265,6 @@ struct TeamSession: Session {
         return seed
     }
 
-    func decryptAdminSeed(seed: String) throws -> Data {
-        let ciphertext = try Crypto.shared.convertFromBase64(from: seed)
-        let (data, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-        return data
-    }
-
     func updateLogo(group: DispatchGroup) throws {
         do {
             let filemgr = FileManager.default
@@ -355,12 +340,29 @@ struct TeamSession: Session {
 
     }
 
-}
+    // MARK: - Admin functions
 
-extension TeamSession: AdminSessionProtocol {
-    func test() -> Bool {
-        return true
+    func getTeamSeed(completionHandler: @escaping (Result<Data,Error>) -> Void) {
+        do {
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/admin", privKey: try signingPrivKey(), body: nil) { result in
+                do {
+                    let dict = try result.get()
+                    guard let teamSeed = dict["team_seed"] as? String else {
+                        throw CodingError.unexpectedData
+                    }
+                    let ciphertext = try Crypto.shared.convertFromBase64(from: teamSeed)
+                    let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+                    completionHandler(.success(seed))
+                } catch {
+                    Logger.shared.error("Error getting admin seed", error: error)
+                    completionHandler(.failure(error))
+                }
+            }
+        } catch {
+            completionHandler(.failure(error))
+        }
     }
+
 }
 
 extension TeamSession: Restorable {

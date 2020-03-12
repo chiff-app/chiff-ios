@@ -17,7 +17,7 @@ enum Browser: String, Codable {
  * There is a non-codable part of session that is only stored in the Keychain.
  * That is: sharedKey and sigingKeyPair.privKey.
  */
-class BrowserSession: Session {
+struct BrowserSession: Session {
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let browser: Browser
     let creationDate: Date
@@ -33,44 +33,6 @@ class BrowserSession: Session {
     static var signingService: KeychainService = .signingSessionKey
     static var encryptionService: KeychainService = .sharedSessionKey
     static var sessionCountFlag = "sessionCount"
-
-    enum CodingKeys: CodingKey {
-        case backgroundTask
-        case browser
-        case creationDate
-        case id
-        case signingPubKey
-        case version
-        case title
-        case lastRequest
-    }
-
-    enum LegacyCodingKey: CodingKey {
-        case os
-    }
-
-    required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try values.decode(String.self, forKey: .id)
-        self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
-        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
-        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-        self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
-        let browser = try values.decode(Browser.self, forKey: .browser)
-        self.browser = browser
-        if let title = try values.decodeIfPresent(String.self, forKey: .title) {
-            self.title = title
-        } else {
-            let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
-            if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
-                self.title = "\(browser.rawValue) on \(os)"
-            } else {
-                self.title = browser.rawValue
-            }
-        }
-    }
 
     init(id: String, signingPubKey: Data, browser: Browser, title: String, version: Int) {
         self.creationDate = Date()
@@ -128,7 +90,7 @@ class BrowserSession: Session {
     ///   - browserTab: The browser tab
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
-    func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
+    mutating func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext) throws {
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
@@ -160,7 +122,7 @@ class BrowserSession: Session {
         try updateLastRequest()
     }
 
-    func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
+    mutating func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext, completionHandler: @escaping (Error?) -> Void) {
         do {
             let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin, pk: nil))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
@@ -178,7 +140,7 @@ class BrowserSession: Session {
         }
     }
 
-    func sendWebAuthnResponse(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext, signature: String?, counter: Int?) throws {
+    mutating func sendWebAuthnResponse(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext, signature: String?, counter: Int?) throws {
         var response: KeynCredentialsResponse!
         switch type {
         case .webauthnCreate:
@@ -425,9 +387,50 @@ class BrowserSession: Session {
         }
     }
 
-    private func updateLastRequest() throws {
+    private mutating func updateLastRequest() throws {
         lastRequest = Date()
         try update()
         NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self])
     }
+}
+
+extension BrowserSession: Codable {
+
+    enum CodingKeys: CodingKey {
+          case backgroundTask
+          case browser
+          case creationDate
+          case id
+          case signingPubKey
+          case version
+          case title
+          case lastRequest
+      }
+
+      enum LegacyCodingKey: CodingKey {
+          case os
+      }
+
+      init(from decoder: Decoder) throws {
+          let values = try decoder.container(keyedBy: CodingKeys.self)
+          self.id = try values.decode(String.self, forKey: .id)
+          self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
+          self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+          self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+          self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+          self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+          self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
+          let browser = try values.decode(Browser.self, forKey: .browser)
+          self.browser = browser
+          if let title = try values.decodeIfPresent(String.self, forKey: .title) {
+              self.title = title
+          } else {
+              let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
+              if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
+                  self.title = "\(browser.rawValue) on \(os)"
+              } else {
+                  self.title = browser.rawValue
+              }
+          }
+      }
 }

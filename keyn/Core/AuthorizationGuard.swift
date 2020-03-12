@@ -17,7 +17,7 @@ class AuthorizationGuard {
 
     static var authorizationInProgress = false
 
-    let session: BrowserSession
+    var session: BrowserSession
     let type: KeynMessageType
     let accounts: [BulkAccount]!// Should be present for bulk add site requests
     private let browserTab: Int!        // Should be present for all requests
@@ -267,21 +267,18 @@ class AuthorizationGuard {
             var success = false
 
             func onSuccess(context: LAContext?) throws {
-                API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamSession.signingPubKey)/admin", privKey: try teamSession.signingPrivKey(), body: nil) { result in
-                    do {
-                        let dict = try result.get()
-                        guard let teamSeed = dict["team_seed"] as? String else {
-                            throw CodingError.unexpectedData
-                        }
-                        let seed = try teamSession.decryptAdminSeed(seed: teamSeed)
+                teamSession.getTeamSeed { (result) in
+                    switch result {
+                    case .success(let seed):
                         self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!, completionHandler: completionHandler)
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .accountsLoaded, object: nil)
                         }
-                    } catch {
+                    case .failure(let error):
                         Logger.shared.error("Error getting admin seed", error: error)
                         completionHandler(error)
                     }
+
                 }
             }
 
@@ -430,7 +427,7 @@ class AuthorizationGuard {
                 switch result {
                 case .success(_):
                     authenticationCompletionHandler?(result)
-                    Team().create(token: token, name: name, completionHandler: completionHandler)
+                    Team.create(token: token, name: name, completionHandler: completionHandler)
                 case .failure(let error):
                     authenticationCompletionHandler?(result)
                     completionHandler(.failure(error))
@@ -463,7 +460,7 @@ class AuthorizationGuard {
                 switch result {
                 case .success(_):
                     authenticationCompletionHandler?(result)
-                    Team().restore(teamSeed64: seed, completionHandler: completionHandler)
+                    Team.restore(teamSeed64: seed, completionHandler: completionHandler)
                 case .failure(let error):
                     authenticationCompletionHandler?(result)
                     completionHandler(.failure(error))

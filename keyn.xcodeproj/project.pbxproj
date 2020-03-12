@@ -149,6 +149,8 @@
 		49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
 		49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */; };
+		49E28AEF241A4599008F0661 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
+		49E28AF0241A4599008F0661 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
 		49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */; };
@@ -1373,6 +1375,7 @@
 				49214B7821032CFD00C793DE /* BrowserSession.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
+				49E28AEF241A4599008F0661 /* Team.swift in Sources */,
 				49E5FA182302E9DE009C964E /* TeamAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
@@ -1574,6 +1577,7 @@
 				49062C5A221449C700A30669 /* BrowserSession.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
 				49E5FA112302D3E1009C964E /* TeamSession.swift in Sources */,
+				49E28AF0241A4599008F0661 /* Team.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */,
