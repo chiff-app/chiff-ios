@@ -255,13 +255,13 @@ struct TeamRole: Codable {
     }
 }
 
-struct TeamAdminUser: Codable {
+struct TeamUser: Codable {
     let pubkey: String
     let key: String
     let created: TimeInterval
     let arn: String
-    let isAdmin = true
-    let name = "Admin"
+    let isAdmin: Bool
+    let name: String
 
     func encrypt(key: Data) throws -> String {
         let data = try JSONEncoder().encode(self)

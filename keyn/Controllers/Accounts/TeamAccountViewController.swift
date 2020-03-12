@@ -11,6 +11,7 @@ import UIKit
 class TeamAccountViewController: UIViewController {
 
     var session: TeamSession!
+    var team: Team!
 
     override func viewDidLoad() {
         super.viewDidLoad()

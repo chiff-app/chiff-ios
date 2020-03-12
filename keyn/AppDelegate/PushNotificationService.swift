@@ -193,7 +193,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func waitForPasswordChangeConfirmation(notification: Notification) {
-        guard let session = notification.object as? BrowserSession else {
+        guard var session = notification.object as? BrowserSession else {
             Logger.shared.warning("Received notification from unexpected object")
             return
         }
