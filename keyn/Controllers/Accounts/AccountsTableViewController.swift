@@ -152,7 +152,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
             cell.titleLabel.alpha = showEnabled ? 1 : 0.5
             cell.icon.alpha = showEnabled ? 1 : 0.5
-            cell.teamIconWidthConstraint.constant = account is TeamAccount ? 24 : 0
+            cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
             if #available(iOS 13.0, *) {
                 cell.teamIcon.image = UIImage(systemName: "person.2.fill")
             }

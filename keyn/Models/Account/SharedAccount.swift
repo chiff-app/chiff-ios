@@ -11,7 +11,7 @@ import AuthenticationServices
 /*
  * An account belongs to the user and can have one Site.
  */
-struct TeamAccount: Account {
+struct SharedAccount: Account {
     
     let id: String
     var username: String
@@ -47,7 +47,7 @@ struct TeamAccount: Account {
 
     mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
+        let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
         guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
             return false
         }
@@ -63,7 +63,7 @@ struct TeamAccount: Account {
     }
 
     func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: TeamAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
+        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
             do {
                 switch result {
                 case .success(_):
@@ -80,7 +80,7 @@ struct TeamAccount: Account {
     }
 
     func delete() throws {
-        try Keychain.shared.delete(id: id, service: TeamAccount.keychainService)
+        try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
     }
@@ -101,8 +101,8 @@ struct TeamAccount: Account {
 
     static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
-        var account = TeamAccount(id: backupAccount.id,
+        let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
+        var account = SharedAccount(id: backupAccount.id,
                                   username: backupAccount.username,
                                   sites: backupAccount.sites,
                                   passwordIndex: backupAccount.passwordIndex,
@@ -132,7 +132,7 @@ struct TeamAccount: Account {
 
 }
 
-extension TeamAccount: Codable {
+extension SharedAccount: Codable {
 
     enum CodingKeys: CodingKey {
         case id

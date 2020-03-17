@@ -59,7 +59,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
 
         tableView.separatorColor = UIColor.primaryTransparant
         // TODO: Handle situation where there are multiple admin sessions
-        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
+        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }), account is UserAccount {
             addToTeamButton.isHidden = false
             addToTeamButton.isEnabled = true
             bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
@@ -277,18 +277,22 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         session.getTeamSeed { result in
             switch result {
             case .success(let seed): Team.get(seed: seed) { result in
-                sender.hideLoading()
-                switch result {
-                case .success(let team):
-                    self.team = team
-                    self.performSegue(withIdentifier: "AddToTeam", sender: self)
-                case .failure(let error):
-                    self.showAlert(message: "Localized error message: \(error)")
+                DispatchQueue.main.async {
+                    sender.hideLoading()
+                    switch result {
+                    case .success(let team):
+                        self.team = team
+                        self.performSegue(withIdentifier: "AddToTeam", sender: self)
+                    case .failure(let error):
+                        self.showAlert(message: "Localized error message: \(error)")
+                    }
                 }
             }
             case .failure(let error):
-                sender.hideLoading()
-                self.showAlert(message: "Localized error message: \(error)")
+                DispatchQueue.main.async {
+                    sender.hideLoading()
+                    self.showAlert(message: "Localized error message: \(error)")
+                }
             }
         }
     }
@@ -528,6 +532,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             destination.delegate = self
         } else if segue.identifier == "AddToTeam", let destination = segue.destination.contents as? TeamAccountViewController {
             destination.session = session!
+            destination.account = account!
             destination.team = team!
         }
     }
