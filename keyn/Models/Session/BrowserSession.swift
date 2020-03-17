@@ -209,8 +209,8 @@ struct BrowserSession: Session {
             "id": account.id,
             "data": ciphertext.base64
         ]
-        if let teamAccount = account as? TeamAccount {
-            message["sessionPubKey"] = teamAccount.sessionPubKey
+        if let SharedAccount = account as? SharedAccount {
+            message["sessionPubKey"] = SharedAccount.sessionPubKey
         }
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil) { result in
             if case let .failure(error) = result {
@@ -341,7 +341,7 @@ struct BrowserSession: Session {
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
-            message["teamAccounts"] = try TeamAccount.all(context: nil).mapValues { (account) -> [String: String] in
+            message["SharedAccounts"] = try SharedAccount.all(context: nil).mapValues { (account) -> [String: String] in
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return [
                     "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,

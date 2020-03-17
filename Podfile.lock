@@ -70,6 +70,15 @@ PODS:
   - nanopb/encode (0.3.901)
   - OneTimePassword (3.2.0):
     - Base32 (~> 1.1.2)
+  - PromiseKit (6.13.1):
+    - PromiseKit/CorePromise (= 6.13.1)
+    - PromiseKit/Foundation (= 6.13.1)
+    - PromiseKit/UIKit (= 6.13.1)
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.13.1):
+    - PromiseKit/CorePromise
   - Sodium (0.8.0)
   - SwiftLint (0.38.2)
   - TrustKit (1.6.2)
@@ -82,6 +91,8 @@ DEPENDENCIES:
   - Firebase/Core
   - MBProgressHUD (~> 1.0.0)
   - OneTimePassword (~> 3.1)
+  - PromiseKit (~> 6.8)
+  - PromiseKit/Foundation
   - Sodium (~> 0.8)
   - SwiftLint
   - TrustKit
@@ -106,6 +117,7 @@ SPEC REPOS:
     - MBProgressHUD
     - nanopb
     - OneTimePassword
+    - PromiseKit
     - Sodium
     - SwiftLint
     - TrustKit
@@ -129,10 +141,11 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   OneTimePassword: c00ecc908e67e6c5bfda9d50b0b2e4696d0b066e
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
 
-PODFILE CHECKSUM: 4e2c673fbf4a1db270ad76fbb778640879a17c37
+PODFILE CHECKSUM: 6215cb50447ff9963b1dc3385ee7a4fcc00366a4
 
 COCOAPODS: 1.8.4

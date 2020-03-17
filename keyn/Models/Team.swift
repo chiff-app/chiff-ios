@@ -10,10 +10,11 @@ import Foundation
 
 struct Team {
 
-    let roles: [TeamRole]
-    let users: [TeamUser]
+    let roles: Set<TeamRole>
+    let users: Set<TeamUser>
     let name: String
-    let key: Data
+    let encryptionKey: Data
+    let passwordSeed: Data
     let keyPair: KeyPair
 
     static let CRYPTO_CONTEXT = "keynteam"
@@ -23,7 +24,7 @@ struct Team {
         do {
             // Generate team seed
             let teamSeed = try Crypto.shared.generateSeed(length: 32)
-            let (teamEncryptionKey, teamKeyPair) = try createTeamSeeds(seed: teamSeed)
+            let (teamEncryptionKey, teamKeyPair, _) = try createTeamSeeds(seed: teamSeed)
 
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
@@ -110,10 +111,10 @@ struct Team {
 
     static func get(seed teamSeed: Data, completionHandler: @escaping (Result<Team, Error>) -> Void) {
         do {
-            let (teamEncryptionKey, teamKeyPair) = try createTeamSeeds(seed: teamSeed)
+            let (teamEncryptionKey, teamKeyPair, teamPasswordSeed) = try createTeamSeeds(seed: teamSeed)
             API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil) { (result) in
                 do {
-                    let team = try Team(teamData: result.get(), key: teamEncryptionKey, keyPair: teamKeyPair)
+                    let team = try Team(teamData: result.get(), encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
                     completionHandler(.success(team))
                 } catch {
                     completionHandler(.failure(error))
@@ -124,21 +125,38 @@ struct Team {
         }
     }
 
-    init(teamData: JSONObject, key: Data, keyPair: KeyPair) throws {
-        guard let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: String] else {
+    init(teamData: JSONObject, encryptionKey: Data, passwordSeed: Data, keyPair: KeyPair) throws {
+        guard let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: [String: Any]] else {
             throw CodingError.missingData
         }
         name = teamData["name"] as? String ?? "devices.unknown".localized
-        roles = try roleData.compactMap { (_, role) -> TeamRole? in
+        roles = Set(try roleData.compactMap { (_, role) -> TeamRole? in
             let roleData = try Crypto.shared.convertFromBase64(from: role)
-            return try JSONDecoder().decode(TeamRole.self, from: Crypto.shared.decryptSymmetric(roleData, secretKey: key))
-        }
-        users = try userData.compactMap { (_, user) -> TeamUser? in
-            let userData = try Crypto.shared.convertFromBase64(from: user)
-            return try JSONDecoder().decode(TeamUser.self, from: Crypto.shared.decryptSymmetric(userData, secretKey: key))
-        }
-        self.key = key
+            return try JSONDecoder().decode(TeamRole.self, from: Crypto.shared.decryptSymmetric(roleData, secretKey: encryptionKey))
+        })
+        users = Set(try userData.compactMap { (pk, user) -> TeamUser? in
+            guard let data = (user["data"] as? String)?.fromBase64 else {
+                throw CodingError.missingData
+            }
+            var user = try JSONDecoder().decode(TeamUser.self, from: Crypto.shared.decryptSymmetric(data, secretKey: encryptionKey))
+            user.pubkey = pk
+            return user
+        })
+        self.encryptionKey = encryptionKey
+        self.passwordSeed = passwordSeed
         self.keyPair = keyPair
+    }
+
+    func usersForAccount(account: TeamAccount) throws -> [[String:String]] {
+        let roleUsers = Set(self.roles.filter({ account.roles.contains($0.id) }).flatMap({ $0.users }))
+        let pubkeys = roleUsers.union(account.users)
+        let users = self.users.filter({ pubkeys.contains($0.pubkey )})
+        return try users.map({[
+            "id": account.id,
+            "pubKey": $0.pubkey,
+            "data": try $0.encryptAccount(account: account),
+            "arn": $0.arn
+        ]})
     }
 
     func updateRole(pubkey: String, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
@@ -149,7 +167,7 @@ struct Team {
             adminRole.users.append(pubkey)
             let roleMessage = [
                 "id": adminRole.id,
-                "data": try adminRole.encrypt(key: key)
+                "data": try adminRole.encrypt(key: encryptionKey)
             ]
             API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil, completionHandler: completionHandler)
         } catch {
@@ -161,7 +179,7 @@ struct Team {
         do {
             let message: [String: Any] = [
                 "userpubkey": user.pubkey,
-                "data": try user.encrypt(key: key),
+                "data": try user.encrypt(key: encryptionKey),
                 "arn": user.arn,
                 "accounts": [],
                 "teamSeed": seed
@@ -181,11 +199,12 @@ struct Team {
         return (passwordSeed, encryptionKey, sharedSeed, signingKeyPair)
     }
 
-    private static func createTeamSeeds(seed: Data) throws -> (Data, KeyPair) {
+    private static func createTeamSeeds(seed: Data) throws -> (Data, KeyPair, Data) {
+        let teamPasswordSeed = try Crypto.shared.deriveKey(keyData: seed, context: TEAM_SEED_CONTEXT, index: 0)
         let teamBackupKey = try Crypto.shared.deriveKey(keyData: seed, context: TEAM_SEED_CONTEXT, index: 1)
         let teamEncryptionKey = try Crypto.shared.deriveKey(keyData: teamBackupKey, context: TEAM_SEED_CONTEXT, index: 0)
         let teamKeyPair = try Crypto.shared.createSigningKeyPair(seed: teamBackupKey)
-        return (teamEncryptionKey, teamKeyPair)
+        return (teamEncryptionKey, teamKeyPair, teamPasswordSeed)
     }
 
 

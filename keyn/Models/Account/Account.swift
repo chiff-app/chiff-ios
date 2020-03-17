@@ -18,19 +18,12 @@ enum AccountError: KeynError {
     case noWebAuthn
 }
 
-protocol Account: Codable {
-    var id: String { get }
-    var username: String { get set }
-    var sites: [Site] { get set }
-    var site: Site { get }
-    var passwordIndex: Int { get set }
-    var passwordOffset: [Int]? { get set }
+protocol Account: BaseAccount {
     var askToLogin: Bool? { get set }
     var askToChange: Bool? { get set }
     var synced: Bool { get }
     var enabled: Bool { get }
-    var version: Int { get }
-    var hasPassword: Bool { get }
+
     static var keychainService: KeychainService { get }
 
     func backup() throws
@@ -38,6 +31,10 @@ protocol Account: Codable {
 }
 
 extension Account {
+
+    var hasOtp: Bool {
+        return Keychain.shared.has(id: id, service: .otp)
+    }
 
     func password(context: LAContext? = nil) throws -> String? {
         do {
@@ -89,10 +86,6 @@ extension Account {
         }
     }
 
-    func hasOtp() -> Bool {
-        return Keychain.shared.has(id: id, service: .otp)
-    }
-
     func update(secret: Data?) throws {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
@@ -142,7 +135,7 @@ extension Account {
 
     // TODO: kinda weird
     static func getAny(accountID: String, context: LAContext?) throws -> Account? {
-        try UserAccount.get(accountID: accountID, context: context) ?? TeamAccount.get(accountID: accountID, context: context)
+        try UserAccount.get(accountID: accountID, context: context) ?? SharedAccount.get(accountID: accountID, context: context)
     }
 
 
@@ -162,61 +155,9 @@ extension Account {
 
     static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
         let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
-        return try userAccounts.merging(TeamAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
+        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
             return userAccount
         })
     }
 
-    // MARK: - AuthenticationServices
-
-    func saveToIdentityStore() {
-        if #available(iOS 12.0, *) {
-            ASCredentialIdentityStore.shared.getState { (state) in
-                if !state.isEnabled {
-                    return
-                } else if state.supportsIncrementalUpdates {
-                    let service = ASCredentialServiceIdentifier(identifier: self.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
-                    let identity = ASPasswordCredentialIdentity(serviceIdentifier: service, user: self.username, recordIdentifier: self.id)
-                    ASCredentialIdentityStore.shared.saveCredentialIdentities([identity], completion: nil)
-                } else if let accounts = try? Self.all(context: nil) {
-                    let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
-                        let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
-                        return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
-                    }
-                    ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
-                }
-            }
-        }
-    }
-
-    func deleteFromToIdentityStore() {
-        if #available(iOS 12.0, *) {
-            ASCredentialIdentityStore.shared.getState { (state) in
-                if !state.isEnabled {
-                    return
-                } else if state.supportsIncrementalUpdates {
-                    let service = ASCredentialServiceIdentifier(identifier: self.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
-                    let identity = ASPasswordCredentialIdentity(serviceIdentifier: service, user: self.username, recordIdentifier: self.id)
-                    ASCredentialIdentityStore.shared.removeCredentialIdentities([identity], completion: nil)
-                } else {
-                    Self.reloadIdentityStore()
-                }
-            }
-        }
-    }
-
-    @available(iOS 12.0, *)
-    static func reloadIdentityStore() {
-        ASCredentialIdentityStore.shared.removeAllCredentialIdentities({ (result, error) in
-            if let error = error {
-                Logger.shared.error("Error deleting credentials from identity store", error: error)
-            } else if result, let accounts = try? Self.all(context: nil) {
-                let identities = accounts.values.map { (account) -> ASPasswordCredentialIdentity in
-                    let service = ASCredentialServiceIdentifier(identifier: account.site.url, type: ASCredentialServiceIdentifier.IdentifierType.URL)
-                    return ASPasswordCredentialIdentity(serviceIdentifier: service, user: account.username, recordIdentifier: account.id)
-                }
-                ASCredentialIdentityStore.shared.saveCredentialIdentities(identities, completion: nil)
-            }
-        })
-    }
 }

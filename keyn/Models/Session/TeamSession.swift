@@ -33,7 +33,7 @@ struct TeamSession: Session {
         return UIImage(contentsOfFile: path)
     }
     var accountCount: Int {
-        return Properties.getTeamAccountCount(teamId: id)
+        return Properties.getSharedAccountCount(teamId: id)
     }
 
     static let CRYPTO_CONTEXT = "keynteam"
@@ -149,7 +149,7 @@ struct TeamSession: Session {
                         changed = true
                         try session.update()
                     }
-                    if try changed || session.updateSharedAccounts(accounts: accounts){
+                    if try changed || session.updateSharedAccounts(accounts: accounts) > 0 {
                         NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
                         NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
                     }
@@ -163,38 +163,40 @@ struct TeamSession: Session {
         }
     }
 
-    mutating func updateSharedAccounts(accounts: [String: String]) throws -> Bool {
-        var changed = false
+    mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
+        var changed = 0
         do {
             let key = try self.passwordSeed()
             #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-            var currentAccounts = try TeamAccount.all(context: nil, label: self.signingPubKey)
+            var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
             for (id, data) in accounts {
                 currentAccounts.removeValue(forKey: id)
                 let ciphertext = try Crypto.shared.convertFromBase64(from: data)
                 let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                if var account = try TeamAccount.get(accountID: id, context: nil) {
-                    changed = try account.update(accountData: accountData, key: key)
+                if var account = try SharedAccount.get(accountID: id, context: nil) {
+                    if try account.update(accountData: accountData, key: key) {
+                        changed += 1
+                    }
                 } else { // New account added
-                    try TeamAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
-                    changed = true
+                    try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+                    changed += 1
                 }
             }
             for account in currentAccounts.values {
                 #warning("Check how to safely delete here in the background")
                 try account.delete()
-                changed = true
+                changed += 1
             }
-            Properties.setTeamAccountCount(teamId: self.id, count: accounts.count)
+            Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
             return changed
         } catch APIError.statusCode(404) {
             guard self.created else {
-                return false
+                return 0
             }
-            TeamAccount.deleteAll(for: self.signingPubKey)
+            SharedAccount.deleteAll(for: self.signingPubKey)
             try? self.delete()
             NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
-            return true
+            return 1
         }
     }
 
@@ -242,13 +244,13 @@ struct TeamSession: Session {
     }
 
     func delete() throws {
-        TeamAccount.deleteAll(for: self.signingPubKey)
+        SharedAccount.deleteAll(for: self.signingPubKey)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
         NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
-        try BackupManager.deleteSession(sessionId: id)
+        try deleteBackup()
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {
@@ -306,40 +308,6 @@ struct TeamSession: Session {
         }
     }
 
-    func backup(seed generatedSeed: Data?, group: DispatchGroup? = nil) {
-        do {
-            let keychainSeed: Data? = generatedSeed == nil ? try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey) : nil
-            guard let seed = generatedSeed ?? keychainSeed else {
-                // Backup complete
-                group?.leave()
-                return
-            }
-            let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
-            BackupManager.backup(session: backupSession, completionHandler: { (result) in
-                do {
-                    if result {
-                        // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
-                        if keychainSeed != nil {
-                            try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-                        }
-                    } else {
-                        // Occurs if backup failed now, so we can try next time
-                        if keychainSeed == nil {
-                            try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
-                        }
-                    }
-                } catch {
-                    Logger.shared.error("Error updating team session backup state", error: error)
-                }
-                group?.leave()
-            })
-        } catch {
-            Logger.shared.error("Error updating team session backup state", error: error)
-            group?.leave()
-        }
-
-    }
-
     // MARK: - Admin functions
 
     func getTeamSeed(completionHandler: @escaping (Result<Data,Error>) -> Void) {
@@ -361,19 +329,6 @@ struct TeamSession: Session {
         } catch {
             completionHandler(.failure(error))
         }
-    }
-
-}
-
-extension TeamSession: Restorable {
-
-    static func restore(data: Data, id: String, context: LAContext?) throws -> TeamSession {
-        let decoder = JSONDecoder()
-        let backupSession = try decoder.decode(BackupTeamSession.self, from: data)
-        let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: backupSession.seed)
-        let session = TeamSession(id: backupSession.id, signingPubKey: signingKeyPair.pubKey, title: backupSession.title, version: backupSession.version, isAdmin: false, created: true)
-        try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
-        return session
     }
 
 }

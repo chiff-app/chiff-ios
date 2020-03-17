@@ -150,7 +150,7 @@ class PrivacyViewController: UITableViewController {
             // Since we back up the team sessions, we just purge the Keychain
             TeamSession.purgeSessionDataFromKeychain()
             // The corresponding team accounts are deleted here.
-            TeamAccount.deleteAll()
+            SharedAccount.deleteAll()
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
