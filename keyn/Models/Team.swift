@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 
 struct Team {
 
@@ -20,7 +21,7 @@ struct Team {
     static let CRYPTO_CONTEXT = "keynteam"
     static let TEAM_SEED_CONTEXT = "teamseed"
 
-    static func create(token: String, name: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func create(token: String, name: String) -> Promise<Session> {
         do {
             // Generate team seed
             let teamSeed = try Crypto.shared.generateSeed(length: 32)
@@ -34,31 +35,28 @@ struct Team {
             }
             let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
             let role = TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [signingKeyPair.pubKey.base64])
-            let message = [
+            let message: [String: Any] = [
                 "name": name,
                 "token": token,
                 "roleId": role.id,
-                "userPubkey": user.pubkey,
+                "userPubkey": user.pubkey!,
                 "arn": user.arn,
                 "roleData": try role.encrypt(key: teamEncryptionKey),
                 "userData": try user.encrypt(key: teamEncryptionKey),
                 "seed": (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
             ]
-            API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil) { (result) in
-                if case .failure(let error) = result {
-                    completionHandler(.failure(error))
-                } else {
-                    self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name, completionHandler: completionHandler)
-                }
-
+            return firstly {
+                API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil)
+            }.map { _ in
+                try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
             }
         } catch {
             Logger.shared.error("errors.creating_team".localized, error: error)
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
-    static func restore(teamSeed64: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func restore(teamSeed64: String) -> Promise<Session> {
         do {
             let teamSeed = try Crypto.shared.convertFromBase64(from: teamSeed64)
 
@@ -69,59 +67,31 @@ struct Team {
                 throw SessionError.noEndpoint
             }
             let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
-            get(seed: teamSeed) { (result) in
-                do {
-                    let team = try result.get()
-                    let group = DispatchGroup()
-                    var groupError: Error? = nil
-                    group.enter()
-                    team.updateRole(pubkey: user.pubkey) { result in
-                        if case .failure(let error) = result {
-                            groupError = error
-                        }
-                        group.leave()
-                    }
-                    team.createAdminUser(user: user, seed: (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64)  { result in
-                        if case .failure(let error) = result {
-                            groupError = error
-                        }
-                        group.leave()
-                    }
-                    group.notify(queue: .main) {
-                        if let error = groupError {
-                            completionHandler(.failure(error))
-                        } else {
-                            self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: team.name, completionHandler: completionHandler)
-                        }
-                    }
-                } catch is KeychainError {
-                    completionHandler(.failure(SessionError.exists))
-                } catch is CryptoError {
-                    completionHandler(.failure(SessionError.invalid))
-                } catch {
-                    completionHandler(.failure(error))
-                }
+            let encryptedSeed = (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
+            return firstly {
+                get(seed: teamSeed)
+            }.then { team in
+                when(fulfilled: team.updateRole(pubkey: user.pubkey), team.createAdminUser(user: user, seed: encryptedSeed)).map({ ($0, team.name) })
+            }.map { _, name in
+                try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
             }
         } catch {
             Logger.shared.error("errors.restoring_team".localized, error: error)
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
 
     }
 
-    static func get(seed teamSeed: Data, completionHandler: @escaping (Result<Team, Error>) -> Void) {
+    static func get(seed teamSeed: Data) -> Promise<Team> {
         do {
             let (teamEncryptionKey, teamKeyPair, teamPasswordSeed) = try createTeamSeeds(seed: teamSeed)
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil) { (result) in
-                do {
-                    let team = try Team(teamData: result.get(), encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
-                    completionHandler(.success(team))
-                } catch {
-                    completionHandler(.failure(error))
-                }
+            return firstly {
+                API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil)
+            }.map {
+                try Team(teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
             }
         } catch {
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
@@ -159,7 +129,7 @@ struct Team {
         ]})
     }
 
-    func updateRole(pubkey: String, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func updateRole(pubkey: String) -> Promise<JSONObject> {
         do {
             guard var adminRole = roles.first(where: { $0.admins }) else {
                 throw CodingError.missingData
@@ -169,24 +139,24 @@ struct Team {
                 "id": adminRole.id,
                 "data": try adminRole.encrypt(key: encryptionKey)
             ]
-            API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil, completionHandler: completionHandler)
+            return API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil)
         } catch {
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
-    func createAdminUser(user: TeamUser, seed: String, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func createAdminUser(user: TeamUser, seed: String) -> Promise<JSONObject> {
         do {
             let message: [String: Any] = [
-                "userpubkey": user.pubkey,
+                "userpubkey": user.pubkey!,
                 "data": try user.encrypt(key: encryptionKey),
                 "arn": user.arn,
                 "accounts": [],
                 "teamSeed": seed
             ]
-            API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey)", privKey: keyPair.privKey, body: nil, completionHandler: completionHandler)
+            return API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", privKey: keyPair.privKey, body: nil)
         } catch {
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
@@ -208,18 +178,16 @@ struct Team {
     }
 
 
-    private static func createTeamSession(browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, seed: Data, name: String, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    private static func createTeamSession(browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, seed: Data, name: String) throws -> Session {
         do {
             let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true, created: true)
             try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: seed)
             TeamSession.count += 1
-            completionHandler(.success(session))
+            return session
         } catch is KeychainError {
-            completionHandler(.failure(SessionError.exists))
+            throw SessionError.exists
         } catch is CryptoError {
-            completionHandler(.failure(SessionError.invalid))
-        } catch {
-            completionHandler(.failure(error))
+            throw SessionError.invalid
         }
     }
 

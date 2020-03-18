@@ -8,6 +8,7 @@
 
 import Foundation
 import LocalAuthentication
+import PromiseKit
 
 extension TeamSession: Restorable {
 
@@ -24,37 +25,33 @@ extension TeamSession: Restorable {
         return session
     }
 
-    func backup(seed generatedSeed: Data?, group: DispatchGroup? = nil) {
+    func backup(seed generatedSeed: Data?) -> Promise<Void> {
         do {
             let keychainSeed: Data? = generatedSeed == nil ? try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey) : nil
             guard let seed = generatedSeed ?? keychainSeed else {
                 // Backup complete
-                group?.leave()
-                return
+                return .value(())
             }
             let backupSession = BackupTeamSession(id: id, seed: seed, title: title , version: version)
             let data = try JSONEncoder().encode(backupSession)
-            backup(data: data) { (result) in
-                do {
-                    if result {
-                        // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
-                        if keychainSeed != nil {
-                            try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-                        }
-                    } else {
-                        // Occurs if backup failed now, so we can try next time
-                        if keychainSeed == nil {
-                            try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
-                        }
+            return firstly {
+                backup(data: data)
+            }.map { result in
+                if result {
+                    // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
+                    if keychainSeed != nil {
+                        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
                     }
-                } catch {
-                    Logger.shared.error("Error updating team session backup state", error: error)
+                } else {
+                    // Occurs if backup failed now, so we can try next time
+                    if keychainSeed == nil {
+                        try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
+                    }
                 }
-                group?.leave()
-            }
+            }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
-            group?.leave()
+            return Promise(error: error)
         }
 
     }

@@ -8,6 +8,7 @@
 
 import Foundation
 import LocalAuthentication
+import PromiseKit
 
 enum BackupEndpoint: String {
     case sessions = "sessions"
@@ -16,7 +17,7 @@ enum BackupEndpoint: String {
 
 protocol Restorable {
     static var backupEndpoint: BackupEndpoint { get }
-    static func getBackupData(pubKey: String, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void)
+    static func getBackupData(pubKey: String, context: LAContext) -> Promise<(Int, Int)>
     static func restore(data: Data, id: String, context: LAContext?) throws -> Self
 
     var id: String { get }
@@ -25,7 +26,7 @@ protocol Restorable {
 
 extension Restorable {
 
-    func backup(data: Data, completionHandler: @escaping (_ result: Bool) -> Void) {
+    func backup(data: Data) -> Guarantee<Bool> {
         do {
             guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
                 throw KeychainError.notFound
@@ -37,59 +38,46 @@ extension Restorable {
                 "data": ciphertext.base64
             ]
             let path = "users/\(try BackupManager.publicKey())/\(Self.backupEndpoint.rawValue)/\(self.id)"
-            API.shared.signedRequest(method: .put, message: message, path: path, privKey: try BackupManager.privateKey(), body: nil) { result in
-                switch result {
-                case .success(_):
-                    completionHandler(true)
-                case .failure(let error):
-                    Logger.shared.error("BackupManager cannot backup data.", error: error)
-                    completionHandler(false)
-                }
+            return firstly {
+                API.shared.signedRequest(method: .put, message: message, path: path, privKey: try BackupManager.privateKey(), body: nil)
+            }.map { _ in
+                return true
+            }.recover { (error) -> Guarantee<Bool> in
+                Logger.shared.error("BackupManager cannot backup data.", error: error)
+                return .value(false)
             }
         } catch {
-            completionHandler(false)
+            return .value(false)
         }
     }
 
     func deleteBackup() throws {
-        API.shared.signedRequest(method: .delete, message: ["id": self.id], path: "users/\(try BackupManager.publicKey())/\(Self.backupEndpoint.rawValue)/\(self.id)", privKey: try BackupManager.privateKey(), body: nil) { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("BackupManager cannot delete account.", error: error)
-            }
-        }
+        API.shared.signedRequest(method: .delete, message: ["id": self.id], path: "users/\(try BackupManager.publicKey())/\(Self.backupEndpoint.rawValue)/\(self.id)", privKey: try BackupManager.privateKey(), body: nil).asVoid().catchLog("BackupManager cannot delete account.")
     }
 
-    static func getBackupData(pubKey: String, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/\(backupEndpoint.rawValue)", privKey: try BackupManager.privateKey(), body: nil) { result in
-                switch result {
-                case .success(let dict):
-                    var failed = [String]()
-                    let objects = dict.compactMap { (id, data) -> Self? in
-                        if let base64Data = data as? String {
-                            do {
-                                let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                                guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                                    throw KeychainError.notFound
-                                }
-                                let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                                return try Self.restore(data: data, id: id, context: context)
-                            } catch {
-                                failed.append(id)
-                                Logger.shared.error("Could not restore data.", error: error)
-                            }
+    static func getBackupData(pubKey: String, context: LAContext) -> Promise<(Int, Int)> {
+        return firstly {
+            API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/\(backupEndpoint.rawValue)", privKey: try BackupManager.privateKey(), body: nil)
+        }.map { result in
+            var failed = [String]()
+            let objects = result.compactMap { (id, data) -> Self? in
+                if let base64Data = data as? String {
+                    do {
+                        let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
+                        guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                            throw KeychainError.notFound
                         }
-                        return nil
+                        let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
+                        return try Self.restore(data: data, id: id, context: context)
+                    } catch {
+                        failed.append(id)
+                        Logger.shared.error("Could not restore data.", error: error)
                     }
-                    completionHandler(.success((objects.count, failed.count)))
-                case .failure(let error):
-                    Logger.shared.error("BackupManager cannot get backup data.", error: error)
-                    completionHandler(.failure(error))
                 }
+                return nil
             }
-        } catch {
-            completionHandler(.failure(error))
-        }
+            return (objects.count, failed.count)
+        }.log("BackupManager cannot get backup data.")
     }
 
 }

@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import PromiseKit
 
 enum APIError: KeynError {
     case url
@@ -26,21 +27,13 @@ enum APIMethod: String {
 }
 
 extension URLSession {
-    func dataTask(with url: URLRequest, result: @escaping (Result<(HTTPURLResponse, Data), Error>) -> Void) -> URLSessionDataTask {
-        return dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                return result(.failure(error))
-            }
-            
-            guard let data = data else {
-                return result(.failure(APIError.noData))
-            }
-            
+
+    func dataTask(with url: URLRequest) -> Promise<(HTTPURLResponse, Data)> {
+        return dataTask(.promise, with: url).map { (data, response) in
             guard let httpResponse = response as? HTTPURLResponse else {
-                Logger.shared.error("API error. Wrong Response type")
-                return result(.failure(APIError.wrongResponseType))
+                throw APIError.wrongResponseType
             }
-            result(.success((httpResponse, data)))
+            return (httpResponse, data)
         }
     }
 }
@@ -48,10 +41,8 @@ extension URLSession {
 typealias JSONObject = Dictionary<String, Any>
 typealias RequestParameters = Dictionary<String, String>?
 
+
 protocol APIProtocol {
-
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
-
-    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?, completionHandler: @escaping (Result<JSONObject, Error>) -> Void)
-
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?) -> Promise<JSONObject>
+    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
 }

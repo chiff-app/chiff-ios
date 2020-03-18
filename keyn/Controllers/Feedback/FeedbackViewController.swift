@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
 
@@ -153,19 +154,16 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         \(debugLogUser)
         id: \(Properties.userId ?? "not set")
         """
-        API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data) { (result) in
-            switch result {
-            case .success(_):
-                DispatchQueue.main.async {
-                    self.nameTextField.text = ""
-                    self.textView.text = "settings.feedback_submitted".localized
-                }
-            case .failure(let error): Logger.shared.warning("Error posting feedback", error: error)
-            }
+        firstly {
+            API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data)
+        }.ensure {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                 self.dismiss(animated: true, completion: nil)
             })
-        }
+        }.done(on: .main) { _ in
+            self.nameTextField.text = ""
+            self.textView.text = "settings.feedback_submitted".localized
+        }.catchLog("Error posting feedback")
     }
 
 }

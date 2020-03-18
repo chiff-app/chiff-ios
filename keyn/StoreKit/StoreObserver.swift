@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import StoreKit
+import PromiseKit
 
 // MARK: - StoreObserverDelegate
 
@@ -41,6 +42,7 @@ enum ValidationStatus: String {
 
 enum StoreObserverError: Error {
     case missingStatus
+    case missingReceipt
 }
 
 class StoreObserver: NSObject {
@@ -78,50 +80,37 @@ class StoreObserver: NSObject {
     }
 
     /// This retrieves current subscription status for this seed from the Keyn server
-    func updateSubscriptions(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil) { result in
-                switch result {
-                case .success(let jsonObject):
-                    if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
-                        if subscriptions.count > 1 {
-                            Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
-                        }
-                        Properties.subscriptionExiryDate = longest.value
-                        Properties.subscriptionProduct = longest.key
-                        completionHandler(.success(()))
-                    } else {
-                        Properties.subscriptionExiryDate = 0
-                        Properties.subscriptionProduct = nil
-                        completionHandler(.success(()))
-                    }
-                case .failure(let error):
-                    completionHandler(.failure(error))
+    func updateSubscriptions() -> Promise<Void>{
+        return firstly {
+           API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
+        }.done { jsonObject in
+            if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
+                if subscriptions.count > 1 {
+                    Logger.shared.warning("Multiple active subscriptions", userInfo: subscriptions)
                 }
+                Properties.subscriptionExiryDate = longest.value
+                Properties.subscriptionProduct = longest.key
+            } else {
+                Properties.subscriptionExiryDate = 0
+                Properties.subscriptionProduct = nil
             }
-        } catch {
-            completionHandler(.failure(error))
         }
     }
 
     fileprivate func handleRefreshedReceipt() {
-        validateReceipt { result in
-            DispatchQueue.main.async {
-                do {
-                    let validationResult = try result.get()
-                    switch validationResult.status {
-                    case .success:
-                        Properties.subscriptionExiryDate = validationResult.expires!
-                        Properties.subscriptionProduct = validationResult.productId!
-                        self.delegate?.storeObserverRestoreDidSucceed()
-                    case .failed: self.delegate?.storeObserverRestoreDidFail()
-                    case .expired: self.delegate?.storeObserverRestoreNoProducts()
-                    }
-                } catch {
-                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
-                }
+        firstly {
+            validateReceipt()
+        }.done(on: DispatchQueue.main) { validationResult in
+            switch validationResult.status {
+            case .success:
+                Properties.subscriptionExiryDate = validationResult.expires!
+                Properties.subscriptionProduct = validationResult.productId!
+                self.delegate?.storeObserverRestoreDidSucceed()
+            case .failed: self.delegate?.storeObserverRestoreDidFail()
+            case .expired: self.delegate?.storeObserverRestoreNoProducts()
             }
-
+        }.catch { (error) in
+            self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
         }
     }
 
@@ -130,28 +119,24 @@ class StoreObserver: NSObject {
     /// Handles successful purchase transactions.
     fileprivate func handlePurchased(_ transaction: SKPaymentTransaction) {
         purchased.append(transaction)
-
-        validateReceipt { result in
-            DispatchQueue.main.async {
-                do {
-                    let validationResult = try result.get()
-                    switch validationResult.status {
-                    case .success:
-                        Properties.subscriptionExiryDate = validationResult.expires!
-                        Properties.subscriptionProduct = validationResult.productId!
-                        self.delegate?.storeObserverPurchaseDidSucceed()
-                        let product = StoreManager.shared.availableProducts.first(where: { $0.productIdentifier == validationResult.productId })
-                        Logger.shared.revenue(productId: validationResult.productId!, price: product?.euroPrice ?? NSDecimalNumber(value: 0))
-                    case .failed, .expired:
-                        self.delegate?.storeObserverPurchaseDidFail()
-                    }
-                } catch {
-                    self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
-                }
+        firstly {
+            validateReceipt()
+        }.done(on: DispatchQueue.main) { validationResult in
+            switch validationResult.status {
+            case .success:
+                Properties.subscriptionExiryDate = validationResult.expires!
+                Properties.subscriptionProduct = validationResult.productId!
+                self.delegate?.storeObserverPurchaseDidSucceed()
+                let product = StoreManager.shared.availableProducts.first(where: { $0.productIdentifier == validationResult.productId })
+                Logger.shared.revenue(productId: validationResult.productId!, price: product?.euroPrice ?? NSDecimalNumber(value: 0))
+            case .failed, .expired:
+                self.delegate?.storeObserverPurchaseDidFail()
             }
-
             SKPaymentQueue.default().finishTransaction(transaction)
+        }.catch { (error) in
+            self.delegate?.storeObserverDidReceiveMessage(error.localizedDescription)
         }
+
     }
 
     /// Handles failed purchase transactions.
@@ -190,30 +175,27 @@ class StoreObserver: NSObject {
 //        SKPaymentQueue.default().finishTransaction(transaction)
 //    }
 
-    private func validateReceipt(completionHandler: @escaping (Result<ValidationResult,Error>) -> Void) {
-        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
-            do {
-                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
-                let message = [
-                    "data": receiptData.base64EncodedString()
-                ]
-                let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-                API.shared.signedRequest(method: .post, message: nil, path: "subscriptions/ios/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: jsonData) { result in
-                    switch result {
-                    case .success(let jsonObject):
-                        guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {
-                            return completionHandler(.failure(StoreObserverError.missingStatus))
-                        }
-                        completionHandler(.success(ValidationResult(status: validationStatus, productId: jsonObject["product"] as? String, expires: jsonObject["expires"] as? TimeInterval)))
-                    case .failure(let error):
-                        Logger.shared.error("Error verifying receipt", error: error)
-                        completionHandler(.failure(error))
-                    }
+    private func validateReceipt() -> Promise<ValidationResult> {
+        guard let appStoreReceiptURL = Bundle.main.appStoreReceiptURL, FileManager.default.fileExists(atPath: appStoreReceiptURL.path) else {
+            return Promise(error: StoreObserverError.missingReceipt)
+        }
+        do {
+            let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+            let message = [
+                "data": receiptData.base64EncodedString()
+            ]
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            return firstly {
+                API.shared.signedRequest(method: .post, message: nil, path: "subscriptions/ios/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: jsonData)
+            }.map { jsonObject in
+                guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {
+                    throw StoreObserverError.missingStatus
                 }
-            } catch {
-                Logger.shared.error("Couldn't read receipt data", error: error)
-                completionHandler(.failure(error))
+                return ValidationResult(status: validationStatus, productId: jsonObject["product"] as? String, expires: jsonObject["expires"] as? TimeInterval)
             }
+        } catch {
+            Logger.shared.error("Couldn't read receipt data", error: error)
+            return Promise(error: error)
         }
     }
 

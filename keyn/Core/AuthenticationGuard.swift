@@ -5,6 +5,7 @@
 import UIKit
 import LocalAuthentication
 import OneTimePassword
+import PromiseKit
 
 class AuthenticationGuard {
 
@@ -52,22 +53,28 @@ class AuthenticationGuard {
             }
         }
         authenticationInProgress = true
-
-        if let url = pairingUrl, false {
-            // Disabled for now, because opening from a QR-code may pose a security risk.
-            pairingUrl = nil
-            AuthorizationGuard.authorizePairing(url: url, mainContext: true, authenticationCompletionHandler: onAuthenticationResult) { (result) in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let session): NotificationCenter.default.post(name: .sessionStarted, object: nil, userInfo: ["session": session])
-                    case .failure(let error): Logger.shared.error("Error creating session.", error: error)
-                    }
-                }
+        firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
+        }.map(on: .main) { context in
+            let accounts = try UserAccount.allCombined(context: context, sync: true)
+            if #available(iOS 12.0, *), Properties.reloadAccounts {
+                UserAccount.reloadIdentityStore()
+                Properties.reloadAccounts = false
             }
-        } else {
-            let localizedReason = "requests.unlock_keyn".localized
-            LocalAuthenticationManager.shared.authenticate(reason: localizedReason, withMainContext: true, completionHandler: onAuthenticationResult(result:))
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
+            self.hideLockWindow()
+        }.then {
+            TeamSession.updateTeamSessions(pushed: false, logo: true, backup: true)
+        }.catch { error in
+            if let error = error as? DecodingError {
+                Logger.shared.error("Error decoding accounts", error: error)
+                (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
+            } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                Logger.shared.error(errorMessage, error: error)
+                (self.lockWindow.rootViewController as? LoginViewController)?.showAlert(message: errorMessage)
+            }
         }
+
     }
 
     func hideLockWindow() {
@@ -81,39 +88,6 @@ class AuthenticationGuard {
         }
     }
 
-    // MARK: - Private functions
-
-    private func onAuthenticationResult(result: Result<LAContext?, Error>) {
-        do {
-            switch result {
-            case .success(let context):
-                let accounts = try UserAccount.allCombined(context: context, sync: true)
-                if #available(iOS 12.0, *), Properties.reloadAccounts {
-                    UserAccount.reloadIdentityStore()
-                    Properties.reloadAccounts = false
-                }
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .accountsLoaded, object: nil, userInfo: accounts)
-                    self.hideLockWindow()
-                }
-                TeamSession.updateTeamSessions(pushed: false, logo: true, backup: true) { _ in }
-            case .failure(let error): throw error
-            }
-        } catch let error as DecodingError {
-            Logger.shared.error("Error decoding accounts", error: error)
-            DispatchQueue.main.async {
-                (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
-            }
-        } catch {
-            if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                Logger.shared.error(errorMessage, error: error)
-                DispatchQueue.main.async {
-                    (self.lockWindow.rootViewController as? LoginViewController)?.showAlert(message: errorMessage)
-                }
-            }
-        }
-    }
-    
     // MARK: - UIApplication Notification Handlers
     
     private func applicationWillEnterForeground(notification: Notification) {

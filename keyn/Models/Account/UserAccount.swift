@@ -7,6 +7,7 @@ import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
 import CryptoKit
+import PromiseKit
 
 /*
  * An account belongs to the user and can have one Site.
@@ -197,25 +198,17 @@ struct UserAccount: Account {
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
-    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
-            do {
-                switch result {
-                case .success(_):
-                    try self.webAuthn?.delete(accountId: self.id)
-                    try self.deleteBackup()
-                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                    self.deleteFromToIdentityStore()
-                    Logger.shared.analytics(.accountDeleted)
-                    Properties.accountCount -= 1
-                    completionHandler(.success(()))
-                case .failure(let error): throw error
-                }
-            } catch {
-                Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(.failure(error))
-            }
-        }
+    func delete() -> Promise<Void> {
+        return firstly {
+            Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
+        }.map { _ in
+            try self.webAuthn?.delete(accountId: self.id)
+            try self.deleteBackup()
+            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+            self.deleteFromToIdentityStore()
+            Logger.shared.analytics(.accountDeleted)
+            Properties.accountCount -= 1
+        }.log("Error deleting accounts")
     }
 
     func save(password: String?, keyPair: KeyPair?) throws {

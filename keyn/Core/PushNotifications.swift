@@ -8,22 +8,25 @@
 
 import UIKit
 import UserNotifications
+import PromiseKit
 
 // This is in an extension, so the target membership of the NotifcationManager can be set to just keyn, not the extensions
 struct PushNotifications {
 
-    static func register(completionHandler: @escaping (_ result: Bool) -> Void) {
-        requestAuthorization { (result) in
+    static func register() -> Guarantee<Bool> {
+        return firstly {
+            requestAuthorization()
+        }.map { result in
             if result {
                 UIApplication.shared.registerForRemoteNotifications()
-                completionHandler(true)
-            } else {
-                completionHandler(false)
             }
+            return result
+        }.recover { error in
+            return .value(false)
         }
     }
 
-    static func requestAuthorization(completionHandler: @escaping (_ result: Bool) -> Void) {
+    static func requestAuthorization() -> Guarantee<Bool> {
         let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
                                                      actions: [],
                                                      intentIdentifiers: [],
@@ -47,15 +50,13 @@ struct PushNotifications {
         let center = UNUserNotificationCenter.current()
         center.delegate = AppDelegate.notificationService
         center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn, nudge])
-        center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-            DispatchQueue.main.async {
+        return Promise { seal in
+            center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
                 Properties.deniedPushNotifications = !granted
-                if granted {
-                    completionHandler(true)
-                } else {
-                    completionHandler(false)
-                }
+                seal.fulfill(granted)
             }
+        }.recover { error in
+            return .value(false)
         }
     }
 
