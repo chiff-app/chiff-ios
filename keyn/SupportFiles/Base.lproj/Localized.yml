@@ -11,6 +11,22 @@ accounts:
     value: Add 2FA code
   add_2fa_code:
     value: Add 2FA-code to
+  all:
+    value: All
+  team:
+    value: Team
+  personal:
+    value: Personal
+  alphabetically:
+    value: Alphabetically
+  mostly:
+    value: Mostly used
+  recently:
+    value: Recently used
+  sort:
+    value: Sort
+  didnt_save:
+    value: You didn’t save any of your accounts yet.
   add_account:
     value: Add account
   add_instructions:
