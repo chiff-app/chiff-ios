@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class TeamAccountViewController: UIViewController {
 
@@ -37,24 +38,16 @@ class TeamAccountViewController: UIViewController {
             ]
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: team.keyPair.privKey).base64
-            API.shared.request(path: "teams/\(team.keyPair.pubKey.base64)/accounts/\(teamAccount.id)", parameters: nil, method: .post, signature: signature, body: jsonData) { (result) in
-                switch result {
-                case .success(_):
-                    self.account.delete { (result) in
-                        switch result {
-                        case .success(_):
-                            TeamSession.updateTeamSession(session: self.session, pushed: false) { (result) in
-                                if case .failure(let error) = result {
-                                    print(error)
-                                }
-                            }
-                        case .failure(let error):
-                            print(error)
-                        }
-                    }
-                case .failure(let error):
-                    print(error)
-                }
+            firstly {
+                API.shared.request(path: "teams/\(team.keyPair.pubKey.base64)/accounts/\(teamAccount.id)", parameters: nil, method: .post, signature: signature, body: jsonData)
+            }.then { _ in
+                self.account.delete()
+            }.then { _ in
+                TeamSession.updateTeamSession(session: self.session, pushed: false)
+            }.done {
+                print("Success")
+            }.catch { error in
+                print(error)
             }
         } catch {
             Logger.shared.error("Error converting account to team account", error: error)

@@ -5,6 +5,7 @@
 import UIKit
 import UserNotifications
 import LocalAuthentication
+import PromiseKit
 
 enum TeamSessionError: KeynError {
     case adminDelete
@@ -53,7 +54,7 @@ struct TeamSession: Session {
 
     // MARK: - Static functions
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, completionHandler: @escaping (Result<Session, Error>) -> Void) {
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int) -> Promise<Session> {
         do {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
@@ -61,25 +62,24 @@ struct TeamSession: Session {
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
             let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
-            try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)  { result in
+            return firstly {
+                try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
+            }.map { _ in
                 do {
-                    let _ = try result.get()
                     try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
-                    session.backup(seed: sharedSeed)
+                    let _ = session.backup(seed: sharedSeed)
                     TeamSession.count += 1
-                    NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
-                    completionHandler(.success(session))
+                    NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+                    return session
                 } catch is KeychainError {
-                    completionHandler(.failure(SessionError.exists))
+                    throw SessionError.exists
                 } catch is CryptoError {
-                    completionHandler(.failure(SessionError.invalid))
-                } catch {
-                    completionHandler(.failure(error))
+                    throw SessionError.invalid
                 }
             }
         } catch {
             Logger.shared.error("Error initiating session", error: error)
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
@@ -90,76 +90,50 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func updateTeamSessions(pushed: Bool, logo: Bool, backup: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            let group = DispatchGroup()
-            var groupError: Error? = nil
-            for session in try TeamSession.all() {
-                group.enter()
-                updateTeamSession(session: session) { result in
-                    if case .failure(let error) = result {
-                        groupError = error
-                    }
-                    group.leave()
-                }
-                if logo {
-                    group.enter()
-                    do {
-                        try session.updateLogo(group: group)
-                    } catch {
-                        groupError = error
-                    }
-                }
-                if backup {
-                    group.enter()
-                    session.backup(seed: nil, group: group)
-                }
-            }
-            group.notify(queue: .main) {
-                if let error = groupError {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(()))
-                }
-            }
-        } catch {
-            completion(.failure(error))
+    static func updateTeamSessions(pushed: Bool, logo: Bool, backup: Bool) -> Promise<Void> {
+        return firstly {
+            when(fulfilled: try TeamSession.all().map { session -> Promise<Void> in
+               var promises = [updateTeamSession(session: session)]
+               if logo {
+                   promises.append(try session.updateLogo())
+               }
+               if backup {
+                   promises.append(session.backup(seed: nil))
+               }
+               return when(fulfilled: promises)
+           })
         }
     }
 
-    static func updateTeamSession(session: TeamSession, pushed: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
+    static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Void> {
         do {
             var session = session
             if !session.created && pushed {
                 session.created = true
                 try session.update()
             }
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil) { result in
-                do {
-                    let dict = try result.get()
-                    guard let accounts = dict["accounts"] as? [String: String] else {
-                        throw CodingError.missingData
-                    }
-                    guard let isAdmin = dict["admin"] as? Bool else {
-                        throw CodingError.missingData
-                    }
-                    var changed = false
-                    if session.isAdmin != isAdmin {
-                        session.isAdmin = isAdmin
-                        changed = true
-                        try session.update()
-                    }
-                    if try changed || session.updateSharedAccounts(accounts: accounts) > 0 {
-                        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
-                        NotificationCenter.default.post(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
-                    }
-                    completion(.success(()))
-                } catch {
-                    completion(.failure(error))
+            return firstly {
+                API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil)
+            }.map { result in
+                guard let accounts = result["accounts"] as? [String: String] else {
+                    throw CodingError.missingData
                 }
-            }
+                guard let isAdmin = result["admin"] as? Bool else {
+                    throw CodingError.missingData
+                }
+                var changed = false
+                if session.isAdmin != isAdmin {
+                    session.isAdmin = isAdmin
+                    changed = true
+                    try session.update()
+                }
+                if try changed || session.updateSharedAccounts(accounts: accounts) > 0 {
+                    NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
+                    NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
+                }
+            }.asVoid()
         } catch {
-            completion(.failure(error))
+            return Promise(error: error)
         }
     }
 
@@ -184,7 +158,7 @@ struct TeamSession: Session {
             }
             for account in currentAccounts.values {
                 #warning("Check how to safely delete here in the background")
-                try account.delete()
+                try account.deleteSync()
                 changed += 1
             }
             Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
@@ -195,12 +169,12 @@ struct TeamSession: Session {
             }
             SharedAccount.deleteAll(for: self.signingPubKey)
             try? self.delete()
-            NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
+            NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
             return 1
         }
     }
 
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws {
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void> {
         guard let endpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
@@ -212,35 +186,20 @@ struct TeamSession: Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData) { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("Error sending pairing response.", error: error)
-                completion(.failure(error))
-            } else {
-                completion(.success(()))
-            }
-        }
+        return API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData).asVoid().log("Error sending pairing response.")
     }
 
-    func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
-                do {
-                    _ = try result.get()
-                    try self.delete()
-                    completion(.success(()))
-                } catch APIError.statusCode(404) {
-                    // Team is already deleted just delete locally + backup
-                    try? self.delete()
-                    completion(.success(()))
-                } catch {
-                    Logger.shared.error("Error deleting arn for team session", error: error)
-                    completion(.failure(error))
-                }
+    func delete(notify: Bool) -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil)
+        }.asVoid().recover { error -> Void in
+            if case APIError.statusCode(404) = error {
+                try self.delete()
+                return
+            } else {
+                throw error
             }
-        } catch {
-            completion(.failure(error))
-        }
+        }.log("Error deleting arn for team session")
     }
 
     func delete() throws {
@@ -249,7 +208,7 @@ struct TeamSession: Session {
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
-        NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
+        NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
         try deleteBackup()
     }
 
@@ -267,68 +226,53 @@ struct TeamSession: Session {
         return seed
     }
 
-    func updateLogo(group: DispatchGroup) throws {
-        do {
-            let filemgr = FileManager.default
+    func updateLogo() -> Promise<Void> {
+        let filemgr = FileManager.default
 //            var headers: [String:String]? = nil
-            guard let path = logoPath else {
-                throw TeamSessionError.logoPathNotFound
-            }
+        guard let path = logoPath else {
+            return Promise(error: TeamSessionError.logoPathNotFound)
+        }
 //            if filemgr.fileExists(atPath: path), let creationDate = (try? filemgr.attributesOfItem(atPath: path) as NSDictionary)?.fileCreationDate() {
 //                headers = ["modified-since": "\(creationDate.timeIntervalSince1970)"]
 //                let rfcDateFormat = DateFormatter()
 //                rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 //                headers["modified-since"] = rfcDateFormat.string(from: creationDate)
 //            }
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/logo", privKey: try signingPrivKey(), body: nil) { result in
-                do {
-                    let dict = try result.get()
-                    guard let logo = dict["logo"] as? String else {
-                        group.leave()
-                        return
-                    }
-                    guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
-                        throw CodingError.unexpectedData
-                    }
-                    if filemgr.fileExists(atPath: path) {
-                        try filemgr.removeItem(atPath: path)
-                    }
-                    filemgr.createFile(atPath: path, contents: data, attributes: nil)
-                } catch APIError.statusCode(404) {
-                    group.leave()
-                    return
-                } catch {
-                    Logger.shared.error("Error retrieving logo", error: error)
-                }
-                group.leave()
+        return firstly {
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/logo", privKey: try signingPrivKey(), body: nil)
+        }.map { result in
+            guard let logo = result["logo"] as? String else {
+                return
             }
-        } catch {
-            Logger.shared.error("Error retrieving logo", error: error)
-            group.leave()
+            guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
+                throw CodingError.unexpectedData
+            }
+            if filemgr.fileExists(atPath: path) {
+                try filemgr.removeItem(atPath: path)
+            }
+            filemgr.createFile(atPath: path, contents: data, attributes: nil)
+        }.recover { error  in
+            if case APIError.statusCode(404) = error {
+                return
+            } else {
+                Logger.shared.error("Error retrieving logo", error: error)
+            }
         }
     }
 
     // MARK: - Admin functions
 
-    func getTeamSeed(completionHandler: @escaping (Result<Data,Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/admin", privKey: try signingPrivKey(), body: nil) { result in
-                do {
-                    let dict = try result.get()
-                    guard let teamSeed = dict["team_seed"] as? String else {
-                        throw CodingError.unexpectedData
-                    }
-                    let ciphertext = try Crypto.shared.convertFromBase64(from: teamSeed)
-                    let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                    completionHandler(.success(seed))
-                } catch {
-                    Logger.shared.error("Error getting admin seed", error: error)
-                    completionHandler(.failure(error))
-                }
+    func getTeamSeed() -> Promise<Data> {
+        return firstly {
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/admin", privKey: try signingPrivKey(), body: nil)
+        }.map { result in
+            guard let teamSeed = result["team_seed"] as? String else {
+                throw CodingError.unexpectedData
             }
-        } catch {
-            completionHandler(.failure(error))
-        }
+            let ciphertext = try Crypto.shared.convertFromBase64(from: teamSeed)
+            let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+            return seed
+        }.log("Error getting admin seed")
     }
 
 }

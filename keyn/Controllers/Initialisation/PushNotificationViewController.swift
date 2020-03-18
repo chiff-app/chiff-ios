@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class PushNotificationViewController: UIViewController {
 
@@ -18,7 +19,9 @@ class PushNotificationViewController: UIViewController {
 
 
     @IBAction func enablePushNotifications(_ sender: UIButton) {
-        PushNotifications.requestAuthorization() { result in
+        firstly {
+            PushNotifications.requestAuthorization()
+        }.done { result in
             if result {
                 self.registerForPushNotifications()
                 self.scheduleNudgeNotifications()
@@ -27,14 +30,14 @@ class PushNotificationViewController: UIViewController {
     }
 
     private func registerForPushNotifications() {
-        PushNotifications.register() { result in
-            DispatchQueue.main.async {
-                if result {
-                    self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
-                } else {
-                    // TODO: Present warning vc, then continue to showRootVC
-                    self.showRootController()
-                }
+        firstly {
+            PushNotifications.register()
+        }.done(on: .main) { result in
+            if result {
+                self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
+            } else {
+                // TODO: Present warning vc, then continue to showRootVC
+                self.showRootController()
             }
         }
     }

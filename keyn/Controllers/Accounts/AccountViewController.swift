@@ -6,6 +6,7 @@ import UIKit
 import MBProgressHUD
 import OneTimePassword
 import QuartzCore
+import PromiseKit
 
 class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDelegate {
 
@@ -242,7 +243,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }
         do {
             try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+            NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
         } catch {
             Logger.shared.error("Failed to update enabled state in account")
             sender.isOn = account.enabled
@@ -252,21 +253,16 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
-        account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded) { (result) in
-            switch result {
-            case .success(let password):
-                DispatchQueue.main.async {
-                    if self.userPasswordTextField.isEnabled {
-                        self.userPasswordTextField.text = password
-                        self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
-                    } else {
-                        self.showHiddenPasswordPopup(password: password ?? "This account has no password")
-                    }
-                }
-            case .failure(let error):
-                Logger.shared.error("Could not get account", error: error)
+        firstly {
+            account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded)
+        }.done(on: .main) { password in
+            if self.userPasswordTextField.isEnabled {
+                self.userPasswordTextField.text = password
+                self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+            } else {
+                self.showHiddenPasswordPopup(password: password ?? "This account has no password")
             }
-        }
+        }.catchLog("Could not get account")
     }
     
     @IBAction func addToTeam(_ sender: KeynButton) {
@@ -274,26 +270,17 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         guard let session = session else {
             fatalError("Session must exist if this action is called")
         }
-        session.getTeamSeed { result in
-            switch result {
-            case .success(let seed): Team.get(seed: seed) { result in
-                DispatchQueue.main.async {
-                    sender.hideLoading()
-                    switch result {
-                    case .success(let team):
-                        self.team = team
-                        self.performSegue(withIdentifier: "AddToTeam", sender: self)
-                    case .failure(let error):
-                        self.showAlert(message: "Localized error message: \(error)")
-                    }
-                }
-            }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    sender.hideLoading()
-                    self.showAlert(message: "Localized error message: \(error)")
-                }
-            }
+        firstly {
+            session.getTeamSeed()
+        }.then {
+            Team.get(seed: $0)
+        }.ensure(on: .main) {
+            sender.hideLoading()
+        }.done(on: .main) {
+            self.team = $0
+            self.performSegue(withIdentifier: "AddToTeam", sender: self)
+        }.catch(on: .main) { error in
+            self.showAlert(message: "TODO: Localized error message: \(error)")
         }
     }
 
@@ -354,7 +341,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
                 return
             }
             try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+            NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
             if newPassword != nil {
                 showPasswordButton.isHidden = false
                 showPasswordButton.isEnabled = true
@@ -376,7 +363,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     func updateAccount(account: UserAccount) {
         self.account = account
         loadAccountData()
-        NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+        NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
     }
     
     // MARK: - Private

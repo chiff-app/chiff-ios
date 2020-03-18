@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class PrivacyViewController: UITableViewController {
 
@@ -82,14 +83,15 @@ class PrivacyViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
-            self.deleteLocalData() {
-                DispatchQueue.main.async {
-                    Logger.shared.analytics(.resetKeyn)
-                    let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-                    UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-                }
+            firstly {
+                self.deleteLocalData()
+            }.done(on: .main) {
+                Logger.shared.analytics(.resetKeyn)
+                let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+                UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            }.catch(on: .main) { error in
+                self.showAlert(message: "\("errors.deleting".localized): \(error)")
             }
-
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -114,39 +116,26 @@ class PrivacyViewController: UITableViewController {
 
     private func deleteRemoteData(action: UIAlertAction) -> Void {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        let group = DispatchGroup()
-        var groupError: Error?
-        group.enter()
-        BackupManager.deleteBackupData() { result in
-            if case .failure(let error) = result {
-                groupError = error
-            }
-            group.leave()
-        }
-        group.enter()
-        TeamSession.deleteAll() {
-            group.leave()
-        }
-        group.notify(queue: .main) {
-            if let error = groupError {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.showAlert(message: "\("errors.deleting".localized): \(error)")
-            } else {
-                self.deleteLocalData() {
-                    DispatchQueue.main.async {
-                        Logger.shared.analytics(.deleteData)
-                        let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-                        UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                    }
-                }
-            }
+        firstly {
+            when(fulfilled: BackupManager.deleteBackupData(), TeamSession.deleteAll())
+        }.then {
+            self.deleteLocalData()
+        }.done(on: .main) {
+            Logger.shared.analytics(.deleteData)
+            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+        }.ensure {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }.catch(on: .main) { error in
+            self.showAlert(message: "\("errors.deleting".localized): \(error)")
         }
     }
 
-    private func deleteLocalData(completion: @escaping () -> Void) {
+    private func deleteLocalData() -> Promise<Void> {
         // Browser sessions are gracefully ended
-        BrowserSession.deleteAll() {
+        return firstly {
+            BrowserSession.deleteAll()
+        }.map {
             // Since we back up the team sessions, we just purge the Keychain
             TeamSession.purgeSessionDataFromKeychain()
             // The corresponding team accounts are deleted here.
@@ -157,7 +146,6 @@ class PrivacyViewController: UITableViewController {
             NotificationManager.shared.deleteKeys()
             BackupManager.deleteKeys()
             Properties.purgePreferences()
-            completion()
         }
     }
 

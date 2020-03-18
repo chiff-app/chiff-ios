@@ -4,6 +4,7 @@
  */
 import Foundation
 import TrustKit
+import PromiseKit
 
 class API: NSObject, APIProtocol {
 
@@ -15,7 +16,7 @@ class API: NSObject, APIProtocol {
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
     
-    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Int(Date().timeIntervalSince1970))
@@ -25,18 +26,21 @@ class API: NSObject, APIProtocol {
             let parameters = [
                 "m": try Crypto.shared.convertToBase64(from: jsonData)
             ]
-            request(path: path, parameters: parameters, method: method, signature: signature, body: body, completionHandler: completionHandler)
+            return request(path: path, parameters: parameters, method: method, signature: signature, body: body)
         } catch {
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
-    
-    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String? = nil, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        do {
-            let request = try createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body)
-            send(request, completionHandler: completionHandler)
-        } catch {
-            completionHandler(.failure(error))
+
+    func request(
+        path: String,
+        parameters: RequestParameters,
+        method: APIMethod,
+        signature: String? = nil,
+        body: Data? = nil
+    ) -> Promise<JSONObject> {
+        return firstly {
+            try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))
         }
     }
     
@@ -70,31 +74,24 @@ class API: NSObject, APIProtocol {
         return request
     }
 
-    private func send(_ request: URLRequest, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
-        let task = urlSession.dataTask(with: request) { (result) in
-            do {
-                switch result {
-                case .success(let response, let data):
-                    if response.statusCode == 200 {
-                        guard !data.isEmpty else {
-                            throw APIError.noData
-                        }
-                        let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
-                        guard let json = jsonData as? [String: Any] else {
-                            throw APIError.jsonSerialization
-                        }
-                        completionHandler(.success(json))
-                    } else {
-                        throw APIError.statusCode(response.statusCode)
-                    }
-                case .failure(let error): throw error
-                }
-            } catch {
-                completionHandler(.failure(error))
-            }
 
+    private func send(_ request: URLRequest) -> Promise<JSONObject> {
+        return firstly {
+            return urlSession!.dataTask(with: request)
+        }.map { response, data in
+            if response.statusCode == 200 {
+                guard !data.isEmpty else {
+                    throw APIError.noData
+                }
+                let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let json = jsonData as? JSONObject else {
+                    throw APIError.jsonSerialization
+                }
+                return json
+            } else {
+                throw APIError.statusCode(response.statusCode)
+            }
         }
-        task.resume()
     }
 
 }

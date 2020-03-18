@@ -9,6 +9,7 @@ import OneTimePassword
 import Amplitude_iOS
 import StoreKit
 import WebKit
+import PromiseKit
 
 // MARK: - Primitive extensions
 
@@ -550,5 +551,44 @@ extension OSStatus {
         }
     }
 }
+
+extension NotificationCenter {
+
+    func postMain(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.post(notification)
+        }
+    }
+
+    func postMain(name aName: NSNotification.Name, object anObject: Any?) {
+        DispatchQueue.main.async {
+            self.post(name: aName, object: anObject)
+        }
+    }
+
+    func postMain(name aName: NSNotification.Name, object anObject: Any?, userInfo aUserInfo: [AnyHashable : Any]? = nil) {
+        DispatchQueue.main.async {
+            self.post(name: aName, object: anObject, userInfo: aUserInfo)
+        }
+    }
+}
+
+extension CatchMixin {
+
+    func log(_ message: String) -> Promise<T> {
+        recover { (error) -> Promise<T> in
+            Logger.shared.error(message, error: error)
+            throw error
+        }
+    }
+
+    func catchLog(_ message: String) {
+        `catch` { (error) in
+            Logger.shared.error(message, error: error)
+        }
+    }
+
+}
+
 
 

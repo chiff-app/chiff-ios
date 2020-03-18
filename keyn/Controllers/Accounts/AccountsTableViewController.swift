@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
     
@@ -220,19 +221,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        account.delete(completionHandler: { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    self.filteredAccounts.remove(at: filteredIndexPath.row)
-                    self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
-                    self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
-                    self.updateUi()
-                case .failure(let error):
-                    self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
-                }
-            }
-        })
+        firstly {
+            account.delete()
+        }.done(on: DispatchQueue.main) {
+            self.filteredAccounts.remove(at: filteredIndexPath.row)
+            self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
+            self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
+            self.updateUi()
+        }.catch(on: DispatchQueue.main) { error in
+            self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
+        }
     }
 
     private func addAddButton(enabled: Bool){

@@ -6,6 +6,7 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
+import PromiseKit
 
 
 /*
@@ -62,24 +63,16 @@ struct SharedAccount: Account {
         return true
     }
 
-    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
-            do {
-                switch result {
-                case .success(_):
-                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                    self.deleteFromToIdentityStore()
-                    completionHandler(.success(()))
-                case .failure(let error): throw error
-                }
-            } catch {
-                Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(.failure(error))
-            }
-        }
+    func delete() -> Promise<Void> {
+        firstly {
+            Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
+        }.map { _ in
+            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+            self.deleteFromToIdentityStore()
+        }.log("Error deleting accounts")
     }
 
-    func delete() throws {
+    func deleteSync() throws {
         try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
@@ -124,7 +117,7 @@ struct SharedAccount: Account {
 
     static func deleteAll(for sessionPubKey: String) {
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
-        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+        NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true
         }

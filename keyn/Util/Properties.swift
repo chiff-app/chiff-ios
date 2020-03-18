@@ -95,7 +95,7 @@ struct Properties {
         get { return UserDefaults.standard.double(forKey: subscriptionExiryDateFlag) }
         set {
             UserDefaults.standard.set(newValue, forKey: subscriptionExiryDateFlag)
-            NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
+            NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
         }
     }
     static var subscriptionProduct: String? {

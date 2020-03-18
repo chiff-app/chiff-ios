@@ -6,6 +6,7 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
+import PromiseKit
 
 enum AccountError: KeynError {
     case duplicateAccountId
@@ -27,7 +28,7 @@ protocol Account: BaseAccount {
     static var keychainService: KeychainService { get }
 
     func backup() throws
-    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) 
+    func delete() -> Promise<Void>
 }
 
 extension Account {
@@ -53,19 +54,17 @@ extension Account {
         }
     }
 
-    func password(reason: String, context: LAContext? = nil, type: AuthenticationType, completionHandler: @escaping (Result<String?, Error>) -> Void) {
-        Keychain.shared.get(id: id, service: Self.keychainService, reason: reason, with: context, authenticationType: type) { (result) in
-            switch result {
-            case .success(let data):
-                guard let data = data else {
-                    return completionHandler(.success(nil))
-                }
-                guard let password = String(data: data, encoding: .utf8) else {
-                    return completionHandler(.failure(CodingError.stringEncoding))
-                }
-                completionHandler(.success(password))
-            case .failure(let error): completionHandler(.failure(error))
+    func password(reason: String, context: LAContext? = nil, type: AuthenticationType) -> Promise<String?> {
+        return firstly {
+            Keychain.shared.get(id: id, service: Self.keychainService, reason: reason, with: context, authenticationType: type)
+        }.map { data in
+            guard let data = data else {
+                return nil
             }
+            guard let password = String(data: data, encoding: .utf8) else {
+                throw CodingError.stringEncoding
+            }
+            return password
         }
     }
 

@@ -9,6 +9,7 @@
 import Foundation
 import LocalAuthentication
 import CryptoKit
+import PromiseKit
 
 extension UserAccount: Restorable {
 
@@ -75,13 +76,11 @@ extension UserAccount: Restorable {
         }
         let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
         let data = try JSONEncoder().encode(account)
-        backup(data: data) { result in
-            do {
-                try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
-            } catch {
-                Logger.shared.error("Error setting account sync info", error: error)
-            }
-        }
+        firstly {
+            backup(data: data)
+        }.done { result in
+            try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
+        }.catchLog("Error setting account sync info")
     }
 
 }
