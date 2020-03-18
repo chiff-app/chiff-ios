@@ -36,6 +36,8 @@ struct UserAccount: Account, Restorable {
     var site: Site {
         return sites[0]
     }
+    var timesUsed: Int
+    var lastTimeUsed: Date?
 
     var synced: Bool {
         do {
@@ -62,6 +64,7 @@ struct UserAccount: Account, Restorable {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
         }
         let keyPair = try webAuthn?.generateKeyPair(accountId: id, context: context)
+        self.timesUsed = 0
 
         var generatedPassword = password
         if let password = password {
@@ -92,6 +95,7 @@ struct UserAccount: Account, Restorable {
         self.enabled = enabled
         self.version = version
         self.webAuthn = webAuthn
+        self.timesUsed = 0
     }
 
 
@@ -351,6 +355,8 @@ extension UserAccount: Codable {
         case enabled
         case version
         case webAuthn
+        case timesUsed
+        case lastTimeUsed
     }
 
     init(from decoder: Decoder) throws {
@@ -366,6 +372,8 @@ extension UserAccount: Codable {
         self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
+        self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
+        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
     }
 
 }

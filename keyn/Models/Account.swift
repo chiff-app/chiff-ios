@@ -31,6 +31,8 @@ protocol Account: Codable {
     var enabled: Bool { get }
     var version: Int { get }
     var hasPassword: Bool { get }
+    var timesUsed: Int { get set }
+    var lastTimeUsed: Date? { get set }
     static var keychainService: KeychainService { get }
 
     func backup() throws
@@ -99,6 +101,16 @@ extension Account {
         try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
         saveToIdentityStore()
+    }
+
+    mutating func increaseUse() {
+        do {
+            lastTimeUsed = Date()
+            timesUsed += 1
+            try update(secret: nil)
+        } catch {
+            Logger.shared.error(error.localizedDescription)
+        }
     }
 
     // MARK: - Static functions

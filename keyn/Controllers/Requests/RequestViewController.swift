@@ -66,6 +66,10 @@ class RequestViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let account):
+                    if var account = account {
+                        account.increaseUse()
+                        NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account])
+                    }
                     if let account = account as? UserAccount, account.hasOtp {
                         AuthenticationGuard.shared.hideLockWindow()
                         self.account = account

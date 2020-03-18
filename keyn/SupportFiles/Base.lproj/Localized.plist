@@ -57,6 +57,16 @@
 			<key>value</key>
 			<string>Adding an account</string>
 		</dict>
+		<key>all</key>
+		<dict>
+			<key>value</key>
+			<string>All</string>
+		</dict>
+		<key>alphabetically</key>
+		<dict>
+			<key>value</key>
+			<string>Alphabetically</string>
+		</dict>
 		<key>alternative_add</key>
 		<dict>
 			<key>value</key>
@@ -124,6 +134,11 @@
 			<key>value</key>
 			<string>Codes can either be time-based or counter-based</string>
 		</dict>
+		<key>mostly</key>
+		<dict>
+			<key>value</key>
+			<string>Mostly used</string>
+		</dict>
 		<key>my_accounts</key>
 		<dict>
 			<key>value</key>
@@ -143,6 +158,16 @@
 		<dict>
 			<key>value</key>
 			<string>Password</string>
+		</dict>
+		<key>personal</key>
+		<dict>
+			<key>value</key>
+			<string>Personal</string>
+		</dict>
+		<key>recently</key>
+		<dict>
+			<key>value</key>
+			<string>Recently used</string>
 		</dict>
 		<key>report</key>
 		<dict>
@@ -175,6 +200,16 @@
 		<dict>
 			<key>value</key>
 			<string>Websites</string>
+		</dict>
+		<key>sort</key>
+		<dict>
+			<key>value</key>
+			<string>Sort</string>
+		</dict>
+		<key>team</key>
+		<dict>
+			<key>value</key>
+			<string>Team</string>
 		</dict>
 		<key>time_based</key>
 		<dict>
