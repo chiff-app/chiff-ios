@@ -90,26 +90,32 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.delegate = self
         tableView.dataSource = self
 
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.scopeButtonTitles = [
-            Filters.all.text(),
-            Filters.team.text(),
-            Filters.personal.text()
-        ]
-        searchController.searchBar.delegate = self
-
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
         setFooter()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if #available(iOS 13, *) {
+            searchController.searchResultsUpdater = self
+            searchController.searchBar.searchBarStyle = .minimal
+            searchController.hidesNavigationBarDuringPresentation = false
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.searchBar.scopeButtonTitles = [
+                Filters.all.text(),
+                Filters.team.text(),
+                Filters.personal.text()
+            ]
+            searchController.searchBar.delegate = self
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = true
+        }
     }
 
     @objc func showAddAccount() {
