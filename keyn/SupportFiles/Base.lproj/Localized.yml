@@ -11,22 +11,6 @@ accounts:
     value: Add 2FA code
   add_2fa_code:
     value: Add 2FA-code to
-  all:
-    value: All
-  team:
-    value: Team
-  personal:
-    value: Personal
-  alphabetically:
-    value: Alphabetically
-  mostly:
-    value: Mostly used
-  recently:
-    value: Recently used
-  sort:
-    value: Sort
-  didnt_save:
-    value: You didn’t save any of your accounts yet.
   add_account:
     value: Add account
   add_instructions:
@@ -38,6 +22,10 @@ accounts:
       value: Keyn asks you to add the website.
   adding_account:
     value: Adding an account
+  all:
+    value: All
+  alphabetically:
+    value: Alphabetically
   alternative_add:
     value: 'Alternatively, you can add an account manually.'
   choose:
@@ -71,6 +59,8 @@ accounts:
     value: Mode
   mode_description:
     value: Codes can either be time-based or counter-based
+  mostly:
+    value: Mostly used
   my_accounts:
     value: My accounts
   name:
@@ -79,6 +69,10 @@ accounts:
     value: No password set
   password:
     value: Password
+  personal:
+    value: Personal
+  recently:
+    value: Recently used
   report:
     value: Report
   scan_2fa:
@@ -92,6 +86,10 @@ accounts:
     value: The secret that was shared by the website
   sites_header:
     value: Websites
+  sort:
+    value: Sort
+  team:
+    value: Team
   time_based:
     value: Time-based
   two_fa_instruction:

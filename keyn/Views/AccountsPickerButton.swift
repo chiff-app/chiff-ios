@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccountsPickerButton: UIButton {
+class AccountsPickerButton: KeynBarButton {
     let picker: UIPickerView = {
         let picker = UIPickerView()
         return picker
@@ -32,16 +32,14 @@ class AccountsPickerButton: UIButton {
         return _inputAccessoryToolbar
     }
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setUp()
+    }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
-        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(doneClick))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-
-        _inputAccessoryToolbar.setItems([ spaceButton, doneButton], animated: false)
-
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(launchPicker))
-        self.addGestureRecognizer(tapRecognizer)
+        setUp()
     }
 
     override var canBecomeFirstResponder: Bool {
@@ -54,5 +52,17 @@ class AccountsPickerButton: UIButton {
 
     @objc private func doneClick() {
         resignFirstResponder()
+    }
+
+    // MARK: - Private functions
+
+    private func setUp() {
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(doneClick))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+
+        _inputAccessoryToolbar.setItems([ spaceButton, doneButton], animated: false)
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(launchPicker))
+        self.addGestureRecognizer(tapRecognizer)
     }
 }

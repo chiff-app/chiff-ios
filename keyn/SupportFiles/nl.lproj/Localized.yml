@@ -22,6 +22,10 @@ accounts:
       value: Keyn vraagt om de website toe te voegen.
   adding_account:
     value: Een account toevoegen
+  all:
+    value: Alle
+  alphabetically:
+    value: Alfabetisch
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
   choose:
@@ -55,6 +59,8 @@ accounts:
     value: Type
   mode_description:
     value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
+  mostly:
+    value: Meest gebruikt
   my_accounts:
     value: Mijn accounts
   name:
@@ -63,6 +69,10 @@ accounts:
     value: Geen wachtwoord ingesteld
   password:
     value: Wachtwoord
+  personal:
+    value: Persoonlijk
+  recently:
+    value: Laatst gebruikt
   report:
     value: Rapporteer
   scan_2fa:
@@ -76,6 +86,10 @@ accounts:
     value: Het geheim dat gedeeld is door de website
   sites_header:
     value: Websites
+  sort:
+    value: Sorteer
+  team:
+    value: Team
   time_based:
     value: Tijdgebaseerd
   two_fa_instruction:
