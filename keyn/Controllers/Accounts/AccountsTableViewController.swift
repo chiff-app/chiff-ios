@@ -51,26 +51,27 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var sortLabel: UILabel!
-    @IBOutlet weak var sortingButton: AccountsPickerButton!
-    
+
+    var sortingButton: AccountsPickerButton!
     var addAccountButton: KeynBarButton?
     var currentFilter = Filters.all
-    var currentSortingValue = SortingValues.alphabetically {
-        didSet {
-            let rangeText = "accounts.sort".localized
-            let title = rangeText + " " + currentSortingValue.text()
-            let range = (title as NSString).range(of: rangeText)
-            let font = UIFont.primaryBold
-            let textColor = UIColor.primary
-            let attributes = [
-                NSAttributedString.Key.font: font,
-                NSAttributedString.Key.foregroundColor: textColor
-            ]
-            let attributedString = NSMutableAttributedString(string: title, attributes: attributes as [NSAttributedString.Key: Any])
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.primaryHalfOpacity, range: range)
-            sortingButton.setAttributedTitle(attributedString, for: .normal)
-        }
-    }
+    var currentSortingValue = SortingValues.alphabetically
+//    {
+//        didSet {
+//            let rangeText = "accounts.sort".localized
+//            let title = rangeText + " " + currentSortingValue.text()
+//            let range = (title as NSString).range(of: rangeText)
+//            let font = UIFont.primaryBold
+//            let textColor = UIColor.primary
+//            let attributes = [
+//                NSAttributedString.Key.font: font,
+//                NSAttributedString.Key.foregroundColor: textColor
+//            ]
+//            let attributedString = NSMutableAttributedString(string: title, attributes: attributes as [NSAttributedString.Key: Any])
+//            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.primaryHalfOpacity, range: range)
+//            sortingButton.setAttributedTitle(attributedString, for: .normal)
+//        }
+//    }
     var searchQuery = ""
 
     override func viewDidLoad() {
@@ -99,10 +100,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             Filters.personal.text()
         ]
         searchController.searchBar.delegate = self
-
-        currentSortingValue = SortingValues.alphabetically
-        sortingButton.picker.delegate = self
-        sortingButton.picker.dataSource = self
 
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
@@ -139,7 +136,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            addBarButtons(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
             setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
             upgradeButtonHeightConstraint.constant = Properties.hasValidSubscription ? 0 : 44
@@ -371,15 +368,23 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         })
     }
 
-    private func addAddButton(enabled: Bool){
-//        guard self.navigationItem.rightBarButtonItem == nil else {
-//            return
-//        }
-
-        addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+    private func addBarButtons(enabled: Bool){
+        if addAccountButton == nil {
+            addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+        }
         addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
+
+        if sortingButton == nil {
+            sortingButton = AccountsPickerButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            sortingButton!.setImage(UIImage(named:"filter_button"), for: .normal)
+            currentSortingValue = SortingValues.alphabetically
+            sortingButton.picker.delegate = self
+            sortingButton.picker.dataSource = self
+            sortingButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+            self.navigationItem.leftBarButtonItem = sortingButton!.barButtonItem
+        }
     }
 }
 

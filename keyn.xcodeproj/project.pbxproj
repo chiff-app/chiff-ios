@@ -590,6 +590,7 @@
 		4950262C22BBA29400545118 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */,
 				4950262F22BBA2FC00545118 /* BackupCircle.swift */,
 				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950263122BBA31200545118 /* FilledCircle.swift */,
@@ -859,7 +860,6 @@
 				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
 				49774C112266035C0094D3ED /* SiteTableViewController.swift */,
 				49774C132266044D0094D3ED /* SiteTableViewCell.swift */,
-				42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -941,8 +941,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
-				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
+				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				49E7664E1F7E6F420022C042 /* Resources */,
