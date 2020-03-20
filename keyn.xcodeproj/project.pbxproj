@@ -227,6 +227,11 @@
 		49F2A0FF2214322700429875 /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2A0F8221431C700429875 /* DataStructures.swift */; };
 		49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
 		49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49214B74210325B400C793DE /* NotificationProcessor.swift */; };
+		49F45E822424C1AF0080B248 /* TeamAccessControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E812424C1AF0080B248 /* TeamAccessControlViewController.swift */; };
+		49F45E842424C4570080B248 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E832424C4570080B248 /* Protocols.swift */; };
+		49F45E852424C4640080B248 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E832424C4570080B248 /* Protocols.swift */; };
+		49F45E862424C4640080B248 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E832424C4570080B248 /* Protocols.swift */; };
+		49F45E882424DBA30080B248 /* KeynTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E872424DBA30080B248 /* KeynTableViewController.swift */; };
 		49F6F23323EDA60D0093AD56 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49FA7F761FB9E08E00EDB367 /* BrowserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */; };
 		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
@@ -477,6 +482,9 @@
 		49F2A0F422142EB900429875 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		49F2A0F622142F0400429875 /* FormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextField.swift; sourceTree = "<group>"; };
 		49F2A0F8221431C700429875 /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
+		49F45E812424C1AF0080B248 /* TeamAccessControlViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccessControlViewController.swift; sourceTree = "<group>"; };
+		49F45E832424C4570080B248 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		49F45E872424DBA30080B248 /* KeynTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTableViewController.swift; sourceTree = "<group>"; };
 		49F6F23223EDA60D0093AD56 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSession.swift; sourceTree = "<group>"; };
 		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -625,6 +633,7 @@
 				495E5B571FAC8F49002E6AC6 /* RootViewController.swift */,
 				495E09ED22453BD500BDFBB1 /* KeynNavigationController.swift */,
 				61F938C31FF4161300AF0880 /* PairViewController.swift */,
+				49F45E872424DBA30080B248 /* KeynTableViewController.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -671,6 +680,7 @@
 				495E72BA22118717003132ED /* Logger.swift */,
 				49062C6C2214679400A30669 /* Localizer.swift */,
 				49DCA6982063E44D008F4DF2 /* Properties.swift */,
+				49F45E832424C4570080B248 /* Protocols.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -928,6 +938,7 @@
 				49774C112266035C0094D3ED /* SiteTableViewController.swift */,
 				49774C132266044D0094D3ED /* SiteTableViewCell.swift */,
 				49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */,
+				49F45E812424C1AF0080B248 /* TeamAccessControlViewController.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -1448,6 +1459,7 @@
 				49686958242103EA00B9BEE9 /* TeamUser.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
+				49F45E852424C4640080B248 /* Protocols.swift in Sources */,
 				49E28AEF241A4599008F0661 /* Team.swift in Sources */,
 				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
@@ -1493,14 +1505,17 @@
 				49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */,
 				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
 				49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */,
+				49F45E882424DBA30080B248 /* KeynTableViewController.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
+				49F45E822424C1AF0080B248 /* TeamAccessControlViewController.swift in Sources */,
 				4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */,
 				42497C12231EE60900ECBDB4 /* APIProtocol.swift in Sources */,
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
 				496869322420F89B00B9BEE9 /* BaseAccount.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
+				49F45E842424C4570080B248 /* Protocols.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
 				49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
@@ -1654,6 +1669,7 @@
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */,
 				4968695D242105B900B9BEE9 /* TeamRole.swift in Sources */,
+				49F45E862424C4640080B248 /* Protocols.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				49E5FA192302E9DE009C964E /* SharedAccount.swift in Sources */,
 				611F4B602146B63B00B35A89 /* BackupManager.swift in Sources */,

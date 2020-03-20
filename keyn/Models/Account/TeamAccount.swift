@@ -25,12 +25,12 @@ struct TeamAccount: BaseAccount {
         (self.password, _) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
     }
 
-    init(account: Account, seed: Data, users: Set<String>, roles: Set<String>, version: Int = 1) throws {
+    init(account: Account, seed: Data, users: [TeamUser], roles: [TeamRole], version: Int = 1) throws {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
-        self.users = users
-        self.roles = roles
+        self.users = Set(users.map { $0.pubkey! })
+        self.roles = Set(roles.map { $0.id })
         self.version = version
         self.compromised = false
 

@@ -138,6 +138,14 @@ extension Data {
 
 }
 
+extension Collection {
+
+    /// Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
 extension Array where Element == UInt8 {
     public var data: Data {
         return Data(self)

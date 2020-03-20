@@ -210,11 +210,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
-        } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-                let indexPath = IndexPath(row: index, section: 0)
-                deleteAccount(account: account, filteredIndexPath: indexPath)
-            }
+        } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account, let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
+            let indexPath = IndexPath(row: index, section: 0)
+            deleteAccount(account: account, filteredIndexPath: indexPath)
+        } else if sender.identifier == "DeleteUserAccount", let sourceViewController = sender.source as? TeamAccountViewController, let account = sourceViewController.account, let index = filteredAccounts.firstIndex(where: { sourceViewController.account.id == $0.id && $0 is UserAccount }) {
+            let indexPath = IndexPath(row: index, section: 0)
+            deleteAccountFromTable(indexPath: indexPath, id: account.id)
         }
     }
 
@@ -224,13 +225,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         firstly {
             account.delete()
         }.done(on: DispatchQueue.main) {
-            self.filteredAccounts.remove(at: filteredIndexPath.row)
-            self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
-            self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
-            self.updateUi()
+            self.deleteAccountFromTable(indexPath: filteredIndexPath, id: account.id)
         }.catch(on: DispatchQueue.main) { error in
             self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
         }
+    }
+
+    private func deleteAccountFromTable(indexPath: IndexPath, id: String) {
+        self.filteredAccounts.remove(at: indexPath.row)
+        self.unfilteredAccounts.removeAll(where: { $0.id == id })
+        self.tableView.deleteRows(at: [indexPath], with: .fade)
+        self.updateUi()
     }
 
     private func addAddButton(enabled: Bool){
