@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TeamRole: Codable {
+struct TeamRole: Codable, AccessControllable {
     let id: String
     let name: String
     let admins: Bool
@@ -32,4 +32,3 @@ extension TeamRole: Hashable {
     }
 
 }
-

@@ -55,3 +55,12 @@ extension TeamUser: Hashable {
     }
 
 }
+
+extension TeamUser: AccessControllable {
+
+    var id: String {
+        return pubkey
+    }
+
+}
+

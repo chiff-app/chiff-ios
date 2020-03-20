@@ -8,7 +8,22 @@ import OneTimePassword
 import QuartzCore
 import PromiseKit
 
-class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDelegate {
+class AccountViewController: KeynTableViewController, UITextFieldDelegate, SitesDelegate {
+
+    override var headers: [String?] {
+        return [
+            "accounts.website_details".localized.capitalizedFirstLetter,
+            "accounts.user_details".localized.capitalizedFirstLetter
+        ]
+    }
+
+    override var footers: [String?] {
+        return [
+            webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
+            "accounts.2fa_description".localized.capitalizedFirstLetter,
+            showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
+        ]
+    }
 
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -118,62 +133,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         return editingMode || showAccountEnableButton ? 3 : 2
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "accounts.website_details".localized.capitalizedFirstLetter
-        case 1:
-            return "accounts.user_details".localized.capitalizedFirstLetter
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
-        case 1:
-            return "accounts.2fa_description".localized.capitalizedFirstLetter
-        case 2:
-            return showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section < 2 else {
-            return
-        }
-
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont.primaryBold
-        header.textLabel?.textAlignment = NSTextAlignment.left
-        header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
-    }
-
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        super.tableView(tableView, willDisplayFooterView: view, forSection: section)
         guard section < 2 || showAccountEnableButton else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
-        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
-        footer.textLabel?.font = UIFont.primaryMediumSmall
-        footer.textLabel?.textAlignment = NSTextAlignment.left
-        footer.textLabel?.frame = footer.frame
         switch section {
         case 0:
-            footer.textLabel?.text = webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
             footer.textLabel?.isHidden = !(webAuthnEnabled || tableView.isEditing)
         case 1:
             footer.textLabel?.isHidden = false
-            footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
         case 2:
             footer.textLabel?.isHidden = false
-            footer.textLabel?.text = "accounts.footer_account_enabled".localized.capitalizedFirstLetter
         default:
             fatalError("An extra section appeared!")
         }
