@@ -6,6 +6,7 @@ import Foundation
 import UIKit
 import UserNotifications
 import LocalAuthentication
+import PromiseKit
 
 /*
  * Handles push notification that come from outside the app.
@@ -45,17 +46,18 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             case NotificationCategory.DELETE_TEAM_SESSION:
                 do {
                     try session.delete()
-                    NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                    NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
                     completionHandler(UIBackgroundFetchResult.newData)
                 } catch {
                     completionHandler(UIBackgroundFetchResult.failed)
                 }
             case NotificationCategory.UPDATE_TEAM_SESSION:
-                session.updateSharedAccounts(pushed: true) { result in
-                    switch result {
-                    case .success(_): completionHandler(UIBackgroundFetchResult.newData)
-                    case .failure(_): completionHandler(UIBackgroundFetchResult.failed)
-                    }
+                firstly {
+                    TeamSession.updateTeamSession(session: session, pushed: true)
+                }.done {
+                    completionHandler(UIBackgroundFetchResult.newData)
+                }.catch { _ in
+                    completionHandler(UIBackgroundFetchResult.failed)
                 }
             default:
                 completionHandler(UIBackgroundFetchResult.noData)
@@ -130,13 +132,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .end {
             do {
-                if let sessionID = keynRequest.sessionID {
-                    try BrowserSession.get(id: sessionID)?.delete(notify: false) { result in
-                        if case .failure(let error) = result {
-                            Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
-                        } else {
-                            NotificationCenter.default.post(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
-                        }
+                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) {
+                    firstly {
+                        session.delete(notify: false)
+                    }.done {
+                        NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: sessionID])
+                    }.catch { error in
+                        Logger.shared.error("Could not end session.", error: nil, userInfo: ["error": error as Any])
                     }
                 }
             } catch {
@@ -163,13 +165,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     throw CodingError.missingData
                 }
                 #warning("TODO: Improve this by using background fetching in notification processor.")
-                self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil) { accounts in
-                    DispatchQueue.main.async {
-                        var request = keynRequest
-                        request.accounts = accounts
-                        AuthorizationGuard.launchRequestView(with: request)
-                    }
-                }
+                firstly {
+                    self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil)
+                }.done(on: .main) { accounts in
+                    var request = keynRequest
+                    request.accounts = accounts
+                    AuthorizationGuard.launchRequestView(with: request)
+                }.catchLog("Error getting password change confirmation from persistent queue.")
                 return [.sound]
             } catch {
                 Logger.shared.error("Could not get session.", error: error)
@@ -193,7 +195,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     }
 
     private func waitForPasswordChangeConfirmation(notification: Notification) {
-        guard let session = notification.object as? BrowserSession else {
+        guard var session = notification.object as? BrowserSession else {
             Logger.shared.warning("Received notification from unexpected object")
             return
         }
@@ -207,72 +209,44 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             UIApplication.shared.endBackgroundTask(id)
             session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         }).rawValue
-
-        self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext, completionHandler: { _ in
+        firstly {
+            self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext)
+        }.ensure {
             if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
                 let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
                 UIApplication.shared.endBackgroundTask(id)
             }
-        })
+        }.catchLog("Error getting password change confirmation from persistent queue.")
     }
 
     private func checkPersistentQueue(notification: Notification) {
         do {
             for session in try BrowserSession.all() {
-                self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil, completionHandler: nil)
+                let _ = self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-        do {
-            for session in try TeamSession.all() {
-                session.updateSharedAccounts { (result) in
-                    if case let .failure(error) = result {
-                        print(error)
-                    }
-                }
-            }
-        } catch {
-            Logger.shared.error("Could not get sessions.", error: error)
-        }
+        firstly {
+            TeamSession.updateTeamSessions(pushed: false, logo: false, backup: false)
+        }.catchLog("Could not update sessions.")
     }
 
-    private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?, completionHandler: ((_ accounts: [BulkAccount]?) -> Void)?) {
-        session.getPersistentQueueMessages(shortPolling: shortPolling) { (result) in
-            switch result {
-            case .success(let messages):
-                do {
-                    guard !messages.isEmpty else {
-                        if (attempts > 1) {
-                            self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context, completionHandler: completionHandler)
-                        } else if let handler = completionHandler {
-                            handler(nil)
-                        }
-                        return
+    private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?) -> Promise<[BulkAccount]?> {
+        return firstly {
+            session.getPersistentQueueMessages(shortPolling: shortPolling)
+        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]?> in
+            if messages.isEmpty {
+                return attempts > 1 ? self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context) : .value(nil)
+            } else {
+                var accounts: [BulkAccount]? = nil
+                for message in messages {
+                    if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
+                        accounts = bulkAccounts
                     }
-                    var accounts: [BulkAccount]?
-                    for message in messages {
-                        if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
-                            accounts = bulkAccounts
-                        }
-                    }
-                    if let handler = completionHandler {
-                        handler(accounts)
-                    }
-                } catch {
-                    Logger.shared.warning("Could not get account list", error: error, userInfo: nil)
                 }
-            case .failure(let error):
-                if case APIError.statusCode(404) = error {
-                    // Queue doesn't exist anymore, delete
-                    session.delete(notify: false) { result in
-                        Logger.shared.warning("Session was deleted because the queue didn't exist.")
-                    }
-                } else {
-                    Logger.shared.error("Error getting password change confirmation from persistent queue.", error: error)
-                }
+                return .value(accounts)
             }
-
         }
     }
 

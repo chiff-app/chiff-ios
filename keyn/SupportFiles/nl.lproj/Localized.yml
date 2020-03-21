@@ -20,6 +20,12 @@ accounts:
       value: Log in zoals je normaal inlogt.
     third:
       value: Keyn vraagt om de website toe te voegen.
+  add_role:
+    value: Voeg rollen toe
+  add_to_team:
+    value: Voeg toe aan team
+  add_user:
+    value: Voeg gebruikers toe
   adding_account:
     value: Een account toevoegen
   alternative_add:
@@ -28,6 +34,17 @@ accounts:
     value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
   code:
     value: Code
+  convert_to_team_footer:
+    value: Kies de rollen en gebruikers die toegang moeten krijgen tot dit account.
+  convert_to_team_header:
+    value: Toegangsrechten
+  convert_to_team_title:
+    value: Voeg %@ toe aan %@.
+    start: 5
+  convert_to_team_warning:
+    value: >-
+      ⚠️ Door dit account naar een team-account te converteren geef je anderen
+      mogelijk toegang tot je wachtwoord.
   copied:
     comment: Show the user that a value has been copied
     value: Gekopieerd
@@ -61,6 +78,10 @@ accounts:
     value: Naam
   no_password:
     value: Geen wachtwoord ingesteld
+  number_of_roles:
+    value: '%@ rollen'
+  number_of_users:
+    value: '%@ gebruikers'
   password:
     value: Wachtwoord
   report:
@@ -76,6 +97,14 @@ accounts:
     value: Het geheim dat gedeeld is door de website
   sites_header:
     value: Websites
+  team_role_footer:
+    value: Kies welke rollen toegang moeten krijgen tot dit account.
+  team_role_header:
+    value: Rollen
+  team_user_footer:
+    value: Kies welke gebruikers toegang moeten krijgen tot dit account.
+  team_user_header:
+    value: Gebruikers
   time_based:
     value: Tijdgebaseerd
   two_fa_instruction:
@@ -295,6 +324,8 @@ errors:
     value: >-
       Je kunt alleen koppelen met een computer als de camera is ingeschakeld.
       Dit kun je doen via Instellingen.
+  convert_to_team:
+    value: Fout bij converteren naar team account
   corrupted_data:
     value: Onleesbare data fout
   creating_team:

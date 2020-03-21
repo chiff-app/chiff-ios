@@ -20,6 +20,12 @@ accounts:
       value: Log in as you'd normally do.
     third:
       value: Keyn asks you to add the website.
+  add_role:
+    value: Add roles
+  add_to_team:
+    value: Add to team
+  add_user:
+    value: Add users
   adding_account:
     value: Adding an account
   alternative_add:
@@ -28,6 +34,17 @@ accounts:
     value: Choose an account to fill the credentials.
   code:
     value: Code
+  convert_to_team_title:
+    value: Add %@ to %@.
+    start: 4
+  convert_to_team_footer:
+    value: Choose the roles and users that should have access to this account.
+  convert_to_team_header:
+    value: Access rights
+  convert_to_team_warning:
+    value: >-
+      ⚠️ Converting this account to a team account may give others access to
+      your password.
   copied:
     comment: Show the user that a value has been copied
     value: Copied
@@ -61,6 +78,10 @@ accounts:
     value: Name
   no_password:
     value: No password set
+  number_of_roles:
+    value: '%@ roles'
+  number_of_users:
+    value: '%@ users'
   password:
     value: Password
   report:
@@ -76,6 +97,14 @@ accounts:
     value: The secret that was shared by the website
   sites_header:
     value: Websites
+  team_role_footer:
+    value: Choose which roles should have access to this account.
+  team_role_header:
+    value: Roles
+  team_user_footer:
+    value: Choose which users should have access to this account.
+  team_user_header:
+    value: Users
   time_based:
     value: Time-based
   two_fa_instruction:
@@ -295,6 +324,8 @@ errors:
     value: >-
       You can only pair with a computer when camera is enabled. You can do this
       in Settings.
+  convert_to_team:
+    value: Error converting to team account
   corrupted_data:
     value: Unreadable data error
   creating_team:

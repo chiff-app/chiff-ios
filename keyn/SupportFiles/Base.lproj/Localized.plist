@@ -52,6 +52,21 @@
 				<string>Keyn asks you to add the website.</string>
 			</dict>
 		</dict>
+		<key>add_role</key>
+		<dict>
+			<key>value</key>
+			<string>Add roles</string>
+		</dict>
+		<key>add_to_team</key>
+		<dict>
+			<key>value</key>
+			<string>Add to team</string>
+		</dict>
+		<key>add_user</key>
+		<dict>
+			<key>value</key>
+			<string>Add users</string>
+		</dict>
 		<key>adding_account</key>
 		<dict>
 			<key>value</key>
@@ -71,6 +86,28 @@
 		<dict>
 			<key>value</key>
 			<string>Code</string>
+		</dict>
+		<key>convert_to_team_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Choose the roles and users that should have access to this account.</string>
+		</dict>
+		<key>convert_to_team_header</key>
+		<dict>
+			<key>value</key>
+			<string>Access rights</string>
+		</dict>
+		<key>convert_to_team_title</key>
+		<dict>
+			<key>start</key>
+			<integer>4</integer>
+			<key>value</key>
+			<string>Add %@ to %@.</string>
+		</dict>
+		<key>convert_to_team_warning</key>
+		<dict>
+			<key>value</key>
+			<string>⚠️ Converting this account to a team account may give others access to your password.</string>
 		</dict>
 		<key>copied</key>
 		<dict>
@@ -139,6 +176,16 @@
 			<key>value</key>
 			<string>No password set</string>
 		</dict>
+		<key>number_of_roles</key>
+		<dict>
+			<key>value</key>
+			<string>%@ roles</string>
+		</dict>
+		<key>number_of_users</key>
+		<dict>
+			<key>value</key>
+			<string>%@ users</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>
@@ -175,6 +222,26 @@
 		<dict>
 			<key>value</key>
 			<string>Websites</string>
+		</dict>
+		<key>team_role_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Choose which roles should have access to this account.</string>
+		</dict>
+		<key>team_role_header</key>
+		<dict>
+			<key>value</key>
+			<string>Roles</string>
+		</dict>
+		<key>team_user_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Choose which users should have access to this account.</string>
+		</dict>
+		<key>team_user_header</key>
+		<dict>
+			<key>value</key>
+			<string>Users</string>
 		</dict>
 		<key>time_based</key>
 		<dict>
@@ -681,6 +748,11 @@ Choose 'Allow Notifications' under 'Notifications'.</string>
 		<dict>
 			<key>value</key>
 			<string>You can only pair with a computer when camera is enabled. You can do this in Settings.</string>
+		</dict>
+		<key>convert_to_team</key>
+		<dict>
+			<key>value</key>
+			<string>Error converting to team account</string>
 		</dict>
 		<key>corrupted_data</key>
 		<dict>

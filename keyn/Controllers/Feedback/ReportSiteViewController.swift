@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class ReportSiteViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var textView: UITextView!
@@ -101,12 +102,11 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         Groetjes!
         id: \(Properties.userId ?? "not set")
         """
-        API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data) { (result) in
-            if case let .failure(error) = result {
-                Logger.shared.warning("Error posting feedback", error: error)
-            }
+        firstly {
+            API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data)
+        }.ensure(on: DispatchQueue.main) {
             self.dismiss(animated: true, completion: nil)
-        }
+        }.catchLog("Error posting feedback")
     }
 
     @IBAction func cancel(_ sender: UIBarButtonItem) {

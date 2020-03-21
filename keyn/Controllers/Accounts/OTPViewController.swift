@@ -6,6 +6,7 @@ import UIKit
 import AVFoundation
 import LocalAuthentication
 import OneTimePassword
+import PromiseKit
 
 protocol TokenController {
     var token: Token? { get }
@@ -42,18 +43,14 @@ class OTPViewController: QRViewController, TokenController {
             showAlert(message: "errors.token_creation".localized, handler: errorHandler)
             return
         }
-
-        try AuthorizationGuard.addOTP(token: token!, account: account) { (result) in
-            DispatchQueue.main.async {
-                do {
-                    let _ = try result.get()
-                    try self.account.setOtp(token: self.token!)
-                    self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
-                } catch {
-                    Logger.shared.error("Error adding OTP", error: error)
-                    self.showAlert(message: "errors.add_otp".localized, handler: super.errorHandler)
-                }
-            }
+        firstly {
+            try AuthorizationGuard.addOTP(token: token!, account: account)
+        }.done(on: .main) {
+            try self.account.setOtp(token: self.token!)
+            self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)
+        }.catch(on: .main) { error in
+            Logger.shared.error("Error adding OTP", error: error)
+            self.showAlert(message: "errors.add_otp".localized, handler: super.errorHandler)
         }
     }
     

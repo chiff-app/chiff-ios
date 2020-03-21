@@ -52,6 +52,21 @@
 				<string>Keyn vraagt om de website toe te voegen.</string>
 			</dict>
 		</dict>
+		<key>add_role</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg rollen toe</string>
+		</dict>
+		<key>add_to_team</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg toe aan team</string>
+		</dict>
+		<key>add_user</key>
+		<dict>
+			<key>value</key>
+			<string>Voeg gebruikers toe</string>
+		</dict>
 		<key>adding_account</key>
 		<dict>
 			<key>value</key>
@@ -71,6 +86,28 @@
 		<dict>
 			<key>value</key>
 			<string>Code</string>
+		</dict>
+		<key>convert_to_team_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Kies de rollen en gebruikers die toegang moeten krijgen tot dit account.</string>
+		</dict>
+		<key>convert_to_team_header</key>
+		<dict>
+			<key>value</key>
+			<string>Toegangsrechten</string>
+		</dict>
+		<key>convert_to_team_title</key>
+		<dict>
+			<key>start</key>
+			<integer>5</integer>
+			<key>value</key>
+			<string>Voeg %@ toe aan %@.</string>
+		</dict>
+		<key>convert_to_team_warning</key>
+		<dict>
+			<key>value</key>
+			<string>⚠️ Door dit account naar een team-account te converteren geef je anderen mogelijk toegang tot je wachtwoord.</string>
 		</dict>
 		<key>copied</key>
 		<dict>
@@ -139,6 +176,16 @@
 			<key>value</key>
 			<string>Geen wachtwoord ingesteld</string>
 		</dict>
+		<key>number_of_roles</key>
+		<dict>
+			<key>value</key>
+			<string>%@ rollen</string>
+		</dict>
+		<key>number_of_users</key>
+		<dict>
+			<key>value</key>
+			<string>%@ gebruikers</string>
+		</dict>
 		<key>password</key>
 		<dict>
 			<key>value</key>
@@ -175,6 +222,26 @@
 		<dict>
 			<key>value</key>
 			<string>Websites</string>
+		</dict>
+		<key>team_role_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Kies welke rollen toegang moeten krijgen tot dit account.</string>
+		</dict>
+		<key>team_role_header</key>
+		<dict>
+			<key>value</key>
+			<string>Rollen</string>
+		</dict>
+		<key>team_user_footer</key>
+		<dict>
+			<key>value</key>
+			<string>Kies welke gebruikers toegang moeten krijgen tot dit account.</string>
+		</dict>
+		<key>team_user_header</key>
+		<dict>
+			<key>value</key>
+			<string>Gebruikers</string>
 		</dict>
 		<key>time_based</key>
 		<dict>
@@ -682,6 +749,11 @@ Als je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindig
 		<dict>
 			<key>value</key>
 			<string>Je kunt alleen koppelen met een computer als de camera is ingeschakeld. Dit kun je doen via Instellingen.</string>
+		</dict>
+		<key>convert_to_team</key>
+		<dict>
+			<key>value</key>
+			<string>Fout bij converteren naar team account</string>
 		</dict>
 		<key>corrupted_data</key>
 		<dict>

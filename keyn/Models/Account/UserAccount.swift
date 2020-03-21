@@ -7,15 +7,12 @@ import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
 import CryptoKit
-
-protocol Restorable {
-    static func restore(data: Data, id: String, context: LAContext?) throws -> Self
-}
+import PromiseKit
 
 /*
  * An account belongs to the user and can have one Site.
  */
-struct UserAccount: Account, Restorable {
+struct UserAccount: Account {
 
     let id: String
     var username: String
@@ -29,14 +26,6 @@ struct UserAccount: Account, Restorable {
     var version: Int
     var webAuthn: WebAuthn?
 
-    var hasPassword: Bool {
-        return passwordIndex >= 0
-    }
-
-    var site: Site {
-        return sites[0]
-    }
-
     var synced: Bool {
         do {
             return try Keychain.shared.isSynced(id: id, service: .account)
@@ -46,9 +35,6 @@ struct UserAccount: Account, Restorable {
         return true // Defaults to true to prevent infinite cycles when an error occurs
     }
 
-    var hasOtp: Bool {
-        return Keychain.shared.has(id: id, service: .otp)
-    }
     static let keychainService: KeychainService = .account
 
     init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, context: LAContext? = nil) throws {
@@ -65,7 +51,7 @@ struct UserAccount: Account, Restorable {
 
         var generatedPassword = password
         if let password = password {
-            let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
             passwordOffset = try passwordGenerator.calculateOffset(index: 0, password: password)
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: passwordOffset)
         } else if rpId != nil && algorithms != nil {
@@ -73,7 +59,7 @@ struct UserAccount: Account, Restorable {
             self.passwordIndex = -1
             self.lastPasswordUpdateTryIndex = -1
         } else {
-            let passwordGenerator = try PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: Seed.getPasswordSeed(context: context))
+            let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
@@ -114,12 +100,12 @@ struct UserAccount: Account, Restorable {
         } else {
             try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
         }
-        try backup()
+        let _ = try backup()
     }
 
     mutating func deleteOtp() throws {
         try Keychain.shared.delete(id: id, service: .otp)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
     }
@@ -208,46 +194,21 @@ struct UserAccount: Account, Restorable {
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
-    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
-            do {
-                switch result {
-                case .success(_):
-                    try self.webAuthn?.delete(accountId: self.id)
-                    try BackupManager.deleteAccount(accountId: self.id)
-                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                    self.deleteFromToIdentityStore()
-                    Logger.shared.analytics(.accountDeleted)
-                    Properties.accountCount -= 1
-                    completionHandler(.success(()))
-                case .failure(let error): throw error
-                }
-            } catch {
-                Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(.failure(error))
-            }
-        }
-    }
-
-    func backup() throws {
-        var tokenURL: URL? = nil
-        var tokenSecret: Data? = nil
-        if let token = try oneTimePasswordToken() {
-            tokenURL = try token.toURL()
-            tokenSecret = token.generator.secret
-        }
-        let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
-        BackupManager.backup(account: account) { result in
-            do {
-                try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
-            } catch {
-                Logger.shared.error("Error setting account sync info", error: error)
-            }
-        }
+    func delete() -> Promise<Void> {
+        return firstly {
+            Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
+        }.map { _ in
+            try self.webAuthn?.delete(accountId: self.id)
+            try self.deleteBackup()
+            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+            self.deleteFromToIdentityStore()
+            Logger.shared.analytics(.accountDeleted)
+            Properties.accountCount -= 1
+        }.log("Error deleting accounts")
     }
 
     func save(password: String?, keyPair: KeyPair?) throws {
@@ -256,7 +217,7 @@ struct UserAccount: Account, Restorable {
         if let keyPair = keyPair {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
         Properties.accountCount += 1
@@ -279,60 +240,6 @@ struct UserAccount: Account, Restorable {
             throw AccountError.noWebAuthn
         }
         return try webAuthn.pubKey(accountId: self.id)
-    }
-
-
-    // MARK: - Static functions
-
-
-    static func restore(data: Data, id: String, context: LAContext?) throws -> UserAccount {
-        let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupUserAccount.self, from: data)
-        let account = UserAccount(id: backupAccount.id,
-                              username: backupAccount.username,
-                              sites: backupAccount.sites,
-                              passwordIndex: backupAccount.passwordIndex,
-                              lastPasswordTryIndex: backupAccount.lastPasswordUpdateTryIndex,
-                              passwordOffset: backupAccount.passwordOffset,
-                              askToLogin: backupAccount.askToLogin,
-                              askToChange: backupAccount.askToChange,
-                              enabled: backupAccount.enabled,
-                              version: backupAccount.version,
-                              webAuthn: backupAccount.webAuthn)
-        assert(account.id == id, "Account restoring went wrong. Different id")
-
-        var password: String? = nil
-        if account.passwordIndex >= 0 {
-            let passwordGenerator = try PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
-            (password, _) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
-        }
-
-        // Remove token and save seperately in Keychain
-        if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
-            let tokenData = tokenURL.absoluteString.data
-            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
-        }
-
-        // Webauthn
-        if let webAuthn = account.webAuthn {
-            let keyPair = try webAuthn.generateKeyPair(accountId: account.id, context: context)
-            switch webAuthn.algorithm {
-            case .EdDSA:
-                try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
-            case .ECDSA:
-                guard #available(iOS 13.0, *) else {
-                    throw WebAuthnError.notSupported
-                }
-                let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                try Keychain.shared.saveKey(id: id, key: privKey)
-            }
-        }
-
-        let data = try PropertyListEncoder().encode(account)
-
-        try Keychain.shared.save(id: account.id, service: .account, secretData: password?.data, objectData: data)
-        account.saveToIdentityStore()
-        return account
     }
 
 }
@@ -369,29 +276,3 @@ extension UserAccount: Codable {
     }
 
 }
-
-
-// Version migration
-extension UserAccount {
-
-    mutating func updateVersion(context: LAContext?) {
-        guard version == 0 else {
-            return
-        }
-        do {
-            guard let password = try password() else {
-                throw KeychainError.notFound
-            }
-            let generator = PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: try Seed.getPasswordSeed(context: context), version: 1)
-            passwordOffset = try generator.calculateOffset(index: passwordIndex, password: password)
-            version = 1
-            let accountData = try PropertyListEncoder().encode(self)
-            try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
-            try backup()
-        } catch {
-            Logger.shared.warning("Error updating account version", error: error, userInfo: nil)
-        }
-
-    }
-}
-

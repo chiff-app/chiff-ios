@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, PairControllerDelegate {
 
@@ -52,20 +53,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-                self.sessions[indexPath.row].delete(notify: true) { result in
-                    DispatchQueue.main.async {
-                        if case .failure(let error) = result {
-                            Logger.shared.error("Could not delete session.", error: error)
-                            self.showAlert(message: "errors.session_delete".localized)
-                        } else {
-                            self.sessions.remove(at: indexPath.row)
-                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                            if self.sessions.isEmpty {
-                                self.updateUi()
-                            }
-                        }
-                    }
-                }
+                self.deleteSession(session: self.sessions[indexPath.row], indexPath: indexPath)
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -238,19 +226,17 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let session = session as? TeamSession, session.isAdmin {
             self.showAlert(message: "errors.session_delete".localized)
         }
-        session.delete(notify: true) { result in
-            DispatchQueue.main.async {
-                if case .failure(let error) = result {
-                    Logger.shared.error("Could not delete session.", error: error)
-                    self.showAlert(message: "errors.session_delete".localized)
-                } else {
-                    self.sessions.remove(at: indexPath.row)
-                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    if self.sessions.isEmpty {
-                        self.updateUi()
-                    }
-                }
+        firstly {
+            session.delete(notify: true)
+        }.done(on: .main) {
+            self.sessions.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            if self.sessions.isEmpty {
+                self.updateUi()
             }
+        }.catch(on: .main) { error in
+            Logger.shared.error("Could not delete session.", error: error)
+            self.showAlert(message: "errors.session_delete".localized)
         }
     }
 }
