@@ -28,6 +28,7 @@
 		42741B6F23201F8000A9D2B2 /* BackupManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */; };
 		4275BC2323D898090060506D /* SessionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4275BC2223D898090060506D /* SessionDetailViewController.swift */; };
 		428178D32321ACBA00DC70DF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428178D22321ACBA00DC70DF /* KeychainTests.swift */; };
+		42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */; };
 		42F203A42327E52A00F7B62E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F203A32327E52A00F7B62E /* SessionTests.swift */; };
 		4904D4ED208CCAD300D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
 		4904D4EE208CD41A00D6B477 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904D4EC208CCAD300D6B477 /* BackupManager.swift */; };
@@ -344,6 +345,7 @@
 		42741B6E23201F8000A9D2B2 /* BackupManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManagerTests.swift; sourceTree = "<group>"; };
 		4275BC2223D898090060506D /* SessionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailViewController.swift; sourceTree = "<group>"; };
 		428178D22321ACBA00DC70DF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
+		42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsPickerButton.swift; sourceTree = "<group>"; };
 		42F203A32327E52A00F7B62E /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 		4950262C22BBA29400545118 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */,
 				4950262F22BBA2FC00545118 /* BackupCircle.swift */,
 				4950262D22BBA2DC00545118 /* CircleView.swift */,
 				4950263122BBA31200545118 /* FilledCircle.swift */,
@@ -1603,6 +1606,7 @@
 				61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */,
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
+				42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */,
 				49E5FA0723015DEC009C964E /* TeamSession.swift in Sources */,
 				49E5FA172302E9DE009C964E /* SharedAccount.swift in Sources */,
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,

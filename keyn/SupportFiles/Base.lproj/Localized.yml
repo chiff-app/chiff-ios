@@ -28,6 +28,10 @@ accounts:
     value: Add users
   adding_account:
     value: Adding an account
+  all:
+    value: All
+  alphabetically:
+    value: Alphabetically
   alternative_add:
     value: 'Alternatively, you can add an account manually.'
   choose:
@@ -72,6 +76,8 @@ accounts:
     value: Mode
   mode_description:
     value: Codes can either be time-based or counter-based
+  mostly:
+    value: Mostly used
   my_accounts:
     value: My accounts
   name:
@@ -84,6 +90,10 @@ accounts:
     value: '%@ users'
   password:
     value: Password
+  personal:
+    value: Personal
+  recently:
+    value: Recently used
   report:
     value: Report
   scan_2fa:
@@ -105,6 +115,10 @@ accounts:
     value: Choose which users should have access to this account.
   team_user_header:
     value: Users
+  sort:
+    value: Sort
+  team:
+    value: Team
   time_based:
     value: Time-based
   two_fa_instruction:

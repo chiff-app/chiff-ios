@@ -211,7 +211,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
 
-        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         button.setImage(UIImage(named:"add_button"), for: .normal)
         button.addTarget(self, action: #selector(showAddSession), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = button.barButtonItem
