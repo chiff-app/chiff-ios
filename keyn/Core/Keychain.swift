@@ -70,6 +70,11 @@ enum KeychainService: String {
     }
 }
 
+fileprivate enum Synced: String {
+    case `true` = "true"
+    case `false` = "fals"  // Four characters
+}
+
 
 /// The interface needed for SecKey conversion.
 protocol SecKeyConvertible: CustomStringConvertible {
@@ -115,6 +120,7 @@ struct Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
+                                    kSecAttrType as String: Synced.false.rawValue,
                                     kSecAttrAccessGroup as String: service.accessGroup]
         if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
@@ -125,7 +131,7 @@ struct Keychain {
         if let label = label {
             query[kSecAttrLabel as String] = label
         }
-    
+
         switch service.classification {
         case .restricted:
             query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
@@ -331,12 +337,10 @@ struct Keychain {
         guard let dataArray = queryResult as? [String: Any] else {
             throw KeychainError.unexpectedData
         }
-        if let label = dataArray[kSecAttrType as String] as? String {
-            return label == "true"
-        } else { // Not present, we'll assume it's synced
-            try setSynced(value: true, id: identifier, service: service)
-            return true
+        guard let label = dataArray[kSecAttrType as String] as? String else {
+            return false
         }
+        return label == Synced.true.rawValue
     }
 
     func setSynced(value: Bool, id identifier: String, service: KeychainService) throws {
@@ -349,7 +353,7 @@ struct Keychain {
             query[kSecUseAuthenticationContext as String] = defaultContext
         }
 
-        let attributes: [String: Any] = [kSecAttrType as String: value ? "true" : "fals"] // Four characters
+        let attributes: [String: Any] = [kSecAttrType as String: value ? Synced.true.rawValue : Synced.false.rawValue]
 
         switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
         case errSecSuccess: return

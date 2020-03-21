@@ -183,7 +183,7 @@ class TestHelper {
     }
 
     static func deleteLocalData() {
-        BrowserSession.deleteAll() {}
+        let _ = BrowserSession.deleteAll()
         UserAccount.deleteAll()
         Seed.delete()
         NotificationManager.shared.deleteEndpoint()

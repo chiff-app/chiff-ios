@@ -27,7 +27,7 @@ protocol Account: BaseAccount {
 
     static var keychainService: KeychainService { get }
 
-    func backup() throws
+    func backup() throws -> Promise<Void>
     func delete() -> Promise<Void>
 }
 

@@ -4,6 +4,7 @@
  */
 import XCTest
 import LocalAuthentication
+import PromiseKit
 
 @testable import keyn
 
@@ -14,13 +15,12 @@ class SeedTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let exp = expectation(description: "Get an authenticated context")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
-            switch result {
-                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
-                case .success(let context):
-                    self.context = context
-            }
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { result in
+            self.context = result
+        }.ensure {
             exp.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
@@ -36,11 +36,10 @@ class SeedTests: XCTestCase {
     func testCreateSeed() {
         TestHelper.deleteLocalData()
         let expectation = XCTestExpectation(description: "Finish testMnemonic")
-        Seed.create(context: self.context) { (result) in
-            if case let .failure(error) = result {
-                XCTFail(error.localizedDescription)
-            }
+        Seed.create(context: self.context).ensure {
             expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -48,21 +47,18 @@ class SeedTests: XCTestCase {
     func testMnemonic() {
         TestHelper.createSeed()
         let expectation = XCTestExpectation(description: "Finish testMnemonic")
-        Seed.mnemonic { (result) in
-            switch result {
-            case .success(let mnemonic):
-                switch Locale.current.languageCode {
-                case "nl":
-                    print(mnemonic)
-                    XCTAssertEqual(["zucht", "vast", "lans", "troosten", "reclame", "gas", "geen", "blok", "falen", "jammer", "intiem", "kat"], mnemonic)
-                default:
-                    XCTAssertEqual(TestHelper.mnemonic, mnemonic)
-                }
-                expectation.fulfill()
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
+        Seed.mnemonic().done{ (mnemonic) in
+            switch Locale.current.languageCode {
+            case "nl":
+                print(mnemonic)
+                XCTAssertEqual(["zucht", "vast", "lans", "troosten", "reclame", "gas", "geen", "blok", "falen", "jammer", "intiem", "kat"], mnemonic)
+            default:
+                XCTAssertEqual(TestHelper.mnemonic, mnemonic)
             }
+        }.ensure {
+            expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -70,13 +66,12 @@ class SeedTests: XCTestCase {
     func testMnemonicFailsIfNoData() {
         let expectation = XCTestExpectation(description: "Finish testMnemonicFailsIfNoData")
         TestHelper.deleteLocalData()
-        Seed.mnemonic { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        Seed.mnemonic().done { (result) in
+             XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
-         wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 3.0)
     }
 
     func testValidate() {
@@ -92,11 +87,10 @@ class SeedTests: XCTestCase {
         }
         let expectation = XCTestExpectation(description: "Finish testRecover")
         API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-        Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic) { (result) in
-            if case let .failure(error) = result {
-                XCTFail(error.localizedDescription)
-            }
+        Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic).ensure {
             expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -164,17 +158,15 @@ class SeedTests: XCTestCase {
         }
         API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
         let expectation = XCTestExpectation(description: "Finish testIsBackedUp")
-        Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic) { (result) in
-            do {
-                let _ = try result.get()
-                guard let account = try UserAccount.get(accountID: TestHelper.userID, context: self.context) else {
-                    return XCTFail("Account not found")
-                }
-                XCTAssertTrue(account.id == TestHelper.userID)
-            } catch {
-                XCTFail(error.localizedDescription)
+        Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic).done { (result) in
+            guard let account = try UserAccount.get(accountID: TestHelper.userID, context: self.context) else {
+                return XCTFail("Account not found")
             }
+            XCTAssertTrue(account.id == TestHelper.userID)
+        }.ensure {
             expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 10.0)
     }
@@ -184,29 +176,16 @@ class SeedTests: XCTestCase {
     func testCreateAndMnemonicAndValidateAndDeleteAndRecover() {
         TestHelper.deleteLocalData()
         let expectation = XCTestExpectation(description: "Finish testCreateAndMnemonicAndValidateAndDeleteAndRecover")
-        Seed.create(context: self.context) { (seedResult) in
-            switch seedResult {
-            case .success(_):
-                Seed.mnemonic { (result) in
-                    do {
-                        let mnemonic = try result.get()
-                        XCTAssertTrue(Seed.validate(mnemonic: mnemonic))
-                        TestHelper.deleteLocalData()
-                        Seed.recover(context: self.context, mnemonic: mnemonic, completionHandler: { (result) in
-                            if case let .failure(error) = result {
-                                XCTFail(error.localizedDescription)
-                            }
-                            expectation.fulfill()
-                        })
-                    } catch {
-                        XCTFail("Error deleting seeds \(error)")
-                        expectation.fulfill()
-                    }
-                }
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        Seed.create(context: self.context).then { (seedResult) in
+            Seed.mnemonic()
+        }.then { (mnemonic: [String]) -> Promise<(Int,Int,Int,Int)> in
+            XCTAssertTrue(Seed.validate(mnemonic: mnemonic))
+            TestHelper.deleteLocalData()
+            return Seed.recover(context: self.context, mnemonic: mnemonic)
+        }.ensure {
+            expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }

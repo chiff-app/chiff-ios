@@ -100,12 +100,12 @@ struct UserAccount: Account {
         } else {
             try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
         }
-        try backup()
+        let _ = try backup()
     }
 
     mutating func deleteOtp() throws {
         try Keychain.shared.delete(id: id, service: .otp)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
     }
@@ -194,7 +194,7 @@ struct UserAccount: Account {
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
@@ -217,7 +217,7 @@ struct UserAccount: Account {
         if let keyPair = keyPair {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
         Properties.accountCount += 1

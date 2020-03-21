@@ -62,12 +62,12 @@ extension UserAccount: Restorable {
 
         let data = try PropertyListEncoder().encode(account)
 
-        try Keychain.shared.save(id: account.id, service: .account, secretData: password?.data, objectData: data)
+        try Keychain.shared.save(id: account.id, service: Self.keychainService, secretData: password?.data, objectData: data)
         account.saveToIdentityStore()
         return account
     }
 
-    func backup() throws {
+    func backup() throws -> Promise<Void> {
         var tokenURL: URL? = nil
         var tokenSecret: Data? = nil
         if let token = try oneTimePasswordToken() {
@@ -76,11 +76,14 @@ extension UserAccount: Restorable {
         }
         let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
         let data = try JSONEncoder().encode(account)
-        firstly {
+        return firstly {
             backup(data: data)
-        }.done { result in
-            try Keychain.shared.setSynced(value: result, id: account.id, service: .account)
-        }.catchLog("Error setting account sync info")
+        }.map { _ in
+            try Keychain.shared.setSynced(value: true, id: self.id, service: Self.keychainService)
+        }.recover { error in
+            try Keychain.shared.setSynced(value: false, id: self.id, service: Self.keychainService)
+            throw error
+        }.log("Error setting account sync info")
     }
 
 }

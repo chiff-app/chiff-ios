@@ -13,7 +13,6 @@ import PromiseKit
  * An account belongs to the user and can have one Site.
  */
 struct SharedAccount: Account {
-    
     let id: String
     var username: String
     var sites: [Site]
@@ -78,14 +77,15 @@ struct SharedAccount: Account {
         self.deleteFromToIdentityStore()
     }
 
-    func backup() throws {
+    func backup() throws -> Promise<Void> {
         // Intentionally not implemented
+        return .value(())
     }
 
     func save(password: String, sessionPubKey: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
     }
