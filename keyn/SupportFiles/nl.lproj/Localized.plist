@@ -72,6 +72,16 @@
 			<key>value</key>
 			<string>Een account toevoegen</string>
 		</dict>
+		<key>all</key>
+		<dict>
+			<key>value</key>
+			<string>Alle</string>
+		</dict>
+		<key>alphabetically</key>
+		<dict>
+			<key>value</key>
+			<string>Alfabetisch</string>
+		</dict>
 		<key>alternative_add</key>
 		<dict>
 			<key>value</key>
@@ -161,6 +171,11 @@
 			<key>value</key>
 			<string>Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn</string>
 		</dict>
+		<key>mostly</key>
+		<dict>
+			<key>value</key>
+			<string>Meest gebruikt</string>
+		</dict>
 		<key>my_accounts</key>
 		<dict>
 			<key>value</key>
@@ -190,6 +205,16 @@
 		<dict>
 			<key>value</key>
 			<string>Wachtwoord</string>
+		</dict>
+		<key>personal</key>
+		<dict>
+			<key>value</key>
+			<string>Persoonlijk</string>
+		</dict>
+		<key>recently</key>
+		<dict>
+			<key>value</key>
+			<string>Laatst gebruikt</string>
 		</dict>
 		<key>report</key>
 		<dict>
@@ -242,6 +267,15 @@
 		<dict>
 			<key>value</key>
 			<string>Gebruikers</string>
+		<key>sort</key>
+		<dict>
+			<key>value</key>
+			<string>Sorteer</string>
+		</dict>
+		<key>team</key>
+		<dict>
+			<key>value</key>
+			<string>Team</string>
 		</dict>
 		<key>time_based</key>
 		<dict>

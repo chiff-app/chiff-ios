@@ -24,6 +24,8 @@ struct SharedAccount: Account {
     let sessionPubKey: String
     var synced = true
     var version: Int
+    var timesUsed: Int
+    var lastTimeUsed: Date?
 
     var site: Site {
         return sites.first!
@@ -43,6 +45,7 @@ struct SharedAccount: Account {
         self.askToLogin = true
         self.sessionPubKey = sessionPubKey
         self.version = version
+        self.timesUsed = 0
     }
 
     mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
@@ -137,6 +140,8 @@ extension SharedAccount: Codable {
         case askToChange
         case sessionPubKey
         case version
+        case timesUsed
+        case lastTimeUsed
     }
 
     init(from decoder: Decoder) throws {
@@ -149,6 +154,8 @@ extension SharedAccount: Codable {
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
+        self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
+        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
     }
 
 }

@@ -5,13 +5,45 @@
 import UIKit
 import PromiseKit
 
+enum Filters: Int {
+    case all
+    case team
+    case personal
+
+    func text() -> String {
+        switch self {
+        case .all: return "accounts.all".localized
+        case .team: return "accounts.team".localized
+        case .personal: return "accounts.personal".localized
+        }
+    }
+}
+
+enum SortingValues: String {
+    case alphabetically
+    case mostly
+    case recently
+
+    func text() -> String {
+        switch self {
+        case .alphabetically: return "accounts.alphabetically".localized
+        case .mostly: return "accounts.mostly".localized
+        case .recently: return "accounts.recently".localized
+        }
+    }
+
+    static func array() -> [SortingValues] {
+        return [SortingValues.alphabetically, SortingValues.mostly, SortingValues.recently]
+    }
+}
+
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
-//    let searchController = UISearchController(searchResultsController: nil)
+    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
@@ -19,8 +51,29 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var upgradeButton: KeynButton!
     @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sortLabel: UILabel!
 
+    var sortingButton: AccountsPickerButton!
     var addAccountButton: KeynBarButton?
+    var currentFilter = Filters.all
+    var currentSortingValue = SortingValues.alphabetically
+//    {
+//        didSet {
+//            let rangeText = "accounts.sort".localized
+//            let title = rangeText + " " + currentSortingValue.text()
+//            let range = (title as NSString).range(of: rangeText)
+//            let font = UIFont.primaryBold
+//            let textColor = UIColor.primary
+//            let attributes = [
+//                NSAttributedString.Key.font: font,
+//                NSAttributedString.Key.foregroundColor: textColor
+//            ]
+//            let attributedString = NSMutableAttributedString(string: title, attributes: attributes as [NSAttributedString.Key: Any])
+//            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.primaryHalfOpacity, range: range)
+//            sortingButton.setAttributedTitle(attributedString, for: .normal)
+//        }
+//    }
+    var searchQuery = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,26 +83,40 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             unfilteredAccounts = [UserAccount]()
         }
-        filteredAccounts = unfilteredAccounts
+
+        prepareAccounts()
         updateUi()
 
         scrollView.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
 
-//        searchController.searchResultsUpdater = self
-//        searchController.searchBar.searchBarStyle = .minimal
-//        searchController.hidesNavigationBarDuringPresentation = true
-//        searchController.dimsBackgroundDuringPresentation = false
         self.extendedLayoutIncludesOpaqueBars = false
         self.definesPresentationContext = true
-//        navigationItem.searchController = searchController
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
         setFooter()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if #available(iOS 13, *) {
+            searchController.searchResultsUpdater = self
+            searchController.searchBar.searchBarStyle = .minimal
+            searchController.hidesNavigationBarDuringPresentation = false
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.searchBar.scopeButtonTitles = [
+                Filters.all.text(),
+                Filters.team.text(),
+                Filters.personal.text()
+            ]
+            searchController.searchBar.delegate = self
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = true
+        }
     }
 
     @objc func showAddAccount() {
@@ -64,7 +131,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         DispatchQueue.main.async {
             if let accounts = try? notification.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
-                self.filteredAccounts = self.unfilteredAccounts
+                self.prepareAccounts()
                 self.tableView.reloadData()
                 self.updateUi()
             }
@@ -76,7 +143,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            addAddButton(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            addBarButtons(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
             setFooter()
             upgradeButton.isHidden = Properties.hasValidSubscription
             upgradeButtonHeightConstraint.constant = Properties.hasValidSubscription ? 0 : 44
@@ -90,7 +157,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func updateSubscriptionStatus(notification: Notification) {
         DispatchQueue.main.async {
-            self.filteredAccounts = self.unfilteredAccounts
+            self.prepareAccounts()
             self.tableView.reloadData()
             self.setFooter()
             self.updateUi()
@@ -106,14 +173,76 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text, !searchText.isEmpty {
-            filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
-                return account.site.name.lowercased().contains(searchText.lowercased())
-            }).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+        if let searchText = searchController.searchBar.text {
+            searchQuery = searchText
         } else {
-            filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+            searchQuery = ""
         }
+        prepareAccounts()
         tableView.reloadData()
+    }
+    @IBAction func showSortValuesPicker(_ sender: Any) {
+        sortingButton.becomeFirstResponder()
+    }
+    
+    func prepareAccounts() {
+        filteredAccounts = searchAccounts(accounts: unfilteredAccounts)
+        filteredAccounts = filterAccounts(accounts: filteredAccounts)
+        filteredAccounts = sortAccounts(accounts: filteredAccounts)
+    }
+
+    func searchAccounts(accounts: [Account]) -> [Account] {
+        return searchQuery == "" ? unfilteredAccounts : unfilteredAccounts.filter({ (account) -> Bool in
+            return account.site.name.lowercased().contains(searchQuery.lowercased())
+        })
+    }
+
+    func filterAccounts(accounts: [Account]) -> [Account] {
+        switch currentFilter {
+        case .all:
+            return accounts
+        case .team:
+            return accounts.filter { (account) -> Bool in
+                return account is TeamAccount
+            }
+        case .personal:
+            return accounts.filter { (account) -> Bool in
+                return account is UserAccount
+            }
+        }
+    }
+
+    func sortAccounts(accounts: [Account]) -> [Account] {
+        switch currentSortingValue {
+        case .alphabetically: return sortAlphabetically(accounts: accounts)
+        case .mostly: return sortMostlyUsed(accounts: accounts)
+        case .recently: return sortRecentlyUsed(accounts: accounts)
+        }
+    }
+
+    func sortAlphabetically(accounts: [Account]) -> [Account] {
+        return accounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+    }
+
+    func sortMostlyUsed(accounts: [Account]) -> [Account] {
+        return accounts.sorted(by: { $0.timesUsed > $1.timesUsed })
+    }
+
+    func sortRecentlyUsed(accounts: [Account]) -> [Account] {
+        return accounts.sorted(by: { current, next in
+            if current.lastTimeUsed == nil {
+                return false
+            } else if next.lastTimeUsed == nil {
+                return true
+            } else if let currentLastTimeUsed = current.lastTimeUsed, let nextLastTimeUsed = next.lastTimeUsed {
+                print(currentLastTimeUsed)
+                print(nextLastTimeUsed)
+                print(currentLastTimeUsed > nextLastTimeUsed)
+                return currentLastTimeUsed > nextLastTimeUsed
+            } else {
+                return false
+            }
+        })
     }
 
     // MARK: - Table view data source
@@ -183,11 +312,21 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         guard let account = notification.userInfo?["account"] as? UserAccount else {
             return
         }
-        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-            filteredAccounts[filteredIndex] = account
-            let indexPath = IndexPath(row: filteredIndex, section: 0)
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+
+        // Update the account on the unfiltered array in case it is not visible at the moment.
+        if let unfilteredIndex = unfilteredAccounts.firstIndex(where: { account.id == $0.id }) {
+            unfilteredAccounts[unfilteredIndex] = account
         }
+        // Will return the same UI
+        // The updated account will be now included
+        prepareAccounts()
+        tableView.reloadData()
+        // For this to work we should use diffing on the data source.
+        // Because in cases where the order of the rows change, for example recent use, this will not be correct.
+//        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
+//            let indexPath = IndexPath(row: filteredIndex, section: 0)
+//             tableView.reloadRows(at: [indexPath], with: .automatic)
+//        }
         if !Properties.hasValidSubscription && Properties.accountOverflow {
             addAccountButton?.isEnabled = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
         }
@@ -196,7 +335,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
     func addAccount(account: UserAccount) {
         unfilteredAccounts.append(account)
-        filteredAccounts = unfilteredAccounts.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
+        prepareAccounts()
         if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
             let newIndexPath = IndexPath(row: filteredIndex, section: 0)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
@@ -238,14 +377,59 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.updateUi()
     }
 
-    private func addAddButton(enabled: Bool){
-//        guard self.navigationItem.rightBarButtonItem == nil else {
-//            return
-//        }
-
-        addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+    private func addBarButtons(enabled: Bool){
+        if addAccountButton == nil {
+            addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+        }
         addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
+
+        if sortingButton == nil {
+            sortingButton = AccountsPickerButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            sortingButton!.setImage(UIImage(named:"filter_button"), for: .normal)
+            currentSortingValue = SortingValues.alphabetically
+            sortingButton.picker.delegate = self
+            sortingButton.picker.dataSource = self
+            sortingButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
+            self.navigationItem.leftBarButtonItem = sortingButton!.barButtonItem
+        }
+    }
+}
+
+extension AccountsTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        switch selectedScope {
+        case Filters.all.rawValue:
+            currentFilter = Filters.all
+        case Filters.team.rawValue:
+            currentFilter = Filters.team
+        case Filters.personal.rawValue:
+            currentFilter = Filters.personal
+        default:
+            return
+        }
+        prepareAccounts()
+        tableView.reloadData()
+    }
+}
+
+extension AccountsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return SortingValues.array().count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return SortingValues.array()[row].text()
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentSortingValue = SortingValues.array()[row]
+        prepareAccounts()
+        tableView.reloadData()
     }
 }
