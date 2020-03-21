@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PromiseKit
 @testable import keyn
 
 enum MockAPIError: Error {
@@ -31,67 +32,76 @@ class MockAPI: APIProtocol {
         customData = data
     }
 
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil) -> Promise<JSONObject> {
         if shouldFail {
-            completionHandler(.failure(MockAPIError.fakeError))
+            return Promise(error: MockAPIError.fakeError)
         } else {
             let components = path.split(separator: "/")
             if components[0] == "users" {
-                completionHandler(backupCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body))
+                if components.count > 2 {
+                    switch components[2] {
+                    case "accounts": return userBackupCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body)
+                    case "sessions": return .value(JSONObject()) // Not implemented yet
+                    default: return Promise(error: MockAPIError.notImplemented)
+                    }
+                } else {
+                    return userBackupCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body)
+                }
             } else if components[0] == "sessions" {
                 if components.count > 2 {
                     switch components[2] {
                     case "pairing":
-                        completionHandler(pairingCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body))
+                        return pairingCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body)
                     case "volatile":
-                        completionHandler(volatileCallSigned())
+                        return volatileCallSigned()
                     case "browser-to-app":
-                        completionHandler(persistentBrowserToAppSignedCall())
+                        return persistentBrowserToAppSignedCall()
                     case "app-to-browser":
-                        completionHandler(.success(JSONObject()))
+                        return .value(JSONObject())
                     default:
-                        completionHandler(.failure(MockAPIError.notImplemented))
+                        return Promise(error: MockAPIError.notImplemented)
                     }
                 } else {
-                    completionHandler(pairingCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body))
+                    return pairingCallSigned(method: method, message: message, pubKey: String(components[1]), privKey: privKey, body: body)
                 }
             }
         }
+        return Promise(error: MockAPIError.notImplemented)
     }
 
-    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil, completionHandler: @escaping (Result<JSONObject, Error>) -> Void) {
+    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
         if shouldFail {
-            completionHandler(.failure(MockAPIError.fakeError))
+            return Promise(error: MockAPIError.fakeError)
         } else {
             let components = path.split(separator: "/")
             switch components[0] {
-            case "sessions": completionHandler(messageCall(path: path, parameters: parameters, method: method, signature: signature, body: body))
-            case "ppd": completionHandler(ppdCall(id: String(components[1])))
-            case "questionnaires": completionHandler(questionnaire(method: method))
-            default: completionHandler(.failure(MockAPIError.notImplemented))
+            case "sessions": return messageCall(path: path, parameters: parameters, method: method, signature: signature, body: body)
+            case "ppd": return ppdCall(id: String(components[1]))
+            case "questionnaires": return questionnaire(method: method)
+            default: return Promise(error: MockAPIError.notImplemented)
             }
         }
     }
     
-    private func questionnaire(method: APIMethod) -> Result<JSONObject, Error> {
+    private func questionnaire(method: APIMethod) -> Promise<JSONObject> {
         switch method {
         case .post:
-            return .success(JSONObject())
+            return .value(JSONObject())
         case .get:
             if let data = customData {
-                return .success(["nothing": data])
+                return .value(["nothing": data])
             } else {
                 if let path = Bundle(for: type(of: self)).path(forResource: "questionnaire", ofType: "json") {
                     do {
                         let fileUrl = URL(fileURLWithPath: path)
                         let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
                         let jsonData = try JSONSerialization.jsonObject(with: data) as! JSONObject
-                        return .success(["questionnaires": [jsonData]])
+                        return .value(["questionnaires": [jsonData]])
                     } catch {
                         fatalError(error.localizedDescription)
                     }
                 } else {
-                    return .success(JSONObject())
+                    return .value(JSONObject())
                 }
             }
         default:
@@ -99,50 +109,50 @@ class MockAPI: APIProtocol {
         }
     }
     
-    private func ppdCall(id: String?) -> Result<JSONObject, Error> {
+    private func ppdCall(id: String?) -> Promise<JSONObject> {
         if id == "1" {
             if let path = Bundle(for: type(of: self)).path(forResource: "samplePPD", ofType: "json") {
                 do {
                     let fileUrl = URL(fileURLWithPath: path)
                     let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
-                    return .success(try JSONSerialization.jsonObject(with: data) as! JSONObject)
+                    return .value(try JSONSerialization.jsonObject(with: data) as! JSONObject)
                 } catch {
                     fatalError(error.localizedDescription)
                 }
             } else {
-                return .success(JSONObject())
+                return .value(JSONObject())
             }
         } else if id == "2" {
-            return .success(["ppds":[["wrong":"data"]]])
+            return .value(["ppds":[["wrong":"data"]]])
         } else {
-            return .success(["nothing":[]])
+            return .value(["nothing":[]])
         }
     }
 
-    private func persistentBrowserToAppSignedCall() -> Result<JSONObject, Error> {
+    private func persistentBrowserToAppSignedCall() -> Promise<JSONObject> {
         if let data = customData as? [[String: String]] {
-            return .success([
+            return .value([
                 "messages": data
                 ])
         }
-        return .success(JSONObject())
+        return .value(JSONObject())
     }
     
-    private func volatileCallSigned() -> Result<JSONObject, Error> {
-        return .success(JSONObject())
+    private func volatileCallSigned() -> Promise<JSONObject> {
+        return .value(JSONObject())
     }
     
-    private func pairingCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Result<JSONObject, Error> {
-        return .success(JSONObject())
+    private func pairingCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Promise<JSONObject> {
+        return .value(JSONObject())
     }
     
-    private func messageCall(path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Result<JSONObject, Error> {
-        return .success(JSONObject())
+    private func messageCall(path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
+        return .value(JSONObject())
     }
 
-    private func backupCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Result<JSONObject, Error> {
+    private func userBackupCallSigned(method: APIMethod, message: JSONObject?, pubKey: String?, privKey: Data, body: Data?) -> Promise<JSONObject> {
         guard let pubKey = pubKey else {
-            return .failure(MockAPIError.noPublicKey)
+            return Promise(error: MockAPIError.noPublicKey)
         }
         switch method {
         case .get:
@@ -150,39 +160,39 @@ class MockAPI: APIProtocol {
                 mockData[pubKey] = [TestHelper.userID:TestHelper.userData]
             }
             guard let data = mockData[pubKey] else {
-                return .failure(MockAPIError.noData)
+                return Promise(error: MockAPIError.noData)
             }
-            return .success(data)
+            return .value(data)
         case .delete:
             if let message = message, let id = message["id"] as? String {
                 if mockData[pubKey]?.removeValue(forKey: id) != nil {
-                    return .success(JSONObject())
+                    return .value(JSONObject())
                 } else {
-                    return .failure(MockAPIError.badPublicKey)
+                    return Promise(error: MockAPIError.badPublicKey)
                 }
             } else if pubKey.contains("/all") {
                 let newPubKey = String(pubKey[pubKey.startIndex..<pubKey.index(pubKey.endIndex, offsetBy: -4)])
                 if mockData.removeValue(forKey: String(newPubKey)) != nil {
-                    return .success(JSONObject())
+                    return .value(JSONObject())
                 } else {
-                    return .failure(MockAPIError.badPublicKey)
+                    return Promise(error: MockAPIError.badPublicKey)
                 }
             }
-            return .success(JSONObject())
+            return .value(JSONObject())
         case .put:
             guard let message = message, let id = message["id"] as? String, let recoverData = message["data"] as? String else {
-                return .failure(MockAPIError.noData)
+                return Promise(error: MockAPIError.noData)
             }
             mockData[pubKey] = [id: recoverData]
-            return .success(JSONObject())
+            return .value(JSONObject())
         case .post:
             guard let message = message, let id = message["userId"] as? String else {
-                return .failure(MockAPIError.noData)
+                return Promise(error: MockAPIError.noData)
             }
             mockData[pubKey] = [id: JSONObject()]
-            return .success(JSONObject())
+            return .value(JSONObject())
         case .patch:
-            return .failure(MockAPIError.notImplemented)
+            return Promise(error: MockAPIError.notImplemented)
         }
     }
 }

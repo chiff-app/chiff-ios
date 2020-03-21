@@ -15,6 +15,8 @@ def shared_pods
   pod 'Firebase/Core'
   pod 'Amplitude-iOS', '~> 4.5'
   pod 'SwiftLint'
+  pod "PromiseKit", "~> 6.8"
+  pod "PromiseKit/Foundation"
 end
 
 target 'keyn' do

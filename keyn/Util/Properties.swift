@@ -95,7 +95,7 @@ struct Properties {
         get { return UserDefaults.standard.double(forKey: subscriptionExiryDateFlag) }
         set {
             UserDefaults.standard.set(newValue, forKey: subscriptionExiryDateFlag)
-            NotificationCenter.default.post(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
+            NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
         }
     }
     static var subscriptionProduct: String? {
@@ -110,14 +110,14 @@ struct Properties {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
         set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
     }
-    static func getTeamAccountCount(teamId: String) -> Int {
+    static func getSharedAccountCount(teamId: String) -> Int {
         if let data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
             return data[teamId] ?? 0
         } else {
             return 0
         }
     }
-    static func setTeamAccountCount(teamId: String, count: Int) {
+    static func setSharedAccountCount(teamId: String, count: Int) {
         if var data = UserDefaults.standard.dictionary(forKey: teamAccountCountFlag) as? [String: Int] {
             data[teamId] = count
             UserDefaults.standard.set(data, forKey: teamAccountCountFlag)

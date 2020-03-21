@@ -5,6 +5,7 @@
 import UIKit
 import LocalAuthentication
 import OneTimePassword
+import PromiseKit
 
 class RequestViewController: UIViewController {
 
@@ -62,38 +63,37 @@ class RequestViewController: UIViewController {
     // MARK: - Private functions
 
     private func acceptRequest() {
-        authorizationGuard.acceptRequest { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let account):
-                    if let account = account as? UserAccount, account.hasOtp {
-                        AuthenticationGuard.shared.hideLockWindow()
-                        self.account = account
-                        self.showOtp()
-                    } else {
-                        AuthenticationGuard.shared.hideLockWindow()
-                        self.success()
-                    }
-                case .failure(let error):
-                    if let error = error as? AuthorizationError {
-                        switch error {
-                        case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
-                        case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
-                        case .noTeamSessionFound:
-                            self.showAlert(message: "errors.no_team".localized)
-                        case .notAdmin:
-                            self.showAlert(message: "errors.no_admin".localized)
-                        }
-                        AuthenticationGuard.shared.hideLockWindow()
-                    } else if let error = error as? APIError {
-                        Logger.shared.error("APIError authorizing request", error: error)
-                    } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                        self.showAlert(message: errorMessage)
-                        Logger.shared.error("Error authorizing request", error: error)
-                    } else {
-                        Logger.shared.error("Error authorizing request", error: error)
-                    }
+        firstly {
+            authorizationGuard.acceptRequest()
+        }.done(on: .main) { account in
+            if let account = account as? UserAccount, account.hasOtp {
+                AuthenticationGuard.shared.hideLockWindow()
+                self.account = account
+                self.showOtp()
+            } else {
+                AuthenticationGuard.shared.hideLockWindow()
+                self.success()
+            }
+        }.catch(on: .main) { error in
+            if let error = error as? AuthorizationError {
+                switch error {
+                case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
+                case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+                case .noTeamSessionFound:
+                    self.showAlert(message: "errors.no_team".localized)
+                case .notAdmin:
+                    self.showAlert(message: "errors.no_admin".localized)
+                case .inProgress:
+                    return
                 }
+                AuthenticationGuard.shared.hideLockWindow()
+            } else if let error = error as? APIError {
+                Logger.shared.error("APIError authorizing request", error: error)
+            } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                self.showAlert(message: errorMessage)
+                Logger.shared.error("Error authorizing request", error: error)
+            } else {
+                Logger.shared.error("Error authorizing request", error: error)
             }
         }
     }
@@ -214,11 +214,11 @@ class RequestViewController: UIViewController {
 
     @IBAction func close(_ sender: UIButton) {
         if !authorized {
-            authorizationGuard.rejectRequest() {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
-                }
-            }
+            firstly {
+                authorizationGuard.rejectRequest()
+            }.done(on: .main) {
+                self.dismiss(animated: true, completion: nil)
+            }.catchLog("Hm?")
         } else {
             dismiss()
         }

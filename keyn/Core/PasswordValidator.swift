@@ -140,34 +140,34 @@ class PasswordValidator {
         return true
     }
     
-    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
-        let hash = password.sha1.uppercased()
-        let index = hash.index(hash.startIndex, offsetBy: 5)
-        let prefix = hash.prefix(upTo: index).uppercased()
-        let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { (result) in
-            switch result {
-            case .failure(let error):
-                Logger.shared.warning("Error querying HIBP", error: error)
-                completionHandler(0)
-            case .success(let response, let data):
-                if response.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
-                    var breachCount: Int? = nil
-                    for line in responseString.lines {
-                        let result = line.split(separator: ":")
-                        if hash == prefix + result[0] {
-                            breachCount = Int(result[1])
-                        }
-                    }
-                    completionHandler(breachCount ?? 0)
-                }
-            }
-        }
-        task.resume()
-    }
+//    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
+//        let hash = password.sha1.uppercased()
+//        let index = hash.index(hash.startIndex, offsetBy: 5)
+//        let prefix = hash.prefix(upTo: index).uppercased()
+//        let url = URL(string: "https://api.pwnedpasswords.com/range/\(prefix)")!
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//
+//        let task = URLSession.shared.dataTask(with: request) { (result) in
+//            switch result {
+//            case .failure(let error):
+//                Logger.shared.warning("Error querying HIBP", error: error)
+//                completionHandler(0)
+//            case .success(let response, let data):
+//                if response.statusCode == 200, let responseString = String(data: data, encoding: .utf8) {
+//                    var breachCount: Int? = nil
+//                    for line in responseString.lines {
+//                        let result = line.split(separator: ":")
+//                        if hash == prefix + result[0] {
+//                            breachCount = Int(result[1])
+//                        }
+//                    }
+//                    completionHandler(breachCount ?? 0)
+//                }
+//            }
+//        }
+//        task.resume()
+//    }
 
     // MARK: - Private
 

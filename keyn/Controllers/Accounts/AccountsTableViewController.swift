@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
     
@@ -152,7 +153,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
             cell.titleLabel.alpha = showEnabled ? 1 : 0.5
             cell.icon.alpha = showEnabled ? 1 : 0.5
-            cell.teamIconWidthConstraint.constant = account is TeamAccount ? 24 : 0
+            cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
             if #available(iOS 13.0, *) {
                 cell.teamIcon.image = UIImage(systemName: "person.2.fill")
             }
@@ -209,30 +210,32 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
-        } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account {
-            if let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-                let indexPath = IndexPath(row: index, section: 0)
-                deleteAccount(account: account, filteredIndexPath: indexPath)
-            }
+        } else if sender.identifier == "DeleteAccount", let sourceViewController = sender.source as? AccountViewController, let account = sourceViewController.account, let index = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
+            let indexPath = IndexPath(row: index, section: 0)
+            deleteAccount(account: account, filteredIndexPath: indexPath)
+        } else if sender.identifier == "DeleteUserAccount", let sourceViewController = sender.source as? TeamAccountViewController, let account = sourceViewController.account, let index = filteredAccounts.firstIndex(where: { sourceViewController.account.id == $0.id && $0 is UserAccount }) {
+            let indexPath = IndexPath(row: index, section: 0)
+            deleteAccountFromTable(indexPath: indexPath, id: account.id)
         }
     }
 
     // MARK: - Private
 
     private func deleteAccount(account: Account, filteredIndexPath: IndexPath) {
-        account.delete(completionHandler: { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    self.filteredAccounts.remove(at: filteredIndexPath.row)
-                    self.unfilteredAccounts.removeAll(where: { $0.id == account.id })
-                    self.tableView.deleteRows(at: [filteredIndexPath], with: .fade)
-                    self.updateUi()
-                case .failure(let error):
-                    self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
-                }
-            }
-        })
+        firstly {
+            account.delete()
+        }.done(on: DispatchQueue.main) {
+            self.deleteAccountFromTable(indexPath: filteredIndexPath, id: account.id)
+        }.catch(on: DispatchQueue.main) { error in
+            self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
+        }
+    }
+
+    private func deleteAccountFromTable(indexPath: IndexPath, id: String) {
+        self.filteredAccounts.remove(at: indexPath.row)
+        self.unfilteredAccounts.removeAll(where: { $0.id == id })
+        self.tableView.deleteRows(at: [indexPath], with: .fade)
+        self.updateUi()
     }
 
     private func addAddButton(enabled: Bool){
