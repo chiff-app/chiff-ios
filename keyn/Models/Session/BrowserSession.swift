@@ -279,7 +279,7 @@ struct BrowserSession: Session {
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
-            message["SharedAccounts"] = try SharedAccount.all(context: nil).mapValues { (account) -> [String: String] in
+            message["teamAccounts"] = try SharedAccount.all(context: nil).mapValues { (account) -> [String: String] in
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return [
                     "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,
