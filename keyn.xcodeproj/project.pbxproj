@@ -42,9 +42,6 @@
 		49062C6D2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
 		49062C6E2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
 		49062C6F2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
-		49062C7822146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
-		49062C7922146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
-		49062C7A22146D8700A30669 /* Localized.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49062C7C22146D8700A30669 /* Localized.plist */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
 		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
 		49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
@@ -78,6 +75,8 @@
 		493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
 		493DB00D231578380061CB5C /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
+		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
 		4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262F22BBA2FC00545118 /* BackupCircle.swift */; };
 		4950263222BBA31200545118 /* FilledCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950263122BBA31200545118 /* FilledCircle.swift */; };
@@ -348,11 +347,9 @@
 		42A1FD6E24221A4E00D05203 /* AccountsPickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsPickerButton.swift; sourceTree = "<group>"; };
 		42F203A32327E52A00F7B62E /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		4904D4EC208CCAD300D6B477 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
-		4905772C2215BA5C006D98C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/wordlist.txt; sourceTree = "<group>"; };
 		49057730221AE04B006D98C0 /* AuthorizationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationGuard.swift; sourceTree = "<group>"; };
 		4905E09A230ECD3B00EE380E /* KeynLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynLabel.swift; sourceTree = "<group>"; };
 		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
-		49062C7B22146D8700A30669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Localized.plist; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
 		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
@@ -365,12 +362,10 @@
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
 		491C485720249D3B00397071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49214B74210325B400C793DE /* NotificationProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationProcessor.swift; sourceTree = "<group>"; };
-		49235FF423151BC3003C4A0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Base; path = Base.lproj/privacy_policy.md; sourceTree = "<group>"; };
 		49235FF623151BCC003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/privacy_policy.md; sourceTree = "<group>"; };
 		49235FF823152686003C4A0F /* WebView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WebView.bundle; sourceTree = "<group>"; };
 		49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
-		49236001231534F2003C4A0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = Base; path = Base.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		49236003231534F3003C4A0F /* nl */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = nl; path = nl.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		4923600423156893003C4A0F /* LocalizableBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableBarButton.swift; sourceTree = "<group>"; };
 		4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynBarButton.swift; sourceTree = "<group>"; };
@@ -378,11 +373,14 @@
 		492EC842224919A10088F73D /* PairingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingViewController.swift; sourceTree = "<group>"; };
 		492EC8442249214E0088F73D /* PairContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairContainerViewController.swift; sourceTree = "<group>"; };
 		4933536B230D8D0500549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/Localized.yml; sourceTree = "<group>"; };
-		4933536C230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Localized.plist; sourceTree = "<group>"; };
 		4933536D230D8D0600549DA5 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text; name = nl; path = nl.lproj/wordlist.txt; sourceTree = "<group>"; };
 		4936049F20861286009E3029 /* AuthenticationGuard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationGuard.swift; sourceTree = "<group>"; };
 		493A35B12215653F002EB043 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateComponentUnitFormatter.swift; sourceTree = "<group>"; };
+		494AA2AF24266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/privacy_policy.md; sourceTree = "<group>"; };
+		494AA2B024266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = en.lproj/wordlist.txt; sourceTree = "<group>"; };
+		494AA2B124266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = en; path = en.lproj/Localized.yml; sourceTree = "<group>"; };
+		494AA2B324266A400068FD46 /* en */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = en; path = en.lproj/terms_of_use.md; sourceTree = "<group>"; };
 		4950262D22BBA2DC00545118 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		4950262F22BBA2FC00545118 /* BackupCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCircle.swift; sourceTree = "<group>"; };
 		4950263122BBA31200545118 /* FilledCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledCircle.swift; sourceTree = "<group>"; };
@@ -394,7 +392,6 @@
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4966FF1623FEDAF300D7C232 /* WebAuthn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthn.swift; sourceTree = "<group>"; };
-		4967F425225CC7100069330D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text; name = Base; path = Base.lproj/Localized.yml; sourceTree = "<group>"; };
 		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
 		496869312420F89B00B9BEE9 /* BaseAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAccount.swift; sourceTree = "<group>"; };
 		496869352420FAE800B9BEE9 /* Account+AuthenticationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AuthenticationServices.swift"; sourceTree = "<group>"; };
@@ -898,7 +895,6 @@
 				49236002231534F2003C4A0F /* terms_of_use.md */,
 				4905772D2215BA5C006D98C0 /* wordlist.txt */,
 				4967F424225CC7100069330D /* Localized.yml */,
-				49062C7C22146D8700A30669 /* Localized.plist */,
 				49F273B9225F233A00FB9D7F /* PatrickHand-Regular.ttf */,
 				49235FFB23152C73003C4A0F /* Montserrat-Bold.ttf */,
 				49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */,
@@ -1009,6 +1005,7 @@
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
 				4919DAE220123FE50048B060 /* Resources */,
+				494AA2B424266AF00068FD46 /* Compile localized YAML files to PLIST */,
 			);
 			buildRules = (
 			);
@@ -1024,10 +1021,10 @@
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
 				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
-				4967F423225CBF950069330D /* Convert localizations from YAML to plist */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				49E7664E1F7E6F420022C042 /* Resources */,
+				4967F423225CBF950069330D /* Compile localized YAML files to PLIST */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
 				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
 				49EB0A4922DE26E0000F05DD /* Crashlytics script */,
@@ -1089,6 +1086,7 @@
 				611F4B412146B47300B35A89 /* Sources */,
 				611F4B422146B47300B35A89 /* Frameworks */,
 				611F4B432146B47300B35A89 /* Resources */,
+				494AA2B524266AF60068FD46 /* Compile localized YAML files to PLIST */,
 			);
 			buildRules = (
 			);
@@ -1183,7 +1181,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 				nl,
 			);
 			mainGroup = 49E766471F7E6F420022C042;
@@ -1205,8 +1202,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49062C7922146D8700A30669 /* Localized.plist in Resources */,
 				49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */,
+				494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1215,7 +1212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */,
-				49062C7822146D8700A30669 /* Localized.plist in Resources */,
 				497C85E22315737100DC4F91 /* Request.storyboard in Resources */,
 				49F273BA225F233A00FB9D7F /* PatrickHand-Regular.ttf in Resources */,
 				4905772B2215BA5C006D98C0 /* wordlist.txt in Resources */,
@@ -1255,7 +1251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				493DB00B231577B40061CB5C /* Montserrat-Bold.ttf in Resources */,
-				49062C7A22146D8700A30669 /* Localized.plist in Resources */,
+				494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */,
 				4955DE642315773600C66996 /* MainInterface.storyboard in Resources */,
 				611F4B6A2147E01900B35A89 /* Assets.xcassets in Resources */,
 				493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */,
@@ -1302,7 +1298,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4967F423225CBF950069330D /* Convert localizations from YAML to plist */ = {
+		494AA2B424266AF00068FD46 /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1312,14 +1308,52 @@
 			inputPaths = (
 				"$(SRCROOT)/keyn/SupportFiles",
 			);
-			name = "Convert localizations from YAML to plist";
+			name = "Compile localized YAML files to PLIST";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "for loc in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$loc/Localized.yml').to_json\" | plutil -convert xml1 - -o $loc/Localized.plist\ndone\n\n";
+			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n";
+		};
+		494AA2B524266AF60068FD46 /* Compile localized YAML files to PLIST */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/keyn/SupportFiles",
+			);
+			name = "Compile localized YAML files to PLIST";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n";
+		};
+		4967F423225CBF950069330D /* Compile localized YAML files to PLIST */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/keyn/SupportFiles",
+			);
+			name = "Compile localized YAML files to PLIST";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "for dir in ${SCRIPT_INPUT_FILE_0}/*.lproj\ndo\n    dir=${dir%*/}\n    dest=$BUILT_PRODUCTS_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/${dir##*/}/Localized.plist\n    echo \"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n    <!DOCTYPE plist PUBLIC \\\"-//Apple//DTD PLIST 1.0//EN\\\" \\\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\\\">\n    <plist version=\\\"1.0\\\">\n    <dict/>\n    </plist>\" > $dest\n    ruby -rjson -ryaml -e \"puts YAML.load_file('$dir/Localized.yml').to_json\" | plutil -convert xml1 - -o $dest\ndone\n\n";
 		};
 		49EB0A4922DE26E0000F05DD /* Crashlytics script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1741,19 +1775,10 @@
 		4905772D2215BA5C006D98C0 /* wordlist.txt */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4905772C2215BA5C006D98C0 /* Base */,
 				4933536D230D8D0600549DA5 /* nl */,
+				494AA2B024266A400068FD46 /* en */,
 			);
 			name = wordlist.txt;
-			sourceTree = "<group>";
-		};
-		49062C7C22146D8700A30669 /* Localized.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				49062C7B22146D8700A30669 /* Base */,
-				4933536C230D8D0600549DA5 /* nl */,
-			);
-			name = Localized.plist;
 			sourceTree = "<group>";
 		};
 		49191EE5239AA2430034EEE7 /* InfoPlist.strings */ = {
@@ -1768,8 +1793,8 @@
 		49235FF523151BC3003C4A0F /* privacy_policy.md */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49235FF423151BC3003C4A0F /* Base */,
 				49235FF623151BCC003C4A0F /* nl */,
+				494AA2AF24266A400068FD46 /* en */,
 			);
 			name = privacy_policy.md;
 			sourceTree = "<group>";
@@ -1777,8 +1802,8 @@
 		49236002231534F2003C4A0F /* terms_of_use.md */ = {
 			isa = PBXVariantGroup;
 			children = (
-				49236001231534F2003C4A0F /* Base */,
 				49236003231534F3003C4A0F /* nl */,
+				494AA2B324266A400068FD46 /* en */,
 			);
 			name = terms_of_use.md;
 			sourceTree = "<group>";
@@ -1786,8 +1811,8 @@
 		4967F424225CC7100069330D /* Localized.yml */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4967F425225CC7100069330D /* Base */,
 				4933536B230D8D0500549DA5 /* nl */,
+				494AA2B124266A400068FD46 /* en */,
 			);
 			name = Localized.yml;
 			sourceTree = "<group>";
