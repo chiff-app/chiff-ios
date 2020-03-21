@@ -26,7 +26,7 @@ protocol Restorable {
 
 extension Restorable {
 
-    func backup(data: Data) -> Guarantee<Bool> {
+    func backup(data: Data) -> Promise<Void> {
         do {
             guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
                 throw KeychainError.notFound
@@ -40,14 +40,9 @@ extension Restorable {
             let path = "users/\(try BackupManager.publicKey())/\(Self.backupEndpoint.rawValue)/\(self.id)"
             return firstly {
                 API.shared.signedRequest(method: .put, message: message, path: path, privKey: try BackupManager.privateKey(), body: nil)
-            }.map { _ in
-                return true
-            }.recover { (error) -> Guarantee<Bool> in
-                Logger.shared.error("BackupManager cannot backup data.", error: error)
-                return .value(false)
-            }
+            }.asVoid().log("BackupManager cannot backup data.")
         } catch {
-            return .value(false)
+            return Promise(error: error)
         }
     }
 

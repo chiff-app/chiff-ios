@@ -7,6 +7,7 @@
 //
 import XCTest
 import LocalAuthentication
+import PromiseKit
 
 @testable import keyn
 
@@ -17,14 +18,13 @@ class SessionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let exp = expectation(description: "Get an authenticated context")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
-            switch result {
-                case .failure(let error): fatalError("Failed to get context: \(error.localizedDescription)")
-                case .success(let context):
-                    self.context = context
-                    TestHelper.createSeed()
-            }
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { context in
+            self.context = context
+            TestHelper.createSeed()
+        }.ensure {
             exp.fulfill()
+        }.catch { error in
+            fatalError(error.localizedDescription)
         }
         waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
@@ -38,11 +38,10 @@ class SessionTests: XCTestCase {
     func testInitiate() {
         let expectation = XCTestExpectation(description: "Finish testInitiate")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            if case let .failure(error) = result {
-                XCTFail(error.localizedDescription)
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").ensure {
             expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -50,27 +49,21 @@ class SessionTests: XCTestCase {
     func testInitiateFailsIfDuplicated() {
         let expectation = XCTestExpectation(description: "Finish testInitiate")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            switch result {
-            case .failure(let error): XCTFail(error.localizedDescription)
-            case .success(_):
-                BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-                    if case .success(_) = result {
-                        XCTFail("Should fail")
-                    }
-                    expectation.fulfill()
-                }
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (result) in
+            BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba")
+        }.done { _ in
+            XCTFail("Should fail")
+        }.ensure {
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
     }
     
     func testInitiateThrowsIfNoEndpointKey() {
         let expectation = XCTestExpectation(description: "Finish testInitiateThrowsIfNoEndpointKey")
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { _ in
+            XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
@@ -79,19 +72,12 @@ class SessionTests: XCTestCase {
     func testInitiateAndDeleteWithNotificationExtension() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndDeleteWithNotificationExtension")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let session = try result.get()
-                session.delete(notify: true) { (result) in
-                    if case .failure(let error) = result {
-                        XCTFail(error.localizedDescription)
-                    }
-                    expectation.fulfill()
-                }
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (session) in
+            session.delete(notify: true)
+        }.ensure {
+            expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -99,19 +85,12 @@ class SessionTests: XCTestCase {
     func testInitiateAndDeleteWithoutNotificationExtension() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndDeleteWithoutNotificationExtension")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let session = try result.get()
-                session.delete(notify: false) { (result) in
-                    if case .failure(let error) = result {
-                        XCTFail(error.localizedDescription)
-                    }
-                    expectation.fulfill()
-                }
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (session) in
+            session.delete(notify: false)
+        }.ensure {
+            expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -119,20 +98,13 @@ class SessionTests: XCTestCase {
     func testInitiateAndDeleteWithoutNotificationExtensionAndNoPrivateKey() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndDeleteWithoutNotificationExtensionAndNoPrivateKey")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let session = try result.get()
-                TestHelper.deleteLocalData()
-                session.delete(notify: false) { (result) in
-                    if case .success(()) = result {
-                        XCTFail("Should fail")
-                    }
-                    expectation.fulfill()
-                }
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (session) -> Promise<Void> in
+            TestHelper.deleteLocalData()
+            return session.delete(notify: false)
+        }.done { _ in
+            XCTFail("Should fail")
+        }.ensure {
+            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -147,11 +119,10 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testCancelRequest")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.cancelRequest(reason: .disabled, browserTab: 0) { (result) in
-            if case let .failure(error) = result {
-                XCTFail(error.localizedDescription)
-            }
+        session.cancelRequest(reason: .disabled, browserTab: 0).ensure {
             expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -161,10 +132,9 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.cancelRequest(reason: .disabled, browserTab: 0) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        session.cancelRequest(reason: .disabled, browserTab: 0).done { _ in
+            XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
@@ -175,11 +145,10 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI", "receiptHandle": "test"]])
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true) { (result) in
-            if case let .failure(error) = result {
-                XCTFail(error.localizedDescription)
-            }
+        session.getPersistentQueueMessages(shortPolling: true).ensure {
             expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -188,10 +157,9 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsWithoutData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+            XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
@@ -202,10 +170,9 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI"]])
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+            XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
@@ -216,10 +183,9 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true) { (result) in
-            if case .success(_) = result {
-                XCTFail("Should fail")
-            }
+        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+            XCTFail("Should fail")
+        }.ensure {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 3.0)
@@ -285,15 +251,12 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let _ = try result.get()
-                XCTAssertTrue(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
-                expectation.fulfill()
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
+            XCTAssertTrue(try BrowserSession.exists(id: TestHelper.browserPublicKeyBase64.hash))
+        }.ensure {
+            expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -301,15 +264,12 @@ class SessionTests: XCTestCase {
     func testGet() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let session = try result.get()
-                XCTAssertNoThrow(try BrowserSession.get(id: session.id))
-                expectation.fulfill()
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
-            }
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
+            XCTAssertNoThrow(try BrowserSession.get(id: session.id))
+        }.ensure {
+            expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
         wait(for: [expectation], timeout: 3.0)
     }
@@ -322,25 +282,25 @@ class SessionTests: XCTestCase {
     func testInitiateAndSendCredentials() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba") { (result) in
-            do {
-                let session = try result.get() as! BrowserSession
-                let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, context: self.context)
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: self.context))
-                XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: self.context))
-                API.shared = MockAPI(shouldFail: true)
-                XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
-                expectation.fulfill()
-            } catch {
-                XCTFail(error.localizedDescription)
-                expectation.fulfill()
+        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, context: self.context)
+            guard var session = session as? BrowserSession else {
+                return XCTFail("Casting error")
             }
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: self.context))
+            XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: self.context))
+            API.shared = MockAPI(shouldFail: true)
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
+        }.ensure {
+            expectation.fulfill()
+        }.catch { error in
+            XCTFail(error.localizedDescription)
         }
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 5.0)
     }
 
     func testShouldNotFailOnOneUndecodableSession() {
@@ -364,7 +324,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldReturnNilOnWrongId() {
-        BrowserSession.deleteAll() {}
+        let _ = BrowserSession.deleteAll()
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -381,7 +341,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldThrowOnSingleUndecodableSession() {
-        BrowserSession.deleteAll() {}
+        let _ = BrowserSession.deleteAll()
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -398,7 +358,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldThrowOnSingleIfUnfixable() {
-        BrowserSession.deleteAll() {}
+        let _ = BrowserSession.deleteAll()
         struct NotASession: Codable {
             let id: String
             let cookie: String
@@ -414,7 +374,7 @@ class SessionTests: XCTestCase {
     }
 
     func testShouldPurgeAllIfUnfixable() {
-        BrowserSession.deleteAll() {}
+        let _ = BrowserSession.deleteAll()
         struct NotASession: Codable {
             let id: String
             let cookie: String

@@ -36,18 +36,17 @@ extension TeamSession: Restorable {
             let data = try JSONEncoder().encode(backupSession)
             return firstly {
                 backup(data: data)
-            }.map { result in
-                if result {
-                    // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
-                    if keychainSeed != nil {
-                        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-                    }
-                } else {
-                    // Occurs if backup failed now, so we can try next time
-                    if keychainSeed == nil {
-                        try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
-                    }
+            }.map { _ in
+                // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
+                if keychainSeed != nil {
+                    try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
                 }
+            }.recover { error in
+                // Occurs if backup failed now, so we can try next time
+                if keychainSeed == nil {
+                    try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
+                }
+                throw error
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)

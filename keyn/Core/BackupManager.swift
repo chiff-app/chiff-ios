@@ -78,7 +78,7 @@ struct BackupManager {
             pubKey = try publicKey()
         }
         return firstly {
-            when(resolved:
+            when(fulfilled:
                 UserAccount.getBackupData(pubKey: pubKey, context: context),
                 TeamSession.getBackupData(pubKey: pubKey, context: context))
         }.then { result in
@@ -86,19 +86,8 @@ struct BackupManager {
                 return result
             }
         }.map { result in
-            var accountsSucceeded = 0
-            var accountsFailed = 0
-            var sessionsSucceeded = 0
-            var sessionsFailed = 0
-            if case .fulfilled(let (succeeded, failed)) = result[0] {
-                accountsSucceeded = succeeded
-                accountsFailed = failed
-                Properties.accountCount = succeeded
-            }
-            if case .fulfilled(let (succeeded, failed)) = result[1] {
-                sessionsSucceeded = succeeded
-                sessionsFailed = failed
-            }
+            let ((accountsSucceeded, accountsFailed), (sessionsSucceeded, sessionsFailed)) = result
+            Properties.accountCount = accountsSucceeded
             return (accountsSucceeded + accountsFailed, accountsFailed, sessionsSucceeded + sessionsFailed, sessionsFailed)
         }
     }
