@@ -95,7 +95,7 @@ struct TeamSession: Session {
             when(fulfilled: try TeamSession.all().map { session -> Promise<Void> in
                var promises = [updateTeamSession(session: session)]
                if logo {
-                   promises.append(try session.updateLogo())
+                   promises.append(session.updateLogo())
                }
                if backup {
                    promises.append(session.backup(seed: nil))
@@ -127,9 +127,10 @@ struct TeamSession: Session {
                     changed = true
                     try session.update()
                 }
-                if try changed || session.updateSharedAccounts(accounts: accounts) > 0 {
+                let updatedAccounts = try session.updateSharedAccounts(accounts: accounts)
+                if changed || updatedAccounts > 0 {
                     NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
-                    NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": self, "count": accounts.count])
+                    NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": session, "count": accounts.count])
                 }
             }.asVoid()
         } catch {

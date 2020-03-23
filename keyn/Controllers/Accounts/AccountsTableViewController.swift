@@ -57,22 +57,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     var addAccountButton: KeynBarButton?
     var currentFilter = Filters.all
     var currentSortingValue = SortingValues.alphabetically
-//    {
-//        didSet {
-//            let rangeText = "accounts.sort".localized
-//            let title = rangeText + " " + currentSortingValue.text()
-//            let range = (title as NSString).range(of: rangeText)
-//            let font = UIFont.primaryBold
-//            let textColor = UIColor.primary
-//            let attributes = [
-//                NSAttributedString.Key.font: font,
-//                NSAttributedString.Key.foregroundColor: textColor
-//            ]
-//            let attributedString = NSMutableAttributedString(string: title, attributes: attributes as [NSAttributedString.Key: Any])
-//            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.primaryHalfOpacity, range: range)
-//            sortingButton.setAttributedTitle(attributedString, for: .normal)
-//        }
-//    }
     var searchQuery = ""
 
     override func viewDidLoad() {
@@ -181,6 +165,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         prepareAccounts()
         tableView.reloadData()
     }
+
     @IBAction func showSortValuesPicker(_ sender: Any) {
         sortingButton.becomeFirstResponder()
     }
@@ -235,9 +220,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             } else if next.lastTimeUsed == nil {
                 return true
             } else if let currentLastTimeUsed = current.lastTimeUsed, let nextLastTimeUsed = next.lastTimeUsed {
-                print(currentLastTimeUsed)
-                print(nextLastTimeUsed)
-                print(currentLastTimeUsed > nextLastTimeUsed)
                 return currentLastTimeUsed > nextLastTimeUsed
             } else {
                 return false
