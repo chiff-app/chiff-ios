@@ -44,7 +44,6 @@ accounts:
     value: Toegangsrechten
   convert_to_team_title:
     value: Voeg %@ toe aan %@.
-    start: 5
   convert_to_team_warning:
     value: >-
       ⚠️ Door dit account naar een team-account te converteren geef je anderen
@@ -107,6 +106,10 @@ accounts:
     value: Het geheim dat gedeeld is door de website
   sites_header:
     value: Websites
+  sort:
+    value: Sorteer
+  team:
+    value: Team
   team_role_footer:
     value: Kies welke rollen toegang moeten krijgen tot dit account.
   team_role_header:
@@ -115,10 +118,6 @@ accounts:
     value: Kies welke gebruikers toegang moeten krijgen tot dit account.
   team_user_header:
     value: Gebruikers
-  sort:
-    value: Sorteer
-  team:
-    value: Team
   time_based:
     value: Tijdgebaseerd
   two_fa_instruction:

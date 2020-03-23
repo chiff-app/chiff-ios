@@ -1092,7 +1092,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>team_role_footer</name>
+                        <name>sort</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
@@ -1114,7 +1114,29 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>sort</name>
+                        <name>team</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
+                        <name>team_role_footer</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
