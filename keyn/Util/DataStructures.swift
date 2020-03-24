@@ -115,6 +115,7 @@ struct BackupSharedAccount: Codable {
     var passwordOffset: [Int]?
     var tokenURL: URL?
     var tokenSecret: Data?
+    let version: Int
 }
 
 struct KeynCredentialsResponse: Codable {
