@@ -62,8 +62,8 @@ class NotificationProcessor {
             content.title = "notifications.team_admin_login".localized
             content.body = session.title
         case .bulkLogin:
-            content.title = "Superlogin"
-            content.body = "Login to all tabs?"
+            content.title = "notifications.login".localized
+            content.body = String(format: "notifications.accounts_from".localized, keynRequest.accountIDs!.count, session.title)
         default:
             content.body = "Unknown request"
         }

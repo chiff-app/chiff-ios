@@ -95,7 +95,7 @@ class AuthorizationGuard {
         case .login, .change, .fill:
             promise = authorize()
         case .bulkLogin:
-            promise = authorizeBulkLogin()
+            promise = authorizeBulkLogin().map { nil }
         case .adminLogin:
             promise = teamAdminLogin().map { nil }
         case .webauthnCreate:
@@ -155,25 +155,19 @@ class AuthorizationGuard {
         }
     }
 
-    private func authorizeBulkLogin(completionHandler: @escaping (Error?) -> Void) {
-        LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false) { result in
-            func onSuccess(context: LAContext?) throws {
-                let accounts: [String: Account] = try UserAccount.allCombined(context: context)
-                NotificationCenter.default.post(name: .accountsLoaded, object: nil)
-                let loginAccounts = try self.accountIds.mapValues { (accountId) -> BulkLoginAccount? in
-                    guard let account = accounts[accountId], let password = try account.password() else {
-                        return nil
-                    }
-                    return BulkLoginAccount(username: account.username, password: password)
+    private func authorizeBulkLogin() -> Promise<Void> {
+        return firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+        }.map { context in
+            let accounts: [String: Account] = try UserAccount.allCombined(context: context)
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            let loginAccounts = try self.accountIds.mapValues { (accountId) -> BulkLoginAccount? in
+                guard let account = accounts[accountId], let password = try account.password() else {
+                    return nil
                 }
-                try self.session.sendBulkLoginResponse(accounts: loginAccounts, context: context, completionHandler: completionHandler)
+                return BulkLoginAccount(username: account.username, password: password)
             }
-
-            do {
-                try onSuccess(context: result.get())
-            } catch {
-                completionHandler(error)
-            }
+            try self.session.sendBulkLoginResponse(accounts: loginAccounts, context: context)
         }
     }
 
