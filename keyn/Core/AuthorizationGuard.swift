@@ -157,7 +157,7 @@ class AuthorizationGuard {
 
     private func authorizeBulkLogin() -> Promise<Void> {
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            LocalAuthenticationManager.shared   .authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
             let accounts: [String: Account] = try UserAccount.allCombined(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
@@ -167,7 +167,7 @@ class AuthorizationGuard {
                 }
                 return BulkLoginAccount(username: account.username, password: password)
             }
-            try self.session.sendBulkLoginResponse(accounts: loginAccounts, context: context)
+            try self.session.sendBulkLoginResponse(browserTab: self.browserTab, accounts: loginAccounts, context: context)
         }
     }
 
@@ -214,9 +214,13 @@ class AuthorizationGuard {
         var success = false
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false)
-        }.map { context in
-            for bulkAccount in self.accounts {
-                let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
+        }.then { (context) -> Promise<(LAContext?, [(BulkAccount, PPD?)])> in
+            when(fulfilled: self.accounts.map { account in
+                PPD.get(id: account.siteId).map { (account, $0) }
+            }).map { (context, $0) }
+        }.map { (context, accounts) in
+            for (bulkAccount, ppd) in accounts {
+                let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
                 let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, context: context)
             }
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
