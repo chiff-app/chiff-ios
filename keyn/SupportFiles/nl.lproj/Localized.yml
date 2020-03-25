@@ -545,11 +545,13 @@ initialization:
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
 notifications:
   accounts_from:
-    value: '%@ accounts van %@.'
+    value: '%@ accounts op %@.'
   add_account:
     value: Voeg account toe
   add_accounts:
     value: Voeg accounts toe
+  bulk_login:
+    value: ''
   change_password:
     value: Verander wachtwoord
   end_session:

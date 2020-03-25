@@ -38,13 +38,12 @@ accounts:
     value: Choose an account to fill the credentials.
   code:
     value: Code
-  convert_to_team_title:
-    value: Add %@ to %@.
-    start: 4
   convert_to_team_footer:
     value: Choose the roles and users that should have access to this account.
   convert_to_team_header:
     value: Access rights
+  convert_to_team_title:
+    value: Add %@ to %@.
   convert_to_team_warning:
     value: >-
       ⚠️ Converting this account to a team account may give others access to
@@ -107,6 +106,10 @@ accounts:
     value: The secret that was shared by the website
   sites_header:
     value: Websites
+  sort:
+    value: Sort
+  team:
+    value: Team
   team_role_footer:
     value: Choose which roles should have access to this account.
   team_role_header:
@@ -115,10 +118,6 @@ accounts:
     value: Choose which users should have access to this account.
   team_user_header:
     value: Users
-  sort:
-    value: Sort
-  team:
-    value: Team
   time_based:
     value: Time-based
   two_fa_instruction:
@@ -546,11 +545,13 @@ initialization:
       Sensitive data is never shared and everything is anonymous.
 notifications:
   accounts_from:
-    value: '%@ accounts from %@.'
+    value: '%@ accounts on %@.'
   add_account:
     value: Add account
   add_accounts:
     value: Add accounts
+  bulk_login:
+    value: ''
   change_password:
     value: Change password
   end_session:

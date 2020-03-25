@@ -95,7 +95,7 @@ struct BrowserSession: Session {
             guard var account = account as? UserAccount else {
                 throw SessionError.unknownType
             }
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change, pk: nil)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil)
             NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
         case .add, .addAndLogin, .addToExisting:
             response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil)
@@ -116,22 +116,11 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    func sendBulkLoginResponse(accounts: [Int: BulkLoginAccount?], context: LAContext?, completionHandler: @escaping (Error?) -> Void) {
-        do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: -42, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts))
-            let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
-            try self.sendToVolatileQueue(ciphertext: ciphertext) { (result) in
-                if case let .failure(error) = result {
-                    Logger.shared.error("Error sending bulk accounts", error: error)
-                    completionHandler(error)
-                } else {
-                    completionHandler(nil)
-                }
-            }
-            try updateLastRequest()
-        } catch {
-            completionHandler(error)
-        }
+    mutating func sendBulkLoginResponse(accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: -42, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts))
+        let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
+        try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
+        try updateLastRequest()
     }
 
     mutating func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
