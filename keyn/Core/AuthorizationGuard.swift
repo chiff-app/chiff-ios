@@ -22,6 +22,7 @@ class AuthorizationGuard {
     var session: BrowserSession
     let type: KeynMessageType
     let accounts: [BulkAccount]!// Should be present for bulk add site requests
+    private let accountIds: [Int: String]!// Should be present for bulk login requests
     private let browserTab: Int!        // Should be present for all requests
     private let siteName: String!       // Should be present for all requests
     private let siteURL: String!        // Should be present for all requests
@@ -37,6 +38,8 @@ class AuthorizationGuard {
         switch type {
         case .login, .addToExisting, .webauthnLogin:
             return String(format: "requests.login_to".localized, siteName!)
+        case .bulkLogin:
+            return String(format: "requests.login_to".localized, "\(accountIds.count) tabs")
         case .add, .register, .addAndLogin, .webauthnCreate:
             return String(format: "requests.add_site".localized, siteName!)
         case .change:
@@ -67,6 +70,7 @@ class AuthorizationGuard {
         self.challenge = request.challenge
         self.rpId = request.relyingPartyId
         self.algorithms = request.algorithms
+        self.accountIds = request.accountIDs
     }
 
     // MARK: - Handle request responses
@@ -90,6 +94,8 @@ class AuthorizationGuard {
             promise = addBulkSites().map { nil }
         case .login, .change, .fill:
             promise = authorize()
+        case .bulkLogin:
+            promise = authorizeBulkLogin().map { nil }
         case .adminLogin:
             promise = teamAdminLogin().map { nil }
         case .webauthnCreate:
@@ -146,6 +152,22 @@ class AuthorizationGuard {
                 default:
                     Logger.shared.warning("Authorize called on the wrong type?")
             }
+        }
+    }
+
+    private func authorizeBulkLogin() -> Promise<Void> {
+        return firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+        }.map { context in
+            let accounts: [String: Account] = try UserAccount.allCombined(context: context)
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            let loginAccounts = try self.accountIds.mapValues { (accountId) -> BulkLoginAccount? in
+                guard let account = accounts[accountId], let password = try account.password() else {
+                    return nil
+                }
+                return BulkLoginAccount(username: account.username, password: password)
+            }
+            try self.session.sendBulkLoginResponse(accounts: loginAccounts, context: context)
         }
     }
 
