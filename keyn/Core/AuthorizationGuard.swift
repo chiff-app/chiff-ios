@@ -219,6 +219,7 @@ class AuthorizationGuard {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: nil)
                 let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, context: context)
             }
+            try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
             success = true
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
         }.ensure {
