@@ -116,6 +116,14 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
+    // Simply acknowledge that the request is received
+    mutating func sendBulkAddResponse(browserTab: Int, context: LAContext?) throws {
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .addBulk, pk: nil, d: nil))
+        let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
+        try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
+        try updateLastRequest()
+    }
+
     mutating func sendBulkLoginResponse(accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
         let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: -42, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
