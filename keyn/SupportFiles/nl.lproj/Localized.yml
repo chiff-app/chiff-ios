@@ -759,6 +759,8 @@ requests:
   login_with:
     comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
     value: Login met %@
+  n_new_accounts:
+    value: '%@ nieuwe accounts.'
   new_password_generated:
     value: Nieuw wachtwoord gegenereerd
   no_accounts_left:

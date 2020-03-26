@@ -48,6 +48,8 @@ class AuthorizationGuard {
             return String(format: "requests.fill_for".localized, siteName!)
         case .adminLogin:
             return String(format: "requests.login_to".localized, "requests.keyn_for_teams".localized)
+        case .addBulk:
+            return String(format: "requests.n_new_accounts".localized, accounts.count)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -157,7 +159,7 @@ class AuthorizationGuard {
 
     private func authorizeBulkLogin() -> Promise<Void> {
         return firstly {
-            LocalAuthenticationManager.shared   .authenticate(reason: self.authenticationReason, withMainContext: false)
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
             let accounts: [String: Account] = try UserAccount.allCombined(context: context)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
