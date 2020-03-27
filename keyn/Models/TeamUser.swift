@@ -12,7 +12,7 @@ struct TeamUser: Codable {
     var pubkey: String!
     let key: String
     let created: TimeInterval
-    let arn: String
+    let userSyncPubkey: String
     let isAdmin: Bool
     let name: String
 

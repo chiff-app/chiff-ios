@@ -82,6 +82,7 @@ struct KeynTeamPairingResponse: Codable {
     let environment: String
     let type: KeynMessageType
     let version: Int
+    let userPubKey: String
     let arn: String
 }
 

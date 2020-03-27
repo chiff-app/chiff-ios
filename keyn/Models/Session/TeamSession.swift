@@ -67,7 +67,6 @@ struct TeamSession: Session {
             }.map { _ in
                 do {
                     try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
-                    let _ = session.backup(seed: sharedSeed)
                     TeamSession.count += 1
                     NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     return session
@@ -98,7 +97,7 @@ struct TeamSession: Session {
                    promises.append(session.updateLogo())
                }
                if backup {
-                   promises.append(session.backup(seed: nil))
+                   promises.append(session.backup())
                }
                return when(fulfilled: promises)
            })
@@ -111,6 +110,7 @@ struct TeamSession: Session {
             if !session.created && pushed {
                 session.created = true
                 try session.update()
+                let _ = session.backup()
             }
             return firstly {
                 API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil)
@@ -179,7 +179,7 @@ struct TeamSession: Session {
         guard let endpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
-        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, type: .pair, version: version, arn: endpoint)
+        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, type: .pair, version: version, userPubKey: try BackupManager.publicKey(), arn: endpoint)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

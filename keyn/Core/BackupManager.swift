@@ -4,7 +4,6 @@
  */
 import Foundation
 import LocalAuthentication
-import DeviceCheck
 import PromiseKit
 
 struct BackupManager {
@@ -37,26 +36,9 @@ struct BackupManager {
             NotificationManager.shared.deleteKeys()
             try createEncryptionKey(seed: seed)
             let (privKey, pubKey, userId) = try createSigningKeypair(seed: seed)
-            return Promise<String?> { seal in
-                DCDevice.current.generateToken { (data, error) in
-                    if let error = error {
-                        Logger.shared.warning("Error retrieving device token.", error: error)
-                        seal.fulfill(nil)
-                    } else {
-                        seal.fulfill(data?.base64EncodedString())
-                    }
-                }
-            }.then { token -> Promise<JSONObject> in
-                var message: [String: Any] = [
-                    "os": "ios",
-                    "userId": userId
-                ]
-                if let token = token {
-                    message[MessageIdentifier.token] = token
-                }
-                return API.shared.signedRequest(method: .post, message: message, path: "users/\(pubKey)", privKey: privKey, body: nil)
+            return firstly {
+                API.shared.signedRequest(method: .post, message: ["userId": userId], path: "users/\(pubKey)", privKey: privKey, body: nil)
             }.asVoid().log("Cannot initialize BackupManager.")
-
         } catch {
             Logger.shared.error("Cannot initialize BackupManager.", error: error)
             return Promise(error: error)
