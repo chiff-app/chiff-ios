@@ -92,6 +92,7 @@ enum MessageParameter {
 }
 
 enum NotificationCategory {
+    static let SYNC = "SYNC"
     static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
     static let END_SESSION = "END_SESSION"
     static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"

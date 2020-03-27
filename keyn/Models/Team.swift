@@ -30,17 +30,14 @@ struct Team {
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
             let (passwordSeed, encryptionKey, sharedSeed, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
-            guard let endpoint = Properties.endpoint else {
-                throw SessionError.noEndpoint
-            }
-            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
+            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try BackupManager.publicKey(), isAdmin: true, name: "devices.admin".localized)
             let role = TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [signingKeyPair.pubKey.base64])
             let message: [String: Any] = [
                 "name": name,
                 "token": token,
                 "roleId": role.id,
                 "userPubkey": user.pubkey!,
-                "arn": user.arn,
+                "userSyncPubkey": user.userSyncPubkey,
                 "roleData": try role.encrypt(key: teamEncryptionKey),
                 "userData": try user.encrypt(key: teamEncryptionKey),
                 "seed": (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
@@ -63,10 +60,7 @@ struct Team {
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
             let (passwordSeed, encryptionKey, sharedSeed, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
-            guard let endpoint = Properties.endpoint else {
-                throw SessionError.noEndpoint
-            }
-            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
+            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try BackupManager.publicKey(), isAdmin: true, name: "devices.admin".localized)
             let encryptedSeed = (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
             return firstly {
                 get(seed: teamSeed)
@@ -125,7 +119,7 @@ struct Team {
             "id": account.id,
             "pubKey": $0.pubkey,
             "data": try $0.encryptAccount(account: account),
-            "arn": $0.arn
+            "userSyncPubkey": $0.userSyncPubkey
         ]})
     }
 
@@ -150,7 +144,7 @@ struct Team {
             let message: [String: Any] = [
                 "userpubkey": user.pubkey!,
                 "data": try user.encrypt(key: encryptionKey),
-                "arn": user.arn,
+                "userSyncPubkey": user.userSyncPubkey,
                 "accounts": [],
                 "teamSeed": seed
             ]

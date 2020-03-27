@@ -25,10 +25,9 @@ extension TeamSession: Restorable {
         return session
     }
 
-    func backup(seed generatedSeed: Data?) -> Promise<Void> {
+    func backup() -> Promise<Void> {
         do {
-            let keychainSeed: Data? = generatedSeed == nil ? try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey) : nil
-            guard let seed = generatedSeed ?? keychainSeed else {
+            guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey), created else {
                 // Backup complete
                 return .value(())
             }
@@ -38,14 +37,10 @@ extension TeamSession: Restorable {
                 backup(data: data)
             }.map { _ in
                 // Occurs if backup failed earlier, but succeeded now: delete sharedSeed from Keychain
-                if keychainSeed != nil {
-                    try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-                }
+                try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
             }.recover { error in
                 // Occurs if backup failed now, so we can try next time
-                if keychainSeed == nil {
-                    try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
-                }
+                try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey, secretData: seed)
                 throw error
             }.log("Error updating team session backup state")
         } catch {
