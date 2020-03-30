@@ -623,6 +623,8 @@ popups:
       value: >-
         Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd.
         Wil je Keyn's huidige data verwijderen?
+    delete_x:
+      value: Delete %@
     move_data:
       comment: Resets Keyn and deletes all data
       value: Verhuis data?

@@ -64,7 +64,7 @@ class AuthenticationGuard {
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
             self.hideLockWindow()
         }.then {
-            TeamSession.updateTeamSessions(pushed: false, logo: true, backup: true)
+            TeamSession.sync(pushed: false, logo: true, backup: true)
         }.catch { error in
             if let error = error as? DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)
