@@ -64,7 +64,7 @@ struct BackupManager {
                 UserAccount.getBackupData(pubKey: pubKey, context: context),
                 TeamSession.getBackupData(pubKey: pubKey, context: context))
         }.then { result in
-            TeamSession.updateTeamSessions(pushed: false, logo: true, backup: false).map { _ in
+            TeamSession.sync(pushed: false, logo: true, backup: false).map { _ in
                 return result
             }
         }.map { result in

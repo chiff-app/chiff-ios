@@ -18,7 +18,7 @@ enum BackupEndpoint: String {
 protocol Restorable {
     static var backupEndpoint: BackupEndpoint { get }
     static func getBackupData(pubKey: String, context: LAContext) -> Promise<(Int, Int)>
-    static func restore(data: Data, id: String, context: LAContext?) throws -> Self
+    static func restore(data: Data, context: LAContext?) throws -> Self
 
     var id: String { get }
     func deleteBackup() throws
@@ -55,15 +55,15 @@ extension Restorable {
             API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/\(backupEndpoint.rawValue)", privKey: try BackupManager.privateKey(), body: nil)
         }.map { result in
             var failed = [String]()
+            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                throw KeychainError.notFound
+            }
             let objects = result.compactMap { (id, data) -> Self? in
                 if let base64Data = data as? String {
                     do {
                         let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                        guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                            throw KeychainError.notFound
-                        }
                         let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                        return try Self.restore(data: data, id: id, context: context)
+                        return try Self.restore(data: data, context: context)
                     } catch {
                         failed.append(id)
                         Logger.shared.error("Could not restore data.", error: error)

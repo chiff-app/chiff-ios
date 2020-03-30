@@ -623,6 +623,8 @@ popups:
       value: >-
         You are trying to restore a backup while Keyn has already been
         initialized. Do you want to delete Keyn's current data?
+    delete_x:
+      value: Delete %@
     move_data:
       comment: Resets Keyn and deletes all data
       value: Move data?

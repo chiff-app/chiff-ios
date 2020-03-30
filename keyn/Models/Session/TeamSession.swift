@@ -11,6 +11,7 @@ enum TeamSessionError: KeynError {
     case adminDelete
     case logoPathNotFound
     case notAdmin
+    case alreadyCreated
 }
 
 struct TeamSession: Session {
@@ -89,17 +90,22 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func updateTeamSessions(pushed: Bool, logo: Bool, backup: Bool) -> Promise<Void> {
+    static func sync(pushed: Bool, logo: Bool, backup: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
         return firstly {
-            when(fulfilled: try TeamSession.all().map { session -> Promise<Void> in
-               var promises = [updateTeamSession(session: session)]
-               if logo {
-                   promises.append(session.updateLogo())
-               }
-               if backup {
-                   promises.append(session.backup())
-               }
-               return when(fulfilled: promises)
+            when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Void>? in
+                if let pubKeys = pubKeys {
+                    guard pubKeys.contains(session.signingPubKey) else {
+                         return nil
+                    }
+                }
+                var promises = [updateTeamSession(session: session)]
+                if logo {
+                    promises.append(session.updateLogo())
+                }
+                if backup {
+                    promises.append(session.backup())
+                }
+                return when(fulfilled: promises)
            })
         }
     }
@@ -132,6 +138,18 @@ struct TeamSession: Session {
                     NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
                     NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": session, "count": accounts.count])
                 }
+            }.recover { error in
+                if case APIError.statusCode(404) = error {
+                    guard session.created else {
+                        return
+                    }
+                    SharedAccount.deleteAll(for: session.signingPubKey)
+                    try? session.delete()
+                    NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                    NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
+                } else {
+                    throw error
+                }
             }.asVoid()
         } catch {
             return Promise(error: error)
@@ -140,39 +158,29 @@ struct TeamSession: Session {
 
     mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
         var changed = 0
-        do {
-            let key = try self.passwordSeed()
-            #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-            var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
-            for (id, data) in accounts {
-                currentAccounts.removeValue(forKey: id)
-                let ciphertext = try Crypto.shared.convertFromBase64(from: data)
-                let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                if var account = try SharedAccount.get(accountID: id, context: nil) {
-                    if try account.update(accountData: accountData, key: key) {
-                        changed += 1
-                    }
-                } else { // New account added
-                    try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+        let key = try self.passwordSeed()
+        #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+        var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
+        for (id, data) in accounts {
+            currentAccounts.removeValue(forKey: id)
+            let ciphertext = try Crypto.shared.convertFromBase64(from: data)
+            let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+            if var account = try SharedAccount.get(id: id, context: nil) {
+                if try account.sync(accountData: accountData, key: key) {
                     changed += 1
                 }
-            }
-            for account in currentAccounts.values {
-                #warning("Check how to safely delete here in the background")
-                try account.deleteSync()
+            } else { // New account added
+                try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
                 changed += 1
             }
-            Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
-            return changed
-        } catch APIError.statusCode(404) {
-            guard self.created else {
-                return 0
-            }
-            SharedAccount.deleteAll(for: self.signingPubKey)
-            try? self.delete()
-            NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
-            return 1
         }
+        for account in currentAccounts.values {
+            #warning("Check how to safely delete here in the background")
+            try account.deleteSync()
+            changed += 1
+        }
+        Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
+        return changed
     }
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void> {
@@ -203,14 +211,19 @@ struct TeamSession: Session {
         }.log("Error deleting arn for team session")
     }
 
-    func delete() throws {
+    func delete(ifNotCreated: Bool = false, backup: Bool = true) throws {
+        if ifNotCreated && created {
+            throw TeamSessionError.alreadyCreated
+        }
         SharedAccount.deleteAll(for: self.signingPubKey)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
         NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
-        try deleteBackup()
+        if backup {
+            try deleteBackup()
+        }
     }
 
     func save(key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {

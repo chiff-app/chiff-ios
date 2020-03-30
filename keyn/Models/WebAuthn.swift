@@ -16,12 +16,12 @@ enum WebAuthnError: KeynError {
     case wrongAlgorithm
 }
 
-enum WebAuthnAlgorithm: Int, Codable {
+enum WebAuthnAlgorithm: Int, Codable, Equatable {
     case EdDSA = -8
     case ECDSA = -7
 }
 
-struct WebAuthn: Codable {
+struct WebAuthn: Codable, Equatable {
     let id: String // rpId
     let algorithm: WebAuthnAlgorithm
     let salt: UInt64

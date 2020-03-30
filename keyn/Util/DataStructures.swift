@@ -120,7 +120,7 @@ struct SessionSite: Codable {
     }
 }
 
-struct BackupSharedAccount: Codable {
+struct BackupSharedAccount: Codable, Equatable {
     let id: String
     var username: String
     var sites: [Site]

@@ -48,7 +48,7 @@ struct SharedAccount: Account {
         self.timesUsed = 0
     }
 
-    mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
+    mutating func sync(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
         guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
@@ -67,28 +67,23 @@ struct SharedAccount: Account {
 
     func delete() -> Promise<Void> {
         firstly {
-            Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
+            Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: String(format: "popups.questions.delete_x".localized, site.name), authenticationType: .ifNeeded)
         }.map { _ in
             try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
         }.log("Error deleting accounts")
     }
 
-    func deleteSync() throws {
-        try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
-        try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
-        self.deleteFromToIdentityStore()
-    }
-
-    func backup() throws -> Promise<Void> {
-        // Intentionally not implemented
-        return .value(())
+    func update(secret: Data?, backup: Bool = false) throws {
+        let accountData = try PropertyListEncoder().encode(self as Self)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        saveToIdentityStore()
     }
 
     func save(password: String, sessionPubKey: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
-        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
     }

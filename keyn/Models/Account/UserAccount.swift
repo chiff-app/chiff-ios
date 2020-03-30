@@ -12,7 +12,7 @@ import PromiseKit
 /*
  * An account belongs to the user and can have one Site.
  */
-struct UserAccount: Account {
+struct UserAccount: Account, Equatable {
 
     let id: String
     var username: String
@@ -141,6 +141,16 @@ struct UserAccount: Account {
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
         try update(secret: nil)
+    }
+
+    func update(secret: Data?, backup: Bool = true) throws {
+        let accountData = try PropertyListEncoder().encode(self as Self)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
+        if backup {
+            let _ = try self.backup()
+        }
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        saveToIdentityStore()
     }
 
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {

@@ -42,12 +42,12 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch category {
             case NotificationCategory.SYNC:
+                var promises: [Promise<Void>] = [TeamSession.sync(pushed: true, logo: true, backup: false, pubKeys: sessionPubKeys)]
                 if accounts {
-                    print("TODO: Sync user accounts")
+                    promises.append(UserAccount.sync(context: nil))
                 }
-                let teamSessions = try TeamSession.all().filter({ sessionPubKeys.contains($0.signingPubKey) })
                 firstly {
-                    when(fulfilled: teamSessions.map { TeamSession.updateTeamSession(session: $0, pushed: true) })
+                    when(fulfilled: promises)
                 }.done {
                     completionHandler(.newData)
                 }.catch { _ in
@@ -60,7 +60,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     return
                 }
                 do {
-                    try session.delete()
+                    try session.delete(ifNotCreated: true)
                     NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
                     completionHandler(.newData)
                 } catch {
@@ -112,12 +112,13 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             }
             return [.alert]
-        case NotificationCategory.UPDATE_TEAM_SESSION,
+        case NotificationCategory.SYNC,
              NotificationCategory.DELETE_TEAM_SESSION:
             return []
         default:
             break
         }
+        print(notification)
 
 
         var content: UNNotificationContent = notification.request.content
@@ -138,7 +139,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .end {
             do {
-                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) {
+                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) {
                     firstly {
                         session.delete(notify: false)
                     }.done {
@@ -167,7 +168,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .addBulk {
             do {
-                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) else {
+                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) else {
                     throw CodingError.missingData
                 }
                 #warning("TODO: Improve this by using background fetching in notification processor.")
@@ -234,7 +235,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             Logger.shared.error("Could not get sessions.", error: error)
         }
         firstly {
-            TeamSession.updateTeamSessions(pushed: false, logo: false, backup: false)
+            TeamSession.sync(pushed: false, logo: false, backup: false)
         }.catchLog("Could not update sessions.")
     }
 
@@ -266,7 +267,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(id: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
@@ -280,7 +281,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(id: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
