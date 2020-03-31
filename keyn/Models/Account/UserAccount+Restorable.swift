@@ -28,13 +28,13 @@ extension UserAccount: Restorable {
             var changed = false
             var currentAccounts = try all(context: context, sync: false, label: nil)
             let seed = try Seed.getPasswordSeed(context: context)
+            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                throw KeychainError.notFound
+            }
             for (id, data) in result {
                 if let base64Data = data as? String {
                     do {
                         let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                        guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                            throw KeychainError.notFound
-                        }
                         let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
                         if var account = try get(id: id, context: context) {
                             currentAccounts.removeValue(forKey: account.id)
@@ -60,7 +60,14 @@ extension UserAccount: Restorable {
                 Properties.accountCount = result.count
                 NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             }
-        }.asVoid().log("Error syncing accounts")
+        }.asVoid().recover { error in
+            if case KeychainError.interactionNotAllowed = error {
+                // Probably happend in the background, we'll sync when authenticated again
+                return
+            } else {
+                throw error
+            }
+        }.log("Error syncing accounts")
     }
 
     init(data: Data, context: LAContext?) throws {

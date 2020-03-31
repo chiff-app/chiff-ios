@@ -118,8 +118,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         default:
             break
         }
-        print(notification)
-
 
         var content: UNNotificationContent = notification.request.content
         if !content.isProcessed() {
@@ -234,9 +232,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-        firstly {
-            TeamSession.sync(pushed: false, logo: false, backup: false)
-        }.catchLog("Could not update sessions.")
     }
 
     private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?) -> Promise<[BulkAccount]?> {

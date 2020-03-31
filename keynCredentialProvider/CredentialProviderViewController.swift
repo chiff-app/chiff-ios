@@ -75,6 +75,10 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountCell", for: indexPath) as! AccountTableViewCell
         let account = filteredAccounts[indexPath.row]
         cell.titleLabel.text = account.site.name
+        cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
+        if #available(iOS 13.0, *) {
+            cell.teamIcon.image = UIImage(systemName: "person.2.fill")
+        }
         return cell
     }
     

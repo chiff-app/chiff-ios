@@ -66,8 +66,11 @@ struct Team {
                 get(seed: teamSeed)
             }.then { team in
                 when(fulfilled: team.updateRole(pubkey: user.pubkey), team.createAdminUser(user: user, seed: encryptedSeed)).map({ ($0, team.name) })
-            }.map { _, name in
-                try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
+            }.then { (_, name) -> Promise<Session> in
+                let session = try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
+                return session.backup().map { _ in
+                    return session
+                }
             }
         } catch {
             Logger.shared.error("errors.restoring_team".localized, error: error)
@@ -172,7 +175,7 @@ struct Team {
     }
 
 
-    private static func createTeamSession(browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, seed: Data, name: String) throws -> Session {
+    private static func createTeamSession(browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, seed: Data, name: String) throws -> TeamSession {
         do {
             let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true, created: true)
             try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: seed)

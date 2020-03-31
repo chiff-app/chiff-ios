@@ -83,7 +83,7 @@ class LoginViewController: ASCredentialProviderViewController {
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true)
         }.done { context in
-            if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.get(id: accountID, context: context), let password = try account.password(context: context) {
+            if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.getAny(id: accountID, context: context), let password = try account.password(context: context) {
                 let passwordCredential = ASPasswordCredential(user: account.username, password: password)
                 self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
             } else {
