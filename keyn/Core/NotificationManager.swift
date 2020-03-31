@@ -53,7 +53,7 @@ struct NotificationManager {
             "id": id
         ]
         firstly {
-            API.shared.signedRequest(method: .delete, message: message, path: "devices/\(try BackupManager.publicKey())/\(id)", privKey: try BackupManager.privateKey(), body: nil)
+            API.shared.signedRequest(method: .delete, message: message, path: "users/\(try BackupManager.publicKey())/devices/\(id)", privKey: try BackupManager.privateKey(), body: nil)
         }.catchLog("Failed to delete ARN @ AWS.")
     }
 
@@ -129,7 +129,7 @@ struct NotificationManager {
             if let deviceToken = deviceToken {
                 message["deviceToken"] = deviceToken
             }
-            return API.shared.signedRequest(method: .post, message: message, path: "devices/\(try BackupManager.publicKey())/\(id)", privKey: try BackupManager.privateKey(), body: nil)
+            return API.shared.signedRequest(method: .post, message: message, path: "users/\(try BackupManager.publicKey())/devices/\(id)", privKey: try BackupManager.privateKey(), body: nil)
         }
     }
 
@@ -141,7 +141,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(method: .put, message: message, path: "devices/\(try BackupManager.publicKey())/\(id)", privKey: try BackupManager.privateKey(), body: nil)
+            API.shared.signedRequest(method: .put, message: message, path: "users/\(try BackupManager.publicKey())/devices/\(id)", privKey: try BackupManager.privateKey(), body: nil)
         }
     }
 
