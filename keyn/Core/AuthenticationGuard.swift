@@ -55,7 +55,7 @@ class AuthenticationGuard {
         authenticationInProgress = true
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
-        }.map(on: .main) { context in
+        }.map(on: .main) { (context) -> LAContext? in
             let accounts = try UserAccount.allCombined(context: context, sync: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
@@ -63,8 +63,9 @@ class AuthenticationGuard {
             }
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
             self.hideLockWindow()
-        }.then {
-            TeamSession.sync(pushed: false, logo: true, backup: true)
+            return context
+        }.then { (context) -> Promise<Void> in
+            when(fulfilled: TeamSession.sync(pushed: false, logo: true, backup: true), UserAccount.sync(context: context))
         }.catch { error in
             if let error = error as? DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)

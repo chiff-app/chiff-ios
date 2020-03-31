@@ -58,7 +58,14 @@ extension TeamSession: Restorable {
             if changed {
                 NotificationCenter.default.postMain(name: .sessionUpdated, object: self)
             }
-        }.asVoid().log("Error syncing accounts")
+        }.asVoid().recover { error in
+            if case KeychainError.interactionNotAllowed = error {
+                // Probably happend in the background, we'll sync when authenticated again
+                return
+            } else {
+                throw error
+            }
+        }.log("Error syncing accounts")
     }
 
     init(data: Data, context: LAContext?) throws {
