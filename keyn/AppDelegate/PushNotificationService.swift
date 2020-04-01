@@ -31,12 +31,17 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let aps = userInfo["aps"] as? [AnyHashable : Any], let category = aps["category"] as? String, category == NotificationCategory.SYNC else {
+        guard let aps = userInfo["aps"] as? [AnyHashable : Any], let category = aps["category"] as? String, category == NotificationCategory.SYNC || category == NotificationCategory.DELETE_TEAM_SESSION else {
                 completionHandler(.noData)
             return
         }
+        print(aps)
+        print(userInfo)
+        if let userTeamSessions = userInfo["userTeamSessions"] as? Bool {
+            print(userTeamSessions ? "yes" : "no")
+        }
         do {
-            guard let accounts = userInfo["accounts"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String] else {
+            guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String] else {
                 completionHandler(.failed)
                 return
             }
@@ -45,6 +50,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 var promises: [Promise<Void>] = [TeamSession.sync(pushed: true, logo: true, backup: false, pubKeys: sessionPubKeys)]
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
+                }
+                if userTeamSessions {
+                    promises.append(TeamSession.backupSync(context: nil))
                 }
                 firstly {
                     when(fulfilled: promises)

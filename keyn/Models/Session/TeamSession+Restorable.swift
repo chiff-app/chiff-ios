@@ -20,15 +20,15 @@ extension TeamSession: Restorable {
         return try TeamSession(data: data, context: context)
     }
 
-    static func backupSync(context: LAContext) throws -> Promise<Void> {
-        guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-            throw KeychainError.notFound
-        }
+    static func backupSync(context: LAContext?) -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(method: .get, message: nil, path: "users/\(try BackupManager.publicKey())/\(backupEndpoint.rawValue)", privKey: try BackupManager.privateKey(), body: nil)
         }.map { result in
             var changed = false
             var currentSessions = try Self.all()
+            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
+                throw KeychainError.notFound
+            }
             for (id, data) in result {
                 if let base64Data = data as? String {
                     do {
@@ -40,9 +40,11 @@ extension TeamSession: Restorable {
                             if backupSession.title != session.title {
                                 session.title = backupSession.title
                                 changed = true
+                                try session.update()
                             }
                         } else {
-                            let _ = try restore(data: data, context: context)
+                            let session = try restore(data: data, context: context)
+                            let _ = TeamSession.updateTeamSession(session: session, pushed: false)
                             changed = true
                         }
                     } catch {
