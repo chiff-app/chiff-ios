@@ -27,6 +27,7 @@ struct UserAccount: Account, Equatable {
     var webAuthn: WebAuthn?
     var timesUsed: Int
     var lastTimeUsed: Date?
+    var lastChange: TimeInterval
 
     var synced: Bool {
         do {
@@ -66,6 +67,7 @@ struct UserAccount: Account, Equatable {
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
+        self.lastChange = Date.now
         try save(password: generatedPassword, keyPair: keyPair)
     }
 
@@ -82,6 +84,7 @@ struct UserAccount: Account, Equatable {
         self.version = version
         self.webAuthn = webAuthn
         self.timesUsed = 0
+        self.lastChange = Date.now
     }
 
 
@@ -274,6 +277,7 @@ extension UserAccount: Codable {
         case webAuthn
         case timesUsed
         case lastTimeUsed
+        case lastChange
     }
 
     init(from decoder: Decoder) throws {
@@ -290,7 +294,8 @@ extension UserAccount: Codable {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
-        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
+        self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
+        self.lastChange = try values.decodeIfPresent(TimeInterval.self, forKey: .lastTimeUsed) ?? Date.now
     }
 
 }

@@ -24,6 +24,7 @@ struct TeamSession: Session {
     var isAdmin: Bool
     var version: Int
     var title: String
+    var lastChange: TimeInterval
     var logoPath: String? {
         let filemgr = FileManager.default
         return filemgr.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("team_logo_\(id).png").path
@@ -43,7 +44,7 @@ struct TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false) {
+    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: TimeInterval) {
         self.creationDate = Date()
         self.id = id
         self.signingPubKey = signingPubKey.base64
@@ -51,6 +52,7 @@ struct TeamSession: Session {
         self.title = title
         self.isAdmin = isAdmin
         self.created = created
+        self.lastChange = lastChange
     }
 
     // MARK: - Static functions
@@ -62,7 +64,7 @@ struct TeamSession: Session {
             let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false)
+            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now)
             return firstly {
                 try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
             }.map { _ in
@@ -90,7 +92,7 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func sync(pushed: Bool, logo: Bool, backup: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
+    static func updateAllTeamSessions(pushed: Bool, logo: Bool, backup: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
         return firstly {
             when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Void>? in
                 if let pubKeys = pubKeys {
@@ -115,8 +117,7 @@ struct TeamSession: Session {
             var session = session
             if !session.created && pushed {
                 session.created = true
-                try session.update()
-                let _ = session.backup()
+                try session.update(makeBackup: true)
             }
             return firstly {
                 API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil)
@@ -131,7 +132,7 @@ struct TeamSession: Session {
                 if session.isAdmin != isAdmin {
                     session.isAdmin = isAdmin
                     changed = true
-                    try session.update()
+                    try session.update(makeBackup: false)
                 }
                 let updatedAccounts = try session.updateSharedAccounts(accounts: accounts)
                 if changed || updatedAccounts > 0 {
@@ -196,6 +197,14 @@ struct TeamSession: Session {
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
         return API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData).asVoid().log("Error sending pairing response.")
+    }
+
+    func update(makeBackup: Bool) throws {
+        let sessionData = try PropertyListEncoder().encode(self as Self)
+        try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
+        if makeBackup {
+            let _ = backup()
+        }
     }
 
     func delete(notify: Bool) -> Promise<Void> {
@@ -301,6 +310,7 @@ extension TeamSession: Codable {
         case isAdmin
         case version
         case title
+        case lastChange
     }
 
     init(from decoder: Decoder) throws {
@@ -313,5 +323,6 @@ extension TeamSession: Codable {
         self.isAdmin = try values.decode(Bool.self, forKey: .isAdmin)
         self.version = try values.decode(Int.self, forKey: .version)
         self.title = try values.decode(String.self, forKey: .title)
+        self.lastChange = try values.decodeIfPresent(TimeInterval.self, forKey: .lastChange) ?? Date.now
     }
 }

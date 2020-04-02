@@ -11,80 +11,43 @@ import LocalAuthentication
 import CryptoKit
 import PromiseKit
 
-extension UserAccount: Restorable {
+extension UserAccount: Syncable {
 
-    static var backupEndpoint: BackupEndpoint {
+    typealias BackupType = BackupUserAccount
+
+    static var syncEndpoint: SyncEndpoint {
         return .accounts
     }
 
-    static func restore(data: Data, context: LAContext?) throws -> UserAccount {
-        return try UserAccount(data: data, context: context)
+    static func all(context: LAContext?) throws -> [String : UserAccount] {
+        return try all(context: context, sync: false, label: nil)
     }
 
-    static func sync(context: LAContext?) -> Promise<Void> {
-        return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "users/\(try BackupManager.publicKey())/\(backupEndpoint.rawValue)", privKey: try BackupManager.privateKey(), body: nil)
-        }.map { result in
-            var changed = false
-            var currentAccounts = try all(context: context, sync: false, label: nil)
-            let seed = try Seed.getPasswordSeed(context: context)
-            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                throw KeychainError.notFound
-            }
-            for (id, data) in result {
-                if let base64Data = data as? String {
-                    do {
-                        let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                        let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                        if var account = try get(id: id, context: context) {
-                            currentAccounts.removeValue(forKey: account.id)
-                            if try account.sync(data: data, seed: seed, context: context) {
-                                changed = true
-                            }
-                        } else {
-                            // Item doesn't exist, create.
-                            let _ = try restore(data: data, context: context)
-                            changed = true
-                        }
-                    } catch {
-                        Logger.shared.error("Could not restore data.", error: error)
-                    }
-                }
-            }
-            for account in currentAccounts.values {
-                #warning("Check how to safely delete here in the background")
-                try account.deleteSync()
-                changed = true
-            }
-            if changed {
-                Properties.accountCount = result.count
-                NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
-            }
-        }.asVoid().recover { error in
-            if case KeychainError.interactionNotAllowed = error {
-                // Probably happend in the background, we'll sync when authenticated again
-                return
-            } else {
-                throw error
-            }
-        }.log("Error syncing accounts")
+    static func create(backupObject: BackupUserAccount, context: LAContext?) throws {
+        let _ = try UserAccount(backupObject: backupObject, context: context)
     }
 
-    init(data: Data, context: LAContext?) throws {
-        let backupAccount = try JSONDecoder().decode(BackupUserAccount.self, from: data)
-        id = backupAccount.id
-        username = backupAccount.username
-        sites = backupAccount.sites
-        passwordIndex = backupAccount.passwordIndex
-        lastPasswordUpdateTryIndex = backupAccount.lastPasswordUpdateTryIndex
-        passwordOffset = backupAccount.passwordOffset
-        askToLogin = backupAccount.askToLogin
-        askToChange = backupAccount.askToChange
-        enabled = backupAccount.enabled
-        version = backupAccount.version
-        webAuthn = backupAccount.webAuthn
+    static func notifyObservers() {
+        NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+    }
+
+    // MARK: - Init
+
+    init(backupObject: BackupUserAccount, context: LAContext?) throws {
+        id = backupObject.id
+        username = backupObject.username
+        sites = backupObject.sites
+        passwordIndex = backupObject.passwordIndex
+        lastPasswordUpdateTryIndex = backupObject.lastPasswordUpdateTryIndex
+        passwordOffset = backupObject.passwordOffset
+        askToLogin = backupObject.askToLogin
+        askToChange = backupObject.askToChange
+        enabled = backupObject.enabled
+        version = backupObject.version
+        webAuthn = backupObject.webAuthn
         timesUsed = 0
         lastTimeUsed = nil
+        lastChange = Date.now
 
         var password: String? = nil
         if passwordIndex >= 0 {
@@ -93,7 +56,7 @@ extension UserAccount: Restorable {
         }
 
         // Remove token and save seperately in Keychain
-        if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
+        if let tokenSecret = backupObject.tokenSecret, let tokenURL = backupObject.tokenURL {
             let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
@@ -125,10 +88,8 @@ extension UserAccount: Restorable {
             tokenURL = try token.toURL()
             tokenSecret = token.generator.secret
         }
-        let account = BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret)
-        let data = try JSONEncoder().encode(account)
         return firstly {
-            backup(data: data)
+            sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret))
         }.map { _ in
             try Keychain.shared.setSynced(value: true, id: self.id, service: Self.keychainService)
         }.recover { error in
@@ -137,40 +98,41 @@ extension UserAccount: Restorable {
         }.log("Error setting account sync info")
     }
 
-    mutating func sync(data: Data, seed: Data, context: LAContext? = nil) throws -> Bool {
-        let backupAccount = try JSONDecoder().decode(BackupUserAccount.self, from: data)
+    mutating func update(with backupObject: BackupUserAccount, context: LAContext? = nil) throws -> Bool {
         // Attributes
-        var (changed, updatePassword) = syncAttributes(backupAccount: backupAccount)
+        var (changed, updatePassword) = updateAttributes(with: backupObject)
 
         // Password
         var password: String?
         var newIndex: Int!
         if updatePassword {
-            let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: seed)
-            (password, newIndex) = try passwordGenerator.generate(index: backupAccount.passwordIndex, offset: self.passwordOffset)
+            let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
+            (password, newIndex) = try passwordGenerator.generate(index: backupObject.passwordIndex, offset: self.passwordOffset)
             guard self.passwordIndex == newIndex else {
                 throw AccountError.passwordGeneration
             }
         }
 
         // OTP
-        if try syncToken(backupAccount: backupAccount, context: context) {
+        if try updateToken(with: backupObject, context: context) {
             changed = true
         }
 
         // Webauthn
-        if try syncWebAuthn(backupAccount: backupAccount, context: context) {
+        if try updateWebAuthn(with: backupObject, context: context) {
             changed = true
         }
-        if changed {
-            try update(secret: password?.data, backup: false)
-        }
+
+        try update(secret: password?.data, backup: false)
         return changed
     }
 
-    private mutating func syncAttributes(backupAccount: BackupUserAccount) -> (Bool, Bool) {
+    // MARK: - Private functinos
+
+    private mutating func updateAttributes(with backupAccount: BackupUserAccount) -> (Bool, Bool) {
         var updatePassword = false
         var changed = false
+        self.lastChange = backupAccount.lastChange
         if backupAccount.username != username {
             self.username = backupAccount.username
             updatePassword = true
@@ -212,7 +174,7 @@ extension UserAccount: Restorable {
         return (changed, updatePassword)
     }
 
-    private mutating func syncToken(backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
+    private mutating func updateToken(with backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
         var tokenURL: URL? = nil
         var tokenSecret: Data? = nil
         if let token = try oneTimePasswordToken() {
@@ -234,7 +196,7 @@ extension UserAccount: Restorable {
         return true
     }
 
-    private mutating func syncWebAuthn(backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
+    private mutating func updateWebAuthn(with backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
         guard backupAccount.webAuthn != webAuthn else {
             return false
         }
@@ -271,9 +233,10 @@ extension UserAccount: Restorable {
         return true
     }
 
+    
 }
 
-fileprivate struct BackupUserAccount: BaseAccount {
+struct BackupUserAccount: BaseAccount, BackupObject {
     let id: String
     var username: String
     var sites: [Site]
@@ -287,6 +250,7 @@ fileprivate struct BackupUserAccount: BaseAccount {
     var tokenSecret: Data?
     var version: Int
     var webAuthn: WebAuthn?
+    var lastChange: TimeInterval
 
     enum CodingKeys: CodingKey {
         case id
@@ -302,6 +266,7 @@ fileprivate struct BackupUserAccount: BaseAccount {
         case tokenSecret
         case version
         case webAuthn
+        case lastChange
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -318,6 +283,7 @@ fileprivate struct BackupUserAccount: BaseAccount {
         self.tokenSecret = tokenSecret
         self.version = account.version
         self.webAuthn = account.webAuthn
+        self.lastChange = account.lastChange
     }
 
     init(from decoder: Decoder) throws {
@@ -335,6 +301,7 @@ fileprivate struct BackupUserAccount: BaseAccount {
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
+        self.lastChange = try values.decodeIfPresent(TimeInterval.self, forKey: .lastChange) ?? Date.now
     }
 
 }

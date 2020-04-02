@@ -162,7 +162,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             deleteSession(session: session, indexPath: IndexPath(row: index, section: 0))
         } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
             session.title = title
-            try? session.update()
+            try? session.update(makeBackup: true)
             sessions[index] = session
             tableView.reloadData()
         }

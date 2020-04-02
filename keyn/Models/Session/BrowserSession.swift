@@ -44,6 +44,11 @@ struct BrowserSession: Session {
         self.version = version
     }
 
+    func update(makeBackup: Bool = false) throws {
+        let sessionData = try PropertyListEncoder().encode(self as Self)
+        try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
+    }
+
     func delete(notify: Bool) -> Promise<Void> {
 
         func deleteSession() {
