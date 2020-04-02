@@ -52,19 +52,16 @@ struct BackupManager {
     }
     
     static func getBackupData(seed: Data, context: LAContext) throws -> Promise<(Int,Int,Int,Int)> {
-        var pubKey: String
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
             try createEncryptionKey(seed: seed)
-            (_, pubKey, _) = try createSigningKeypair(seed: seed)
-        } else {
-            pubKey = try publicKey()
+            _ = try createSigningKeypair(seed: seed)
         }
         return firstly {
             when(fulfilled:
-                UserAccount.getBackupData(pubKey: pubKey, context: context),
-                TeamSession.getBackupData(pubKey: pubKey, context: context))
+                UserAccount.restore(context: context),
+                TeamSession.restore(context: context))
         }.then { result in
-            TeamSession.sync(pushed: false, logo: true, backup: false).map { _ in
+            TeamSession.updateAllTeamSessions(pushed: false, logo: true, backup: false).map { _ in
                 return result
             }
         }.map { result in

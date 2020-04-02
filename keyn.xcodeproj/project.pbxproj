@@ -108,12 +108,12 @@
 		496869412421008500B9BEE9 /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869402421008500B9BEE9 /* TeamAccount.swift */; };
 		49686942242100D800B9BEE9 /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869402421008500B9BEE9 /* TeamAccount.swift */; };
 		49686943242100D800B9BEE9 /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869402421008500B9BEE9 /* TeamAccount.swift */; };
-		4968694D242102AE00B9BEE9 /* UserAccount+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Restorable.swift */; };
-		49686950242102C000B9BEE9 /* UserAccount+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Restorable.swift */; };
-		49686951242102C000B9BEE9 /* UserAccount+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Restorable.swift */; };
-		496869532421032F00B9BEE9 /* TeamSession+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Restorable.swift */; };
-		496869542421033300B9BEE9 /* TeamSession+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Restorable.swift */; };
-		496869552421033300B9BEE9 /* TeamSession+Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Restorable.swift */; };
+		4968694D242102AE00B9BEE9 /* UserAccount+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */; };
+		49686950242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */; };
+		49686951242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */; };
+		496869532421032F00B9BEE9 /* TeamSession+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */; };
+		496869542421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */; };
+		496869552421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */; };
 		49686957242103E600B9BEE9 /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
 		49686958242103EA00B9BEE9 /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
 		49686959242103EB00B9BEE9 /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
@@ -123,9 +123,6 @@
 		4968696324211EF700B9BEE9 /* KeynRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968696224211EF700B9BEE9 /* KeynRequest.swift */; };
 		4968696424211F1200B9BEE9 /* KeynRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968696224211EF700B9BEE9 /* KeynRequest.swift */; };
 		4968696524211F1300B9BEE9 /* KeynRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968696224211EF700B9BEE9 /* KeynRequest.swift */; };
-		496869672421203900B9BEE9 /* Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869662421203900B9BEE9 /* Restorable.swift */; };
-		496869682421203900B9BEE9 /* Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869662421203900B9BEE9 /* Restorable.swift */; };
-		496869692421203900B9BEE9 /* Restorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869662421203900B9BEE9 /* Restorable.swift */; };
 		496886E61FBF4E9400837045 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496886E51FBF4E9400837045 /* Keychain.swift */; };
 		496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F0DEC22429C2F007C4152 /* KeynTabButton.swift */; };
 		49721F9C2128E5830090AF48 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49721F9B2128E5830090AF48 /* API.swift */; };
@@ -168,6 +165,9 @@
 		49B17338229ECADC0029FD2B /* PrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17337229ECADC0029FD2B /* PrivacyViewController.swift */; };
 		49B1733A229ED29A0029FD2B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B17339229ED29A0029FD2B /* WebViewController.swift */; };
 		49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */; };
+		49B1CD7D24360BFE0097DBBD /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1CD7C24360BFE0097DBBD /* Syncable.swift */; };
+		49B1CD7E243623960097DBBD /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1CD7C24360BFE0097DBBD /* Syncable.swift */; };
+		49B1CD7F243623970097DBBD /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1CD7C24360BFE0097DBBD /* Syncable.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
@@ -397,12 +397,11 @@
 		496869352420FAE800B9BEE9 /* Account+AuthenticationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AuthenticationServices.swift"; sourceTree = "<group>"; };
 		496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserAccount+Migration.swift"; sourceTree = "<group>"; };
 		496869402421008500B9BEE9 /* TeamAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccount.swift; sourceTree = "<group>"; };
-		4968694C242102AE00B9BEE9 /* UserAccount+Restorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserAccount+Restorable.swift"; sourceTree = "<group>"; };
-		496869522421032F00B9BEE9 /* TeamSession+Restorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamSession+Restorable.swift"; sourceTree = "<group>"; };
+		4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserAccount+Syncable.swift"; sourceTree = "<group>"; };
+		496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamSession+Syncable.swift"; sourceTree = "<group>"; };
 		49686956242103E600B9BEE9 /* TeamUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamUser.swift; sourceTree = "<group>"; };
 		4968695A2421046200B9BEE9 /* TeamRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamRole.swift; sourceTree = "<group>"; };
 		4968696224211EF700B9BEE9 /* KeynRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynRequest.swift; sourceTree = "<group>"; };
-		496869662421203900B9BEE9 /* Restorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restorable.swift; sourceTree = "<group>"; };
 		496886E51FBF4E9400837045 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		496F0DEC22429C2F007C4152 /* KeynTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabButton.swift; sourceTree = "<group>"; };
 		49721F9B2128E5830090AF48 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -440,6 +439,7 @@
 		49B17337229ECADC0029FD2B /* PrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyViewController.swift; sourceTree = "<group>"; };
 		49B17339229ED29A0029FD2B /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
+		49B1CD7C24360BFE0097DBBD /* Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncable.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewOverlappingLayout.swift; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
@@ -694,7 +694,7 @@
 				49E5FA162302E9DE009C964E /* SharedAccount.swift */,
 				496869402421008500B9BEE9 /* TeamAccount.swift */,
 				49E5FA122302E529009C964E /* UserAccount.swift */,
-				4968694C242102AE00B9BEE9 /* UserAccount+Restorable.swift */,
+				4968694C242102AE00B9BEE9 /* UserAccount+Syncable.swift */,
 				496869372420FBB400B9BEE9 /* UserAccount+Migration.swift */,
 			);
 			path = Account;
@@ -706,7 +706,7 @@
 				49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */,
 				49E5FA0C2302C482009C964E /* Session.swift */,
 				49E5FA0623015DEC009C964E /* TeamSession.swift */,
-				496869522421032F00B9BEE9 /* TeamSession+Restorable.swift */,
+				496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -875,7 +875,7 @@
 				49057730221AE04B006D98C0 /* AuthorizationGuard.swift */,
 				4904D4EC208CCAD300D6B477 /* BackupManager.swift */,
 				491968041FC0DC6400206B75 /* Crypto.swift */,
-				496869662421203900B9BEE9 /* Restorable.swift */,
+				49B1CD7C24360BFE0097DBBD /* Syncable.swift */,
 				496886E51FBF4E9400837045 /* Keychain.swift */,
 				49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */,
 				497828852285712C00D30C42 /* NotificationManager.swift */,
@@ -1487,8 +1487,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				496869542421033300B9BEE9 /* TeamSession+Restorable.swift in Sources */,
+				496869542421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */,
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
+				49B1CD7E243623960097DBBD /* Syncable.swift in Sources */,
 				496869392420FD0300B9BEE9 /* Account+AuthenticationServices.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
 				49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */,
@@ -1501,7 +1502,7 @@
 				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
 				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
-				49686950242102C000B9BEE9 /* UserAccount+Restorable.swift in Sources */,
+				49686950242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				49686942242100D800B9BEE9 /* TeamAccount.swift in Sources */,
 				4968693D2420FD2900B9BEE9 /* UserAccount+Migration.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
@@ -1517,7 +1518,6 @@
 				4968695C242105B800B9BEE9 /* TeamRole.swift in Sources */,
 				42497C13231EF4AF00ECBDB4 /* APIProtocol.swift in Sources */,
 				496869332420FA1400B9BEE9 /* BaseAccount.swift in Sources */,
-				496869682421203900B9BEE9 /* Restorable.swift in Sources */,
 				4966FF1823FEE2C800D7C232 /* WebAuthn.swift in Sources */,
 				613CFB0A201360D800460CC6 /* Account.swift in Sources */,
 				4919DAE720123FE50048B060 /* NotificationService.swift in Sources */,
@@ -1550,6 +1550,7 @@
 				4995D48B23995CE100267E6A /* StartInitialisationViewController.swift in Sources */,
 				42497C12231EE60900ECBDB4 /* APIProtocol.swift in Sources */,
 				49E4A1E722425904005E8EBF /* KeynButton.swift in Sources */,
+				49B1CD7D24360BFE0097DBBD /* Syncable.swift in Sources */,
 				496869322420F89B00B9BEE9 /* BaseAccount.swift in Sources */,
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F45E842424C4570080B248 /* Protocols.swift in Sources */,
@@ -1616,7 +1617,7 @@
 				013438CD220C583F000685B2 /* PasteboardService.swift in Sources */,
 				61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */,
 				497B4E8C23101B0300ED7E4A /* UnderlinedButton.swift in Sources */,
-				496869532421032F00B9BEE9 /* TeamSession+Restorable.swift in Sources */,
+				496869532421032F00B9BEE9 /* TeamSession+Syncable.swift in Sources */,
 				492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
@@ -1627,7 +1628,7 @@
 				4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */,
 				4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */,
 				492EC8452249214E0088F73D /* PairContainerViewController.swift in Sources */,
-				4968694D242102AE00B9BEE9 /* UserAccount+Restorable.swift in Sources */,
+				4968694D242102AE00B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				49B1733C229FFDFC0029FD2B /* LoggingPreferenceViewController.swift in Sources */,
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
@@ -1646,7 +1647,6 @@
 				49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */,
 				013438C7220C460A000685B2 /* AppStartupService.swift in Sources */,
 				4950262E22BBA2DC00545118 /* CircleView.swift in Sources */,
-				496869672421203900B9BEE9 /* Restorable.swift in Sources */,
 				49E75CA920FF34AF00BC0D65 /* Questionnaire.swift in Sources */,
 				6182D49F2151239B00D0E190 /* ManualOTPViewController.swift in Sources */,
 				49FA7F761FB9E08E00EDB367 /* BrowserSession.swift in Sources */,
@@ -1700,7 +1700,7 @@
 				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
 				49F2A0FF2214322700429875 /* DataStructures.swift in Sources */,
 				4968693A2420FD0300B9BEE9 /* Account+AuthenticationServices.swift in Sources */,
-				496869552421033300B9BEE9 /* TeamSession+Restorable.swift in Sources */,
+				496869552421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */,
 				49E4A1E822425904005E8EBF /* KeynButton.swift in Sources */,
 				493A35B42215660E002EB043 /* Constants.swift in Sources */,
 				4968693E2420FD2A00B9BEE9 /* UserAccount+Migration.swift in Sources */,
@@ -1731,14 +1731,14 @@
 				49E5FA112302D3E1009C964E /* TeamSession.swift in Sources */,
 				49E28AF0241A4599008F0661 /* Team.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
-				496869692421203900B9BEE9 /* Restorable.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49E5FA152302E52F009C964E /* UserAccount.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,
 				4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */,
-				49686951242102C000B9BEE9 /* UserAccount+Restorable.swift in Sources */,
+				49B1CD7F243623970097DBBD /* Syncable.swift in Sources */,
+				49686951242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
