@@ -37,13 +37,12 @@ enum SortingValues: String {
     }
 }
 
-class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIScrollViewDelegate {
+class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
     var filteredAccounts: [Account]!
-    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var tableViewContainer: UIView!
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
@@ -52,6 +51,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var sortLabel: UILabel!
+    @IBOutlet weak var searchBar: UISearchBar!
 
     var sortingButton: AccountsPickerButton!
     var addAccountButton: KeynBarButton?
@@ -83,24 +83,18 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
         setFooter()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        if #available(iOS 13, *) {
-            searchController.searchResultsUpdater = self
-            searchController.searchBar.searchBarStyle = .minimal
-            searchController.hidesNavigationBarDuringPresentation = false
-            searchController.dimsBackgroundDuringPresentation = false
-            searchController.searchBar.scopeButtonTitles = [
-                Filters.all.text(),
-                Filters.team.text(),
-                Filters.personal.text()
-            ]
-            searchController.searchBar.delegate = self
-            navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = true
-        }
+
+        searchBar.placeholder = "accounts.search".localized
+        searchBar.setScopeBarButtonTitleTextAttributes([
+            NSAttributedString.Key.font : UIFont.primaryMediumNormal as Any,
+            NSAttributedString.Key.foregroundColor : UIColor.primary,
+        ], for: .normal)
+        searchBar.scopeButtonTitles = [
+            Filters.all.text(),
+            Filters.team.text(),
+            Filters.personal.text()
+        ]
+        searchBar.delegate = self
     }
 
     @objc func showAddAccount() {
@@ -156,16 +150,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
 
-    func updateSearchResults(for searchController: UISearchController) {
-        if let searchText = searchController.searchBar.text {
-            searchQuery = searchText
-        } else {
-            searchQuery = ""
-        }
-        prepareAccounts()
-        tableView.reloadData()
-    }
-
     @IBAction func showSortValuesPicker(_ sender: Any) {
         sortingButton.becomeFirstResponder()
     }
@@ -187,13 +171,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         case .all:
             return accounts
         case .team:
-            return accounts.filter { (account) -> Bool in
-                return account is TeamAccount
-            }
+            return accounts.filter { $0 is SharedAccount }
         case .personal:
-            return accounts.filter { (account) -> Bool in
-                return account is UserAccount
-            }
+            return accounts.filter { $0 is UserAccount }
         }
     }
 
@@ -390,6 +370,38 @@ extension AccountsTableViewController: UISearchBarDelegate {
             currentFilter = Filters.personal
         default:
             return
+        }
+        prepareAccounts()
+        tableView.reloadData()
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+        if #available(iOS 13.0, *) {
+            searchBar.setShowsScope(true, animated: true)
+        } else {
+            searchBar.showsScopeBar = true
+        }
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        if #available(iOS 13.0, *) {
+            searchBar.setShowsScope(false, animated: true)
+        } else {
+            searchBar.showsScopeBar = false
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let searchText = searchBar.text {
+            searchQuery = searchText
+        } else {
+            searchQuery = ""
         }
         prepareAccounts()
         tableView.reloadData()
