@@ -221,7 +221,7 @@ struct BrowserSession: Session {
             guard let endpoint = Properties.endpoint else {
                 throw SessionError.noEndpoint
             }
-            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint)
+            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version)
             let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
             let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
             let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

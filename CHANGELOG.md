@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for BulkLogin requests (log in at multiple tabs at once).
 - Support BulkAdd requests (for import multiple accounts at once).
 - Add a CHANGELOG.
+- Add app version to pairing response to determine feature support.
 
 ### Changed
 
