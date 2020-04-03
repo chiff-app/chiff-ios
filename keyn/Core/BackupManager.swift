@@ -5,6 +5,7 @@
 import Foundation
 import LocalAuthentication
 import DeviceCheck
+import PromiseKit
 
 struct BackupManager {
 
@@ -26,144 +27,75 @@ struct BackupManager {
         static let environment = "environment"
     }
 
-    static func initialize(seed: Data, context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func initialize(seed: Data, context: LAContext?) -> Promise<Void> {
         do {
             guard !hasKeys else {
                 Logger.shared.warning("Tried to create backup keys while they already existed")
-                completionHandler(.success(()))
-                return
+                return .value(())
             }
             deleteKeys()
             NotificationManager.shared.deleteKeys()
             try createEncryptionKey(seed: seed)
             let (privKey, pubKey, userId) = try createSigningKeypair(seed: seed)
-            DCDevice.current.generateToken { (data, error) in
-                if let error = error {
-                    Logger.shared.warning("Error retrieving device token.", error: error)
+            return Promise<String?> { seal in
+                DCDevice.current.generateToken { (data, error) in
+                    if let error = error {
+                        Logger.shared.warning("Error retrieving device token.", error: error)
+                        seal.fulfill(nil)
+                    } else {
+                        seal.fulfill(data?.base64EncodedString())
+                    }
                 }
+            }.then { token -> Promise<JSONObject> in
                 var message: [String: Any] = [
                     "os": "ios",
                     "userId": userId
                 ]
-                if let data = data {
-                    message[MessageIdentifier.token] = data.base64EncodedString()
+                if let token = token {
+                    message[MessageIdentifier.token] = token
                 }
-                API.shared.signedRequest(method: .post, message: message, path: "users/\(pubKey)", privKey: privKey, body: nil) { result in
-                    switch result {
-                    case .success(_):
-                        completionHandler(.success(()))
-                    case .failure(let error):
-                        Logger.shared.error("Cannot initialize BackupManager.", error: error)
-                        completionHandler(.failure(error))
-                    }
-                }
-            }
+                return API.shared.signedRequest(method: .post, message: message, path: "users/\(pubKey)", privKey: privKey, body: nil)
+            }.asVoid().log("Cannot initialize BackupManager.")
+
         } catch {
             Logger.shared.error("Cannot initialize BackupManager.", error: error)
-            completionHandler(.failure(error))
-        }
-    }
-    
-    static func backup(account: BackupUserAccount, completionHandler: @escaping (_ result: Bool) -> Void) {
-        do {
-            let accountData = try JSONEncoder().encode(account)
-            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                throw KeychainError.notFound
-            }
-            let ciphertext = try Crypto.shared.encryptSymmetric(accountData, secretKey: key)
-
-            let message = [
-                MessageIdentifier.id: account.id,
-                MessageIdentifier.data: ciphertext.base64
-            ]
-            API.shared.signedRequest(method: .put, message: message, path: "users/\(try publicKey())/accounts/\(account.id)", privKey: try privateKey(), body: nil) { result in
-                switch result {
-                case .success(_):
-                    completionHandler(true)
-                case .failure(let error):
-                    Logger.shared.error("BackupManager cannot backup account data.", error: error)
-                    completionHandler(false)
-                }
-            }
-        } catch {
-            completionHandler(false)
-        }
-    }
-    
-    static func deleteAccount(accountId: String) throws {
-        API.shared.signedRequest(method: .delete, message: [MessageIdentifier.id: accountId], path: "users/\(try publicKey())/accounts/\(accountId)", privKey: try privateKey(), body: nil) { result in
-            if case let .failure(error) = result {
-                Logger.shared.error("BackupManager cannot delete account.", error: error)
-            }
+            return Promise(error: error)
         }
     }
 
-    static func deleteAllAccounts(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil) { result in
-                switch result {
-                case .success(_): completionHandler(.success(()))
-                case .failure(let error):
-                    Logger.shared.error("BackupManager cannot delete account.", error: error)
-                    completionHandler(.failure(error))
-                }
-            }
-        } catch {
-            completionHandler(.failure(error))
-        }
+    static func deleteBackupData() -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil)
+        }.asVoid().log("BackupManager cannot delete account.")
     }
     
-    static func getBackupData(seed: Data, context: LAContext, completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) throws {
+    static func getBackupData(seed: Data, context: LAContext) throws -> Promise<(Int,Int,Int,Int)> {
         var pubKey: String
-
         if !Keychain.shared.has(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) {
             try createEncryptionKey(seed: seed)
             (_, pubKey, _) = try createSigningKeypair(seed: seed)
         } else {
             pubKey = try publicKey()
         }
-        API.shared.signedRequest(method: .get, message: nil, path: "users/\(pubKey)/accounts", privKey: try privateKey(), body: nil) { result in
-            switch result {
-            case .success(let dict):
-                var failedAccounts = [String]()
-                for (id, data) in dict {
-                    if let base64Data = data as? String {
-                        do {
-                            let ciphertext = try Crypto.shared.convertFromBase64(from: base64Data)
-                            guard let key = try Keychain.shared.get(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup) else {
-                                throw KeychainError.notFound
-                            }
-                            let accountData = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                            try UserAccount.restore(accountData: accountData, id: id, context: context)
-                        } catch {
-                            failedAccounts.append(id)
-                            Logger.shared.error("Could not restore account.", error: error)
-                        }
-                    }
-                }
-                Properties.accountCount = dict.count - failedAccounts.count
-                completionHandler(.success((dict.count, failedAccounts.count)))
-            case .failure(let error):
-                Logger.shared.error("BackupManager cannot get backup data.", error: error)
-                completionHandler(.failure(error))
+        return firstly {
+            when(fulfilled:
+                UserAccount.getBackupData(pubKey: pubKey, context: context),
+                TeamSession.getBackupData(pubKey: pubKey, context: context))
+        }.then { result in
+            TeamSession.updateTeamSessions(pushed: false, logo: true, backup: false).map { _ in
+                return result
             }
+        }.map { result in
+            let ((accountsSucceeded, accountsFailed), (sessionsSucceeded, sessionsFailed)) = result
+            Properties.accountCount = accountsSucceeded
+            return (accountsSucceeded + accountsFailed, accountsFailed, sessionsSucceeded + sessionsFailed, sessionsFailed)
         }
     }
 
-    static func moveToProduction(completionHandler: @escaping ((Error?) -> Void)) {
-        do {
-            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil) { (result) in
-                if case .failure(let error) = result {
-                    Logger.shared.error("BackupManager cannot move backup data.", error: error)
-                    completionHandler(error)
-                } else {
-                    completionHandler(nil)
-                }
-            }
-        } catch {
-            Logger.shared.error("BackupManager cannot move backup data.", error: error)
-            completionHandler(error)
-        }
+    static func moveToProduction() -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil)
+        }.asVoid().log("BackupManager cannot move backup data.")
     }
 
     static func deleteKeys() {
@@ -186,7 +118,6 @@ struct BackupManager {
     }
 
     // MARK: - Private
-    
     private static func createSigningKeypair(seed: Data) throws -> (Data, String, String) {
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: seed)
         try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: keyPair.pubKey)

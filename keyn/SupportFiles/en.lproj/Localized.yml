@@ -20,14 +20,34 @@ accounts:
       value: Log in as you'd normally do.
     third:
       value: Keyn asks you to add the website.
+  add_role:
+    value: Add roles
+  add_to_team:
+    value: Add to team
+  add_user:
+    value: Add users
   adding_account:
     value: Adding an account
+  all:
+    value: All
+  alphabetically:
+    value: Alphabetically
   alternative_add:
     value: 'Alternatively, you can add an account manually.'
   choose:
     value: Choose an account to fill the credentials.
   code:
     value: Code
+  convert_to_team_footer:
+    value: Choose the roles and users that should have access to this account.
+  convert_to_team_header:
+    value: Access rights
+  convert_to_team_title:
+    value: Add %@ to %@.
+  convert_to_team_warning:
+    value: >-
+      ⚠️ Converting this account to a team account may give others access to
+      your password.
   copied:
     comment: Show the user that a value has been copied
     value: Copied
@@ -55,14 +75,24 @@ accounts:
     value: Mode
   mode_description:
     value: Codes can either be time-based or counter-based
+  mostly:
+    value: Mostly used
   my_accounts:
     value: My accounts
   name:
     value: Name
   no_password:
     value: No password set
+  number_of_roles:
+    value: '%@ roles'
+  number_of_users:
+    value: '%@ users'
   password:
     value: Password
+  personal:
+    value: Personal
+  recently:
+    value: Recently used
   report:
     value: Report
   scan_2fa:
@@ -70,12 +100,26 @@ accounts:
   scan_qr:
     comment: Cell title for scanning qr code for OTP
     value: Scan QR
+  search:
+    value: Search
   secret:
     value: Secret
   secret_description:
     value: The secret that was shared by the website
   sites_header:
     value: Websites
+  sort:
+    value: Sort
+  team:
+    value: Team
+  team_role_footer:
+    value: Choose which roles should have access to this account.
+  team_role_header:
+    value: Roles
+  team_user_footer:
+    value: Choose which users should have access to this account.
+  team_user_header:
+    value: Users
   time_based:
     value: Time-based
   two_fa_instruction:
@@ -295,6 +339,8 @@ errors:
     value: >-
       You can only pair with a computer when camera is enabled. You can do this
       in Settings.
+  convert_to_team:
+    value: Error converting to team account
   corrupted_data:
     value: Unreadable data error
   creating_team:
@@ -312,6 +358,10 @@ errors:
     value: Keyn was unable to restore %d of the %d accounts.
   failed_accounts_title:
     value: Recovery error
+  failed_teams_and_accounts_message:
+    value: Keyn was unable to restore %d of the %d accounts and  %d of the %d teams.
+  failed_teams_message:
+    value: Keyn was unable to restore %d of the %d teams.
   generic_error:
     comment: A generic error description
     value: An error occured.
@@ -497,11 +547,13 @@ initialization:
       Sensitive data is never shared and everything is anonymous.
 notifications:
   accounts_from:
-    value: '%@ accounts from %@.'
+    value: '%@ accounts on %@.'
   add_account:
     value: Add account
   add_accounts:
     value: Add accounts
+  bulk_login:
+    value: ''
   change_password:
     value: Change password
   end_session:
@@ -703,10 +755,12 @@ requests:
     value: Login successful
   login_to:
     comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
-    value: Login to %@
+    value: Log in to %@
   login_with:
     comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
     value: Login with %@
+  n_new_accounts:
+    value: '%@ new accounts.'
   new_password_generated:
     value: New password generated
   no_accounts_left:

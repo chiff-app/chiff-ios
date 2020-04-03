@@ -6,13 +6,13 @@ import Foundation
 import OneTimePassword
 import LocalAuthentication
 import AuthenticationServices
+import PromiseKit
 
 
 /*
  * An account belongs to the user and can have one Site.
  */
-struct TeamAccount: Account {
-    
+struct SharedAccount: Account {
     let id: String
     var username: String
     var sites: [Site]
@@ -24,6 +24,8 @@ struct TeamAccount: Account {
     let sessionPubKey: String
     var synced = true
     var version: Int
+    var timesUsed: Int
+    var lastTimeUsed: Date?
 
     var site: Site {
         return sites.first!
@@ -43,11 +45,12 @@ struct TeamAccount: Account {
         self.askToLogin = true
         self.sessionPubKey = sessionPubKey
         self.version = version
+        self.timesUsed = 0
     }
 
     mutating func update(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
+        let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
         guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
             return false
         }
@@ -62,37 +65,30 @@ struct TeamAccount: Account {
         return true
     }
 
-    func delete(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        Keychain.shared.delete(id: id, service: TeamAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded) { (result) in
-            do {
-                switch result {
-                case .success(_):
-                    try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
-                    self.deleteFromToIdentityStore()
-                    completionHandler(.success(()))
-                case .failure(let error): throw error
-                }
-            } catch {
-                Logger.shared.error("Error deleting accounts", error: error)
-                return completionHandler(.failure(error))
-            }
-        }
+    func delete() -> Promise<Void> {
+        firstly {
+            Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
+        }.map { _ in
+            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
+            self.deleteFromToIdentityStore()
+        }.log("Error deleting accounts")
     }
 
-    func delete() throws {
-        try Keychain.shared.delete(id: id, service: TeamAccount.keychainService)
+    func deleteSync() throws {
+        try Keychain.shared.delete(id: id, service: SharedAccount.keychainService)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
     }
 
-    func backup() throws {
+    func backup() throws -> Promise<Void> {
         // Intentionally not implemented
+        return .value(())
     }
 
     func save(password: String, sessionPubKey: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
-        try backup()
+        let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
         saveToIdentityStore()
     }
@@ -101,8 +97,8 @@ struct TeamAccount: Account {
 
     static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
         let decoder = JSONDecoder()
-        let backupAccount = try decoder.decode(BackupTeamAccount.self, from: accountData)
-        var account = TeamAccount(id: backupAccount.id,
+        let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
+        var account = SharedAccount(id: backupAccount.id,
                                   username: backupAccount.username,
                                   sites: backupAccount.sites,
                                   passwordIndex: backupAccount.passwordIndex,
@@ -123,8 +119,13 @@ struct TeamAccount: Account {
     }
 
     static func deleteAll(for sessionPubKey: String) {
+        if let accounts = try? all(context: nil, sync: false, label: sessionPubKey), let sessions = try? BrowserSession.all() {
+            for id in accounts.keys {
+                sessions.forEach({ $0.deleteAccount(accountId: id) })
+            }
+        }
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
-        NotificationCenter.default.post(name: .sharedAccountsChanged, object: nil)
+        NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true
         }
@@ -132,7 +133,7 @@ struct TeamAccount: Account {
 
 }
 
-extension TeamAccount: Codable {
+extension SharedAccount: Codable {
 
     enum CodingKeys: CodingKey {
         case id
@@ -144,6 +145,8 @@ extension TeamAccount: Codable {
         case askToChange
         case sessionPubKey
         case version
+        case timesUsed
+        case lastTimeUsed
     }
 
     init(from decoder: Decoder) throws {
@@ -156,6 +159,8 @@ extension TeamAccount: Codable {
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
+        self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
+        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
     }
 
 }

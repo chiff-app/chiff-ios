@@ -6,8 +6,24 @@ import UIKit
 import MBProgressHUD
 import OneTimePassword
 import QuartzCore
+import PromiseKit
 
-class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDelegate {
+class AccountViewController: KeynTableViewController, UITextFieldDelegate, SitesDelegate {
+
+    override var headers: [String?] {
+        return [
+            "accounts.website_details".localized.capitalizedFirstLetter,
+            "accounts.user_details".localized.capitalizedFirstLetter
+        ]
+    }
+
+    override var footers: [String?] {
+        return [
+            webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
+            "accounts.2fa_description".localized.capitalizedFirstLetter,
+            showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
+        ]
+    }
 
     @IBOutlet weak var websiteNameTextField: UITextField!
     @IBOutlet weak var websiteURLTextField: UITextField!
@@ -20,6 +36,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var enabledSwitch: UISwitch!
     @IBOutlet weak var bottomSpacer: UIView!
+    @IBOutlet weak var addToTeamButton: KeynButton!
 
     var editButton: UIBarButtonItem!
     var account: Account!
@@ -31,6 +48,8 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     var loadingCircle: FilledCircle?
     var showAccountEnableButton: Bool = false
     var canEnableAccount: Bool = true
+    var session: TeamSession?   // Only set if user is team admin
+    var team: Team?             // Only set if user is team admin
 
     var password: String? {
         return try? account.password()
@@ -55,7 +74,17 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         tableView.layer.borderWidth = 1.0
 
         tableView.separatorColor = UIColor.primaryTransparant
-        bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+        // TODO: Handle situation where there are multiple admin sessions
+        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }), account is UserAccount {
+            addToTeamButton.isHidden = false
+            addToTeamButton.isEnabled = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
+            self.session = session
+        } else {
+            addToTeamButton.isEnabled = false
+            addToTeamButton.isHidden = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+        }
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
@@ -104,62 +133,19 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         return editingMode || showAccountEnableButton ? 3 : 2
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "accounts.website_details".localized.capitalizedFirstLetter
-        case 1:
-            return "accounts.user_details".localized.capitalizedFirstLetter
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
-        case 1:
-            return "accounts.2fa_description".localized.capitalizedFirstLetter
-        case 2:
-            return showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section < 2 else {
-            return
-        }
-
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont.primaryBold
-        header.textLabel?.textAlignment = NSTextAlignment.left
-        header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
-    }
-
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        super.tableView(tableView, willDisplayFooterView: view, forSection: section)
         guard section < 2 || showAccountEnableButton else {
             return
         }
         let footer = view as! UITableViewHeaderFooterView
-        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
-        footer.textLabel?.font = UIFont.primaryMediumSmall
-        footer.textLabel?.textAlignment = NSTextAlignment.left
-        footer.textLabel?.frame = footer.frame
         switch section {
         case 0:
-            footer.textLabel?.text = webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter
             footer.textLabel?.isHidden = !(webAuthnEnabled || tableView.isEditing)
         case 1:
             footer.textLabel?.isHidden = false
-            footer.textLabel?.text = "accounts.2fa_description".localized.capitalizedFirstLetter
         case 2:
             footer.textLabel?.isHidden = false
-            footer.textLabel?.text = "accounts.footer_account_enabled".localized.capitalizedFirstLetter
         default:
             fatalError("An extra section appeared!")
         }
@@ -229,7 +215,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }
         do {
             try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+            NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
         } catch {
             Logger.shared.error("Failed to update enabled state in account")
             sender.isOn = account.enabled
@@ -239,23 +225,37 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
-        account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded) { (result) in
-            switch result {
-            case .success(let password):
-                DispatchQueue.main.async {
-                    if self.userPasswordTextField.isEnabled {
-                        self.userPasswordTextField.text = password
-                        self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
-                    } else {
-                        self.showHiddenPasswordPopup(password: password ?? "This account has no password")
-                    }
-                }
-            case .failure(let error):
-                Logger.shared.error("Could not get account", error: error)
+        firstly {
+            account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded)
+        }.done(on: .main) { password in
+            if self.userPasswordTextField.isEnabled {
+                self.userPasswordTextField.text = password
+                self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+            } else {
+                self.showHiddenPasswordPopup(password: password ?? "This account has no password")
             }
-        }
+        }.catchLog("Could not get account")
     }
     
+    @IBAction func addToTeam(_ sender: KeynButton) {
+        sender.showLoading()
+        guard let session = session else {
+            fatalError("Session must exist if this action is called")
+        }
+        firstly {
+            session.getTeamSeed()
+        }.then {
+            Team.get(seed: $0)
+        }.ensure(on: .main) {
+            sender.hideLoading()
+        }.done(on: .main) {
+            self.team = $0
+            self.performSegue(withIdentifier: "AddToTeam", sender: self)
+        }.catch(on: .main) { error in
+            self.showAlert(message: "TODO: Localized error message: \(error)")
+        }
+    }
+
     @IBAction func deleteAccount(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
@@ -264,7 +264,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     @objc func edit() {
         tableView.setEditing(true, animated: true)
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(update))
@@ -313,7 +313,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
                 return
             }
             try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
-            NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+            NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
             if newPassword != nil {
                 showPasswordButton.isHidden = false
                 showPasswordButton.isEnabled = true
@@ -335,7 +335,7 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
     func updateAccount(account: UserAccount) {
         self.account = account
         loadAccountData()
-        NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
+        NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
     }
     
     // MARK: - Private
@@ -489,6 +489,10 @@ class AccountViewController: UITableViewController, UITextFieldDelegate, SitesDe
             }
             destination.account = account
             destination.delegate = self
+        } else if segue.identifier == "AddToTeam", let destination = segue.destination.contents as? TeamAccountViewController {
+            destination.session = session!
+            destination.account = account!
+            destination.team = team!
         }
     }
 }

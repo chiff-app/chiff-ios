@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class StartBackupViewController: UIViewController {
 
@@ -13,18 +14,14 @@ class StartBackupViewController: UIViewController {
     }
     
     @IBAction func startBackup(_ sender: UIButton) {
-        Seed.mnemonic { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let mnemonic):
-                    self.mnemonic = mnemonic
-                    self.performSegue(withIdentifier: "StartBackup", sender: self)
-                case .failure(let error):
-                    self.showAlert(message: error.localizedDescription)
-                }
-            }
+        firstly {
+            Seed.mnemonic()
+        }.done(on: .main) {
+            self.mnemonic = $0
+            self.performSegue(withIdentifier: "StartBackup", sender: self)
+        }.catch(on: .main) { error in
+            self.showAlert(message: error.localizedDescription)
         }
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

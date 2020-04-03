@@ -20,14 +20,34 @@ accounts:
       value: Log in zoals je normaal inlogt.
     third:
       value: Keyn vraagt om de website toe te voegen.
+  add_role:
+    value: Voeg rollen toe
+  add_to_team:
+    value: Voeg toe aan team
+  add_user:
+    value: Voeg gebruikers toe
   adding_account:
     value: Een account toevoegen
+  all:
+    value: Alle
+  alphabetically:
+    value: Alfabetisch
   alternative_add:
     value: Je kunt ook handmatig een account toevoegen
   choose:
     value: Kies een account om gebruikersnaam en wachtwoord in te vullen.
   code:
     value: Code
+  convert_to_team_footer:
+    value: Kies de rollen en gebruikers die toegang moeten krijgen tot dit account.
+  convert_to_team_header:
+    value: Toegangsrechten
+  convert_to_team_title:
+    value: Voeg %@ toe aan %@.
+  convert_to_team_warning:
+    value: >-
+      ⚠️ Door dit account naar een team-account te converteren geef je anderen
+      mogelijk toegang tot je wachtwoord.
   copied:
     comment: Show the user that a value has been copied
     value: Gekopieerd
@@ -55,14 +75,24 @@ accounts:
     value: Type
   mode_description:
     value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
+  mostly:
+    value: Meest gebruikt
   my_accounts:
     value: Mijn accounts
   name:
     value: Naam
   no_password:
     value: Geen wachtwoord ingesteld
+  number_of_roles:
+    value: '%@ rollen'
+  number_of_users:
+    value: '%@ gebruikers'
   password:
     value: Wachtwoord
+  personal:
+    value: Persoonlijk
+  recently:
+    value: Laatst gebruikt
   report:
     value: Rapporteer
   scan_2fa:
@@ -70,12 +100,26 @@ accounts:
   scan_qr:
     comment: Cell title for scanning qr code for OTP
     value: Scan QR
+  search:
+    value: Zoek
   secret:
     value: Geheim
   secret_description:
     value: Het geheim dat gedeeld is door de website
   sites_header:
     value: Websites
+  sort:
+    value: Sorteer
+  team:
+    value: Team
+  team_role_footer:
+    value: Kies welke rollen toegang moeten krijgen tot dit account.
+  team_role_header:
+    value: Rollen
+  team_user_footer:
+    value: Kies welke gebruikers toegang moeten krijgen tot dit account.
+  team_user_header:
+    value: Gebruikers
   time_based:
     value: Tijdgebaseerd
   two_fa_instruction:
@@ -273,7 +317,7 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "Je bent admin van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in het admin-panel."
+    value: "Je bent beheerder van dit team \U0001F389.\nAls je deze verantwoordelijkheid niet langer aan kan, kun je de sessie beëindigen in de beheer-applicatie."
   team_session_detail_footer:
     value: >-
       Je raakt toegang tot al je team-accounts kwijt als je deze sessie
@@ -295,6 +339,8 @@ errors:
     value: >-
       Je kunt alleen koppelen met een computer als de camera is ingeschakeld.
       Dit kun je doen via Instellingen.
+  convert_to_team:
+    value: Fout bij converteren naar team account
   corrupted_data:
     value: Onleesbare data fout
   creating_team:
@@ -312,6 +358,10 @@ errors:
     value: '%d van de %d accounts konden niet hersteld worden.'
   failed_accounts_title:
     value: Fout
+  failed_teams_and_accounts_message:
+    value: '%d van de %d accounts en %d van de %d teams konden niet hersteld worden.'
+  failed_teams_message:
+    value: '%d van de %d teams konden niet hersteld worden.'
   generic_error:
     comment: A generic error description
     value: Er is een fout opgetreden.
@@ -497,11 +547,13 @@ initialization:
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
 notifications:
   accounts_from:
-    value: '%@ accounts van %@.'
+    value: '%@ accounts op %@.'
   add_account:
     value: Voeg account toe
   add_accounts:
     value: Voeg accounts toe
+  bulk_login:
+    value: ''
   change_password:
     value: Verander wachtwoord
   end_session:
@@ -705,10 +757,12 @@ requests:
     value: Login gelukt
   login_to:
     comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
-    value: Login bij %@
+    value: Log in bij %@
   login_with:
     comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
     value: Login met %@
+  n_new_accounts:
+    value: '%@ nieuwe accounts.'
   new_password_generated:
     value: Nieuw wachtwoord gegenereerd
   no_accounts_left:

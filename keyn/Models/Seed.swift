@@ -4,6 +4,7 @@
  */
 import Foundation
 import LocalAuthentication
+import PromiseKit
 
 enum SeedError: KeynError {
     case mnemonicConversion
@@ -28,65 +29,51 @@ struct Seed {
         set {
             UserDefaults.standard.set(newValue, forKey: paperBackupCompletedFlag)
             if newValue {
-                NotificationCenter.default.post(name: .backupCompleted, object: self)
+                NotificationCenter.default.postMain(name: .backupCompleted, object: self)
             }
         }
     }
 
-    static func create(context: LAContext?, completionHandler: @escaping (Result<Void, Error>) -> Void) {
+    static func create(context: LAContext?) -> Promise<Void> {
         guard !hasKeys && !BackupManager.hasKeys else {
-            completionHandler(.failure(SeedError.exists))
-            return
+            return Promise(error: SeedError.exists)
         }
         do {
-
             let seed = try Crypto.shared.generateSeed()
             let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: CRYPTO_CONTEXT)
             let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .webAuthnSeed, context: CRYPTO_CONTEXT)
             let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: CRYPTO_CONTEXT)
 
-            BackupManager.initialize(seed: backupSeed, context: context) { result in
-                do {
-                    switch result {
-                    case .success(_):
-                        try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
-                        try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
-                        try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-                        try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
-                        completionHandler(.success(()))
-                    case .failure(let error): throw error
-                    }
-                } catch {
-                    NotificationManager.shared.deleteKeys()
-                    BackupManager.deleteKeys()
-                    delete()
-                    completionHandler(.failure(error))
-                }
+            return firstly {
+                BackupManager.initialize(seed: backupSeed, context: context)
+            }.map { result in
+                try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
+                try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
+                try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
+                try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
+            }.recover { error in
+                NotificationManager.shared.deleteKeys()
+                BackupManager.deleteKeys()
+                delete()
+                throw error
             }
         } catch {
             delete()
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 
-    static func mnemonic(completionHandler: @escaping (Result<[String], Error>) -> Void) {
-        Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded) { (result) in
-            do {
-                switch result {
-                case .success(let seed):
-                    guard let seed = seed else {
-                        throw SeedError.notFound
-                    }
-                    let checksumSize = seed.count / 4
-                    let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
-                    let wordlist = try self.localizedWordlist()
-                    let mnemonic = bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
-                    completionHandler(.success(mnemonic))
-                case .failure(let error): throw error
-                }
-            } catch {
-                completionHandler(.failure(error))
+    static func mnemonic() -> Promise<[String]> {
+        return firstly {
+            Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "backup.retrieve".localized, authenticationType: .ifNeeded)
+        }.map { seed in
+            guard let seed = seed else {
+                throw SeedError.notFound
             }
+            let checksumSize = seed.count / 4
+            let bitstring = seed.bitstring + String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize)
+            let wordlist = try self.localizedWordlist()
+            return bitstring.components(withLength: 11).map({ wordlist[Int($0, radix: 2)!] })
         }
     }
     
@@ -99,10 +86,9 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
     
-    static func recover(context: LAContext, mnemonic: [String], completionHandler: @escaping (Result<(Int,Int), Error>) -> Void) {
+    static func recover(context: LAContext, mnemonic: [String]) -> Promise<(Int,Int,Int,Int)> {
         guard !hasKeys && !BackupManager.hasKeys else {
-            completionHandler(.failure(SeedError.exists))
-            return
+            return Promise(error: SeedError.exists)
         }
         do {
             let (checksum, seed) = try generateSeedFromMnemonic(mnemonic: mnemonic)
@@ -119,12 +105,12 @@ struct Seed {
             try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
             paperBackupCompleted = true
 
-            try BackupManager.getBackupData(seed: backupSeed, context: context, completionHandler: completionHandler)
+            return try BackupManager.getBackupData(seed: backupSeed, context: context)
         } catch {
             NotificationManager.shared.deleteKeys()
             BackupManager.deleteKeys()
             delete()
-            completionHandler(.failure(error))
+            return Promise(error: error)
         }
     }
 

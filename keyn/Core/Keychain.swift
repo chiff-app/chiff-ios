@@ -6,6 +6,7 @@ import Foundation
 import Security
 import LocalAuthentication
 import CryptoKit
+import PromiseKit
 
 enum KeychainError: KeynError {
     case stringEncoding
@@ -69,6 +70,11 @@ enum KeychainService: String {
     }
 }
 
+fileprivate enum Synced: String {
+    case `true` = "true"
+    case `false` = "fals"  // Four characters
+}
+
 
 /// The interface needed for SecKey conversion.
 protocol SecKeyConvertible: CustomStringConvertible {
@@ -114,6 +120,7 @@ struct Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
+                                    kSecAttrType as String: Synced.false.rawValue,
                                     kSecAttrAccessGroup as String: service.accessGroup]
         if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
@@ -124,7 +131,7 @@ struct Keychain {
         if let label = label {
             query[kSecAttrLabel as String] = label
         }
-    
+
         switch service.classification {
         case .restricted:
             query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
@@ -330,12 +337,10 @@ struct Keychain {
         guard let dataArray = queryResult as? [String: Any] else {
             throw KeychainError.unexpectedData
         }
-        if let label = dataArray[kSecAttrType as String] as? String {
-            return label == "true"
-        } else { // Not present, we'll assume it's synced
-            try setSynced(value: true, id: identifier, service: service)
-            return true
+        guard let label = dataArray[kSecAttrType as String] as? String else {
+            return false
         }
+        return label == Synced.true.rawValue
     }
 
     func setSynced(value: Bool, id identifier: String, service: KeychainService) throws {
@@ -348,7 +353,7 @@ struct Keychain {
             query[kSecUseAuthenticationContext as String] = defaultContext
         }
 
-        let attributes: [String: Any] = [kSecAttrType as String: value ? "true" : "fals"] // Four characters
+        let attributes: [String: Any] = [kSecAttrType as String: value ? Synced.true.rawValue : Synced.false.rawValue]
 
         switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
         case errSecSuccess: return
@@ -361,57 +366,60 @@ struct Keychain {
     // MARK: - Authenticated Keychain operations
     // These operations ask the user to authenticate the operation if necessary. This is handled on a custom OperationQueue that is managed by LocalAuthenticationManager.shared
 
-    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType, completionHandler: @escaping (Result<Data?, Error>) -> Void) {
+    func get(id identifier: String, service: KeychainService, reason: String, with context: LAContext? = nil, authenticationType type: AuthenticationType) -> Promise<Data?> {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
                                     kSecMatchLimit as String: kSecMatchLimitOne,
                                     kSecReturnData as String: true,
                                     kSecUseOperationPrompt as String: reason]
-        do {
-            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
-                var queryResult: AnyObject?
-                switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-                    case errSecSuccess: break
-                    case errSecItemNotFound:
-                        completionHandler(.success(nil))
-                    case errSecInteractionNotAllowed:
-                        completionHandler(.failure(KeychainError.interactionNotAllowed))
-                    case let status:
-                        completionHandler(.failure(KeychainError.unhandledError(status.message)))
-                }
+        return Promise { seal in
+            do {
+                try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, _) in
+                    var queryResult: AnyObject?
+                    switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
+                        case errSecSuccess: break
+                        case errSecItemNotFound:
+                            seal.fulfill(nil)
+                        case errSecInteractionNotAllowed:
+                            seal.reject(KeychainError.interactionNotAllowed)
+                        case let status:
+                            seal.reject(KeychainError.unhandledError(status.message))
+                    }
 
-                guard let result = queryResult else {
-                    return completionHandler(.success(nil))
+                    guard let result = queryResult else {
+                        return seal.fulfill(nil)
+                    }
+                    guard let data = result as? Data else {
+                        return seal.reject(KeychainError.unexpectedData)
+                    }
+                    seal.fulfill(data)
                 }
-                guard let data = result as? Data else {
-                    return completionHandler(.failure(KeychainError.unexpectedData))
-                }
-                completionHandler(.success(data))
+            } catch {
+                seal.reject(error)
             }
-        } catch {
-            completionHandler(.failure(error)) // These can be LocalAuthenticationErrors
         }
     }
 
-    func delete(id identifier: String, service: KeychainService, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil, completionHandler: @escaping (Result<LAContext, Error>) -> Void) {
+    func delete(id identifier: String, service: KeychainService, reason: String, authenticationType type: AuthenticationType, with context: LAContext? = nil) -> Promise<LAContext?> {
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue]
-
-        do {
-            try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, context) in
-                switch SecItemDelete(query as CFDictionary) {
-                case errSecItemNotFound:
-                    completionHandler(.failure(KeychainError.notFound))
-                case errSecSuccess:
-                    completionHandler(.success(context))
-                case let status:
-                    completionHandler(.failure(KeychainError.unhandledError(status.message)))
+        return Promise { seal in
+            do {
+                try LocalAuthenticationManager.shared.execute(query: query, type: type) { (query, context) in
+                    switch SecItemDelete(query as CFDictionary) {
+                    case errSecItemNotFound:
+                        seal.reject(KeychainError.notFound)
+                    case errSecSuccess:
+                        seal.fulfill(context)
+                    case let status:
+                        seal.reject(KeychainError.unhandledError(status.message))
+                    }
                 }
+            } catch {
+                seal.reject(error)
             }
-        } catch {
-            completionHandler(.failure(error))
         }
     }
 

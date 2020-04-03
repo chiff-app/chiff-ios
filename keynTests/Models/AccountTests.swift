@@ -9,18 +9,18 @@ import LocalAuthentication
 
 @testable import keyn
 import AuthenticationServices
+import PromiseKit
 
 class AccountTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
         let exp = expectation(description: "Get an authenticated context")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true) { result in
-            if case .failure(let error) = result {
-                fatalError("Failed to get context: \(error.localizedDescription)")
-            }
+        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { result in
             TestHelper.createSeed()
             exp.fulfill()
+        }.catch { error in
+            fatalError("Failed to get context: \(error.localizedDescription)")
         }
         waitForExpectations(timeout: 40, handler: nil)
     }
@@ -171,14 +171,12 @@ class AccountTests: XCTestCase {
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
             let accountId = account.id
-            account.delete { (result) in
-                do {
-                    let _ = try result.get()
-                    XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
-                } catch {
-                    XCTFail(error.localizedDescription)
-                }
+            account.delete().done { (result) in
+                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+            }.ensure {
                 expectation.fulfill()
+            }.catch { error in
+                XCTFail(error.localizedDescription)
             }
         } catch {
             XCTFail(error.localizedDescription)
@@ -191,10 +189,9 @@ class AccountTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testDeleteWithoutBackupKeys")
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
-            account.delete { (result) in
-                if case .success(_) = result {
-                    XCTFail("Should fail")
-                }
+            account.delete().done { (result) in
+                XCTFail("Should fail")
+            }.ensure {
                 expectation.fulfill()
             }
         } catch {
@@ -208,12 +205,12 @@ class AccountTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testPassword")
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
-            account.password(reason: "Testing", type: .ifNeeded) { (result) in
-                switch result {
-                case .failure(let error): XCTFail(error.localizedDescription)
-                case .success(let password): XCTAssertEqual(password, "vGx$85gzsLZ/eK23ngx[afwG^0?#y%]C")
-                }
+            account.password(reason: "Testing", type: .ifNeeded).done { (password) in
+                XCTAssertEqual(password, "vGx$85gzsLZ/eK23ngx[afwG^0?#y%]C")
+            }.ensure {
                 expectation.fulfill()
+            }.catch {
+                XCTFail($0.localizedDescription)
             }
         } catch {
             XCTFail(error.localizedDescription)
@@ -226,12 +223,12 @@ class AccountTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testPassword")
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSiteV1_1], password: nil, rpId: nil, algorithms: nil)
-            account.password(reason: "Testing", type: .ifNeeded) { (result) in
-                switch result {
-                case .failure(let error): XCTFail(error.localizedDescription)
-                case .success(let password): XCTAssertEqual(password, "{W(1s?wt_3b<Y.V`tzltDEW%(OmR17~R")
-                }
+            account.password(reason: "Testing", type: .ifNeeded).done { (password) in
+                XCTAssertEqual(password, "{W(1s?wt_3b<Y.V`tzltDEW%(OmR17~R")
+            }.ensure {
                 expectation.fulfill()
+            }.catch {
+                XCTFail($0.localizedDescription)
             }
         } catch {
             XCTFail(error.localizedDescription)
@@ -257,7 +254,7 @@ class AccountTests: XCTestCase {
         guard let accountData = TestHelper.backupData.fromBase64 else {
             return XCTFail("Error converting to data")
         }
-        XCTAssertNoThrow(try UserAccount.restore(accountData: accountData, id: TestHelper.userID, context: nil))
+        XCTAssertNoThrow(try UserAccount.restore(data: accountData, id: TestHelper.userID, context: nil))
         XCTAssertNotNil(try UserAccount.get(accountID: TestHelper.userID, context: nil))
     }
     
@@ -292,16 +289,13 @@ class AccountTests: XCTestCase {
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
             let accountId = account.id
-            account.delete { (result) in
-                do {
-                    try result.get()
-                    XCTAssertTrue(account.synced)
-                    XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
-                    expectation.fulfill()
-                } catch {
-                    XCTFail(error.localizedDescription)
-                    expectation.fulfill()
-                }
+            account.delete().done { (result) in
+                XCTAssertTrue(account.synced)
+                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+            }.ensure {
+                expectation.fulfill()
+            }.catch {
+                XCTFail($0.localizedDescription)
             }
         } catch {
             XCTFail(error.localizedDescription)

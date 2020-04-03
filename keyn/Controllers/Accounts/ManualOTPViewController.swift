@@ -5,6 +5,7 @@
 import UIKit
 import OneTimePassword
 import Base32
+import PromiseKit
 
 enum OTPError: KeynError {
     case invalidSecret
@@ -68,18 +69,14 @@ class ManualOTPViewController: UITableViewController, TokenController {
             throw OTPError.invalidSecret
         }
         self.token = Token(generator: generator)
-
-        try AuthorizationGuard.addOTP(token: token!, account: account) { (result) in
-            DispatchQueue.main.async {
-                do {
-                    let _ = try result.get()
-                    try self.account.setOtp(token: self.token!)
-                    self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
-                } catch {
-                    Logger.shared.error("Error adding OTP", error: error)
-                    self.showAlert(message: "errors.add_otp".localized)
-                }
-            }
+        firstly {
+            try AuthorizationGuard.addOTP(token: token!, account: account)
+        }.done(on: .main) {
+            try self.account.setOtp(token: self.token!)
+            self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)
+        }.catch(on: .main) { error in
+            Logger.shared.error("Error adding OTP", error: error)
+            self.showAlert(message: "errors.add_otp".localized)
         }
     }
 

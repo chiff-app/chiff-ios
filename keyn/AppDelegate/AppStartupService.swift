@@ -7,6 +7,7 @@ import LocalAuthentication
 import UIKit
 import UserNotifications
 import StoreKit
+import PromiseKit
 
 /*
  * Code related to starting up the app in different ways.
@@ -33,11 +34,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
-
-        (try? TeamSession.all())?.forEach {
-            $0.updateLogo()
-            $0.updateSharedAccounts(pushed: false) { _ in }
-        }
 
         return true
     }
@@ -93,12 +89,12 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             if settings.authorizationStatus == .denied {
                 if !Properties.deniedPushNotifications {
                     Properties.deniedPushNotifications = true
-                    NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
+                    NotificationCenter.default.postMain(name: .notificationSettingsUpdated, object: nil)
                 }
             } else if settings.authorizationStatus == .authorized {
                 if Properties.deniedPushNotifications {
                     Properties.deniedPushNotifications = false
-                    NotificationCenter.default.post(name: .notificationSettingsUpdated, object: nil)
+                    NotificationCenter.default.postMain(name: .notificationSettingsUpdated, object: nil)
                 }
             }
         }
@@ -127,6 +123,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if Properties.isFirstLaunch {
             // Purge Keychain
             BrowserSession.purgeSessionDataFromKeychain()
+            TeamSession.purgeSessionDataFromKeychain()
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
@@ -144,7 +141,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         if Seed.hasKeys && BackupManager.hasKeys {
-            PushNotifications.register { result in
+            firstly {
+                PushNotifications.register()
+            }.done(on: .main) { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
                     Logger.shared.error("Unexpected root view controller type")
                     fatalError("Unexpected root view controller type")
