@@ -132,7 +132,17 @@ struct TeamSession: Session {
                     NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
                     NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": session, "count": accounts.count])
                 }
-            }.asVoid()
+            }.asVoid().recover { error in
+                guard case APIError.statusCode(404) = error else {
+                    throw error
+                }
+                guard session.created else {
+                    return
+                }
+                SharedAccount.deleteAll(for: session.signingPubKey)
+                try? session.delete()
+                NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+            }
         } catch {
             return Promise(error: error)
         }
@@ -140,39 +150,29 @@ struct TeamSession: Session {
 
     mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
         var changed = 0
-        do {
-            let key = try self.passwordSeed()
-            #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-            var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
-            for (id, data) in accounts {
-                currentAccounts.removeValue(forKey: id)
-                let ciphertext = try Crypto.shared.convertFromBase64(from: data)
-                let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
-                if var account = try SharedAccount.get(accountID: id, context: nil) {
-                    if try account.update(accountData: accountData, key: key) {
-                        changed += 1
-                    }
-                } else { // New account added
-                    try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+        let key = try self.passwordSeed()
+        #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+        var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
+        for (id, data) in accounts {
+            currentAccounts.removeValue(forKey: id)
+            let ciphertext = try Crypto.shared.convertFromBase64(from: data)
+            let (accountData, _)  = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
+            if var account = try SharedAccount.get(accountID: id, context: nil) {
+                if try account.update(accountData: accountData, key: key) {
                     changed += 1
                 }
-            }
-            for account in currentAccounts.values {
-                #warning("Check how to safely delete here in the background")
-                try account.deleteSync()
+            } else { // New account added
+                try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
                 changed += 1
             }
-            Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
-            return changed
-        } catch APIError.statusCode(404) {
-            guard self.created else {
-                return 0
-            }
-            SharedAccount.deleteAll(for: self.signingPubKey)
-            try? self.delete()
-            NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: self.id])
-            return 1
         }
+        for account in currentAccounts.values {
+            #warning("Check how to safely delete here in the background")
+            try account.deleteSync()
+            changed += 1
+        }
+        Properties.setSharedAccountCount(teamId: self.id, count: accounts.count)
+        return changed
     }
 
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void> {
