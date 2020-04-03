@@ -119,6 +119,11 @@ struct SharedAccount: Account {
     }
 
     static func deleteAll(for sessionPubKey: String) {
+        if let accounts = try? all(context: nil, sync: false, label: sessionPubKey), let sessions = try? BrowserSession.all() {
+            for id in accounts.keys {
+                sessions.forEach({ $0.deleteAccount(accountId: id) })
+            }
+        }
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
         NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
