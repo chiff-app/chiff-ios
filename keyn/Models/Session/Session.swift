@@ -5,6 +5,7 @@
 import UIKit
 import UserNotifications
 import LocalAuthentication
+import PromiseKit
 
 enum SessionError: KeynError {
     case exists
@@ -20,6 +21,7 @@ enum SessionIdentifier: String, Codable {
     case sharedKey = "shared"
     case signingKeyPair = "signing"
     case passwordSeed = "passwordSeed"
+    case sharedSeed = "sharedSeed"
 
     func identifier(for id: String) -> String {
         return "\(id)-\(self.rawValue)"
@@ -39,8 +41,8 @@ protocol Session: Codable {
     var logo: UIImage? { get }
     var version: Int { get }
 
-    func delete(notify: Bool, completion: @escaping (Result<Void, Error>) -> Void)
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, completion: @escaping (Result<Void, Error>) -> Void) throws
+    func delete(notify: Bool) -> Promise<Void>
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void>
 
     static var encryptionService: KeychainService { get }
     static var signingService: KeychainService { get }
@@ -76,20 +78,10 @@ extension Session {
         return try JSONDecoder().decode(T.self, from: data)
     }
 
-    func deleteQueuesAtAWS(completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil) { result in
-                if case let .failure(error) = result {
-                    Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-                    completion(.failure(error))
-                } else {
-                    completion(.success(()))
-                }
-            }
-        } catch {
-            Logger.shared.error("Cannot delete endpoint at AWS.", error: error)
-            completion(.failure(error))
-        }
+    func deleteQueuesAtAWS() -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil).asVoid()
+        }.log("Cannot delete endpoint at AWS.")
     }
 
     func update() throws {
@@ -148,21 +140,12 @@ extension Session {
         return try decoder.decode(Self.self, from: sessionData)
     }
 
-    static func deleteAll() {
-        do {
-            for session in try all() {
-                session.delete(notify: true) { result in
-                    if case .failure(let error) = result {
-                        Logger.shared.warning("Error deleting sessions remotely.", error: error)
-                    }
-                }
-            }
-        } catch {
-            Logger.shared.warning("Error deleting sessions.", error: error)
+    static func deleteAll() -> Promise<Void> {
+        return firstly {
+            when(resolved: try all().map() { session in
+                session.delete(notify: true).log("Error deleting sessions remotely.")
+            }).asVoid()
         }
-
-        // To be sure
-        //purgeSessionDataFromKeychain()
     }
 
 }

@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable class KeynNavigationController: UINavigationController {
 
     private let height: CGFloat = 38
-    private let imageBottomMargin: CGFloat = 0
+    private let imageTopMargin: CGFloat = 0
     private var gradientLayer: CAGradientLayer!
 
     @IBInspectable var gradientColor: UIColor = .primaryVeryLight
@@ -39,7 +39,7 @@ import UIKit
         logoImageView.tintColor = logoColor
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: navigationBar.centerXAnchor),
-            logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageBottomMargin),
+            logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageTopMargin),
             logoImageView.heightAnchor.constraint(equalToConstant: height),
         ])
     }

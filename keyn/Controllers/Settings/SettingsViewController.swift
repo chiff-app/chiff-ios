@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import UIKit
+import PromiseKit
 
 class SettingsViewController: UITableViewController, UITextViewDelegate {
 
@@ -103,14 +104,12 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         let alert = UIAlertController(title: "popups.questions.move_data".localized, message: "popups.questions.move_data_description".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
-            BackupManager.moveToProduction { (error) in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        self.showAlert(message: "\("errors.moving_data".localized): \(error.localizedDescription)")
-                    } else {
-                        self.showAlert(message: "popups.responses.data_move_success".localized, title: "popups.responses.data_move_success_title".localized)
-                    }
-                }
+            firstly {
+                BackupManager.moveToProduction()
+            }.done(on: .main) {
+                self.showAlert(message: "popups.responses.data_move_success".localized, title: "popups.responses.data_move_success_title".localized)
+            }.catch(on: .main) { error in
+                self.showAlert(message: "\("errors.moving_data".localized): \(error.localizedDescription)")
             }
         }))
         self.present(alert, animated: true, completion: nil)
@@ -118,30 +117,15 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     @IBAction func updateNotificationSettings(_ sender: UISwitch) {
         sender.isUserInteractionEnabled = false
-        if sender.isOn {
-            NotificationManager.shared.subscribe() { result in
-                DispatchQueue.main.async {
-                    let subscribed = NotificationManager.shared.isSubscribed
-                    Properties.infoNotifications = subscribed ? .yes : .no
-                    if case let .failure(error) = result {
-                        sender.isOn = subscribed
-                        self.showAlert(message: "\("errors.subscribing".localized): \(error)")
-                    }
-                    sender.isUserInteractionEnabled = true
-                }
-            }
-        } else {
-            NotificationManager.shared.unsubscribe() { result in
-                DispatchQueue.main.async {
-                    let subscribed = NotificationManager.shared.isSubscribed
-                    Properties.infoNotifications = subscribed ? .yes : .no
-                    if case let .failure(error) = result {
-                        sender.isOn = subscribed
-                        self.showAlert(message: "\("errors.unsubscribing".localized): \(error)")
-                    }
-                    sender.isUserInteractionEnabled = true
-                }
-            }
+        firstly {
+            sender.isOn ? NotificationManager.shared.subscribe().map { _ in } : NotificationManager.shared.unsubscribe()
+        }.done(on: DispatchQueue.main) { _ in
+            Properties.infoNotifications = NotificationManager.shared.isSubscribed ? .yes : .no
+        }.ensure(on: DispatchQueue.main) {
+            sender.isUserInteractionEnabled = true
+        }.catch(on: DispatchQueue.main) { error in
+            sender.isOn = NotificationManager.shared.isSubscribed
+            self.showAlert(message: "\("errors.subscribing".localized): \(error)")
         }
     }
 

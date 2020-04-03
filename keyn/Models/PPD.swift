@@ -3,6 +3,7 @@
  * All rights reserved.
  */
 import Foundation
+import PromiseKit
 
 enum PPDBaseCharacterSet: String, Codable {
     case upperLetters = "UpperLetters"
@@ -39,30 +40,23 @@ struct PPD: Codable {
     let redirect: String?
     let name: String
     
-    static func get(id: String, completionHandler: @escaping (_ ppd: PPD?) -> Void) {
-        API.shared.request(path: "ppd/\(id)", parameters: ["v": PPDVersion.v1_1.rawValue], method: .get, signature: nil, body: nil) { (result) in
-            switch result {
-            case .success(let dict):
-                if let ppd = dict["ppds"] as? [Any] {
-                    do {
-                        let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
-                        let ppd = try JSONDecoder().decode(PPD.self, from: jsonData)
-                        completionHandler(ppd)
-                    } catch {
-                        Logger.shared.error("Failed to decode PPD", error: error)
-                        completionHandler(nil)
-                    }
-                } else {
-                    Logger.shared.error("Failed to decode PPD")
-                    completionHandler(nil)
-                }
-            case .failure(let error):
-                guard case APIError.statusCode(404) = error else {
-                    Logger.shared.error("PPD retrieval problem", error: error)
-                    return
-                }
-                completionHandler(nil)
+    static func get(id: String) -> Guarantee<PPD?> {
+        let parameters: RequestParameters = ["v": PPDVersion.v1_1.rawValue]
+        return firstly {
+            API.shared.request(path: "ppd/\(id)", parameters: parameters, method: .get, signature: nil, body: nil)
+        }.map { result -> PPD? in
+            guard let ppd = result["ppds"] as? [Any] else {
+                Logger.shared.error("Failed to decode PPD")
+                return nil
             }
+            let jsonData = try JSONSerialization.data(withJSONObject: ppd[0], options: [])
+            return try JSONDecoder().decode(PPD.self, from: jsonData)
+        }.recover { error in
+            guard case APIError.statusCode(404) = error else {
+                Logger.shared.error("PPD retrieval problem", error: error)
+                return .value(nil)
+            }
+            return .value(nil)
         }
     }
 

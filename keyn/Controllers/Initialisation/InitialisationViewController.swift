@@ -4,6 +4,8 @@
  */
 import UIKit
 import LocalAuthentication
+import PromiseKit
+
 
 class InitialisationViewController: UIViewController {
 
@@ -35,31 +37,21 @@ class InitialisationViewController: UIViewController {
             self.performSegue(withIdentifier: "ShowPushView", sender: self)
             return
         }
-        initializeSeed { (result) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    self.performSegue(withIdentifier: "ShowPushView", sender: self)
-                    Logger.shared.analytics(.seedCreated, override: true)
-                case .failure(let error):
-                    self.loadingView.isHidden = true
-                    if let error = error as? LAError {
-                        if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                            self.showAlert(message:"\("errors.seed_creation".localized): \(errorMessage)")
-                        }
-                    } else {
-                        self.showAlert(message: error.localizedDescription, title: "errors.seed_creation".localized)
-                    }
+        firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true)
+        }.then { context in
+            Seed.create(context: context)
+        }.done(on: .main) { _ in
+            self.performSegue(withIdentifier: "ShowPushView", sender: self)
+            Logger.shared.analytics(.seedCreated, override: true)
+        }.catch(on: .main) { error in
+            self.loadingView.isHidden = true
+            if let error = error as? LAError {
+                if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+                    self.showAlert(message:"\("errors.seed_creation".localized): \(errorMessage)")
                 }
-            }
-        }
-    }
-
-    private func initializeSeed(completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        LocalAuthenticationManager.shared.authenticate(reason: "initialization.initialize_keyn".localized, withMainContext: true) { (result) in
-            switch result {
-            case .success(let context): Seed.create(context: context, completionHandler: completionHandler)
-            case .failure(let error): completionHandler(.failure(error))
+            } else {
+                self.showAlert(message: error.localizedDescription, title: "errors.seed_creation".localized)
             }
         }
     }

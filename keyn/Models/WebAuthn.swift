@@ -65,31 +65,73 @@ struct WebAuthn: Codable {
         return keyPair
     }
 
-    mutating func sign(challenge: String, rpId: String, privKey: Data) throws -> (String, Int) {
-        guard rpId == id else {
-            throw WebAuthnError.wrongRpId
+    func pubKey(accountId: String) throws -> String {
+        switch algorithm {
+        case .EdDSA:
+            guard let dict = try Keychain.shared.attributes(id: accountId, service: .webauthn) else {
+                throw KeychainError.notFound
+            }
+            guard let pubKey = dict[kSecAttrGeneric as String] as? Data else {
+                throw CodingError.unexpectedData
+            }
+            return try Crypto.shared.convertToBase64(from: pubKey)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            guard let key: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
+                throw KeychainError.notFound
+            }
+            return try Crypto.shared.convertToBase64(from: key.publicKey.rawRepresentation)
         }
-        guard algorithm == .EdDSA else {
-            throw WebAuthnError.wrongAlgorithm
-        }
-        let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
-        let data = try createAuthenticatorData() + challengeData
-        let signature = try Crypto.shared.signature(message: data, privKey: privKey)
-        return (signature.base64, counter)
     }
 
-    @available(iOS 13.0, *)
-    mutating func sign(challenge: String, rpId: String, privKey: P256.Signing.PrivateKey) throws -> (String, Int) {
+    func save(accountId: String, keyPair: KeyPair) throws {
+        switch algorithm {
+        case .EdDSA: try Keychain.shared.save(id: accountId, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
+            try Keychain.shared.saveKey(id: accountId, key: privKey)
+        }
+    }
+
+    func delete(accountId: String) throws {
+        switch algorithm {
+        case .EdDSA: try Keychain.shared.delete(id: accountId, service: .webauthn)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            try Keychain.shared.deleteKey(id: accountId)
+        }
+    }
+
+    mutating func sign(accountId: String, challenge: String, rpId: String) throws -> (String, Int) {
         guard rpId == id else {
             throw WebAuthnError.wrongRpId
         }
-        guard algorithm == .ECDSA else {
-            throw WebAuthnError.wrongAlgorithm
-        }
         let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
         let data = try createAuthenticatorData() + challengeData
-        let signature = try privKey.signature(for: data)
-        return (signature.derRepresentation.base64, counter)
+        switch algorithm {
+        case .EdDSA:
+            guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .webauthn) else {
+                throw KeychainError.notFound
+            }
+            let signature = try Crypto.shared.signature(message: data, privKey: privKey)
+            return (signature.base64, counter)
+        case .ECDSA:
+            guard #available(iOS 13.0, *) else {
+                throw WebAuthnError.notSupported
+            }
+            guard let privKey: P256.Signing.PrivateKey = try Keychain.shared.getKey(id: accountId, context: nil) else {
+                throw KeychainError.notFound
+            }
+            let signature = try privKey.signature(for: data)
+            return (signature.derRepresentation.base64, counter)
+        }
     }
 
         // TODO: Implement attestation

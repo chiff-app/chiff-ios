@@ -4,6 +4,7 @@
  */
 import Foundation
 import LocalAuthentication
+import PromiseKit
 
 enum AuthenticationType {
     case ifNeeded       // Only presents LocalAuthentication if needed. Uses the main context.
@@ -45,33 +46,35 @@ class LocalAuthenticationManager {
         }
     }
     
-    func authenticate(reason: String, withMainContext: Bool, completionHandler: @escaping (Result<LAContext?, Error>) -> Void) {
-        do {
-            if withMainContext {
-                try checkMainContext()
-            }
-            let context = withMainContext ? mainContext : LAContext()
-            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (evaluationResult, error) in
-                if let error = error {
-                    return completionHandler(.failure(error))
+    func authenticate(reason: String, withMainContext: Bool) -> Promise<LAContext?> {
+        return Promise { seal in
+            do {
+                if withMainContext {
+                    try checkMainContext()
                 }
-                if evaluationResult {
-                    self.mainContext = context
-                    return completionHandler(.success(context))
-                } else {
-                    return completionHandler(.success(nil))
+                let context = withMainContext ? mainContext : LAContext()
+                context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (evaluationResult, error) in
+                    if let error = error {
+                        return seal.reject(error)
+                    }
+                    if evaluationResult {
+                        self.mainContext = context
+                        return seal.fulfill(context)
+                    } else {
+                        return seal.fulfill(nil)
+                    }
                 }
+            } catch {
+                Logger.shared.warning("Localauthentication failed")
+                seal.reject(error)
             }
-        } catch {
-            Logger.shared.warning("Localauthentication failed")
-            completionHandler(.failure(error))
         }
     }
 
     func handleError(error: Error) -> String? {
 
         switch error {
-        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+        case KeychainError.authenticationCancelled, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
             // Not interesting, do nothing.
             break
         case LAError.invalidContext, LAError.notInteractive:

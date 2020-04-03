@@ -5,6 +5,7 @@
 import UIKit
 import LocalAuthentication
 import AuthenticationServices
+import PromiseKit
 
 class LoginViewController: ASCredentialProviderViewController {
     @IBOutlet weak var touchIDButton: UIButton!
@@ -79,29 +80,25 @@ class LoginViewController: ASCredentialProviderViewController {
 
     private func loadUsers() {
         let reason = credentialIdentity != nil ? String(format: "requests.login_with".localized, credentialIdentity!.user) : "requests.unlock_accounts".localized
-        LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true) { (result) in
-            do {
-                switch result {
-                case .success(let context):
-                    if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.get(accountID: accountID, context: context), let password = try account.password(context: context) {
-                        let passwordCredential = ASPasswordCredential(user: account.username, password: password)
-                        self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
-                    } else {
-                        let accounts = try UserAccount.allCombined(context: context)
-                        guard !accounts.isEmpty else {
-                            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            self.accounts = accounts
-                            self.performSegue(withIdentifier: "showAccounts", sender: self)
-                        }
-                    }
-                case .failure(let error): throw error
+        firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: true)
+        }.done { context in
+            if let accountID = self.credentialIdentity?.recordIdentifier, let account = try UserAccount.getAny(accountID: accountID, context: context), let password = try account.password(context: context) {
+                let passwordCredential = ASPasswordCredential(user: account.username, password: password)
+                self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
+            } else {
+                let accounts = try UserAccount.allCombined(context: context)
+                guard !accounts.isEmpty else {
+                    self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                    return
                 }
-            } catch {
-                self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
+                DispatchQueue.main.async {
+                    self.accounts = accounts
+                    self.performSegue(withIdentifier: "showAccounts", sender: self)
+                }
             }
+        }.catch { error in
+            self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }
 }
