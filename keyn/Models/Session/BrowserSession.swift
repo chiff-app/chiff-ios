@@ -97,10 +97,10 @@ struct BrowserSession: Session {
             }
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: try account.nextPassword(context: context), b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil)
             NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self, userInfo: ["context": context])
-        case .add, .addAndLogin, .addToExisting:
+        case .add, .addAndLogin:
             response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil)
-        case .login:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: .login, pk: nil, d: nil)
+        case .login, .addToExisting:
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil)
         case .fill:
             response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .fill, pk: nil, d: nil)
         case .register:
