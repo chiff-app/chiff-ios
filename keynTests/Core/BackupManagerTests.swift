@@ -61,9 +61,7 @@ class BackupManagerTests: XCTestCase {
             guard let backupSeed = try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed) else {
                 throw KeychainError.notFound
             }
-            BackupManager.initialize(seed: backupSeed, context: nil).ensure {
-                expectation.fulfill()
-            }.catch { error in
+            BackupManager.initialize(seed: backupSeed, context: nil).catch { error in
                 XCTFail(error.localizedDescription)
             }.finally {
                 expectation.fulfill()
@@ -72,7 +70,7 @@ class BackupManagerTests: XCTestCase {
             XCTFail(error.localizedDescription)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 10.0)
     }
     
     func testInitializeFailsIfWrongSeed() {

@@ -74,7 +74,7 @@ class LocalAuthenticationManager {
     func handleError(error: Error) -> String? {
 
         switch error {
-        case KeychainError.authenticationCancelled, LAError.systemCancel, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
+        case KeychainError.authenticationCancelled, LAError.appCancel, LAError.systemCancel, LAError.userCancel:
             // Not interesting, do nothing.
             break
         case LAError.invalidContext, LAError.notInteractive:

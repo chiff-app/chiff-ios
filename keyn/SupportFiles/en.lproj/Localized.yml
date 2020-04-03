@@ -100,6 +100,8 @@ accounts:
   scan_qr:
     comment: Cell title for scanning qr code for OTP
     value: Scan QR
+  search:
+    value: Search
   secret:
     value: Secret
   secret_description:
