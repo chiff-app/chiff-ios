@@ -139,7 +139,6 @@ struct TeamSession: Session {
                 guard session.created else {
                     return
                 }
-                SharedAccount.deleteAll(for: session.signingPubKey)
                 try? session.delete()
                 NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
             }
