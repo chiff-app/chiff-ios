@@ -67,7 +67,9 @@ class AuthenticationGuard {
         }.then { (context) -> Promise<Void> in
             when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, logo: true, backup: true), UserAccount.sync(context: context), TeamSession.sync(context: context))
         }.catch { error in
-            if let error = error as? DecodingError {
+            if case SyncError.dataDeleted = error {
+                (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
+            } else if let error = error as? DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)
                 (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
             } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {

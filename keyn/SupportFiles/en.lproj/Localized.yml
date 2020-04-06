@@ -343,6 +343,10 @@ errors:
     value: Unreadable data error
   creating_team:
     value: Error creating team
+  data_deleted:
+    value: Data deleted
+  data_recreation_failed_message:
+    value: Error restoring the backup data
   delete_url:
     comment: Error deleting url
     value: Error deleting URL
@@ -623,6 +627,11 @@ popups:
       value: >-
         You are trying to restore a backup while Keyn has already been
         initialized. Do you want to delete Keyn's current data?
+    delete_locally:
+      value: >-
+        The backup data has been deleted from another device. Do you want to
+        delete the data on this device as well or restore the backup data from
+        this device?
     delete_x:
       value: Delete %@
     move_data:
@@ -678,6 +687,8 @@ popups:
     reset:
       comment: Resets something
       value: Reset
+    restore:
+      value: Restore
     settings:
       value: Open settings
     'yes':
