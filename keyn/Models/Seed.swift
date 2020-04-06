@@ -65,6 +65,14 @@ struct Seed {
         }
     }
 
+    static func recreateBackup() -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .post, message: ["userId": Properties.userId as Any], path: "users/\(try publicKey())", privKey: try privateKey(), body: nil)
+        }.then { _ in
+            when(fulfilled: UserAccount.sync(context: nil), TeamSession.sync(context: nil))
+        }
+    }
+
     static func recover(context: LAContext, mnemonic: [String]) -> Promise<(Int,Int,Int,Int)> {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)

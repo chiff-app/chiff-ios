@@ -10,6 +10,10 @@ import Foundation
 import LocalAuthentication
 import PromiseKit
 
+enum SyncError: KeynError {
+    case dataDeleted
+}
+
 enum SyncEndpoint: String {
     case sessions = "sessions"
     case accounts = "accounts"
@@ -123,10 +127,12 @@ extension Syncable {
             }
             return when(fulfilled: promises)
         }.recover { error in
-            if case KeychainError.interactionNotAllowed = error {
-                // Probably happend in the background, we'll sync when authenticated again
-                return
-            } else {
+            switch error {
+            case KeychainError.interactionNotAllowed:
+                return // Probably happend in the background, we'll sync when authenticated again
+            case APIError.statusCode(404):
+                throw SyncError.dataDeleted
+            default:
                 throw error
             }
         }.log("Syncing error")
