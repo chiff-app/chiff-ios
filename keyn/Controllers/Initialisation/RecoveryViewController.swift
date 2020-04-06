@@ -249,7 +249,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
                 NotificationManager.shared.deleteKeys()
-                BackupManager.deleteKeys()
             }.catchLog("Error deleting data")
         }))
         self.present(alert, animated: true, completion: nil)

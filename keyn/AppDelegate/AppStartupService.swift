@@ -128,7 +128,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
             NotificationManager.shared.deleteKeys()
-            BackupManager.deleteKeys()
             Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
@@ -136,11 +135,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.cleanFolder()
             Properties.questionnaireDirPurged = true
         }
-        guard Seed.hasKeys == BackupManager.hasKeys else {
-            launchErrorView("Inconsistency between seed and backup keys.")
-            return
-        }
-        if Seed.hasKeys && BackupManager.hasKeys {
+        if Seed.hasKeys {
             firstly {
                 PushNotifications.register()
             }.done(on: .main) { result in

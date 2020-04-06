@@ -188,7 +188,7 @@ struct TeamSession: Session {
         guard let endpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
-        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, type: .pair, version: version, userPubKey: try BackupManager.publicKey(), arn: endpoint)
+        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, type: .pair, version: version, userPubKey: try Seed.publicKey(), arn: endpoint)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
