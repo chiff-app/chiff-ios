@@ -8,6 +8,7 @@ import UIKit
 import UserNotifications
 import StoreKit
 import PromiseKit
+import TrueTime
 
 /*
  * Code related to starting up the app in different ways.
@@ -34,6 +35,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
+
+        TrueTimeClient.sharedInstance.start()
 
         return true
     }
