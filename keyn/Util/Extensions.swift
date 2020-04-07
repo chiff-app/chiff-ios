@@ -152,10 +152,20 @@ extension Array where Element == UInt8 {
     }
 }
 
+typealias Timestamp = Int
+
 extension Date {
 
-    static var now: TimeInterval {
-        return Date().timeIntervalSince1970 * 1000
+    init(millisSince1970: Timestamp) {
+        self.init(timeIntervalSince1970: TimeInterval(millisSince1970 / 1000))
+    }
+
+    var millisSince1970: Timestamp {
+        return Timestamp(timeIntervalSince1970 * 1000)
+    }
+
+    static var now: Timestamp {
+        return Date().millisSince1970
     }
 
     // TODO: localize this

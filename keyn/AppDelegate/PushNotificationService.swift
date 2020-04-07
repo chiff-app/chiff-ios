@@ -42,7 +42,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch category {
             case NotificationCategory.SYNC:
-                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, logo: true, backup: false, pubKeys: sessionPubKeys)]
+                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, logo: true, pubKeys: sessionPubKeys)]
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
                 }

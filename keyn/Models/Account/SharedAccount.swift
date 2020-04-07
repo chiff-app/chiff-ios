@@ -150,7 +150,7 @@ extension SharedAccount: Codable {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
-        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
+        self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
     }
 
 }

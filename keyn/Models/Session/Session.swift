@@ -42,7 +42,7 @@ protocol Session: Codable {
     var version: Int { get }
 
     func delete(notify: Bool) -> Promise<Void>
-    func update(makeBackup: Bool) throws
+    mutating func update(makeBackup: Bool) throws
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void>
 
     static var encryptionService: KeychainService { get }

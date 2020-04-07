@@ -20,7 +20,7 @@ enum SyncEndpoint: String {
 }
 
 protocol BackupObject: Codable {
-    var lastChange: TimeInterval { get }
+    var lastChange: Timestamp { get }
 }
 
 protocol Syncable {
@@ -38,7 +38,7 @@ protocol Syncable {
     mutating func update(with backupObject: BackupType, context: LAContext?) throws -> Bool
 
     var id: String { get }
-    var lastChange: TimeInterval { get set }
+    var lastChange: Timestamp { get set }
 }
 
 extension Syncable {

@@ -26,7 +26,7 @@ protocol Account: BaseAccount {
     var enabled: Bool { get }
     var timesUsed: Int { get set }
     var lastTimeUsed: Date? { get set }
-    
+
     static var keychainService: KeychainService { get }
 
     func delete() -> Promise<Void>

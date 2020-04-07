@@ -47,7 +47,7 @@ extension UserAccount: Syncable {
         webAuthn = backupObject.webAuthn
         timesUsed = 0
         lastTimeUsed = nil
-        lastChange = Date.now
+        lastChange = backupObject.lastChange
 
         var password: String? = nil
         if passwordIndex >= 0 {
@@ -250,7 +250,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
     var tokenSecret: Data?
     var version: Int
     var webAuthn: WebAuthn?
-    var lastChange: TimeInterval
+    var lastChange: Timestamp
 
     enum CodingKeys: CodingKey {
         case id
@@ -301,7 +301,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
-        self.lastChange = try values.decodeIfPresent(TimeInterval.self, forKey: .lastChange) ?? Date.now
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
     }
 
 }

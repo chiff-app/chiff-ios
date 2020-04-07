@@ -23,7 +23,10 @@ extension TeamSession: Syncable {
     }
 
     static func create(backupObject: BackupTeamSession, context: LAContext?) throws {
-        let _ = try TeamSession(from: backupObject, context: context)
+        let session = try TeamSession(from: backupObject, context: context)
+        _ = updateTeamSession(session: session).catch { error in
+            Logger.shared.warning("Failed to update shared accounts after creating team session from backup", error: error)
+        }
     }
 
     static func notifyObservers() {
@@ -32,7 +35,7 @@ extension TeamSession: Syncable {
 
     init(from backupSession: BackupTeamSession, context: LAContext?) throws {
         let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: backupSession.seed)
-        creationDate = Date()
+        creationDate = Date(millisSince1970: backupSession.creationDate)
         id = backupSession.id
         signingPubKey = signingKeyPair.pubKey.base64
         title = backupSession.title
@@ -40,14 +43,14 @@ extension TeamSession: Syncable {
         isAdmin = false
         created = true
         lastChange = Date.now
-        try save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
     }
 
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
         guard backupObject.title != title else {
             return false
         }
-        lastChange = Date.now
+        lastChange = backupObject.lastChange
         title = backupObject.title
         try update(makeBackup: false)
         return true
@@ -60,22 +63,15 @@ extension TeamSession: Syncable {
     func backup() -> Promise<Void> {
         do {
             guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey), created else {
-                // Backup complete
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version))
-            }.map { _ in
-                try Keychain.shared.setSynced(value: true, id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-            }.recover { error in
-                try Keychain.shared.setSynced(value: false, id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey)
-                throw error
+                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
             return Promise(error: error)
         }
-
     }
 
 }
@@ -85,7 +81,8 @@ struct BackupTeamSession: BackupObject {
     let seed: Data
     let title: String
     let version: Int
-    var lastChange: TimeInterval
+    var lastChange: Timestamp
+    let creationDate: Timestamp
 
     enum CodingKeys: CodingKey {
         case id
@@ -93,22 +90,25 @@ struct BackupTeamSession: BackupObject {
         case title
         case version
         case lastChange
+        case creationDate
     }
 
-    init(id: String, seed: Data, title: String, version: Int) {
+    init(id: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date) {
         self.id = id
         self.seed = seed
         self.title = title
         self.version = version
-        self.lastChange = Date.now
+        self.lastChange = lastChange
+        self.creationDate = creationDate.millisSince1970
     }
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
-        self.seed = try values.decode(Data.self, forKey: .id)
-        self.title = try values.decode(String.self, forKey: .id)
+        self.seed = try values.decode(Data.self, forKey: .seed)
+        self.title = try values.decode(String.self, forKey: .title)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-        self.lastChange = try values.decodeIfPresent(TimeInterval.self, forKey: .lastChange) ?? Date.now
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
+        self.creationDate = try values.decodeIfPresent(Timestamp.self, forKey: .creationDate) ?? Date.now
     }
 }
