@@ -10,6 +10,7 @@ import Amplitude_iOS
 import StoreKit
 import WebKit
 import PromiseKit
+import TrueTime
 
 // MARK: - Primitive extensions
 
@@ -165,7 +166,7 @@ extension Date {
     }
 
     static var now: Timestamp {
-        return Date().millisSince1970
+        return (TrueTimeClient.sharedInstance.referenceTime?.now() ?? Date()).millisSince1970
     }
 
     // TODO: localize this

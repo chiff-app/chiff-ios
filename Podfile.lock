@@ -81,6 +81,7 @@ PODS:
     - PromiseKit/CorePromise
   - Sodium (0.8.0)
   - SwiftLint (0.38.2)
+  - TrueTime (5.0.3)
   - TrustKit (1.6.2)
 
 DEPENDENCIES:
@@ -95,6 +96,7 @@ DEPENDENCIES:
   - PromiseKit/Foundation
   - Sodium (~> 0.8)
   - SwiftLint
+  - TrueTime
   - TrustKit
 
 SPEC REPOS:
@@ -120,6 +122,7 @@ SPEC REPOS:
     - PromiseKit
     - Sodium
     - SwiftLint
+    - TrueTime
     - TrustKit
 
 SPEC CHECKSUMS:
@@ -144,8 +147,9 @@ SPEC CHECKSUMS:
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
+  TrueTime: b49551ffafb28a9dee04e51b226f42a416010842
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
 
-PODFILE CHECKSUM: 6215cb50447ff9963b1dc3385ee7a4fcc00366a4
+PODFILE CHECKSUM: 87898e60e2584c82010bfff9427902460cc8e01a
 
 COCOAPODS: 1.8.4
