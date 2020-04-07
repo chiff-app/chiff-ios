@@ -11,7 +11,7 @@ import Foundation
 struct TeamUser: Codable {
     var pubkey: String!
     let key: String
-    let created: TimeInterval
+    let created: Timestamp
     let userSyncPubkey: String
     let isAdmin: Bool
     let name: String

@@ -45,7 +45,7 @@ struct NotificationManager {
     }
 
     func deleteEndpoint() {
-        guard let endpoint = Properties.endpoint, let id = UIDevice.current.identifierForVendor?.uuidString  else {
+        guard let endpoint = Properties.endpoint, let id = UIDevice.current.identifierForVendor?.uuidString else {
             return
         }
         let message = [

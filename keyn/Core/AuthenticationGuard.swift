@@ -65,7 +65,7 @@ class AuthenticationGuard {
             self.hideLockWindow()
             return context
         }.then { (context) -> Promise<Void> in
-            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, logo: true, backup: true), UserAccount.sync(context: context), TeamSession.sync(context: context))
+            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, logo: true), UserAccount.sync(context: context), TeamSession.sync(context: context))
         }.catch { error in
             if case SyncError.dataDeleted = error {
                 (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
