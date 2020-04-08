@@ -68,6 +68,15 @@ struct Seed {
     static func recreateBackup() -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(method: .post, message: ["userId": Properties.userId as Any], path: "users/\(try publicKey())", privKey: try privateKey(), body: nil)
+        }.asVoid().then { () -> Promise<Void> in
+            var promises: [Promise<Void>] = []
+            for account in try UserAccount.all(context: nil).values {
+                promises.append(try account.backup())
+            }
+            for session in try TeamSession.all(context: nil).values {
+                promises.append(session.backup())
+            }
+            return when(fulfilled: promises)
         }.then { _ in
             when(fulfilled: UserAccount.sync(context: nil), TeamSession.sync(context: nil))
         }
@@ -197,7 +206,7 @@ struct Seed {
         let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: SEED_CRYPTO_CONTEXT)
         let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .webAuthnSeed, context: SEED_CRYPTO_CONTEXT)
         let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: SEED_CRYPTO_CONTEXT)
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: BACKUP_CRYPTO_CONTEXT)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: BACKUP_CRYPTO_CONTEXT)
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: backupSeed)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
         let userId = "\(base64PubKey)_KEYN_USER_ID".sha256

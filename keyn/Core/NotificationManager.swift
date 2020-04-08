@@ -54,6 +54,8 @@ struct NotificationManager {
         ]
         firstly {
             API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+        }.done { _ in
+            NotificationManager.shared.deleteKeys()
         }.catchLog("Failed to delete ARN @ AWS.")
     }
 

@@ -31,43 +31,41 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: "errors.corrupted_data".localized, message: "popups.questions.delete_corrupted".localized, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            let _ = BrowserSession.deleteAll()
-            TeamSession.purgeSessionDataFromKeychain()
-            UserAccount.deleteAll()
-            Seed.delete()
-            NotificationManager.shared.deleteEndpoint()
-            NotificationManager.shared.deleteKeys()
             Logger.shared.warning("Keyn reset after corrupted data", error: error)
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-            AuthenticationGuard.shared.hideLockWindow()
+            self.deleteData()
         }))
         self.present(alert, animated: true, completion: nil)
     }
 
     func showDataDeleted() {
+        authenticateButton.isEnabled = false
         let alert = UIAlertController(title: "errors.data_deleted".localized, message: "popups.questions.delete_locally".localized, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "popups.responses.restore".localized, style: .default, handler: { action in
             firstly {
                 Seed.recreateBackup()
-            }.done(on: .main) {
+            }.then {
+                PushNotifications.register()
+            }.done(on: .main) { _ in
                 AuthenticationGuard.shared.authenticateUser(cancelChecks: false)
             }.catch(on: .main) { error in
                 self.showAlert(message: "errors.data_recreation_failed_message".localized, title: "errors.generic_error".localized, handler: nil)
             }
         }))
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
-            let _ = BrowserSession.deleteAll()
-            TeamSession.purgeSessionDataFromKeychain()
-            UserAccount.deleteAll()
-            Seed.delete()
-            NotificationManager.shared.deleteEndpoint()
-            NotificationManager.shared.deleteKeys()
-            let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
-            AuthenticationGuard.shared.hideLockWindow()
+            self.deleteData()
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+
+    private func deleteData() {
+        let _ = BrowserSession.deleteAll()
+        TeamSession.purgeSessionDataFromKeychain()
+        UserAccount.deleteAll()
+        Seed.delete()
+        NotificationManager.shared.deleteEndpoint()
+        let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
+        UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+        AuthenticationGuard.shared.hideLockWindow()
     }
     
 }
