@@ -13,6 +13,7 @@ struct Team {
 
     let roles: Set<TeamRole>
     let users: Set<TeamUser>
+    let accounts: Set<TeamAccount>
     let name: String
     let encryptionKey: Data
     let passwordSeed: Data
@@ -65,7 +66,7 @@ struct Team {
             return firstly {
                 get(seed: teamSeed)
             }.then { team in
-                when(fulfilled: team.updateRole(pubkey: user.pubkey), team.createAdminUser(user: user, seed: encryptedSeed)).map({ ($0, team.name) })
+                team.restore(user: user, seed: encryptedSeed).map { ($0, team.name) }
             }.then { (_, name) -> Promise<Session> in
                 try self.createTeamSession(sharedSeed: sharedSeed, browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, passwordSeed: passwordSeed, name: name)
             }
@@ -90,7 +91,7 @@ struct Team {
     }
 
     init(teamData: JSONObject, encryptionKey: Data, passwordSeed: Data, keyPair: KeyPair) throws {
-        guard let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: [String: Any]] else {
+        guard let accountData = teamData["accounts"] as? [String: String], let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: [String: Any]] else {
             throw CodingError.missingData
         }
         name = teamData["name"] as? String ?? "devices.unknown".localized
@@ -106,49 +107,62 @@ struct Team {
             user.pubkey = pk
             return user
         })
+        accounts = Set(try accountData.compactMap { (_, account) -> TeamAccount? in
+            let data = try Crypto.shared.convertFromBase64(from: account)
+            return try JSONDecoder().decode(TeamAccount.self, from: Crypto.shared.decryptSymmetric(data, secretKey: encryptionKey))
+        })
         self.encryptionKey = encryptionKey
         self.passwordSeed = passwordSeed
         self.keyPair = keyPair
     }
 
-    func usersForAccount(account: TeamAccount) throws -> [[String:String]] {
+
+    func usersForAccount(account: TeamAccount) throws -> [[String:Any]] {
         let roleUsers = Set(self.roles.filter({ account.roles.contains($0.id) }).flatMap({ $0.users }))
         let pubkeys = roleUsers.union(account.users)
         let users = self.users.filter({ pubkeys.contains($0.pubkey )})
         return try users.map({[
             "id": account.id,
             "pubKey": $0.pubkey,
-            "data": try $0.encryptAccount(account: account),
+            "data": try $0.encryptAccount(account: account, teamPasswordSeed: passwordSeed),
             "userSyncPubkey": $0.userSyncPubkey
         ]})
     }
 
-    func updateRole(pubkey: String) -> Promise<JSONObject> {
+    func restore(user: TeamUser, seed: String) -> Promise<Void> {
         do {
-            guard var adminRole = roles.first(where: { $0.admins }) else {
+            guard let role = roles.first(where: { $0.admins }) else {
                 throw CodingError.missingData
             }
+            let accounts = try self.accounts.filter() { $0.roles.contains(role.id) }.map { try user.encryptAccount(account: $0, teamPasswordSeed: passwordSeed) }
+            return when(fulfilled: updateRole(role: role, pubkey: user.pubkey), try createAdminUser(user: user, seed: seed, accounts: accounts)).asVoid()
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private func createAdminUser(user: TeamUser, seed: String, accounts: [[String: String]]) throws -> Promise<JSONObject> {
+        let message: [String: Any] = [
+            "userpubkey": user.pubkey!,
+            "data": try user.encrypt(key: encryptionKey),
+            "userSyncPubkey": user.userSyncPubkey,
+            "accounts": accounts,
+            "teamSeed": seed
+        ]
+        return API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", privKey: keyPair.privKey, body: nil)
+    }
+
+    private func updateRole(role: TeamRole, pubkey: String) -> Promise<JSONObject> {
+        do {
+            var adminRole = role
             adminRole.users.append(pubkey)
             let roleMessage = [
                 "id": adminRole.id,
                 "data": try adminRole.encrypt(key: encryptionKey)
             ]
             return API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil)
-        } catch {
-            return Promise(error: error)
-        }
-    }
-
-    func createAdminUser(user: TeamUser, seed: String) -> Promise<JSONObject> {
-        do {
-            let message: [String: Any] = [
-                "userpubkey": user.pubkey!,
-                "data": try user.encrypt(key: encryptionKey),
-                "userSyncPubkey": user.userSyncPubkey,
-                "accounts": [],
-                "teamSeed": seed
-            ]
-            return API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", privKey: keyPair.privKey, body: nil)
         } catch {
             return Promise(error: error)
         }

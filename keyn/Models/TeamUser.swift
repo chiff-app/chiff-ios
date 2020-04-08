@@ -24,23 +24,23 @@ struct TeamUser: Codable {
         return try Crypto.shared.convertToBase64(from: ciphertext)
     }
 
-    func encryptAccount(account: TeamAccount) throws -> String {
+    func encryptAccount(account: TeamAccount, teamPasswordSeed: Data) throws -> [String: String] {
         guard let site = account.sites.first else {
             throw CodingError.missingData
         }
         guard let key = key.fromBase64 else {
             throw CodingError.stringDecoding
         }
-        guard let password = account.password else {
-            throw CodingError.missingData
-        }
         let passwordSeed = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.CRYPTO_CONTEXT, index: 0)
         let encryptionKey = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.CRYPTO_CONTEXT, index: 1)
         let generator = PasswordGenerator(username: account.username, siteId: site.id, ppd: site.ppd, passwordSeed: passwordSeed)
-        let offset = try generator.calculateOffset(index: 0, password: password)
+        let offset = try generator.calculateOffset(index: 0, password: account.password(for: teamPasswordSeed))
         let backupAccount = BackupSharedAccount(id: account.id, username: account.username, sites: account.sites, passwordIndex: 0, passwordOffset: offset, tokenURL: nil, tokenSecret: nil, version: account.version)
         let data = try JSONEncoder().encode(backupAccount)
-        return try Crypto.shared.encrypt(data, key: encryptionKey).base64
+        return [
+            "id": account.id,
+            "data": try Crypto.shared.encrypt(data, key: encryptionKey).base64
+        ]
     }
 }
 
