@@ -158,6 +158,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 self.onSeedRecoverySuccess()
             }
         }.catch(on: .main) { error in
+            Logger.shared.error("Error restoring backup", error: error)
             self.showAlert(message: "errors.seed_restore".localized)
             self.activityViewContainer.isHidden = true
         }
@@ -248,7 +249,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 UserAccount.deleteAll()
                 Seed.delete()
                 NotificationManager.shared.deleteEndpoint()
-                NotificationManager.shared.deleteKeys()
             }.catchLog("Error deleting data")
         }))
         self.present(alert, animated: true, completion: nil)

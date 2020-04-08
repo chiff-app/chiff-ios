@@ -196,6 +196,9 @@ struct TeamSession: Session {
     }
 
     mutating func update(makeBackup: Bool) throws {
+        if makeBackup {
+            lastChange = Date.now
+        }
         let sessionData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
         if makeBackup {

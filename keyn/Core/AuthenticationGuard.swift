@@ -66,9 +66,9 @@ class AuthenticationGuard {
             return context
         }.then { (context) -> Promise<Void> in
             when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, logo: true), UserAccount.sync(context: context), TeamSession.sync(context: context))
-        }.catch { error in
+        }.catch(on: .main) { error in
             if case SyncError.dataDeleted = error {
-                (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
+                self.showDataDeleted()
             } else if let error = error as? DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)
                 (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
@@ -89,6 +89,18 @@ class AuthenticationGuard {
             self.authenticationInProgress = false
             }
         }
+    }
+
+    private func showDataDeleted() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.lockWindow.alpha = 1.0
+        }) { if $0 {
+            self.lockWindow.makeKeyAndVisible()
+            self.lockWindowIsHidden = false
+            (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
+            }
+        }
+
     }
 
     // MARK: - UIApplication Notification Handlers

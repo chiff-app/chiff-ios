@@ -130,7 +130,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
-            NotificationManager.shared.deleteKeys()
             Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
