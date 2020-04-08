@@ -30,25 +30,22 @@ struct Team {
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
             let (passwordSeed, encryptionKey, sharedSeed, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
-            guard let endpoint = Properties.endpoint else {
-                throw SessionError.noEndpoint
-            }
-            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
+            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try Seed.publicKey(), isAdmin: true, name: "devices.admin".localized)
             let role = TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [signingKeyPair.pubKey.base64])
             let message: [String: Any] = [
                 "name": name,
                 "token": token,
                 "roleId": role.id,
                 "userPubkey": user.pubkey!,
-                "arn": user.arn,
+                "userSyncPubkey": user.userSyncPubkey,
                 "roleData": try role.encrypt(key: teamEncryptionKey),
                 "userData": try user.encrypt(key: teamEncryptionKey),
                 "seed": (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
             ]
             return firstly {
                 API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil)
-            }.map { _ in
-                try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
+            }.then { _ in
+                try self.createTeamSession(sharedSeed: sharedSeed, browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, passwordSeed: passwordSeed, name: name)
             }
         } catch {
             Logger.shared.error("errors.creating_team".localized, error: error)
@@ -63,17 +60,14 @@ struct Team {
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
             let (passwordSeed, encryptionKey, sharedSeed, signingKeyPair) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
-            guard let endpoint = Properties.endpoint else {
-                throw SessionError.noEndpoint
-            }
-            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, arn: endpoint, isAdmin: true, name: "devices.admin".localized)
+            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try Seed.publicKey(), isAdmin: true, name: "devices.admin".localized)
             let encryptedSeed = (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
             return firstly {
                 get(seed: teamSeed)
             }.then { team in
                 when(fulfilled: team.updateRole(pubkey: user.pubkey), team.createAdminUser(user: user, seed: encryptedSeed)).map({ ($0, team.name) })
-            }.map { _, name in
-                try self.createTeamSession(browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, seed: passwordSeed, name: name)
+            }.then { (_, name) -> Promise<Session> in
+                try self.createTeamSession(sharedSeed: sharedSeed, browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, passwordSeed: passwordSeed, name: name)
             }
         } catch {
             Logger.shared.error("errors.restoring_team".localized, error: error)
@@ -125,7 +119,7 @@ struct Team {
             "id": account.id,
             "pubKey": $0.pubkey,
             "data": try $0.encryptAccount(account: account),
-            "arn": $0.arn
+            "userSyncPubkey": $0.userSyncPubkey
         ]})
     }
 
@@ -150,7 +144,7 @@ struct Team {
             let message: [String: Any] = [
                 "userpubkey": user.pubkey!,
                 "data": try user.encrypt(key: encryptionKey),
-                "arn": user.arn,
+                "userSyncPubkey": user.userSyncPubkey,
                 "accounts": [],
                 "teamSeed": seed
             ]
@@ -178,12 +172,12 @@ struct Team {
     }
 
 
-    private static func createTeamSession(browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, seed: Data, name: String) throws -> Session {
+    private static func createTeamSession(sharedSeed: Data, browserKeyPair: KeyPair, signingKeyPair: KeyPair, encryptionKey: Data, passwordSeed: Data, name: String) throws -> Promise<Session> {
         do {
-            let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true, created: true)
-            try session.save(key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: seed)
+            let session = TeamSession(id: browserKeyPair.pubKey.base64.hash, signingPubKey: signingKeyPair.pubKey, title: "\("devices.admin".localized) @ \(name)", version: 2, isAdmin: true, created: true, lastChange: Date.now)
+            try session.save(sharedSeed: sharedSeed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
             TeamSession.count += 1
-            return session
+            return session.backup().map { session }
         } catch is KeychainError {
             throw SessionError.exists
         } catch is CryptoError {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G43-hy-fNq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="G43-hy-fNq">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -117,32 +117,39 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="AccountCell" id="s52-P6-R42" customClass="AccountTableViewCell" customModule="keynCredentialProvider" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationWidth="0.0" reuseIdentifier="AccountCell" id="Ss3-8F-m3f" customClass="AccountTableViewCell" customModule="keyn" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="335" height="48"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="s52-P6-R42" id="NmO-ft-6sq">
+                                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ss3-8F-m3f" id="YyQ-Ux-RxQ">
                                                             <rect key="frame" x="0.0" y="0.0" width="335" height="48"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="IZS-ai-HCT">
-                                                                    <rect key="frame" x="20" y="11" width="295" height="26"/>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="umX-PH-YLU">
+                                                                    <rect key="frame" x="20" y="0.0" width="295" height="48"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="sgD-Le-nvL">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="10" height="26"/>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock_small" translatesAutoresizingMaskIntoConstraints="NO" id="MeO-1u-3Aa">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="10" height="48"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" constant="10" id="buz-jd-H0c"/>
+                                                                                <constraint firstAttribute="width" constant="10" id="5ut-BY-URR"/>
                                                                             </constraints>
                                                                         </imageView>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQv-dQ-Djc">
-                                                                            <rect key="frame" x="24" y="0.0" width="249" height="26"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="De Correspondent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3OU-Sd-IuP">
+                                                                            <rect key="frame" x="22" y="0.0" width="214" height="48"/>
                                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                                                             <color key="textColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lan-Md-epW">
-                                                                            <rect key="frame" x="287" y="0.0" width="8" height="26"/>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="team_icon" translatesAutoresizingMaskIntoConstraints="NO" id="32F-er-SSS">
+                                                                            <rect key="frame" x="248" y="0.0" width="27" height="48"/>
+                                                                            <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" constant="8" id="sMT-GQ-2nN"/>
+                                                                                <constraint firstAttribute="width" constant="27" id="ybe-d7-6i9"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EO9-gW-H4B">
+                                                                            <rect key="frame" x="287" y="0.0" width="8" height="48"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="8" id="cv1-0I-M0L"/>
                                                                             </constraints>
                                                                             <state key="normal" image="chevron_right">
                                                                                 <color key="titleColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="0.99860873289999996" colorSpace="calibratedRGB"/>
@@ -151,16 +158,19 @@
                                                                     </subviews>
                                                                 </stackView>
                                                             </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstItem="IZS-ai-HCT" firstAttribute="top" secondItem="NmO-ft-6sq" secondAttribute="topMargin" id="Ivy-Hn-Ol8"/>
-                                                                <constraint firstItem="IZS-ai-HCT" firstAttribute="leading" secondItem="NmO-ft-6sq" secondAttribute="leading" constant="20" id="Nfl-sX-yrh"/>
-                                                                <constraint firstAttribute="bottomMargin" secondItem="IZS-ai-HCT" secondAttribute="bottom" id="Oo6-gc-jfg"/>
-                                                                <constraint firstAttribute="trailing" secondItem="IZS-ai-HCT" secondAttribute="trailing" constant="20" id="rAb-Ed-eiI"/>
+                                                                <constraint firstItem="umX-PH-YLU" firstAttribute="top" secondItem="YyQ-Ux-RxQ" secondAttribute="top" id="aFX-fc-pfM"/>
+                                                                <constraint firstAttribute="bottom" secondItem="umX-PH-YLU" secondAttribute="bottom" id="qAY-3G-Kg7"/>
+                                                                <constraint firstAttribute="trailing" secondItem="umX-PH-YLU" secondAttribute="trailing" constant="20" id="qDl-pl-ABs"/>
+                                                                <constraint firstItem="umX-PH-YLU" firstAttribute="leading" secondItem="YyQ-Ux-RxQ" secondAttribute="leading" constant="20" id="tAY-ip-ehf"/>
                                                             </constraints>
                                                         </tableViewCellContentView>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <connections>
-                                                            <outlet property="titleLabel" destination="UQv-dQ-Djc" id="Gwk-N6-f39"/>
+                                                            <outlet property="icon" destination="MeO-1u-3Aa" id="x7H-fS-PBt"/>
+                                                            <outlet property="teamIcon" destination="32F-er-SSS" id="ngH-s0-rfl"/>
+                                                            <outlet property="teamIconWidthConstraint" destination="ybe-d7-6i9" id="6RG-84-6ZF"/>
+                                                            <outlet property="titleLabel" destination="3OU-Sd-IuP" id="sa5-jb-eZW"/>
                                                         </connections>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -242,5 +252,6 @@
         <image name="fingerprint" width="50" height="55"/>
         <image name="lock_small" width="10" height="13"/>
         <image name="logo" width="291" height="323"/>
+        <image name="team_icon" width="25" height="17"/>
     </resources>
 </document>

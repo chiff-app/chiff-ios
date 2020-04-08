@@ -55,7 +55,7 @@ class AuthenticationGuard {
         authenticationInProgress = true
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
-        }.map(on: .main) { context in
+        }.map(on: .main) { (context) -> LAContext? in
             let accounts = try UserAccount.allCombined(context: context, sync: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()
@@ -63,10 +63,13 @@ class AuthenticationGuard {
             }
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil, userInfo: accounts)
             self.hideLockWindow()
-        }.then {
-            TeamSession.updateTeamSessions(pushed: false, logo: true, backup: true)
-        }.catch { error in
-            if let error = error as? DecodingError {
+            return context
+        }.then { (context) -> Promise<Void> in
+            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, logo: true), UserAccount.sync(context: context), TeamSession.sync(context: context))
+        }.catch(on: .main) { error in
+            if case SyncError.dataDeleted = error {
+                self.showDataDeleted()
+            } else if let error = error as? DecodingError {
                 Logger.shared.error("Error decoding accounts", error: error)
                 (self.lockWindow.rootViewController as? LoginViewController)?.showDecodingError(error: error)
             } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
@@ -86,6 +89,18 @@ class AuthenticationGuard {
             self.authenticationInProgress = false
             }
         }
+    }
+
+    private func showDataDeleted() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.lockWindow.alpha = 1.0
+        }) { if $0 {
+            self.lockWindow.makeKeyAndVisible()
+            self.lockWindowIsHidden = false
+            (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
+            }
+        }
+
     }
 
     // MARK: - UIApplication Notification Handlers

@@ -162,7 +162,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             deleteSession(session: session, indexPath: IndexPath(row: index, section: 0))
         } else if sender.identifier == "UpdateSession", let title = sourceViewController.sessionNameTextField.text {
             session.title = title
-            try? session.update()
+            try? session.update(makeBackup: true)
             sessions[index] = session
             tableView.reloadData()
         }
@@ -181,10 +181,16 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Private functions
 
     private func reloadData(notification: Notification) {
-        guard let session = notification.userInfo?["session"] as? Session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
-            return
+        if let session = notification.userInfo?["session"] as? Session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
+            sessions[index] = session
+        } else {
+            do {
+                sessions = try BrowserSession.all()
+                sessions.append(contentsOf: try TeamSession.all())
+            } catch {
+                Logger.shared.error("Could not get sessions.", error: error)
+            }
         }
-        sessions[index] = session
         tableView.reloadData()
     }
 

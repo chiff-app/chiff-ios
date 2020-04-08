@@ -131,7 +131,7 @@ class AuthorizationGuard {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
-            guard let account: Account = try UserAccount.getAny(accountID: self.accountId, context: context) else {
+            guard let account: Account = try UserAccount.getAny(id: self.accountId, context: context) else {
                 throw AccountError.notFound
             }
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
@@ -181,7 +181,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
+            guard var account = try UserAccount.get(id: self.accountId, context: context) else {
                 throw AccountError.notFound
             }
             try account.addSite(site: site)
@@ -276,7 +276,7 @@ class AuthorizationGuard {
             defer {
                 Logger.shared.analytics(.webAuthnLoginRequestAuthorized, properties: [.value: success])
             }
-            guard var account = try UserAccount.get(accountID: self.accountId, context: context) else {
+            guard var account = try UserAccount.get(id: self.accountId, context: context) else {
                 throw AccountError.notFound
             }
             let (signature, counter) = try account.webAuthnSign(challenge: self.challenge, rpId: self.rpId)
@@ -297,7 +297,7 @@ class AuthorizationGuard {
         }
         AuthorizationGuard.authorizationInProgress = true
         do {
-            guard let sessionID = request.sessionID, let session = try BrowserSession.get(id: sessionID) else {
+            guard let sessionID = request.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) else {
                 AuthorizationGuard.authorizationInProgress = false
                 throw SessionError.doesntExist
             }

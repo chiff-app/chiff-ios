@@ -35,7 +35,7 @@ struct PPD: Codable {
     let properties: PPDProperties? // Required. Represents the properties of the password.
     let service: PPDService? // Holds information related to the service the password is used for.
     let version: PPDVersion // The current version of the PPD.
-    let timestamp: Date? // Timestamp when this PPD was created/updated. It must include the time, the date, and the offset from the UTC time.
+    let timestamp: Int? // Timestamp when this PPD was created/updated.
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String
@@ -71,7 +71,7 @@ struct PPD: Codable {
         case name
     }
 
-    init(characterSets: [PPDCharacterSet]?, properties: PPDProperties?, service: PPDService?, version: PPDVersion?, timestamp: Date?, url: String, redirect: String?, name: String) {
+    init(characterSets: [PPDCharacterSet]?, properties: PPDProperties?, service: PPDService?, version: PPDVersion?, timestamp: Timestamp?, url: String, redirect: String?, name: String) {
         self.characterSets = characterSets
         self.properties = properties
         self.service = service
@@ -92,7 +92,11 @@ struct PPD: Codable {
         } catch is DecodingError {
             self.version = .v1_0
         }
-        self.timestamp = try values.decodeIfPresent(Date.self, forKey: .timestamp)
+        do {
+            self.timestamp = try values.decodeIfPresent(Timestamp.self, forKey: .timestamp)
+        } catch {
+            self.timestamp = try values.decodeIfPresent(Date.self, forKey: .timestamp)?.millisSince1970
+        }
         self.url = try values.decode(String.self, forKey: .url)
         self.redirect = try values.decodeIfPresent(String.self, forKey: .redirect)
         self.name = try values.decode(String.self, forKey: .name)

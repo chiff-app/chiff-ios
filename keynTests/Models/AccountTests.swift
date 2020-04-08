@@ -166,33 +166,16 @@ class AccountTests: XCTestCase {
     }
     
     func testDelete() {
-        TestHelper.createBackupKeys()
         let expectation = XCTestExpectation(description: "Finish testDelete")
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
             let accountId = account.id
             account.delete().done { (result) in
-                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+                XCTAssertNil(try UserAccount.get(id: accountId, context: nil))
             }.ensure {
                 expectation.fulfill()
             }.catch { error in
                 XCTFail(error.localizedDescription)
-            }
-        } catch {
-            XCTFail(error.localizedDescription)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10.0)
-    }
-    
-    func testDeleteWithoutBackupKeys() {
-        let expectation = XCTestExpectation(description: "Finish testDeleteWithoutBackupKeys")
-        do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
-            account.delete().done { (result) in
-                XCTFail("Should fail")
-            }.ensure {
-                expectation.fulfill()
             }
         } catch {
             XCTFail(error.localizedDescription)
@@ -246,16 +229,20 @@ class AccountTests: XCTestCase {
     }
     
     func testGetUserAccount() {
-        XCTAssertNil(try UserAccount.get(accountID: "noid", context: nil))
+        XCTAssertNil(try UserAccount.get(id: "noid", context: nil))
     }
     
     func testSave() {
-        TestHelper.createBackupKeys()
         guard let accountData = TestHelper.backupData.fromBase64 else {
             return XCTFail("Error converting to data")
         }
-        XCTAssertNoThrow(try UserAccount.restore(data: accountData, id: TestHelper.userID, context: nil))
-        XCTAssertNotNil(try UserAccount.get(accountID: TestHelper.userID, context: nil))
+        do {
+            let backupObject = try JSONDecoder().decode(BackupUserAccount.self, from: accountData)
+            try UserAccount.create(backupObject: backupObject, context: nil)
+            XCTAssertNotNil(try UserAccount.get(id: TestHelper.userID, context: nil))
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
     }
     
     func testAccountList() {
@@ -284,14 +271,13 @@ class AccountTests: XCTestCase {
     // MARK: - Integration Tests
     
     func testDeleteAndSyncAndGet() {
-        TestHelper.createBackupKeys()
         let expectation = XCTestExpectation(description: "Finish testDeleteAndSyncAndGet")
         do {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
             let accountId = account.id
             account.delete().done { (result) in
                 XCTAssertTrue(account.synced)
-                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+                XCTAssertNil(try UserAccount.get(id: accountId, context: nil))
             }.ensure {
                 expectation.fulfill()
             }.catch {
