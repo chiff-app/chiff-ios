@@ -65,7 +65,7 @@ class TestHelper {
         }
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
-        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0).millisSince1970, url: "https://example.com", redirect: nil, name: "Example")
     }
 
     static func samplePPDV1_1(minLength: Int?, maxLength: Int?, maxConsecutive: Int? = nil, characterSetSettings: [PPDCharacterSetSettings]? = nil, positionRestrictions: [PPDPositionRestriction]? = nil, requirementGroups: [PPDRequirementGroup]? = nil) -> PPD {
@@ -81,7 +81,7 @@ class TestHelper {
         }
 
         let properties = PPDProperties(characterSettings: ppdCharacterSettings, maxConsecutive: maxConsecutive, minLength: minLength, maxLength: maxLength)
-        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_1, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        return PPD(characterSets: characterSets, properties: properties, service: nil, version: .v1_1, timestamp: Date(timeIntervalSinceNow: 0.0).millisSince1970, url: "https://example.com", redirect: nil, name: "Example")
     }
 
     static func saveHOTPToken(id: String, includeData: Bool = true) {
@@ -122,21 +122,13 @@ class TestHelper {
         guard let seed = base64seed.fromBase64, let passwordSeed = passwordSeed.fromBase64, let backupSeed = backupSeed.fromBase64 else {
             fatalError("Unable to get data from base 64 string")
         }
-
+        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivKey.fromBase64, let encryptionKey = "Qpx3K996cCvM4L7iZeGjHHDy2m1p0m3MTI7VRN9LrAk".fromBase64 else {
+            fatalError("Unable to get data from base 64 string")
+        }
         do {            
             try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: seed)
             try Keychain.shared.save(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, secretData: passwordSeed)
             try Keychain.shared.save(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, secretData: backupSeed)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-    }
-
-    static func createBackupKeys() {
-        guard let pubKey = TestHelper.backupPubKey.fromBase64, let privKey = TestHelper.backupPrivKey.fromBase64, let encryptionKey = "Qpx3K996cCvM4L7iZeGjHHDy2m1p0m3MTI7VRN9LrAk".fromBase64 else {
-            fatalError("Unable to get data from base 64 string")
-        }
-        do {
             try Keychain.shared.save(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup, secretData: pubKey)
             try Keychain.shared.save(id: KeyIdentifier.priv.identifier(for: .backup), service: .backup, secretData: privKey)
             try Keychain.shared.save(id: KeyIdentifier.encryption.identifier(for: .backup), service: .backup, secretData: encryptionKey)
@@ -144,7 +136,7 @@ class TestHelper {
             fatalError(error.localizedDescription)
         }
     }
-    
+
     static func createEndpointKey() {
         do {
             try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: sessionID.data)
@@ -187,8 +179,6 @@ class TestHelper {
         UserAccount.deleteAll()
         Seed.delete()
         NotificationManager.shared.deleteEndpoint()
-        NotificationManager.shared.deleteKeys()
-        BackupManager.deleteKeys()
         // Wipe the keychain, keychain tests do not work without this
         let secItemClasses =  [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         for itemClass in secItemClasses {

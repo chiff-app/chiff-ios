@@ -17,6 +17,7 @@ def shared_pods
   pod 'SwiftLint'
   pod "PromiseKit", "~> 6.8"
   pod "PromiseKit/Foundation"
+  pod "TrueTime"
 end
 
 target 'keyn' do

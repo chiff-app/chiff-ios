@@ -42,6 +42,7 @@ protocol Session: Codable {
     var version: Int { get }
 
     func delete(notify: Bool) -> Promise<Void>
+    mutating func update(makeBackup: Bool) throws
     func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void>
 
     static var encryptionService: KeychainService { get }
@@ -84,11 +85,6 @@ extension Session {
         }.log("Cannot delete endpoint at AWS.")
     }
 
-    func update() throws {
-        let sessionData = try PropertyListEncoder().encode(self as Self)
-        try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
-    }
-
     // MARK: Static functions
 
 
@@ -129,8 +125,8 @@ extension Session {
         return Keychain.shared.has(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService)
     }
 
-    static func get(id: String) throws -> Self? {
-        guard let sessionDict = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService) else {
+    static func get(id: String, context: LAContext?) throws -> Self? {
+        guard let sessionDict = try Keychain.shared.attributes(id: SessionIdentifier.sharedKey.identifier(for: id), service: encryptionService, context: context) else {
             return nil
         }
         guard let sessionData = sessionDict[kSecAttrGeneric as String] as? Data else {

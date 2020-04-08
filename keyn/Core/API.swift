@@ -19,7 +19,7 @@ class API: NSObject, APIProtocol {
     func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
-        message["timestamp"] = String(Int(Date().timeIntervalSince1970))
+        message["timestamp"] = String(Date.now)
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64

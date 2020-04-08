@@ -345,6 +345,10 @@ errors:
     value: Onleesbare data fout
   creating_team:
     value: Fout bij het maken van team
+  data_deleted:
+    value: Data verwijderd
+  data_recreation_failed_message:
+    value: Fout bij het herstellen van de backup-data
   delete_url:
     comment: Error deleting url
     value: Fout bij verwijderen URL
@@ -625,6 +629,12 @@ popups:
       value: >-
         Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd.
         Wil je Keyn's huidige data verwijderen?
+    delete_locally:
+      value: >-
+        De backup data is verwijderd vanaf een ander apparaat. Wil je de data
+        hier ook verwijderen of de backup herstellen vanaf dit apparaat?
+    delete_x:
+      value: Delete %@
     move_data:
       comment: Resets Keyn and deletes all data
       value: Verhuis data?
@@ -678,6 +688,8 @@ popups:
     reset:
       comment: Resets something
       value: Reset
+    restore:
+      value: Herstel
     settings:
       value: Open instellingen
     'yes':

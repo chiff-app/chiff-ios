@@ -10,7 +10,6 @@ import UIKit
 import UserNotifications
 import PromiseKit
 
-// This is in an extension, so the target membership of the NotifcationManager can be set to just keyn, not the extensions
 struct PushNotifications {
 
     static func register() -> Guarantee<Bool> {
