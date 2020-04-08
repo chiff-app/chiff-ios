@@ -125,7 +125,7 @@ class PasswordGeneratorTests: XCTestCase {
         characterSets.append(PPDCharacterSet(base: nil, characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ", name: "UpperLetters"))
         characterSets.append(PPDCharacterSet(base: nil, characters: "0123456789", name: "Numbers"))
         characterSets.append(PPDCharacterSet(base: nil, characters: ")(*&^%$#@!{}[]:;\"'?/,.<>`~|", name: "Specials"))
-        let ppd = PPD(characterSets: characterSets, properties: nil, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0), url: "https://example.com", redirect: nil, name: "Example")
+        let ppd = PPD(characterSets: characterSets, properties: nil, service: nil, version: .v1_0, timestamp: Date(timeIntervalSinceNow: 0.0).millisSince1970, url: "https://example.com", redirect: nil, name: "Example")
         let passwordGenerator = PasswordGenerator(username: "test", siteId: TestHelper.linkedInPPDHandle, ppd: ppd, passwordSeed: TestHelper.passwordSeed.fromBase64!)
         XCTAssertNoThrow(try passwordGenerator.generate(index: 0, offset: nil))
     }

@@ -265,7 +265,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
-            XCTAssertNoThrow(try BrowserSession.get(id: session.id))
+            XCTAssertNoThrow(try BrowserSession.get(id: session.id, context: nil))
         }.ensure {
             expectation.fulfill()
         }.catch { error in
@@ -275,8 +275,8 @@ class SessionTests: XCTestCase {
     }
     
     func testGetNilIfNoData() {
-        XCTAssertNoThrow(try BrowserSession.get(id: "session.id"))
-        XCTAssertNil(try BrowserSession.get(id: "session.id"))
+        XCTAssertNoThrow(try BrowserSession.get(id: "session.id", context: nil))
+        XCTAssertNil(try BrowserSession.get(id: "session.id", context: nil))
     }
     
     func testInitiateAndSendCredentials() {
@@ -334,7 +334,7 @@ class SessionTests: XCTestCase {
         let encoder = PropertyListEncoder()
         do {
             try Keychain.shared.save(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
-            XCTAssertNil(try BrowserSession.get(id: "ihaveanidea"))
+            XCTAssertNil(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -351,7 +351,7 @@ class SessionTests: XCTestCase {
         let encoder = PropertyListEncoder()
         do {
             try Keychain.shared.save(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: encoder.encode(notASession))
-            XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea"))
+            XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -367,7 +367,7 @@ class SessionTests: XCTestCase {
         let keychainId = "\(notASession.id)-shared"
         do {
             try saveWrongDataInKeychain(id: keychainId, service: .sharedSessionKey, secretData: "secret".data, objectData: 42)
-            XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea"))
+            XCTAssertThrowsError(try BrowserSession.get(id: "ihaveanidea", context: nil))
         } catch {
             XCTFail(error.localizedDescription)
         }

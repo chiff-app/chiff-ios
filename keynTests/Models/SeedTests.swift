@@ -74,6 +74,19 @@ class SeedTests: XCTestCase {
         wait(for: [expectation], timeout: 3.0)
     }
 
+    func testCreateFailsIfAPIFails() {
+        TestHelper.deleteLocalData()
+        let mockAPI = MockAPI(shouldFail: true)
+        let expectation = XCTestExpectation(description: "Finish testCreateFailsIfAPIFails")
+        API.shared = mockAPI
+        Seed.create(context: self.context).done {
+            XCTFail("Must fail")
+        }.ensure {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 3.0)
+    }
+
     func testValidate() {
         TestHelper.createSeed()
         XCTAssertTrue(Seed.validate(mnemonic: TestHelper.mnemonic))
@@ -143,6 +156,30 @@ class SeedTests: XCTestCase {
         XCTAssertNoThrow(Seed.delete())
     }
 
+
+    func testDeleteBackupData() {
+        TestHelper.createSeed()
+        let expectation = XCTestExpectation(description: "Finish testDeleteBackupData")
+        Seed.deleteBackupData().ensure {
+            expectation.fulfill()
+        }.catch {
+            XCTFail($0.localizedDescription)
+        }
+        wait(for: [expectation], timeout: 3.0)
+    }
+
+    func testDeleteBackupDataFailsIfAPIFails() {
+        TestHelper.createSeed()
+        API.shared = MockAPI(pubKey: try! Seed.publicKey(), account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
+        let expectation = XCTestExpectation(description: "Finish testDeleteBackupDataFailsIfAPIFails")
+        Seed.deleteBackupData().done {
+            XCTFail("Should fail")
+        }.ensure {
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 3.0)
+    }
+
     func testSetBackedUp() {
         TestHelper.createSeed()
         UserDefaults.standard.set(false, forKey: "paperBackupCompleted")
@@ -159,7 +196,7 @@ class SeedTests: XCTestCase {
         API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
         let expectation = XCTestExpectation(description: "Finish testIsBackedUp")
         Seed.recover(context: self.context, mnemonic: TestHelper.mnemonic).done { (result) in
-            guard let account = try UserAccount.get(accountID: TestHelper.userID, context: self.context) else {
+            guard let account = try UserAccount.get(id: TestHelper.userID, context: self.context) else {
                 return XCTFail("Account not found")
             }
             XCTAssertTrue(account.id == TestHelper.userID)
@@ -169,6 +206,34 @@ class SeedTests: XCTestCase {
             XCTFail($0.localizedDescription)
         }
         wait(for: [expectation], timeout: 10.0)
+    }
+
+    func testPublicKey() {
+        TestHelper.createSeed()
+        do {
+            let publicKey = try Seed.publicKey()
+            XCTAssertEqual(publicKey, "Sv83e1XwETq4-buTc9fU29lHxCoRPlxA8Xr2pxnXQdI")
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
+
+    func testPrivateKeyDoesntThrow() {
+        TestHelper.createSeed()
+        XCTAssertNoThrow(try Seed.privateKey())
+    }
+
+    func testPrivateKey() {
+        TestHelper.createSeed()
+        do {
+            let privateKey = try Seed.privateKey()
+            guard let constantKey = TestHelper.backupPrivKey.fromBase64 else {
+                return XCTFail("Imposible to get data from base64 string")
+            }
+            XCTAssertEqual(privateKey, constantKey)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
     }
 
     // MARK: - Integration Tests
