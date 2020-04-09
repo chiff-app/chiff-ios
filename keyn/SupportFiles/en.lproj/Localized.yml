@@ -551,7 +551,7 @@ initialization:
       Sensitive data is never shared and everything is anonymous.
 notifications:
   accounts_from:
-    value: '%@ accounts on %@.'
+    value: '%d accounts on %@.'
   add_account:
     value: Add account
   add_accounts:
