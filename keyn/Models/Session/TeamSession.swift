@@ -91,18 +91,23 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func updateAllTeamSessions(pushed: Bool, logo: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
+    static func updateAllTeamSessions(pushed: Bool, filterLogos: [String]?, pubKeys: [String]? = nil) -> Promise<Void> {
         return firstly {
             when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Void>? in
+                var promises: [Promise<Void>] = []
+                if let logos = filterLogos {
+                    if logos.contains(session.signingPubKey) {
+                        promises.append(session.updateLogo())
+                    }
+                } else {
+                    promises.append(session.updateLogo())
+                }
                 if let pubKeys = pubKeys {
                     guard pubKeys.contains(session.signingPubKey) else {
                          return nil
                     }
                 }
-                var promises = [updateTeamSession(session: session, pushed: pushed)]
-                if logo {
-                    promises.append(session.updateLogo())
-                }
+                promises.append(updateTeamSession(session: session, pushed: pushed))
                 return when(fulfilled: promises)
            })
         }
@@ -250,16 +255,9 @@ struct TeamSession: Session {
 
     func updateLogo() -> Promise<Void> {
         let filemgr = FileManager.default
-//            var headers: [String:String]? = nil
         guard let path = logoPath else {
             return Promise(error: TeamSessionError.logoPathNotFound)
         }
-//            if filemgr.fileExists(atPath: path), let creationDate = (try? filemgr.attributesOfItem(atPath: path) as NSDictionary)?.fileCreationDate() {
-//                headers = ["modified-since": "\(creationDate.timeIntervalSince1970)"]
-//                let rfcDateFormat = DateFormatter()
-//                rfcDateFormat.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
-//                headers["modified-since"] = rfcDateFormat.string(from: creationDate)
-//            }
         return firstly {
             API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/logo", privKey: try signingPrivKey(), body: nil)
         }.map { result in
