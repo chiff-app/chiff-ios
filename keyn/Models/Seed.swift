@@ -100,7 +100,7 @@ struct Seed {
                     UserAccount.restore(context: context),
                     TeamSession.restore(context: context))
             }.then { result in
-                TeamSession.updateAllTeamSessions(pushed: false, logo: true).map { _ in
+                TeamSession.updateAllTeamSessions(pushed: false, filterLogos: nil).map { _ in
                     return result
                 }
             }.map { result in
