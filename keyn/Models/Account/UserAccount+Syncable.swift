@@ -248,14 +248,14 @@ extension UserAccount: Syncable {
             return false
         }
         if let newNotes = backupAccount.notes {
-            if Keychain.shared.has(id: id, service: .notes) {
-                if newNotes.isEmpty {
-                    try Keychain.shared.delete(id: id, service: .notes)
-                } else {
-                    try Keychain.shared.update(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
-                }
-            } else if !newNotes.isEmpty {
+            if currentNotes != nil {
+                try Keychain.shared.update(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+            } else {
                 try Keychain.shared.save(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+            }
+        } else {
+            if currentNotes != nil {
+                try Keychain.shared.delete(id: id, service: .notes)
             }
         }
         return true
