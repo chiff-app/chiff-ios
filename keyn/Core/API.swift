@@ -47,7 +47,7 @@ class API: NSObject, APIProtocol {
     private func createRequest(path: String, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = path.starts(with: "ppd") || path.starts(with: "questionnaire") ? "api.keyn.app" : Properties.keynApi
+        components.host = path.starts(with: "questionnaire") ? "api.keyn.app" : Properties.keynApi
         components.path = "/\(Properties.environment.path)/\(path)"
 
         if let parameters = parameters {
@@ -61,6 +61,9 @@ class API: NSObject, APIProtocol {
         
         guard let url = components.url else {
             throw APIError.url
+        }
+        guard url.absoluteString.count < 8192 else {
+            throw APIError.urlSize // AWS will do it otherwise
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue

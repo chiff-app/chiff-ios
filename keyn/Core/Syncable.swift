@@ -76,7 +76,7 @@ extension Syncable {
                         throw CodingError.unexpectedData
                     }
                     let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
-                    return try JSONDecoder().decode(T.self, from: data)
+                    return try JSONDecoder().decode(T.self, from: data.decompress() ?? data)
                 } catch {
                     Logger.shared.error("Could not restore data.", error: error)
                 }
@@ -161,7 +161,7 @@ extension Syncable {
     func sendData<T: BackupObject>(item: T) -> Promise<Void> where T == BackupType {
         do {
             let data = try JSONEncoder().encode(item)
-            let ciphertext = try Crypto.shared.encryptSymmetric(data, secretKey: try Self.encryptionKey())
+            let ciphertext = try Crypto.shared.encryptSymmetric(data.compress() ?? data, secretKey: try Self.encryptionKey())
             let message = [
                 "id": self.id,
                 "data": ciphertext.base64

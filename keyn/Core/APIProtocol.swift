@@ -15,6 +15,7 @@ enum APIError: KeynError {
     case response
     case wrongResponseType
     case pinninigError
+    case urlSize
 }
 
 
