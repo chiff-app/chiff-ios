@@ -26,7 +26,6 @@ struct SharedAccount: Account {
     var version: Int
     var timesUsed: Int
     var lastTimeUsed: Date?
-    var notes: String?
 
     var site: Site {
         return sites.first!
@@ -37,7 +36,7 @@ struct SharedAccount: Account {
 
     static let keychainService: KeychainService = .sharedAccount
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionPubKey: String, notes: String?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionPubKey: String) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -47,19 +46,28 @@ struct SharedAccount: Account {
         self.sessionPubKey = sessionPubKey
         self.version = version
         self.timesUsed = 0
-        self.notes = notes
     }
 
     mutating func sync(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
-        guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites || notes != backupAccount.notes else {
+        guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
             return false
         }
         self.username = backupAccount.username
         self.sites = backupAccount.sites
         self.passwordOffset = backupAccount.passwordOffset
-        self.notes = backupAccount.notes
+        if let notes = backupAccount.notes {
+            if Keychain.shared.has(id: id, service: .notes) {
+                if notes.isEmpty {
+                    try Keychain.shared.delete(id: id, service: .notes)
+                } else {
+                    try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                }
+            } else if !notes.isEmpty {
+                try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        }
 
         let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: key)
         let (password, newIndex) = try passwordGenerator.generate(index: backupAccount.passwordIndex, offset: self.passwordOffset)
@@ -102,8 +110,7 @@ struct SharedAccount: Account {
                                   passwordIndex: backupAccount.passwordIndex,
                                   passwordOffset: backupAccount.passwordOffset,
                                   version: 1,
-                                  sessionPubKey: sessionPubKey,
-                                  notes: backupAccount.notes)
+                                  sessionPubKey: sessionPubKey)
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: key)
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
@@ -113,7 +120,9 @@ struct SharedAccount: Account {
             let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
-
+        if let notes = backupAccount.notes {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
         try account.save(password: password, sessionPubKey: sessionPubKey)
     }
 
@@ -146,7 +155,6 @@ extension SharedAccount: Codable {
         case version
         case timesUsed
         case lastTimeUsed
-        case notes
     }
 
     init(from decoder: Decoder) throws {
@@ -161,7 +169,6 @@ extension SharedAccount: Codable {
         self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
         self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
-        self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
     }
 
 }

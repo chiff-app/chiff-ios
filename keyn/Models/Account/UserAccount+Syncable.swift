@@ -76,6 +76,10 @@ extension UserAccount: Syncable {
             }
         }
 
+        if let notes = backupObject.notes, !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
+
         let data = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: data)
         saveToIdentityStore()
@@ -89,7 +93,7 @@ extension UserAccount: Syncable {
             tokenSecret = token.generator.secret
         }
         return firstly {
-            sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret))
+            sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret, notes: try notes()))
         }.map { _ in
             try Keychain.shared.setSynced(value: true, id: self.id, service: Self.keychainService)
         }.recover { error in
@@ -120,6 +124,11 @@ extension UserAccount: Syncable {
 
         // Webauthn
         if try updateWebAuthn(with: backupObject, context: context) {
+            changed = true
+        }
+
+        // Notes
+        if try updateNotes(with: backupObject, context: context) {
             changed = true
         }
 
@@ -233,6 +242,24 @@ extension UserAccount: Syncable {
         return true
     }
 
+    private  func updateNotes(with backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
+        let currentNotes = try notes()
+        guard backupAccount.notes != currentNotes else {
+            return false
+        }
+        if let newNotes = backupAccount.notes {
+            if Keychain.shared.has(id: id, service: .notes) {
+                if newNotes.isEmpty {
+                    try Keychain.shared.delete(id: id, service: .notes)
+                } else {
+                    try Keychain.shared.update(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+                }
+            } else if !newNotes.isEmpty {
+                try Keychain.shared.save(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+            }
+        }
+        return true
+    }
     
 }
 
@@ -271,7 +298,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         case notes
     }
 
-    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
+    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?, notes: String?) {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
@@ -286,7 +313,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.version = account.version
         self.webAuthn = account.webAuthn
         self.lastChange = account.lastChange
-        self.notes = account.notes
+        self.notes = notes
     }
 
     init(from decoder: Decoder) throws {
