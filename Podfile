@@ -18,6 +18,7 @@ def shared_pods
   pod "PromiseKit", "~> 6.8"
   pod "PromiseKit/Foundation"
   pod "TrueTime"
+  pod 'DataCompression'
 end
 
 target 'keyn' do
