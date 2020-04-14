@@ -100,7 +100,6 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         websiteNameTextField.text = account.site.name
         websiteURLTextField.text = account.site.url
         userNameTextField.text = account.username
-        notesCell.textString = account.notes ?? ""
         enabledSwitch.isOn = account.enabled
         enabledSwitch.isEnabled = account.enabled || canEnableAccount
         websiteNameTextField.delegate = self
@@ -118,6 +117,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 userPasswordTextField.isSecureTextEntry = true
             }
             token = try account.oneTimePasswordToken()
+            notesCell.textString = try account.notes() ?? ""
             updateOTPUI()
         } catch AccountError.tokenRetrieval {
             showAlert(message: "errors.otp_fetch".localized)
@@ -221,7 +221,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return
         }
         do {
-            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn, notes: nil)
+            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
             NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
         } catch {
             Logger.shared.error("Failed to update enabled state in account")
@@ -317,11 +317,13 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 newPassword = userPasswordTextField.text
             }
             let newUrl = websiteURLTextField.text != account.site.url ? websiteURLTextField.text : nil
-            let newNotes = notesCell.textString != account.notes ? notesCell.textString : nil
-            guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil || newNotes != nil else {
+            if try notesCell.textString != account.notes() {
+                try account.updateNotes(notes: notesCell.textString)
+            }
+            guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil, notes: newNotes)
+            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
             NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
             if newPassword != nil {
                 showPasswordButton.isHidden = false
@@ -527,5 +529,5 @@ extension AccountViewController: MultiLineTextInputTableViewCellDelegate {
             tableView?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
         }
     }
-    
+
 }

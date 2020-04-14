@@ -24,10 +24,10 @@ struct TeamAccount: BaseAccount {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
-        self.notes = account.notes
         self.users = Set(users.map { $0.pubkey! })
         self.roles = Set(roles.map { $0.id })
         self.version = version
+        self.notes = try account.notes()
         self.compromised = false
 
         if let password = try account.password() {

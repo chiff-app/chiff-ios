@@ -28,7 +28,6 @@ struct UserAccount: Account, Equatable {
     var timesUsed: Int
     var lastTimeUsed: Date?
     var lastChange: Timestamp
-    var notes: String?
 
     var synced: Bool {
         do {
@@ -48,7 +47,6 @@ struct UserAccount: Account, Equatable {
         self.username = username
         self.enabled = false
         self.version = 1
-        self.notes = nil
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
         }
@@ -87,7 +85,6 @@ struct UserAccount: Account, Equatable {
         self.webAuthn = webAuthn
         self.timesUsed = 0
         self.lastChange = Date.now
-        self.notes = notes
     }
 
 
@@ -112,6 +109,21 @@ struct UserAccount: Account, Equatable {
         }
         let _ = try backup()
     }
+
+    mutating func updateNotes(notes: String) throws {
+        self.lastChange = Date.now
+        if Keychain.shared.has(id: id, service: .notes) {
+            if notes.isEmpty {
+                try Keychain.shared.delete(id: id, service: .notes)
+            } else {
+                try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        } else if !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
+        let _ = try backup()
+    }
+
 
     mutating func deleteOtp() throws {
         self.lastChange = Date.now
@@ -164,7 +176,7 @@ struct UserAccount: Account, Equatable {
         saveToIdentityStore()
     }
 
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, notes: String?, context: LAContext? = nil) throws {
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -182,9 +194,6 @@ struct UserAccount: Account, Equatable {
         }
         if let enabled = enabled {
             self.enabled = enabled
-        }
-        if let notes = notes {
-            self.notes = notes.isEmpty ? nil : notes
         }
 
         if let newPassword = newPassword {
