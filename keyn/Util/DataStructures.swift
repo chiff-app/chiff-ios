@@ -131,6 +131,7 @@ struct BackupSharedAccount: Codable, Equatable {
     var tokenURL: URL?
     var tokenSecret: Data?
     let version: Int
+    var notes: String?
 }
 
 struct KeynCredentialsResponse: Codable {

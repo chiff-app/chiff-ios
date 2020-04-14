@@ -18,6 +18,7 @@ protocol BaseAccount: Codable {
     var passwordOffset: [Int]? { get set }
     var version: Int { get }
     var hasPassword: Bool { get }
+    var notes: String? { get set }
 }
 
 extension BaseAccount {

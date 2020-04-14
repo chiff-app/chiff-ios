@@ -41,6 +41,7 @@
 		49062C6E2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
 		49062C6F2214679400A30669 /* Localizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49062C6C2214679400A30669 /* Localizer.swift */; };
 		4908103620598AC700C770F1 /* PPD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4908103520598AC700C770F1 /* PPD.swift */; };
+		490D96362445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */; };
 		4914498722C0F3310021D081 /* KeynTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4914498622C0F3310021D081 /* KeynTabBar.swift */; };
 		49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
@@ -348,6 +349,7 @@
 		49062C6C2214679400A30669 /* Localizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localizer.swift; sourceTree = "<group>"; };
 		4906BDAF20E3C41300183664 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		4908103520598AC700C770F1 /* PPD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPD.swift; sourceTree = "<group>"; };
+		490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTextInputTableViewCell.swift; sourceTree = "<group>"; };
 		4914498622C0F3310021D081 /* KeynTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTabBar.swift; sourceTree = "<group>"; };
 		49191EE4239AA2430034EEE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		49191EE6239AA2450034EEE7 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -653,6 +655,7 @@
 				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
 				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */,
+				490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1545,6 +1548,7 @@
 				4973BB7522F818470004E365 /* TermsViewController.swift in Sources */,
 				49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */,
 				49F45E882424DBA30080B248 /* KeynTableViewController.swift in Sources */,
+				490D96362445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift in Sources */,
 				493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */,
 				49E75CA120FF282D00BC0D65 /* QuestionnaireController.swift in Sources */,
 				495E09EE22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
