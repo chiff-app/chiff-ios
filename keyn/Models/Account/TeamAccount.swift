@@ -18,11 +18,13 @@ struct TeamAccount: BaseAccount {
     let users: Set<String>
     let roles: Set<String>
     let compromised: Bool
+    var notes: String?
 
     init(account: Account, seed: Data, users: [TeamUser], roles: [TeamRole], version: Int = 1) throws {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
+        self.notes = account.notes
         self.users = Set(users.map { $0.pubkey! })
         self.roles = Set(roles.map { $0.id })
         self.version = version
@@ -74,6 +76,7 @@ extension TeamAccount: Codable {
         case roles
         case compromised
         case version
+        case notes
     }
 
     init(from decoder: Decoder) throws {
@@ -87,6 +90,7 @@ extension TeamAccount: Codable {
         self.roles = try values.decode(Set<String>.self, forKey: .roles)
         self.compromised = try values.decode(Bool.self, forKey: .compromised)
         self.version = try values.decode(Int.self, forKey: .version)
+        self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -100,6 +104,7 @@ extension TeamAccount: Codable {
         try container.encode(roles, forKey: .roles)
         try container.encode(compromised, forKey: .compromised)
         try container.encode(version, forKey: .version)
+        try container.encode(notes, forKey: .notes)
     }
 
 }

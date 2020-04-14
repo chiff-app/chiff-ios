@@ -83,6 +83,10 @@ accounts:
     value: Name
   no_password:
     value: No password set
+  notes:
+    value: Notes
+  notes_placeholder:
+    value: Add notes...
   number_of_roles:
     value: '%@ roles'
   number_of_users:

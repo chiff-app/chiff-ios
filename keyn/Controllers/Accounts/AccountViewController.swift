@@ -13,7 +13,8 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     override var headers: [String?] {
         return [
             "accounts.website_details".localized.capitalizedFirstLetter,
-            "accounts.user_details".localized.capitalizedFirstLetter
+            "accounts.user_details".localized.capitalizedFirstLetter,
+            "accounts.notes".localized.capitalizedFirstLetter
         ]
     }
 
@@ -21,6 +22,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         return [
             webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
             "accounts.2fa_description".localized.capitalizedFirstLetter,
+            nil,
             showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
         ]
     }
@@ -37,6 +39,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     @IBOutlet weak var enabledSwitch: UISwitch!
     @IBOutlet weak var bottomSpacer: UIView!
     @IBOutlet weak var addToTeamButton: KeynButton!
+    @IBOutlet weak var notesCell: MultiLineTextInputTableViewCell!
 
     var editButton: UIBarButtonItem!
     var account: Account!
@@ -69,10 +72,11 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         editButton.isEnabled = account is UserAccount
         canEnableAccount = account is UserAccount
         navigationItem.rightBarButtonItem = editButton
+        notesCell.textView.isEditable = false
+        notesCell.delegate = self
 
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
-
         tableView.separatorColor = UIColor.primaryTransparant
         // TODO: Handle situation where there are multiple admin sessions
         if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }), account is UserAccount {
@@ -96,6 +100,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         websiteNameTextField.text = account.site.name
         websiteURLTextField.text = account.site.url
         userNameTextField.text = account.username
+        notesCell.textString = account.notes ?? ""
         enabledSwitch.isOn = account.enabled
         enabledSwitch.isEnabled = account.enabled || canEnableAccount
         websiteNameTextField.delegate = self
@@ -130,7 +135,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return editingMode || showAccountEnableButton ? 3 : 2
+        return editingMode || showAccountEnableButton ? 4 : 3
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -145,6 +150,8 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         case 1:
             footer.textLabel?.isHidden = false
         case 2:
+            footer.textLabel?.isHidden = true
+        case 3:
             footer.textLabel?.isHidden = false
         default:
             fatalError("An extra section appeared!")
@@ -169,12 +176,12 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 2 && showAccountEnableButton && indexPath.row > 0 {
+        if indexPath.section == 3 && showAccountEnableButton && indexPath.row > 0 {
             return editingMode ? tableView.rowHeight : 0
-        } else if indexPath.section == 2 && !showAccountEnableButton && indexPath.row == 0 {
+        } else if indexPath.section == 3 && !showAccountEnableButton && indexPath.row == 0 {
             return 0.5 // So we still have a border
         }
-        return tableView.rowHeight
+        return indexPath.section == 2 ? UITableView.automaticDimension : 44
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -214,7 +221,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return
         }
         do {
-            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
+            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn, notes: nil)
             NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
         } catch {
             Logger.shared.error("Failed to update enabled state in account")
@@ -277,6 +284,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         userPasswordTextField.isEnabled = true
         websiteNameTextField.isEnabled = true
         websiteURLTextField.isEnabled = true
+        notesCell.textView.isEditable = true
         totpLoader?.isHidden = true
 
         editingMode = true
@@ -309,10 +317,11 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 newPassword = userPasswordTextField.text
             }
             let newUrl = websiteURLTextField.text != account.site.url ? websiteURLTextField.text : nil
-            guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
+            let newNotes = notesCell.textString != account.notes ? notesCell.textString : nil
+            guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil || newNotes != nil else {
                 return
             }
-            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
+            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil, notes: newNotes)
             NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
             if newPassword != nil {
                 showPasswordButton.isHidden = false
@@ -348,6 +357,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         userPasswordTextField.isEnabled = false
         websiteNameTextField.isEnabled = false
         websiteURLTextField.isEnabled = false
+        notesCell.textView.isEditable = false
         totpLoader?.isHidden = false
         
         editingMode = false
@@ -495,4 +505,27 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             destination.team = team!
         }
     }
+}
+
+extension AccountViewController: MultiLineTextInputTableViewCellDelegate {
+
+    var maxCharacters: Int {
+        return 4000
+    }
+
+    var placeholderText: String {
+        return "accounts.notes_placeholder".localized
+    }
+
+    func textViewHeightDidChange(_ cell: UITableViewCell) {
+        UIView.setAnimationsEnabled(false)
+        tableView?.beginUpdates()
+        tableView?.endUpdates()
+        UIView.setAnimationsEnabled(true)
+
+        if let thisIndexPath = tableView?.indexPath(for: cell) {
+            tableView?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
+        }
+    }
+    
 }

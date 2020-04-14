@@ -251,6 +251,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
     var version: Int
     var webAuthn: WebAuthn?
     var lastChange: Timestamp
+    var notes: String?
 
     enum CodingKeys: CodingKey {
         case id
@@ -267,6 +268,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         case version
         case webAuthn
         case lastChange
+        case notes
     }
 
     init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
@@ -284,6 +286,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.version = account.version
         self.webAuthn = account.webAuthn
         self.lastChange = account.lastChange
+        self.notes = account.notes
     }
 
     init(from decoder: Decoder) throws {
@@ -302,6 +305,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
+        self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
     }
 
 }

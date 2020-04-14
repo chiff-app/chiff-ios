@@ -83,6 +83,10 @@ accounts:
     value: Naam
   no_password:
     value: Geen wachtwoord ingesteld
+  notes:
+    value: Notities
+  notes_placeholder:
+    value: Voeg notities toe...
   number_of_roles:
     value: '%@ rollen'
   number_of_users:
