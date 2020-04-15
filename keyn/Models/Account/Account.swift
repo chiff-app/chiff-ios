@@ -39,6 +39,16 @@ extension Account {
         return Keychain.shared.has(id: id, service: .otp)
     }
 
+    func notes(context: LAContext? = nil) throws -> String? {
+        guard let data = try Keychain.shared.get(id: id, service: .notes, context: context) else {
+            return nil
+        }
+        guard let notes = String(data: data, encoding: .utf8) else {
+            throw CodingError.stringEncoding
+        }
+        return notes
+    }
+
     func password(context: LAContext? = nil) throws -> String? {
         do {
             guard let data = try Keychain.shared.get(id: id, service: Self.keychainService, context: context) else {

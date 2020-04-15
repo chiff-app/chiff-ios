@@ -76,6 +76,10 @@ extension UserAccount: Syncable {
             }
         }
 
+        if let notes = backupObject.notes, !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
+
         let data = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: data)
         saveToIdentityStore()
@@ -89,7 +93,7 @@ extension UserAccount: Syncable {
             tokenSecret = token.generator.secret
         }
         return firstly {
-            sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret))
+            sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret, notes: try notes()))
         }.map { _ in
             try Keychain.shared.setSynced(value: true, id: self.id, service: Self.keychainService)
         }.recover { error in
@@ -120,6 +124,11 @@ extension UserAccount: Syncable {
 
         // Webauthn
         if try updateWebAuthn(with: backupObject, context: context) {
+            changed = true
+        }
+
+        // Notes
+        if try updateNotes(with: backupObject, context: context) {
             changed = true
         }
 
@@ -233,6 +242,24 @@ extension UserAccount: Syncable {
         return true
     }
 
+    private  func updateNotes(with backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
+        let currentNotes = try notes()
+        guard backupAccount.notes != currentNotes else {
+            return false
+        }
+        if let newNotes = backupAccount.notes {
+            if currentNotes != nil {
+                try Keychain.shared.update(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+            } else {
+                try Keychain.shared.save(id: id, service: .notes, secretData: newNotes.data, objectData: nil)
+            }
+        } else {
+            if currentNotes != nil {
+                try Keychain.shared.delete(id: id, service: .notes)
+            }
+        }
+        return true
+    }
     
 }
 
@@ -251,6 +278,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
     var version: Int
     var webAuthn: WebAuthn?
     var lastChange: Timestamp
+    var notes: String?
 
     enum CodingKeys: CodingKey {
         case id
@@ -267,9 +295,10 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         case version
         case webAuthn
         case lastChange
+        case notes
     }
 
-    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?) {
+    init(account: UserAccount, tokenURL: URL?, tokenSecret: Data?, notes: String?) {
         self.id = account.id
         self.username = account.username
         self.sites = account.sites
@@ -284,6 +313,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.version = account.version
         self.webAuthn = account.webAuthn
         self.lastChange = account.lastChange
+        self.notes = notes
     }
 
     init(from decoder: Decoder) throws {
@@ -302,6 +332,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
+        self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
     }
 
 }

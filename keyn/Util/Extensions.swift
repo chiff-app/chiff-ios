@@ -11,6 +11,7 @@ import StoreKit
 import WebKit
 import PromiseKit
 import TrueTime
+import DataCompression
 
 // MARK: - Primitive extensions
 
@@ -136,6 +137,14 @@ extension Data {
     }
 
     var bytes: Bytes { return Bytes(self) }
+
+    func compress() -> Data? {
+        return self.zip()
+    }
+
+    func decompress() -> Data? {
+        return self.unzip()
+    }
 
 }
 

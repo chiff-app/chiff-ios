@@ -40,7 +40,7 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -66,12 +66,15 @@ struct UserAccount: Account, Equatable {
             let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
+        if let notes = notes, !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
         self.lastChange = Date.now
         try save(password: generatedPassword, keyPair: keyPair)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?, notes: String?) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -109,6 +112,21 @@ struct UserAccount: Account, Equatable {
         }
         let _ = try backup()
     }
+
+    mutating func updateNotes(notes: String) throws {
+        self.lastChange = Date.now
+        if Keychain.shared.has(id: id, service: .notes) {
+            if notes.isEmpty {
+                try Keychain.shared.delete(id: id, service: .notes)
+            } else {
+                try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        } else if !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
+        let _ = try backup()
+    }
+
 
     mutating func deleteOtp() throws {
         self.lastChange = Date.now

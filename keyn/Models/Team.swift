@@ -151,6 +151,7 @@ struct Team {
             "accounts": accounts,
             "teamSeed": seed
         ]
+        #warning("This message should be sent in the body")
         return API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", privKey: keyPair.privKey, body: nil)
     }
 
