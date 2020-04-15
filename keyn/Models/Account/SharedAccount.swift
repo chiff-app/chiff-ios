@@ -57,6 +57,17 @@ struct SharedAccount: Account {
         self.username = backupAccount.username
         self.sites = backupAccount.sites
         self.passwordOffset = backupAccount.passwordOffset
+        if let notes = backupAccount.notes {
+            if Keychain.shared.has(id: id, service: .notes) {
+                if notes.isEmpty {
+                    try Keychain.shared.delete(id: id, service: .notes)
+                } else {
+                    try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                }
+            } else if !notes.isEmpty {
+                try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        }
 
         let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: key)
         let (password, newIndex) = try passwordGenerator.generate(index: backupAccount.passwordIndex, offset: self.passwordOffset)
@@ -109,7 +120,9 @@ struct SharedAccount: Account {
             let tokenData = tokenURL.absoluteString.data
             try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
         }
-
+        if let notes = backupAccount.notes {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
         try account.save(password: password, sessionPubKey: sessionPubKey)
     }
 
