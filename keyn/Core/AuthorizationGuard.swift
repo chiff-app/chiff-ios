@@ -202,7 +202,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, context: context)
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
@@ -223,7 +223,7 @@ class AuthorizationGuard {
         }.map { (context, accounts) in
             for (bulkAccount, ppd) in accounts {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, context: context)
+                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: nil, context: context)
             }
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
             success = true
@@ -257,7 +257,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
             let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
-            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, notes: nil, context: context)
             // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
             try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)

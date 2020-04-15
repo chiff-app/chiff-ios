@@ -40,7 +40,7 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -65,6 +65,9 @@ struct UserAccount: Account, Equatable {
         } else {
             let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
+        }
+        if let notes = notes, !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
         self.lastChange = Date.now
