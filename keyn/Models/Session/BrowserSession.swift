@@ -197,7 +197,7 @@ struct BrowserSession: Session {
 
     func updateAccountList(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
-        let ciphertext = try Crypto.shared.encrypt(accountData.compress() ?? accountData, key: sharedKey())
+        let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
         var message = [
             "id": account.id,
             "data": ciphertext.base64
