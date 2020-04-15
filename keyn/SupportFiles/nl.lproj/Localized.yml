@@ -85,6 +85,8 @@ accounts:
     value: Geen wachtwoord ingesteld
   notes:
     value: Notities
+  notes_footer:
+    value: Notities zijn versleuteld en mogen maximaal %d tekens bevatten.
   notes_placeholder:
     value: Voeg notities toe...
   number_of_roles:

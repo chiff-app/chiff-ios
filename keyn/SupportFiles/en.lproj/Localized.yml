@@ -85,6 +85,8 @@ accounts:
     value: No password set
   notes:
     value: Notes
+  notes_footer:
+    value: Notes are encrypted and be no longer than %d characters.
   notes_placeholder:
     value: Add notes...
   number_of_roles:

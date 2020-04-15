@@ -22,7 +22,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         return [
             webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
             "accounts.2fa_description".localized.capitalizedFirstLetter,
-            nil,
+            String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters),
             showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
         ]
     }
