@@ -5,7 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.4.0] - 2020-04-17
+
+### Added
+
+- Added syncing between multiple devies that have the same seed.
+- Added compression to backup data
+- Added encrypted notes to an account.
+
+### Changed
+
+- Sorting preference is now persistent.
+- Clocks are now synced with NTP server.
+
+### Fixed
+
+- Fixed bug where useraccounts where not created when restoring a team.
+- Update the team logo more efficiently
 
 ## [3.3.0] - 2020-04-03
 
