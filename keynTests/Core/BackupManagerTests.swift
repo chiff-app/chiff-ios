@@ -36,7 +36,7 @@ class SyncableTests: XCTestCase {
 
     func testBackup() {
         let site = TestHelper.sampleSite
-        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
         XCTAssertNoThrow(try account.backup())
     }
 
@@ -44,7 +44,7 @@ class SyncableTests: XCTestCase {
         let site = TestHelper.sampleSite
         let mockAPI = MockAPI(shouldFail: true)
         API.shared = mockAPI
-        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
         XCTAssertNoThrow(try account.backup())
     }
 
@@ -56,7 +56,7 @@ class SyncableTests: XCTestCase {
             let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
             API.shared = mockAPI
             let originalSize = mockAPI.mockData[pubKey.base64]!.count
-            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
             try account.deleteBackup()
             XCTAssertTrue(mockAPI.mockData[pubKey.base64]!.count < originalSize)
         } catch {
@@ -72,7 +72,7 @@ class SyncableTests: XCTestCase {
             let mockAPI = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
             API.shared = mockAPI
             let originalSize = mockAPI.mockData[pubKey.base64]!.count
-            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [TestHelper.sampleSite], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
             XCTAssertNoThrow(try account.deleteBackup())
             XCTAssertFalse(mockAPI.mockData[pubKey.base64]!.count < originalSize)
         } catch {
@@ -124,7 +124,7 @@ class SyncableTests: XCTestCase {
         let mockAPI = API.shared as! MockAPI
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndDeleteAccount")
-        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
             try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
@@ -151,7 +151,7 @@ class SyncableTests: XCTestCase {
     func testBackupAndDeleteAllAccounts() {
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndDeleteAllAccounts")
-        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
             try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
@@ -175,7 +175,7 @@ class SyncableTests: XCTestCase {
         UserAccount.deleteAll()
         let site = TestHelper.sampleSite
         let expectation = XCTestExpectation(description: "Finish testBackupAndGetBackupData")
-        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+        let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
         do {
             let accountData = try PropertyListEncoder().encode(account)
             try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: accountData)
@@ -212,7 +212,7 @@ class SyncableTests: XCTestCase {
             // Assure there currently no accounts in the Keychain
             UserAccount.deleteAll()
             let site = TestHelper.sampleSite
-            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil)
+            let account = UserAccount(id: TestHelper.userID, username: TestHelper.username, sites: [site], passwordIndex: 0, lastPasswordTryIndex: 0, passwordOffset: nil, askToLogin: nil, askToChange: nil, enabled: false, version: 1, webAuthn: nil, notes: nil)
             let data = try PropertyListEncoder().encode(account)
             try Keychain.shared.save(id: account.id, service: .account, secretData: "somepassword".data, objectData: data)
             firstly {

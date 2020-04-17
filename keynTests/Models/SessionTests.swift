@@ -283,7 +283,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndSendCredentials")
         TestHelper.createEndpointKey()
         BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { (session) in
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, context: self.context)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil, context: self.context)
             guard var session = session as? BrowserSession else {
                 return XCTFail("Casting error")
             }
