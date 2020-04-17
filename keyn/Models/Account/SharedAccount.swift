@@ -51,23 +51,27 @@ struct SharedAccount: Account {
     mutating func sync(accountData: Data, key: Data, context: LAContext? = nil) throws -> Bool {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
-        guard passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
+        var notesChanged = false
+        if let notes = backupAccount.notes {
+            if Keychain.shared.has(id: id, service: .notes) {
+                if notes.isEmpty {
+                    notesChanged = true
+                    try Keychain.shared.delete(id: id, service: .notes)
+                } else {
+                    notesChanged = true
+                    try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+                }
+            } else if !notes.isEmpty {
+                notesChanged = true
+                try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        }
+        guard notesChanged || passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
             return false
         }
         self.username = backupAccount.username
         self.sites = backupAccount.sites
         self.passwordOffset = backupAccount.passwordOffset
-        if let notes = backupAccount.notes {
-            if Keychain.shared.has(id: id, service: .notes) {
-                if notes.isEmpty {
-                    try Keychain.shared.delete(id: id, service: .notes)
-                } else {
-                    try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
-                }
-            } else if !notes.isEmpty {
-                try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
-            }
-        }
 
         let passwordGenerator = PasswordGenerator(username: self.username, siteId: site.id, ppd: site.ppd, passwordSeed: key)
         let (password, newIndex) = try passwordGenerator.generate(index: backupAccount.passwordIndex, offset: self.passwordOffset)

@@ -93,7 +93,25 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
 
+        NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: reloadAccount)
+        NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: reloadAccount)
+
         reEnableBarButtonFont()
+    }
+
+    private func reloadAccount(notification: Notification) {
+        DispatchQueue.main.async {
+            do {
+                if let oldAccount = self.account as? UserAccount {
+                    self.account = try UserAccount.get(id: oldAccount.id, context: nil)
+                } else if let oldAccount  = self.account as? SharedAccount {
+                    self.account = try SharedAccount.get(id: oldAccount.id, context: nil)
+                }
+                self.loadAccountData()
+            } catch {
+                Logger.shared.warning("Failed to update accounts in UI", error: error)
+            }
+        }
     }
 
     private func loadAccountData() {
