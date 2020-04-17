@@ -5,47 +5,27 @@
 
 import UIKit
 import PromiseKit
+import DeviceCheck
 
 struct NotificationManager {
 
     static let shared = NotificationManager()
 
-    private enum MessageIdentifier {
-        static let token = "token"
-        static let endpoint = "endpoint"
-        static let arn = "arn"
-        static let os = "os"
-    }
-
     var isSubscribed: Bool {
         return Keychain.shared.has(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
     }
 
-    func snsRegistration(deviceToken: Data) {
-        do {
-            let token = deviceToken.hexEncodedString()
-            if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
-                // Get endpoint from Keychain
-                try updateEndpoint(token: token, pubKey: BackupManager.publicKey(), endpoint: Properties.endpoint)
+    func registerDevice(token pushToken: Data) {
+        let token = pushToken.hexEncodedString()
+        guard let id = UIDevice.current.identifierForVendor?.uuidString else {
+            return // TODO: How to handle this?
+        }
+        firstly { () -> Promise<JSONObject> in
+            if let endpoint = Properties.endpoint {
+                return updateEndpoint(pushToken: token, id: id, endpoint: endpoint)
             } else {
-                // Create new endpoint if not found in storage
-                try updateEndpoint(token: token, pubKey: BackupManager.publicKey(), endpoint: nil)
+                return createEndpoint(pushToken: token, id: id)
             }
-        } catch {
-            Logger.shared.error("Error updating endpoint", error: error)
-        }
-    }
-
-    func updateEndpoint(token: String, pubKey: String, endpoint: String?) throws {
-        var message = [
-            MessageIdentifier.token: token,
-            MessageIdentifier.os: "ios"
-        ]
-        if let endpoint = endpoint {
-            message[MessageIdentifier.endpoint] = endpoint
-        }
-        firstly {
-            API.shared.signedRequest(method: .post, message: message, path: "devices/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
         }.done { result in
             if let endpoint = result["arn"] as? String {
                 if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
@@ -65,11 +45,17 @@ struct NotificationManager {
     }
 
     func deleteEndpoint() {
-        guard let endpoint = Properties.endpoint else {
+        guard let endpoint = Properties.endpoint, let id = UIDevice.current.identifierForVendor?.uuidString else {
             return
         }
+        let message = [
+            "endpoint": endpoint,
+            "id": id
+        ]
         firstly {
-            API.shared.signedRequest(method: .delete, message: [MessageIdentifier.endpoint: endpoint], path: "devices/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
+            API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+        }.done { _ in
+            NotificationManager.shared.deleteKeys()
         }.catchLog("Failed to delete ARN @ AWS.")
     }
 
@@ -82,7 +68,7 @@ struct NotificationManager {
             "endpoint": endpoint
         ]
         return firstly {
-            API.shared.signedRequest(method: .post, message: message, path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
+            API.shared.signedRequest(method: .post, message: message, path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil)
         }.map { result in
             if let subscriptionArn = result["arn"] as? String {
                 let id = KeyIdentifier.subscription.identifier(for: .aws)
@@ -111,7 +97,7 @@ struct NotificationManager {
                 throw CodingError.stringDecoding
             }
             return firstly {
-                API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
+                API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil)
             }.map { result in
                 try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
                 return
@@ -125,5 +111,41 @@ struct NotificationManager {
     func deleteKeys() {
         Keychain.shared.deleteAll(service: .aws)
     }
+
+    private func createEndpoint(pushToken: String, id: String) -> Promise<JSONObject> {
+        return Promise<String?> { seal in
+            DCDevice.current.generateToken { (data, error) in
+                if let error = error {
+                    Logger.shared.warning("Error retrieving device token.", error: error)
+                    seal.fulfill(nil)
+                } else {
+                    seal.fulfill(data?.base64EncodedString())
+                }
+            }
+        }.then { deviceToken -> Promise<JSONObject> in
+            var message = [
+                "pushToken": pushToken,
+                "os": "ios",
+                "id": id
+            ]
+            if let deviceToken = deviceToken {
+                message["deviceToken"] = deviceToken
+            }
+            return API.shared.signedRequest(method: .post, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+        }
+    }
+
+    private func updateEndpoint(pushToken: String, id: String, endpoint: String) -> Promise<JSONObject> {
+        let message = [
+            "pushToken": pushToken,
+            "os": "ios",
+            "endpoint": endpoint,
+            "id": id
+        ]
+        return firstly {
+            API.shared.signedRequest(method: .put, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+        }
+    }
+
 
 }

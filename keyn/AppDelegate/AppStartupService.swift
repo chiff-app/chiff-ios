@@ -8,6 +8,7 @@ import UIKit
 import UserNotifications
 import StoreKit
 import PromiseKit
+import TrueTime
 
 /*
  * Code related to starting up the app in different ways.
@@ -34,6 +35,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         launchInitialView()
         Properties.isJailbroken = isJailbroken()
+
+        TrueTimeClient.sharedInstance.start()
 
         return true
     }
@@ -69,7 +72,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Logger.shared.warning("didRegisterForRemoteNotificationsWithDeviceToken was called with no seed present")
             return
         }
-        NotificationManager.shared.snsRegistration(deviceToken: deviceToken)
+        NotificationManager.shared.registerDevice(token: deviceToken)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -127,8 +130,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
-            NotificationManager.shared.deleteKeys()
-            BackupManager.deleteKeys()
             Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
             UserDefaults.standard.addSuite(named: Questionnaire.suite)
             Questionnaire.createQuestionnaireDirectory()
@@ -136,11 +137,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             Questionnaire.cleanFolder()
             Properties.questionnaireDirPurged = true
         }
-        guard Seed.hasKeys == BackupManager.hasKeys else {
-            launchErrorView("Inconsistency between seed and backup keys.")
-            return
-        }
-        if Seed.hasKeys && BackupManager.hasKeys {
+        if Seed.hasKeys {
             firstly {
                 PushNotifications.register()
             }.done(on: .main) { result in

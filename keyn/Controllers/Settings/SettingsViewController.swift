@@ -105,7 +105,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
             firstly {
-                BackupManager.moveToProduction()
+                Seed.moveToProduction()
             }.done(on: .main) {
                 self.showAlert(message: "popups.responses.data_move_success".localized, title: "popups.responses.data_move_success_title".localized)
             }.catch(on: .main) { error in

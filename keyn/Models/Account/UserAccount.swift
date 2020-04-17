@@ -12,7 +12,7 @@ import PromiseKit
 /*
  * An account belongs to the user and can have one Site.
  */
-struct UserAccount: Account {
+struct UserAccount: Account, Equatable {
 
     let id: String
     var username: String
@@ -27,6 +27,7 @@ struct UserAccount: Account {
     var webAuthn: WebAuthn?
     var timesUsed: Int
     var lastTimeUsed: Date?
+    var lastChange: Timestamp
 
     var synced: Bool {
         do {
@@ -39,7 +40,7 @@ struct UserAccount: Account {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -65,11 +66,15 @@ struct UserAccount: Account {
             let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: try Seed.getPasswordSeed(context: context))
             (generatedPassword, passwordIndex) = try passwordGenerator.generate(index: 0, offset: nil)
         }
+        if let notes = notes, !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
+        self.lastChange = Date.now
         try save(password: generatedPassword, keyPair: keyPair)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?, notes: String?) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -82,6 +87,7 @@ struct UserAccount: Account {
         self.version = version
         self.webAuthn = webAuthn
         self.timesUsed = 0
+        self.lastChange = Date.now
     }
 
 
@@ -98,7 +104,7 @@ struct UserAccount: Account {
     mutating func setOtp(token: Token) throws {
         let secret = token.generator.secret
         let tokenData = try token.toURL().absoluteString.data
-
+        self.lastChange = Date.now
         if self.hasOtp {
             try Keychain.shared.update(id: id, service: .otp, secretData: secret, objectData: tokenData)
         } else {
@@ -107,7 +113,23 @@ struct UserAccount: Account {
         let _ = try backup()
     }
 
+    mutating func updateNotes(notes: String) throws {
+        self.lastChange = Date.now
+        if Keychain.shared.has(id: id, service: .notes) {
+            if notes.isEmpty {
+                try Keychain.shared.delete(id: id, service: .notes)
+            } else {
+                try Keychain.shared.update(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            }
+        } else if !notes.isEmpty {
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+        }
+        let _ = try backup()
+    }
+
+
     mutating func deleteOtp() throws {
+        self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: .otp)
         let _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
@@ -116,11 +138,13 @@ struct UserAccount: Account {
 
     mutating func addSite(site: Site) throws {
         self.sites.append(site)
+        self.lastChange = Date.now
         try update(secret: nil)
     }
 
     mutating func removeSite(forIndex index: Int) throws {
         self.sites.remove(at: index)
+        self.lastChange = Date.now
         try update(secret: nil)
     }
 
@@ -135,12 +159,24 @@ struct UserAccount: Account {
             try Keychain.shared.deleteKey(id: id)
         }
         self.webAuthn = nil
+        self.lastChange = Date.now
         try update(secret: nil)
     }
 
     mutating func updateSite(url: String, forIndex index: Int) throws {
         self.sites[index].url = url
+        self.lastChange = Date.now
         try update(secret: nil)
+    }
+
+    func update(secret: Data?, backup: Bool = true) throws {
+        let accountData = try PropertyListEncoder().encode(self as Self)
+        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
+        if backup {
+            let _ = try self.backup()
+        }
+        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        saveToIdentityStore()
     }
 
     mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {
@@ -176,7 +212,7 @@ struct UserAccount: Account {
             let passwordGenerator = try PasswordGenerator(username: newUsername, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
             self.passwordOffset = try passwordGenerator.calculateOffset(index: passwordIndex, password: oldPassword)
         }
-
+        self.lastChange = Date.now
         try update(secret: newPassword?.data)
     }
 
@@ -195,6 +231,7 @@ struct UserAccount: Account {
         self.lastPasswordUpdateTryIndex = newIndex
         passwordOffset = offset
         askToChange = false
+        self.lastChange = Date.now
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
@@ -235,6 +272,7 @@ struct UserAccount: Account {
             throw AccountError.noWebAuthn
         }
         let (signature, counter) = try webAuthn!.sign(accountId: self.id, challenge: challenge, rpId: rpId)
+        self.lastChange = Date.now
         try update(secret: nil)
         return (signature, counter)
     }
@@ -264,6 +302,7 @@ extension UserAccount: Codable {
         case webAuthn
         case timesUsed
         case lastTimeUsed
+        case lastChange
     }
 
     init(from decoder: Decoder) throws {
@@ -280,7 +319,8 @@ extension UserAccount: Codable {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
-        self.lastTimeUsed = try values.decodeIfPresent(Date?.self, forKey: .lastTimeUsed) ?? nil
+        self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? Date.now
     }
 
 }

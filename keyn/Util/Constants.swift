@@ -92,6 +92,7 @@ enum MessageParameter {
 }
 
 enum NotificationCategory {
+    static let SYNC = "SYNC"
     static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
     static let END_SESSION = "END_SESSION"
     static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
@@ -139,4 +140,5 @@ enum KeynMessageType: Int, Codable {
     case webauthnCreate = 16
     case webauthnLogin = 17
     case bulkLogin = 18
+    case getDetails = 19
 }

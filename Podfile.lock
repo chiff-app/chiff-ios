@@ -3,6 +3,7 @@ PODS:
   - Base32 (1.1.2)
   - Crashlytics (3.13.4):
     - Fabric (~> 1.10.2)
+  - DataCompression (3.6.0)
   - Down (0.8.6)
   - Fabric (1.10.2)
   - Firebase/Core (6.8.1):
@@ -81,11 +82,13 @@ PODS:
     - PromiseKit/CorePromise
   - Sodium (0.8.0)
   - SwiftLint (0.38.2)
+  - TrueTime (5.0.3)
   - TrustKit (1.6.2)
 
 DEPENDENCIES:
   - Amplitude-iOS (~> 4.5)
   - Crashlytics (~> 3.13.4)
+  - DataCompression
   - Down
   - Fabric (~> 1.10.2)
   - Firebase/Core
@@ -95,6 +98,7 @@ DEPENDENCIES:
   - PromiseKit/Foundation
   - Sodium (~> 0.8)
   - SwiftLint
+  - TrueTime
   - TrustKit
 
 SPEC REPOS:
@@ -102,6 +106,7 @@ SPEC REPOS:
     - Amplitude-iOS
     - Base32
     - Crashlytics
+    - DataCompression
     - Down
     - Fabric
     - Firebase
@@ -120,12 +125,14 @@ SPEC REPOS:
     - PromiseKit
     - Sodium
     - SwiftLint
+    - TrueTime
     - TrustKit
 
 SPEC CHECKSUMS:
   Amplitude-iOS: 6e2a21000b89aaa428a45cd22e56caed5e2360bf
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   Crashlytics: 2dfd686bcb918dc10ee0e76f7f853fe42c7bd552
+  DataCompression: 06628f9c807b6f152e0da37635633f62fc51dc77
   Down: 3c758f2388fa739663023f400e742a988fa1e21d
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   Firebase: 9cbe4e5b5eaafa05dc932be58b7c8c3820d71e88
@@ -144,8 +151,9 @@ SPEC CHECKSUMS:
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
+  TrueTime: b49551ffafb28a9dee04e51b226f42a416010842
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
 
-PODFILE CHECKSUM: 6215cb50447ff9963b1dc3385ee7a4fcc00366a4
+PODFILE CHECKSUM: 365092570242ade2f489ba625195863f69427d79
 
 COCOAPODS: 1.8.4

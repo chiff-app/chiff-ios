@@ -41,6 +41,7 @@ struct Properties {
     static private let agreedWithTermsFlag = "agreedWithTerms"
     static private let firstPairingCompletedFlag = "firstPairingCompleted"
     static private let reloadAccountsFlag = "reloadAccountsFlag"
+    static private let sortingPreferenceFlag = "sortingPreference"
     static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
 
     static var isFirstLaunch: Bool {
@@ -88,6 +89,10 @@ struct Properties {
             Logger.shared.setUserId(userId: newValue)
             UserDefaults.standard.set(newValue, forKey: userIdFlag)
         }
+    }
+    static var sortingPreference: SortingValue {
+        get { return SortingValue(rawValue: UserDefaults.standard.integer(forKey: sortingPreferenceFlag)) ?? SortingValue.alphabetically }
+        set { UserDefaults.standard.set(newValue.rawValue, forKey: sortingPreferenceFlag) }
     }
 
     static var isJailbroken = false

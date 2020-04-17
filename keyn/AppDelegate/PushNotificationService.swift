@@ -31,36 +31,45 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let aps = userInfo["aps"] as? [AnyHashable : Any],
-            let category = aps["category"] as? String,
-            let pubkey = userInfo["pubkey"] as? String else {
-                completionHandler(UIBackgroundFetchResult.noData)
+        guard let aps = userInfo["aps"] as? [AnyHashable : Any], let category = aps["category"] as? String, category == NotificationCategory.SYNC || category == NotificationCategory.DELETE_TEAM_SESSION else {
+                completionHandler(.noData)
             return
         }
         do {
-            guard let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
-                completionHandler(UIBackgroundFetchResult.failed)
+            guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String], let logos = userInfo["logos"] as? [String] else {
+                completionHandler(.failed)
                 return
             }
             switch category {
-            case NotificationCategory.DELETE_TEAM_SESSION:
-                do {
-                    try session.delete()
-                    NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
-                    completionHandler(UIBackgroundFetchResult.newData)
-                } catch {
-                    completionHandler(UIBackgroundFetchResult.failed)
+            case NotificationCategory.SYNC:
+                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, filterLogos: logos, pubKeys: sessionPubKeys)]
+                if accounts {
+                    promises.append(UserAccount.sync(context: nil))
                 }
-            case NotificationCategory.UPDATE_TEAM_SESSION:
+                if userTeamSessions {
+                    promises.append(TeamSession.sync(context: nil))
+                }
                 firstly {
-                    TeamSession.updateTeamSession(session: session, pushed: true)
+                    when(fulfilled: promises)
                 }.done {
-                    completionHandler(UIBackgroundFetchResult.newData)
+                    completionHandler(.newData)
                 }.catch { _ in
-                    completionHandler(UIBackgroundFetchResult.failed)
+                    completionHandler(.failed)
                 }
-            default:
-                completionHandler(UIBackgroundFetchResult.noData)
+            case NotificationCategory.DELETE_TEAM_SESSION:
+                // This can be sent directly from admin panel to cancel existing pairing process
+                guard let pubkey = userInfo["pubkey"] as? String, let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
+                    completionHandler(UIBackgroundFetchResult.failed)
+                    return
+                }
+                do {
+                    try session.delete(ifNotCreated: true)
+                    NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+                    completionHandler(.newData)
+                } catch {
+                    completionHandler(.failed)
+                }
+            default: completionHandler(.noData)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
@@ -106,20 +115,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             }
             return [.alert]
-        case NotificationCategory.UPDATE_TEAM_SESSION,
+        case NotificationCategory.SYNC,
              NotificationCategory.DELETE_TEAM_SESSION:
             return []
         default:
             break
         }
 
-
-        var content: UNNotificationContent = notification.request.content
-        if !content.isProcessed() {
-            Logger.shared.warning("It seems we need to manually call NotificationProcessor.process().")
-            content = reprocess(content: notification.request.content)
-        }
-
+        let content: UNNotificationContent = notification.request.content
         guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
             Logger.shared.error("Cannot find a KeynRequest in the push notification.")
             return []
@@ -132,7 +135,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
 
         if keynRequest.type == .end {
             do {
-                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) {
+                if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) {
                     firstly {
                         session.delete(notify: false)
                     }.done {
@@ -153,35 +156,15 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return []
         }
 
+        DispatchQueue.main.async {
+            AuthorizationGuard.launchRequestView(with: keynRequest)
+        }
+
         // This is disabled for now, because it causes requests to not appear if time of phone and device are not in sync
 //        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
 //            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
 //            return []
 //        }
-
-        if keynRequest.type == .addBulk {
-            do {
-                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID) else {
-                    throw CodingError.missingData
-                }
-                #warning("TODO: Improve this by using background fetching in notification processor.")
-                firstly {
-                    self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil)
-                }.done(on: .main) { accounts in
-                    var request = keynRequest
-                    request.accounts = accounts
-                    AuthorizationGuard.launchRequestView(with: request)
-                }.catchLog("Error getting password change confirmation from persistent queue.")
-                return [.sound]
-            } catch {
-                Logger.shared.error("Could not get session.", error: error)
-                return []
-            }
-        } else {
-            DispatchQueue.main.async {
-                AuthorizationGuard.launchRequestView(with: keynRequest)
-            }
-        }
 
         return [.sound]
     }
@@ -227,9 +210,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
-        firstly {
-            TeamSession.updateTeamSessions(pushed: false, logo: false, backup: false)
-        }.catchLog("Could not update sessions.")
     }
 
     private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?) -> Promise<[BulkAccount]?> {
@@ -239,18 +219,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             if messages.isEmpty {
                 return attempts > 1 ? self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context) : .value(nil)
             } else {
-                var accounts: [BulkAccount]? = nil
+                var promises: [Promise<[BulkAccount]?>] = []
                 for message in messages {
-                    if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
-                        accounts = bulkAccounts
-                    }
+                    promises.append(try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context))
                 }
-                return .value(accounts)
+                return when(fulfilled: promises).firstValue(where: { $0 != nil })
             }
         }
     }
 
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> [BulkAccount]? {
+    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> Promise<[BulkAccount]?> {
         guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
@@ -260,7 +238,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(id: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
@@ -274,7 +252,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(accountID: accountId, context: context)
+            var account = try UserAccount.get(id: accountId, context: context)
             guard account != nil else {
                 throw AccountError.notFound
             }
@@ -284,23 +262,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         default:
             Logger.shared.warning("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
-        session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
-        return result
-    }
-
-    // DEBUG
-    private func reprocess(content: UNNotificationContent) -> UNNotificationContent {
-        guard let mutableContent = (content.mutableCopy() as? UNMutableNotificationContent) else {
-            return content
+        return session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
+            result
         }
-
-        do {
-            return try NotificationProcessor.process(content: mutableContent)
-        } catch {
-            Logger.shared.warning("Error reprocessing data", error: error)
-        }
-
-        return content
     }
 
 }

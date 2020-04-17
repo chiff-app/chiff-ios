@@ -15,15 +15,10 @@ struct TeamAccount: BaseAccount {
     var passwordIndex: Int
     var sites: [Site]
     let version: Int
-    var password: String?
     let users: Set<String>
     let roles: Set<String>
     let compromised: Bool
-
-    mutating func loadPassword(seed: Data) throws {
-        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: seed)
-        (self.password, _) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
-    }
+    var notes: String?
 
     init(account: Account, seed: Data, users: [TeamUser], roles: [TeamRole], version: Int = 1) throws {
         self.id = account.id
@@ -32,18 +27,22 @@ struct TeamAccount: BaseAccount {
         self.users = Set(users.map { $0.pubkey! })
         self.roles = Set(roles.map { $0.id })
         self.version = version
+        self.notes = try account.notes()
         self.compromised = false
 
         if let password = try account.password() {
             let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: seed)
             self.passwordIndex = 0
             self.passwordOffset = try passwordGenerator.calculateOffset(index: self.passwordIndex, password: password)
-            self.password = password
         } else {
             self.passwordOffset = nil
             self.passwordIndex = -1
-            self.password = nil
         }
+    }
+
+    func password(for seed: Data) throws -> String {
+        let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: seed)
+        return (try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)).0
     }
 
     func encrypt(key: Data) throws -> String {
@@ -52,6 +51,17 @@ struct TeamAccount: BaseAccount {
         return try Crypto.shared.convertToBase64(from: ciphertext)
     }
 
+}
+
+extension TeamAccount: Hashable {
+
+    static func == (lhs: TeamAccount, rhs:TeamAccount) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 extension TeamAccount: Codable {
@@ -66,6 +76,7 @@ extension TeamAccount: Codable {
         case roles
         case compromised
         case version
+        case notes
     }
 
     init(from decoder: Decoder) throws {
@@ -79,7 +90,7 @@ extension TeamAccount: Codable {
         self.roles = try values.decode(Set<String>.self, forKey: .roles)
         self.compromised = try values.decode(Bool.self, forKey: .compromised)
         self.version = try values.decode(Int.self, forKey: .version)
-        self.password = nil
+        self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -93,6 +104,7 @@ extension TeamAccount: Codable {
         try container.encode(roles, forKey: .roles)
         try container.encode(compromised, forKey: .compromised)
         try container.encode(version, forKey: .version)
+        try container.encode(notes, forKey: .notes)
     }
 
 }

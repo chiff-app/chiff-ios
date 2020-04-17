@@ -117,7 +117,7 @@ class PrivacyViewController: UITableViewController {
     private func deleteRemoteData(action: UIAlertAction) -> Void {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         firstly {
-            when(fulfilled: BackupManager.deleteBackupData(), TeamSession.deleteAll())
+            when(fulfilled: Seed.deleteBackupData(), TeamSession.deleteAll())
         }.then {
             self.deleteLocalData()
         }.done(on: .main) {
@@ -143,8 +143,6 @@ class PrivacyViewController: UITableViewController {
             UserAccount.deleteAll()
             Seed.delete()
             NotificationManager.shared.deleteEndpoint()
-            NotificationManager.shared.deleteKeys()
-            BackupManager.deleteKeys()
             Properties.purgePreferences()
         }
     }

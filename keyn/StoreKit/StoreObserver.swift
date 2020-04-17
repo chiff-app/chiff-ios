@@ -82,7 +82,7 @@ class StoreObserver: NSObject {
     /// This retrieves current subscription status for this seed from the Keyn server
     func updateSubscriptions() -> Promise<Void>{
         return firstly {
-           API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: nil)
+           API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil)
         }.done { jsonObject in
             if let subscriptions = jsonObject as? [String: TimeInterval], !subscriptions.isEmpty, let longest = subscriptions.max(by: { $0.value > $1.value }) {
                 if subscriptions.count > 1 {
@@ -186,7 +186,7 @@ class StoreObserver: NSObject {
             ]
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             return firstly {
-                API.shared.signedRequest(method: .post, message: nil, path: "subscriptions/ios/\(try BackupManager.publicKey())", privKey: try BackupManager.privateKey(), body: jsonData)
+                API.shared.signedRequest(method: .post, message: nil, path: "subscriptions/ios/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: jsonData)
             }.map { jsonObject in
                 guard let status = jsonObject["status"] as? String, let validationStatus = ValidationStatus(rawValue: status) else {
                     throw StoreObserverError.missingStatus
