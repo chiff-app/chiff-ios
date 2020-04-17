@@ -833,6 +833,72 @@
                         </children>
                     </folder_node>
                     <folder_node>
+                        <name>notes</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
+                        <name>notes_footer</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
+                        <name>notes_placeholder</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
                         <name>number_of_roles</name>
                         <children>
                             <concept_node>
@@ -3488,6 +3554,50 @@
                         </children>
                     </folder_node>
                     <folder_node>
+                        <name>data_deleted</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
+                        <name>data_recreation_failed_message</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
                         <name>delete_url</name>
                         <children>
                             <concept_node>
@@ -5677,7 +5787,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password</name>
+                        <name>get_password</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
@@ -6335,6 +6445,50 @@
                                 </children>
                             </folder_node>
                             <folder_node>
+                                <name>delete_locally</name>
+                                <children>
+                                    <concept_node>
+                                        <name>value</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>nl-NL</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                </children>
+                            </folder_node>
+                            <folder_node>
+                                <name>delete_x</name>
+                                <children>
+                                    <concept_node>
+                                        <name>value</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>nl-NL</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                </children>
+                            </folder_node>
+                            <folder_node>
                                 <name>move_data</name>
                                 <children>
                                     <concept_node>
@@ -6933,6 +7087,28 @@
                                             </translation>
                                             <translation>
                                                 <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                </children>
+                            </folder_node>
+                            <folder_node>
+                                <name>restore</name>
+                                <children>
+                                    <concept_node>
+                                        <name>value</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description></description>
+                                        <comment></comment>
+                                        <default_text></default_text>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>false</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>nl-NL</language>
                                                 <approved>false</approved>
                                             </translation>
                                         </translations>
@@ -7594,7 +7770,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_for</name>
+                        <name>get_for</name>
                         <children>
                             <concept_node>
                                 <name>comment</name>
@@ -7633,7 +7809,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password</name>
+                        <name>get_password</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
@@ -7655,7 +7831,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password_successful</name>
+                        <name>get_password_successful</name>
                         <children>
                             <concept_node>
                                 <name>value</name>

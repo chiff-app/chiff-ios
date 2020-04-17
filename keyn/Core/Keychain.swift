@@ -26,6 +26,7 @@ enum KeychainService: String {
     case sharedAccount = "io.keyn.sharedaccount"
     case otp = "io.keyn.otp"
     case webauthn = "io.keyn.webauthn"
+    case notes = "io.keyn.notes"
     case seed = "io.keyn.seed"
     case sharedSessionKey = "io.keyn.session.shared"
     case signingSessionKey = "io.keyn.session.signing"
@@ -42,7 +43,7 @@ enum KeychainService: String {
             return .confidential
         case .aws, .backup:
             return .secret
-        case .seed, .otp:
+        case .seed, .otp, .notes:
             return .topsecret
         }
     }

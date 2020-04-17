@@ -34,7 +34,7 @@ class AccountTests: XCTestCase {
     
     func testSynced() {
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertFalse(account.synced)
         } catch {
             XCTFail(error.localizedDescription)
@@ -42,14 +42,14 @@ class AccountTests: XCTestCase {
     }
     
     func testInitDoesntThrow() {
-        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil))
-        XCTAssertNoThrow(try UserAccount(username: TestHelper.username + "2", sites: [TestHelper.sampleSite], password: "password", rpId: nil, algorithms: nil))
+        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil))
+        XCTAssertNoThrow(try UserAccount(username: TestHelper.username + "2", sites: [TestHelper.sampleSite], password: "password", rpId: nil, algorithms: nil, notes: nil))
     }
     
     func testNextPassword() {
         let site = TestHelper.sampleSite
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertEqual(try account.nextPassword(), "[jh6eAX)og7A#nJ1:YDSrD6#61cf${\"A")
         } catch {
             XCTFail(error.localizedDescription)
@@ -59,7 +59,7 @@ class AccountTests: XCTestCase {
     func testNextPasswordV1_1() {
         let site = TestHelper.sampleSiteV1_1
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertEqual(try account.nextPassword(), "-S1tV2470vfm^9c[u{=*@zI7;FC>t+}t")
         } catch {
             XCTFail(error.localizedDescription)
@@ -69,7 +69,7 @@ class AccountTests: XCTestCase {
     func testOneTimePasswordToken() {
         let site = TestHelper.sampleSite
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [site], password: nil, rpId: nil, algorithms: nil, notes: nil)
             TestHelper.saveHOTPToken(id: account.id)
             let token = try account.oneTimePasswordToken()
             XCTAssertNotNil(token)
@@ -88,7 +88,7 @@ class AccountTests: XCTestCase {
             return XCTFail("Error creating token")
         }
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.setOtp(token: token))
             XCTAssertNoThrow(try account.setOtp(token: token)) // To call update instead of save
         } catch {
@@ -98,7 +98,7 @@ class AccountTests: XCTestCase {
     
     func testDeleteOtp() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             TestHelper.saveHOTPToken(id: account.id)
             XCTAssertNoThrow(try account.deleteOtp())
         } catch {
@@ -108,7 +108,7 @@ class AccountTests: XCTestCase {
     
     func testAddSite() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.addSite(site: TestHelper.sampleSite))
             XCTAssertEqual(account.sites.count, 2)
         } catch {
@@ -118,7 +118,7 @@ class AccountTests: XCTestCase {
     
     func testRemoveSite() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             try account.addSite(site: Site(name: "test", id: "testid", url: "https://example.com", ppd: nil))
             XCTAssertNoThrow(try account.removeSite(forIndex: 0))
             XCTAssertEqual(account.sites.count, 1)
@@ -129,7 +129,7 @@ class AccountTests: XCTestCase {
     
     func testUpdateSite() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.updateSite(url: "google.com", forIndex: 0))
             XCTAssertEqual(account.sites.count, 1)
             XCTAssertEqual(account.sites[0].url, "google.com")
@@ -143,7 +143,7 @@ class AccountTests: XCTestCase {
             let siteName = "Google"
             let password = "testPassword"
             let url = "www.google.com"
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: false, enabled: true))
             XCTAssertNoThrow(try account.update(username: TestHelper.username, password: password, siteName: siteName, url: url, askToLogin: true, askToChange: nil, enabled: true))
             XCTAssertNoThrow(try account.update(username: TestHelper.username, password: nil, siteName: siteName, url: url, askToLogin: true, askToChange: nil, enabled: true))
@@ -158,7 +158,7 @@ class AccountTests: XCTestCase {
     
     func testUpdatePasswordAfterConfirmation() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.updatePasswordAfterConfirmation(context: nil))
         } catch {
             XCTFail(error.localizedDescription)
@@ -166,13 +166,12 @@ class AccountTests: XCTestCase {
     }
     
     func testDelete() {
-        TestHelper.createBackupKeys()
         let expectation = XCTestExpectation(description: "Finish testDelete")
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             let accountId = account.id
             account.delete().done { (result) in
-                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+                XCTAssertNil(try UserAccount.get(id: accountId, context: nil))
             }.ensure {
                 expectation.fulfill()
             }.catch { error in
@@ -185,26 +184,10 @@ class AccountTests: XCTestCase {
         wait(for: [expectation], timeout: 10.0)
     }
     
-    func testDeleteWithoutBackupKeys() {
-        let expectation = XCTestExpectation(description: "Finish testDeleteWithoutBackupKeys")
-        do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
-            account.delete().done { (result) in
-                XCTFail("Should fail")
-            }.ensure {
-                expectation.fulfill()
-            }
-        } catch {
-            XCTFail(error.localizedDescription)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10.0)
-    }
-    
     func testPassword() {
         let expectation = XCTestExpectation(description: "Finish testPassword")
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             account.password(reason: "Testing", type: .ifNeeded).done { (password) in
                 XCTAssertEqual(password, "vGx$85gzsLZ/eK23ngx[afwG^0?#y%]C")
             }.ensure {
@@ -222,7 +205,7 @@ class AccountTests: XCTestCase {
     func testPasswordV1_1() {
         let expectation = XCTestExpectation(description: "Finish testPassword")
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSiteV1_1], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSiteV1_1], password: nil, rpId: nil, algorithms: nil, notes: nil)
             account.password(reason: "Testing", type: .ifNeeded).done { (password) in
                 XCTAssertEqual(password, "{W(1s?wt_3b<Y.V`tzltDEW%(OmR17~R")
             }.ensure {
@@ -240,22 +223,26 @@ class AccountTests: XCTestCase {
     func testAll() {
         XCTAssertNoThrow(try UserAccount.all(context: nil))
         XCTAssertTrue(try UserAccount.all(context: nil).isEmpty)
-        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil))
+        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil))
         XCTAssertNoThrow(try UserAccount.all(context: nil))
         XCTAssertFalse(try UserAccount.all(context: nil).isEmpty)
     }
     
     func testGetUserAccount() {
-        XCTAssertNil(try UserAccount.get(accountID: "noid", context: nil))
+        XCTAssertNil(try UserAccount.get(id: "noid", context: nil))
     }
     
     func testSave() {
-        TestHelper.createBackupKeys()
         guard let accountData = TestHelper.backupData.fromBase64 else {
             return XCTFail("Error converting to data")
         }
-        XCTAssertNoThrow(try UserAccount.restore(data: accountData, id: TestHelper.userID, context: nil))
-        XCTAssertNotNil(try UserAccount.get(accountID: TestHelper.userID, context: nil))
+        do {
+            let backupObject = try JSONDecoder().decode(BackupUserAccount.self, from: accountData)
+            try UserAccount.create(backupObject: backupObject, context: nil)
+            XCTAssertNotNil(try UserAccount.get(id: TestHelper.userID, context: nil))
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
     }
     
     func testAccountList() {
@@ -264,15 +251,15 @@ class AccountTests: XCTestCase {
     }
 
     func testDeleteAll() {
-        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil))
-        XCTAssertNoThrow(try UserAccount(username: TestHelper.username + "2", sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil))
+        XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil))
+        XCTAssertNoThrow(try UserAccount(username: TestHelper.username + "2", sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil))
         UserAccount.deleteAll()
         XCTAssertEqual(try UserAccount.all(context: nil).count, 0)
     }
     
     func testUpdateVersion() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             account.updateVersion(context: nil)
             account.version = 0
             account.updateVersion(context: nil)
@@ -284,14 +271,13 @@ class AccountTests: XCTestCase {
     // MARK: - Integration Tests
     
     func testDeleteAndSyncAndGet() {
-        TestHelper.createBackupKeys()
         let expectation = XCTestExpectation(description: "Finish testDeleteAndSyncAndGet")
         do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             let accountId = account.id
             account.delete().done { (result) in
                 XCTAssertTrue(account.synced)
-                XCTAssertNil(try UserAccount.get(accountID: accountId, context: nil))
+                XCTAssertNil(try UserAccount.get(id: accountId, context: nil))
             }.ensure {
                 expectation.fulfill()
             }.catch {
@@ -306,7 +292,7 @@ class AccountTests: XCTestCase {
 
     func testUpdatePasswordAndConfirm() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             let newPassword = try account.nextPassword()
             XCTAssertNotEqual(newPassword, try account.password())
             XCTAssertNoThrow(try account.updatePasswordAfterConfirmation(context: nil))
@@ -321,7 +307,7 @@ class AccountTests: XCTestCase {
             return XCTFail("Error creating token")
         }
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.setOtp(token: token))
             XCTAssertNoThrow(try account.deleteOtp())
         } catch {
@@ -331,7 +317,7 @@ class AccountTests: XCTestCase {
     
     func testAddSiteAndRemoveSite() {
         do {
-            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil)
+            var account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil)
             XCTAssertNoThrow(try account.addSite(site: TestHelper.sampleSite))
             XCTAssertEqual(account.sites.count, 2)
             XCTAssertNoThrow(try account.removeSite(forIndex: 0))

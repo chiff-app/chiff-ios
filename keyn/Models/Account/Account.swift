@@ -26,17 +26,27 @@ protocol Account: BaseAccount {
     var enabled: Bool { get }
     var timesUsed: Int { get set }
     var lastTimeUsed: Date? { get set }
-    
+
     static var keychainService: KeychainService { get }
 
-    func backup() throws -> Promise<Void>
     func delete() -> Promise<Void>
+    func update(secret: Data?, backup: Bool) throws
 }
 
 extension Account {
 
     var hasOtp: Bool {
         return Keychain.shared.has(id: id, service: .otp)
+    }
+
+    func notes(context: LAContext? = nil) throws -> String? {
+        guard let data = try Keychain.shared.get(id: id, service: .notes, context: context) else {
+            return nil
+        }
+        guard let notes = String(data: data, encoding: .utf8) else {
+            throw CodingError.stringEncoding
+        }
+        return notes
     }
 
     func password(context: LAContext? = nil) throws -> String? {
@@ -87,19 +97,11 @@ extension Account {
         }
     }
 
-    func update(secret: Data?) throws {
-        let accountData = try PropertyListEncoder().encode(self as Self)
-        try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
-        try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
-        saveToIdentityStore()
-    }
-
     mutating func increaseUse() {
         do {
             lastTimeUsed = Date()
             timesUsed += 1
-            try update(secret: nil)
+            try update(secret: nil, backup: false)
         } catch {
             Logger.shared.error(error.localizedDescription)
         }
@@ -119,19 +121,19 @@ extension Account {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(Self.self, from: accountData)
-            if sync {
-                if var account = account as? UserAccount, account.version == 0 {
+            if sync, var account = account as? UserAccount {
+                if account.version == 0 {
                     account.updateVersion(context: context)
                 } else if !account.synced {
-                    try? account.backup()
+                    let _ = try? account.backup()
                 }
             }
             return (account.id, account)
             })
     }
 
-    static func get(accountID: String, context: LAContext?) throws -> Self? {
-        guard let dict = try Keychain.shared.attributes(id: accountID, service: Self.keychainService, context: context) else {
+    static func get(id: String, context: LAContext?) throws -> Self? {
+        guard let dict = try Keychain.shared.attributes(id: id, service: Self.keychainService, context: context) else {
             return nil
         }
 
@@ -144,9 +146,15 @@ extension Account {
         return try decoder.decode(Self.self, from: accountData)
     }
 
+    func deleteSync() throws {
+        try Keychain.shared.delete(id: id, service: Self.keychainService)
+        try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
+        self.deleteFromToIdentityStore()
+    }
+
     // TODO: kinda weird
-    static func getAny(accountID: String, context: LAContext?) throws -> Account? {
-        try UserAccount.get(accountID: accountID, context: context) ?? SharedAccount.get(accountID: accountID, context: context)
+    static func getAny(id: String, context: LAContext?) throws -> Account? {
+        try UserAccount.get(id: id, context: context) ?? SharedAccount.get(id: id, context: context)
     }
 
 

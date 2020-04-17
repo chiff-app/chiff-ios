@@ -4,8 +4,23 @@
  */
 import UIKit
 
-#warning("TODO: Add MFA QR-code scan")
-class AddAccountViewController: UITableViewController, UITextFieldDelegate {
+class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
+
+    override var headers: [String?] {
+        return [
+            "accounts.website_details".localized.capitalizedFirstLetter,
+            "accounts.user_details".localized.capitalizedFirstLetter,
+            "accounts.notes".localized.capitalizedFirstLetter
+        ]
+    }
+
+    override var footers: [String?] {
+        return [
+            "accounts.url_warning".localized.capitalizedFirstLetter,
+            nil,
+            String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters)
+        ]
+    }
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var requirementsView: UIView!
@@ -17,6 +32,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var showPasswordButton: UIButton!
+    @IBOutlet weak var notesCell: MultiLineTextInputTableViewCell!
 
     private let ppd: PPD? = nil
     private var passwordValidator: PasswordValidator? = nil
@@ -31,6 +47,8 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             textField?.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         }
 
+        notesCell.delegate = self
+
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
 
@@ -43,6 +61,14 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
         reEnableBarButtonFont()
     }
 
+    // MARK: - UITableView
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.section == 2 ? UITableView.automaticDimension : 44
+    }
+
+    // MARK: - Actions
+
     @IBAction func showPassword(_ sender: UIButton) {
         passwordIsHidden = !passwordIsHidden
         passwordField.isSecureTextEntry = passwordIsHidden
@@ -52,55 +78,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-    
 
-    // MARK: - UITableView
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "accounts.website_details".localized.capitalizedFirstLetter
-        case 1:
-            return "accounts.user_details".localized.capitalizedFirstLetter
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "accounts.url_warning".localized.capitalizedFirstLetter
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section < 2 else {
-            return
-        }
-
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont.primaryBold
-        header.textLabel?.textAlignment = NSTextAlignment.left
-        header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "accounts.website_details".localized.capitalizedFirstLetter : "accounts.user_details".localized.capitalizedFirstLetter
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section < 2 else {
-            return
-        }
-        let footer = view as! UITableViewHeaderFooterView
-        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
-        footer.textLabel?.font = UIFont.primaryMediumSmall
-        footer.textLabel?.textAlignment = NSTextAlignment.left
-        footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = "accounts.url_warning".localized.capitalizedFirstLetter
-    }
-    
     // MARK: UITextFieldDelegate
 
     @objc func textFieldDidChange(textField: UITextField){
@@ -167,7 +145,7 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
             let id = url!.absoluteString.lowercased().sha256
             let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
             do {
-                self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, context: nil)
+                self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, notes: notesCell.textString, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
             } catch {
@@ -175,6 +153,29 @@ class AddAccountViewController: UITableViewController, UITextFieldDelegate {
                 Logger.shared.error("Account could not be saved", error: error)
             }
 
+        }
+    }
+
+}
+
+extension AddAccountViewController: MultiLineTextInputTableViewCellDelegate {
+
+    var maxCharacters: Int {
+        return 4000
+    }
+
+    var placeholderText: String {
+        return "accounts.notes_placeholder".localized
+    }
+
+    func textViewHeightDidChange(_ cell: UITableViewCell) {
+        UIView.setAnimationsEnabled(false)
+        tableView?.beginUpdates()
+        tableView?.endUpdates()
+        UIView.setAnimationsEnabled(true)
+
+        if let thisIndexPath = tableView?.indexPath(for: cell) {
+            tableView?.scrollToRow(at: thisIndexPath, at: .bottom, animated: false)
         }
     }
 

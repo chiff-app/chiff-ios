@@ -3,6 +3,8 @@
  * All rights reserved.
  */
 import UserNotifications
+import PromiseKit
+import LocalAuthentication
 
 enum NotificationExtensionError: KeynError {
     case decodeCiphertext
@@ -16,7 +18,7 @@ enum NotificationExtensionError: KeynError {
 class NotificationProcessor {
 
     static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
-        guard content.categoryIdentifier != NotificationCategory.DELETE_TEAM_SESSION || content.categoryIdentifier != NotificationCategory.UPDATE_TEAM_SESSION else {
+        guard content.categoryIdentifier != NotificationCategory.DELETE_TEAM_SESSION || content.categoryIdentifier != NotificationCategory.SYNC else {
             return content
         }
         guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
@@ -27,13 +29,11 @@ class NotificationProcessor {
             throw NotificationExtensionError.decodeSessionId
         }
 
-        guard let session = try BrowserSession.get(id: id) else {
+        guard let session = try BrowserSession.get(id: id, context: nil) else {
             throw SessionError.doesntExist
         }
 
         let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)
-        content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
-
         let siteName = keynRequest.siteName ?? "Unknown"
 
         switch keynRequest.type {
@@ -52,8 +52,8 @@ class NotificationProcessor {
         case .login, .addToExisting, .webauthnLogin:
             content.title = "notifications.login".localized
             content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
-        case .fill:
-            content.title = "notifications.fill_password".localized
+        case .fill, .getDetails:
+            content.title = "notifications.get_password".localized
             content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .pair:
             content.title = "notifications.pairing".localized
@@ -68,9 +68,8 @@ class NotificationProcessor {
             content.body = "Unknown request"
         }
 
-        // temp
         content.userInfo[NotificationContentKey.type] = keynRequest.type.rawValue
-
+        content.userInfo["keynRequest"] = try PropertyListEncoder().encode(keynRequest)
         return content
     }
 

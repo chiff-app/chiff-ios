@@ -84,6 +84,7 @@ struct KeynTeamPairingResponse: Codable {
     let environment: String
     let type: KeynMessageType
     let version: Int
+    let userPubKey: String
     let arn: String
 }
 
@@ -121,7 +122,7 @@ struct SessionSite: Codable {
     }
 }
 
-struct BackupSharedAccount: Codable {
+struct BackupSharedAccount: Codable, Equatable {
     let id: String
     var username: String
     var sites: [Site]
@@ -130,6 +131,7 @@ struct BackupSharedAccount: Codable {
     var tokenURL: URL?
     var tokenSecret: Data?
     let version: Int
+    var notes: String?
 }
 
 struct KeynCredentialsResponse: Codable {
@@ -145,6 +147,7 @@ struct KeynCredentialsResponse: Codable {
     let t: KeynMessageType    // One of the message types Keyn understands
     let pk: String?           // Webauthn pubkey
     let d: [Int: BulkLoginAccount?]?
+    let y: String?            // Notes
 }
 
 enum KeyType: UInt64 {
@@ -202,5 +205,23 @@ enum KeyIdentifier: String, Codable {
 
     func identifier(for keychainService: KeychainService) -> String {
         return "\(keychainService.rawValue).\(self.rawValue)"
+    }
+}
+
+enum SortingValue: Int {
+    case alphabetically
+    case mostly
+    case recently
+
+    static var all: [SortingValue] {
+        return [.alphabetically, .mostly, .recently]
+    }
+
+    var text: String {
+        switch self {
+        case .alphabetically: return "accounts.alphabetically".localized
+        case .mostly: return "accounts.mostly".localized
+        case .recently: return "accounts.recently".localized
+        }
     }
 }

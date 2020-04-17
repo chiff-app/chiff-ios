@@ -19,24 +19,6 @@ enum Filters: Int {
     }
 }
 
-enum SortingValues: String {
-    case alphabetically
-    case mostly
-    case recently
-
-    func text() -> String {
-        switch self {
-        case .alphabetically: return "accounts.alphabetically".localized
-        case .mostly: return "accounts.mostly".localized
-        case .recently: return "accounts.recently".localized
-        }
-    }
-
-    static func array() -> [SortingValues] {
-        return [SortingValues.alphabetically, SortingValues.mostly, SortingValues.recently]
-    }
-}
-
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -56,7 +38,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     var sortingButton: AccountsPickerButton!
     var addAccountButton: KeynBarButton?
     var currentFilter = Filters.all
-    var currentSortingValue = SortingValues.alphabetically
+    var currentSortingValue = Properties.sortingPreference
     var searchQuery = ""
 
     override func viewDidLoad() {
@@ -350,9 +332,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if sortingButton == nil {
             sortingButton = AccountsPickerButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             sortingButton!.setImage(UIImage(named:"filter_button"), for: .normal)
-            currentSortingValue = SortingValues.alphabetically
             sortingButton.picker.delegate = self
             sortingButton.picker.dataSource = self
+            sortingButton.picker.selectRow(currentSortingValue.rawValue, inComponent: 0, animated: false)
             sortingButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
             self.navigationItem.leftBarButtonItem = sortingButton!.barButtonItem
         }
@@ -361,16 +343,10 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 extension AccountsTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        switch selectedScope {
-        case Filters.all.rawValue:
-            currentFilter = Filters.all
-        case Filters.team.rawValue:
-            currentFilter = Filters.team
-        case Filters.personal.rawValue:
-            currentFilter = Filters.personal
-        default:
+        guard let filter = Filters(rawValue: selectedScope) else {
             return
         }
+        currentFilter = filter
         prepareAccounts()
         tableView.reloadData()
     }
@@ -414,15 +390,16 @@ extension AccountsTableViewController: UIPickerViewDelegate, UIPickerViewDataSou
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return SortingValues.array().count
+        return SortingValue.all.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return SortingValues.array()[row].text()
+        return SortingValue(rawValue: row)!.text
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        currentSortingValue = SortingValues.array()[row]
+        currentSortingValue = SortingValue(rawValue: row)!
+        Properties.sortingPreference = currentSortingValue
         prepareAccounts()
         tableView.reloadData()
     }

@@ -10,6 +10,8 @@ import Amplitude_iOS
 import StoreKit
 import WebKit
 import PromiseKit
+import TrueTime
+import DataCompression
 
 // MARK: - Primitive extensions
 
@@ -136,6 +138,14 @@ extension Data {
 
     var bytes: Bytes { return Bytes(self) }
 
+    func compress() -> Data? {
+        return self.zip()
+    }
+
+    func decompress() -> Data? {
+        return self.unzip()
+    }
+
 }
 
 extension Collection {
@@ -152,10 +162,20 @@ extension Array where Element == UInt8 {
     }
 }
 
+typealias Timestamp = Int
+
 extension Date {
 
-    static var now: TimeInterval {
-        return Date().timeIntervalSince1970 * 1000
+    init(millisSince1970: Timestamp) {
+        self.init(timeIntervalSince1970: TimeInterval(millisSince1970 / 1000))
+    }
+
+    var millisSince1970: Timestamp {
+        return Timestamp(timeIntervalSince1970 * 1000)
+    }
+
+    static var now: Timestamp {
+        return (TrueTimeClient.sharedInstance.referenceTime?.now() ?? Date()).millisSince1970
     }
 
     // TODO: localize this

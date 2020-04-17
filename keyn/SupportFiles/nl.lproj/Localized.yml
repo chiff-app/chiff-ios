@@ -83,6 +83,12 @@ accounts:
     value: Naam
   no_password:
     value: Geen wachtwoord ingesteld
+  notes:
+    value: Notities
+  notes_footer:
+    value: Notities zijn versleuteld en mogen maximaal %d tekens bevatten.
+  notes_placeholder:
+    value: Voeg notities toe...
   number_of_roles:
     value: '%@ rollen'
   number_of_users:
@@ -345,6 +351,10 @@ errors:
     value: Onleesbare data fout
   creating_team:
     value: Fout bij het maken van team
+  data_deleted:
+    value: Data verwijderd
+  data_recreation_failed_message:
+    value: Fout bij het herstellen van de backup-data
   delete_url:
     comment: Error deleting url
     value: Fout bij verwijderen URL
@@ -547,7 +557,7 @@ initialization:
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
 notifications:
   accounts_from:
-    value: '%@ accounts op %@.'
+    value: '%d accounts op %@.'
   add_account:
     value: Voeg account toe
   add_accounts:
@@ -558,8 +568,8 @@ notifications:
     value: Verander wachtwoord
   end_session:
     value: Sessie beëindigd
-  fill_password:
-    value: Wachtwoord invullen
+  get_password:
+    value: Haal wachtwoord op
   login:
     value: Inloggen
   onboarding_reminder_message:
@@ -625,6 +635,12 @@ popups:
       value: >-
         Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd.
         Wil je Keyn's huidige data verwijderen?
+    delete_locally:
+      value: >-
+        De backup data is verwijderd vanaf een ander apparaat. Wil je de data
+        hier ook verwijderen of de backup herstellen vanaf dit apparaat?
+    delete_x:
+      value: Delete %@
     move_data:
       comment: Resets Keyn and deletes all data
       value: Verhuis data?
@@ -678,6 +694,8 @@ popups:
     reset:
       comment: Resets something
       value: Reset
+    restore:
+      value: Herstel
     settings:
       value: Open instellingen
     'yes':
@@ -742,13 +760,13 @@ requests:
     value: >-
       Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
       verstuurd.
-  fill_for:
+  get_for:
     comment: 'Ask the user to fill a password, e.g. Fill password for Amazon.com?'
-    value: Vul wachtwoord in voor %@
-  fill_password:
-    value: Wachtwoord invullen
-  fill_password_successful:
-    value: Wachtwoord invullen gelukt
+    value: Haal wachtwoord van %@ op.
+  get_password:
+    value: Wachtwoord ophalen
+  get_password_successful:
+    value: Wachtwoord opgehaald
   keyn_for_teams:
     value: Keyn voor teams
   login_keyn_next_time:
@@ -762,7 +780,7 @@ requests:
     comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
     value: Login met %@
   n_new_accounts:
-    value: '%@ nieuwe accounts.'
+    value: '%d nieuwe accounts.'
   new_password_generated:
     value: Nieuw wachtwoord gegenereerd
   no_accounts_left:
