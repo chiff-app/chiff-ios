@@ -206,3 +206,21 @@ enum KeyIdentifier: String, Codable {
         return "\(keychainService.rawValue).\(self.rawValue)"
     }
 }
+
+enum SortingValue: Int {
+    case alphabetically
+    case mostly
+    case recently
+
+    static var all: [SortingValue] {
+        return [.alphabetically, .mostly, .recently]
+    }
+
+    var text: String {
+        switch self {
+        case .alphabetically: return "accounts.alphabetically".localized
+        case .mostly: return "accounts.mostly".localized
+        case .recently: return "accounts.recently".localized
+        }
+    }
+}
