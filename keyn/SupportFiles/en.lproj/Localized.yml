@@ -568,8 +568,8 @@ notifications:
     value: Change password
   end_session:
     value: Session ended
-  fill_password:
-    value: Fill password
+  get_password:
+    value: Get password
   login:
     value: Login
   onboarding_reminder_message:
@@ -759,13 +759,13 @@ requests:
     value: >-
       The request that was received expired. This means it was sent more than
       three minutes ago.
-  fill_for:
+  get_for:
     comment: 'Ask the user to fill a password, e.g. Fill password for Amazon.com?'
-    value: Fill password for %@
-  fill_password:
-    value: Fill password
-  fill_password_successful:
-    value: Fill password successful
+    value: Get password for %@.
+  get_password:
+    value: Get password
+  get_password_successful:
+    value: Password retrieved
   keyn_for_teams:
     value: Keyn for teams
   login_keyn_next_time:
@@ -779,7 +779,7 @@ requests:
     comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
     value: Login with %@
   n_new_accounts:
-    value: '%@ new accounts.'
+    value: '%d new accounts.'
   new_password_generated:
     value: New password generated
   no_accounts_left:

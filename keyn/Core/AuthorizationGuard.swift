@@ -21,7 +21,7 @@ class AuthorizationGuard {
 
     var session: BrowserSession
     let type: KeynMessageType
-    let accounts: [BulkAccount]!// Should be present for bulk add site requests
+    let count: Int!       // Should be present for bulk add site requests
     private let accountIds: [Int: String]!// Should be present for bulk login requests
     private let browserTab: Int!        // Should be present for all requests
     private let siteName: String!       // Should be present for all requests
@@ -44,12 +44,12 @@ class AuthorizationGuard {
             return String(format: "requests.add_site".localized, siteName!)
         case .change:
             return String(format: "requests.change_for".localized, siteName!)
-        case .fill:
-            return String(format: "requests.fill_for".localized, siteName!)
+        case .fill, .getDetails:
+            return String(format: "requests.get_for".localized, siteName!)
         case .adminLogin:
             return String(format: "requests.login_to".localized, "requests.keyn_for_teams".localized)
         case .addBulk:
-            return String(format: "requests.n_new_accounts".localized, accounts.count)
+            return String(format: "requests.n_new_accounts".localized, count)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -68,11 +68,11 @@ class AuthorizationGuard {
         self.password = request.password
         self.username = request.username
         self.accountId = request.accountID
-        self.accounts = request.accounts
         self.challenge = request.challenge
         self.rpId = request.relyingPartyId
         self.algorithms = request.algorithms
         self.accountIds = request.accountIDs
+        self.count = request.count
     }
 
     // MARK: - Handle request responses
@@ -94,7 +94,7 @@ class AuthorizationGuard {
                 return Promise(error: AuthorizationError.cannotAddAccount)
             }
             promise = addBulkSites().map { nil }
-        case .login, .change, .fill:
+        case .login, .change, .fill, .getDetails:
             promise = authorize()
         case .bulkLogin:
             promise = authorizeBulkLogin().map { nil }
@@ -151,8 +151,10 @@ class AuthorizationGuard {
                     Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
                 case .fill:
                     Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
-                default:
-                    Logger.shared.warning("Authorize called on the wrong type?")
+            case .getDetails:
+                print("TODO: get details analytics")
+            default:
+                Logger.shared.warning("Authorize called on the wrong type?")
             }
         }
     }
@@ -212,20 +214,31 @@ class AuthorizationGuard {
     }
 
     private func addBulkSites() -> Promise<Void> {
-        #warning("TODO: Use plurals")
         var success = false
+        var laContext: LAContext?
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: "\("requests.save".localized.capitalizedFirstLetter) \(accounts.count) \("request.accounts".localized)", withMainContext: false)
-        }.then { (context) -> Promise<(LAContext?, [(BulkAccount, PPD?)])> in
-            when(fulfilled: self.accounts.map { account in
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+        }.then { (context: LAContext?) -> Promise<[KeynPersistentQueueMessage]> in
+            laContext = context
+            return self.session.getPersistentQueueMessages(shortPolling: true)
+        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]> in
+            if let message = messages.first(where: { $0.type == .addBulk }), let receiptHandle = message.receiptHandle {
+                return self.session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
+                    message.accounts!
+                }
+            } else {
+                throw CodingError.missingData
+            }
+        }.then { accounts in
+            when(fulfilled: accounts.map { account in
                 PPD.get(id: account.siteId).map { (account, $0) }
-            }).map { (context, $0) }
-        }.map { (context, accounts) in
+            })
+        }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: nil, context: context)
+                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: nil, context: laContext)
             }
-            try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
+            try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: laContext)
             success = true
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
         }.ensure {

@@ -122,12 +122,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             break
         }
 
-        var content: UNNotificationContent = notification.request.content
-        if !content.isProcessed() {
-            Logger.shared.warning("It seems we need to manually call NotificationProcessor.process().")
-            content = reprocess(content: notification.request.content)
-        }
-
+        let content: UNNotificationContent = notification.request.content
         guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
             Logger.shared.error("Cannot find a KeynRequest in the push notification.")
             return []
@@ -161,35 +156,15 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             return []
         }
 
+        DispatchQueue.main.async {
+            AuthorizationGuard.launchRequestView(with: keynRequest)
+        }
+
         // This is disabled for now, because it causes requests to not appear if time of phone and device are not in sync
 //        guard Date(timeIntervalSince1970: keynRequest.sentTimestamp / 1000).timeIntervalSinceNow > -180 else {
 //            Logger.shared.warning("Got a notification older than 3 minutes. I will be ignoring it.")
 //            return []
 //        }
-
-        if keynRequest.type == .addBulk {
-            do {
-                guard let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) else {
-                    throw CodingError.missingData
-                }
-                #warning("TODO: Improve this by using background fetching in notification processor.")
-                firstly {
-                    self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil)
-                }.done(on: .main) { accounts in
-                    var request = keynRequest
-                    request.accounts = accounts
-                    AuthorizationGuard.launchRequestView(with: request)
-                }.catchLog("Error getting password change confirmation from persistent queue.")
-                return [.sound]
-            } catch {
-                Logger.shared.error("Could not get session.", error: error)
-                return []
-            }
-        } else {
-            DispatchQueue.main.async {
-                AuthorizationGuard.launchRequestView(with: keynRequest)
-            }
-        }
 
         return [.sound]
     }
@@ -244,18 +219,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             if messages.isEmpty {
                 return attempts > 1 ? self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context) : .value(nil)
             } else {
-                var accounts: [BulkAccount]? = nil
+                var promises: [Promise<[BulkAccount]?>] = []
                 for message in messages {
-                    if let bulkAccounts = try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context) {
-                        accounts = bulkAccounts
-                    }
+                    promises.append(try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context))
                 }
-                return .value(accounts)
+                return when(fulfilled: promises).firstValue(where: { $0 != nil })
             }
         }
     }
 
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> [BulkAccount]? {
+    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> Promise<[BulkAccount]?> {
         guard let receiptHandle = keynMessage.receiptHandle else  {
             throw CodingError.missingData
         }
@@ -289,23 +262,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         default:
             Logger.shared.warning("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
         }
-        session.deleteFromPersistentQueue(receiptHandle: receiptHandle)
-        return result
-    }
-
-    // DEBUG
-    private func reprocess(content: UNNotificationContent) -> UNNotificationContent {
-        guard let mutableContent = (content.mutableCopy() as? UNMutableNotificationContent) else {
-            return content
+        return session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
+            result
         }
-
-        do {
-            return try NotificationProcessor.process(content: mutableContent)
-        } catch {
-            Logger.shared.warning("Error reprocessing data", error: error)
-        }
-
-        return content
     }
 
 }

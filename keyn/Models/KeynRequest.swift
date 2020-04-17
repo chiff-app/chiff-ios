@@ -118,6 +118,20 @@ struct KeynRequest: Codable {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn algorithm.")
                 return false
             }
+        case .getDetails:
+            guard accountID != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
+                return false
+            }
+            guard browserTab != nil else {
+                Logger.shared.warning("VerifyIntegrity failed because there is no browserTab to send the reply back to.")
+                return false
+            }
+            guard siteName != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no siteName.")
+                return false
+            }
+            return true // Return here because getDetails doesn't have siteUrl don't apply to adminLogin request
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false

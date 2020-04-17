@@ -30,7 +30,7 @@ class NotificationService: UNNotificationServiceExtension {
     // otherwise the original push payload will be used.
     override func serviceExtensionTimeWillExpire() {
         if let contentHandler = contentHandler, let content =  content {
-            content.userInfo["expried"] = true
+            content.userInfo["expired"] = true
             contentHandler(content)
         }
     }

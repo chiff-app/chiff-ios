@@ -147,6 +147,7 @@ struct KeynCredentialsResponse: Codable {
     let t: KeynMessageType    // One of the message types Keyn understands
     let pk: String?           // Webauthn pubkey
     let d: [Int: BulkLoginAccount?]?
+    let y: String?            // Notes
 }
 
 enum KeyType: UInt64 {
