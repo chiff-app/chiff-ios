@@ -145,14 +145,17 @@ struct Team {
 
     private func createAdminUser(user: TeamUser, seed: String, accounts: [[String: String]]) throws -> Promise<JSONObject> {
         let message: [String: Any] = [
+            "httpMethod": APIMethod.post.rawValue,
+            "timestamp": String(Int(Date().timeIntervalSince1970)),
             "userpubkey": user.pubkey!,
             "data": try user.encrypt(key: encryptionKey),
             "userSyncPubkey": user.userSyncPubkey,
             "accounts": accounts,
             "teamSeed": seed
         ]
-        #warning("This message should be sent in the body")
-        return API.shared.signedRequest(method: .post, message: message, path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", privKey: keyPair.privKey, body: nil)
+        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+        let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
+        return API.shared.request(path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", parameters: nil, method: .post, signature: signature, body: jsonData)
     }
 
     private func updateRole(role: TeamRole, pubkey: String) -> Promise<JSONObject> {
