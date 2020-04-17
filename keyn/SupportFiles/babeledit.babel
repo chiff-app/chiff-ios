@@ -5787,7 +5787,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password</name>
+                        <name>get_password</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
@@ -7770,7 +7770,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_for</name>
+                        <name>get_for</name>
                         <children>
                             <concept_node>
                                 <name>comment</name>
@@ -7809,7 +7809,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password</name>
+                        <name>get_password</name>
                         <children>
                             <concept_node>
                                 <name>value</name>
@@ -7831,7 +7831,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>fill_password_successful</name>
+                        <name>get_password_successful</name>
                         <children>
                             <concept_node>
                                 <name>value</name>

@@ -140,4 +140,5 @@ enum KeynMessageType: Int, Codable {
     case webauthnCreate = 16
     case webauthnLogin = 17
     case bulkLogin = 18
+    case getDetails = 19
 }

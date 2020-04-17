@@ -47,8 +47,8 @@ class RequestViewController: UIViewController {
         case .change:
             requestLabel.text = "requests.change_password".localized.capitalizedFirstLetter
             Logger.shared.analytics(.changePasswordRequestOpened)
-        case .fill:
-            requestLabel.text = "requests.fill_password".localized.capitalizedFirstLetter
+        case .fill, .getDetails:
+            requestLabel.text = "requests.get_password".localized.capitalizedFirstLetter
             Logger.shared.analytics(.fillPassworddRequestOpened)
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
@@ -145,14 +145,14 @@ class RequestViewController: UIViewController {
             successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             autoClose = setAccountsLeft()
         case .addBulk:
-            successTextLabel.text = "\(authorizationGuard.accounts.count) \("requests.accounts_added".localized)"
+            successTextLabel.text = "\(authorizationGuard.count!) \("requests.accounts_added".localized)"
             successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
             autoClose = setAccountsLeft()
         case .change:
             successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
-        case .fill:
-            successTextLabel.text = "requests.fill_password_successful".localized.capitalizedFirstLetter
+        case .fill, .getDetails:
+            successTextLabel.text = "requests.get_password_successful".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter

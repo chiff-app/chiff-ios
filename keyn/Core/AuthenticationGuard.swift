@@ -38,23 +38,25 @@ class AuthenticationGuard {
 
 
     func authenticateUser(cancelChecks: Bool) {
-        if cancelChecks {
-            guard !authenticationInProgress &&
-                !lockWindowIsHidden &&
-                !LocalAuthenticationManager.shared.authenticationInProgress &&
-                !AuthorizationGuard.authorizationInProgress else {
-                return
-            }
+        firstly {
+            after(seconds: 0.5)
+        }.then(on: .main) { (_) -> Promise<LAContext?> in
+            if cancelChecks {
+                guard !self.authenticationInProgress &&
+                    !self.lockWindowIsHidden &&
+                    !LocalAuthenticationManager.shared.authenticationInProgress &&
+                    !AuthorizationGuard.authorizationInProgress else {
+                    throw PMKError.cancelled
+                }
 
-            if let visibleViewController = UIApplication.shared.visibleViewController {
-                guard !(visibleViewController is RequestViewController) else {
-                    return
+                if let visibleViewController = UIApplication.shared.visibleViewController {
+                    guard !(visibleViewController is RequestViewController) else {
+                         throw PMKError.cancelled
+                    }
                 }
             }
-        }
-        authenticationInProgress = true
-        firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
+            self.authenticationInProgress = true
+            return LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
         }.map(on: .main) { (context) -> LAContext? in
             let accounts = try UserAccount.allCombined(context: context, sync: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
