@@ -91,15 +91,17 @@ enum MessageParameter {
     static let type = "type"
 }
 
+enum BackgroundNotificationType: String {
+    case sync = "SYNC"
+    case deleteTeamSession = "DELETE_TEAM_SESSION"
+}
+
 enum NotificationCategory {
-    static let SYNC = "SYNC"
     static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
     static let END_SESSION = "END_SESSION"
     static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
     static let KEYN_NOTIFICATION = "KEYN_NOTIFICATION"
     static let ONBOARDING_NUDGE = "ONBOARDING_NUDGE"
-    static let UPDATE_TEAM_SESSION = "UPDATE_TEAM_SESSION"
-    static let DELETE_TEAM_SESSION = "DELETE_TEAM_SESSION"
 }
 
 enum NotificationContentKey {

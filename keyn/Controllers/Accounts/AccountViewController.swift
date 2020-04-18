@@ -107,6 +107,10 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 } else if let oldAccount  = self.account as? SharedAccount {
                     self.account = try SharedAccount.get(id: oldAccount.id, context: nil)
                 }
+                guard self.account != nil else {
+                    self.performSegue(withIdentifier: "DeleteAccount", sender: self)
+                    return
+                }
                 self.loadAccountData()
             } catch {
                 Logger.shared.warning("Failed to update accounts in UI", error: error)
