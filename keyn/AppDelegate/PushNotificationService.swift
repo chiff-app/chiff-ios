@@ -53,7 +53,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     when(fulfilled: promises)
                 }.done {
                     completionHandler(.newData)
-                }.catch { _ in
+                }.catch { error in
+                    Logger.shared.warning("Failed to sync after push message", error: error)
                     completionHandler(.failed)
                 }
             case NotificationCategory.DELETE_TEAM_SESSION:
