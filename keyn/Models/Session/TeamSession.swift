@@ -320,6 +320,6 @@ extension TeamSession: Codable {
         self.isAdmin = try values.decode(Bool.self, forKey: .isAdmin)
         self.version = try values.decode(Int.self, forKey: .version)
         self.title = try values.decode(String.self, forKey: .title)
-        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? Date.now
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
     }
 }
