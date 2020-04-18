@@ -244,6 +244,8 @@ struct UserAccount: Account, Equatable {
             Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
         }.map { _ in
             try self.webAuthn?.delete(accountId: self.id)
+            try? Keychain.shared.delete(id: self.id, service: .notes)
+            try? Keychain.shared.delete(id: self.id, service: .otp)
             try self.deleteBackup()
             try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
