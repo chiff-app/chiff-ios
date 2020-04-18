@@ -148,6 +148,9 @@ extension Account {
 
     func deleteSync() throws {
         try Keychain.shared.delete(id: id, service: Self.keychainService)
+        try? Keychain.shared.delete(id: id, service: .webauthn)
+        try? Keychain.shared.delete(id: id, service: .notes)
+        try? Keychain.shared.delete(id: id, service: .otp)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
     }
@@ -165,7 +168,7 @@ extension Account {
     static func deleteAll() {
         Keychain.shared.deleteAll(service: Self.keychainService)
         Keychain.shared.deleteAll(service: .webauthn)
-        #warning("Also fix otp keychain service")
+        Keychain.shared.deleteAll(service: .notes)
         Keychain.shared.deleteAll(service: .otp)
         if #available(iOS 12.0, *) {
             ASCredentialIdentityStore.shared.removeAllCredentialIdentities(nil)

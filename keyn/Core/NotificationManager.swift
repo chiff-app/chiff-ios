@@ -44,19 +44,19 @@ struct NotificationManager {
         }.catchLog("AWS cannot get arn.")
     }
 
-    func deleteEndpoint() {
+    func deleteEndpoint() -> Promise<Void> {
         guard let endpoint = Properties.endpoint, let id = UIDevice.current.identifierForVendor?.uuidString else {
-            return
+            return .value(())
         }
         let message = [
             "endpoint": endpoint,
             "id": id
         ]
-        firstly {
+        return firstly {
             API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
         }.done { _ in
             NotificationManager.shared.deleteKeys()
-        }.catchLog("Failed to delete ARN @ AWS.")
+        }.log("Failed to delete ARN @ AWS.")
     }
 
     func subscribe() -> Guarantee<Bool> {

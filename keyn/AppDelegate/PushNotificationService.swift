@@ -31,17 +31,17 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * After this the userNotificationCenter function will also be called.
      */
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let aps = userInfo["aps"] as? [AnyHashable : Any], let category = aps["category"] as? String, category == NotificationCategory.SYNC || category == NotificationCategory.DELETE_TEAM_SESSION else {
-                completionHandler(.noData)
-            return
-        }
         do {
-            guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String], let logos = userInfo["logos"] as? [String] else {
+            guard let typeString = userInfo["type"] as? String, let type = BackgroundNotificationType(rawValue: typeString) else {
                 completionHandler(.failed)
                 return
             }
-            switch category {
-            case NotificationCategory.SYNC:
+            switch type {
+            case .sync:
+                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String], let logos = userInfo["logos"] as? [String] else {
+                    completionHandler(.failed)
+                    return
+                }
                 var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, filterLogos: logos, pubKeys: sessionPubKeys)]
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
@@ -53,10 +53,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     when(fulfilled: promises)
                 }.done {
                     completionHandler(.newData)
-                }.catch { _ in
+                }.catch { error in
+                    Logger.shared.warning("Failed to sync after push message", error: error)
                     completionHandler(.failed)
                 }
-            case NotificationCategory.DELETE_TEAM_SESSION:
+            case .deleteTeamSession:
                 // This can be sent directly from admin panel to cancel existing pairing process
                 guard let pubkey = userInfo["pubkey"] as? String, let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
                     completionHandler(UIBackgroundFetchResult.failed)
@@ -69,7 +70,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 } catch {
                     completionHandler(.failed)
                 }
-            default: completionHandler(.noData)
             }
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
@@ -115,9 +115,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             }
             return [.alert]
-        case NotificationCategory.SYNC,
-             NotificationCategory.DELETE_TEAM_SESSION:
-            return []
         default:
             break
         }
