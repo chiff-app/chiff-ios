@@ -18,9 +18,6 @@ enum NotificationExtensionError: KeynError {
 class NotificationProcessor {
 
     static func process(content: UNMutableNotificationContent) throws -> UNMutableNotificationContent {
-        guard content.categoryIdentifier != NotificationCategory.DELETE_TEAM_SESSION || content.categoryIdentifier != NotificationCategory.SYNC else {
-            return content
-        }
         guard let ciphertext = content.userInfo[NotificationContentKey.data] as? String else {
             throw NotificationExtensionError.decodeCiphertext
         }
