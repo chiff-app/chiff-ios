@@ -244,6 +244,8 @@ struct UserAccount: Account, Equatable {
             Keychain.shared.delete(id: id, service: .account, reason: "Delete \(site.name)", authenticationType: .ifNeeded)
         }.map { _ in
             try self.webAuthn?.delete(accountId: self.id)
+            try? Keychain.shared.delete(id: self.id, service: .notes)
+            try? Keychain.shared.delete(id: self.id, service: .otp)
             try self.deleteBackup()
             try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
@@ -320,7 +322,7 @@ extension UserAccount: Codable {
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
         self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
-        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? Date.now
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
     }
 
 }

@@ -84,6 +84,7 @@ struct SharedAccount: Account {
         firstly {
             Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: String(format: "popups.questions.delete_x".localized, site.name), authenticationType: .ifNeeded)
         }.map { _ in
+            try? Keychain.shared.delete(id: self.id, service: .notes)
             try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
         }.log("Error deleting accounts")
@@ -122,10 +123,10 @@ struct SharedAccount: Account {
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
             let tokenData = tokenURL.absoluteString.data
-            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData)
+            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData, label: sessionPubKey)
         }
         if let notes = backupAccount.notes {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil, label: sessionPubKey)
         }
         try account.save(password: password, sessionPubKey: sessionPubKey)
     }
@@ -137,6 +138,8 @@ struct SharedAccount: Account {
             }
         }
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
+        Keychain.shared.deleteAll(service: .otp, label: sessionPubKey)
+        Keychain.shared.deleteAll(service: .notes, label: sessionPubKey)
         NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true
