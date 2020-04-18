@@ -320,7 +320,7 @@ extension UserAccount: Codable {
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
         self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
-        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? Date.now
+        self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
     }
 
 }

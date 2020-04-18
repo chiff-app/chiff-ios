@@ -97,14 +97,16 @@ extension Syncable {
                     if var object = try get(id: id, context: context) {
                         current.removeValue(forKey: object.id)
                         if backupObject.lastChange == object.lastChange {
-                            return false
+                            // Synced
+                            return changed
                         } else if backupObject.lastChange > object.lastChange {
                             // Backup object is newer, update
-                            return try object.update(with: backupObject, context: context)
+                            let updated = try object.update(with: backupObject, context: context)
+                            return changed || updated
                         } else {
                             // Local account is newer, create backup.
                             promises.append(try object.backup())
-                            return false
+                            return changed
                         }
                     } else {
                         // Item doesn't exist, create.
@@ -113,8 +115,8 @@ extension Syncable {
                     }
                 } catch {
                     Logger.shared.error("Could not restore data.", error: error)
+                    return changed
                 }
-                return changed
             }
             // Remove accounts that were not present
             for object in current.values {
