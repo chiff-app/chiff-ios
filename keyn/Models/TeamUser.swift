@@ -24,7 +24,7 @@ struct TeamUser: Codable {
         return try Crypto.shared.convertToBase64(from: ciphertext)
     }
 
-    func encryptAccount(account: TeamAccount, teamPasswordSeed: Data) throws -> [String: String] {
+    func encryptAccount(account: TeamAccount, teamPasswordSeed: Data) throws -> String {
         guard let site = account.sites.first else {
             throw CodingError.missingData
         }
@@ -37,10 +37,7 @@ struct TeamUser: Codable {
         let offset = try generator.calculateOffset(index: 0, password: account.password(for: teamPasswordSeed))
         let backupAccount = BackupSharedAccount(id: account.id, username: account.username, sites: account.sites, passwordIndex: 0, passwordOffset: offset, tokenURL: nil, tokenSecret: nil, version: account.version)
         let data = try JSONEncoder().encode(backupAccount)
-        return [
-            "id": account.id,
-            "data": try Crypto.shared.encrypt(data, key: encryptionKey).base64
-        ]
+        return try Crypto.shared.encrypt(data, key: encryptionKey).base64
     }
 }
 

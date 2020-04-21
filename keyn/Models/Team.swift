@@ -123,7 +123,7 @@ struct Team {
         let users = self.users.filter({ pubkeys.contains($0.pubkey )})
         return try users.map({[
             "id": account.id,
-            "pubKey": $0.pubkey,
+            "pubKey": $0.pubkey as Any,
             "data": try $0.encryptAccount(account: account, teamPasswordSeed: passwordSeed),
             "userSyncPubkey": $0.userSyncPubkey
         ]})
@@ -134,7 +134,12 @@ struct Team {
             guard let role = roles.first(where: { $0.admins }) else {
                 throw CodingError.missingData
             }
-            let accounts = try self.accounts.filter() { $0.roles.contains(role.id) }.map { try user.encryptAccount(account: $0, teamPasswordSeed: passwordSeed) }
+            let accounts = try self.accounts.filter() { $0.roles.contains(role.id) }.map {
+                [
+                    "id": $0.id,
+                    "data": try user.encryptAccount(account: $0, teamPasswordSeed: passwordSeed)
+                ]
+            }
             return when(fulfilled: updateRole(role: role, pubkey: user.pubkey), try createAdminUser(user: user, seed: seed, accounts: accounts)).asVoid()
         } catch {
             return Promise(error: error)
