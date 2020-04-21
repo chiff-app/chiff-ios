@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OneTimePassword
 
 struct TeamAccount: BaseAccount {
     let id: String
@@ -19,6 +20,16 @@ struct TeamAccount: BaseAccount {
     let roles: Set<String>
     let compromised: Bool
     var notes: String?
+    let tokenURL: URL?
+    let tokenSecret: Data?
+
+    var token: Token? {
+        if let url = tokenURL, let secret = tokenSecret {
+            return Token(url: url, secret: secret)
+        } else {
+            return nil
+        }
+    }
 
     init(account: Account, seed: Data, users: [TeamUser], roles: [TeamRole], version: Int = 1) throws {
         self.id = account.id
@@ -29,6 +40,17 @@ struct TeamAccount: BaseAccount {
         self.version = version
         self.notes = try account.notes()
         self.compromised = false
+
+        if let token = try account.oneTimePasswordToken() {
+            guard case .timer(_) = token.generator.factor else {
+                throw AccountError.notTOTP
+            }
+            self.tokenURL = try token.toURL()
+            self.tokenSecret = token.generator.secret
+        } else {
+            self.tokenURL = nil
+            self.tokenSecret = nil
+        }
 
         if let password = try account.password() {
             let passwordGenerator = PasswordGenerator(username: username, siteId: sites[0].id, ppd: sites[0].ppd, passwordSeed: seed)
@@ -77,6 +99,8 @@ extension TeamAccount: Codable {
         case compromised
         case version
         case notes
+        case tokenURL
+        case tokenSecret
     }
 
     init(from decoder: Decoder) throws {
@@ -91,6 +115,8 @@ extension TeamAccount: Codable {
         self.compromised = try values.decode(Bool.self, forKey: .compromised)
         self.version = try values.decode(Int.self, forKey: .version)
         self.notes = try values.decodeIfPresent(String.self, forKey: .notes)
+        self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
+        self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -105,6 +131,8 @@ extension TeamAccount: Codable {
         try container.encode(compromised, forKey: .compromised)
         try container.encode(version, forKey: .version)
         try container.encode(notes, forKey: .notes)
+        try container.encode(tokenSecret, forKey: .tokenSecret)
+        try container.encode(tokenURL, forKey: .tokenURL)
     }
 
 }
