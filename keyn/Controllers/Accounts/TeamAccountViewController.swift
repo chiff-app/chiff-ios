@@ -133,11 +133,10 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
                 self.account.delete()
             }.then { _ in
                 TeamSession.updateTeamSession(session: self.session, pushed: false)
-            }.ensure {
-                barButtonItem?.hideLoading()
             }.done(on: .main) {
                 self.performSegue(withIdentifier: "DeleteUserAccount", sender: self)
             }.catch(on: .main) { error in
+                barButtonItem?.hideLoading()
                 self.showAlert(message: "\("errors.convert_to_team".localized): \(error.localizedDescription)")
             }
         } catch {

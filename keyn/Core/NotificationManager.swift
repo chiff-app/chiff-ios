@@ -27,18 +27,20 @@ struct NotificationManager {
                 return createEndpoint(pushToken: token, id: id)
             }
         }.done { result in
-            if let endpoint = result["arn"] as? String {
-                if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
-                    try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
-                } else {
-                    try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
-                }
-                if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
-                    firstly {
-                        self.subscribe()
-                    }.done { result in
-                        Properties.infoNotifications = result ? .yes : .no
-                    }
+            guard let endpoint = result["arn"] as? String else {
+                Logger.shared.error("Could not find ARN in server respoonse")
+                return
+            }
+            if Keychain.shared.has(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws) {
+                try Keychain.shared.update(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+            } else {
+                try Keychain.shared.save(id: KeyIdentifier.endpoint.identifier(for: .aws), service: .aws, secretData: endpoint.data)
+            }
+            if Properties.infoNotifications == .notDecided && !NotificationManager.shared.isSubscribed {
+                firstly {
+                    self.subscribe()
+                }.done { result in
+                    Properties.infoNotifications = result ? .yes : .no
                 }
             }
         }.catchLog("AWS cannot get arn.")
@@ -146,6 +148,5 @@ struct NotificationManager {
             API.shared.signedRequest(method: .put, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
         }
     }
-
 
 }
