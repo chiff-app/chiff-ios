@@ -186,6 +186,9 @@ class Crypto {
     }
 
     func decrypt(_ ciphertext: Data, key: Data, version: Int) throws -> (Data, Data) {
+        guard ciphertext.count > sodium.box.NonceBytes else {
+            throw CryptoError.decryption
+        }
         let nonce = ciphertext[..<Data.Index(sodium.box.NonceBytes)]
         guard var plaintext: Bytes = sodium.box.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, beforenm: key.bytes) else {
             throw CryptoError.decryption
