@@ -351,6 +351,10 @@ errors:
       Dit kun je doen via Instellingen.
   convert_to_team:
     value: Fout bij converteren naar team account
+  convert_to_team_totp:
+    value: >-
+      Dit account heeft een counter-gebaseerd one-time password, welke niet
+      ondersteund wordt in een Team-account.
   corrupted_data:
     value: Onleesbare data fout
   creating_team:

@@ -112,6 +112,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
     }
 
     private func convertToTeamAccount() {
+        let barButtonItem = navigationItem.rightBarButtonItem as? LocalizableBarButton
         do {
             let teamAccount = try TeamAccount(account: account, seed: team.passwordSeed, users: selectedUsers, roles: selectedRoles)
             let ciphertext = try teamAccount.encrypt(key: team.encryptionKey)
@@ -125,7 +126,6 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             ]
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: team.keyPair.privKey).base64
-            let barButtonItem = navigationItem.rightBarButtonItem as? LocalizableBarButton
             barButtonItem?.showLoading()
             firstly {
                 API.shared.request(path: "teams/\(team.keyPair.pubKey.base64)/accounts/\(teamAccount.id)", parameters: nil, method: .post, signature: signature, body: jsonData)
@@ -139,8 +139,12 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
                 barButtonItem?.hideLoading()
                 self.showAlert(message: "\("errors.convert_to_team".localized): \(error.localizedDescription)")
             }
+        } catch AccountError.notTOTP {
+            barButtonItem?.hideLoading()
+            self.showAlert(message: "errors.convert_to_team_totp".localized)
         } catch {
-            Logger.shared.error("Error converting account to team account", error: error)
+            barButtonItem?.hideLoading()
+            self.showAlert(message: "\("errors.convert_to_team".localized): \(error.localizedDescription)")
         }
     }
 

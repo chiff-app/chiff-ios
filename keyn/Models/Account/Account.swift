@@ -17,6 +17,7 @@ enum AccountError: KeynError {
     case tokenRetrieval
     case wrongRpId
     case noWebAuthn
+    case notTOTP
 }
 
 protocol Account: BaseAccount {

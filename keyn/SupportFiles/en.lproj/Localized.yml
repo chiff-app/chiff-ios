@@ -351,6 +351,10 @@ errors:
       in Settings.
   convert_to_team:
     value: Error converting to team account
+  convert_to_team_totp:
+    value: >-
+      This account has a counter-based one-time password, which cannot be used
+      in Team accounts.
   corrupted_data:
     value: Unreadable data error
   creating_team:
