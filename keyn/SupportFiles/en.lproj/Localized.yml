@@ -77,6 +77,8 @@ accounts:
     value: Codes can either be time-based or counter-based
   mostly:
     value: Mostly used
+  move_from_team:
+    value: Move from team
   my_accounts:
     value: My accounts
   name:
@@ -335,6 +337,8 @@ devices:
 errors:
   add_otp:
     value: Error adding OTP token
+  add_to_team:
+    value: Error adding account to team
   api_error:
     comment: An error thrown by the API
     value: A network error occured
@@ -393,6 +397,8 @@ errors:
       value: >-
         Authentication could not start, because passcode is not set on the
         device.
+  move_from_team:
+    value: Error moving account from team
   moving_data:
     value: Error moving backup data.
   no_admin:
@@ -650,6 +656,13 @@ popups:
       value: >-
         This moves your backup data to the production database. Use this if you
         want to switch to the App Store version of Keyn.
+    move_to_user_account_message:
+      value: >-
+        Do you want to move this account from the team to your personal
+        accounts? Other team members won't be able to access this account
+        anymore.
+    move_to_user_account_title:
+      value: Move from team
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Do you have time to answer a few questions? It'll only take a moment.
