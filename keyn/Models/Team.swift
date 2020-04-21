@@ -146,6 +146,12 @@ struct Team {
         }
     }
 
+    func deleteAccount(id: String) -> Promise<Void> {
+        return firstly {
+            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(keyPair.pubKey.base64)/accounts/\(id)", privKey: keyPair.privKey, body: nil)
+        }.asVoid()
+    }
+
     // MARK: - Private methods
 
     private func createAdminUser(user: TeamUser, seed: String, accounts: [[String: String]]) throws -> Promise<JSONObject> {
