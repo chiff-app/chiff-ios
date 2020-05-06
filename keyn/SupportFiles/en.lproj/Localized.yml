@@ -445,6 +445,8 @@ errors:
     value: This QR-code is invalid
   session_not_found:
     value: Session was not found.
+  shared_account_change:
+    value: Cannot change password for a shared account.
   subscribing:
     value: Error subscribing to info notifications
   token_creation:
