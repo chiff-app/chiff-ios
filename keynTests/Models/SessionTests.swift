@@ -287,14 +287,14 @@ class SessionTests: XCTestCase {
             guard var session = session as? BrowserSession else {
                 return XCTFail("Casting error")
             }
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context))
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context))
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context))
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: self.context))
-            XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .change, context: self.context, newPassword: nil))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .add, context: self.context, newPassword: nil))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .login, context: self.context, newPassword: nil))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context, newPassword: nil))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .register, context: self.context, newPassword: nil))
+            XCTAssertThrowsError(try session.sendCredentials(account: account, browserTab: 0, type: .end, context: self.context, newPassword: nil))
             API.shared = MockAPI(shouldFail: true)
-            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context))
+            XCTAssertNoThrow(try session.sendCredentials(account: account, browserTab: 0, type: .fill, context: self.context, newPassword: nil))
         }.ensure {
             expectation.fulfill()
         }.catch { error in
