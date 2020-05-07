@@ -455,6 +455,8 @@ errors:
     value: Deze QR-code is ongeldig
   session_not_found:
     value: Sessie is niet gevonden.
+  shared_account_change:
+    value: Het wachtwoord van een gedeeld account kan niet gewijzigd worden.
   subscribing:
     value: Fout bij aanzetten infoberichten
   token_creation:
