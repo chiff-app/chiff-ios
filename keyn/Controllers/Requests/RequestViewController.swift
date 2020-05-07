@@ -83,6 +83,8 @@ class RequestViewController: UIViewController {
                 switch error {
                 case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
                 case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+                case .cannotChangeAccount:
+                    self.showAlert(message: "errors.shared_account_change".localized)
                 case .noTeamSessionFound:
                     self.showAlert(message: "errors.no_team".localized)
                 case .notAdmin:

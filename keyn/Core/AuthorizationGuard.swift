@@ -10,6 +10,7 @@ import PromiseKit
 enum AuthorizationError: KeynError {
     case accountOverflow
     case cannotAddAccount
+    case cannotChangeAccount
     case noTeamSessionFound
     case notAdmin
     case inProgress
@@ -139,9 +140,21 @@ class AuthorizationGuard {
                 self.session.cancelRequest(reason: .disabled, browserTab: self.browserTab).catchLog("Error rejecting request")
                 throw AuthorizationError.accountOverflow
             }
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
-            success = true
-            return account
+            if self.type == .change {
+                if var account = account as? UserAccount {
+                    let newPassword = try account.nextPassword(context: context)
+                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: newPassword)
+                    success = true
+                    NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
+                    return account
+                } else {
+                    throw AuthorizationError.cannotChangeAccount
+                }
+            } else {
+                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+                success = true
+                return account
+            }
         }.ensure {
             AuthorizationGuard.authorizationInProgress = false
             switch self.type {
@@ -188,7 +201,7 @@ class AuthorizationGuard {
             }
             try account.addSite(site: site)
             #warning("This seems off. Can this crash? Should LocalAuthenticationManager return the context non-optional")
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
         }.ensure {
@@ -205,7 +218,7 @@ class AuthorizationGuard {
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
             let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, context: context)
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
         }.ensure {
