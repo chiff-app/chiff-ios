@@ -236,7 +236,6 @@ struct UserAccount: Account, Equatable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
     }
 
     func delete() -> Promise<Void> {

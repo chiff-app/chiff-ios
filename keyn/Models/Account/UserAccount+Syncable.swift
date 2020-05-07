@@ -38,7 +38,7 @@ extension UserAccount: Syncable {
         username = backupObject.username
         sites = backupObject.sites
         passwordIndex = backupObject.passwordIndex
-        lastPasswordUpdateTryIndex = backupObject.lastPasswordUpdateTryIndex
+        lastPasswordUpdateTryIndex = backupObject.passwordIndex
         passwordOffset = backupObject.passwordOffset
         askToLogin = backupObject.askToLogin
         askToChange = backupObject.askToChange
@@ -268,7 +268,6 @@ struct BackupUserAccount: BaseAccount, BackupObject {
     var username: String
     var sites: [Site]
     var passwordIndex: Int
-    var lastPasswordUpdateTryIndex: Int
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
@@ -285,7 +284,6 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         case username
         case sites
         case passwordIndex
-        case lastPasswordUpdateTryIndex
         case passwordOffset
         case askToLogin
         case askToChange
@@ -303,7 +301,6 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.username = account.username
         self.sites = account.sites
         self.passwordIndex = account.passwordIndex
-        self.lastPasswordUpdateTryIndex = account.lastPasswordUpdateTryIndex
         self.passwordOffset = account.passwordOffset
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
@@ -322,7 +319,6 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.username = try values.decode(String.self, forKey: .username)
         self.sites = try values.decode([Site].self, forKey: .sites)
         self.passwordIndex = try values.decode(Int.self, forKey: .passwordIndex)
-        self.lastPasswordUpdateTryIndex = try values.decode(Int.self, forKey: .lastPasswordUpdateTryIndex)
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)

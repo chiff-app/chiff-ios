@@ -220,9 +220,16 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 for message in messages {
                     promises.append(try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context))
                 }
-                return when(fulfilled: promises).firstValue(where: { $0 != nil })
+                return when(fulfilled: promises).map { (result: [[BulkAccount]?]) -> [BulkAccount]? in
+                    if result.isEmpty {
+                        return nil
+                    } else {
+                        return result.first(where: { $0 != nil }) ?? nil
+                    }
+                }
             }
         }
+
     }
 
     private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> Promise<[BulkAccount]?> {
@@ -232,28 +239,23 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         var result: [BulkAccount]?
         switch keynMessage.type {
         case .confirm:
-            guard let accountId = keynMessage.accountID else  {
+            guard let accountId = keynMessage.accountID, let result = keynMessage.passwordSuccessfullyChanged else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(id: accountId, context: context)
-            guard account != nil else {
+            guard var account = try UserAccount.get(id: accountId, context: context) else {
                 throw AccountError.notFound
             }
-            guard let result = keynMessage.passwordSuccessfullyChanged else {
-                throw CodingError.missingData
-            }
             if result {
-                try account!.updatePasswordAfterConfirmation(context: context)
+                try account.updatePasswordAfterConfirmation(context: context)
             }
         case .preferences:
             guard let accountId = keynMessage.accountID else  {
                 throw CodingError.missingData
             }
-            var account = try UserAccount.get(id: accountId, context: context)
-            guard account != nil else {
+            guard var account = try UserAccount.get(id: accountId, context: context) else {
                 throw AccountError.notFound
             }
-            try account!.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, enabled: nil)
+            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, enabled: nil)
         case .addBulk:
             result = keynMessage.accounts!
         default:
