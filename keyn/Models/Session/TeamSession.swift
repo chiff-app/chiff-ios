@@ -24,6 +24,7 @@ struct TeamSession: Session {
     var version: Int
     var title: String
     var lastChange: Timestamp
+    let organisationKey: Data
     var logoPath: String? {
         let filemgr = FileManager.default
         return filemgr.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("team_logo_\(id).png").path
@@ -43,7 +44,7 @@ struct TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp) {
+    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
         self.creationDate = Date()
         self.id = id
         self.signingPubKey = signingPubKey.base64
@@ -52,18 +53,20 @@ struct TeamSession: Session {
         self.isAdmin = isAdmin
         self.created = created
         self.lastChange = lastChange
+        self.organisationKey = organisationKey
     }
 
     // MARK: - Static functions
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int) -> Promise<Session> {
+    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
         do {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
+            let organisationKeyData = try Crypto.shared.convertFromBase64(from: organisationKey)
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now)
+            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
             return firstly {
                 try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
             }.map { _ in
@@ -78,6 +81,7 @@ struct TeamSession: Session {
                     throw SessionError.invalid
                 }
             }
+            // TODO: Update existing browser sessions.
         } catch {
             Logger.shared.error("Error initiating session", error: error)
             return Promise(error: error)
@@ -308,6 +312,7 @@ extension TeamSession: Codable {
         case version
         case title
         case lastChange
+        case organisationKey
     }
 
     init(from decoder: Decoder) throws {
@@ -321,5 +326,6 @@ extension TeamSession: Codable {
         self.version = try values.decode(Int.self, forKey: .version)
         self.title = try values.decode(String.self, forKey: .title)
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
+        self.organisationKey = try values.decodeIfPresent(Data.self, forKey: .organisationKey) ?? Data()
     }
 }

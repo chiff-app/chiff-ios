@@ -378,7 +378,10 @@ class AuthorizationGuard {
                 version = versionNumber
             }
             if let type = parameters["t"], type == "1" {
-                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version)
+                guard let organisationKey = parameters["k"] else {
+                    throw SessionError.invalid
+                }
+                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version, organisationKey: organisationKey)
             } else {
                 guard let browser = Browser(rawValue: browser.lowercased()) else {
                     throw SessionError.unknownType

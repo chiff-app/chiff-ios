@@ -218,13 +218,13 @@ struct BrowserSession: Session {
         try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
     }
 
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) -> Promise<Void> {
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, organisationKey: Data?) -> Promise<Void> {
         // TODO: Differentiate this for session type?
         do {
             guard let endpoint = Properties.endpoint else {
                 throw SessionError.noEndpoint
             }
-            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version)
+            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64)
             let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
             let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
             let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -250,8 +250,9 @@ struct BrowserSession: Session {
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
+            let organisationKey = try TeamSession.all().first?.organisationKey // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                when(fulfilled: try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey), session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64))
+                when(fulfilled: try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, organisationKey: organisationKey), session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, organisationKey: organisationKey))
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
@@ -279,15 +280,22 @@ struct BrowserSession: Session {
     }
 
 
-    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data) throws -> Promise<Void>{
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, organisationKey: Data?) throws -> Promise<Void>{
         guard let deviceEndpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
-
+        var data: [String: Any] = [:]
+        if let appVersion = Properties.version {
+            data["appVersion"] = appVersion
+        }
+        if let organisationKey = organisationKey {
+            data["organisationKey"] = organisationKey.base64
+        }
         var message: [String: Any] = [
             "httpMethod": APIMethod.post.rawValue,
             "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "deviceEndpoint": deviceEndpoint
+            "deviceEndpoint": deviceEndpoint,
+            "data": try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: sharedKey).base64
         ]
         if let userId = Properties.userId {
             message["userId"] = userId
@@ -304,6 +312,7 @@ struct BrowserSession: Session {
                     "sessionPubKey": account.sessionPubKey
                 ]
             }
+            print(keyPair.pubKey.base64)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
             return API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .post, signature: signature, body: jsonData).asVoid().log("Cannot create SQS queues and SNS endpoint.")
