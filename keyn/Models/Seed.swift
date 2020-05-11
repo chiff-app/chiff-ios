@@ -52,7 +52,7 @@ struct Seed {
             let seed = try Crypto.shared.generateSeed()
             let (keyPair, userId) = try createKeys(seed: seed)
             return firstly {
-                API.shared.signedRequest(method: .post, message: ["userId": userId], path: "users/\(keyPair.pubKey.base64)", privKey: keyPair.privKey, body: nil)
+                API.shared.signedRequest(method: .post, message: ["userId": userId], path: "users/\(keyPair.pubKey.base64)", privKey: keyPair.privKey, body: nil, parameters: nil)
             }.asVoid().recover { error in
                 NotificationManager.shared.deleteKeys()
                 delete()
@@ -67,7 +67,7 @@ struct Seed {
 
     static func recreateBackup() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .post, message: ["userId": Properties.userId as Any], path: "users/\(try publicKey())", privKey: try privateKey(), body: nil)
+            API.shared.signedRequest(method: .post, message: ["userId": Properties.userId as Any], path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
         }.asVoid().then { () -> Promise<Void> in
             var promises: [Promise<Void>] = []
             for account in try UserAccount.all(context: nil).values {
@@ -149,13 +149,13 @@ struct Seed {
 
     static func deleteBackupData() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil)
+            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
         }.asVoid().log("BackupManager cannot delete account.")
     }
 
     static func moveToProduction() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil)
+            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
         }.asVoid().log("Cannot move backup data.")
     }
 
