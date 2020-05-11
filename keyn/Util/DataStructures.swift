@@ -69,6 +69,7 @@ struct KeynPairingResponse: Codable {
     let arn: String
     let os: String = "ios"
     let appVersion: String?
+    let organisationKey: String?
 }
 
 /*

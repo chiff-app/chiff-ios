@@ -40,10 +40,8 @@ extension URLSession {
 }
 
 typealias JSONObject = Dictionary<String, Any>
-typealias RequestParameters = Dictionary<String, String>?
-
 
 protocol APIProtocol {
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?) -> Promise<JSONObject>
-    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String:String]?) -> Promise<JSONObject>
+    func request(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
 }

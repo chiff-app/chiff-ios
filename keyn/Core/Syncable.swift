@@ -67,7 +67,7 @@ extension Syncable {
 
     static func getData<T: BackupObject>(context: LAContext?) -> Promise<[String: T]> where T == BackupType {
         return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "users/\(try publicKey())/\(syncEndpoint.rawValue)", privKey: try privateKey(), body: nil)
+            API.shared.signedRequest(method: .get, message: nil, path: "users/\(try publicKey())/\(syncEndpoint.rawValue)", privKey: try privateKey(), body: nil, parameters: nil)
         }.map { result in
             let key = try encryptionKey()
             return result.compactMapValues { (object) in
@@ -170,7 +170,7 @@ extension Syncable {
             ]
             let path = "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)"
             return firstly {
-                API.shared.signedRequest(method: .put, message: message, path: path, privKey: try Self.privateKey(), body: nil)
+                API.shared.signedRequest(method: .put, message: message, path: path, privKey: try Self.privateKey(), body: nil, parameters: nil)
             }.asVoid().log("BackupManager cannot backup data.")
         } catch {
             return Promise(error: error)
@@ -178,7 +178,7 @@ extension Syncable {
     }
 
     func deleteBackup() throws {
-        API.shared.signedRequest(method: .delete, message: ["id": self.id], path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)", privKey: try Self.privateKey(), body: nil).asVoid().catchLog("Cannot delete backup.")
+        API.shared.signedRequest(method: .delete, message: ["id": self.id], path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)", privKey: try Self.privateKey(), body: nil, parameters: nil).asVoid().catchLog("Cannot delete backup.")
     }
 
 }

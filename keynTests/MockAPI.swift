@@ -32,7 +32,7 @@ class MockAPI: APIProtocol {
         customData = data
     }
 
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil) -> Promise<JSONObject> {
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, parameters: [String : String]?) -> Promise<JSONObject> {
         if shouldFail {
             return Promise(error: MockAPIError.fakeError)
         } else {
@@ -69,7 +69,7 @@ class MockAPI: APIProtocol {
         return Promise(error: MockAPIError.notImplemented)
     }
 
-    func request(path: String, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
+    func request(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
         if shouldFail {
             return Promise(error: MockAPIError.fakeError)
         } else {
@@ -146,7 +146,7 @@ class MockAPI: APIProtocol {
         return .value(JSONObject())
     }
     
-    private func messageCall(path: String?, parameters: RequestParameters, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
+    private func messageCall(path: String?, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<JSONObject> {
         return .value(JSONObject())
     }
 
