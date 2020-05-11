@@ -428,6 +428,8 @@ errors:
   password_error:
     comment: Error fetching password
     value: Error fetching password
+  password_generation:
+    value: 'Error generating new password:'
   push_notifications_error:
     comment: Error when push notifications are not available
     value: There was an error registering for push notifications.

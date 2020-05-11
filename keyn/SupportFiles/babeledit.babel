@@ -4294,6 +4294,28 @@
                         </children>
                     </folder_node>
                     <folder_node>
+                        <name>password_generation</name>
+                        <children>
+                            <concept_node>
+                                <name>value</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description></description>
+                                <comment></comment>
+                                <default_text></default_text>
+                                <translations>
+                                    <translation>
+                                        <language>en-US</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>nl-NL</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                        </children>
+                    </folder_node>
+                    <folder_node>
                         <name>push_notifications_error</name>
                         <children>
                             <concept_node>
