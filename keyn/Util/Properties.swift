@@ -43,6 +43,7 @@ struct Properties {
     static private let reloadAccountsFlag = "reloadAccountsFlag"
     static private let sortingPreferenceFlag = "sortingPreference"
     static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
+    static private let lastRunVersionFlag = "lastRunVersionFlag"
 
     static var isFirstLaunch: Bool {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
@@ -238,6 +239,20 @@ struct Properties {
             UserDefaults.standard.set(date, forKey: installTimestamp)
             return date.timeIntervalSince1970
         }
+    }
+
+    static var isUpgraded: Bool {
+        guard let lastRunVersion = UserDefaults.standard.string(forKey: lastRunVersionFlag) else {
+            UserDefaults.standard.set(Properties.version, forKey: lastRunVersionFlag)
+            return false
+        }
+        guard let currentVersion = Properties.version else {
+            return false
+        }
+        defer {
+            UserDefaults.standard.set(Properties.version, forKey: lastRunVersionFlag)
+        }
+        return currentVersion != lastRunVersion
     }
 
 }
