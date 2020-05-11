@@ -191,7 +191,7 @@ class AuthorizationGuard {
     private func addToExistingAccount() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: self.siteId)
+            try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
@@ -212,7 +212,7 @@ class AuthorizationGuard {
     private func addSite() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: siteId)
+            try PPD.get(id: siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
@@ -243,8 +243,8 @@ class AuthorizationGuard {
                 throw CodingError.missingData
             }
         }.then { accounts in
-            when(fulfilled: accounts.map { account in
-                PPD.get(id: account.siteId).map { (account, $0) }
+            when(fulfilled: try accounts.map { account in
+                try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) }
             })
         }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {

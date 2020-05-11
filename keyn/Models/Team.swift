@@ -48,7 +48,7 @@ struct Team {
                 "seed": (try Crypto.shared.encrypt(teamSeed, key: encryptionKey)).base64
             ]
             return firstly {
-                API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil)
+                API.shared.signedRequest(method: .post, message: message, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
             }.then { _ in
                 try self.createTeamSession(sharedSeed: sharedSeed, browserKeyPair: browserKeyPair, signingKeyPair: signingKeyPair, encryptionKey: encryptionKey, passwordSeed: passwordSeed, name: name, organisationKey: Crypto.shared.convertFromBase64(from: organisationKey64))
             }
@@ -86,7 +86,7 @@ struct Team {
         do {
             let (teamEncryptionKey, teamKeyPair, teamPasswordSeed) = try createTeamSeeds(seed: teamSeed)
             return firstly {
-                API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil)
+                API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
             }.map {
                 try Team(teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
             }
@@ -153,7 +153,7 @@ struct Team {
 
     func deleteAccount(id: String) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(keyPair.pubKey.base64)/accounts/\(id)", privKey: keyPair.privKey, body: nil)
+            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(keyPair.pubKey.base64)/accounts/\(id)", privKey: keyPair.privKey, body: nil, parameters: nil)
         }.asVoid()
     }
 
@@ -182,7 +182,7 @@ struct Team {
                 "id": adminRole.id,
                 "data": try adminRole.encrypt(key: encryptionKey)
             ]
-            return API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil)
+            return API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil, parameters: nil)
         } catch {
             return Promise(error: error)
         }

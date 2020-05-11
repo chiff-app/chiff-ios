@@ -55,7 +55,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+            API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
         }.done { _ in
             NotificationManager.shared.deleteKeys()
         }.log("Failed to delete ARN @ AWS.")
@@ -70,7 +70,7 @@ struct NotificationManager {
             "endpoint": endpoint
         ]
         return firstly {
-            API.shared.signedRequest(method: .post, message: message, path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil)
+            API.shared.signedRequest(method: .post, message: message, path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil, parameters: nil)
         }.map { result in
             if let subscriptionArn = result["arn"] as? String {
                 let id = KeyIdentifier.subscription.identifier(for: .aws)
@@ -99,7 +99,7 @@ struct NotificationManager {
                 throw CodingError.stringDecoding
             }
             return firstly {
-                API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil)
+                API.shared.signedRequest(method: .delete, message: ["arn": subscription], path: "news/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil, parameters: nil)
             }.map { result in
                 try Keychain.shared.delete(id: KeyIdentifier.subscription.identifier(for: .aws), service: .aws)
                 return
@@ -133,7 +133,7 @@ struct NotificationManager {
             if let deviceToken = deviceToken {
                 message["deviceToken"] = deviceToken
             }
-            return API.shared.signedRequest(method: .post, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+            return API.shared.signedRequest(method: .post, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
         }
     }
 
@@ -145,7 +145,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(method: .put, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil)
+            API.shared.signedRequest(method: .put, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
         }
     }
 
