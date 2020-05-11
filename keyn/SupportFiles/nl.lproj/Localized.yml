@@ -428,6 +428,8 @@ errors:
   password_error:
     comment: Fout bij ophalen wachtwoord
     value: Error fetching password
+  password_generation:
+    value: 'Fout bij genereren van nieuw wachtwoord:'
   push_notifications_error:
     comment: Error when push notifications are not available
     value: Er is een fout opgetreden bij het registreren van pushberichten.
