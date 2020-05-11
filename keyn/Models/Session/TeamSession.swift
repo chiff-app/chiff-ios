@@ -130,6 +130,7 @@ struct TeamSession: Session {
             if !session.created && pushed {
                 session.created = true
                 try session.update(makeBackup: true)
+                _ = BrowserSession.updateAllSessionData(organisationKey: session.organisationKey)
             }
             return firstly {
                 API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil, parameters: nil)

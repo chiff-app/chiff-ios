@@ -193,7 +193,7 @@ struct BrowserSession: Session {
         }.asVoid().log("Failed to delete password change confirmation from queue.")
     }
 
-    func updateAccountList(account: Account) throws {
+    func updateSessionAccount(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
         var message = [
@@ -204,6 +204,20 @@ struct BrowserSession: Session {
             message["sessionPubKey"] = SharedAccount.sessionPubKey
         }
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
+    }
+
+    func updateSessionData(organisationKey: Data?) throws -> Promise<Void> {
+        var data: [String: Any] = [:]
+        if let appVersion = Properties.version {
+            data["appVersion"] = appVersion
+        }
+        if let organisationKey = organisationKey {
+            data["organisationKey"] = organisationKey.base64
+        }
+        let message = [
+            "data": try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
+        ]
+        return API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to update session data.")
     }
 
     func deleteAccount(accountId: String) {
@@ -270,6 +284,12 @@ struct BrowserSession: Session {
         }
     }
 
+    static func updateAllSessionData(organisationKey: Data?) {
+        firstly {
+            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey) })
+        }.log("Failed to update session data.")
+    }
+
     // MARK: - Private
 
     private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
@@ -312,7 +332,6 @@ struct BrowserSession: Session {
                     "sessionPubKey": account.sessionPubKey
                 ]
             }
-            print(keyPair.pubKey.base64)
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
             return API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .post, signature: signature, body: jsonData).asVoid().log("Cannot create SQS queues and SNS endpoint.")
