@@ -95,7 +95,9 @@ class AuthorizationGuard {
                 return Promise(error: AuthorizationError.cannotAddAccount)
             }
             promise = addBulkSites().map { nil }
-        case .login, .change, .fill, .getDetails:
+        case .change:
+            promise = authorizeChange()
+        case .login, .fill, .getDetails:
             promise = authorize()
         case .bulkLogin:
             promise = authorizeBulkLogin().map { nil }
@@ -140,35 +142,45 @@ class AuthorizationGuard {
                 self.session.cancelRequest(reason: .disabled, browserTab: self.browserTab).catchLog("Error rejecting request")
                 throw AuthorizationError.accountOverflow
             }
-            if self.type == .change {
-                if var account = account as? UserAccount {
-                    let newPassword = try account.nextPassword(context: context)
-                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: newPassword)
-                    success = true
-                    NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
-                    return account
-                } else {
-                    throw AuthorizationError.cannotChangeAccount
-                }
-            } else {
-                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
-                success = true
-                return account
-            }
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+            success = true
+            return account
         }.ensure {
             AuthorizationGuard.authorizationInProgress = false
             switch self.type {
-                case .login:
-                    Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
-                case .change:
-                    Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
-                case .fill:
-                    Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
+            case .login:
+                Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
+            case .fill:
+                Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
             case .getDetails:
                 print("TODO: get details analytics")
             default:
                 Logger.shared.warning("Authorize called on the wrong type?")
             }
+        }
+    }
+
+    private func authorizeChange() -> Promise<Account?> {
+        var success = false
+        return firstly {
+            when(fulfilled: LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false), try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair()))
+        }.map { (context, ppd) in
+            guard var account: UserAccount = try UserAccount.get(id: self.accountId, context: context) else {
+                if try SharedAccount.get(id: self.accountId, context: context) != nil {
+                    throw AuthorizationError.cannotChangeAccount
+                } else {
+                    throw AccountError.notFound
+                }
+            }
+            account.sites[0].ppd = ppd
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: account.nextPassword(context: context))
+            success = true
+            NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
+            return account
+        }.ensure {
+            AuthorizationGuard.authorizationInProgress = false
+            Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
         }
     }
 
@@ -191,7 +203,7 @@ class AuthorizationGuard {
     private func addToExistingAccount() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: self.siteId)
+            try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
@@ -212,7 +224,7 @@ class AuthorizationGuard {
     private func addSite() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: siteId)
+            try PPD.get(id: siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
@@ -243,8 +255,8 @@ class AuthorizationGuard {
                 throw CodingError.missingData
             }
         }.then { accounts in
-            when(fulfilled: accounts.map { account in
-                PPD.get(id: account.siteId).map { (account, $0) }
+            when(fulfilled: try accounts.map { account in
+                try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) }
             })
         }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {
@@ -378,7 +390,10 @@ class AuthorizationGuard {
                 version = versionNumber
             }
             if let type = parameters["t"], type == "1" {
-                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version)
+                guard let organisationKey = parameters["k"] else {
+                    throw SessionError.invalid
+                }
+                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version, organisationKey: organisationKey)
             } else {
                 guard let browser = Browser(rawValue: browser.lowercased()) else {
                     throw SessionError.unknownType

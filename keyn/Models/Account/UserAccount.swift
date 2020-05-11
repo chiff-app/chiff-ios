@@ -132,7 +132,7 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: .otp)
         let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 
@@ -175,7 +175,7 @@ struct UserAccount: Account, Equatable {
         if backup {
             let _ = try self.backup()
         }
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
     }
 
@@ -260,7 +260,7 @@ struct UserAccount: Account, Equatable {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
         let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
         Properties.accountCount += 1
     }

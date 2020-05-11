@@ -40,10 +40,14 @@ struct PPD: Codable {
     let redirect: String?
     let name: String
     
-    static func get(id: String) -> Guarantee<PPD?> {
-        let parameters: RequestParameters = ["v": PPDVersion.v1_1.rawValue]
-        return firstly {
-            API.shared.request(path: "ppd/\(id)", parameters: parameters, method: .get, signature: nil, body: nil)
+    static func get(id: String, organisationKeyPair: KeyPair?) -> Guarantee<PPD?> {
+        let parameters = ["v": PPDVersion.v1_1.rawValue]
+        return firstly { () -> Promise<JSONObject> in
+            if let keyPair = organisationKeyPair {
+                return API.shared.signedRequest(method: .get, message: ["id": id], path: "organisations/\(keyPair.pubKey.base64)/ppd/\(id)", privKey: keyPair.privKey, body: nil, parameters: parameters)
+            } else {
+                return API.shared.request(path: "ppd/\(id)", parameters: parameters, method: .get, signature: nil, body: nil)
+            }
         }.map { result -> PPD? in
             guard let ppd = result["ppds"] as? [Any] else {
                 Logger.shared.error("Failed to decode PPD")

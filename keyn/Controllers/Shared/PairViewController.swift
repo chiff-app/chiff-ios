@@ -78,10 +78,10 @@ class PairViewController: QRViewController {
             AuthorizationGuard.startAuthorization(reason: "requests.create_team".localized)
         }.then(on: .main) { context -> Promise<Session> in
             self.pairContainerDelegate.startLoading()
-            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"] else {
+            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"], let organisationKey = parameters["k"] else {
                 return Promise(error: SessionError.invalid)
             }
-            return Team.create(token: token, name: name)
+            return Team.create(token: token, name: name, organisationKey64: organisationKey)
         }
     }
 
@@ -90,10 +90,10 @@ class PairViewController: QRViewController {
             AuthorizationGuard.startAuthorization(reason: "requests.restore_team".localized)
         }.then(on: .main) { context -> Promise<Session> in
             self.pairContainerDelegate.startLoading()
-            guard let parameters = url.queryParameters, let seed = parameters["s"] else {
+            guard let parameters = url.queryParameters, let seed = parameters["s"], let organisationKey = parameters["k"] else {
                 return Promise(error: SessionError.invalid)
             }
-            return Team.restore(teamSeed64: seed)
+            return Team.restore(teamSeed64: seed, organisationKey64: organisationKey)
         }
     }
 
