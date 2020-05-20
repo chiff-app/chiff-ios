@@ -606,7 +606,7 @@ notifications:
     value: Inloggen Keyn voor teams
   this_on_that:
     description: GitHub in Firefox op MacOS
-    value: '%@ op %@.'
+    value: '%@ in %@.'
 numbers:
   five:
     value: '5'

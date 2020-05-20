@@ -43,6 +43,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
     var editButton: UIBarButtonItem!
     var account: Account!
+    var passwordLoaded = false
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
     var editingMode: Bool = false
@@ -140,7 +141,11 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 showPasswordButton.isHidden = true
                 showPasswordButton.isEnabled = false
             } else {
-                userPasswordTextField.text = password ?? "22characterplaceholder"
+                if let password = password {
+                    passwordLoaded = true
+                    userPasswordTextField.text = password
+                }
+                userPasswordTextField.text = "22characterplaceholder"
                 userPasswordTextField.isSecureTextEntry = true
             }
             token = try account.oneTimePasswordToken()
@@ -259,11 +264,14 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
+        if passwordLoaded && userPasswordTextField.isEnabled {
+            self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+            return
+        }
         firstly {
             account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded)
         }.done(on: .main) { password in
             if self.userPasswordTextField.isEnabled {
-                self.userPasswordTextField.text = password
                 self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
             } else {
                 self.showHiddenPasswordPopup(password: password ?? "This account has no password")
