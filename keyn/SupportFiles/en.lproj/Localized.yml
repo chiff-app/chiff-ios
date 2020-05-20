@@ -606,7 +606,7 @@ notifications:
     value: Keyn for teams login
   this_on_that:
     description: Chrome on MacOS
-    value: '%@ on %@.'
+    value: '%@ in %@.'
 numbers:
   five:
     value: '5'
