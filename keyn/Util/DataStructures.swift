@@ -20,6 +20,7 @@ struct BulkAccount: Codable {
     let siteId: String
     let siteURL: String
     let siteName: String
+    let notes: String?
 
     enum CodingKeys: String, CodingKey {
         case username = "u"
@@ -27,6 +28,7 @@ struct BulkAccount: Codable {
         case siteId = "s"
         case siteName = "n"
         case siteURL = "l"
+        case notes = "y"
     }
 }
 
