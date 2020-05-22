@@ -261,7 +261,7 @@ class AuthorizationGuard {
         }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: nil, context: laContext)
+                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, context: laContext)
             }
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: laContext)
             success = true
