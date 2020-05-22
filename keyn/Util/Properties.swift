@@ -5,12 +5,6 @@
 import Foundation
 import LocalAuthentication
 
-enum InfoNotificationStatus: Int {
-    case notDecided
-    case yes
-    case no
-}
-
 struct Properties {
 
     init() {}
@@ -32,7 +26,6 @@ struct Properties {
     static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
-    static private let infoNotificationsFlag = "infoNotifications"
     static private let userIdFlag = "userID"
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
     static private let subscriptionProductFlag = "subscriptionProduct"
@@ -79,10 +72,6 @@ struct Properties {
             UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
             Logger.shared.setAnalyticsLogging(value: newValue)
         }
-    }
-    static var infoNotifications: InfoNotificationStatus {
-        get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
-        set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
     }
     static var userId: String? {
         get { return UserDefaults.standard.string(forKey: userIdFlag) }
@@ -142,7 +131,6 @@ struct Properties {
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
-        UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
         UserDefaults.standard.removeObject(forKey: userIdFlag)
 //        UserDefaults.standard.removeObject(forKey: accountCountFlag)
 //        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
