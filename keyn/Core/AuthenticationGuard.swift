@@ -67,7 +67,7 @@ class AuthenticationGuard {
             self.hideLockWindow()
             return context
         }.then { (context) -> Promise<Void> in
-            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, filterLogos: nil), UserAccount.sync(context: context), TeamSession.sync(context: context))
+            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, filterLogos: nil), UserAccount.sync(context: context), TeamSession.sync(context: context), self.updateNews())
         }.catch(on: .main) { error in
             if case SyncError.dataDeleted = error {
                 self.showDataDeleted()
@@ -102,8 +102,24 @@ class AuthenticationGuard {
             (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
             }
         }
-
     }
+
+    private func updateNews() -> Promise<Void> {
+        return firstly {
+            API.shared.request(path: "news", parameters: ["t": "\(Properties.firstLaunchTimestamp)"], method: .get, signature: nil, body: nil)
+        }.map { messages in
+            guard let (id, news) = messages.first(where: { !Properties.receivedNewsMessage(id: $0.key) }),
+                let object = news as? [String: String],
+                let title = object["title"],
+                let message = object["message"] else {
+                return
+            }
+            UIApplication.shared.visibleViewController?.showAlert(message: message, title: title, handler: { (action) in
+                Properties.addReceivedNewsMessage(id: id)
+            })
+        }
+    }
+
 
     // MARK: - UIApplication Notification Handlers
     
