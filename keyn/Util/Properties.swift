@@ -23,6 +23,7 @@ struct Properties {
         }
     }
 
+    static private let receivedNewsMessagesFlag = "receivedNewsMessagesFlag"
     static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
@@ -44,6 +45,17 @@ struct Properties {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
         }
         return isFirstLaunch
+    }
+
+    static func receivedNewsMessage(id: String) -> Bool {
+        let ids = UserDefaults.standard.array(forKey: receivedNewsMessagesFlag) as? [String] ?? []
+        return ids.contains(id)
+    }
+
+    static func addReceivedNewsMessage(id: String) {
+        var ids = UserDefaults.standard.array(forKey: receivedNewsMessagesFlag) as? [String] ?? []
+        ids.append(id)
+        UserDefaults.standard.set(ids, forKey: receivedNewsMessagesFlag)
     }
 
     static var reloadAccounts: Bool {
@@ -217,15 +229,15 @@ struct Properties {
 
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
-    static var firstLaunchTimestamp: TimeInterval {
+    static var firstLaunchTimestamp: Timestamp {
         #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
-            return installDate.timeIntervalSince1970
+            return installDate.millisSince1970
         } else {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
-            return date.timeIntervalSince1970
+            return date.millisSince1970
         }
     }
 

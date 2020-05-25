@@ -207,6 +207,7 @@ extension Notification.Name {
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
     static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
     static let backupCompleted = Notification.Name("BackupCompleted")
+    static let newsMessage = Notification.Name("NewsMessage")
 }
 
 extension Token {
