@@ -5,12 +5,6 @@
 import Foundation
 import LocalAuthentication
 
-enum InfoNotificationStatus: Int {
-    case notDecided
-    case yes
-    case no
-}
-
 struct Properties {
 
     init() {}
@@ -29,10 +23,10 @@ struct Properties {
         }
     }
 
+    static private let receivedNewsMessagesFlag = "receivedNewsMessagesFlag"
     static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
-    static private let infoNotificationsFlag = "infoNotifications"
     static private let userIdFlag = "userID"
     static private let subscriptionExiryDateFlag = "subscriptionExiryDate"
     static private let subscriptionProductFlag = "subscriptionProduct"
@@ -51,6 +45,17 @@ struct Properties {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
         }
         return isFirstLaunch
+    }
+
+    static func receivedNewsMessage(id: String) -> Bool {
+        let ids = UserDefaults.standard.array(forKey: receivedNewsMessagesFlag) as? [String] ?? []
+        return ids.contains(id)
+    }
+
+    static func addReceivedNewsMessage(id: String) {
+        var ids = UserDefaults.standard.array(forKey: receivedNewsMessagesFlag) as? [String] ?? []
+        ids.append(id)
+        UserDefaults.standard.set(ids, forKey: receivedNewsMessagesFlag)
     }
 
     static var reloadAccounts: Bool {
@@ -79,10 +84,6 @@ struct Properties {
             UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
             Logger.shared.setAnalyticsLogging(value: newValue)
         }
-    }
-    static var infoNotifications: InfoNotificationStatus {
-        get { return InfoNotificationStatus(rawValue: UserDefaults.standard.integer(forKey: infoNotificationsFlag)) ?? InfoNotificationStatus.notDecided }
-        set { UserDefaults.standard.set(newValue.rawValue, forKey: infoNotificationsFlag) }
     }
     static var userId: String? {
         get { return UserDefaults.standard.string(forKey: userIdFlag) }
@@ -142,7 +143,6 @@ struct Properties {
     static func purgePreferences() {
         UserDefaults.standard.removeObject(forKey: errorLoggingFlag)
         UserDefaults.standard.removeObject(forKey: analyticsLoggingFlag)
-        UserDefaults.standard.removeObject(forKey: infoNotificationsFlag)
         UserDefaults.standard.removeObject(forKey: userIdFlag)
 //        UserDefaults.standard.removeObject(forKey: accountCountFlag)
 //        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
@@ -229,15 +229,15 @@ struct Properties {
 
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
-    static var firstLaunchTimestamp: TimeInterval {
+    static var firstLaunchTimestamp: Timestamp {
         #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
-            return installDate.timeIntervalSince1970
+            return installDate.millisSince1970
         } else {
             let date = Date()
             UserDefaults.standard.set(date, forKey: installTimestamp)
-            return date.timeIntervalSince1970
+            return date.millisSince1970
         }
     }
 

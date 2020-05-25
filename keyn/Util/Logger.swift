@@ -28,7 +28,6 @@ struct Logger {
             .accountCount: Properties.accountCount,
             .pairingCount: BrowserSession.count,
             .subscribed: Properties.hasValidSubscription,
-            .infoNotifications: Properties.infoNotifications,
             .backupCompleted: Seed.paperBackupCompleted
         ])
         if let userId = Properties.userId {
