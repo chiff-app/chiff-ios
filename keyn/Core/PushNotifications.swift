@@ -38,17 +38,13 @@ struct PushNotifications {
                                                                 actions: [],
                                                                 intentIdentifiers: [],
                                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let keyn = UNNotificationCategory(identifier: NotificationCategory.KEYN_NOTIFICATION,
-                                          actions: [],
-                                          intentIdentifiers: [],
-                                          options: .customDismissAction)
         let nudge = UNNotificationCategory(identifier: NotificationCategory.ONBOARDING_NUDGE,
                                            actions: [],
                                            intentIdentifiers: [],
                                            options: .customDismissAction)
         let center = UNUserNotificationCenter.current()
         center.delegate = AppDelegate.notificationService
-        center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, keyn, nudge])
+        center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, nudge])
         return Promise { seal in
             center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
                 Properties.deniedPushNotifications = !granted

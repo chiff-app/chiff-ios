@@ -106,8 +106,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
         switch notification.request.content.categoryIdentifier {
-        case NotificationCategory.KEYN_NOTIFICATION:
-            return [.alert]
         case NotificationCategory.ONBOARDING_NUDGE:
             DispatchQueue.main.async {
                 if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {

@@ -22,7 +22,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
-        notificationSettingSwitch.isOn = Properties.infoNotifications == .yes
         setJailbreakText()
         NotificationCenter.default.addObserver(forName: .backupCompleted, object: nil, queue: OperationQueue.main, using: updateBackupFooter)
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
@@ -113,20 +112,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             }
         }))
         self.present(alert, animated: true, completion: nil)
-    }
-
-    @IBAction func updateNotificationSettings(_ sender: UISwitch) {
-        sender.isUserInteractionEnabled = false
-        firstly {
-            sender.isOn ? NotificationManager.shared.subscribe().map { _ in } : NotificationManager.shared.unsubscribe()
-        }.done(on: DispatchQueue.main) { _ in
-            Properties.infoNotifications = NotificationManager.shared.isSubscribed ? .yes : .no
-        }.ensure(on: DispatchQueue.main) {
-            sender.isUserInteractionEnabled = true
-        }.catch(on: DispatchQueue.main) { error in
-            sender.isOn = NotificationManager.shared.isSubscribed
-            self.showAlert(message: "\("errors.subscribing".localized): \(error)")
-        }
     }
 
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
