@@ -417,7 +417,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 guard try SharedAccount.get(id: account.id, context: nil) == nil else {
                     throw KeychainError.storeKey
                 }
-                self.account = try UserAccount(username: account.username, sites: account.sites, password: password, rpId: nil, algorithms: nil, notes: notes, context: nil)
+                self.account = try UserAccount(username: account.username, sites: account.sites, password: password, rpId: nil, algorithms: nil, notes: notes, askToChange: nil, context: nil)
                 self.addToTeamButton.originalButtonText = "accounts.add_to_team".localized
             }.asVoid()
         } catch {

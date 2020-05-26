@@ -23,6 +23,7 @@ class AuthorizationGuard {
     var session: BrowserSession
     let type: KeynMessageType
     let count: Int!       // Should be present for bulk add site requests
+    private let askToChange: Bool?      // May be present for addSite requests.
     private let accountIds: [Int: String]!// Should be present for bulk login requests
     private let browserTab: Int!        // Should be present for all requests
     private let siteName: String!       // Should be present for all requests
@@ -74,6 +75,7 @@ class AuthorizationGuard {
         self.algorithms = request.algorithms
         self.accountIds = request.accountIDs
         self.count = request.count
+        self.askToChange = request.askToChange
     }
 
     // MARK: - Handle request responses
@@ -229,7 +231,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, askToChange: self.askToChange, context: context)
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
@@ -261,7 +263,7 @@ class AuthorizationGuard {
         }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, context: laContext)
+                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, askToChange: nil, context: laContext)
             }
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: laContext)
             success = true
@@ -295,7 +297,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
             let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
-            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, notes: nil, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, notes: nil, askToChange: false, context: context)
             // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
             try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)

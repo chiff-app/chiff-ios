@@ -28,7 +28,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Properties.environment == .prod ? 4 : 5
+        return Properties.environment == .prod ? 3 : 4
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

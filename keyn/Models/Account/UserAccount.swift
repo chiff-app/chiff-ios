@@ -40,13 +40,14 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
         self.username = username
         self.enabled = false
         self.version = 1
+        self.askToChange = askToChange
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
         }
