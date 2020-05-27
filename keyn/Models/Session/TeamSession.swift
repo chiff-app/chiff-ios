@@ -270,8 +270,9 @@ struct TeamSession: Session {
         guard let path = logoPath else {
             return Promise(error: TeamSessionError.logoPathNotFound)
         }
-        return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/logo", privKey: try signingPrivKey(), body: nil, parameters: nil)
+        return firstly { () -> Promise<JSONObject> in
+            let organisationKeyPair = try Crypto.shared.createSigningKeyPair(seed: organisationKey)
+            return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(organisationKeyPair.pubKey.base64)/logo", privKey: organisationKeyPair.privKey, body: nil, parameters: nil)
         }.map { result in
             guard let logo = result["logo"] as? String else {
                 return
@@ -334,6 +335,6 @@ extension TeamSession: Codable {
         self.version = try values.decode(Int.self, forKey: .version)
         self.title = try values.decode(String.self, forKey: .title)
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
-        self.organisationKey = try values.decodeIfPresent(Data.self, forKey: .organisationKey) ?? Data()
+        self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
     }
 }
