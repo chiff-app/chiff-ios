@@ -10,7 +10,7 @@ import UIKit
 import PromiseKit
 
 protocol AccessControlDelegate {
-    func setObjects(objects: [AccessControllable])
+    func setObjects(objects: [AccessControllable], type: AccessControlType)
 }
 
 class TeamAccountViewController: KeynTableViewController, AccessControlDelegate {
@@ -43,11 +43,12 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
         setTitle()
     }
 
-    func setObjects(objects: [AccessControllable]) {
-        if let roles = objects as? [TeamRole] {
-            selectedRoles = roles
-        } else if let users = objects as? [TeamUser] {
-            selectedUsers = users
+    func setObjects(objects: [AccessControllable], type: AccessControlType) {
+        switch type {
+        case .user:
+            selectedUsers = objects as! [TeamUser]
+        case .role:
+            selectedRoles = objects as! [TeamRole]
         }
         tableView.reloadData()
     }
