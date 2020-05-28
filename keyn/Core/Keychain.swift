@@ -19,6 +19,7 @@ enum KeychainError: KeynError {
     case failedCreatingSecAccess
     case authenticationCancelled
     case createSecKey
+    case duplicateItem
 }
 
 enum KeychainService: String {
@@ -146,9 +147,12 @@ struct Keychain {
             query[kSecAttrAccessControl as String] = access
         }
 
-        let status = SecItemAdd(query as CFDictionary, nil)
-        guard status == errSecSuccess else {
-            throw KeychainError.unhandledError(status.message)
+        switch SecItemAdd(query as CFDictionary, nil) {
+        case errSecSuccess: break
+        case errSecDuplicateItem:
+            throw KeychainError.duplicateItem
+        case let status:
+             throw KeychainError.unhandledError(status.message)
         }
     }
 

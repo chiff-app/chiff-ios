@@ -148,8 +148,10 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
                 self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
+            } catch KeychainError.duplicateItem {
+                showAlert(message: "errors.account_exists".localized)
             } catch {
-                showAlert(message: "\("errors.save_account".localized): \(error)")
+                showAlert(message: "\("errors.save_account".localized): \(error.localizedDescription)")
                 Logger.shared.error("Account could not be saved", error: error)
             }
 

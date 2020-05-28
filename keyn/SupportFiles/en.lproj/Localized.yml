@@ -335,6 +335,8 @@ devices:
   unknown:
     value: Unknown
 errors:
+  account_exists:
+    value: An account with this URL and username combination already exists.
   add_otp:
     value: Error adding OTP token
   add_to_team:
