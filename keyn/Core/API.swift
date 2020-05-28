@@ -16,16 +16,15 @@ class API: NSObject, APIProtocol {
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
     
-    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil) -> Promise<JSONObject> {
+    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String:String]?) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
-            let parameters = [
-                "m": try Crypto.shared.convertToBase64(from: jsonData)
-            ]
+            var parameters = parameters ?? [:]
+            parameters["m"] = try Crypto.shared.convertToBase64(from: jsonData)
             return request(path: path, parameters: parameters, method: method, signature: signature, body: body)
         } catch {
             return Promise(error: error)
@@ -34,7 +33,7 @@ class API: NSObject, APIProtocol {
 
     func request(
         path: String,
-        parameters: RequestParameters,
+        parameters: [String:String]?,
         method: APIMethod,
         signature: String? = nil,
         body: Data? = nil
@@ -44,7 +43,7 @@ class API: NSObject, APIProtocol {
         }
     }
     
-    private func createRequest(path: String, parameters: RequestParameters, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
+    private func createRequest(path: String, parameters: [String:String]?, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = path.starts(with: "questionnaire") ? "api.keyn.app" : Properties.keynApi

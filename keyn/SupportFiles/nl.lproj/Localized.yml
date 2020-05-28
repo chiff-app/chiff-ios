@@ -77,6 +77,8 @@ accounts:
     value: Codes kunnen zowel tijdgebaseerd als tellergebaseerd zijn
   mostly:
     value: Meest gebruikt
+  move_from_team:
+    value: Verplaats uit team
   my_accounts:
     value: Mijn accounts
   name:
@@ -333,8 +335,12 @@ devices:
   unknown:
     value: Onbekend
 errors:
+  account_exists:
+    value: Er bestaat al een account met deze URL en gebruikersnaam.
   add_otp:
     value: Fout bij toevoegen OTP token
+  add_to_team:
+    value: Fout bij toevoegen aan team
   api_error:
     comment: An error thrown by the API
     value: Er is een netwerkfout opgetreden
@@ -347,6 +353,10 @@ errors:
       Dit kun je doen via Instellingen.
   convert_to_team:
     value: Fout bij converteren naar team account
+  convert_to_team_totp:
+    value: >-
+      Dit account heeft een counter-gebaseerd one-time password, welke niet
+      ondersteund wordt in een Team-account.
   corrupted_data:
     value: Onleesbare data fout
   creating_team:
@@ -393,6 +403,8 @@ errors:
       value: >-
         Authenticatie kan niet gestart worden, omdat de toegangscode niet is
         ingesteld op de telefoon.
+  move_from_team:
+    value: Fout bij verplaatsen account van team
   moving_data:
     value: Fout bij verhuizen backup data.
   no_admin:
@@ -418,6 +430,8 @@ errors:
   password_error:
     comment: Fout bij ophalen wachtwoord
     value: Error fetching password
+  password_generation:
+    value: 'Fout bij genereren van nieuw wachtwoord:'
   push_notifications_error:
     comment: Error when push notifications are not available
     value: Er is een fout opgetreden bij het registreren van pushberichten.
@@ -594,7 +608,7 @@ notifications:
     value: Inloggen Keyn voor teams
   this_on_that:
     description: GitHub in Firefox op MacOS
-    value: '%@ op %@.'
+    value: '%@ in %@.'
 numbers:
   five:
     value: '5'
@@ -651,6 +665,13 @@ popups:
       value: >-
         Verhuis je backup data naar de productie database. Gebruik deze functie
         als je de App Store versie van Keyn wilt gaan gebruiken.
+    move_to_user_account_message:
+      value: >-
+        Wil je dit account van het team naar je persoonlijke accounts
+        verplaatsen? Andere teamleden zullen geen toegang meer hebben tot dit
+        account.
+    move_to_user_account_title:
+      value: Verplaats uit team
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.
@@ -686,7 +707,7 @@ popups:
       comment: Deletes something
       value: Verwijder
     move:
-      value: Verhuis
+      value: Verplaats
     'no':
       comment: nee
       value: 'no'

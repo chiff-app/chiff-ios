@@ -23,6 +23,7 @@ class AuthorizationGuard {
     var session: BrowserSession
     let type: KeynMessageType
     let count: Int!       // Should be present for bulk add site requests
+    private let askToChange: Bool?      // May be present for addSite requests.
     private let accountIds: [Int: String]!// Should be present for bulk login requests
     private let browserTab: Int!        // Should be present for all requests
     private let siteName: String!       // Should be present for all requests
@@ -74,6 +75,7 @@ class AuthorizationGuard {
         self.algorithms = request.algorithms
         self.accountIds = request.accountIDs
         self.count = request.count
+        self.askToChange = request.askToChange
     }
 
     // MARK: - Handle request responses
@@ -95,7 +97,9 @@ class AuthorizationGuard {
                 return Promise(error: AuthorizationError.cannotAddAccount)
             }
             promise = addBulkSites().map { nil }
-        case .login, .change, .fill, .getDetails:
+        case .change:
+            promise = authorizeChange()
+        case .login, .fill, .getDetails:
             promise = authorize()
         case .bulkLogin:
             promise = authorizeBulkLogin().map { nil }
@@ -140,35 +144,45 @@ class AuthorizationGuard {
                 self.session.cancelRequest(reason: .disabled, browserTab: self.browserTab).catchLog("Error rejecting request")
                 throw AuthorizationError.accountOverflow
             }
-            if self.type == .change {
-                if var account = account as? UserAccount {
-                    let newPassword = try account.nextPassword(context: context)
-                    try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: newPassword)
-                    success = true
-                    NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
-                    return account
-                } else {
-                    throw AuthorizationError.cannotChangeAccount
-                }
-            } else {
-                try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
-                success = true
-                return account
-            }
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+            success = true
+            return account
         }.ensure {
             AuthorizationGuard.authorizationInProgress = false
             switch self.type {
-                case .login:
-                    Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
-                case .change:
-                    Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
-                case .fill:
-                    Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
+            case .login:
+                Logger.shared.analytics(.loginRequestAuthorized, properties: [.value: success])
+            case .fill:
+                Logger.shared.analytics(.fillPassworddRequestAuthorized, properties: [.value: success])
             case .getDetails:
                 print("TODO: get details analytics")
             default:
                 Logger.shared.warning("Authorize called on the wrong type?")
             }
+        }
+    }
+
+    private func authorizeChange() -> Promise<Account?> {
+        var success = false
+        return firstly {
+            when(fulfilled: LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false), try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair()))
+        }.map { (context, ppd) in
+            guard var account: UserAccount = try UserAccount.get(id: self.accountId, context: context) else {
+                if try SharedAccount.get(id: self.accountId, context: context) != nil {
+                    throw AuthorizationError.cannotChangeAccount
+                } else {
+                    throw AccountError.notFound
+                }
+            }
+            account.sites[0].ppd = ppd
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: account.nextPassword(context: context))
+            success = true
+            NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
+            return account
+        }.ensure {
+            AuthorizationGuard.authorizationInProgress = false
+            Logger.shared.analytics(.changePasswordRequestAuthorized, properties: [.value: success])
         }
     }
 
@@ -191,7 +205,7 @@ class AuthorizationGuard {
     private func addToExistingAccount() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: self.siteId)
+            try PPD.get(id: self.siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
@@ -212,12 +226,12 @@ class AuthorizationGuard {
     private func addSite() -> Promise<Void> {
         var success = false
         return firstly {
-            PPD.get(id: siteId)
+            try PPD.get(id: siteId, organisationKeyPair: TeamSession.organisationKeyPair())
         }.then { ppd in
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, askToChange: self.askToChange, context: context)
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
@@ -243,13 +257,13 @@ class AuthorizationGuard {
                 throw CodingError.missingData
             }
         }.then { accounts in
-            when(fulfilled: accounts.map { account in
-                PPD.get(id: account.siteId).map { (account, $0) }
+            when(fulfilled: try accounts.map { account in
+                try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) }
             })
         }.map { (accounts) in
             for (bulkAccount, ppd) in accounts {
                 let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: nil, context: laContext)
+                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, askToChange: nil, context: laContext)
             }
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: laContext)
             success = true
@@ -283,7 +297,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
             let site = Site(name: self.siteName ?? "Unknown", id: self.siteId, url: self.siteURL ?? "https://", ppd: nil)
-            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, notes: nil, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: nil, rpId: self.rpId, algorithms: self.algorithms, notes: nil, askToChange: false, context: context)
             // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
             try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
@@ -378,7 +392,10 @@ class AuthorizationGuard {
                 version = versionNumber
             }
             if let type = parameters["t"], type == "1" {
-                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version)
+                guard let organisationKey = parameters["k"] else {
+                    throw SessionError.invalid
+                }
+                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version, organisationKey: organisationKey)
             } else {
                 guard let browser = Browser(rawValue: browser.lowercased()) else {
                     throw SessionError.unknownType

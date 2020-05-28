@@ -77,6 +77,8 @@ accounts:
     value: Codes can either be time-based or counter-based
   mostly:
     value: Mostly used
+  move_from_team:
+    value: Move from team
   my_accounts:
     value: My accounts
   name:
@@ -333,8 +335,12 @@ devices:
   unknown:
     value: Unknown
 errors:
+  account_exists:
+    value: An account with this URL and username combination already exists.
   add_otp:
     value: Error adding OTP token
+  add_to_team:
+    value: Error adding account to team
   api_error:
     comment: An error thrown by the API
     value: A network error occured
@@ -347,6 +353,10 @@ errors:
       in Settings.
   convert_to_team:
     value: Error converting to team account
+  convert_to_team_totp:
+    value: >-
+      This account has a counter-based one-time password, which cannot be used
+      in Team accounts.
   corrupted_data:
     value: Unreadable data error
   creating_team:
@@ -393,6 +403,8 @@ errors:
       value: >-
         Authentication could not start, because passcode is not set on the
         device.
+  move_from_team:
+    value: Error moving account from team
   moving_data:
     value: Error moving backup data.
   no_admin:
@@ -418,6 +430,8 @@ errors:
   password_error:
     comment: Error fetching password
     value: Error fetching password
+  password_generation:
+    value: 'Error generating new password:'
   push_notifications_error:
     comment: Error when push notifications are not available
     value: There was an error registering for push notifications.
@@ -594,7 +608,7 @@ notifications:
     value: Keyn for teams login
   this_on_that:
     description: Chrome on MacOS
-    value: '%@ on %@.'
+    value: '%@ in %@.'
 numbers:
   five:
     value: '5'
@@ -652,6 +666,13 @@ popups:
       value: >-
         This moves your backup data to the production database. Use this if you
         want to switch to the App Store version of Keyn.
+    move_to_user_account_message:
+      value: >-
+        Do you want to move this account from the team to your personal
+        accounts? Other team members won't be able to access this account
+        anymore.
+    move_to_user_account_title:
+      value: Move from team
     questionnaire_permission:
       comment: Ask the user to answer some questions
       value: Do you have time to answer a few questions? It'll only take a moment.

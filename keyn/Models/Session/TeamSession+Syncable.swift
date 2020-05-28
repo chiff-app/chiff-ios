@@ -43,6 +43,8 @@ extension TeamSession: Syncable {
         isAdmin = false
         created = true
         lastChange = Date.now
+        organisationKey = backupSession.organisationKey
+
         try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
     }
 
@@ -66,7 +68,7 @@ extension TeamSession: Syncable {
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate))
+                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
@@ -83,6 +85,7 @@ struct BackupTeamSession: BackupObject {
     let version: Int
     var lastChange: Timestamp
     let creationDate: Timestamp
+    let organisationKey: Data
 
     enum CodingKeys: CodingKey {
         case id
@@ -91,15 +94,17 @@ struct BackupTeamSession: BackupObject {
         case version
         case lastChange
         case creationDate
+        case organisationKey
     }
 
-    init(id: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date) {
+    init(id: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data) {
         self.id = id
         self.seed = seed
         self.title = title
         self.version = version
         self.lastChange = lastChange
         self.creationDate = creationDate.millisSince1970
+        self.organisationKey = organisationKey
     }
 
     init(from decoder: Decoder) throws {
@@ -110,5 +115,6 @@ struct BackupTeamSession: BackupObject {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
         self.creationDate = try values.decodeIfPresent(Timestamp.self, forKey: .creationDate) ?? Date.now
+        self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
     }
 }

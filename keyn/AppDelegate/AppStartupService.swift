@@ -38,6 +38,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         TrueTimeClient.sharedInstance.start()
 
+        checkIfUpgraded()
+
         return true
     }
 
@@ -223,6 +225,13 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return true
         } catch {
             return false
+        }
+    }
+
+    private func checkIfUpgraded() {
+        if Properties.isUpgraded {
+            let organisationKey = try? TeamSession.all().first?.organisationKey
+            BrowserSession.updateAllSessionData(organisationKey: organisationKey)
         }
     }
 

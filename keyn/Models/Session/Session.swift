@@ -43,7 +43,6 @@ protocol Session: Codable {
 
     func delete(notify: Bool) -> Promise<Void>
     mutating func update(makeBackup: Bool) throws
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String) throws -> Promise<Void>
 
     static var encryptionService: KeychainService { get }
     static var signingService: KeychainService { get }
@@ -81,7 +80,7 @@ extension Session {
 
     func deleteQueuesAtAWS() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil).asVoid()
+            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid()
         }.log("Cannot delete endpoint at AWS.")
     }
 

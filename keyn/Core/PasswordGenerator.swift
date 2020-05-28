@@ -10,6 +10,7 @@ enum PasswordGenerationError: KeynError {
     case tooShort
     case keyGeneration
     case invalidPassword
+    case ppdInconsistency
 }
 
 class PasswordGenerator {
@@ -61,7 +62,7 @@ class PasswordGenerator {
 
         if offset == nil { // Only validate generated password. Custom passwords should be validated in UI.
             let passwordValidator = PasswordValidator(ppd: ppd)
-            while !passwordValidator.validate(password: password) {
+            while try !passwordValidator.validate(password: password) {
                 index += 1
                 password = try generatePasswordCandidate(index: index, length: length, offset: offset)
             }

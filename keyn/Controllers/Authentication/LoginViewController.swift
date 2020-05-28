@@ -58,11 +58,11 @@ class LoginViewController: UIViewController {
     }
 
     private func deleteData() {
-        let _ = BrowserSession.deleteAll()
+        _ = BrowserSession.deleteAll()
         TeamSession.purgeSessionDataFromKeychain()
         UserAccount.deleteAll()
         Seed.delete()
-        NotificationManager.shared.deleteEndpoint()
+        _ = NotificationManager.shared.deleteEndpoint()
         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
         UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         AuthenticationGuard.shared.hideLockWindow()
