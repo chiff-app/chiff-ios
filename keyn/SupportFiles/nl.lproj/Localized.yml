@@ -335,6 +335,8 @@ devices:
   unknown:
     value: Onbekend
 errors:
+  account_exists:
+    value: Er bestaat al een account met deze URL en gebruikersnaam.
   add_otp:
     value: Fout bij toevoegen OTP token
   add_to_team:
