@@ -60,7 +60,7 @@ class TeamAccessControlViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        delegate.setObjects(objects: selectedObjects)
+        delegate.setObjects(objects: selectedObjects, type: type)
     }
 
 }
@@ -79,21 +79,22 @@ extension TeamAccessControlViewController: UITableViewDataSource {
 
 extension TeamAccessControlViewController: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        selectedObjects.removeAll(where: { $0.id == allObjects[indexPath.row].id })
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        selectedObjects.append(allObjects[indexPath.row])
+        tableView.deselectRow(at: indexPath, animated: false)
+        let object = allObjects[indexPath.row]
+        if selectedObjects.contains(where: { $0.id == object.id }) {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+            selectedObjects.removeAll(where: { $0.id == object.id })
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+            selectedObjects.append(allObjects[indexPath.row])
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let object = allObjects[indexPath.row]
         cell.textLabel?.text = object.name
         if selectedObjects.contains(where: { $0.id == object.id }) {
-            cell.isSelected = true
             cell.accessoryType = .checkmark
         }
     }

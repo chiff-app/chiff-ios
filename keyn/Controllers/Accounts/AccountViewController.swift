@@ -144,8 +144,9 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 if let password = password {
                     passwordLoaded = true
                     userPasswordTextField.text = password
+                } else {
+                    userPasswordTextField.text = "22characterplaceholder"
                 }
-                userPasswordTextField.text = "22characterplaceholder"
                 userPasswordTextField.isSecureTextEntry = true
             }
             token = try account.oneTimePasswordToken()
