@@ -115,6 +115,6 @@ struct BackupTeamSession: BackupObject {
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
         self.creationDate = try values.decodeIfPresent(Timestamp.self, forKey: .creationDate) ?? Date.now
-        self.organisationKey = try values.decodeIfPresent(Data.self, forKey: .organisationKey) ?? Data()
+        self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
     }
 }
