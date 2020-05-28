@@ -95,6 +95,8 @@ class RequestViewController: UIViewController {
                 AuthenticationGuard.shared.hideLockWindow()
             } else if let error = error as? APIError {
                 Logger.shared.error("APIError authorizing request", error: error)
+            } else if let error = error as? PasswordGenerationError {
+                self.showAlert(message: "\("errors.password_generation".localized) \(error)")
             } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                 self.showAlert(message: errorMessage)
                 Logger.shared.error("Error authorizing request", error: error)

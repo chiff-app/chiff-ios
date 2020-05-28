@@ -93,14 +93,14 @@ struct SharedAccount: Account {
     func update(secret: Data?, backup: Bool = false) throws {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
     }
 
     func save(password: String, sessionPubKey: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 

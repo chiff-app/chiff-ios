@@ -46,7 +46,7 @@ class PasswordValidator {
         }
     }
 
-    func validate(password: String) -> Bool {
+    func validate(password: String) throws -> Bool {
         // Checks if password is less than or equal to maximum length. Relevant for custom passwords.
         guard validateMaxLength(password: password) else { return false }
 
@@ -63,13 +63,13 @@ class PasswordValidator {
         guard validateConsecutiveOrderedCharacters(password: password) else { return false }
 
         // CharacterSet restrictions.
-        guard validateCharacterSet(password: password) else { return false }
+        guard try validateCharacterSet(password: password) else { return false }
 
         // Position restrictions.
-        guard validatePositionRestrictions(password: password) else { return false }
+        guard try validatePositionRestrictions(password: password) else { return false }
 
         // Requirement groups.
-        guard validateRequirementGroups(password: password) else { return false }
+        guard try validateRequirementGroups(password: password) else { return false }
 
         // All tests passed, password is valid.
         return true
@@ -113,27 +113,27 @@ class PasswordValidator {
         return true
     }
 
-    func validateCharacterSet(password: String) -> Bool {
+    func validateCharacterSet(password: String) throws -> Bool {
         if let characterSetSettings = ppd?.properties?.characterSettings?.characterSetSettings {
-            guard checkCharacterSetSettings(password: password, characterSetSettings: characterSetSettings) else {
+            guard try checkCharacterSetSettings(password: password, characterSetSettings: characterSetSettings) else {
                 return false
             }
         }
         return true
     }
 
-    func validatePositionRestrictions(password: String) -> Bool {
+    func validatePositionRestrictions(password: String) throws -> Bool {
         if let positionRestrictions = ppd?.properties?.characterSettings?.positionRestrictions {
-            guard checkPositionRestrictions(password: password, positionRestrictions: positionRestrictions) else {
+            guard try checkPositionRestrictions(password: password, positionRestrictions: positionRestrictions) else {
                 return false
             }
         }
         return true
     }
 
-    func validateRequirementGroups(password: String) -> Bool {
+    func validateRequirementGroups(password: String) throws -> Bool {
         if let requirementGroups = ppd?.properties?.characterSettings?.requirementGroups {
-            guard checkRequirementGroups(password: password, requirementGroups: requirementGroups) else {
+            guard try checkRequirementGroups(password: password, requirementGroups: requirementGroups) else {
                 return false
             }
         }
@@ -199,7 +199,7 @@ class PasswordValidator {
         return longestSequence <= maxConsecutive
     }
 
-    private func checkCharacterSetSettings(password: String, characterSetSettings: [PPDCharacterSetSettings]) -> Bool {
+    private func checkCharacterSetSettings(password: String, characterSetSettings: [PPDCharacterSetSettings]) throws -> Bool {
         for characterSetSetting in characterSetSettings {
             if let characterSet = characterSetDictionary[characterSetSetting.name] {
                 let occurences = countCharacterOccurences(password: password, characterSet: characterSet)
@@ -209,12 +209,14 @@ class PasswordValidator {
                 if let maxOccurs = characterSetSetting.maxOccurs {
                     guard occurences <= maxOccurs else { return false }
                 }
+            } else {
+                throw PasswordGenerationError.ppdInconsistency
             }
         }
         return true
     }
 
-    private func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction]) -> Bool {
+    private func checkPositionRestrictions(password: String, positionRestrictions: [PPDPositionRestriction]) throws -> Bool {
         for positionRestriction in positionRestrictions {
             if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
                 let occurences = checkPositions(password: password, positions: positionRestriction.positions, characterSet: characterSet)
@@ -223,13 +225,13 @@ class PasswordValidator {
                     guard occurences <= maxOccurs else { return false }
                 }
             } else {
-                Logger.shared.warning("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                throw PasswordGenerationError.ppdInconsistency
             }
         }
         return true
     }
 
-    private func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup]) -> Bool {
+    private func checkRequirementGroups(password: String, requirementGroups: [PPDRequirementGroup]) throws -> Bool {
         for requirementGroup in requirementGroups {
             //requirementGroup.minRules = minimum amount of rules password
             var validRules = 0
@@ -248,7 +250,7 @@ class PasswordValidator {
                         if occurences >= requirementRule.minOccurs { validRules += 1 }
                     }
                 } else {
-                     Logger.shared.warning("CharacterSet wasn't found in dictionary. Inconsistency in PPD?")
+                     throw PasswordGenerationError.ppdInconsistency
                 }
             }
             guard validRules >= requirementGroup.minRules else  {

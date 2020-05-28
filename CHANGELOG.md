@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2020-05-27
+
+### Added
+- Added functionality to remove an account from the team (team admins only).
+- Added TOTP to team accounts.
+- Importing accounts from CSV now also import notes.
+
+### Changed
+- Team members now try to fetch PPDs from the organisation-repository first.
+- Removed 'News from Keyn' push messages and changed to poll.
+
+### Fixed
+- Throw errors when incosistency in PPD is found.
+- Update app version in sessions after updating app.
+- Fix bug where showing the password when editing showed the old password.
+
 ## [3.4.3] - 2020-05-06
 
 ### Fixed

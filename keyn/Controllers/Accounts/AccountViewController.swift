@@ -43,6 +43,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
     var editButton: UIBarButtonItem!
     var account: Account!
+    var passwordLoaded = false
     var tap: UITapGestureRecognizer!
     var qrEnabled: Bool = true
     var editingMode: Bool = false
@@ -78,17 +79,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
-        // TODO: Handle situation where there are multiple admin sessions
-        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }), account is UserAccount {
-            addToTeamButton.isHidden = false
-            addToTeamButton.isEnabled = true
-            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
-            self.session = session
-        } else {
-            addToTeamButton.isEnabled = false
-            addToTeamButton.isHidden = true
-            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
-        }
+        setAddToTeamButton()
         loadAccountData()
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
@@ -97,6 +88,21 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: reloadAccount)
 
         reEnableBarButtonFont()
+    }
+
+    private func setAddToTeamButton() {
+        // TODO: Handle situation where there are multiple admin sessions
+        if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
+            addToTeamButton.isHidden = false
+            addToTeamButton.isEnabled = true
+            addToTeamButton.setTitle(account is SharedAccount ? "accounts.move_from_team".localized : "accounts.add_to_team".localized, for: .normal)
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 100)
+            self.session = session
+        } else {
+            addToTeamButton.isEnabled = false
+            addToTeamButton.isHidden = true
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+        }
     }
 
     private func reloadAccount(notification: Notification) {
@@ -135,7 +141,12 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 showPasswordButton.isHidden = true
                 showPasswordButton.isEnabled = false
             } else {
-                userPasswordTextField.text = password ?? "22characterplaceholder"
+                if let password = password {
+                    passwordLoaded = true
+                    userPasswordTextField.text = password
+                } else {
+                    userPasswordTextField.text = "22characterplaceholder"
+                }
                 userPasswordTextField.isSecureTextEntry = true
             }
             token = try account.oneTimePasswordToken()
@@ -254,11 +265,14 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
+        if passwordLoaded && userPasswordTextField.isEnabled {
+            self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
+            return
+        }
         firstly {
             account.password(reason: String(format: "popups.questions.retrieve_password".localized, account.site.name), context: nil, type: .ifNeeded)
         }.done(on: .main) { password in
             if self.userPasswordTextField.isEnabled {
-                self.userPasswordTextField.text = password
                 self.userPasswordTextField.isSecureTextEntry = !self.userPasswordTextField.isSecureTextEntry
             } else {
                 self.showHiddenPasswordPopup(password: password ?? "This account has no password")
@@ -271,17 +285,32 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         guard let session = session else {
             fatalError("Session must exist if this action is called")
         }
-        firstly {
-            session.getTeamSeed()
-        }.then {
-            Team.get(seed: $0)
-        }.ensure(on: .main) {
-            sender.hideLoading()
-        }.done(on: .main) {
-            self.team = $0
-            self.performSegue(withIdentifier: "AddToTeam", sender: self)
-        }.catch(on: .main) { error in
-            self.showAlert(message: "TODO: Localized error message: \(error)")
+        if let account = account as? SharedAccount {
+            let alert = UIAlertController(title: "popups.questions.move_to_user_account_title".localized, message: "popups.questions.move_to_user_account_message".localized, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
+                firstly {
+                    self.removeAccountFromTeam(session: session, account: account)
+                }.ensure {
+                    sender.hideLoading()
+                }.catch(on: .main) { error in
+                    self.showAlert(message: "\("errors.move_from_team".localized): \(error)")
+                }
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            firstly {
+                session.getTeamSeed()
+            }.then {
+                Team.get(seed: $0)
+            }.ensure(on: .main) {
+                sender.hideLoading()
+            }.done(on: .main) {
+                self.team = $0
+                self.performSegue(withIdentifier: "AddToTeam", sender: self)
+            }.catch(on: .main) { error in
+                self.showAlert(message: "\("errors.add_to_team".localized): \(error)")
+            }
         }
     }
 
@@ -372,6 +401,30 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     }
     
     // MARK: - Private
+
+    private func removeAccountFromTeam(session: TeamSession, account: SharedAccount) -> Promise<Void> {
+        do {
+            let password = try account.password()
+            let notes = try account.notes()
+            return firstly {
+                session.getTeamSeed()
+            }.then {
+                Team.get(seed: $0)
+            }.then {
+                $0.deleteAccount(id: account.id)
+            }.then {
+                TeamSession.updateTeamSession(session: session)
+            }.map(on: .main) {
+                guard try SharedAccount.get(id: account.id, context: nil) == nil else {
+                    throw KeychainError.storeKey
+                }
+                self.account = try UserAccount(username: account.username, sites: account.sites, password: password, rpId: nil, algorithms: nil, notes: notes, askToChange: nil, context: nil)
+                self.addToTeamButton.originalButtonText = "accounts.add_to_team".localized
+            }.asVoid()
+        } catch {
+            return Promise(error: error)
+        }
+    }
     
     private func endEditing() {
         tableView.setEditing(false, animated: true)

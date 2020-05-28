@@ -26,7 +26,7 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = "Ver8aspdisd8nad8*(&sa8d97mjaVer8a" // 33 Characters
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     func testValidateReturnsFalseWhenMinLengthUnderceeded() { // is this even a word?
@@ -34,7 +34,7 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = "Sh0rt*r" // 7 characters
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     func testValidateReturnsFalseWhenMaxLengthExceededUsingFallback() {
@@ -42,7 +42,7 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = String(repeating: "a", count: PasswordValidator.MAX_PASSWORD_LENGTH_BOUND + 1)
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     func testValidateReturnsFalseWhenMinLengthUnderceededUsingFallback() {
@@ -50,14 +50,14 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = String(repeating: "a", count: PasswordValidator.MIN_PASSWORD_LENGTH_BOUND - 1)
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     func testValidateReturnsFalseForUnallowedCharacters() {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "Ver8aspdi€sd8na"), false)
+        XCTAssertEqual(try validator.validate(password: "Ver8aspdi€sd8na"), false)
     }
 
     func testValidateReturnsFalseForTooMatestValidateReturnsFalseForUnallowedCharactersnyConsecutiveCharacters() {
@@ -65,7 +65,7 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = "sod8na9p8d7snaaaa" // 4 consecutive characters
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     func testValidateReturnsFalseForTooManyOrderedConsecutiveCharacters() {
@@ -73,7 +73,7 @@ class PasswordValidatorTests: XCTestCase {
         let validator = PasswordValidator(ppd: ppd)
         let password = "sod8na9p8d7snabcd" // 4 ordered consecutive characters abcd
 
-        XCTAssertEqual(validator.validate(password: password), false)
+        XCTAssertEqual(try validator.validate(password: password), false)
     }
 
     // For readability the character sets are defined in Testhelper.examplePPPD().
@@ -84,7 +84,7 @@ class PasswordValidatorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: 0, characterSetSettings: characterSetSettings)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "onlylowerletters"), false)
+        XCTAssertEqual(try validator.validate(password: "onlylowerletters"), false)
     }
 
     func testValidateReturnsFalseWhenCharacterSetMaxOccursExceeded() {
@@ -94,7 +94,7 @@ class PasswordValidatorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: 0, characterSetSettings: characterSetSettings)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "toomanyUPPER"), false)
+        XCTAssertEqual(try validator.validate(password: "toomanyUPPER"), false)
     }
 
     func testValidateReturnsFalseIfPositionRestrictionNotMet() {
@@ -105,7 +105,7 @@ class PasswordValidatorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "asdpuhfjkad45"), false)
+        XCTAssertEqual(try validator.validate(password: "asdpuhfjkad45"), false)
     }
 
     func testValidateReturnsFalseIfMultiplePositionRestrictionNotMet() {
@@ -116,8 +116,8 @@ class PasswordValidatorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: positionRestrictions, requirementGroups: nil)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "**d**********"), true)
-        XCTAssertEqual(validator.validate(password: "***puhfjkad45"), false)
+        XCTAssertEqual(try validator.validate(password: "**d**********"), true)
+        XCTAssertEqual(try validator.validate(password: "***puhfjkad45"), false)
     }
 
     func testValidateShouldReturnFalseIfRequirementGroupIsNotMet() {
@@ -129,9 +129,9 @@ class PasswordValidatorTests: XCTestCase {
         let ppd = TestHelper.samplePPD(minLength: 8, maxLength: 32, maxConsecutive: nil, characterSetSettings: nil, positionRestrictions: nil, requirementGroups: requirementGroups)
         let validator = PasswordValidator(ppd: ppd)
 
-        XCTAssertEqual(validator.validate(password: "Password123"), true)  // follows both
-        XCTAssertEqual(validator.validate(password: "Password"), false)    // follows rule1 not rule2
-        XCTAssertEqual(validator.validate(password: "password123"), false) // follows rule2 not rule1
+        XCTAssertEqual(try validator.validate(password: "Password123"), true)  // follows both
+        XCTAssertEqual(try validator.validate(password: "Password"), false)    // follows rule1 not rule2
+        XCTAssertEqual(try validator.validate(password: "password123"), false) // follows rule2 not rule1
     }
 
 }

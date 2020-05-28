@@ -29,6 +29,7 @@ struct KeynRequest: Codable {
     let username: String?
     let sentTimestamp: TimeInterval
     let count: Int?
+    let askToChange: Bool?
     var sessionID: String?
     var accounts: [BulkAccount]?
 
@@ -50,6 +51,7 @@ struct KeynRequest: Codable {
         case sentTimestamp = "z"
         case count = "x"
         case accounts = "t"
+        case askToChange = "d"
     }
 
     /// This checks if the appropriate variables are set for the type of of this request

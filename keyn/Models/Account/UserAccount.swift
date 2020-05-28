@@ -40,13 +40,14 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
         self.username = username
         self.enabled = false
         self.version = 1
+        self.askToChange = askToChange
         if let rpId = rpId, let algorithms = algorithms {
             self.webAuthn = try WebAuthn(id: rpId, algorithms: algorithms)
         }
@@ -132,7 +133,7 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: .otp)
         let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 
@@ -175,7 +176,7 @@ struct UserAccount: Account, Equatable {
         if backup {
             let _ = try self.backup()
         }
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self as Self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
     }
 
@@ -260,7 +261,7 @@ struct UserAccount: Account, Equatable {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
         let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateAccountList(account: self) })
+        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
         Properties.accountCount += 1
     }
