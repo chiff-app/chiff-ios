@@ -19,7 +19,7 @@ accounts:
     second:
       value: Log in as you'd normally do.
     third:
-      value: Keyn asks you to add the website.
+      value: Chiff asks you to add the website.
   add_role:
     value: Add roles
   add_to_team:
@@ -59,15 +59,15 @@ accounts:
     value: Enabled
   footer:
     value: >-
-      You can save up to 8 accounts in your free Keyn plan. Upgrade to Keyn
+      You can save up to 8 accounts in your free Chiff plan. Upgrade to Chiff
       Premium to save more.
   footer_account_enabled:
     value: >-
-      You can enable 8 accounts to use with your computer. Upgrade to Keyn
+      You can enable 8 accounts to use with your computer. Upgrade to Chiff
       Premium to log in with more.
   footer_account_overflow:
     value: >-
-      Only 8 accounts can be used to log in to your computer. Upgrade to Keyn
+      Only 8 accounts can be used to log in to your computer. Upgrade to Chiff
       Premium to log in with more.
   footer_unlimited:
     value: You can save as many accounts as you want.
@@ -140,7 +140,7 @@ accounts:
   url:
     value: URL
   url_warning:
-    value: ⚠️ Keyn doesn't work if the URL is incorrect.
+    value: ⚠️ Chiff doesn't work if the URL is incorrect.
   user_details:
     value: User details
   username:
@@ -158,7 +158,7 @@ backup:
     value: Complete
   explanation:
     first:
-      value: Keyn keeps your passwords in a safe and only your phone has the key.
+      value: Chiff keeps your passwords in a safe and only your phone has the key.
     second:
       value: >-
         So if your phone gets lost or stolen, you need a backup, something
@@ -287,11 +287,11 @@ devices:
     value: nooit
   no_push_warning_text:
     value: >-
-      But you can only use Keyn to log in to other devices if  you enable push
+      But you can only use Chiff to log in to other devices if  you enable push
       notifications.
 
 
-      You can allow Keyn to send notifications via Settings > Keyn >
+      You can allow Chiff to send notifications via Settings > Chiff >
       Notifications.
 
 
@@ -308,7 +308,7 @@ devices:
     value: Pairing
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
-    value: Go to keyn.app/go
+    value: Go to chiff.app/go
   pairing_instruction_two:
     value: Scan the QR-code.
   scan_qr:
@@ -323,7 +323,7 @@ devices:
   session_name_example:
     value: Example @ work
   start_pairing:
-    value: You haven't set up Keyn on your computer yet.
+    value: You haven't set up Chiff on your computer yet.
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
@@ -375,13 +375,13 @@ errors:
   error:
     value: Error
   failed_accounts_message:
-    value: Keyn was unable to restore %d of the %d accounts.
+    value: Chiff was unable to restore %d of the %d accounts.
   failed_accounts_title:
     value: Recovery error
   failed_teams_and_accounts_message:
-    value: Keyn was unable to restore %d of the %d accounts and  %d of the %d teams.
+    value: Chiff was unable to restore %d of the %d accounts and  %d of the %d teams.
   failed_teams_message:
-    value: Keyn was unable to restore %d of the %d teams.
+    value: Chiff was unable to restore %d of the %d teams.
   generic_error:
     comment: A generic error description
     value: An error occured.
@@ -415,10 +415,10 @@ errors:
   no_push_notifications:
     comment: Error when push notifications are not available
     value: >-
-      Unfortunately, Keyn doesn't work without push notifications :(
+      Unfortunately, Chiff doesn't work without push notifications :(
 
 
-      Turn them on if you want to use Keyn. You can do this in Settings > Keyn >
+      Turn them on if you want to use Chiff. You can do this in Settings > Chiff >
       Notifications.
   no_team:
     value: You are not part of a team.
@@ -447,7 +447,7 @@ errors:
     comment: This may occur during the initialisation process
     value: Error generating seed
   seed_exists:
-    value: Keyn already initialized
+    value: Chiff already initialized
   seed_restore:
     value: Error restoring backup
   session_delete:
@@ -480,7 +480,7 @@ feedback:
   feedback:
     value: >-
       Did you find a bug? Please let us know! We're also happy to hear your
-      opinion on Keyn or suggestions for improvements.
+      opinion on Chiff or suggestions for improvements.
   finish:
     value: Finish
   logging_in:
@@ -513,7 +513,7 @@ initialization:
   begin_passwordless:
     value: Let's begin your passwordless life.
   byebye:
-    value: 'Bye bye forgetting passwords, hello Keyn'
+    value: 'Bye bye forgetting passwords, hello Chiff'
   change:
     value: You can always change this later in settings
   disagree:
@@ -563,7 +563,7 @@ initialization:
   try_later:
     value: Try later
   welcome_text:
-    value: Keyn allows you to log in to any website using your phone
+    value: Chiff allows you to log in to any website using your phone
   working:
     value: >-
       You can greatly help us by sharing usage statistics and error data with
@@ -605,7 +605,7 @@ notifications:
   pairing:
     value: Let's set up your computer!
   team_admin_login:
-    value: Keyn for teams login
+    value: Chiff for teams login
   this_on_that:
     description: Chrome on MacOS
     value: '%@ in %@.'
@@ -623,7 +623,7 @@ numbers:
 popups:
   questions:
     agree_terms:
-      value: I have read and agree to the Terms of Use of Keyn
+      value: I have read and agree to the Terms of Use of Chiff
     camera_permission:
       value: Permission needed
     cancel_backup:
@@ -634,23 +634,23 @@ popups:
       value: You can complete the backup sequence later.
     close_warning:
       value: >-
-        You cannot use Keyn if you don't agree with the Terms of Use. Are you
+        You cannot use Chiff if you don't agree with the Terms of Use. Are you
         sure?
     delete_account:
       comment: Ask the user to delete the account
       value: Delete account?
     delete_corrupted:
       value: >-
-        Keyn couldn't read the data from your phone. Perhaps it's in an old
+        Chiff couldn't read the data from your phone. Perhaps it's in an old
         format. You can probably fix this by deleting all data. If you don't
-        want to do this, contact us at hello@keyn.app.
+        want to do this, contact us at hello@chiff.app.
     delete_data:
       comment: Delete local and remote data
       value: Delete data?
     delete_existing:
       value: >-
-        You are trying to restore a backup while Keyn has already been
-        initialized. Do you want to delete Keyn's current data?
+        You are trying to restore a backup while Chiff has already been
+        initialized. Do you want to delete Chiff's current data?
     delete_locally:
       value: >-
         The backup data has been deleted from another device. Do you want to
@@ -659,13 +659,13 @@ popups:
     delete_x:
       value: Delete %@
     move_data:
-      comment: Resets Keyn and deletes all data
+      comment: Resets Chiff and deletes all data
       value: Move data?
     move_data_description:
       comment: This will delete the seed and all passwords.
       value: >-
         This moves your backup data to the production database. Use this if you
-        want to switch to the App Store version of Keyn.
+        want to switch to the App Store version of Chiff.
     move_to_user_account_message:
       value: >-
         Do you want to move this account from the team to your personal
@@ -701,7 +701,7 @@ popups:
     data_move_success:
       value: >-
         The backup data was successfully moved. You can now install the App
-        Store version of Keyn.
+        Store version of Chiff.
     data_move_success_title:
       value: Succeeded!
     delete:
@@ -734,7 +734,7 @@ registration:
   change_password_footer:
     comment: Description for enabling changing a password
     value: >-
-      If enabled, Keyn will automatically change the password to a secure
+      If enabled, Chiff will automatically change the password to a secure
       password
   change_password_impossible:
     comment: Description if changing a password is not possible
@@ -757,7 +757,7 @@ requests:
   accounts_left_2_single:
     value: additional account
   accounts_left_3:
-    value: in your free Keyn plan. Upgrade to save an unlimited number of accounts
+    value: in your free Chiff plan. Upgrade to save an unlimited number of accounts
   add_account:
     value: Add account
   add_accounts:
@@ -799,7 +799,7 @@ requests:
     comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
     value: Log in to %@
   login_with:
-    comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
+    comment: 'Ask to the user to login with an account, e.g. Login with demo@chiff.app?'
     value: Login with %@
   n_new_accounts:
     value: '%d new accounts.'
@@ -807,7 +807,7 @@ requests:
     value: New password generated
   no_accounts_left:
     value: >-
-      You cannot add any more accounts in your free Keyn plan. Upgrade to save
+      You cannot add any more accounts in your free Chiff plan. Upgrade to save
       an unlimited number of accounts
   'on':
     comment: 'The word for on, e.g. Pair with browser on OS?'
@@ -877,13 +877,13 @@ settings:
     value: Desktop
   desktop_instruction:
     first:
-      value: Keyn asks you in your browser if you want to log in.
+      value: Chiff asks you in your browser if you want to log in.
     second:
       value: >-
         You receive a notification on your phone that asks you to authorize the
         request.
     third:
-      value: Keyn fills your credentials in the right fields.
+      value: Chiff fills your credentials in the right fields.
   disclaimer:
     value: >-
       Payment will be charged to your Apple ID account at the confirmation of
@@ -903,7 +903,7 @@ settings:
     value: 'Use this form to provide feedback :)'
   feedback_footer:
     value: >-
-      Help us make Keyn better by letting us know what you think or providing
+      Help us make Chiff better by letting us know what you think or providing
       suggestions for improvements.
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
@@ -928,7 +928,7 @@ settings:
     value: Mobile
   mobile_instruction_<iOS12:
     first:
-      value: 'To log in on your phone, open Keyn.'
+      value: 'To log in on your phone, open Chiff.'
     second:
       value: Copy your password by simply tapping it.
     third:
@@ -936,11 +936,11 @@ settings:
   mobile_instruction_iOS12:
     first:
       value: >-
-        To use Keyn on your phone, you need to tell iOS that Keyn manages your
+        To use Chiff on your phone, you need to tell iOS that Chiff manages your
         passwords.
     second:
       value: >-
-        When you want to login, iOS will automatically ask Keyn for your
+        When you want to login, iOS will automatically ask Chiff for your
         password.
     third:
       value: You can login by authorizing the request.
@@ -954,11 +954,11 @@ settings:
     value: Premium
   premium_beta:
     value: >-
-      Keyn Premium is already enabled if you're participating in the beta
+      Chiff Premium is already enabled if you're participating in the beta
       program
   premium_teams:
     value: >-
-      Keyn Premium is already enabled because you have an active Keyn for Teams
+      Chiff Premium is already enabled because you have an active Chiff for Teams
       session.
   privacy:
     comment: The word for privacy
@@ -970,7 +970,7 @@ settings:
       of Testflight.
   privacy_explanation:
     value: >-
-      Sharing error and analytical data will greatly help us improving Keyn.
+      Sharing error and analytical data will greatly help us improving Chiff.
       Please consider enabling it.
   privacy_policy:
     value: Privacy Policy
@@ -984,9 +984,9 @@ settings:
       ⚠️ Resetting Chiff will delete your local data. Make sure you have written
       down your paper backup.
   reset_warning:
-    comment: Description under reset Keyn
+    comment: Description under reset Chiff
     value: >-
-      Resetting Keyn will delete your local data, but still allow you to restore
+      Resetting Chiff will delete your local data, but still allow you to restore
       your accounts with the paper backup.
   restore_failed:
     value: No active subscriptions were found
@@ -1029,11 +1029,11 @@ storekit:
   restorable:
     value: All restorable transactions have been processed by the payment queue
   restore_button:
-    value: I already have Keyn Premium
+    value: I already have Chiff Premium
   status:
     value: Status
   title:
-    value: 'With Keyn Premium, you can add an unlimited number of accounts to Keyn.'
+    value: 'With Chiff Premium, you can add an unlimited number of accounts to Chiff.'
   unknownDefault:
     value: Unknown payment transaction case
   updateResource:
@@ -1047,7 +1047,7 @@ tabs:
     value: Settings
 urls:
   faq:
-    value: 'https://keyn.app/faq_raw'
+    value: 'https://chiff.app/faq_raw'
   jailbreak:
-    value: 'https://keyn.app/faq#jailbreak'
+    value: 'https://chiff.app/faq#jailbreak'
 
