@@ -534,7 +534,7 @@ initialization:
     comment: This is provided as a reason for authenticating the first time.
     value: Zo log je voortaan in
   keyn_uses_push:
-    value: Om in te loggen op je computer maakt Keyn gebruik van pushberichten.
+    value: Om in te loggen op je computer maakt Chiff gebruik van pushberichten.
   learn_more:
     value: Meer info
   lets_go:
@@ -557,7 +557,7 @@ initialization:
   share_errors:
     value: Deel foutmeldingen
   start_using_keyn:
-    value: Start met Keyn
+    value: Start met Chiff
   touch_id:
     value: je vingerafdruk
   try_later:
@@ -679,8 +679,8 @@ popups:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Vragenrondje!
     reset_keyn:
-      comment: Resets Keyn and deletes all data
-      value: Reset Keyn?
+      comment: Resets Chiff and deletes all data
+      value: Reset Chiff?
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: Dit verwijdert de seed en alle wachtwoorden.
@@ -791,9 +791,9 @@ requests:
   get_password_successful:
     value: Wachtwoord opgehaald
   keyn_for_teams:
-    value: Keyn voor teams
+    value: Chiff voor teams
   login_keyn_next_time:
-    value: Volgende keer kun je met Keyn inloggen
+    value: Volgende keer kun je met Chiff inloggen
   login_succesful:
     value: Login gelukt
   login_to:
@@ -832,18 +832,18 @@ requests:
     comment: Unlock accounts
     value: Ontgrendel accounts
   unlock_keyn:
-    comment: Unlock Keyn
-    value: Ontgrendel Keyn
+    comment: Unlock Chiff
+    value: Ontgrendel Chiff
   upgrade:
     value: Upgrade nu
   upgrade_keyn_for_add:
     value: >-
-      Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade
-      naar Keyn Premium om onbeperkt accounts op te slaan
+      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
+      naar Chiff Premium om onbeperkt accounts op te slaan
   upgrade_keyn_for_request:
     value: >-
-      Je kunt maar 8 accounts inschakelen in de gratis versie van Keyn. Upgrade
-      naar Keyn Premium om weer met al je accounts in te loggen
+      Je kunt maar 8 accounts inschakelen in de gratis versie van Chiff. Upgrade
+      naar Chiff Premium om weer met al je accounts in te loggen
 settings:
   about:
     value: Over Keyn
@@ -910,15 +910,15 @@ settings:
     comment: The word for help
     value: Help
   how_keyn_works:
-    value: Hoe Keyn werkt
+    value: Hoe Chiff werkt
   how_keyn_works_on:
-    value: Hoe Keyn werkt op
+    value: Hoe Chiff werkt op
   jailbreak_warning:
     value: >-
       Dit apparaat lijkt gekraakt te zijn (jailbreak). Andere applicaties hebben
       mogelijk toegang tot je wachtwoorden
   keyn_premium:
-    value: Keyn Premium
+    value: Chiff Premium
   legal:
     comment: The word for legal
     value: Juridisch
@@ -943,7 +943,7 @@ settings:
   move_data:
     value: Verhuis backup data
   news_from_keyn:
-    value: Nieuws van Keyn
+    value: Nieuws van Chiff
   paper_backup:
     value: Paper backup
   premium:
@@ -973,11 +973,11 @@ settings:
   read_more:
     value: Lees meer
   reset_keyn_button:
-    value: Reset Keyn
+    value: Reset Chiff
   reset_keyn_warning:
     comment: Alert before deleting local data
     value: >-
-      ⚠️ Met het resetten van Keyn verwijder je alle gegevens op de telefoon.
+      ⚠️ Met het resetten van Chiff verwijder je alle gegevens op de telefoon.
       Zorg ervoor dat je de paper back-up hebt genoteerd.
   reset_warning:
     comment: Description under reset Keyn

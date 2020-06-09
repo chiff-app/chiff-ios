@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -604,7 +604,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_1" translatesAutoresizingMaskIntoConstraints="NO" id="dlZ-LU-Cgs">
-                                <rect key="frame" x="-8.6666666666666572" y="109" width="392.33333333333326" height="20"/>
+                                <rect key="frame" x="89.666666666666686" y="109" width="196" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="haT-PC-dlf"/>
                                 </constraints>
@@ -710,20 +710,20 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_purple" translatesAutoresizingMaskIntoConstraints="NO" id="6r2-z2-GmB">
-                                <rect key="frame" x="135.66666666666666" y="35" width="104" height="58"/>
+                                <rect key="frame" x="161.66666666666666" y="35" width="52" height="58"/>
                                 <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="XlO-Uf-5Sz"/>
                                 </constraints>
                             </imageView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAD-g0-bY7">
-                                <rect key="frame" x="0.0" y="173" width="375" height="501"/>
+                                <rect key="frame" x="0.0" y="151" width="375" height="523"/>
                                 <connections>
                                     <segue destination="Lp7-Hn-Yem" kind="embed" identifier="EmbeddedPairing" id="PRF-kk-uoI"/>
                                 </connections>
                             </containerView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_3" translatesAutoresizingMaskIntoConstraints="NO" id="6Jo-yM-A8E">
-                                <rect key="frame" x="-8.6666666666666572" y="109" width="392.33333333333326" height="44"/>
+                                <rect key="frame" x="89.666666666666686" y="109" width="196" height="22"/>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTF-id-QPJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -1048,7 +1048,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_2" translatesAutoresizingMaskIntoConstraints="NO" id="Cg7-fO-kPO">
-                                <rect key="frame" x="-8.6666666666666572" y="109" width="392.33333333333326" height="20"/>
+                                <rect key="frame" x="89.666666666666686" y="109" width="196" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="nbW-YJ-E6K"/>
                                 </constraints>
@@ -1101,6 +1101,7 @@ Sensitive data is never shared and everything is anonymous.</string>
             <point key="canvasLocation" x="796.875" y="1709.1549295774648"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="chevron_left_white" width="9" height="13"/>
         <image name="desk" width="375" height="213"/>
@@ -1113,5 +1114,4 @@ Sensitive data is never shared and everything is anonymous.</string>
         <image name="progress_3" width="196" height="22"/>
         <image name="progress_4" width="195" height="22"/>
     </resources>
-    <color key="tintColor" red="1" green="0.71764705880000002" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

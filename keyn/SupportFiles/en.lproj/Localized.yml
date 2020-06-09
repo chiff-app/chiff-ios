@@ -534,7 +534,7 @@ initialization:
     comment: This is provided as a reason for authenticating the first time.
     value: This is how you log in from now on
   keyn_uses_push:
-    value: 'To log in to your computer, Keyn uses push notifications.'
+    value: 'To log in to your computer, Chiff uses push notifications.'
   learn_more:
     value: Learn more
   lets_go:
@@ -551,13 +551,13 @@ initialization:
     value: Scan QR code
   setup_keyn:
     comment: ''
-    value: Setup Keyn
+    value: Setup Chiff
   share_analytics:
     value: Share usage statistics
   share_errors:
     value: Share error data
   start_using_keyn:
-    value: Start using Keyn
+    value: Start using Chiff
   touch_id:
     value: your fingerprint
   try_later:
@@ -680,8 +680,8 @@ popups:
       comment: The title of the popup that asks the user fill a questionnaire
       value: Questiontime!
     reset_keyn:
-      comment: Resets Keyn and deletes all data
-      value: Reset Keyn?
+      comment: Resets Chiff and deletes all data
+      value: Reset Chiff?
     reset_keyn_description:
       comment: This will delete the seed and all passwords.
       value: This will delete the seed and all passwords.
@@ -790,9 +790,9 @@ requests:
   get_password_successful:
     value: Password retrieved
   keyn_for_teams:
-    value: Keyn for teams
+    value: Chiff for teams
   login_keyn_next_time:
-    value: Next time you can login with Keyn
+    value: Next time you can login with Chiff
   login_succesful:
     value: Login successful
   login_to:
@@ -831,18 +831,18 @@ requests:
     comment: Unlock accounts
     value: Unlock accounts
   unlock_keyn:
-    comment: Unlock Keyn
-    value: Unlock Keyn
+    comment: Unlock Chiff
+    value: Unlock Chiff
   upgrade:
     value: Upgrade now
   upgrade_keyn_for_add:
     value: >-
-      You can only add 8 accounts in your free Keyn plan. Upgrade to Keyn
+      You can only add 8 accounts in your free Chiff plan. Upgrade to Chiff
       Premium to save an unlimited number of accounts
   upgrade_keyn_for_request:
     value: >-
-      You can enable up to 8 accounts to use in your free Keyn plan. Upgrade to
-      Keyn Premium to log in with all your accounts again
+      You can enable up to 8 accounts to use in your free Chiff plan. Upgrade to
+      Chiff Premium to log in with all your accounts again
 settings:
   about:
     value: About
@@ -912,15 +912,15 @@ settings:
     comment: The word for help
     value: Help
   how_keyn_works:
-    value: How Keyn works
+    value: How Chiff works
   how_keyn_works_on:
-    value: How Keyn works on
+    value: How Chiff works on
   jailbreak_warning:
     value: >-
       This device appears to be jailbroken. Other applications may be able to
       access your passwords
   keyn_premium:
-    value: Keyn Premium
+    value: Chiff Premium
   legal:
     comment: The word for legal
     value: Legal
@@ -947,7 +947,7 @@ settings:
   move_data:
     value: Move backup data
   news_from_keyn:
-    value: News from Keyn
+    value: News from Chiff
   paper_backup:
     value: Paper backup
   premium:
@@ -977,11 +977,11 @@ settings:
   read_more:
     value: Read more
   reset_keyn_button:
-    value: Reset Keyn
+    value: Reset Chiff
   reset_keyn_warning:
     comment: Alert before deleting local data
     value: >-
-      ⚠️ Resetting Keyn will delete your local data. Make sure you have written
+      ⚠️ Resetting Chiff will delete your local data. Make sure you have written
       down your paper backup.
   reset_warning:
     comment: Description under reset Keyn

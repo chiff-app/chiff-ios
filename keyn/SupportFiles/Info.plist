@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Keyn</string>
+	<string>Chiff</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Scanning QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Unlocking Keyn and authorizing requests.</string>
+	<string>Unlocking Chiff and authorizing requests.</string>
 	<key>TSKConfiguration</key>
 	<dict>
 		<key>TSKPinnedDomains</key>

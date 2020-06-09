@@ -34,7 +34,7 @@ class PairViewController: QRViewController {
         case "keyn":
             promise = self.pair(url: url)
         case "https":
-            guard url.host == "keyn.app" else {
+            guard url.host == "keyn.app" || url.host == "chiff.app" else {
                 throw URLError.invalidHost
             }
 
