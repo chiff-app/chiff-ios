@@ -19,7 +19,7 @@ accounts:
     second:
       value: Log in zoals je normaal inlogt.
     third:
-      value: Keyn vraagt om de website toe te voegen.
+      value: Chiff vraagt om de website toe te voegen.
   add_role:
     value: Voeg rollen toe
   add_to_team:
@@ -59,16 +59,16 @@ accounts:
     value: Ingeschakeld
   footer:
     value: >-
-      Je kunt maximaal 8 accounts gratis toevoegen aan Keyn. Upgrade naar Keyn
+      Je kunt maximaal 8 accounts gratis toevoegen aan Chiff. Upgrade naar Chiff
       Premium om zoveel accounts toe te voegen als je wilt.
   footer_account_enabled:
     value: >-
-      Je kunt slechts 8 accounts gebruiken met je computer. Upgrade naar Keyn
+      Je kunt slechts 8 accounts gebruiken met je computer. Upgrade naar Chiff
       Premium om met alle accounts in te loggen.
   footer_account_overflow:
     value: >-
       Je kunt slechts 8 accounts gebruiken om in te loggen met je computer.
-      Upgrade naar Keyn Premium om met alle accounts in te loggen.
+      Upgrade naar Chiff Premium om met alle accounts in te loggen.
   footer_unlimited:
     value: Je kunt zoveel accounts toevoegen als je wilt.
   mode:
@@ -140,7 +140,7 @@ accounts:
   url:
     value: URL
   url_warning:
-    value: ⚠️ Keyn werkt niet als de URL incorrect is.
+    value: ⚠️ Chiff werkt niet als de URL incorrect is.
   user_details:
     value: Gebruikersgegevens
   username:
@@ -159,8 +159,8 @@ backup:
   explanation:
     first:
       value: >-
-        Keyn bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt
-        inloggen, kun je Keyn gebruiken.
+        Chiff bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt
+        inloggen, kun je Chiff gebruiken.
     second:
       value: >-
         Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig,
@@ -289,9 +289,9 @@ devices:
     value: nooit
   no_push_warning_text:
     value: |-
-      Maar Keyn werkt helaas niet zonder pushberichten. 
+      Maar Chiff werkt helaas niet zonder pushberichten. 
 
-      Je kun pushberichten aan  zetten via Instellingen > Keyn > Berichtgeving.
+      Je kun pushberichten aan  zetten via Instellingen > Chiff > Berichtgeving.
 
       Kies dan 'Sta berichtgeving toe'.
   no_push_warning_title:
@@ -306,7 +306,7 @@ devices:
     value: Koppelen met je computer
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
-    value: Ga naar keyn.app/nl/go
+    value: Ga naar chiff.app/nl/go
   pairing_instruction_two:
     value: Scan de QR-code.
   scan_qr:
@@ -415,11 +415,11 @@ errors:
   no_push_notifications:
     comment: Error when push notifications are not available
     value: >-
-      Helaas werkt Keyn niet zonder pushberichten :(
+      Helaas werkt Chiff niet zonder pushberichten :(
 
 
-      Schakel deze in als je Keyn wilt gebruiken. Dit kun je doen via
-      Instellingen > Keyn > Berichtgeving.
+      Schakel deze in als je Chiff wilt gebruiken. Dit kun je doen via
+      Instellingen > Chiff > Berichtgeving.
   no_team:
     value: Je bent geen onderdeel van een team.
   only_admins:
@@ -447,7 +447,7 @@ errors:
     comment: This may occur during the initialisation process
     value: Fout bij genereren seed
   seed_exists:
-    value: Keyn is al geïnitialiseerd
+    value: Chiff is al geïnitialiseerd
   seed_restore:
     value: Fout bij herstellen backup
   session_delete:
@@ -480,7 +480,7 @@ feedback:
   feedback:
     value: >-
       Heb je een bug gevonden? Laat het ons weten! We horen ook graag je mening
-      over keyn of suggesties voor verbeteringen.
+      over chiff of suggesties voor verbeteringen.
   finish:
     value: Klaar
   logging_in:
@@ -513,7 +513,7 @@ initialization:
   begin_passwordless:
     value: Je leven zonder wachtwoorden begint nu.
   byebye:
-    value: 'Dag wachtwoorden, hallo Keyn'
+    value: 'Dag wachtwoorden, hallo Chiff'
   change:
     value: Je kunt dit altijd later veranderen in de instellingen.
   disagree:
@@ -550,7 +550,7 @@ initialization:
   scan_qr:
     value: Scan QR code
   setup_keyn:
-    comment: Of 'stel keyn in'
+    comment: Of 'stel chiff in'
     value: Verder
   share_analytics:
     value: Deel gebruiksstatistieken
@@ -563,10 +563,10 @@ initialization:
   try_later:
     value: Later
   welcome_text:
-    value: Met Keyn kun je op elke website inloggen met je telefoon
+    value: Met Chiff kun je op elke website inloggen met je telefoon
   working:
     value: >-
-      Help ons Keyn te verbeteren door gebruiksstatistieken en foutmeldingen te
+      Help ons Chiff te verbeteren door gebruiksstatistieken en foutmeldingen te
       delen.
 
 
@@ -605,7 +605,7 @@ notifications:
   pairing:
     value: Koppelen
   team_admin_login:
-    value: Inloggen Keyn voor teams
+    value: Inloggen Chiff voor teams
   this_on_that:
     description: GitHub in Firefox op MacOS
     value: '%@ in %@.'
@@ -634,23 +634,23 @@ popups:
       value: Je kunt de backup later voltooien.
     close_warning:
       value: >-
-        Je kunt Keyn niet gebruiken als je niet akkoord gaat met de Algemene
+        Je kunt Chiff niet gebruiken als je niet akkoord gaat met de Algemene
         Voorwaarden. Weet je het zeker?
     delete_account:
       comment: Ask the user to delete the account
       value: Verwijder account?
     delete_corrupted:
       value: >-
-        Keyn kon niet de data van je telefoon lezen. Misschien is het in een oud
+        Chiff kon niet de data van je telefoon lezen. Misschien is het in een oud
         formaat. Je kunt dit verhelpen door alle data te verwijderen. Als je dit
-        niet wilt doen, contact ons dan via hello@keyn.app.
+        niet wilt doen, contact ons dan via hello@chiff.app.
     delete_data:
       comment: Delete local and remote data
       value: Verwijder data?
     delete_existing:
       value: >-
-        Je probeert een backup te herstellen terwijl Keyn al is geïnitialiseerd.
-        Wil je Keyn's huidige data verwijderen?
+        Je probeert een backup te herstellen terwijl Chiff al is geïnitialiseerd.
+        Wil je Chiff's huidige data verwijderen?
     delete_locally:
       value: >-
         De backup data is verwijderd vanaf een ander apparaat. Wil je de data
@@ -658,13 +658,13 @@ popups:
     delete_x:
       value: Delete %@
     move_data:
-      comment: Resets Keyn and deletes all data
+      comment: Resets Chiff and deletes all data
       value: Verhuis data?
     move_data_description:
       comment: This will delete the seed and all passwords.
       value: >-
         Verhuis je backup data naar de productie database. Gebruik deze functie
-        als je de App Store versie van Keyn wilt gaan gebruiken.
+        als je de App Store versie van Chiff wilt gaan gebruiken.
     move_to_user_account_message:
       value: >-
         Wil je dit account van het team naar je persoonlijke accounts
@@ -700,7 +700,7 @@ popups:
     data_move_success:
       value: >-
         De backup data is succesvol verhuisd. Je kunt nu de App Store versie van
-        Keyn installeren.
+        Chiff installeren.
     data_move_success_title:
       value: Gelukt!
     delete:
@@ -733,7 +733,7 @@ registration:
   change_password_footer:
     comment: Description for enabling changing a password
     value: >-
-      Indien ingeschakeld, wijzigt Keyn het wachtwoord automatisch in een zeer
+      Indien ingeschakeld, wijzigt Chiff het wachtwoord automatisch in een zeer
       veilig wachtwoord
   change_password_impossible:
     comment: Description if changing a password is not possible
@@ -757,7 +757,7 @@ requests:
     value: extra account
   accounts_left_3:
     value: >-
-      toevoegen in de gratis versie van Keyn. Upgrade om onbeperkt accounts te
+      toevoegen in de gratis versie van Chiff. Upgrade om onbeperkt accounts te
       bewaren.
   add_account:
     value: Account toevoegen
@@ -800,7 +800,7 @@ requests:
     comment: 'Ask to the user to login to a site, e.g. Login to Amazon.com?'
     value: Log in bij %@
   login_with:
-    comment: 'Ask to the user to login with an account, e.g. Login with demo@keyn.io?'
+    comment: 'Ask to the user to login with an account, e.g. Login with demo@chiff.app?'
     value: Login met %@
   n_new_accounts:
     value: '%d nieuwe accounts.'
@@ -808,7 +808,7 @@ requests:
     value: Nieuw wachtwoord gegenereerd
   no_accounts_left:
     value: >-
-      Je kunt geen accounts meer toevoegen in de gratis versie van Keyn. Upgrade
+      Je kunt geen accounts meer toevoegen in de gratis versie van Chiff. Upgrade
       om een onbeperkt aantal accounts te bewaren.
   'on':
     comment: 'The word for on, e.g. Pair with browser on OS?'
@@ -846,7 +846,7 @@ requests:
       naar Chiff Premium om weer met al je accounts in te loggen
 settings:
   about:
-    value: Over Keyn
+    value: Over Chiff
   active:
     value: actief
   and:
@@ -876,13 +876,13 @@ settings:
     value: Desktop
   desktop_instruction:
     first:
-      value: Keyn vraagt in je browser of je wil inloggen.
+      value: Chiff vraagt in je browser of je wil inloggen.
     second:
       value: >-
         Je ontvangt een pushbericht op je telefoon met de vraag of je wil
         inloggen.
     third:
-      value: Keyn vult je inloggegevens in de juiste velden.
+      value: Chiff vult je inloggegevens in de juiste velden.
   disclaimer:
     value: >-
       De betaling wordt in rekening gebracht via uw AppleID account als de
@@ -902,7 +902,7 @@ settings:
     comment: Description under feedback form
     value: 'Gebruik dit formulier om ons feedback te geven :)'
   feedback_footer:
-    value: Help ons Keyn te verbeteren door ons te laten weten wat je er van vindt.
+    value: Help ons Chiff te verbeteren door ons te laten weten wat je er van vindt.
   feedback_submitted:
     comment: Message to the user after feedback has been submitted
     value: 'Feedback verstuurd, bedankt!'
@@ -926,17 +926,17 @@ settings:
     value: Mobiel
   mobile_instruction_<iOS12:
     first:
-      value: Open Keyn om in te loggen op je telefoon.
+      value: Open Chiff om in te loggen op je telefoon.
     second:
       value: Kopieer je wachtwoord door er op te tikken.
     third:
       value: Keer terug naar de website en plak je wachtwoord.
   mobile_instruction_iOS12:
     first:
-      value: 'Om Keyn op je telefoon te gebruiken, moet je toestemming geven bij iOS.'
+      value: 'Om Chiff op je telefoon te gebruiken, moet je toestemming geven bij iOS.'
     second:
       value: >-
-        Wanneer je wilt inloggen, zal iOS Keyn automatisch vragen om je
+        Wanneer je wilt inloggen, zal iOS Chiff automatisch vragen om je
         wachtwoord.
     third:
       value: Je kunt dan inloggen door het verzoek te autoriseren.
@@ -950,11 +950,11 @@ settings:
     value: Premium
   premium_beta:
     value: >-
-      Keyn Premium is automatisch ingeschakeld als je deelneemt aan het
+      Chiff Premium is automatisch ingeschakeld als je deelneemt aan het
       betaprogramma
   premium_teams:
     value: >-
-      Keyn Premium is automatisch ingeschakeld omdate je een actieve Keyn voor
+      Chiff Premium is automatisch ingeschakeld omdate je een actieve Chiff voor
       Teams sessie hebt.
   privacy:
     comment: The word for privacy
@@ -962,11 +962,11 @@ settings:
   privacy_beta_explanation:
     value: >-
       Gebruiksstatistieken worden automatisch gedeeld als je de betaversie
-      gebruikt. Je kunt hier meer over lezen in Keyn's privacy policy en de
+      gebruikt. Je kunt hier meer over lezen in Chiff's privacy policy en de
       algemene voorwaarden van Testflight.
   privacy_explanation:
     value: >-
-      Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Keyn
+      Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Chiff
       te verbeteren.
   privacy_policy:
     value: Privacy policy
@@ -980,9 +980,9 @@ settings:
       ⚠️ Met het resetten van Chiff verwijder je alle gegevens op de telefoon.
       Zorg ervoor dat je de paper back-up hebt genoteerd.
   reset_warning:
-    comment: Description under reset Keyn
+    comment: Description under reset Chiff
     value: >-
-      Met het resetten van Keyn verwijder je alle gegevens op de telefoon. Je
+      Met het resetten van Chiff verwijder je alle gegevens op de telefoon. Je
       kunt altijd je accounts herstellen met de paper backup.
   restore_failed:
     value: Geen actief abonnement gevonden
@@ -1025,11 +1025,11 @@ storekit:
   restorable:
     value: Alle herstelbare transacties zijn verwerkt door de betalingswachtrij
   restore_button:
-    value: Ik heb al Keyn Premium
+    value: Ik heb al Chiff Premium
   status:
     value: Status
   title:
-    value: Met Keyn Premium kun je zoveel accounts toevoegen als je wilt.
+    value: Met Chiff Premium kun je zoveel accounts toevoegen als je wilt.
   unknownDefault:
     value: Onbekende betalingstransactie
   updateResource:
@@ -1043,7 +1043,7 @@ tabs:
     value: Instellingen
 urls:
   faq:
-    value: 'https://keyn.app/nl/faq_raw'
+    value: 'https://chiff.app/nl/faq_raw'
   jailbreak:
-    value: 'https://keyn.app/nl/faq#jailbreak'
+    value: 'https://chiff.app/nl/faq#jailbreak'
 
