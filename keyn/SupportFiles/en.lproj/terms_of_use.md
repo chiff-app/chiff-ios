@@ -1,7 +1,7 @@
 ### TERMS OF USE
 **for the private company with limited liability Keyn B.V., registered in the Trade Register of the Chamber of Commerce under number 72100419**
 
-The terms of use are applicable to all services of Keyn, a company providing an application aimed at the management of digital passwords. For proper use of the application, please see the explanation on our website [keyn.app](https://keyn.app).
+The terms of use are applicable to all services of Keyn, a company providing an application aimed at the management of digital passwords. For proper use of the application, please see the explanation on our website [chiff.app](https://chiff.app).
 
 Please read these conditions of use carefully before using the website or the application. As soon as you visit this website or download the application, you are bound by these terms of use. If you do not agree to these terms of use, you are not allowed to use the application or the website. You are not allowed to transfer these terms of use to any other person.
 
@@ -23,7 +23,7 @@ In these terms of use, the following terms have the following meaning:
 **1.13.** Paper Back-up: twelve (12) words that the User must write down after installing the Mobile Application. These twelve words represent the unique and randomly generated Random Seed;  
 **1.14.** Parties: Keyn and the User jointly;  
 **1.15.** Random Seed: the randomly generated key from which the User’s passwords are derived on the basis of a deterministic algorithm;  
-**1.16.** Website: the website developed by Keyn [keyn.app](https:/keyn.app) for the purpose of providing its Services.  
+**1.16.** Website: the website developed by Keyn [chiff.app](https://chiff.app) for the purpose of providing its Services.  
 
 #### ARTICLE 2:	APPLICATION OF THE TERMS OF USE
 
@@ -157,7 +157,7 @@ In these terms of use, the following terms have the following meaning:
 **13.4.** It is preferable to go through the present complaint procedure before submitting a dispute to the competent court.  
 
 #### ARTICLE 14: PRIVACY
-**14.1.** All data that Keyn asks the User to provide are collected, used, stored and deleted in accordance with the General Data Protection Regulation (GDPR) as well as other applicable laws and/or regulations. Please refer to our [Privacy Policy](https://keyn.app/privacy) for more information.  
+**14.1.** All data that Keyn asks the User to provide are collected, used, stored and deleted in accordance with the General Data Protection Regulation (GDPR) as well as other applicable laws and/or regulations. Please refer to our [Privacy Policy](https://chiff.app/privacy) for more information.  
 **14.2.** It is possible that Keyn is legally obliged to submit personal data to competent government bodies, police or investigative authorities.   
 
 #### ARTICLE 15: APPLICABLE LAW
