@@ -23,22 +23,18 @@ end
 
 target 'keyn' do
   shared_pods
-#  pod 'SmileLock'
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.13.4'
+  pod 'Firebase/Crashlytics'
   pod 'Down'
 end
 
 target 'keynNotificationExtension' do
   shared_pods
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.13.4'
+  pod 'Firebase/Crashlytics'
 end
 
 target 'keynCredentialProvider' do
   shared_pods
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.13.4'
+  pod 'Firebase/Crashlytics'
 end
 
 

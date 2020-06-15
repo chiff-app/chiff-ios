@@ -8,7 +8,7 @@ import LocalAuthentication
 import CryptoKit
 import PromiseKit
 
-enum KeychainError: KeynError {
+enum KeychainError: Error {
     case stringEncoding
     case unexpectedData
     case storeKey

@@ -17,7 +17,7 @@ protocol PairContainerDelegate {
     func finishLoading()
 }
 
-enum URLError: KeynError {
+enum URLError: Error {
     case invalidScheme
     case invalidHost
     case invalidPath

@@ -6,7 +6,7 @@ import UserNotifications
 import PromiseKit
 import LocalAuthentication
 
-enum NotificationExtensionError: KeynError {
+enum NotificationExtensionError: Error {
     case decodeCiphertext
     case decodeSessionId
 }

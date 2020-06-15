@@ -51,6 +51,19 @@ platform :ios do
         )
     end
 
+    desc 'Upload dSYMs to Crashlytics'
+    lane :upload_symbols do |options|
+        download_dsyms(
+          version: 'latest'
+        )
+    
+        upload_symbols_to_crashlytics(
+          gsp_path: "./keyn/SupportFiles/GoogleService-Info.plist"
+        )
+    
+        clean_build_artifacts()
+      end
+
     desc 'Build app'
     lane :build do
         test
@@ -96,9 +109,8 @@ platform :ios do
     lane :beta_release do
         version = get_version_number(target: scheme)
         build
-        upload_to_testflight(
-            skip_waiting_for_build_processing: true
-        )
+        upload_to_testflight()
+        upload_symbols
         slack(message: "New version of Keyn released! #{version}")
     end
 

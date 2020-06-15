@@ -7,7 +7,7 @@ import OneTimePassword
 import LocalAuthentication
 import PromiseKit
 
-enum AuthorizationError: KeynError {
+enum AuthorizationError: Error {
     case accountOverflow
     case cannotAddAccount
     case cannotChangeAccount

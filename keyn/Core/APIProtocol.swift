@@ -5,7 +5,7 @@
 import Foundation
 import PromiseKit
 
-enum APIError: KeynError {
+enum APIError: Error {
     case url
     case jsonSerialization
     case request(error: Error)
