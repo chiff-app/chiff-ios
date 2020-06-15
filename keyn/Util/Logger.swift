@@ -7,14 +7,14 @@
 //
 
 import Foundation
-import Crashlytics
+import FirebaseCrashlytics
 import Amplitude_iOS
 import Firebase
 
 struct Logger {
     
     static let shared = Logger()
-    private let crashlytics = Crashlytics.sharedInstance()
+    private let crashlytics = Crashlytics.crashlytics()
     private let amplitude = Amplitude.instance()!
 
     private init() {
@@ -33,7 +33,7 @@ struct Logger {
         if let userId = Properties.userId {
             setUserId(userId: userId)
         }
-        crashlytics.setObjectValue(Properties.environment.rawValue, forKey: "environment")
+        crashlytics.setCustomValue(Properties.environment.rawValue, forKey: "environment")
     }
 
     func setAnalyticsLogging(value: Bool) {
@@ -50,8 +50,10 @@ struct Logger {
     }
 
     func setUserId(userId: String?) {
-        crashlytics.setUserIdentifier(userId)
-        amplitude.setUserId(userId)
+        if let userId = userId {
+            crashlytics.setUserID(userId)
+            amplitude.setUserId(userId)
+        }
     }
 
     func uploadAnalytics() {
@@ -65,17 +67,12 @@ struct Logger {
         guard Properties.errorLogging else {
             return
         }
-        crashlytics.setObjectValue(message, forKey: "message")
-        crashlytics.setObjectValue("warning", forKey: "level")
-        crashlytics.setObjectValue(file, forKey: "file")
-        crashlytics.setObjectValue(function, forKey: "function")
-        crashlytics.setIntValue(Int32(line), forKey: "line")
-        if let error = error {
-            crashlytics.recordError(getNSError(error), withAdditionalUserInfo: userInfo)
-        } else {
-            let error = NSError(domain: "NoError", code: 42, userInfo: nil)
-            crashlytics.recordError(error, withAdditionalUserInfo: userInfo)
-        }
+        crashlytics.setCustomValue(message, forKey: "message")
+        crashlytics.setCustomValue("warning", forKey: "level")
+        crashlytics.setCustomValue(file, forKey: "file")
+        crashlytics.setCustomValue(function, forKey: "function")
+        crashlytics.setCustomValue(Int32(line), forKey: "line")
+        crashlytics.record(error: error ?? KeynError())
     }
     
     func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, override: Bool = false, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
@@ -85,17 +82,12 @@ struct Logger {
         guard Properties.errorLogging || override else {
             return
         }
-        crashlytics.setObjectValue(message, forKey: "message")
-        crashlytics.setObjectValue("error", forKey: "level")
-        crashlytics.setObjectValue(file, forKey: "file")
-        crashlytics.setObjectValue(function, forKey: "function")
-        crashlytics.setIntValue(Int32(line), forKey: "line")
-        if let error = error {
-            crashlytics.recordError(getNSError(error), withAdditionalUserInfo: userInfo)
-        } else {
-            let error = NSError(domain: "NoError", code: 42, userInfo: nil)
-            crashlytics.recordError(error, withAdditionalUserInfo: userInfo)
-        }
+        crashlytics.setCustomValue(message, forKey: "message")
+        crashlytics.setCustomValue("error", forKey: "level")
+        crashlytics.setCustomValue(file, forKey: "file")
+        crashlytics.setCustomValue(function, forKey: "function")
+        crashlytics.setCustomValue(Int32(line), forKey: "line")
+        crashlytics.record(error: error ?? KeynError())
     }
 
     func analytics(_ event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil, override: Bool = false) {
@@ -115,27 +107,7 @@ struct Logger {
         revenue.setPrice(price)
         amplitude.logRevenueV2(revenue)
     }
-    
-    private func getNSError(_ error: Error) -> NSError {
-        if let error = error as? KeynError {
-            return error.nsError
-        } else  {
-            return error as NSError
-        }
-    }
 
 }
 
-protocol KeynError: Error {
-    var nsError: NSError { get }
-}
-
-// TODO: Differentiate this for Crashlytics. See https://firebase.google.com/docs/crashlytics/customize-crash-reports
-extension KeynError {
-    var nsError: NSError {
-        return NSError(
-            domain: "\(type(of: self)).\(self)",
-            code: 42,
-            userInfo: nil)
-    }
-}
+struct KeynError: Error {}

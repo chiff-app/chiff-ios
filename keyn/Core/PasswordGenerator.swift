@@ -5,7 +5,7 @@
 import Foundation
 import LocalAuthentication
 
-enum PasswordGenerationError: KeynError {
+enum PasswordGenerationError: Error {
     case characterNotAllowed
     case tooShort
     case keyGeneration
