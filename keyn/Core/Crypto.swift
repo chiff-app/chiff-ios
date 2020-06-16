@@ -7,7 +7,7 @@ import Sodium
 import CommonCrypto
 import CryptoKit
 
-enum CryptoError: KeynError {
+enum CryptoError: Error {
     case randomGeneration
     case base64Decoding
     case base64Encoding

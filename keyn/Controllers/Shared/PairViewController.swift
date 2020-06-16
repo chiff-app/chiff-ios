@@ -17,7 +17,7 @@ protocol PairContainerDelegate {
     func finishLoading()
 }
 
-enum URLError: KeynError {
+enum URLError: Error {
     case invalidScheme
     case invalidHost
     case invalidPath
@@ -34,7 +34,7 @@ class PairViewController: QRViewController {
         case "keyn":
             promise = self.pair(url: url)
         case "https":
-            guard url.host == "keyn.app" else {
+            guard url.host == "keyn.app" || url.host == "chiff.app" else {
                 throw URLError.invalidHost
             }
 

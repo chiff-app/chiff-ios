@@ -157,7 +157,7 @@ enum KeyType: UInt64 {
     case passwordSeed, backupSeed, webAuthnSeed
 }
 
-enum CodingError: KeynError {
+enum CodingError: Error {
     case stringEncoding
     case stringDecoding
     case unexpectedData

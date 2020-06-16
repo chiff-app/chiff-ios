@@ -18,7 +18,7 @@ class LearnMoreViewController: UIViewController, WKUIDelegate, WKNavigationDeleg
         super.viewDidLoad()
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        let url = URL(string: Properties.environment == .dev ? "https://staging.keyn.dev/nl/faq_raw/index.html" : "urls.faq".localized)
+        let url = URL(string: "urls.faq".localized)
         let request = URLRequest(url: url!)
         webView.load(request)
         Logger.shared.analytics(.learnMoreClicked, override: true)
