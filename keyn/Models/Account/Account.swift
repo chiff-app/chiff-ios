@@ -8,7 +8,7 @@ import LocalAuthentication
 import AuthenticationServices
 import PromiseKit
 
-enum AccountError: KeynError {
+enum AccountError: Error {
     case duplicateAccountId
     case accountsNotLoaded
     case notFound

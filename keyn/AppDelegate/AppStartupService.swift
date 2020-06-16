@@ -48,7 +48,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             let url = userActivity.webpageURL,
             let scheme = url.scheme,
             let host = url.host,
-            host == "keyn.app",
+            (host == "keyn.app" || host == "chiff.app"),
             scheme == "https",
             url.path == "/pair",
             let params = url.queryParameters,
