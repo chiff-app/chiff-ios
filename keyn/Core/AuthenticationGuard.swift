@@ -116,10 +116,11 @@ class AuthenticationGuard {
         return firstly {
             API.shared.request(path: "news", parameters: ["t": "\(Properties.firstLaunchTimestamp)"], method: .get, signature: nil, body: nil)
         }.map { messages in
+            let localization = Locale.current.languageCode ?? "en"
             guard let (id, news) = messages.first(where: { !Properties.receivedNewsMessage(id: $0.key) }),
-                let object = news as? [String: String],
-                let title = object["title"],
-                let message = object["message"] else {
+                let object = news as? [String: [String: String]],
+                let title = object["title"]?[localization],
+                let message = object["message"]?[localization] else {
                 return
             }
             UIApplication.shared.visibleViewController?.showAlert(message: message, title: title, handler: { (action) in
