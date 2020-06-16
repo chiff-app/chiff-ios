@@ -418,8 +418,8 @@ errors:
       Unfortunately, Chiff doesn't work without push notifications :(
 
 
-      Turn them on if you want to use Chiff. You can do this in Settings > Chiff >
-      Notifications.
+      Turn them on if you want to use Chiff. You can do this in Settings > Chiff
+      > Notifications.
   no_team:
     value: You are not part of a team.
   only_admins:
@@ -778,6 +778,8 @@ requests:
     value: Confirm request
   create_team:
     value: Create team
+  enter_otp:
+    value: Enter your one-time password
   expired:
     value: >-
       The request that was received expired. This means it was sent more than
@@ -958,8 +960,8 @@ settings:
       program
   premium_teams:
     value: >-
-      Chiff Premium is already enabled because you have an active Chiff for Teams
-      session.
+      Chiff Premium is already enabled because you have an active Chiff for
+      Teams session.
   privacy:
     comment: The word for privacy
     value: Privacy
@@ -986,8 +988,8 @@ settings:
   reset_warning:
     comment: Description under reset Chiff
     value: >-
-      Resetting Chiff will delete your local data, but still allow you to restore
-      your accounts with the paper backup.
+      Resetting Chiff will delete your local data, but still allow you to
+      restore your accounts with the paper backup.
   restore_failed:
     value: No active subscriptions were found
   restore_successful:
