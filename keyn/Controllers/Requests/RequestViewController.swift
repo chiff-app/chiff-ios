@@ -70,12 +70,12 @@ class RequestViewController: UIViewController {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account])
             }
-            if let account = account as? UserAccount, account.hasOtp {
-                AuthenticationGuard.shared.hideLockWindow()
+            self.authenticateButton.isHidden = true
+            if let account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {
+                self.token = token
                 self.account = account
                 self.showOtp()
             } else {
-                AuthenticationGuard.shared.hideLockWindow()
                 self.success()
             }
         }.catch(on: .main) { error in
@@ -107,15 +107,10 @@ class RequestViewController: UIViewController {
     }
 
     private func showOtp() {
-        guard let token = try? account?.oneTimePasswordToken() else {
-            self.success()
-            return
-        }
-        self.token = token
         successTextLabel.font = successTextLabel.font.withSize(32.0)
-        successTextLabel.text = token.currentPasswordSpaced
+        successTextLabel.text = token!.currentPasswordSpaced
         checkmarkHeightContstraint.constant = 0
-        switch token.generator.factor {
+        switch token!.generator.factor {
         case .counter(_):
             authenticateButton.setImage(UIImage(named: "refresh"), for: .normal)
             authenticateButton.imageView?.contentMode = .scaleAspectFit
@@ -124,12 +119,12 @@ class RequestViewController: UIViewController {
             successView.removeCircleAnimation()
             successView.draw(color: UIColor.white.cgColor, backgroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor)
             otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
-                self.successTextLabel.text = token.currentPasswordSpaced
+                self.successTextLabel.text = self.token!.currentPasswordSpaced
                 self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
             })
             successView.startCircleAnimation(duration: period, start: start)
         }
-        successTextDetailLabel.text = "Enter your one-time password"
+        successTextDetailLabel.text = "requests.enter_otp".localized
         self.authorized = true
         self.showSuccessView()
     }
@@ -164,13 +159,13 @@ class RequestViewController: UIViewController {
         self.authorized = true
         self.showSuccessView()
         if autoClose {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
+                AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
                 self.dismiss()
             }
         }
     }
 
-    // "requests.account_disabled".localized.capitalizedFirstLetter
     private func shouldUpgrade(title: String, description: String) {
         authenticateButton.isHidden = true
         upgradeStackView.isHidden = false
@@ -221,16 +216,15 @@ class RequestViewController: UIViewController {
     }
 
     @IBAction func close(_ sender: UIButton) {
-        if !authorized {
-            firstly {
+        guard authorized else {
+            return firstly {
                 authorizationGuard.rejectRequest()
             }.done(on: .main) {
-                self.dismiss(animated: true, completion: nil)
-            }.catchLog("Hm?")
-        } else {
-            dismiss()
+                self.dismiss()
+            }.catchLog("Error rejecting request")
         }
-
+        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+        dismiss()
     }
 
     // MARK: - Navigation

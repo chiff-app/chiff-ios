@@ -159,8 +159,8 @@ backup:
   explanation:
     first:
       value: >-
-        Chiff bewaart het wachtwoord op je telefoon. De volgende keer dat je wilt
-        inloggen, kun je Chiff gebruiken.
+        Chiff bewaart het wachtwoord op je telefoon. De volgende keer dat je
+        wilt inloggen, kun je Chiff gebruiken.
     second:
       value: >-
         Dus als je telefoon kwijt raakt of kapot gaat, heb je een backup nodig,
@@ -641,16 +641,16 @@ popups:
       value: Verwijder account?
     delete_corrupted:
       value: >-
-        Chiff kon niet de data van je telefoon lezen. Misschien is het in een oud
-        formaat. Je kunt dit verhelpen door alle data te verwijderen. Als je dit
-        niet wilt doen, contact ons dan via hello@chiff.app.
+        Chiff kon niet de data van je telefoon lezen. Misschien is het in een
+        oud formaat. Je kunt dit verhelpen door alle data te verwijderen. Als je
+        dit niet wilt doen, contact ons dan via hello@chiff.app.
     delete_data:
       comment: Delete local and remote data
       value: Verwijder data?
     delete_existing:
       value: >-
-        Je probeert een backup te herstellen terwijl Chiff al is geïnitialiseerd.
-        Wil je Chiff's huidige data verwijderen?
+        Je probeert een backup te herstellen terwijl Chiff al is
+        geïnitialiseerd. Wil je Chiff's huidige data verwijderen?
     delete_locally:
       value: >-
         De backup data is verwijderd vanaf een ander apparaat. Wil je de data
@@ -779,6 +779,8 @@ requests:
     value: Bevestig verzoek
   create_team:
     value: Creëer team
+  enter_otp:
+    value: Voer het one-time password in
   expired:
     value: >-
       Het onvangen verzoek is verlopen. Het is meer dan 3 minuten geleden
@@ -808,8 +810,8 @@ requests:
     value: Nieuw wachtwoord gegenereerd
   no_accounts_left:
     value: >-
-      Je kunt geen accounts meer toevoegen in de gratis versie van Chiff. Upgrade
-      om een onbeperkt aantal accounts te bewaren.
+      Je kunt geen accounts meer toevoegen in de gratis versie van Chiff.
+      Upgrade om een onbeperkt aantal accounts te bewaren.
   'on':
     comment: 'The word for on, e.g. Pair with browser on OS?'
     value: op
@@ -966,8 +968,8 @@ settings:
       algemene voorwaarden van Testflight.
   privacy_explanation:
     value: >-
-      Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om Chiff
-      te verbeteren.
+      Het delen van foutmeldingen en gebruiksstatistieken helpt ons veel om
+      Chiff te verbeteren.
   privacy_policy:
     value: Privacy policy
   read_more:

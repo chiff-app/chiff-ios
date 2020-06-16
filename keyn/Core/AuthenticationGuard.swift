@@ -82,14 +82,22 @@ class AuthenticationGuard {
 
     }
 
-    func hideLockWindow() {
-        UIView.animate(withDuration: 0.25, animations: {
+    func hideLockWindow(delay: Double? = nil) {
+        let duration = 0.25
+        let animations = {
             self.lockWindow.alpha = 0.0
-        }) { if $0 {
-            self.lockWindowIsHidden = true
-            self.lockWindow.alpha = 1.0
-            self.authenticationInProgress = false
+        }
+        func completion(_ result: Bool) {
+            if result {
+                self.lockWindowIsHidden = true
+                self.lockWindow.alpha = 1.0
+                self.authenticationInProgress = false
             }
+        }
+        if let delay = delay {
+            UIView.animate(withDuration: duration, delay: delay, animations: animations, completion: completion)
+        } else {
+            UIView.animate(withDuration: duration, animations: animations, completion: completion)
         }
     }
 

@@ -312,7 +312,6 @@ class AuthorizationGuard {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.map { context in
-
             defer {
                 Logger.shared.analytics(.webAuthnLoginRequestAuthorized, properties: [.value: success])
             }
