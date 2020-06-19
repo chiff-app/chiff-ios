@@ -155,7 +155,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         id: \(Properties.userId ?? "not set")
         """
         firstly {
-            API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data)
+            API.shared.request(path: "analytics", parameters: nil, method: .post, signature: nil, body: message.data)
         }.ensure {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                 self.dismiss(animated: true, completion: nil)

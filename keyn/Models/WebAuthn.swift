@@ -10,7 +10,7 @@ import Foundation
 import LocalAuthentication
 import CryptoKit
 
-enum WebAuthnError: KeynError {
+enum WebAuthnError: Error {
     case wrongRpId
     case notSupported
     case wrongAlgorithm

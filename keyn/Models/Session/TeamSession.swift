@@ -7,7 +7,7 @@ import UserNotifications
 import LocalAuthentication
 import PromiseKit
 
-enum TeamSessionError: KeynError {
+enum TeamSessionError: Error {
     case adminDelete
     case logoPathNotFound
     case notAdmin

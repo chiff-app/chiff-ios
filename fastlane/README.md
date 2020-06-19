@@ -21,6 +21,11 @@ or alternatively using `brew cask install fastlane`
 fastlane ios test
 ```
 Run tests
+### ios upload_symbols
+```
+fastlane ios upload_symbols
+```
+Upload dSYMs to Crashlytics
 ### ios build
 ```
 fastlane ios build

@@ -5,9 +5,10 @@
 import Foundation
 import LocalAuthentication
 
-enum PasswordGenerationError: KeynError {
+enum PasswordGenerationError: Error {
     case characterNotAllowed
     case tooShort
+    case tooLong
     case keyGeneration
     case invalidPassword
     case ppdInconsistency
@@ -75,8 +76,8 @@ class PasswordGenerator {
         let chars = PasswordValidator.MAXIMAL_CHARACTER_SET.sorted()
         let length = self.length(isCustomPassword: true)
         let validator = PasswordValidator(ppd: ppd)
-        guard validator.validateMaxLength(password: password) else {
-            throw PasswordGenerationError.invalidPassword
+        guard password.count <= 100 else {
+            throw PasswordGenerationError.tooLong
         }
         guard validator.validateCharacters(password: password, characters: String(chars)) else {
             throw PasswordGenerationError.characterNotAllowed

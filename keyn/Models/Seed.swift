@@ -6,7 +6,7 @@ import Foundation
 import LocalAuthentication
 import PromiseKit
 
-enum SeedError: KeynError {
+enum SeedError: Error {
     case mnemonicConversion
     case checksumFailed
     case exists

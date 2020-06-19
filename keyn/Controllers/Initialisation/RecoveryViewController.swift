@@ -5,7 +5,7 @@
 import UIKit
 import PromiseKit
 
-enum RecoveryError: KeynError {
+enum RecoveryError: Error {
     case unauthenticated
 }
 

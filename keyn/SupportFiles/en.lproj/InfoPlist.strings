@@ -6,5 +6,5 @@
   Copyright © 2019 keyn. All rights reserved.
 */
 
-"NSCameraUsageDescription" = "Keyn uses the camera to scan QR-codes";
-"NSFaceIDUsageDescription" = "Keyn uses FaceID to log you in to websites";
+"NSCameraUsageDescription" = "Chiff uses the camera to scan QR-codes";
+"NSFaceIDUsageDescription" = "Chiff uses FaceID to log you in to websites";
