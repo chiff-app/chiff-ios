@@ -6,7 +6,7 @@ import UIKit
 import AVFoundation
 import LocalAuthentication
 
-enum CameraError: KeynError {
+enum CameraError: Error {
     case noCamera
     case videoInputInitFailed
     case exists

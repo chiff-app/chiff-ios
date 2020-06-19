@@ -7,7 +7,7 @@ import UserNotifications
 import LocalAuthentication
 import PromiseKit
 
-enum SessionError: KeynError {
+enum SessionError: Error {
     case exists
     case doesntExist
     case invalid

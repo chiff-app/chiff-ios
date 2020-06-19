@@ -7,7 +7,7 @@ import OneTimePassword
 import Base32
 import PromiseKit
 
-enum OTPError: KeynError {
+enum OTPError: Error {
     case invalidSecret
     case invalidParameters
     case empty

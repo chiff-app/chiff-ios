@@ -82,14 +82,22 @@ class AuthenticationGuard {
 
     }
 
-    func hideLockWindow() {
-        UIView.animate(withDuration: 0.25, animations: {
+    func hideLockWindow(delay: Double? = nil) {
+        let duration = 0.25
+        let animations = {
             self.lockWindow.alpha = 0.0
-        }) { if $0 {
-            self.lockWindowIsHidden = true
-            self.lockWindow.alpha = 1.0
-            self.authenticationInProgress = false
+        }
+        func completion(_ result: Bool) {
+            if result {
+                self.lockWindowIsHidden = true
+                self.lockWindow.alpha = 1.0
+                self.authenticationInProgress = false
             }
+        }
+        if let delay = delay {
+            UIView.animate(withDuration: duration, delay: delay, animations: animations, completion: completion)
+        } else {
+            UIView.animate(withDuration: duration, animations: animations, completion: completion)
         }
     }
 
@@ -108,10 +116,11 @@ class AuthenticationGuard {
         return firstly {
             API.shared.request(path: "news", parameters: ["t": "\(Properties.firstLaunchTimestamp)"], method: .get, signature: nil, body: nil)
         }.map { messages in
+            let localization = Locale.current.languageCode ?? "en"
             guard let (id, news) = messages.first(where: { !Properties.receivedNewsMessage(id: $0.key) }),
-                let object = news as? [String: String],
-                let title = object["title"],
-                let message = object["message"] else {
+                let object = news as? [String: [String: String]],
+                let title = object["title"]?[localization],
+                let message = object["message"]?[localization] else {
                 return
             }
             UIApplication.shared.visibleViewController?.showAlert(message: message, title: title, handler: { (action) in

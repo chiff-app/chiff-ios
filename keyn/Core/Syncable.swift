@@ -10,7 +10,7 @@ import Foundation
 import LocalAuthentication
 import PromiseKit
 
-enum SyncError: KeynError {
+enum SyncError: Error {
     case dataDeleted
 }
 
