@@ -388,6 +388,8 @@ errors:
   generic_problem:
     comment: A generic problem description
     value: Er was een probleem
+  invalid_secret:
+    value: Het geheim moet bestaan uit de karakters A-Z en cijfers 2-7.
   local_authentication:
     biometry_not_available:
       value: >-
