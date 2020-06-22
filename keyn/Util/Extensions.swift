@@ -216,6 +216,16 @@ extension Token {
     }
 }
 
+extension CharacterSet {
+    static var base32WithSpaces: CharacterSet {
+        return CharacterSet.letters.union(CharacterSet(["0", "1", "2", "3", "4", "5", "6", "7", " "]))
+    }
+
+    static var base32: CharacterSet {
+        return CharacterSet.lowercaseLetters.union(CharacterSet(["0", "1", "2", "3", "4", "5", "6", "7"]))
+    }
+}
+
 // MARK: - UIExtensions
 
 // Extension for UIViewController that return visible view controller if it is a navigationController

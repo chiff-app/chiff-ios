@@ -13,50 +13,35 @@ enum OTPError: Error {
     case empty
 }
 
-class ManualOTPViewController: UITableViewController, TokenController {
+class ManualOTPViewController: KeynTableViewController, TokenController {
 
     @IBOutlet weak var keyTextField: UITextField!
     @IBOutlet weak var timeBasedSwitch: UISwitch!
-    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
 
     var account: UserAccount!
     var token: Token?
+
+    override var headers: [String?] {
+        return ["accounts.secret".localized, "accounts.mode".localized]
+    }
+    override var footers: [String?] {
+        return ["accounts.secret_description".localized, "accounts.mode_description".localized]
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
         tableView.layer.borderWidth = 1.0
-
+        saveButton.isEnabled = false
+        keyTextField.delegate = self
         tableView.separatorColor = UIColor.primaryTransparant
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
 
-    // MARK: - UITableView
-
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard section < 2 else {
-            return
-        }
-
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.textColor = UIColor.primaryHalfOpacity
-        header.textLabel?.font = UIFont.primaryBold
-        header.textLabel?.textAlignment = NSTextAlignment.left
-        header.textLabel?.frame = header.frame
-        header.textLabel?.text = section == 0 ? "accounts.secret".localized : "accounts.mode".localized
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as! UITableViewHeaderFooterView
-        footer.textLabel?.textColor = UIColor.textColorHalfOpacity
-        footer.textLabel?.font = UIFont.primaryMediumSmall
-        footer.textLabel?.textAlignment = NSTextAlignment.left
-        footer.textLabel?.frame = footer.frame
-        footer.textLabel?.text = section == 0 ? "accounts.secret_description".localized : "accounts.mode_description".localized
-    }
-
     func add(secret: String, timeBased: Bool) throws {
-        guard let secretData = MF_Base32Codec.data(fromBase32String: secret),
+        guard CharacterSet(charactersIn: secret).isSubset(of: CharacterSet.base32),
+            let secretData = MF_Base32Codec.data(fromBase32String: secret),
             !secretData.isEmpty else {
                 throw OTPError.invalidSecret
         }
@@ -85,15 +70,14 @@ class ManualOTPViewController: UITableViewController, TokenController {
             guard let secret = keyTextField.text, secret != "" else {
                 throw OTPError.empty
             }
-            try add(secret: secret.replacingOccurrences(of: " ", with: ""), timeBased: timeBasedSwitch.isOn)
+            try add(secret: secret.replacingOccurrences(of: " ", with: "").localizedLowercase, timeBased: timeBasedSwitch.isOn)
         } catch {
             switch error {
-            case OTPError.invalidSecret:
-                errorLabel.text = "The secret should consist of characters A-Z and numbers 2-7."
-            case OTPError.empty:
-                errorLabel.text = "The secret can't be empty."
+            case OTPError.invalidSecret, OTPError.empty:
+                showAlert(message: "errors.invalid_secret".localized)
             default:
                 Logger.shared.error("OTP error occured", error: error)
+                showAlert(message: "errors.generic_error".localized)
             }
         }
     }
@@ -103,3 +87,13 @@ class ManualOTPViewController: UITableViewController, TokenController {
     }
 
 }
+
+extension ManualOTPViewController: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        saveButton.isEnabled = !string.isEmpty
+        return CharacterSet(charactersIn: string).isSubset(of: CharacterSet.base32WithSpaces)
+    }
+
+}
+
