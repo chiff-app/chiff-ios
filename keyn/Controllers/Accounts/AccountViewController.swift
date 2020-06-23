@@ -287,7 +287,9 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         }
         if let account = account as? SharedAccount {
             let alert = UIAlertController(title: "popups.questions.move_to_user_account_title".localized, message: "popups.questions.move_to_user_account_message".localized, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { action in
+                sender.hideLoading()
+            }))
             alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
                 firstly {
                     self.removeAccountFromTeam(session: session, account: account)
