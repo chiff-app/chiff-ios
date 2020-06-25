@@ -34,8 +34,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.definesPresentationContext = true
 
         do {
-            sessions = try BrowserSession.all()
+            var sessions: [Session] = try BrowserSession.all()
             sessions.append(contentsOf: try TeamSession.all())
+            self.sessions = sessions.sorted(by: { $0.creationDate < $1.creationDate })
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
         }
@@ -155,7 +156,9 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func unwindToDevicesOverview(sender: UIStoryboardSegue) {
-        guard let sourceViewController = sender.source as? SessionDetailViewController, var session = sourceViewController.session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
+        guard let sourceViewController = sender.source as? SessionDetailViewController,
+            var session = sourceViewController.session,
+            let index = self.sessions.firstIndex(where: { session.id == $0.id }) else {
             return
         }
         if sender.identifier == "DeleteSession" {
@@ -164,7 +167,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             session.title = title
             try? session.update(makeBackup: true)
             sessions[index] = session
-            tableView.reloadData()
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
     }
 
@@ -181,12 +184,14 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: - Private functions
 
     private func reloadData(notification: Notification) {
-        if let session = notification.userInfo?["session"] as? Session, let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
+        if let session = notification.userInfo?["session"] as? Session,
+            let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
             sessions[index] = session
         } else {
             do {
-                sessions = try BrowserSession.all()
+                var sessions: [Session] = try BrowserSession.all()
                 sessions.append(contentsOf: try TeamSession.all())
+                self.sessions = sessions.sorted(by: { $0.creationDate < $1.creationDate })
             } catch {
                 Logger.shared.error("Could not get sessions.", error: error)
             }

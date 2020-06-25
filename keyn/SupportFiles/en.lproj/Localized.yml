@@ -191,6 +191,7 @@ backup:
     comment: For the word 'word'
     value: the
   what_if:
+    start: '24'
     value: What if your phone gets lost or stolen?
   word:
     comment: The word for word
@@ -308,6 +309,7 @@ devices:
     value: Pairing
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
+    start: '6'
     value: Go to chiff.app/go
   pairing_instruction_two:
     value: Scan the QR-code.
@@ -388,6 +390,8 @@ errors:
   generic_problem:
     comment: A generic problem description
     value: There was a problem
+  invalid_secret:
+    value: The secret should consist of characters A-Z and numbers 2-7.
   local_authentication:
     biometry_not_available:
       value: >-
@@ -511,8 +515,11 @@ initialization:
   all_set_up:
     value: "You're all set up! \U0001F389"
   begin_passwordless:
+    end: '29'
+    start: '17'
     value: Let's begin your passwordless life.
   byebye:
+    start: '30'
     value: 'Bye bye forgetting passwords, hello Chiff'
   change:
     value: You can always change this later in settings
@@ -523,6 +530,7 @@ initialization:
   enter_words:
     value: Enter the words of your paper backup to recover your passwords
   face_id:
+    start: '0'
     value: face recognition
   finish:
     value: Finish
@@ -542,8 +550,12 @@ initialization:
   log_in_with:
     value: 'Log in with '
   no_pushing:
+    end: '21'
+    start: '17'
     value: We don't want to push you...
   one_minute_away:
+    end: '15'
+    start: '6'
     value: You're 1 minute away from forgetting your passwords
   recover:
     value: Recover from backup
@@ -559,6 +571,7 @@ initialization:
   start_using_keyn:
     value: Start using Chiff
   touch_id:
+    start: '4'
     value: your fingerprint
   try_later:
     value: Try later
@@ -603,6 +616,8 @@ notifications:
     third:
       value: Are you still there?
   pairing:
+    end: ''
+    start: '18'
     value: Let's set up your computer!
   team_admin_login:
     value: Chiff for teams login
@@ -916,6 +931,8 @@ settings:
   how_keyn_works:
     value: How Chiff works
   how_keyn_works_on:
+    end: '9'
+    start: '4'
     value: How Chiff works on
   jailbreak_warning:
     value: >-

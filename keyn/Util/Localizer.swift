@@ -49,8 +49,12 @@ private class Localizer {
             return NSMutableAttributedString(string: "")
         }
         let attributedString = NSMutableAttributedString(string: localizedString, attributes: attributes)
-        if let start = localizableGroup["start"] as? Int {
-            let end = localizableGroup["end"] as? Int
+        if let startString = localizableGroup["start"] as? String,
+            let start = Int(startString) {
+            var end: Int? = nil
+            if let endString = localizableGroup["end"] as? String {
+                end = Int(endString)
+            }
             var attributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: accentColor]
             if let font = font {
                 attributes[NSAttributedString.Key.font] = font as Any

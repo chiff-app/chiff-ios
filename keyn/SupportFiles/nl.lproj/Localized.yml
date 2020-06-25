@@ -193,6 +193,7 @@ backup:
     comment: For the word 'word'
     value: het
   what_if:
+    start: '23'
     value: Wat als je je telefoon kwijtraakt?
   word:
     comment: The word for word
@@ -306,6 +307,7 @@ devices:
     value: Koppelen met je computer
   pairing_instruction:
     comment: Instruction shown above the qr-code scanner
+    start: '7'
     value: Ga naar chiff.app/nl/go
   pairing_instruction_two:
     value: Scan de QR-code.
@@ -388,6 +390,8 @@ errors:
   generic_problem:
     comment: A generic problem description
     value: Er was een probleem
+  invalid_secret:
+    value: Het geheim moet bestaan uit de karakters A-Z en cijfers 2-7.
   local_authentication:
     biometry_not_available:
       value: >-
@@ -511,8 +515,11 @@ initialization:
   all_set_up:
     value: "Je bent helemaal klaar! \U0001F389"
   begin_passwordless:
+    end: '29'
+    start: '16'
     value: Je leven zonder wachtwoorden begint nu.
   byebye:
+    start: '18'
     value: 'Dag wachtwoorden, hallo Chiff'
   change:
     value: Je kunt dit altijd later veranderen in de instellingen.
@@ -523,6 +530,7 @@ initialization:
   enter_words:
     value: Voer de 12 woorden van je paper backup in
   face_id:
+    start: '0'
     value: gezichtsherkenning
   finish:
     value: Gereed
@@ -542,8 +550,12 @@ initialization:
   log_in_with:
     value: 'Log vanaf nu in op elke website met '
   no_pushing:
+    end: '24'
+    start: '18'
     value: We willen je niet pushen...
   one_minute_away:
+    end: '16'
+    start: '7'
     value: Je bent 1 minuut verwijderd van het vergeten van je wachtwoorden
   recover:
     value: Herstel van backup
@@ -559,6 +571,7 @@ initialization:
   start_using_keyn:
     value: Start met Chiff
   touch_id:
+    start: '2'
     value: je vingerafdruk
   try_later:
     value: Later
@@ -603,6 +616,8 @@ notifications:
     third:
       value: Ben je er nog?
   pairing:
+    end: ''
+    start: '26'
     value: Koppelen
   team_admin_login:
     value: Inloggen Chiff voor teams
@@ -914,6 +929,8 @@ settings:
   how_keyn_works:
     value: Hoe Chiff werkt
   how_keyn_works_on:
+    end: '9'
+    start: '4'
     value: Hoe Chiff werkt op
   jailbreak_warning:
     value: >-

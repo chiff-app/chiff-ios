@@ -12,6 +12,7 @@ enum Browser: String, Codable {
     case chrome = "chrome"
     case edge = "edge"
     case safari = "safari"
+    case cli = "cli"
 }
 
 /*
@@ -260,7 +261,6 @@ struct BrowserSession: Session {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
-
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
@@ -287,7 +287,7 @@ struct BrowserSession: Session {
     static func updateAllSessionData(organisationKey: Data?) {
         firstly {
             when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey) })
-        }.log("Failed to update session data.")
+        }.catchLog("Failed to update session data.")
     }
 
     // MARK: - Private
