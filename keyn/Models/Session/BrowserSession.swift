@@ -287,7 +287,7 @@ struct BrowserSession: Session {
     static func updateAllSessionData(organisationKey: Data?) {
         firstly {
             when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey) })
-        }.log("Failed to update session data.")
+        }.catchLog("Failed to update session data.")
     }
 
     // MARK: - Private
