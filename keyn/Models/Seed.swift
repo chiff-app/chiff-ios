@@ -107,6 +107,10 @@ struct Seed {
                 let ((accountsSucceeded, accountsFailed), (sessionsSucceeded, sessionsFailed)) = result
                 Properties.accountCount = accountsSucceeded
                 return (accountsSucceeded + accountsFailed, accountsFailed, sessionsSucceeded + sessionsFailed, sessionsFailed)
+            }.recover { error -> Promise<(Int,Int,Int,Int)> in
+                NotificationManager.shared.deleteKeys()
+                delete()
+                throw error
             }
         } catch {
             NotificationManager.shared.deleteKeys()
