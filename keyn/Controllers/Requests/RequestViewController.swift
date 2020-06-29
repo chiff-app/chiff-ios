@@ -50,6 +50,9 @@ class RequestViewController: UIViewController {
         case .fill, .getDetails:
             requestLabel.text = "requests.get_password".localized.capitalizedFirstLetter
             Logger.shared.analytics(.fillPassworddRequestOpened)
+        case .updateAccount:
+            requestLabel.text = "requests.update_account".localized.capitalizedFirstLetter
+            Logger.shared.analytics(.fillPassworddRequestOpened)
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -152,6 +155,9 @@ class RequestViewController: UIViewController {
             successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
         case .fill, .getDetails:
             successTextLabel.text = "requests.get_password_successful".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        case .updateAccount:
+            requestLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter

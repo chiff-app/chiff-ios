@@ -763,6 +763,8 @@ requests:
     value: Account added
   account_disabled:
     value: Account disabled
+  account_updated:
+    value: Account updated
   accounts:
     comment: The word for 'accounts'
     value: accounts
@@ -854,6 +856,10 @@ requests:
   unlock_keyn:
     comment: Unlock Chiff
     value: Unlock Chiff
+  update_account:
+    value: Update account
+  update_this:
+    value: Update %@.
   upgrade:
     value: Upgrade now
   upgrade_keyn_for_add:
