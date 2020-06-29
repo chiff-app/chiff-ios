@@ -99,7 +99,7 @@ struct BrowserSession: Session {
         switch type {
         case .change:
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: newPassword, b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil, y: nil)
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .updateAccount:
             response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil, y: nil)
         case .login, .addToExisting:
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: nil)
