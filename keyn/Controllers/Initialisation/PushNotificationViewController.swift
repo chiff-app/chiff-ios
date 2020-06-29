@@ -25,8 +25,15 @@ class PushNotificationViewController: UIViewController {
             if result {
                 self.registerForPushNotifications()
                 self.scheduleNudgeNotifications()
+            } else {
+                self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
             }
         }
+    }
+
+    @IBAction func nextScreen(_ sender: UIButton) {
+        Properties.deniedPushNotifications = true
+        self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
     }
 
     private func registerForPushNotifications() {
@@ -36,25 +43,9 @@ class PushNotificationViewController: UIViewController {
             if result {
                 self.performSegue(withIdentifier: "ShowPairingExplanation", sender: self)
             } else {
-                // TODO: Present warning vc, then continue to showRootVC
-                self.showRootController()
+                self.performSegue(withIdentifier: "ShowLoggingPreferences", sender: self)
             }
         }
-    }
-
-    private func showRootController() {
-        guard let window = UIApplication.shared.keyWindow else {
-            return
-        }
-        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-            Logger.shared.error("Unexpected root view controller type")
-            fatalError("Unexpected root view controller type")
-        }
-        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
-            DispatchQueue.main.async {
-                window.rootViewController = vc
-            }
-        })
     }
 
     private func scheduleNudgeNotifications() {

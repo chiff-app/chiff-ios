@@ -298,6 +298,8 @@ devices:
 
       Choose 'Allow Notifications' under 'Notifications'.
   no_push_warning_title:
+    end: '21'
+    start: '17'
     value: We don't want to push you...
   'on':
     value: 'on'
@@ -553,6 +555,8 @@ initialization:
     end: '21'
     start: '17'
     value: We don't want to push you...
+  not_now:
+    value: Not now
   one_minute_away:
     end: '15'
     start: '6'
