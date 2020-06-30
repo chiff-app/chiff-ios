@@ -88,7 +88,7 @@ class PrivacyViewController: UITableViewController {
             }.done(on: .main) {
                 Logger.shared.analytics(.resetKeyn)
                 let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-                UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+                AppDelegate.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
             }.catch(on: .main) { error in
                 self.showAlert(message: "\("errors.deleting".localized): \(error)")
             }
@@ -123,7 +123,7 @@ class PrivacyViewController: UITableViewController {
         }.done(on: .main) {
             Logger.shared.analytics(.deleteData)
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-            UIApplication.shared.keyWindow?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+            AppDelegate.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         }.ensure {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }.catch(on: .main) { error in
