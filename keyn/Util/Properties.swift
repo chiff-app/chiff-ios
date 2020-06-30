@@ -17,7 +17,7 @@ struct Properties {
         var path: String {
             switch self {
             case .dev: return "dev"
-            case .beta: return "beta"
+            case .beta: return Properties.migrated ? "v1" : "beta"
             case .prod: return "v1"
             }
         }
@@ -38,6 +38,7 @@ struct Properties {
     static private let sortingPreferenceFlag = "sortingPreference"
     static private let hasBeenLaunchedBeforeFlag = "hasBeenLaunchedBeforeFlag" // IMPORTANT: If this flag is not present, all data will be deleted from Keychain on App startup!
     static private let lastRunVersionFlag = "lastRunVersionFlag"
+    static private let migratedFlag = "migratedFlag"
 
     static var isFirstLaunch: Bool {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
@@ -83,6 +84,13 @@ struct Properties {
         set {
             UserDefaults.standard.set(newValue, forKey: analyticsLoggingFlag)
             Logger.shared.setAnalyticsLogging(value: newValue)
+        }
+    }
+    static var migrated: Bool {
+        get { return environment == .beta && UserDefaults.standard.bool(forKey: migratedFlag) }
+        set {
+            guard environment == .beta else { return }
+            UserDefaults.standard.set(newValue, forKey: migratedFlag)
         }
     }
     static var userId: String? {

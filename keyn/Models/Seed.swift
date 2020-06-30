@@ -46,6 +46,7 @@ struct Seed {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
         }
+        Properties.migrated = true
         do {
             Keychain.shared.deleteAll(service: .backup)
             NotificationManager.shared.deleteKeys()
@@ -94,8 +95,9 @@ struct Seed {
             }
             _ = try createKeys(seed: seed)
             paperBackupCompleted = true
-
             return firstly {
+                setMigrated()
+            }.then {
                 when(fulfilled:
                     UserAccount.restore(context: context),
                     TeamSession.restore(context: context))
@@ -158,9 +160,47 @@ struct Seed {
     }
 
     static func moveToProduction() -> Promise<Void> {
+        do {
+            guard Properties.environment == .beta && !Properties.migrated else {
+                return .value(())
+            }
+            let message = [
+                "sessions": try BrowserSession.all().map { [
+                    "pk": $0.signingPubKey,
+                    "message": try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: [
+                            "timestamp": Date.now,
+                            "data": try $0.encryptSessionData(organisationKey: try? TeamSession.all().first?.organisationKey, migrated: true)
+                        ], options: []), privKey: try $0.signingPrivKey()).base64,
+                    ]
+                }
+            ]
+            return firstly {
+                API.shared.signedRequest(method: .patch, message: message, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
+            }.asVoid()
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
+    static func setMigrated() -> Promise<Void> {
+        guard Properties.environment == .beta else {
+            return .value(())
+        }
         return firstly {
-            API.shared.signedRequest(method: .patch, message: nil, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
-        }.asVoid().log("Cannot move backup data.")
+            API.shared.signedRequest(method: .get, message: nil, path: "users/\(try publicKey())/migrated", privKey: try privateKey(), body: nil, parameters: nil)
+        }.map { result in
+            guard let migrated = result["migrated"] as? Bool else {
+                Logger.shared.warning("Error parsing migrated status")
+                return
+            }
+            Properties.migrated = migrated
+        }.asVoid().recover { error in
+            guard case APIError.statusCode(404) = error else {
+                Logger.shared.warning("Error getting migrated status")
+                return
+            }
+            return
+        }
     }
 
     static func publicKey() throws -> String {
