@@ -181,7 +181,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func showRootController() {
-        guard let window = UIApplication.shared.keyWindow else {
+        guard let window = AppDelegate.startupService.window else {
             return
         }
         guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
