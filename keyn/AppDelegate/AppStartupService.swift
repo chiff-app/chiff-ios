@@ -243,8 +243,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
         return firstly {
             Seed.moveToProduction()
-        }.done { _ in
-            Properties.migrated = true
         }.recover { error in
             Logger.shared.warning("Error migrating from beta environment.", error: error)
             return

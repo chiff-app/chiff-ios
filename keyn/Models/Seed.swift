@@ -176,7 +176,9 @@ struct Seed {
             ]
             return firstly {
                 API.shared.signedRequest(method: .patch, message: message, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
-            }.asVoid()
+            }.asVoid().done {
+                Properties.migrated = true
+            }
         } catch {
             return Promise(error: error)
         }
