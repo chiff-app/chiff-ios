@@ -27,10 +27,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Properties.environment == .prod ? 3 : 4
-    }
-
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "settings.settings".localized
 //        switch section {
@@ -98,21 +94,6 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     // MARK: - Actions
-
-    @IBAction func moveBackupData(_ sender: UIButton) {
-        let alert = UIAlertController(title: "popups.questions.move_data".localized, message: "popups.questions.move_data_description".localized, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
-            firstly {
-                Seed.moveToProduction()
-            }.done(on: .main) {
-                self.showAlert(message: "popups.responses.data_move_success".localized, title: "popups.responses.data_move_success_title".localized)
-            }.catch(on: .main) { error in
-                self.showAlert(message: "\("errors.moving_data".localized): \(error.localizedDescription)")
-            }
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
 
     @IBAction func unwindToSettings(sender: UIStoryboardSegue) {
         let completed = Seed.paperBackupCompleted
