@@ -762,6 +762,8 @@ requests:
     value: Account toegevoegd
   account_disabled:
     value: Account uitgeschakeld
+  account_updated:
+    value: Account geüpdatet
   accounts:
     comment: The word for 'accounts'
     value: accounts
@@ -855,6 +857,10 @@ requests:
   unlock_keyn:
     comment: Unlock Chiff
     value: Ontgrendel Chiff
+  update_account:
+    value: Update account
+  update_this:
+    value: Update %@.
   upgrade:
     value: Upgrade nu
   upgrade_keyn_for_add:

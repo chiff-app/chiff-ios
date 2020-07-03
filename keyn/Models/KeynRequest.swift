@@ -22,7 +22,9 @@ struct KeynRequest: Codable {
     let passwordSuccessfullyChanged: Bool?
     let siteID: String?
     let siteName: String?
+    let newSiteName: String?
     let siteURL: String?
+    let notes: String?
     let type: KeynMessageType
     let relyingPartyId: String?
     let algorithms: [WebAuthnAlgorithm]?
@@ -43,7 +45,9 @@ struct KeynRequest: Codable {
         case sessionID = "i"
         case siteID = "s"
         case siteName = "n"
+        case newSiteName = "nn"
         case siteURL = "l"
+        case notes = "y"
         case type = "r"
         case algorithms = "g"
         case relyingPartyId = "rp"
@@ -120,7 +124,7 @@ struct KeynRequest: Codable {
                 Logger.shared.error("VerifyIntegrity failed because there is no webauthn algorithm.")
                 return false
             }
-        case .getDetails:
+        case .getDetails, .updateAccount:
             guard accountID != nil else {
                 Logger.shared.error("VerifyIntegrity failed because there is no accountID.")
                 return false
