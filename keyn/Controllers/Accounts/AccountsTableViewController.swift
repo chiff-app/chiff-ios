@@ -44,7 +44,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let accountDict = try? UserAccount.all(context: nil) {
+        if let accountDict = try? UserAccount.allCombined(context: nil) {
             unfilteredAccounts = Array(accountDict.values).sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
         } else {
             unfilteredAccounts = [UserAccount]()
@@ -87,9 +87,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         performSegue(withIdentifier: "ShowAddSubscription", sender: self)
     }
 
-    private func loadAccounts(notification: Notification) {
+    private func loadAccounts(notification: Notification?) {
         DispatchQueue.main.async {
-            if let accounts = try? notification.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
+            if let accounts = try? notification?.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
                 self.unfilteredAccounts = accounts.values.sorted(by: { $0.site.name.lowercased() < $1.site.name.lowercased() })
                 self.prepareAccounts()
                 self.tableView.reloadData()
@@ -226,9 +226,16 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
             cell.titleLabel.alpha = showEnabled ? 1 : 0.5
             cell.icon.alpha = showEnabled ? 1 : 0.5
-            cell.teamIconWidthConstraint.constant = account is SharedAccount ? 24 : 0
             if #available(iOS 13.0, *) {
                 cell.teamIcon.image = UIImage(systemName: "person.2.fill")
+            }
+            if account is SharedAccount {
+                cell.teamIconWidthConstraint.constant = 24
+            } else if let account = account as? UserAccount, account.shadowing {
+                cell.teamIconWidthConstraint.constant = 24
+                cell.teamIcon.alpha = 0.5
+            } else {
+                cell.teamIconWidthConstraint.constant = 0
             }
         }
     }
@@ -278,12 +285,20 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
 
     func addAccount(account: UserAccount) {
-        unfilteredAccounts.append(account)
-        prepareAccounts()
-        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
-            let newIndexPath = IndexPath(row: filteredIndex, section: 0)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-            self.updateUi()
+        if let index = unfilteredAccounts.firstIndex(where: { ($0 as? SharedAccount)?.id == account.id }) {
+            var account = account
+            account.shadowing = true
+            unfilteredAccounts[index] = account
+            prepareAccounts()
+            tableView.reloadData()
+        } else {
+            unfilteredAccounts.append(account)
+            prepareAccounts()
+            if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
+                let newIndexPath = IndexPath(row: filteredIndex, section: 0)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                self.updateUi()
+            }
         }
 //        updateSearchResults(for: searchController)
     }
@@ -309,6 +324,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
             account.delete()
         }.done(on: DispatchQueue.main) {
             self.deleteAccountFromTable(indexPath: filteredIndexPath, id: account.id)
+            if (account as? UserAccount)?.shadowing ?? false {
+                self.loadAccounts(notification: nil)
+            }
         }.catch(on: DispatchQueue.main) { error in
             self.showAlert(message: error.localizedDescription, title: "errors.deleting_account".localized)
         }
