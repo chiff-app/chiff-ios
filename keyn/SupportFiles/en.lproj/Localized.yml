@@ -114,6 +114,10 @@ accounts:
     value: Secret
   secret_description:
     value: The secret that was shared by the website
+  shadowing_warning:
+    value: >-
+      ⚠ There exists a shared account from your team with the same URL and
+      username. Delete this account to get access to the shared account.
   sites_header:
     value: Websites
   sort:

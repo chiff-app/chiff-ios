@@ -20,7 +20,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
     override var footers: [String?] {
         return [
-            webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
+            shadowing ? "accounts.shadowing_warning".localized : webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
             "accounts.2fa_description".localized.capitalizedFirstLetter,
             String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters),
             showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
@@ -62,6 +62,14 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     var webAuthnEnabled: Bool {
         if let account = account as? UserAccount {
             return account.webAuthn != nil
+        } else {
+            return false
+        }
+    }
+
+    var shadowing: Bool {
+        if let account = account as? UserAccount {
+            return account.shadowing
         } else {
             return false
         }
@@ -179,7 +187,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         let footer = view as! UITableViewHeaderFooterView
         switch section {
         case 0:
-            footer.textLabel?.isHidden = !(webAuthnEnabled || tableView.isEditing)
+            footer.textLabel?.isHidden = !(shadowing || webAuthnEnabled || tableView.isEditing)
         case 1:
             footer.textLabel?.isHidden = false
         case 2:

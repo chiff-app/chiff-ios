@@ -114,6 +114,11 @@ accounts:
     value: Geheim
   secret_description:
     value: Het geheim dat gedeeld is door de website
+  shadowing_warning:
+    value: >-
+      ⚠ Er bestaat een gedeeld account van je team met dezelfde URL en
+      gebruikersnaam. Verwijder dit account om toegang te krijgen tot het
+      gedeelde account.
   sites_header:
     value: Websites
   sort:
