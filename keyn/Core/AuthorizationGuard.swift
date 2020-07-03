@@ -27,11 +27,13 @@ class AuthorizationGuard {
     private let accountIds: [Int: String]!// Should be present for bulk login requests
     private let browserTab: Int!        // Should be present for all requests
     private let siteName: String!       // Should be present for all requests
+    private let newSiteName: String?    // May be present for update account request
     private let siteURL: String!        // Should be present for all requests
     private let accountId: String!      // Should be present for login, change and fill requests
     private let siteId: String!         // Should be present for add site requests
     private let password: String!       // Should be present for add site requests
     private let username: String!       // Should be present for add site requests
+    private let notes: String?          // May be present for addSite requests
     private let challenge: String!      // Should be present for webauthn requests
     private let rpId: String!           // Should be present for webauthn requests
     private let algorithms: [WebAuthnAlgorithm]! // Should be present for webauthn create requests
@@ -52,6 +54,8 @@ class AuthorizationGuard {
             return String(format: "requests.login_to".localized, "requests.keyn_for_teams".localized)
         case .addBulk:
             return String(format: "requests.n_new_accounts".localized, count)
+        case .updateAccount:
+            return String(format: "requests.update_this".localized, siteName)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -66,9 +70,11 @@ class AuthorizationGuard {
         self.browserTab = request.browserTab
         self.siteId = request.siteID
         self.siteName = request.siteName
+        self.newSiteName = request.newSiteName
         self.siteURL = request.siteURL
         self.password = request.password
         self.username = request.username
+        self.notes = request.notes
         self.accountId = request.accountID
         self.challenge = request.challenge
         self.rpId = request.relyingPartyId
@@ -109,6 +115,8 @@ class AuthorizationGuard {
             promise = webAuthnCreate().map { nil }
         case .webauthnLogin:
             promise = webAuthnLogin().map { nil }
+        case .updateAccount:
+            promise = updateAccount()
         default:
             promise = .value(nil)
         }
@@ -223,6 +231,31 @@ class AuthorizationGuard {
         }
     }
 
+    private func updateAccount() -> Promise<Account?> {
+        var success = false
+        return firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+        }.map { context in
+            guard var account: UserAccount = try UserAccount.get(id: self.accountId, context: context) else {
+                if try SharedAccount.get(id: self.accountId, context: context) != nil {
+                    throw AuthorizationError.cannotChangeAccount
+                } else {
+                    throw AccountError.notFound
+                }
+            }
+            try account.update(username: self.username, password: self.password, siteName: self.newSiteName, url: self.siteURL, askToLogin: nil, askToChange: nil, enabled: nil)
+            if let notes = self.notes {
+                try account.updateNotes(notes: notes)
+            }
+            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+            success = true
+            return account
+        }.ensure {
+            Logger.shared.analytics(.updateAccountRequestAuthorized, properties: [.value: success])
+        }
+    }
+
     private func addSite() -> Promise<Void> {
         var success = false
         return firstly {
@@ -231,7 +264,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false).map { ($0, ppd) }
         }.map { context, ppd in
             let site = Site(name: self.siteName ?? ppd?.name ?? "Unknown", id: self.siteId, url: self.siteURL ?? ppd?.url ?? "https://", ppd: ppd)
-            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: nil, askToChange: self.askToChange, context: context)
+            let account = try UserAccount(username: self.username, sites: [site], password: self.password, rpId: nil, algorithms: nil, notes: self.notes, askToChange: self.askToChange, context: context)
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true

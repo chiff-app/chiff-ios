@@ -99,7 +99,7 @@ struct BrowserSession: Session {
         switch type {
         case .change:
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: newPassword, b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil, y: nil)
-        case .add, .addAndLogin:
+        case .add, .addAndLogin, .updateAccount:
             response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil, y: nil)
         case .login, .addToExisting:
             response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: nil)
@@ -208,17 +208,23 @@ struct BrowserSession: Session {
     }
 
     func updateSessionData(organisationKey: Data?) throws -> Promise<Void> {
-        var data: [String: Any] = [:]
+        let message = [
+            "data": try encryptSessionData(organisationKey: organisationKey)
+        ]
+        return API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to update session data.")
+    }
+
+    func encryptSessionData(organisationKey: Data?, migrated: Bool? = nil) throws -> String {
+        var data: [String: Any] = [
+            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue
+        ]
         if let appVersion = Properties.version {
             data["appVersion"] = appVersion
         }
         if let organisationKey = organisationKey {
             data["organisationKey"] = organisationKey.base64
         }
-        let message = [
-            "data": try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
-        ]
-        return API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to update session data.")
+        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
     }
 
     func deleteAccount(accountId: String) {
@@ -239,7 +245,7 @@ struct BrowserSession: Session {
             guard let endpoint = Properties.endpoint else {
                 throw SessionError.noEndpoint
             }
-            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64)
+            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64)
             let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
             let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
             let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)

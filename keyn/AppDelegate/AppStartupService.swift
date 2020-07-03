@@ -144,6 +144,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         }
         if Seed.hasKeys {
             firstly {
+                checkIfMigrated()
+            }.then {
                 Properties.deniedPushNotifications ? .value(false) : PushNotifications.register()
             }.done(on: .main) { result in
                 guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
@@ -158,7 +160,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 }
                 self.window?.rootViewController = vc
                 self.window?.makeKeyAndVisible()
-            }
+            }.catchLog("Failed to initialize")
         } else {
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
@@ -232,6 +234,18 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         if Properties.isUpgraded {
             let organisationKey = try? TeamSession.all().first?.organisationKey
             BrowserSession.updateAllSessionData(organisationKey: organisationKey)
+        }
+    }
+
+    private func checkIfMigrated() -> Promise<Void> {
+        guard Properties.environment == .beta && !Properties.migrated else {
+            return .value(())
+        }
+        return firstly {
+            Seed.moveToProduction()
+        }.recover { error in
+            Logger.shared.warning("Error migrating from beta environment.", error: error)
+            return
         }
     }
 
