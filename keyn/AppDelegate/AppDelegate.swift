@@ -28,8 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     let services: [Service: UIApplicationDelegate] = [
-        .pushNotification: PushNotificationService(),
         .appStartup: AppStartupService(),
+        .pushNotification: PushNotificationService(),
         .pasteBoard: PasteboardService()
     ]
 

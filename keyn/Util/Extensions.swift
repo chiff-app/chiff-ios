@@ -480,7 +480,7 @@ extension UITableViewCell {
 }
 
 extension UNNotificationContent {
-    func isProcessed() -> Bool {
+    var isProcessed: Bool {
         return self.userInfo[NotificationContentKey.type] != nil
     }
 }
