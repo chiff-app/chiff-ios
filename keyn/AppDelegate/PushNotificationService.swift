@@ -40,11 +40,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch type {
             case .sync:
-                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String], let logos = userInfo["logos"] as? [String] else {
+                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String] else {
                     completionHandler(.failed)
                     return
                 }
-                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, filterLogos: logos, pubKeys: sessionPubKeys)]
+                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, pubKeys: sessionPubKeys)]
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
                 }
