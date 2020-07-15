@@ -102,7 +102,7 @@ struct Seed {
                     UserAccount.restore(context: context),
                     TeamSession.restore(context: context))
             }.then { result in
-                TeamSession.updateAllTeamSessions(pushed: false, filterLogos: nil).map { _ in
+                TeamSession.updateAllTeamSessions(pushed: false).map { _ in
                     return result
                 }
             }.map { result in
@@ -159,17 +159,40 @@ struct Seed {
         }.asVoid().log("BackupManager cannot delete account.")
     }
 
+    //    private func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
+    //        let teamSessions = try TeamSession.all()
+    //        var data: [String: Any] = [
+    //            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+    //            "isAdmin": teamSessions.contains(where: { $0.isAdmin })
+    //        ]
+    //        if let appVersion = Properties.version {
+    //            data["appVersion"] = appVersion
+    //        }
+    //        if let organisationKey = organisationKey {
+    //            data["organisationKey"] = organisationKey.base64
+//                data["organisationType"] = teamSessions.reduce(0, { (result, session) -> Int in
+//                    return session.type.rawValue > result ? session.type.rawValue : result
+//                })
+    //        }
+    //     teamSessions.contains(where: { $0.isAdmin })
+    //        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
+    //    }
+
     static func moveToProduction() -> Promise<Void> {
         do {
             guard Properties.environment == .beta && !Properties.migrated else {
                 return .value(())
             }
+            let teamSessions = try TeamSession.all()
+            let organisationKey = teamSessions.first?.organisationKey
+            let organisationType = teamSessions.first?.type
+            let isAdmin = teamSessions.contains(where: { $0.isAdmin })
             let message = [
                 "sessions": try BrowserSession.all().map { [
                     "pk": $0.signingPubKey,
                     "message": try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: [
                             "timestamp": Date.now,
-                            "data": try $0.encryptSessionData(organisationKey: try? TeamSession.all().first?.organisationKey, migrated: true)
+                            "data": try $0.encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin, migrated: true)
                         ], options: []), privKey: try $0.signingPrivKey()).base64,
                     ]
                 }

@@ -67,7 +67,7 @@ class AuthenticationGuard {
             self.hideLockWindow()
             return context
         }.then { (context) -> Promise<Void> in
-            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false, filterLogos: nil), UserAccount.sync(context: context), TeamSession.sync(context: context), self.updateNews())
+            when(fulfilled: TeamSession.updateAllTeamSessions(pushed: false), UserAccount.sync(context: context), TeamSession.sync(context: context), self.updateNews())
         }.catch(on: .main) { error in
             if case SyncError.dataDeleted = error {
                 self.showDataDeleted()

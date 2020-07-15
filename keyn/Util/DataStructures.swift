@@ -72,6 +72,8 @@ struct KeynPairingResponse: Codable {
     let os: String = "ios"
     let appVersion: String?
     let organisationKey: String?
+    let organisationType: OrganisationType?
+    let isAdmin: Bool?
 }
 
 /*
