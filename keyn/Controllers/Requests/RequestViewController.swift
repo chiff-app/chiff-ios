@@ -53,6 +53,9 @@ class RequestViewController: UIViewController {
         case .updateAccount:
             requestLabel.text = "requests.update_account".localized.capitalizedFirstLetter
             Logger.shared.analytics(.fillPassworddRequestOpened)
+        case .createOrganisation:
+            requestLabel.text = "requests.create_team".localized.capitalizedFirstLetter
+            // TODO: analytics
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -158,6 +161,9 @@ class RequestViewController: UIViewController {
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         case .updateAccount:
             requestLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        case .createOrganisation:
+            requestLabel.text = "requests.team_created".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter

@@ -171,11 +171,10 @@ struct TeamSession: Session {
             guard session.created else {
                 return .value(false)
             }
-            SharedAccount.deleteAll(for: session.signingPubKey)
             try? session.delete()
             NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
             NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
-            return .value(false)
+            return .value(true)
         }
     }
 
@@ -298,6 +297,8 @@ struct TeamSession: Session {
             } else {
                 return nil
             }
+        }.recover { (error) -> Promise<OrganisationType?> in
+            return .value(nil)
         }
     }
 

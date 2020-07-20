@@ -1,5 +1,5 @@
 PODS:
-  - Amplitude-iOS (4.10.0)
+  - Amplitude (5.2.1)
   - Base32 (1.1.2)
   - DataCompression (3.6.0)
   - Down (0.9.3)
@@ -99,7 +99,7 @@ PODS:
   - TrustKit (1.6.5)
 
 DEPENDENCIES:
-  - Amplitude-iOS (~> 4.5)
+  - Amplitude (~> 5.1)
   - DataCompression
   - Down
   - Firebase/Core
@@ -115,7 +115,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Amplitude-iOS
+    - Amplitude
     - Base32
     - DataCompression
     - Down
@@ -142,7 +142,7 @@ SPEC REPOS:
     - TrustKit
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: 7d8cdc3408ba35c2e68368fc7c692cd104606b94
+  Amplitude: 9774e93d48d9f41f271a4479e06369a30ab31db1
   Base32: 163c298644d184e89ca4e00a996bad6bf5166390
   DataCompression: 06628f9c807b6f152e0da37635633f62fc51dc77
   Down: 4553b984236807e384fa0ef7c7e360ef9f7c425d
@@ -168,6 +168,6 @@ SPEC CHECKSUMS:
   TrueTime: b49551ffafb28a9dee04e51b226f42a416010842
   TrustKit: 073855e3adecd317417bda4ac9e9ac54a2e3b9f2
 
-PODFILE CHECKSUM: 0236f3c043822f587b36fb3428259ca2b19d8f52
+PODFILE CHECKSUM: 9abe6758ecb61634f7cd57b6d459f03def22fb6b
 
 COCOAPODS: 1.8.4

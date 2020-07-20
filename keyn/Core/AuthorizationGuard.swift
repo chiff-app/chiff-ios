@@ -36,6 +36,8 @@ class AuthorizationGuard {
     private let notes: String?          // May be present for addSite requests
     private let challenge: String!      // Should be present for webauthn requests
     private let rpId: String!           // Should be present for webauthn requests
+    private let organisationName: String!   // Should be present for create team requests
+    private let orderKey: String!           // Should be present for create team requests
     private let algorithms: [WebAuthnAlgorithm]! // Should be present for webauthn create requests
 
     private var authenticationReason: String {
@@ -56,6 +58,8 @@ class AuthorizationGuard {
             return String(format: "requests.n_new_accounts".localized, count)
         case .updateAccount:
             return String(format: "requests.update_this".localized, siteName)
+        case .createOrganisation:
+            return String(format: "requests.create_this".localized, organisationName)
         default:
             return "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -82,6 +86,8 @@ class AuthorizationGuard {
         self.accountIds = request.accountIDs
         self.count = request.count
         self.askToChange = request.askToChange
+        self.organisationName = request.organisationName
+        self.orderKey = request.orderKey
     }
 
     // MARK: - Handle request responses
@@ -117,6 +123,8 @@ class AuthorizationGuard {
             promise = webAuthnLogin().map { nil }
         case .updateAccount:
             promise = updateAccount()
+        case .createOrganisation:
+            promise = createOrganisation().map { nil }
         default:
             promise = .value(nil)
         }
@@ -322,6 +330,19 @@ class AuthorizationGuard {
         }.then { seed, context  in
             self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!)
         }.log("Error getting admin seed")
+    }
+
+    private func createOrganisation() -> Promise<Void> {
+        return firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+        }.then { (context) -> Promise<(Session, String, LAContext?)> in
+            Team.create(orderKey: self.orderKey, name: self.organisationName).map { (teamSession, seed) in
+                return (teamSession, seed, context)
+            }
+        }.then { (teamSession, seed, context) -> Promise<Void> in
+            NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))
+            return self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed, browserTab: self.browserTab, context: context!)
+        }.log("Error creating team")
     }
 
     private func webAuthnCreate() -> Promise<Void> {
