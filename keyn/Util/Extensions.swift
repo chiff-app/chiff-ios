@@ -6,7 +6,7 @@ import UIKit
 import Sodium
 import UserNotifications
 import OneTimePassword
-import Amplitude_iOS
+import Amplitude
 import StoreKit
 import WebKit
 import PromiseKit

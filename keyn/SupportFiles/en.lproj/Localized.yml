@@ -803,6 +803,8 @@ requests:
     value: Confirm request
   create_team:
     value: Create team
+  create_this:
+    value: Create %@.
   enter_otp:
     value: Enter your one-time password
   expired:
@@ -850,6 +852,8 @@ requests:
   save:
     comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
     value: Save
+  team_created:
+    value: Team created
   to_complete_process:
     value: to complete the process
   unknown_request:

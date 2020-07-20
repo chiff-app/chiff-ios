@@ -31,6 +31,8 @@ struct KeynRequest: Codable {
     let username: String?
     let sentTimestamp: TimeInterval
     let count: Int?
+    let orderKey: String?
+    let organisationName: String?
     let askToChange: Bool?
     var sessionID: String?
     var accounts: [BulkAccount]?
@@ -56,6 +58,8 @@ struct KeynRequest: Codable {
         case count = "x"
         case accounts = "t"
         case askToChange = "d"
+        case orderKey = "o"
+        case organisationName = "on"
     }
 
     /// This checks if the appropriate variables are set for the type of of this request
@@ -138,6 +142,16 @@ struct KeynRequest: Codable {
                 return false
             }
             return true // Return here because getDetails doesn't have siteUrl don't apply to adminLogin request
+        case .createOrganisation:
+            guard organisationName != nil else {
+                Logger.shared.error("VerifyIntegrity failed because there is no organisation name.")
+                return false
+            }
+            guard orderKey != nil else {
+                Logger.shared.warning("VerifyIntegrity failed because there is no order key.")
+                return false
+            }
+            return true
         default:
             Logger.shared.warning("Unknown request received", userInfo: ["type": type])
             return false

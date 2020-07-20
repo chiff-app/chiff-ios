@@ -43,8 +43,6 @@ class PairViewController: QRViewController {
                 promise = self.pair(url: url)
             case "team":
                 switch url.pathComponents[2] {
-                case "create":
-                    promise = self.createTeam(url: url)
                 case "restore":
                     promise = self.restoreTeam(url: url)
                 default: throw URLError.invalidPath
@@ -73,17 +71,17 @@ class PairViewController: QRViewController {
         }
     }
 
-    private func createTeam(url: URL) -> Promise<Session> {
-        return firstly {
-            AuthorizationGuard.startAuthorization(reason: "requests.create_team".localized)
-        }.then(on: .main) { context -> Promise<Session> in
-            self.pairContainerDelegate.startLoading()
-            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"], let organisationKey = parameters["k"] else {
-                return Promise(error: SessionError.invalid)
-            }
-            return Team.create(token: token, name: name, organisationKey64: organisationKey)
-        }
-    }
+//    private func createTeam(url: URL) -> Promise<Session> {
+//        return firstly {
+//            AuthorizationGuard.startAuthorization(reason: "requests.create_team".localized)
+//        }.then(on: .main) { context -> Promise<Session> in
+//            self.pairContainerDelegate.startLoading()
+//            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"], let organisationKey = parameters["k"] else {
+//                return Promise(error: SessionError.invalid)
+//            }
+//            return Team.create(token: token, name: name, organisationKey64: organisationKey)
+//        }
+//    }
 
     private func restoreTeam(url: URL) -> Promise<Session> {
         return firstly {

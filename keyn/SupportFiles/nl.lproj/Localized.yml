@@ -805,6 +805,8 @@ requests:
     value: Bevestig verzoek
   create_team:
     value: Creëer team
+  create_this:
+    value: Creëer %@.
   enter_otp:
     value: Voer het one-time password in
   expired:
@@ -852,6 +854,8 @@ requests:
   save:
     comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
     value: Bewaar
+  team_created:
+    value: Team gecreëerd
   to_complete_process:
     value: om het proces te voltooien
   unknown_request:
