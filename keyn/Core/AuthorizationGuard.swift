@@ -92,7 +92,7 @@ class AuthorizationGuard {
 
     // MARK: - Handle request responses
 
-    func acceptRequest() -> Promise<Account?> {
+    func acceptRequest(startLoading: @escaping (() -> Void)) -> Promise<Account?> {
         var promise: Promise<Account?>
         switch type {
         case .add, .register, .addAndLogin:
@@ -116,7 +116,7 @@ class AuthorizationGuard {
         case .bulkLogin:
             promise = authorizeBulkLogin().map { nil }
         case .adminLogin:
-            promise = teamAdminLogin().map { nil }
+            promise = teamAdminLogin(startLoading: startLoading).map { nil }
         case .webauthnCreate:
             promise = webAuthnCreate().map { nil }
         case .webauthnLogin:
@@ -124,7 +124,7 @@ class AuthorizationGuard {
         case .updateAccount:
             promise = updateAccount()
         case .createOrganisation:
-            promise = createOrganisation().map { nil }
+            promise = createOrganisation(startLoading: startLoading).map { nil }
         default:
             promise = .value(nil)
         }
@@ -314,7 +314,7 @@ class AuthorizationGuard {
         }
     }
 
-    private func teamAdminLogin() -> Promise<Void> {
+    private func teamAdminLogin(startLoading: @escaping (() -> Void)) -> Promise<Void> {
         guard let teamSession = try? TeamSession.all().first else {
             AuthorizationGuard.showError(errorMessage: "errors.session_not_found".localized)
             return .value(())
@@ -325,18 +325,20 @@ class AuthorizationGuard {
         }
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
-        }.then { context in
-            teamSession.getTeamSeed().map { ($0, context) }
+        }.then { context -> Promise<(Data, LAContext?)> in
+            startLoading()
+            return teamSession.getTeamSeed().map { ($0, context) }
         }.then { seed, context  in
             self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!)
         }.log("Error getting admin seed")
     }
 
-    private func createOrganisation() -> Promise<Void> {
+    private func createOrganisation(startLoading: @escaping (() -> Void)) -> Promise<Void> {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
-            Team.create(orderKey: self.orderKey, name: self.organisationName).map { (teamSession, seed) in
+            startLoading()
+            return Team.create(orderKey: self.orderKey, name: self.organisationName).map { (teamSession, seed) in
                 return (teamSession, seed, context)
             }
         }.then { (teamSession, seed, context) -> Promise<Void> in

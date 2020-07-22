@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="94D-re-oPz">
-                                <rect key="frame" x="16" y="35" width="343" height="58"/>
+                                <rect key="frame" x="16" y="15" width="343" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="CqV-ZT-5qq"/>
                                 </constraints>
@@ -51,7 +49,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTZ-Sz-IhE">
-                                <rect key="frame" x="311" y="45" width="39" height="39"/>
+                                <rect key="frame" x="311" y="25" width="39" height="39"/>
                                 <state key="normal" image="close_button">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -152,11 +150,15 @@
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="sKO-Gy-MvK"/>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0yL-oc-bvy">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="qAm-BS-Rbr" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="0jc-hJ-NWG"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="94D-re-oPz" secondAttribute="trailing" constant="16" id="1Xp-7h-O8U"/>
+                            <constraint firstItem="0yL-oc-bvy" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="34t-Fd-6hC"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="15" id="8C7-AH-O92"/>
                             <constraint firstItem="Dnn-31-QJY" firstAttribute="top" secondItem="qAm-BS-Rbr" secondAttribute="bottom" constant="20" id="9nH-wY-6Uf"/>
                             <constraint firstItem="J0B-1e-Apk" firstAttribute="centerX" secondItem="TnR-ml-hOh" secondAttribute="centerX" id="Iz1-Ka-LIg"/>
@@ -165,6 +167,7 @@
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="Dnn-31-QJY" secondAttribute="trailing" constant="50" id="Xyn-Vi-8YG"/>
                             <constraint firstItem="0KU-eH-Piw" firstAttribute="top" secondItem="Dnn-31-QJY" secondAttribute="bottom" id="avg-fr-3Np"/>
                             <constraint firstItem="VTZ-Sz-IhE" firstAttribute="top" secondItem="qKc-Qi-ftw" secondAttribute="top" constant="25" id="cCz-eg-KTW"/>
+                            <constraint firstItem="0yL-oc-bvy" firstAttribute="centerY" secondItem="TnR-ml-hOh" secondAttribute="centerY" id="db7-Ro-oyo"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="bottom" secondItem="J0B-1e-Apk" secondAttribute="bottom" constant="60" id="dwk-8s-tIy"/>
                             <constraint firstItem="qKc-Qi-ftw" firstAttribute="trailing" secondItem="0KU-eH-Piw" secondAttribute="trailing" constant="40" id="er0-TM-XRM"/>
                             <constraint firstItem="94D-re-oPz" firstAttribute="leading" secondItem="qKc-Qi-ftw" secondAttribute="leading" constant="16" id="fEo-uK-RmZ"/>
@@ -179,6 +182,7 @@
                     </view>
                     <connections>
                         <outlet property="accountsLeftLabel" destination="0KU-eH-Piw" id="vGV-0w-LcK"/>
+                        <outlet property="activityIndicator" destination="0yL-oc-bvy" id="6ab-P4-stO"/>
                         <outlet property="authenticateButton" destination="J0B-1e-Apk" id="Onl-y7-Lnr"/>
                         <outlet property="checkmarkHeightContstraint" destination="hbI-90-4vC" id="bcd-zo-18U"/>
                         <outlet property="requestLabel" destination="qAm-BS-Rbr" id="91F-kb-EA0"/>
@@ -209,7 +213,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="P3y-jh-lMf" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FaU-BA-hIb">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

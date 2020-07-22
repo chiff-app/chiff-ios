@@ -18,6 +18,7 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var successImageView: UIImageView!
     @IBOutlet weak var upgradeStackView: UIView!
     @IBOutlet weak var accountsLeftLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 
     var authorizationGuard: AuthorizationGuard!
@@ -70,8 +71,13 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizationGuard.acceptRequest()
+            authorizationGuard.acceptRequest() {
+                DispatchQueue.main.async { [weak self] in
+                    self?.activityIndicator.startAnimating()
+                }
+            }
         }.done(on: .main) { account in
+            self.activityIndicator.stopAnimating()
             if var account = account {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account])
@@ -85,6 +91,7 @@ class RequestViewController: UIViewController {
                 self.success()
             }
         }.catch(on: .main) { error in
+            self.activityIndicator.stopAnimating()
             if let error = error as? AuthorizationError {
                 switch error {
                 case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
