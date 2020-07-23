@@ -167,10 +167,10 @@ class RequestViewController: UIViewController {
             successTextLabel.text = "requests.get_password_successful".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         case .updateAccount:
-            requestLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
+            successTextLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         case .createOrganisation:
-            requestLabel.text = "requests.team_created".localized.capitalizedFirstLetter
+            successTextLabel.text = "requests.team_created".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
@@ -242,8 +242,8 @@ class RequestViewController: UIViewController {
                 self.dismiss()
             }.catchLog("Error rejecting request")
         }
-        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
         dismiss()
+        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
     }
 
     // MARK: - Navigation

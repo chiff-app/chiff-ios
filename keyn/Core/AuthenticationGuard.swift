@@ -92,6 +92,7 @@ class AuthenticationGuard {
                 self.lockWindowIsHidden = true
                 self.lockWindow.alpha = 1.0
                 self.authenticationInProgress = false
+                self.lockWindow.rootViewController?.dismiss(animated: false, completion: nil)
             }
         }
         if let delay = delay {
