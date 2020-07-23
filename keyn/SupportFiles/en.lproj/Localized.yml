@@ -603,6 +603,8 @@ notifications:
     value: ''
   change_password:
     value: Change password
+  create_organisation:
+    value: Create team
   end_session:
     value: Session ended
   get_password:

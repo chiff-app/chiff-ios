@@ -58,6 +58,13 @@ class NotificationProcessor {
         case .adminLogin:
             content.title = "notifications.team_admin_login".localized
             content.body = session.title
+        case .createOrganisation:
+            content.title = "notifications.create_organisation".localized
+            if let name = keynRequest.organisationName {
+                content.body = String(format: "notifications.this_on_that".localized, name, session.title)
+            } else {
+                content.body = session.title
+            }
         case .bulkLogin:
             content.title = "notifications.login".localized
             content.body = String(format: "notifications.accounts_from".localized, keynRequest.accountIDs!.count, session.title)
