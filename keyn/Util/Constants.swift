@@ -145,4 +145,5 @@ enum KeynMessageType: Int, Codable {
     case bulkLogin = 18
     case getDetails = 19
     case updateAccount = 20
+    case createOrganisation = 21
 }
