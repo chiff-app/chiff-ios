@@ -13,7 +13,7 @@ def shared_pods
   pod 'OneTimePassword', '~> 3.1'
   pod 'TrustKit'
   pod 'Firebase/Core'
-  pod 'Amplitude-iOS', '~> 4.5'
+  pod 'Amplitude', '~> 5.1'
   pod 'SwiftLint'
   pod "PromiseKit", "~> 6.8"
   pod "PromiseKit/Foundation"

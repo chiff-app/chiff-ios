@@ -8,7 +8,7 @@
 
 import Foundation
 import FirebaseCrashlytics
-import Amplitude_iOS
+import Amplitude
 import Firebase
 
 struct Logger {
@@ -52,7 +52,7 @@ struct Logger {
     func setUserId(userId: String?) {
         if let userId = userId {
             crashlytics.setUserID(userId)
-            amplitude.setUserId(userId)
+            amplitude.setUserId(userId, startNewSession: false)
         }
     }
 
