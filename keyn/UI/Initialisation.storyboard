@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="138" width="335" height="153"/>
+                                <rect key="frame" x="20" y="138" width="335" height="101"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="wFq-E5-qbT"/>
                                 </constraints>
@@ -60,7 +60,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="28" y="321" width="319" height="0.0"/>
+                                <rect key="frame" x="28" y="269" width="319" height="52"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -72,7 +72,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB" customClass="UnderlinedButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="88" y="738" width="199" height="20"/>
+                                <rect key="frame" x="110.66666666666669" y="738" width="154" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="b0G-uf-Vuz"/>
                                 </constraints>
@@ -625,7 +625,7 @@
                                 <viewLayoutGuide key="safeArea" id="Rej-2b-uMf"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="169" width="343" height="26"/>
+                                <rect key="frame" x="16" y="169" width="343" height="51.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -974,7 +974,7 @@ Sensitive data is never shared and everything is anonymous.</string>
         <!--Keyn Navigation Controller-->
         <scene sceneID="av3-y2-coI">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ydb-xL-bng" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TermsViewController" automaticallyAdjustsScrollViewInsets="NO" id="Ydb-xL-bng" customClass="KeynNavigationController" customModule="keyn" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" alpha="0.0" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Vkn-qR-tkX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -1014,7 +1014,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log in with your fingerprint on any website from today onwards." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlO-Tl-us3" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="592" width="343" height="52"/>
+                                <rect key="frame" x="16" y="606.66666666666663" width="343" height="37.333333333333371"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -1036,7 +1036,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="DvO-Ut-DMi" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="16" y="189" width="343" height="26"/>
+                                <rect key="frame" x="16" y="189" width="343" height="51.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="22"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>

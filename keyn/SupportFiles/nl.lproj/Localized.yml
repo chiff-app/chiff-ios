@@ -715,7 +715,9 @@ popups:
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
-      value: Algemene Voorwaarden
+      value: Gebruikersvoorwaarden
+    updated_terms_message:
+      value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:
     cancel:
       comment: Cancels something
@@ -732,11 +734,15 @@ popups:
     delete:
       comment: Deletes something
       value: Verwijder
+    dont_care:
+      value: Prima
     move:
       value: Verplaats
     'no':
       comment: nee
       value: 'no'
+    open:
+      value: Laat zien
     questionnaire_deny:
       comment: Deny the questionnaire
       value: 'Nee, bedankt'
