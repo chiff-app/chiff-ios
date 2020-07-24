@@ -716,6 +716,8 @@ popups:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Terms of Use
+    updated_terms_message:
+      value: We have updated are terms of use.
   responses:
     cancel:
       comment: Cancels something
@@ -732,11 +734,15 @@ popups:
     delete:
       comment: Deletes something
       value: Delete
+    dont_care:
+      value: Don't care
     move:
       value: Move
     'no':
       comment: 'no'
       value: 'no'
+    open:
+      value: Show me
     questionnaire_deny:
       comment: Deny the questionnaire
       value: 'No, thanks'
