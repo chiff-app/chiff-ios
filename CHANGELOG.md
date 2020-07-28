@@ -7,20 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.0] - 2020-07-28
+
+### Added
+
+- Add icon when personal account is shadowed by a shared account.
+- Added functionality to create a team.
+
+### Changed
+
+- Prevent creation of session accounts with same ID.
+- Share admin status with extension.
+- Updated terms of use.
+
+### Fixed
+
+- Fixed bug where notifications did not arrive when app was closed.
+- Fixed bug where previous requests remained visible on screen.
+
 ## [3.6.2] - 2020-06-26
 
 ### Added
+
 - Added 'deny' button for push notifications
 
 ## [3.6.1] - 2020-06-25
 
 ### Added
+
 - Added support for CLI session.
 
 ### Changed
+
 - Sort sessions by date
 
 ### Fixed
+
 - Fixed bug where ManualOTP controller crashed when entering non-base32 characters.
 - Fixed bug where seed was still loaded if restoring failed.
 - Fixed bug where button still animated loading after cancelling.
@@ -29,25 +51,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.6.0] - 2020-06-18
 
 ### Changed
+
 - The name!
 - Custom passwords now have a maximum length of 100 characters.
 
 ### Fixed
+
 - Fixed bug wher feedback wasn't sent.
 - Fixed bug where OTP code didn't show after authorizing request.
 
 ## [3.5.0] - 2020-05-27
 
 ### Added
+
 - Added functionality to remove an account from the team (team admins only).
 - Added TOTP to team accounts.
 - Importing accounts from CSV now also import notes.
 
 ### Changed
+
 - Team members now try to fetch PPDs from the organisation-repository first.
 - Removed 'News from Keyn' push messages and changed to poll.
 
 ### Fixed
+
 - Throw errors when incosistency in PPD is found.
 - Update app version in sessions after updating app.
 - Fix bug where showing the password when editing showed the old password.
