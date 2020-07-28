@@ -114,6 +114,11 @@ accounts:
     value: Geheim
   secret_description:
     value: Het geheim dat gedeeld is door de website
+  shadowing_warning:
+    value: >-
+      ⚠ Er bestaat een gedeeld account van je team met dezelfde URL en
+      gebruikersnaam. Verwijder dit account om toegang te krijgen tot het
+      gedeelde account.
   sites_header:
     value: Websites
   sort:
@@ -599,6 +604,8 @@ notifications:
     value: ''
   change_password:
     value: Verander wachtwoord
+  create_organisation:
+    value: Creëer team
   end_session:
     value: Sessie beëindigd
   get_password:
@@ -708,7 +715,9 @@ popups:
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
-      value: Algemene Voorwaarden
+      value: Gebruikersvoorwaarden
+    updated_terms_message:
+      value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:
     cancel:
       comment: Cancels something
@@ -725,11 +734,15 @@ popups:
     delete:
       comment: Deletes something
       value: Verwijder
+    dont_care:
+      value: Prima
     move:
       value: Verplaats
     'no':
       comment: nee
       value: 'no'
+    open:
+      value: Laat zien
     questionnaire_deny:
       comment: Deny the questionnaire
       value: 'Nee, bedankt'
@@ -800,6 +813,8 @@ requests:
     value: Bevestig verzoek
   create_team:
     value: Creëer team
+  create_this:
+    value: Creëer %@.
   enter_otp:
     value: Voer het one-time password in
   expired:
@@ -847,6 +862,8 @@ requests:
   save:
     comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
     value: Bewaar
+  team_created:
+    value: Team gecreëerd
   to_complete_process:
     value: om het proces te voltooien
   unknown_request:

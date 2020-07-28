@@ -7,6 +7,7 @@ import UIKit
 import UserNotifications
 import LocalAuthentication
 import PromiseKit
+import os.log
 
 /*
  * Handles push notification that come from outside the app.
@@ -16,6 +17,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     private let PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS = 3
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
         handlePendingNotifications()
 
         let nc = NotificationCenter.default
@@ -38,11 +40,11 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch type {
             case .sync:
-                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String], let logos = userInfo["logos"] as? [String] else {
+                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String] else {
                     completionHandler(.failed)
                     return
                 }
-                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, filterLogos: logos, pubKeys: sessionPubKeys)]
+                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, pubKeys: sessionPubKeys)]
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
                 }
@@ -117,7 +119,10 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             break
         }
 
-        let content: UNNotificationContent = notification.request.content
+        var content: UNNotificationContent = notification.request.content
+        if !content.isProcessed {
+            content = reprocess(content: notification.request.content)
+        }
         guard let encodedKeynRequest: Data = content.userInfo["keynRequest"] as? Data else {
             Logger.shared.error("Cannot find a KeynRequest in the push notification.")
             return []
@@ -127,7 +132,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             Logger.shared.error("Cannot decode the KeynRequest sent through a push notification.")
             return []
         }
-
         if keynRequest.type == .end {
             do {
                 if let sessionID = keynRequest.sessionID, let session = try BrowserSession.get(id: sessionID, context: nil) {
@@ -262,6 +266,20 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         return session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
             result
         }
+    }
+
+    private func reprocess(content: UNNotificationContent) -> UNNotificationContent {
+        guard let mutableContent = (content.mutableCopy() as? UNMutableNotificationContent) else {
+            return content
+        }
+
+        do {
+            return try NotificationProcessor.process(content: mutableContent)
+        } catch {
+            Logger.shared.warning("Error reprocessing data", error: error)
+        }
+
+        return content
     }
 
 }

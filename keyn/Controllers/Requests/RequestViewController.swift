@@ -18,6 +18,7 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var successImageView: UIImageView!
     @IBOutlet weak var upgradeStackView: UIView!
     @IBOutlet weak var accountsLeftLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
 
     var authorizationGuard: AuthorizationGuard!
@@ -53,6 +54,9 @@ class RequestViewController: UIViewController {
         case .updateAccount:
             requestLabel.text = "requests.update_account".localized.capitalizedFirstLetter
             Logger.shared.analytics(.fillPassworddRequestOpened)
+        case .createOrganisation:
+            requestLabel.text = "requests.create_team".localized.capitalizedFirstLetter
+            // TODO: analytics
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
         }
@@ -67,8 +71,13 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizationGuard.acceptRequest()
+            authorizationGuard.acceptRequest() {
+                DispatchQueue.main.async { [weak self] in
+                    self?.activityIndicator.startAnimating()
+                }
+            }
         }.done(on: .main) { account in
+            self.activityIndicator.stopAnimating()
             if var account = account {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account])
@@ -82,6 +91,7 @@ class RequestViewController: UIViewController {
                 self.success()
             }
         }.catch(on: .main) { error in
+            self.activityIndicator.stopAnimating()
             if let error = error as? AuthorizationError {
                 switch error {
                 case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
@@ -157,7 +167,10 @@ class RequestViewController: UIViewController {
             successTextLabel.text = "requests.get_password_successful".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         case .updateAccount:
-            requestLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
+            successTextLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
+            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
+        case .createOrganisation:
+            successTextLabel.text = "requests.team_created".localized.capitalizedFirstLetter
             successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
         default:
             requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
@@ -229,8 +242,8 @@ class RequestViewController: UIViewController {
                 self.dismiss()
             }.catchLog("Error rejecting request")
         }
-        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
         dismiss()
+        AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
     }
 
     // MARK: - Navigation

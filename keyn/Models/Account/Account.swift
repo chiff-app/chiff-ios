@@ -179,7 +179,11 @@ extension Account {
     static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
         let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
         return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
-            return userAccount
+            guard var account = userAccount as? UserAccount else {
+                return userAccount
+            }
+            account.shadowing = true
+            return account
         })
     }
 

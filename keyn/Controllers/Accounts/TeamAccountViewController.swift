@@ -133,7 +133,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             }.then { _ in
                 self.account.delete()
             }.then { _ in
-                TeamSession.updateTeamSession(session: self.session, pushed: false)
+                TeamSession.updateTeamSession(session: self.session, pushed: false).asVoid()
             }.done(on: .main) {
                 self.performSegue(withIdentifier: "DeleteUserAccount", sender: self)
             }.catch(on: .main) { error in

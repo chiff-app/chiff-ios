@@ -148,24 +148,28 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             }.then {
                 Properties.deniedPushNotifications ? .value(false) : PushNotifications.register()
             }.done(on: .main) { result in
-                guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
-                    Logger.shared.error("Unexpected root view controller type")
-                    fatalError("Unexpected root view controller type")
-                }
-
-                // We just open the devices tab instead of accounts when opened from a pairing url.
-                if self.openedFromUrl {
-                    vc.selectedIndex = 1
-                    self.openedFromUrl = false
-                }
-                self.window?.rootViewController = vc
-                self.window?.makeKeyAndVisible()
+                self.launchRootViewController()
             }.catchLog("Failed to initialize")
         } else {
             let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
             self.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
             self.window?.makeKeyAndVisible()
         }
+    }
+
+    private func launchRootViewController() {
+        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+            Logger.shared.error("Unexpected root view controller type")
+            fatalError("Unexpected root view controller type")
+        }
+
+        // We just open the devices tab instead of accounts when opened from a pairing url.
+        if self.openedFromUrl {
+            vc.selectedIndex = 1
+            self.openedFromUrl = false
+        }
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
     }
 
     private func launchErrorView(_ message: String) {
@@ -232,8 +236,11 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
     private func checkIfUpgraded() {
         if Properties.isUpgraded {
-            let organisationKey = try? TeamSession.all().first?.organisationKey
-            BrowserSession.updateAllSessionData(organisationKey: organisationKey)
+            let teamSessions = try? TeamSession.all()
+            let organisationKey = teamSessions?.first?.organisationKey
+            let organisationType = teamSessions?.first?.type
+            let isAdmin = teamSessions?.contains(where: { $0.isAdmin }) ?? false
+            _ = BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         }
     }
 

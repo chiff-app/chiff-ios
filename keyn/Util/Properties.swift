@@ -40,6 +40,8 @@ struct Properties {
     static private let lastRunVersionFlag = "lastRunVersionFlag"
     static private let migratedFlag = "migratedFlag"
 
+    static let termsOfUseVersion = 2
+
     static var isFirstLaunch: Bool {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
         if (isFirstLaunch) {
@@ -67,9 +69,19 @@ struct Properties {
         get { return UserDefaults.standard.bool(forKey: firstPairingCompletedFlag) }
         set { UserDefaults.standard.set(newValue, forKey: firstPairingCompletedFlag) }
     }
+    static var notifiedLatestTerms: Bool {
+        get { return UserDefaults.standard.integer(forKey: agreedWithTermsFlag) >= termsOfUseVersion }
+        set { if newValue {
+                UserDefaults.standard.set(termsOfUseVersion, forKey: agreedWithTermsFlag)
+            }
+        }
+    }
     static var agreedWithTerms: Bool {
-        get { return UserDefaults.standard.bool(forKey: agreedWithTermsFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: agreedWithTermsFlag) }
+        get { return UserDefaults.standard.integer(forKey: agreedWithTermsFlag) > 0 }
+        set { if newValue {
+                UserDefaults.standard.set(termsOfUseVersion, forKey: agreedWithTermsFlag)
+            }
+        }
     }
     static var questionnaireDirPurged: Bool {
         get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
