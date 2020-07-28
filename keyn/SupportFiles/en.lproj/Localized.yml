@@ -114,6 +114,10 @@ accounts:
     value: Secret
   secret_description:
     value: The secret that was shared by the website
+  shadowing_warning:
+    value: >-
+      ⚠ There exists a shared account from your team with the same URL and
+      username. Delete this account to get access to the shared account.
   sites_header:
     value: Websites
   sort:
@@ -599,6 +603,8 @@ notifications:
     value: ''
   change_password:
     value: Change password
+  create_organisation:
+    value: Create team
   end_session:
     value: Session ended
   get_password:
@@ -710,6 +716,8 @@ popups:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Terms of Use
+    updated_terms_message:
+      value: We have updated are terms of use.
   responses:
     cancel:
       comment: Cancels something
@@ -726,11 +734,15 @@ popups:
     delete:
       comment: Deletes something
       value: Delete
+    dont_care:
+      value: Don't care
     move:
       value: Move
     'no':
       comment: 'no'
       value: 'no'
+    open:
+      value: Show me
     questionnaire_deny:
       comment: Deny the questionnaire
       value: 'No, thanks'
@@ -799,6 +811,8 @@ requests:
     value: Confirm request
   create_team:
     value: Create team
+  create_this:
+    value: Create %@.
   enter_otp:
     value: Enter your one-time password
   expired:
@@ -846,6 +860,8 @@ requests:
   save:
     comment: 'Ask the user to save a site, e.g. Save Amazon.com?'
     value: Save
+  team_created:
+    value: Team created
   to_complete_process:
     value: to complete the process
   unknown_request:

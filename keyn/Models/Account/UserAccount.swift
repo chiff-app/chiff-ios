@@ -28,6 +28,7 @@ struct UserAccount: Account, Equatable {
     var timesUsed: Int
     var lastTimeUsed: Date?
     var lastChange: Timestamp
+    var shadowing: Bool = false // This is set when loading accounts if there exists a team account with the same ID.
 
     var synced: Bool {
         do {

@@ -137,7 +137,7 @@ struct BrowserSession: Session {
 
     mutating func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .adminLogin, pk: nil, d: nil, y: nil))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
@@ -207,22 +207,26 @@ struct BrowserSession: Session {
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
     }
 
-    func updateSessionData(organisationKey: Data?) throws -> Promise<Void> {
+    func updateSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> Promise<Void> {
         let message = [
-            "data": try encryptSessionData(organisationKey: organisationKey)
+            "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         ]
         return API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to update session data.")
     }
 
-    func encryptSessionData(organisationKey: Data?, migrated: Bool? = nil) throws -> String {
+    func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
         var data: [String: Any] = [
-            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue
+            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+            "isAdmin": isAdmin
         ]
         if let appVersion = Properties.version {
             data["appVersion"] = appVersion
         }
         if let organisationKey = organisationKey {
             data["organisationKey"] = organisationKey.base64
+        }
+        if let organisationType = organisationType {
+            data["organisationType"] = organisationType.rawValue
         }
         return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
     }
@@ -239,13 +243,13 @@ struct BrowserSession: Session {
         try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: BrowserSession.signingService, secretData: signingKeyPair.privKey)
     }
 
-    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, organisationKey: Data?) -> Promise<Void> {
+    func acknowledgeSessionStart(pairingKeyPair: KeyPair, browserPubKey: Data, sharedKeyPubkey: String, isAdmin: Bool?, organisationKey: Data?, organisationType: OrganisationType?) -> Promise<Void> {
         // TODO: Differentiate this for session type?
         do {
             guard let endpoint = Properties.endpoint else {
                 throw SessionError.noEndpoint
             }
-            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64)
+            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64, organisationType: organisationType, isAdmin: isAdmin)
             let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
             let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
             let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -262,7 +266,7 @@ struct BrowserSession: Session {
 
 
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: Browser, os: String, version: Int = 0) -> Promise<Session> {
-        do {
+        do {    
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
@@ -270,9 +274,11 @@ struct BrowserSession: Session {
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
-            let organisationKey = try TeamSession.all().first?.organisationKey // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
+            let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                when(fulfilled: try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, organisationKey: organisationKey), session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, organisationKey: organisationKey))
+                when(fulfilled:
+                    try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type),
+                     session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type))
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
@@ -290,9 +296,9 @@ struct BrowserSession: Session {
         }
     }
 
-    static func updateAllSessionData(organisationKey: Data?) {
+    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) {
         firstly {
-            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey) })
+            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin) })
         }.catchLog("Failed to update session data.")
     }
 
@@ -306,7 +312,7 @@ struct BrowserSession: Session {
     }
 
 
-    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, organisationKey: Data?) throws -> Promise<Void>{
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, isAdmin: Bool?, organisationKey: Data?, organisationType: OrganisationType?) throws -> Promise<Void>{
         guard let deviceEndpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
@@ -316,6 +322,12 @@ struct BrowserSession: Session {
         }
         if let organisationKey = organisationKey {
             data["organisationKey"] = organisationKey.base64
+        }
+        if let organisationType = organisationType {
+            data["organisationType"] = organisationType.rawValue
+        }
+        if let isAdmin = isAdmin {
+            data["isAdmin"] = isAdmin
         }
         var message: [String: Any] = [
             "httpMethod": APIMethod.post.rawValue,
@@ -327,11 +339,15 @@ struct BrowserSession: Session {
             message["userId"] = userId
         }
         do {
-            message["userAccounts"] = try UserAccount.all(context: nil).mapValues { (account) -> String in
+            let userAccounts = try UserAccount.all(context: nil)
+            message["userAccounts"] = try userAccounts.mapValues { (account) -> String in
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return try Crypto.shared.encrypt(accountData, key: sharedKey).base64
             }
-            message["teamAccounts"] = try SharedAccount.all(context: nil).mapValues { (account) -> [String: String] in
+            message["teamAccounts"] = try SharedAccount.all(context: nil).compactMapValues { (account) -> [String: String]? in
+                guard !userAccounts.keys.contains(account.id) else {
+                    return nil
+                }
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return [
                     "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,

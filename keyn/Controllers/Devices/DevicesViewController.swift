@@ -140,7 +140,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func addSession(notification: Notification) {
-        guard let session = notification.userInfo?["session"] as? BrowserSession else {
+        guard let session = notification.userInfo?["session"] as? Session else {
             Logger.shared.warning("Session was nil when trying to add it to the devices view.")
             return
         }

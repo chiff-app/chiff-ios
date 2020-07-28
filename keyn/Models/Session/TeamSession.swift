@@ -14,6 +14,11 @@ enum TeamSessionError: Error {
     case alreadyCreated
 }
 
+enum OrganisationType: Int, Codable {
+    case team
+    case enterprise
+}
+
 struct TeamSession: Session {
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let creationDate: Date
@@ -25,6 +30,7 @@ struct TeamSession: Session {
     var title: String
     var lastChange: Timestamp
     let organisationKey: Data
+    var type: OrganisationType = .team
     var logoPath: String? {
         let filemgr = FileManager.default
         return filemgr.urls(for: .libraryDirectory, in: .userDomainMask).first?.appendingPathComponent("team_logo_\(id).png").path
@@ -102,70 +108,73 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func updateAllTeamSessions(pushed: Bool, filterLogos: [String]?, pubKeys: [String]? = nil) -> Promise<Void> {
+    static func updateAllTeamSessions(pushed: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
         return firstly {
-            when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Void>? in
-                var promises: [Promise<Void>] = []
-                if let logos = filterLogos {
-                    if logos.contains(session.signingPubKey) {
-                        promises.append(session.updateLogo())
-                    }
-                } else {
-                    promises.append(session.updateLogo())
-                }
+            when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Bool>? in
                 if let pubKeys = pubKeys {
                     guard pubKeys.contains(session.signingPubKey) else {
                          return nil
                     }
                 }
-                promises.append(updateTeamSession(session: session, pushed: pushed))
-                return when(fulfilled: promises)
+                return updateTeamSession(session: session, pushed: pushed)
            })
-        }
+        }.map { results in
+            if results.reduce(false, { $0 ? $0 : $1 }) {
+                let teamSessions = try TeamSession.all()
+                let organisationKey = teamSessions.first?.organisationKey
+                let organisationType = teamSessions.first?.type
+                let isAdmin = teamSessions.contains(where: { $0.isAdmin })
+                BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+            }
+        }.asVoid()
     }
 
-    static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Void> {
-        do {
-            var session = session
-            if !session.created && pushed {
-                session.created = true
-                try session.update(makeBackup: true)
-                _ = BrowserSession.updateAllSessionData(organisationKey: session.organisationKey)
+    static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Bool> {
+        var session = session
+        var created = false
+        var changed = false
+        if !session.created && pushed {
+            session.created = true
+            changed = true
+            created = true
+        }
+        return firstly {
+            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
+        }.map { (type, result) in
+            guard let accounts = result["accounts"] as? [String: String] else {
+                throw CodingError.missingData
             }
-            return firstly {
-                API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil, parameters: nil)
-            }.map { result in
-                guard let accounts = result["accounts"] as? [String: String] else {
-                    throw CodingError.missingData
-                }
-                guard let isAdmin = result["admin"] as? Bool else {
-                    throw CodingError.missingData
-                }
-                var changed = false
-                if session.isAdmin != isAdmin {
-                    session.isAdmin = isAdmin
-                    changed = true
-                    try session.update(makeBackup: false)
-                }
-                let updatedAccounts = try session.updateSharedAccounts(accounts: accounts)
-                if changed || updatedAccounts > 0 {
-                    NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
-                    NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": session, "count": accounts.count])
-                }
-            }.asVoid().recover { error in
-                guard case APIError.statusCode(404) = error else {
-                    throw error
-                }
-                guard session.created else {
-                    return
-                }
-                SharedAccount.deleteAll(for: session.signingPubKey)
-                try? session.delete()
-                NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+            guard let isAdmin = result["admin"] as? Bool else {
+                throw CodingError.missingData
+            }
+            if let type = type, session.type != type {
+                session.type = type
+                changed = true
+            }
+            if session.isAdmin != isAdmin {
+                session.isAdmin = isAdmin
+                changed = true
+            }
+            if changed {
+                try session.update(makeBackup: created)
+            }
+            let updatedAccounts = try session.updateSharedAccounts(accounts: accounts)
+            if changed || updatedAccounts > 0 {
                 NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
+                NotificationCenter.default.postMain(name: .sessionUpdated, object: nil, userInfo: ["session": session, "count": accounts.count])
             }
-        } catch {
-            return Promise(error: error)
+            return changed
+        }.recover { (error) -> Promise<Bool> in
+            guard case APIError.statusCode(404) = error else {
+                throw error
+            }
+            guard session.created else {
+                return .value(false)
+            }
+            try? session.delete()
+            NotificationCenter.default.postMain(name: .sessionEnded, object: nil, userInfo: [NotificationContentKey.sessionId: session.id])
+            NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
+            return .value(true)
         }
     }
 
@@ -265,31 +274,31 @@ struct TeamSession: Session {
         return seed
     }
 
-    func updateLogo() -> Promise<Void> {
+    func getOrganisationData() -> Promise<OrganisationType?> {
         let filemgr = FileManager.default
         guard let path = logoPath else {
             return Promise(error: TeamSessionError.logoPathNotFound)
         }
         return firstly { () -> Promise<JSONObject> in
             let organisationKeyPair = try Crypto.shared.createSigningKeyPair(seed: organisationKey)
-            return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(organisationKeyPair.pubKey.base64)/logo", privKey: organisationKeyPair.privKey, body: nil, parameters: nil)
+            return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(organisationKeyPair.pubKey.base64)", privKey: organisationKeyPair.privKey, body: nil, parameters: nil)
         }.map { result in
-            guard let logo = result["logo"] as? String else {
-                return
+            if let logo = result["logo"] as? String {
+                guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
+                    throw CodingError.unexpectedData
+                }
+                if filemgr.fileExists(atPath: path) {
+                    try filemgr.removeItem(atPath: path)
+                }
+                filemgr.createFile(atPath: path, contents: data, attributes: nil)
             }
-            guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
-                throw CodingError.unexpectedData
-            }
-            if filemgr.fileExists(atPath: path) {
-                try filemgr.removeItem(atPath: path)
-            }
-            filemgr.createFile(atPath: path, contents: data, attributes: nil)
-        }.recover { error  in
-            if case APIError.statusCode(404) = error {
-                return
+            if let typeValue = result["type"] as? Int, let type = OrganisationType(rawValue: typeValue) {
+                return type
             } else {
-                Logger.shared.error("Error retrieving logo", error: error)
+                return nil
             }
+        }.recover { (error) -> Promise<OrganisationType?> in
+            return .value(nil)
         }
     }
 
@@ -322,6 +331,7 @@ extension TeamSession: Codable {
         case title
         case lastChange
         case organisationKey
+        case type
     }
 
     init(from decoder: Decoder) throws {
@@ -336,5 +346,6 @@ extension TeamSession: Codable {
         self.title = try values.decode(String.self, forKey: .title)
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
         self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
+        self.type = try values.decodeIfPresent(OrganisationType.self, forKey: .type) ?? .team
     }
 }
