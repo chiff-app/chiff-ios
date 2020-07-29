@@ -13,6 +13,7 @@ enum Browser: String, Codable {
     case edge = "edge"
     case safari = "safari"
     case cli = "cli"
+    case brave = "brave"
 }
 
 /*

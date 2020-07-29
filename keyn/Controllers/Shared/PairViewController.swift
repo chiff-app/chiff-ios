@@ -71,18 +71,6 @@ class PairViewController: QRViewController {
         }
     }
 
-//    private func createTeam(url: URL) -> Promise<Session> {
-//        return firstly {
-//            AuthorizationGuard.startAuthorization(reason: "requests.create_team".localized)
-//        }.then(on: .main) { context -> Promise<Session> in
-//            self.pairContainerDelegate.startLoading()
-//            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"], let organisationKey = parameters["k"] else {
-//                return Promise(error: SessionError.invalid)
-//            }
-//            return Team.create(token: token, name: name, organisationKey64: organisationKey)
-//        }
-//    }
-
     private func restoreTeam(url: URL) -> Promise<Session> {
         return firstly {
             AuthorizationGuard.startAuthorization(reason: "requests.restore_team".localized)
