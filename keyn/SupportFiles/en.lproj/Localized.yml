@@ -434,6 +434,10 @@ errors:
     value: You are not part of a team.
   only_admins:
     value: Only admins are allowed to perform this action.
+  organisation_exists:
+    value: >-
+      The team already exists. Please contact help@chiff.app if you don't have
+      access to the team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Error retrieving the OTP-code
@@ -442,6 +446,8 @@ errors:
     value: Error fetching password
   password_generation:
     value: 'Error generating new password:'
+  payment_required:
+    value: The payment has not been successful. Please contact help@chiff.app.
   push_notifications_error:
     comment: Error when push notifications are not available
     value: There was an error registering for push notifications.

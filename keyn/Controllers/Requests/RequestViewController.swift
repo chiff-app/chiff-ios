@@ -108,6 +108,18 @@ class RequestViewController: UIViewController {
                 AuthenticationGuard.shared.hideLockWindow()
             } else if let error = error as? APIError {
                 Logger.shared.error("APIError authorizing request", error: error)
+                guard self.authorizationGuard.type == .createOrganisation else {
+                    self.showAlert(message: "\("errors.api_error".localized): \(error)")
+                    return
+                }
+                switch error {
+                case APIError.statusCode(409):
+                    self.showAlert(message: "errors.organisation_exists".localized)
+                case APIError.statusCode(402):
+                    self.showAlert(message: "errors.payment_required".localized)
+                default:
+                    self.showAlert(message: "\("errors.api_error".localized): \(error)")
+                }
             } else if let error = error as? PasswordGenerationError {
                 self.showAlert(message: "\("errors.password_generation".localized) \(error)")
             } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
