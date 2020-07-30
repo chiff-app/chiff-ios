@@ -46,6 +46,9 @@ class NotificationProcessor {
         case .change:
             content.title = "notifications.change_password".localized
             content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
+        case .updateAccount:
+            content.title = "notifications.update_account".localized
+            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
         case .login, .addToExisting, .webauthnLogin:
             content.title = "notifications.login".localized
             content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
