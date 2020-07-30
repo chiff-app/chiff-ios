@@ -641,6 +641,8 @@ notifications:
   this_on_that:
     description: GitHub in Firefox op MacOS
     value: '%@ in %@.'
+  update_account:
+    value: Update account
 numbers:
   five:
     value: '5'

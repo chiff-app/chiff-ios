@@ -640,6 +640,8 @@ notifications:
   this_on_that:
     description: Chrome on MacOS
     value: '%@ in %@.'
+  update_account:
+    value: Update account
 numbers:
   five:
     value: '5'
