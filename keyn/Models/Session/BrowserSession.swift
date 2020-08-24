@@ -390,40 +390,47 @@ struct BrowserSession: Session {
 extension BrowserSession: Codable {
 
     enum CodingKeys: CodingKey {
-          case backgroundTask
-          case browser
-          case creationDate
-          case id
-          case signingPubKey
-          case version
-          case title
-          case lastRequest
-      }
+        case backgroundTask
+        case browser
+        case creationDate
+        case id
+        case signingPubKey
+        case version
+        case title
+        case lastRequest
+    }
 
-      enum LegacyCodingKey: CodingKey {
-          case os
-      }
+    enum LegacyCodingKey: CodingKey {
+        case os
+    }
 
-      init(from decoder: Decoder) throws {
-          let values = try decoder.container(keyedBy: CodingKeys.self)
-          self.id = try values.decode(String.self, forKey: .id)
-          self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
-          self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-          self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-          self.creationDate = try values.decode(Date.self, forKey: .creationDate)
-          self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-          self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
-          let browser = try values.decode(Browser.self, forKey: .browser)
-          self.browser = browser
-          if let title = try values.decodeIfPresent(String.self, forKey: .title) {
-              self.title = title
-          } else {
-              let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
-              if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
-                  self.title = "\(browser.rawValue) on \(os)"
-              } else {
-                  self.title = browser.rawValue
-              }
-          }
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
+        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
+        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
+        do {
+            let browser = try values.decode(Browser.self, forKey: .browser)
+            self.browser = browser
+        } catch {
+            guard let browser = try Browser(rawValue: values.decode(String.self, forKey: .browser).lowercased()) else {
+                throw error
+            }
+            self.browser = browser
+        }
+        if let title = try values.decodeIfPresent(String.self, forKey: .title) {
+            self.title = title
+        } else {
+            let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
+            if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
+                self.title = "\(browser.rawValue) on \(os)"
+            } else {
+                self.title = browser.rawValue
+            }
+        }
       }
 }
