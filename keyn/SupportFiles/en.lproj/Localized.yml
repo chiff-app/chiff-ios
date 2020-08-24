@@ -335,7 +335,7 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "You are the admin of this team \U0001F389.\\nIf you don't want this burden, you can end the session in the admin panel."
+    value: "You are the admin of this team \U0001F389.\nIf you don't want this burden, you can end the session in the admin panel."
   team_session_detail_footer:
     value: You will lose access to all shared accounts by ending the team session.
   team_session_detail_header:

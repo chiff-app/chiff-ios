@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed malformatted linebreak
+- Fixed issue where sessions where deleted when migrated from an older version
+
 ## [3.7.0] - 2020-07-28
 
 ### Added
