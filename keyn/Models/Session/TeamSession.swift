@@ -24,6 +24,7 @@ struct TeamSession: Session {
     let creationDate: Date
     let id: String
     let signingPubKey: String
+    let teamId: String
     var created: Bool
     var isAdmin: Bool
     var version: Int
@@ -50,9 +51,10 @@ struct TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
+    init(id: String, teamId: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
         self.creationDate = Date()
         self.id = id
+        self.teamId = teamId
         self.signingPubKey = signingPubKey.base64
         self.version = version
         self.title = title
@@ -71,7 +73,7 @@ struct TeamSession: Session {
         return try Crypto.shared.createSigningKeyPair(seed: organisationKey)
     }
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
+    static func initiate(pairingQueueSeed: String, teamId: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
         do {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let organisationKeyData = try Crypto.shared.convertFromBase64(from: organisationKey)
@@ -79,7 +81,7 @@ struct TeamSession: Session {
             let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
+            let session = TeamSession(id: browserPubKey.hash, teamId: teamId, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
             return firstly {
                 try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
             }.map { _ in
@@ -324,6 +326,7 @@ extension TeamSession: Codable {
     enum CodingKeys: CodingKey {
         case creationDate
         case id
+        case teamId
         case signingPubKey
         case created
         case isAdmin
@@ -338,6 +341,7 @@ extension TeamSession: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.id = try values.decode(String.self, forKey: .id)
+        self.teamId = try values.decode(String.self, forKey: .teamId)
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
         self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
         self.created = try values.decode(Bool.self, forKey: .created)

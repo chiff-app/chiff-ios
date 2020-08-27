@@ -37,6 +37,7 @@ extension TeamSession: Syncable {
         let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: backupSession.seed)
         creationDate = Date(millisSince1970: backupSession.creationDate)
         id = backupSession.id
+        teamId = backupSession.teamId
         signingPubKey = signingKeyPair.pubKey.base64
         title = backupSession.title
         version = backupSession.version
@@ -68,7 +69,7 @@ extension TeamSession: Syncable {
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey))
+                sendData(item: BackupTeamSession(id: id, teamId: teamId, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
@@ -80,6 +81,7 @@ extension TeamSession: Syncable {
 
 struct BackupTeamSession: BackupObject {
     let id: String
+    let teamId: String
     let seed: Data
     let title: String
     let version: Int
@@ -89,6 +91,7 @@ struct BackupTeamSession: BackupObject {
 
     enum CodingKeys: CodingKey {
         case id
+        case teamId
         case seed
         case title
         case version
@@ -97,8 +100,9 @@ struct BackupTeamSession: BackupObject {
         case organisationKey
     }
 
-    init(id: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data) {
+    init(id: String, teamId: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data) {
         self.id = id
+        self.teamId = teamId
         self.seed = seed
         self.title = title
         self.version = version
@@ -110,6 +114,7 @@ struct BackupTeamSession: BackupObject {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
+        self.teamId = try values.decode(String.self, forKey: .teamId)
         self.seed = try values.decode(Data.self, forKey: .seed)
         self.title = try values.decode(String.self, forKey: .title)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
