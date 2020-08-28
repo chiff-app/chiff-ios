@@ -22,6 +22,7 @@ enum SessionIdentifier: String, Codable {
     case signingKeyPair = "signing"
     case passwordSeed = "passwordSeed"
     case sharedSeed = "sharedSeed"
+    case sharedKeyPrivKey = "sharedKeyPrivKey"
 
     func identifier(for id: String) -> String {
         return "\(id)-\(self.rawValue)"

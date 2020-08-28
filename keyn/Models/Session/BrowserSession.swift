@@ -136,9 +136,9 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    mutating func sendTeamSeed(pubkey: String, id: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
+    mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil, i: id))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: id, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil, i: teamId))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
@@ -198,13 +198,10 @@ struct BrowserSession: Session {
     func updateSessionAccount(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
-        var message = [
+        let message = [
             "id": account.id,
             "data": ciphertext.base64
         ]
-        if let SharedAccount = account as? SharedAccount {
-            message["sessionPubKey"] = SharedAccount.sessionPubKey
-        }
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
     }
 
@@ -352,7 +349,7 @@ struct BrowserSession: Session {
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return [
                     "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,
-                    "sessionPubKey": account.sessionPubKey
+                    "sessionId": account.sessionId
                 ]
             }
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
