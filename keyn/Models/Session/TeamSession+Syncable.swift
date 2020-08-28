@@ -46,7 +46,7 @@ extension TeamSession: Syncable {
         lastChange = Date.now
         organisationKey = backupSession.organisationKey
 
-        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed, sharedKeyPrivKey: backupSession.privKey)
     }
 
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
@@ -65,11 +65,14 @@ extension TeamSession: Syncable {
 
     func backup() -> Promise<Void> {
         do {
-            guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey), created else {
+            guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: TeamSession.signingService), created else {
+                return .value(())
+            }
+            guard let privKey = try Keychain.shared.get(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: self.id), service: TeamSession.signingService), created else {
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, teamId: teamId, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey))
+                sendData(item: BackupTeamSession(id: id, teamId: teamId, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey, privKey: privKey))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
@@ -83,6 +86,7 @@ struct BackupTeamSession: BackupObject {
     let id: String
     let teamId: String
     let seed: Data
+    let privKey: Data
     let title: String
     let version: Int
     var lastChange: Timestamp
@@ -93,6 +97,7 @@ struct BackupTeamSession: BackupObject {
         case id
         case teamId
         case seed
+        case privKey
         case title
         case version
         case lastChange
@@ -100,10 +105,11 @@ struct BackupTeamSession: BackupObject {
         case organisationKey
     }
 
-    init(id: String, teamId: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data) {
+    init(id: String, teamId: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data, privKey: Data) {
         self.id = id
         self.teamId = teamId
         self.seed = seed
+        self.privKey = privKey
         self.title = title
         self.version = version
         self.lastChange = lastChange
@@ -121,5 +127,6 @@ struct BackupTeamSession: BackupObject {
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
         self.creationDate = try values.decodeIfPresent(Timestamp.self, forKey: .creationDate) ?? Date.now
         self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
+        self.privKey = try values.decode(Data.self, forKey: .privKey)
     }
 }
