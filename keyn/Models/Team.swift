@@ -35,8 +35,8 @@ struct Team {
             // Create admin user
             let browserKeyPair = try Crypto.shared.createSessionKeyPair()
             let (passwordSeed, encryptionKey, sharedSeed, signingKeyPair, keyPairForSharedKey) = try createTeamSessionKeys(browserPubKey: browserKeyPair.pubKey)
-            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, userPubkey: browserKeyPair.pubKey.base64, id: browserKeyPair.pubKey.base64.hash, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try Seed.publicKey(), isAdmin: true, name: "devices.admin".localized)
-            let role = TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [signingKeyPair.pubKey.base64])
+            let user = TeamUser(pubkey: signingKeyPair.pubKey.base64, userPubkey: keyPairForSharedKey.pubKey.base64, id: browserKeyPair.pubKey.base64.hash, key: sharedSeed.base64, created: Date.now, userSyncPubkey: try Seed.publicKey(), isAdmin: true, name: "devices.admin".localized)
+            let role = TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [user.id])
             let teamData: [String: Any] = [
                 "organisationKey": orgKey.base64
             ]
