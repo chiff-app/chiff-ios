@@ -190,7 +190,7 @@ struct TeamSession: Session {
         var changed = 0
         let key = try self.passwordSeed()
         #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-        var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
+        var currentAccounts = try SharedAccount.all(context: nil, label: self.id)
         for (id, data) in accounts {
             currentAccounts.removeValue(forKey: id)
             let ciphertext = try Crypto.shared.convertFromBase64(from: data)
@@ -320,7 +320,7 @@ struct TeamSession: Session {
             // This loops over all keys, chaining them from the initial key
             let (encryptionKey, sharedSeed, passwordSeed, signingKeyPair) = try keys.reduce((try self.sharedKey(), nil, nil, nil)) { (data, ciphertext) -> (Data, Data?, Data?, KeyPair?) in
                 let ciphertextData = try Crypto.shared.convertFromBase64(from: ciphertext)
-                let newPubKey = try Crypto.shared.decrypt(ciphertextData, key: data.0, version: version).0
+                let newPubKey = try Crypto.shared.decrypt(ciphertextData, key: data.0, version: self.version).0
                 let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: newPubKey, privKey: privKey)
                 let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: sharedSeed)
                 return (encryptionKey, sharedSeed, passwordSeed, signingKeyPair)
@@ -351,9 +351,7 @@ struct TeamSession: Session {
             guard let teamSeed = result["team_seed"] as? String else {
                 throw CodingError.unexpectedData
             }
-            print(teamSeed)
             let ciphertext = try Crypto.shared.convertFromBase64(from: teamSeed)
-            print(try self.sharedKey().base64)
             let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
             return seed
         }.log("Error getting admin seed")
