@@ -64,7 +64,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             case .deleteTeamSession:
                 // This can be sent directly from admin panel to cancel existing pairing process
-                guard let id = userInfo["id"] as? String, let session = try TeamSession.all().first(where: { $0.id == id }) else {
+
+                guard let id = userInfo["id"] as? String, let session = try TeamSession.get(id: id, context: nil) else {
                     completionHandler(UIBackgroundFetchResult.failed)
                     return
                 }
