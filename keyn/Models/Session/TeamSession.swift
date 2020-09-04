@@ -134,7 +134,7 @@ struct TeamSession: Session {
             makeBackup = true
         }
         return firstly {
-            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
+            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.teamId)/\(session.id)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
         }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
             if let keys = result["keys"] as? [String] {
                 return session.updateKeys(keys: keys).map { (type, result, $0) }
@@ -241,7 +241,9 @@ struct TeamSession: Session {
 
     func delete(notify: Bool) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(teamId)/\(id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+        }.map { _ in
+            try self.delete()
         }.asVoid().recover { error -> Void in
             if case APIError.statusCode(404) = error {
                 try self.delete()
@@ -327,7 +329,7 @@ struct TeamSession: Session {
             }
             if let sharedSeed = sharedSeed, let passwordSeed = passwordSeed, let signingKeyPair = signingKeyPair {
                 return firstly {
-                    API.shared.signedRequest(method: .patch, message: ["id": id, "length": keys.count, "teamId": self.teamId, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+                    API.shared.signedRequest(method: .patch, message: ["pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(teamId)/\(self.id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
                 }.map { _ in
                     try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: TeamSession.encryptionService, secretData: encryptionKey, objectData: nil)
                     try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
@@ -346,7 +348,7 @@ struct TeamSession: Session {
 
     func getTeamSeed() -> Promise<Data> {
         return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/admin", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamId)/\(id)/admin", privKey: try signingPrivKey(), body: nil, parameters: nil)
         }.map { result in
             guard let teamSeed = result["team_seed"] as? String else {
                 throw CodingError.unexpectedData
