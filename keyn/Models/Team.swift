@@ -11,6 +11,7 @@ import PromiseKit
 
 struct Team {
 
+    let id: String
     let roles: Set<TeamRole>
     let users: Set<TeamUser>
     let accounts: Set<TeamAccount>
@@ -71,20 +72,20 @@ struct Team {
         }
     }
 
-    static func get(seed teamSeed: Data) -> Promise<Team> {
+    static func get(id: String, seed teamSeed: Data) -> Promise<Team> {
         do {
             let (teamEncryptionKey, teamKeyPair, teamPasswordSeed) = try createTeamSeeds(seed: teamSeed)
             return firstly {
-                API.shared.signedRequest(method: .get, message: nil, path: "teams/\(teamKeyPair.pubKey.base64)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
+                API.shared.signedRequest(method: .get, message: nil, path: "teams/\(id)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
             }.map {
-                try Team(teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
+                try Team(id: id, teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
             }
         } catch {
             return Promise(error: error)
         }
     }
 
-    init(teamData: JSONObject, encryptionKey: Data, passwordSeed: Data, keyPair: KeyPair) throws {
+    init(id: String, teamData: JSONObject, encryptionKey: Data, passwordSeed: Data, keyPair: KeyPair) throws {
         guard let accountData = teamData["accounts"] as? [String: String], let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: [String: Any]] else {
             throw CodingError.missingData
         }
@@ -105,6 +106,7 @@ struct Team {
             let data = try Crypto.shared.convertFromBase64(from: account)
             return try JSONDecoder().decode(TeamAccount.self, from: Crypto.shared.decryptSymmetric(data, secretKey: encryptionKey))
         })
+        self.id = id
         self.encryptionKey = encryptionKey
         self.passwordSeed = passwordSeed
         self.keyPair = keyPair
@@ -112,10 +114,10 @@ struct Team {
 
     func usersForAccount(account: TeamAccount) throws -> [[String:Any]] {
         let roleUsers = Set(self.roles.filter({ account.roles.contains($0.id) }).flatMap({ $0.users }))
-        let pubkeys = roleUsers.union(account.users)
-        let users = self.users.filter({ pubkeys.contains($0.pubkey )})
+        let ids = roleUsers.union(account.users)
+        let users = self.users.filter({ ids.contains($0.id )})
         return try users.map({[
-            "id": account.id,
+            "id": $0.id,
             "pubKey": $0.pubkey as Any,
             "data": try $0.encryptAccount(account: account, teamPasswordSeed: passwordSeed),
             "userSyncPubkey": $0.userSyncPubkey
@@ -124,39 +126,8 @@ struct Team {
 
     func deleteAccount(id: String) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(keyPair.pubKey.base64)/accounts/\(id)", privKey: keyPair.privKey, body: nil, parameters: nil)
+            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(self.id)/accounts/\(id)", privKey: keyPair.privKey, body: nil, parameters: nil)
         }.asVoid()
-    }
-
-    // MARK: - Private methods
-
-    private func createAdminUser(user: TeamUser, seed: String, accounts: [[String: String]]) throws -> Promise<JSONObject> {
-        let message: [String: Any] = [
-            "httpMethod": APIMethod.post.rawValue,
-            "timestamp": String(Int(Date().timeIntervalSince1970)),
-            "userpubkey": user.pubkey!,
-            "data": try user.encrypt(key: encryptionKey),
-            "userSyncPubkey": user.userSyncPubkey,
-            "accounts": accounts,
-            "teamSeed": seed
-        ]
-        let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
-        return API.shared.request(path: "teams/\(keyPair.pubKey.base64)/users/\(user.pubkey!)", parameters: nil, method: .post, signature: signature, body: jsonData)
-    }
-
-    private func updateRole(role: TeamRole, pubkey: String) -> Promise<JSONObject> {
-        do {
-            var adminRole = role
-            adminRole.users.append(pubkey)
-            let roleMessage = [
-                "id": adminRole.id,
-                "data": try adminRole.encrypt(key: encryptionKey)
-            ]
-            return API.shared.signedRequest(method: .put, message: roleMessage, path: "teams/\(keyPair.pubKey.base64)/roles/\(adminRole.id)", privKey: keyPair.privKey, body: nil, parameters: nil)
-        } catch {
-            return Promise(error: error)
-        }
     }
 
     // MARK: - Private static functions
