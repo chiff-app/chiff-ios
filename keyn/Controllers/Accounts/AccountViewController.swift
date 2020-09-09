@@ -312,7 +312,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             firstly {
                 session.getTeamSeed()
             }.then {
-                Team.get(seed: $0)
+                Team.get(id: session.teamId, seed: $0)
             }.ensure(on: .main) {
                 sender.hideLoading()
             }.done(on: .main) {
@@ -419,7 +419,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return firstly {
                 session.getTeamSeed()
             }.then {
-                Team.get(seed: $0)
+                Team.get(id: session.teamId, seed: $0)
             }.then {
                 $0.deleteAccount(id: account.id)
             }.then {

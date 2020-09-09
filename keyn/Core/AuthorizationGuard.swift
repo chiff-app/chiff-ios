@@ -329,7 +329,7 @@ class AuthorizationGuard {
             startLoading()
             return teamSession.getTeamSeed().map { ($0, context) }
         }.then { seed, context  in
-            self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed.base64, browserTab: self.browserTab, context: context!)
+            self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!)
         }.log("Error getting admin seed")
     }
 
@@ -343,7 +343,10 @@ class AuthorizationGuard {
             }
         }.then { (teamSession, seed, context) -> Promise<Void> in
             NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))
-            return self.session.sendTeamSeed(pubkey: teamSession.signingPubKey, seed: seed, browserTab: self.browserTab, context: context!)
+            guard let teamSession = teamSession as? TeamSession else {
+                throw AuthorizationError.noTeamSessionFound
+            }
+            return self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed, browserTab: self.browserTab, context: context!)
         }.log("Error creating team")
     }
 
@@ -447,10 +450,10 @@ class AuthorizationGuard {
                 version = versionNumber
             }
             if let type = parameters["t"], type == "1" {
-                guard let organisationKey = parameters["k"] else {
+                guard let organisationKey = parameters["k"], let teamId = parameters["i"] else {
                     throw SessionError.invalid
                 }
-                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, role: browser, team: os, version: version, organisationKey: organisationKey)
+                return TeamSession.initiate(pairingQueueSeed: pairingQueueSeed, teamId: teamId, browserPubKey: browserPubKey, role: browser, team: os, version: version, organisationKey: organisationKey)
             } else {
                 guard let browser = Browser(rawValue: browser.lowercased()) else {
                     throw SessionError.unknownType
