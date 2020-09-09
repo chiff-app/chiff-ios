@@ -8,8 +8,10 @@
 
 import Foundation
 
-struct TeamUser: Codable {
+struct TeamUser: Codable, AccessControllable {
     var pubkey: String!
+    let userPubkey: String
+    let id: String
     let key: String
     let created: Timestamp
     let userSyncPubkey: String
@@ -52,12 +54,3 @@ extension TeamUser: Hashable {
     }
 
 }
-
-extension TeamUser: AccessControllable {
-
-    var id: String {
-        return pubkey
-    }
-
-}
-

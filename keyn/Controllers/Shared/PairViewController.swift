@@ -37,18 +37,10 @@ class PairViewController: QRViewController {
             guard url.host == "keyn.app" || url.host == "chiff.app" else {
                 throw URLError.invalidHost
             }
-
-            switch url.pathComponents[1] {
-            case "adduser", "pair":
-                promise = self.pair(url: url)
-            case "team":
-                switch url.pathComponents[2] {
-                case "restore":
-                    promise = self.restoreTeam(url: url)
-                default: throw URLError.invalidPath
-                }
-            default: throw URLError.invalidPath
+            guard url.pathComponents[1] == "adduser" || url.pathComponents[1] == "pair" else {
+                throw URLError.invalidPath
             }
+            promise = self.pair(url: url)
         default: throw URLError.invalidScheme
         }
         promise.done(on: .main) {
@@ -68,18 +60,6 @@ class PairViewController: QRViewController {
             self.pairContainerDelegate.startLoading()
             Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
             return AuthorizationGuard.authorizePairing(parameters: parameters, context: context)
-        }
-    }
-
-    private func restoreTeam(url: URL) -> Promise<Session> {
-        return firstly {
-            AuthorizationGuard.startAuthorization(reason: "requests.restore_team".localized)
-        }.then(on: .main) { context -> Promise<Session> in
-            self.pairContainerDelegate.startLoading()
-            guard let parameters = url.queryParameters, let seed = parameters["s"], let organisationKey = parameters["k"] else {
-                return Promise(error: SessionError.invalid)
-            }
-            return Team.restore(teamSeed64: seed, organisationKey64: organisationKey)
         }
     }
 

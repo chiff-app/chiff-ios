@@ -40,11 +40,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             }
             switch type {
             case .sync:
-                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessionPubKeys = userInfo["sessions"] as? [String] else {
+                guard let accounts = userInfo["accounts"] as? Bool, let userTeamSessions = userInfo["userTeamSessions"] as? Bool, let sessions = userInfo["sessions"] as? Bool else {
                     completionHandler(.failed)
                     return
                 }
-                var promises: [Promise<Void>] = [TeamSession.updateAllTeamSessions(pushed: true, pubKeys: sessionPubKeys)]
+                var promises: [Promise<Void>] = []
+                if sessions {
+                    promises.append(TeamSession.updateAllTeamSessions(pushed: true))
+                }
                 if accounts {
                     promises.append(UserAccount.sync(context: nil))
                 }
@@ -61,7 +64,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                 }
             case .deleteTeamSession:
                 // This can be sent directly from admin panel to cancel existing pairing process
-                guard let pubkey = userInfo["pubkey"] as? String, let session = try TeamSession.all().first(where: { $0.signingPubKey == pubkey }) else {
+
+                guard let id = userInfo["id"] as? String, let session = try TeamSession.get(id: id, context: nil) else {
                     completionHandler(UIBackgroundFetchResult.failed)
                     return
                 }
