@@ -489,6 +489,9 @@ errors:
     value: Deze QR-code kon niet ontcijferd worden.
   unsubscribing:
     value: Fout bij uitzetten infoberichten
+  updating_account:
+    comment: Error retrieving the OTP-code
+    value: Fout bij het bijwerken van het account.
 feedback:
   add_site:
     value: Site toevoegen
@@ -722,10 +725,14 @@ popups:
       value: Dit verwijdert de seed en alle wachtwoorden.
     restore_accounts:
       value: Herstel accounts
+    retrieve_account:
+      value: Ontsleutel gegevens van %@
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Gebruikersvoorwaarden
+    update_account:
+      value: Versleutel gegevens van %@
     updated_terms_message:
       value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:
