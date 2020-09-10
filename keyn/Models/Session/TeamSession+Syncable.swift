@@ -50,12 +50,27 @@ extension TeamSession: Syncable {
     }
 
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
-        guard backupObject.title != title else {
+        var newSeed: Data?
+        if let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: Self.signingService), !Crypto.shared.equals(first: backupObject.seed, second: seed) {
+            newSeed = backupObject.seed
+        }
+        if backupObject.title != title {
+            title = backupObject.title
+        } else if newSeed == nil {
+            // Nothing has changed
             return false
         }
         lastChange = backupObject.lastChange
-        title = backupObject.title
-        try update(makeBackup: false)
+        let sessionData = try PropertyListEncoder().encode(self as Self)
+        if let seed = newSeed {
+            let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: seed)
+            try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: Self.encryptionService, secretData: encryptionKey, objectData: sessionData)
+            try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService, secretData: signingKeyPair.privKey)
+            try Keychain.shared.update(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService, secretData: passwordSeed)
+            try Keychain.shared.update(id: SessionIdentifier.sharedSeed.identifier(for: id), service: Self.signingService, secretData: seed)
+        } else {
+            try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
+        }
         return true
     }
 
