@@ -398,6 +398,8 @@ errors:
     value: There was a problem
   invalid_secret:
     value: The secret should consist of characters A-Z and numbers 2-7.
+  invalid_url:
+    value: This URL does not seem to be valid.
   local_authentication:
     biometry_not_available:
       value: >-
