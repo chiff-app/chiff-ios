@@ -250,6 +250,10 @@ class Crypto {
         }
         return digest.data
     }
+
+    func equals(first: Data, second: Data) -> Bool {
+        return sodium.utils.equals(first.bytes, second.bytes)
+    }
 }
 
 @available(iOS 13.0, *)
