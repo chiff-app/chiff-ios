@@ -140,16 +140,20 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
 
     #warning("TODO: How do we save accounts when there is no Site object? This happens when a user adds an account manually.")
     private func createAccount() {
-        if let websiteName = siteNameField.text, let websiteURL = siteURLField.text, let username = usernameField.text, let password = passwordField.text {
-            let url = URL(string: websiteURL)
-            let id = url!.absoluteString.lowercased().sha256
-            let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
+        if let websiteName = siteNameField.text, let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), let username = usernameField.text, let password = passwordField.text {
             do {
+                guard let url = URL(string: websiteURL) ?? URL(string: "https://\(websiteURL)") else {
+                    throw AccountError.invalidURL
+                }
+                let id = url.absoluteString.lowercased().sha256
+                let site = Site(name: websiteName, id: id, url: websiteURL, ppd: nil)
                 self.account = try UserAccount(username: username, sites: [site], password: password, rpId: nil, algorithms: nil, notes: notesCell.textString, askToChange: nil, context: nil)
                 self.performSegue(withIdentifier: "UnwindToAccountOverview", sender: self)
                 Logger.shared.analytics(.accountAddedLocal)
             } catch KeychainError.duplicateItem {
                 showAlert(message: "errors.account_exists".localized)
+            } catch AccountError.invalidURL {
+                showAlert(message: "errors.invalid_url".localized)
             } catch {
                 showAlert(message: "\("errors.save_account".localized): \(error.localizedDescription)")
                 Logger.shared.error("Account could not be saved", error: error)

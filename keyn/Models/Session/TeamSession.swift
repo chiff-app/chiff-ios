@@ -260,6 +260,7 @@ struct TeamSession: Session {
         }
         SharedAccount.deleteAll(for: self.id)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService)
@@ -329,7 +330,7 @@ struct TeamSession: Session {
             }
             if let sharedSeed = sharedSeed, let passwordSeed = passwordSeed, let signingKeyPair = signingKeyPair {
                 return firstly {
-                    API.shared.signedRequest(method: .patch, message: ["pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(teamId)/\(self.id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+                    API.shared.signedRequest(method: .patch, message: ["id": self.id, "pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(teamId)/\(self.id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
                 }.map { _ in
                     try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: TeamSession.encryptionService, secretData: encryptionKey, objectData: nil)
                     try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
