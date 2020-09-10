@@ -149,6 +149,8 @@ struct Keychain {
 
         switch SecItemAdd(query as CFDictionary, nil) {
         case errSecSuccess: break
+        case -26276, errSecInteractionNotAllowed:
+            throw KeychainError.interactionNotAllowed
         case errSecDuplicateItem:
             throw KeychainError.duplicateItem
         case let status:
@@ -171,7 +173,7 @@ struct Keychain {
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
         case errSecSuccess: break
-        case errSecInteractionNotAllowed:
+        case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case errSecItemNotFound:
             return nil
@@ -228,6 +230,8 @@ struct Keychain {
 
         switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
         case errSecSuccess: return
+        case -26276, errSecInteractionNotAllowed:
+            throw KeychainError.interactionNotAllowed
         case errSecItemNotFound:
             throw KeychainError.notFound
         case let status:
@@ -282,7 +286,7 @@ struct Keychain {
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
         case errSecSuccess: break
         case errSecItemNotFound: return nil
-        case errSecInteractionNotAllowed:
+        case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case let status:
             throw KeychainError.unhandledError(status.message)
@@ -331,7 +335,7 @@ struct Keychain {
         var queryResult: AnyObject?
         switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
         case errSecSuccess: break
-        case errSecInteractionNotAllowed:
+        case -26276, errSecInteractionNotAllowed:
             throw KeychainError.interactionNotAllowed
         case errSecItemNotFound:
             throw KeychainError.notFound

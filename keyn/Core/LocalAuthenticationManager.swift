@@ -27,6 +27,10 @@ class LocalAuthenticationManager {
         return localAuthenticationQueue.operationCount > 0
     }
 
+    var isAuthenticated: Bool {
+        return mainContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)
+    }
+
     func execute(query: [String: Any], type: AuthenticationType, with context: LAContext? = nil, operation: @escaping (_ query: [String: Any], _ context: LAContext) -> Void) throws {
         var mutableQuery = query
         switch type {

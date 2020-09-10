@@ -88,7 +88,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         tableView.layer.borderWidth = 1.0
         tableView.separatorColor = UIColor.primaryTransparant
         setAddToTeamButton()
-        loadAccountData()
+        loadAccountData(dismiss: true)
 
         tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
 
@@ -125,14 +125,26 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                     self.performSegue(withIdentifier: "DeleteAccount", sender: self)
                     return
                 }
-                self.loadAccountData()
+                self.loadAccountData(dismiss: false)
             } catch {
                 Logger.shared.warning("Failed to update accounts in UI", error: error)
             }
         }
     }
 
-    private func loadAccountData() {
+    private func loadAccountData(dismiss: Bool) {
+        func authenticate() {
+            firstly {
+                LocalAuthenticationManager.shared.authenticate(reason: String(format: "popups.questions.retrieve_account".localized, account.site.name), withMainContext: true)
+            }.map(on: .main) { _ in
+                try self.loadKeychainData()
+            }.catch(on: .main) { error in
+                if dismiss {
+                    self.navigationController?.popViewController(animated: true)
+                }
+                Logger.shared.error("Error loading accountData", error: error)
+            }
+        }
         websiteNameTextField.text = account.site.name
         websiteURLTextField.text = account.site.url
         userNameTextField.text = account.username
@@ -142,29 +154,34 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         websiteURLTextField.delegate = self
         userNameTextField.delegate = self
         userPasswordTextField.delegate = self
-        do {
-            if !account.hasPassword {
-                userPasswordTextField.placeholder = "accounts.no_password".localized
-                userPasswordTextField.isSecureTextEntry = false
-                showPasswordButton.isHidden = true
-                showPasswordButton.isEnabled = false
-            } else {
-                if let password = password {
-                    passwordLoaded = true
-                    userPasswordTextField.text = password
-                } else {
-                    userPasswordTextField.text = "22characterplaceholder"
-                }
-                userPasswordTextField.isSecureTextEntry = true
+        if LocalAuthenticationManager.shared.isAuthenticated {
+            do {
+                try self.loadKeychainData()
+            } catch KeychainError.interactionNotAllowed {
+                // For some reasons isAuthenticated returns true if the user cancelled the operation, but Keychain still throws
+                authenticate()
+            } catch {
+                Logger.shared.error("Error loading accountData", error: error)
             }
-            token = try account.oneTimePasswordToken()
-            notesCell.textString = try account.notes() ?? ""
-            updateOTPUI()
-        } catch AccountError.tokenRetrieval {
-            showAlert(message: "errors.otp_fetch".localized)
-        } catch {
-            Logger.shared.error("Error loading accountData", error: error)
+        } else {
+            authenticate()
         }
+    }
+
+    private func loadKeychainData() throws {
+        if !account.hasPassword {
+            userPasswordTextField.placeholder = "accounts.no_password".localized
+            userPasswordTextField.isSecureTextEntry = false
+            showPasswordButton.isHidden = true
+            showPasswordButton.isEnabled = false
+        } else {
+            passwordLoaded = true
+            userPasswordTextField.text = password
+            userPasswordTextField.isSecureTextEntry = true
+        }
+        self.token = try self.account.oneTimePasswordToken()
+        self.notesCell.textString = try self.account.notes() ?? ""
+        updateOTPUI()
     }
 
     // MARK: - UITableView
@@ -285,6 +302,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             } else {
                 self.showHiddenPasswordPopup(password: password ?? "This account has no password")
             }
+            try self.loadKeychainData()
         }.catchLog("Could not get account")
     }
     
@@ -368,7 +386,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return
         }
         endEditing()
-        do {
+        func updateAccount() throws {
             var newPassword: String? = nil
             let newUsername = userNameTextField.text != account.username ? userNameTextField.text : nil
             let newSiteName = websiteNameTextField.text != account.site.name ? websiteNameTextField.text : nil
@@ -396,6 +414,23 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 .url: newUrl != nil,
                 .siteName: newSiteName != nil
             ])
+        }
+        do {
+            if LocalAuthenticationManager.shared.isAuthenticated {
+                try updateAccount()
+            } else {
+                firstly {
+                    LocalAuthenticationManager.shared.authenticate(reason: String(format: "popups.questions.update_account".localized, account.site.name), withMainContext: true)
+                }.map(on: .main) { _ in
+                    try updateAccount()
+                }.catch(on: .main) { error in
+                    self.showAlert(message: "errors.updating_account".localized)
+                    self.userNameTextField.text = account.username
+                    self.websiteNameTextField.text = account.site.name
+                    self.websiteURLTextField.text = account.site.url
+                    Logger.shared.error("Error loading accountData", error: error)
+                }
+            }
         } catch {
             Logger.shared.warning("Could not change username", error: error)
             userNameTextField.text = account.username
@@ -406,7 +441,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
     func updateAccount(account: UserAccount) {
         self.account = account
-        loadAccountData()
+        loadAccountData(dismiss: false)
         NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
     }
     

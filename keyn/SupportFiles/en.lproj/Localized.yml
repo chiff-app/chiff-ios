@@ -488,6 +488,9 @@ errors:
     value: This QR-code could not be decoded.
   unsubscribing:
     value: Error unsubscribing to info notifications
+  updating_account:
+    comment: Error updating the account.
+    value: Error updating the account.
 feedback:
   add_site:
     value: Adding site
@@ -722,10 +725,14 @@ popups:
       value: This will delete the seed and all passwords.
     restore_accounts:
       value: Restore accounts
+    retrieve_account:
+      value: Ontsleutel gegevens van %@
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Terms of Use
+    update_account:
+      value: Versleutel gegevens van %@
     updated_terms_message:
       value: We have updated are terms of use.
   responses:
