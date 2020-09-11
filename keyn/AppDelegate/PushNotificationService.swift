@@ -45,14 +45,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     return
                 }
                 var promises: [Promise<Void>] = []
-                if userTeamSessions {
+                if sessions {
                     promises.append(firstly {
                         // First sync team session, because keys may have changed.
                         sessions ? TeamSession.sync(context: nil) : .value(())
                     }.map {
                         TeamSession.updateAllTeamSessions(pushed: true)
                     }.asVoid())
-                } else if sessions {
+                } else if userTeamSessions {
                     promises.append(TeamSession.sync(context: nil))
                 }
                 if accounts {
