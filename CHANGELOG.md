@@ -7,10 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.0] - 2020-08-11
+
+### Added
+
+- Added support for Brave browser.
+
+### Changed
+
+- Change the way teams are created.
+
 ### Fixed
 
-- Fixed malformatted linebreak
-- Fixed issue where sessions where deleted when migrated from an older version
+- Fixed malformatted linebreak.
+- Fixed issue where sessions where deleted when migrated from an older version.
+- Fixed issue where app crasshed when URL was malformatted.
+- Fixed issue where account wasn't updated when app was open for a long time.
 
 ## [3.7.0] - 2020-07-28
 
