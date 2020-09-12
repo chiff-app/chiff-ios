@@ -39,7 +39,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        teamLogo.image = session.logo
+        teamLogo.image = session.logo ?? UIImage(named: "logo_purple")
         setTitle()
     }
 
