@@ -156,7 +156,7 @@ accounts:
 backup:
   check_text:
     value: >-
-      To make sure everything was written down correctly, please enter te
+      To make sure everything was written down correctly, please enter the
       following words from your paper to continue
   complete:
     value: Complete
