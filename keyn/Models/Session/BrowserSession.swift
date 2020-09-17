@@ -274,9 +274,9 @@ struct BrowserSession: Session {
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                when(fulfilled:
-                    try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type),
-                     session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type))
+                try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
+            }.then {
+                session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
