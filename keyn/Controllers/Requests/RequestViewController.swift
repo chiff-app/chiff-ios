@@ -80,7 +80,7 @@ class RequestViewController: UIViewController {
             self.activityIndicator.stopAnimating()
             if var account = account {
                 account.increaseUse()
-                NotificationCenter.default.post(name: .accountUpdated, object: nil, userInfo: ["account": account])
+                NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
             }
             self.authenticateButton.isHidden = true
             if let account = account as? UserAccount, account.hasOtp, let token = try? account.oneTimePasswordToken() {

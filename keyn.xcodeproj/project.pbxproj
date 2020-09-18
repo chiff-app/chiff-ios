@@ -92,6 +92,7 @@
 		4966FF1723FEDAF300D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
 		4966FF1823FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
 		4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4966FF1623FEDAF300D7C232 /* WebAuthn.swift */; };
+		49677ADE2514FD0C0074C224 /* QueueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49677ADD2514FD0B0074C224 /* QueueHandler.swift */; };
 		4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */; };
 		4967F428225D02450069330D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
 		4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967F429225E318A0069330D /* BackupFinishViewController.swift */; };
@@ -390,6 +391,7 @@
 		495E5B591FAC9887002E6AC6 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		495E72BA22118717003132ED /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4966FF1623FEDAF300D7C232 /* WebAuthn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthn.swift; sourceTree = "<group>"; };
+		49677ADD2514FD0B0074C224 /* QueueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueHandler.swift; sourceTree = "<group>"; };
 		4967F429225E318A0069330D /* BackupFinishViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupFinishViewController.swift; sourceTree = "<group>"; };
 		496869312420F89B00B9BEE9 /* BaseAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAccount.swift; sourceTree = "<group>"; };
 		496869352420FAE800B9BEE9 /* Account+AuthenticationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+AuthenticationServices.swift"; sourceTree = "<group>"; };
@@ -879,6 +881,7 @@
 				497828852285712C00D30C42 /* NotificationManager.swift */,
 				49AC6E7623604BDC0010AC32 /* PushNotifications.swift */,
 				49214B74210325B400C793DE /* NotificationProcessor.swift */,
+				49677ADD2514FD0B0074C224 /* QueueHandler.swift */,
 				497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */,
 				49CF311220628E9100272277 /* PasswordValidator.swift */,
 			);
@@ -1642,6 +1645,7 @@
 				493A35B22215653F002EB043 /* Constants.swift in Sources */,
 				49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */,
 				4923600523156893003C4A0F /* LocalizableBarButton.swift in Sources */,
+				49677ADE2514FD0C0074C224 /* QueueHandler.swift in Sources */,
 				495E72BB22118717003132ED /* Logger.swift in Sources */,
 				49E75CA320FF2DD000BC0D65 /* LikertQuestionViewController.swift in Sources */,
 				4973BB7922F866D90004E365 /* AccessoryTableViewCell.swift in Sources */,

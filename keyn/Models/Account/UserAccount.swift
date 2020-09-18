@@ -238,6 +238,7 @@ struct UserAccount: Account, Equatable {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
         let _ = try backup()
+        NotificationCenter.default.postMain(Notification(name: .accountUpdated, object: self, userInfo: ["account": self]))
     }
 
     func delete() -> Promise<Void> {
