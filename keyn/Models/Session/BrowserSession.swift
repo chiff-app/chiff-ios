@@ -21,7 +21,6 @@ enum Browser: String, Codable {
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 struct BrowserSession: Session {
-    var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let browser: Browser
     let creationDate: Date
     let id: String
@@ -387,7 +386,6 @@ struct BrowserSession: Session {
 extension BrowserSession: Codable {
 
     enum CodingKeys: CodingKey {
-        case backgroundTask
         case browser
         case creationDate
         case id
@@ -406,7 +404,6 @@ extension BrowserSession: Codable {
         self.id = try values.decode(String.self, forKey: .id)
         self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)

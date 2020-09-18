@@ -40,6 +40,9 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         checkIfUpgraded()
 
+        // Start listening for password change notifications
+        QueueHandler.shared.start()
+
         return true
     }
 
