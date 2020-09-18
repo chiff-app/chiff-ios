@@ -20,10 +20,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         UNUserNotificationCenter.current().delegate = self
         handlePendingNotifications()
 
-        let nc = NotificationCenter.default
-        nc.addObserver(forName: .passwordChangeConfirmation, object: nil, queue: nil, using: waitForPasswordChangeConfirmation)
-        nc.addObserver(forName: .accountsLoaded, object: nil, queue: nil, using: checkPersistentQueue)
-
         return true
     }
 
@@ -45,14 +41,14 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
                     return
                 }
                 var promises: [Promise<Void>] = []
-                if userTeamSessions {
+                if sessions {
                     promises.append(firstly {
                         // First sync team session, because keys may have changed.
                         sessions ? TeamSession.sync(context: nil) : .value(())
                     }.map {
                         TeamSession.updateAllTeamSessions(pushed: true)
                     }.asVoid())
-                } else if sessions {
+                } else if userTeamSessions {
                     promises.append(TeamSession.sync(context: nil))
                 }
                 if accounts {
@@ -181,98 +177,6 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
             for notification in notifications {
                 let _ = self.handleNotification(notification)
             }
-        }
-    }
-
-    private func waitForPasswordChangeConfirmation(notification: Notification) {
-        guard var session = notification.object as? BrowserSession else {
-            Logger.shared.warning("Received notification from unexpected object")
-            return
-        }
-
-        guard session.backgroundTask == UIBackgroundTaskIdentifier.invalid.rawValue else {
-            return
-        }
-
-        session.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
-            UIApplication.shared.endBackgroundTask(id)
-            session.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-        }).rawValue
-        firstly {
-            self.pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false, context: notification.userInfo?["context"] as? LAContext)
-        }.ensure {
-            if session.backgroundTask != UIBackgroundTaskIdentifier.invalid.rawValue {
-                let id = UIBackgroundTaskIdentifier(rawValue: session.backgroundTask)
-                UIApplication.shared.endBackgroundTask(id)
-            }
-        }.catchLog("Error getting password change confirmation from persistent queue.")
-    }
-
-    private func checkPersistentQueue(notification: Notification) {
-        do {
-            for session in try BrowserSession.all() {
-                let _ = self.pollQueue(attempts: 1, session: session, shortPolling: true, context: nil)
-            }
-        } catch {
-            Logger.shared.error("Could not get sessions.", error: error)
-        }
-    }
-
-    private func pollQueue(attempts: Int, session: BrowserSession, shortPolling: Bool, context: LAContext?) -> Promise<[BulkAccount]?> {
-        return firstly {
-            session.getPersistentQueueMessages(shortPolling: shortPolling)
-        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]?> in
-            if messages.isEmpty {
-                return attempts > 1 ? self.pollQueue(attempts: attempts - 1, session: session, shortPolling: shortPolling, context: context) : .value(nil)
-            } else {
-                var promises: [Promise<[BulkAccount]?>] = []
-                for message in messages {
-                    promises.append(try self.handlePersistentQueueMessage(keynMessage: message, session: session, context: context))
-                }
-                return when(fulfilled: promises).map { (result: [[BulkAccount]?]) -> [BulkAccount]? in
-                    if result.isEmpty {
-                        return nil
-                    } else {
-                        return result.first(where: { $0 != nil }) ?? nil
-                    }
-                }
-            }
-        }
-
-    }
-
-    private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession, context: LAContext?) throws -> Promise<[BulkAccount]?> {
-        guard let receiptHandle = keynMessage.receiptHandle else  {
-            throw CodingError.missingData
-        }
-        var result: [BulkAccount]?
-        switch keynMessage.type {
-        case .confirm:
-            guard let accountId = keynMessage.accountID, let result = keynMessage.passwordSuccessfullyChanged else  {
-                throw CodingError.missingData
-            }
-            guard var account = try UserAccount.get(id: accountId, context: context) else {
-                throw AccountError.notFound
-            }
-            if result {
-                try account.updatePasswordAfterConfirmation(context: context)
-            }
-        case .preferences:
-            guard let accountId = keynMessage.accountID else  {
-                throw CodingError.missingData
-            }
-            guard var account = try UserAccount.get(id: accountId, context: context) else {
-                throw AccountError.notFound
-            }
-            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, enabled: nil)
-        case .addBulk:
-            result = keynMessage.accounts!
-        default:
-            Logger.shared.warning("Unknown message type received", userInfo: ["messageType": keynMessage.type.rawValue ])
-        }
-        return session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
-            result
         }
     }
 

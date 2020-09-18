@@ -94,6 +94,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
 
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: reloadAccount)
         NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: reloadAccount)
+        NotificationCenter.default.addObserver(forName: .accountUpdated, object: UserAccount.self, queue: OperationQueue.main, using: reloadAccount)
 
         reEnableBarButtonFont()
     }
