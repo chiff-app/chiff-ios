@@ -78,7 +78,7 @@ class Crypto {
 
         return KeyPair(pubKey: keyPair.publicKey.data, privKey: keyPair.secretKey.data)
     }
-    
+
     func generateSharedKey(pubKey: Data, privKey: Data) throws -> Data {
         guard let sharedKey = sodium.box.beforenm(recipientPublicKey: pubKey.bytes, senderSecretKey: privKey.bytes) else {
             throw CryptoError.keyDerivation
@@ -249,6 +249,10 @@ class Crypto {
             data.withUnsafeBytes { CC_SHA256($0.baseAddress, CC_LONG(data.count), digestBytes.bindMemory(to: UInt8.self).baseAddress) }
         }
         return digest.data
+    }
+
+    func equals(first: Data, second: Data) -> Bool {
+        return sodium.utils.equals(first.bytes, second.bytes)
     }
 }
 

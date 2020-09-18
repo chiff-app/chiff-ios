@@ -21,7 +21,7 @@ struct SharedAccount: Account {
     var askToLogin: Bool?
     var askToChange: Bool? = false
     let enabled = true
-    let sessionPubKey: String
+    let sessionId: String
     var synced = true
     var version: Int
     var timesUsed: Int
@@ -36,14 +36,14 @@ struct SharedAccount: Account {
 
     static let keychainService: KeychainService = .sharedAccount
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionPubKey: String) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, passwordOffset: [Int]?, version: Int, sessionId: String) {
         self.id = id
         self.username = username
         self.sites = sites
         self.passwordIndex = passwordIndex
         self.passwordOffset = passwordOffset
         self.askToLogin = true
-        self.sessionPubKey = sessionPubKey
+        self.sessionId = sessionId
         self.version = version
         self.timesUsed = 0
     }
@@ -97,16 +97,16 @@ struct SharedAccount: Account {
         saveToIdentityStore()
     }
 
-    func save(password: String, sessionPubKey: String) throws {
+    func save(password: String, sessionId: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
-        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionPubKey)
+        try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionId)
         try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 
     // MARK: - Static functions
 
-    static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionPubKey: String) throws {
+    static func create(accountData: Data, id: String, key: Data, context: LAContext?, sessionId: String) throws {
         let decoder = JSONDecoder()
         let backupAccount = try decoder.decode(BackupSharedAccount.self, from: accountData)
         var account = SharedAccount(id: backupAccount.id,
@@ -115,7 +115,7 @@ struct SharedAccount: Account {
                                   passwordIndex: backupAccount.passwordIndex,
                                   passwordOffset: backupAccount.passwordOffset,
                                   version: 1,
-                                  sessionPubKey: sessionPubKey)
+                                  sessionId: sessionId)
 
         let passwordGenerator = PasswordGenerator(username: account.username, siteId: account.site.id, ppd: account.site.ppd, passwordSeed: key)
         let (password, index) = try passwordGenerator.generate(index: account.passwordIndex, offset: account.passwordOffset)
@@ -123,23 +123,23 @@ struct SharedAccount: Account {
         // Remove token and save seperately in Keychain
         if let tokenSecret = backupAccount.tokenSecret, let tokenURL = backupAccount.tokenURL {
             let tokenData = tokenURL.absoluteString.data
-            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData, label: sessionPubKey)
+            try Keychain.shared.save(id: id, service: .otp, secretData: tokenSecret, objectData: tokenData, label: sessionId)
         }
         if let notes = backupAccount.notes {
-            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil, label: sessionPubKey)
+            try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil, label: sessionId)
         }
-        try account.save(password: password, sessionPubKey: sessionPubKey)
+        try account.save(password: password, sessionId: sessionId)
     }
 
-    static func deleteAll(for sessionPubKey: String) {
-        if let accounts = try? all(context: nil, sync: false, label: sessionPubKey), let sessions = try? BrowserSession.all() {
+    static func deleteAll(for sessionId: String) {
+        if let accounts = try? all(context: nil, sync: false, label: sessionId), let sessions = try? BrowserSession.all() {
             for id in accounts.keys {
                 sessions.forEach({ $0.deleteAccount(accountId: id) })
             }
         }
-        Keychain.shared.deleteAll(service: Self.keychainService, label: sessionPubKey)
-        Keychain.shared.deleteAll(service: .otp, label: sessionPubKey)
-        Keychain.shared.deleteAll(service: .notes, label: sessionPubKey)
+        Keychain.shared.deleteAll(service: Self.keychainService, label: sessionId)
+        Keychain.shared.deleteAll(service: .otp, label: sessionId)
+        Keychain.shared.deleteAll(service: .notes, label: sessionId)
         NotificationCenter.default.postMain(name: .sharedAccountsChanged, object: nil)
         if #available(iOS 12.0, *) {
             Properties.reloadAccounts = true
@@ -158,7 +158,7 @@ extension SharedAccount: Codable {
         case passwordOffset
         case askToLogin
         case askToChange
-        case sessionPubKey
+        case sessionId
         case version
         case timesUsed
         case lastTimeUsed
@@ -173,7 +173,7 @@ extension SharedAccount: Codable {
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-        self.sessionPubKey = try values.decode(String.self, forKey: .sessionPubKey)
+        self.sessionId = try values.decode(String.self, forKey: .sessionId)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0
         self.lastTimeUsed = try values.decodeIfPresent(Date.self, forKey: .lastTimeUsed)
     }

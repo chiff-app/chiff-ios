@@ -156,7 +156,7 @@ accounts:
 backup:
   check_text:
     value: >-
-      To make sure everything was written down correctly, please enter te
+      To make sure everything was written down correctly, please enter the
       following words from your paper to continue
   complete:
     value: Complete
@@ -335,7 +335,7 @@ devices:
   team_auxiliary_title:
     value: 'Team accounts:'
   team_session_admin_detail_footer:
-    value: "You are the admin of this team \U0001F389.\\nIf you don't want this burden, you can end the session in the admin panel."
+    value: "You are the admin of this team \U0001F389.\nIf you don't want this burden, you can end the session in the admin panel."
   team_session_detail_footer:
     value: You will lose access to all shared accounts by ending the team session.
   team_session_detail_header:
@@ -398,6 +398,8 @@ errors:
     value: There was a problem
   invalid_secret:
     value: The secret should consist of characters A-Z and numbers 2-7.
+  invalid_url:
+    value: This URL does not seem to be valid.
   local_authentication:
     biometry_not_available:
       value: >-
@@ -434,6 +436,10 @@ errors:
     value: You are not part of a team.
   only_admins:
     value: Only admins are allowed to perform this action.
+  organisation_exists:
+    value: >-
+      The team already exists. Please contact help@chiff.app if you don't have
+      access to the team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Error retrieving the OTP-code
@@ -442,6 +448,8 @@ errors:
     value: Error fetching password
   password_generation:
     value: 'Error generating new password:'
+  payment_required:
+    value: The payment has not been successful. Please contact help@chiff.app.
   push_notifications_error:
     comment: Error when push notifications are not available
     value: There was an error registering for push notifications.
@@ -480,6 +488,9 @@ errors:
     value: This QR-code could not be decoded.
   unsubscribing:
     value: Error unsubscribing to info notifications
+  updating_account:
+    comment: Error updating the account.
+    value: Error updating the account.
 feedback:
   add_site:
     value: Adding site
@@ -634,6 +645,8 @@ notifications:
   this_on_that:
     description: Chrome on MacOS
     value: '%@ in %@.'
+  update_account:
+    value: Update account
 numbers:
   five:
     value: '5'
@@ -712,10 +725,14 @@ popups:
       value: This will delete the seed and all passwords.
     restore_accounts:
       value: Restore accounts
+    retrieve_account:
+      value: Ontsleutel gegevens van %@
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Terms of Use
+    update_account:
+      value: Versleutel gegevens van %@
     updated_terms_message:
       value: We have updated are terms of use.
   responses:

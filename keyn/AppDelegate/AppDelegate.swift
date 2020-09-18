@@ -113,6 +113,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UserAccount.deleteAll()   // Uncomment if passwords should be cleaned before startup
         //try? Seed.delete()      // Uncomment if you want to force seed regeneration
         //try? Keychain.shared.delete(id: "snsDeviceEndpointArn", service: "io.keyn.aws") // Uncomment to delete snsDeviceEndpointArn from Keychain
+        //Keychain.shared.deleteAll(service: TeamSession.encryptionService)
+        //Keychain.shared.deleteAll(service: TeamSession.signingService)
         //NotificationManager.shared.deleteKeys()
         //BackupManager.deleteAll()
         //Questionnaire.cleanFolder()

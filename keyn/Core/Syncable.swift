@@ -78,7 +78,7 @@ extension Syncable {
                     let data = try Crypto.shared.decryptSymmetric(ciphertext, secretKey: key)
                     return try JSONDecoder().decode(T.self, from: data.decompress() ?? data)
                 } catch {
-                    Logger.shared.error("Could not restore data.", error: error)
+                    Logger.shared.error("Could not get restore data.", error: error)
                 }
                 return nil
             }

@@ -399,6 +399,8 @@ errors:
     value: Er was een probleem
   invalid_secret:
     value: Het geheim moet bestaan uit de karakters A-Z en cijfers 2-7.
+  invalid_url:
+    value: Deze URL lijkt niet geldig te zijn.
   local_authentication:
     biometry_not_available:
       value: >-
@@ -435,6 +437,10 @@ errors:
     value: Je bent geen onderdeel van een team.
   only_admins:
     value: Alleen beheerders mogen deze actie uitvoeren.
+  organisation_exists:
+    value: >-
+      Het team bestaat al. Neem contact op met help@chiff.app als je geen
+      toegang hebt tot het team.
   otp_fetch:
     comment: Error retrieving the OTP-code
     value: Fout bij ophalen OTP-code
@@ -443,6 +449,8 @@ errors:
     value: Error fetching password
   password_generation:
     value: 'Fout bij genereren van nieuw wachtwoord:'
+  payment_required:
+    value: De betaling is niet gelukt. Neem contact op met help@chiff.app.
   push_notifications_error:
     comment: Error when push notifications are not available
     value: Er is een fout opgetreden bij het registreren van pushberichten.
@@ -481,6 +489,9 @@ errors:
     value: Deze QR-code kon niet ontcijferd worden.
   unsubscribing:
     value: Fout bij uitzetten infoberichten
+  updating_account:
+    comment: Error retrieving the OTP-code
+    value: Fout bij het bijwerken van het account.
 feedback:
   add_site:
     value: Site toevoegen
@@ -635,6 +646,8 @@ notifications:
   this_on_that:
     description: GitHub in Firefox op MacOS
     value: '%@ in %@.'
+  update_account:
+    value: Update account
 numbers:
   five:
     value: '5'
@@ -712,10 +725,14 @@ popups:
       value: Dit verwijdert de seed en alle wachtwoorden.
     restore_accounts:
       value: Herstel accounts
+    retrieve_account:
+      value: Ontsleutel gegevens van %@
     retrieve_password:
       value: Ontsleutel wachtwoord voor %@
     terms:
       value: Gebruikersvoorwaarden
+    update_account:
+      value: Versleutel gegevens van %@
     updated_terms_message:
       value: We hebben de gebruikersvoorwaarden bijgewerkt.
   responses:

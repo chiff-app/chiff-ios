@@ -9,6 +9,7 @@ import AuthenticationServices
 import PromiseKit
 
 enum AccountError: Error {
+    case invalidURL
     case duplicateAccountId
     case accountsNotLoaded
     case notFound

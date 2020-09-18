@@ -37,6 +37,7 @@ extension TeamSession: Syncable {
         let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: backupSession.seed)
         creationDate = Date(millisSince1970: backupSession.creationDate)
         id = backupSession.id
+        teamId = backupSession.teamId
         signingPubKey = signingKeyPair.pubKey.base64
         title = backupSession.title
         version = backupSession.version
@@ -45,16 +46,31 @@ extension TeamSession: Syncable {
         lastChange = Date.now
         organisationKey = backupSession.organisationKey
 
-        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed, sharedKeyPrivKey: backupSession.privKey)
     }
 
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
-        guard backupObject.title != title else {
+        var newSeed: Data?
+        if let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: Self.signingService), !Crypto.shared.equals(first: backupObject.seed, second: seed) {
+            newSeed = backupObject.seed
+        }
+        if backupObject.title != title {
+            title = backupObject.title
+        } else if newSeed == nil {
+            // Nothing has changed
             return false
         }
         lastChange = backupObject.lastChange
-        title = backupObject.title
-        try update(makeBackup: false)
+        let sessionData = try PropertyListEncoder().encode(self as Self)
+        if let seed = newSeed {
+            let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: seed)
+            try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: Self.encryptionService, secretData: encryptionKey, objectData: sessionData)
+            try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService, secretData: signingKeyPair.privKey)
+            try Keychain.shared.update(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService, secretData: passwordSeed)
+            try Keychain.shared.update(id: SessionIdentifier.sharedSeed.identifier(for: id), service: Self.signingService, secretData: seed)
+        } else {
+            try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
+        }
         return true
     }
 
@@ -64,11 +80,14 @@ extension TeamSession: Syncable {
 
     func backup() -> Promise<Void> {
         do {
-            guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: .signingTeamSessionKey), created else {
+            guard let seed = try Keychain.shared.get(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: TeamSession.signingService), created else {
+                return .value(())
+            }
+            guard let privKey = try Keychain.shared.get(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: self.id), service: TeamSession.signingService), created else {
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey))
+                sendData(item: BackupTeamSession(id: id, teamId: teamId, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey, privKey: privKey))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)
@@ -80,7 +99,9 @@ extension TeamSession: Syncable {
 
 struct BackupTeamSession: BackupObject {
     let id: String
+    let teamId: String
     let seed: Data
+    let privKey: Data
     let title: String
     let version: Int
     var lastChange: Timestamp
@@ -89,7 +110,9 @@ struct BackupTeamSession: BackupObject {
 
     enum CodingKeys: CodingKey {
         case id
+        case teamId
         case seed
+        case privKey
         case title
         case version
         case lastChange
@@ -97,9 +120,11 @@ struct BackupTeamSession: BackupObject {
         case organisationKey
     }
 
-    init(id: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data) {
+    init(id: String, teamId: String, seed: Data, title: String, version: Int, lastChange: Timestamp, creationDate: Date, organisationKey: Data, privKey: Data) {
         self.id = id
+        self.teamId = teamId
         self.seed = seed
+        self.privKey = privKey
         self.title = title
         self.version = version
         self.lastChange = lastChange
@@ -110,11 +135,13 @@ struct BackupTeamSession: BackupObject {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try values.decode(String.self, forKey: .id)
+        self.teamId = try values.decode(String.self, forKey: .teamId)
         self.seed = try values.decode(Data.self, forKey: .seed)
         self.title = try values.decode(String.self, forKey: .title)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.lastChange = try values.decodeIfPresent(Timestamp.self, forKey: .lastChange) ?? 0
         self.creationDate = try values.decodeIfPresent(Timestamp.self, forKey: .creationDate) ?? Date.now
         self.organisationKey = try values.decode(Data.self, forKey: .organisationKey)
+        self.privKey = try values.decode(Data.self, forKey: .privKey)
     }
 }
