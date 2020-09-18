@@ -37,18 +37,10 @@ class PairViewController: QRViewController {
             guard url.host == "keyn.app" || url.host == "chiff.app" else {
                 throw URLError.invalidHost
             }
-
-            switch url.pathComponents[1] {
-            case "adduser", "pair":
-                promise = self.pair(url: url)
-            case "team":
-                switch url.pathComponents[2] {
-                case "restore":
-                    promise = self.restoreTeam(url: url)
-                default: throw URLError.invalidPath
-                }
-            default: throw URLError.invalidPath
+            guard url.pathComponents[1] == "adduser" || url.pathComponents[1] == "pair" else {
+                throw URLError.invalidPath
             }
+            promise = self.pair(url: url)
         default: throw URLError.invalidScheme
         }
         promise.done(on: .main) {
@@ -71,30 +63,6 @@ class PairViewController: QRViewController {
         }
     }
 
-//    private func createTeam(url: URL) -> Promise<Session> {
-//        return firstly {
-//            AuthorizationGuard.startAuthorization(reason: "requests.create_team".localized)
-//        }.then(on: .main) { context -> Promise<Session> in
-//            self.pairContainerDelegate.startLoading()
-//            guard let parameters = url.queryParameters, let token = parameters["t"], let name = parameters["n"], let organisationKey = parameters["k"] else {
-//                return Promise(error: SessionError.invalid)
-//            }
-//            return Team.create(token: token, name: name, organisationKey64: organisationKey)
-//        }
-//    }
-
-    private func restoreTeam(url: URL) -> Promise<Session> {
-        return firstly {
-            AuthorizationGuard.startAuthorization(reason: "requests.restore_team".localized)
-        }.then(on: .main) { context -> Promise<Session> in
-            self.pairContainerDelegate.startLoading()
-            guard let parameters = url.queryParameters, let seed = parameters["s"], let organisationKey = parameters["k"] else {
-                return Promise(error: SessionError.invalid)
-            }
-            return Team.restore(teamSeed64: seed, organisationKey64: organisationKey)
-        }
-    }
-
     private func createSession(_ session: Session) {
         self.pairContainerDelegate.finishLoading()
         self.pairControllerDelegate.sessionCreated(session: session)
@@ -106,22 +74,27 @@ class PairViewController: QRViewController {
         switch error {
         case is LAError, is KeychainError:
             if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
-                self.showAlert(message: authenticationError, handler: super.errorHandler)
+                self.showAlert(message: authenticationError, handler: closeError)
             }
         case SessionError.invalid:
             Logger.shared.error("Invalid QR-code scanned", error: error)
-            self.showAlert(message: "errors.session_invalid".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.session_invalid".localized, handler: closeError)
         case SessionError.noEndpoint:
             Logger.shared.error("There is no endpoint in the session data.", error: error)
-            self.showAlert(message: "errors.session_error_no_endpoint".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.session_error_no_endpoint".localized, handler: closeError)
         case APIError.statusCode(let statusCode):
-            self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: super.errorHandler)
+            self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: closeError)
         case is APIError:
-            self.showAlert(message: "errors.api_error".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.api_error".localized, handler: closeError)
         default:
             Logger.shared.error("Unhandled QR code error during pairing.", error: error)
-            self.showAlert(message: "errors.generic_error".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.generic_error".localized, handler: closeError)
         }
+    }
+
+    private func closeError(_ action: UIAlertAction) {
+        super.errorHandler(action)
+        self.pairContainerDelegate.finishLoading()
     }
 
     private func removeNotifications() {

@@ -23,7 +23,8 @@ struct TeamSession: Session {
     var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let creationDate: Date
     let id: String
-    let signingPubKey: String
+    var signingPubKey: String
+    let teamId: String
     var created: Bool
     var isAdmin: Bool
     var version: Int
@@ -50,9 +51,10 @@ struct TeamSession: Session {
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
 
-    init(id: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
+    init(id: String, teamId: String, signingPubKey: Data, title: String, version: Int, isAdmin: Bool, created: Bool = false, lastChange: Timestamp, organisationKey: Data) {
         self.creationDate = Date()
         self.id = id
+        self.teamId = teamId
         self.signingPubKey = signingPubKey.base64
         self.version = version
         self.title = title
@@ -71,7 +73,7 @@ struct TeamSession: Session {
         return try Crypto.shared.createSigningKeyPair(seed: organisationKey)
     }
 
-    static func initiate(pairingQueueSeed: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
+    static func initiate(pairingQueueSeed: String, teamId: String, browserPubKey: String, role: String, team: String, version: Int, organisationKey: String) -> Promise<Session> {
         do {
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let organisationKeyData = try Crypto.shared.convertFromBase64(from: organisationKey)
@@ -79,12 +81,12 @@ struct TeamSession: Session {
             let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-            let session = TeamSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
+            let session = TeamSession(id: browserPubKey.hash, teamId: teamId, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
             return firstly {
                 try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
             }.map { _ in
                 do {
-                    try session.save(sharedSeed: sharedSeed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed)
+                    try session.save(sharedSeed: sharedSeed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed, sharedKeyPrivKey: keyPairForSharedKey.privKey)
                     TeamSession.count += 1
                     NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     return session
@@ -108,16 +110,9 @@ struct TeamSession: Session {
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
-    static func updateAllTeamSessions(pushed: Bool, pubKeys: [String]? = nil) -> Promise<Void> {
+    static func updateAllTeamSessions(pushed: Bool) -> Promise<Void> {
         return firstly {
-            when(fulfilled: try TeamSession.all().compactMap { session -> Promise<Bool>? in
-                if let pubKeys = pubKeys {
-                    guard pubKeys.contains(session.signingPubKey) else {
-                         return nil
-                    }
-                }
-                return updateTeamSession(session: session, pushed: pushed)
-           })
+            when(fulfilled: try TeamSession.all().map { updateTeamSession(session: $0, pushed: pushed) })
         }.map { results in
             if results.reduce(false, { $0 ? $0 : $1 }) {
                 let teamSessions = try TeamSession.all()
@@ -131,16 +126,29 @@ struct TeamSession: Session {
 
     static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Bool> {
         var session = session
-        var created = false
+        var makeBackup = false
         var changed = false
         if !session.created && pushed {
             session.created = true
             changed = true
-            created = true
+            makeBackup = true
         }
         return firstly {
-            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.signingPubKey)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
-        }.map { (type, result) in
+            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.teamId)/\(session.id)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
+        }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
+            if let keys = result["keys"] as? [String] {
+                return session.updateKeys(keys: keys).map { (type, result, $0) }
+            } else {
+                return .value((type, result, nil))
+            }
+        }.map { (type, result, pubKey) in
+            if let pubKey = pubKey {
+                session.signingPubKey = pubKey
+                changed = true
+                if session.created {
+                    makeBackup = true
+                }
+            }
             guard let accounts = result["accounts"] as? [String: String] else {
                 throw CodingError.missingData
             }
@@ -156,7 +164,7 @@ struct TeamSession: Session {
                 changed = true
             }
             if changed {
-                try session.update(makeBackup: created)
+                try session.update(makeBackup: makeBackup)
             }
             let updatedAccounts = try session.updateSharedAccounts(accounts: accounts)
             if changed || updatedAccounts > 0 {
@@ -182,7 +190,7 @@ struct TeamSession: Session {
         var changed = 0
         let key = try self.passwordSeed()
         #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
-        var currentAccounts = try SharedAccount.all(context: nil, label: self.signingPubKey)
+        var currentAccounts = try SharedAccount.all(context: nil, label: self.id)
         for (id, data) in accounts {
             currentAccounts.removeValue(forKey: id)
             let ciphertext = try Crypto.shared.convertFromBase64(from: data)
@@ -192,7 +200,7 @@ struct TeamSession: Session {
                     changed += 1
                 }
             } else { // New account added
-                try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionPubKey: self.signingPubKey)
+                try SharedAccount.create(accountData: accountData, id: id, key: key, context: nil, sessionId: self.id)
                 changed += 1
             }
         }
@@ -233,7 +241,9 @@ struct TeamSession: Session {
 
     func delete(notify: Bool) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(teamId)/\(id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+        }.map { _ in
+            try self.delete()
         }.asVoid().recover { error -> Void in
             if case APIError.statusCode(404) = error {
                 try self.delete()
@@ -248,10 +258,12 @@ struct TeamSession: Session {
         if ifNotCreated && created {
             throw TeamSessionError.alreadyCreated
         }
-        SharedAccount.deleteAll(for: self.signingPubKey)
+        SharedAccount.deleteAll(for: self.id)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedSeed.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
+        try Keychain.shared.delete(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
         NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
         if backup {
@@ -259,12 +271,13 @@ struct TeamSession: Session {
         }
     }
 
-    func save(sharedSeed: Data, key: Data, signingKeyPair: KeyPair, passwordSeed: Data) throws {
+    func save(sharedSeed: Data, key: Data, signingKeyPair: KeyPair, passwordSeed: Data, sharedKeyPrivKey: Data) throws {
         let sessionData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: SessionIdentifier.sharedKey.identifier(for: id), service: TeamSession.encryptionService, secretData: key, objectData: sessionData)
         try Keychain.shared.save(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
         try Keychain.shared.save(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService, secretData: passwordSeed)
         try Keychain.shared.save(id: SessionIdentifier.sharedSeed.identifier(for: id), service: TeamSession.signingService, secretData: sharedSeed)
+        try Keychain.shared.save(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService, secretData: sharedKeyPrivKey)
     }
 
     func passwordSeed() throws -> Data {
@@ -302,11 +315,41 @@ struct TeamSession: Session {
         }
     }
 
+    func updateKeys(keys: [String]) -> Promise<String?> {
+        do {
+            guard let privKey = try Keychain.shared.get(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService) else {
+                throw KeychainError.notFound
+            }
+            // This loops over all keys, chaining them from the initial key
+            let (encryptionKey, sharedSeed, passwordSeed, signingKeyPair) = try keys.reduce((try self.sharedKey(), nil, nil, nil)) { (data, ciphertext) -> (Data, Data?, Data?, KeyPair?) in
+                let ciphertextData = try Crypto.shared.convertFromBase64(from: ciphertext)
+                let newPubKey = try Crypto.shared.decrypt(ciphertextData, key: data.0, version: self.version).0
+                let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: newPubKey, privKey: privKey)
+                let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: sharedSeed)
+                return (encryptionKey, sharedSeed, passwordSeed, signingKeyPair)
+            }
+            if let sharedSeed = sharedSeed, let passwordSeed = passwordSeed, let signingKeyPair = signingKeyPair {
+                return firstly {
+                    API.shared.signedRequest(method: .patch, message: ["id": self.id, "pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(teamId)/\(self.id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+                }.map { _ in
+                    try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: TeamSession.encryptionService, secretData: encryptionKey, objectData: nil)
+                    try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
+                    try Keychain.shared.update(id: SessionIdentifier.passwordSeed.identifier(for: self.id), service: TeamSession.signingService, secretData: passwordSeed)
+                    try Keychain.shared.update(id: SessionIdentifier.sharedSeed.identifier(for: self.id), service: TeamSession.signingService, secretData: sharedSeed)
+                    return signingKeyPair.pubKey.base64
+                }
+            }
+            return .value(nil)
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
     // MARK: - Admin functions
 
     func getTeamSeed() -> Promise<Data> {
         return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(signingPubKey)/admin", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamId)/\(id)/admin", privKey: try signingPrivKey(), body: nil, parameters: nil)
         }.map { result in
             guard let teamSeed = result["team_seed"] as? String else {
                 throw CodingError.unexpectedData
@@ -324,6 +367,7 @@ extension TeamSession: Codable {
     enum CodingKeys: CodingKey {
         case creationDate
         case id
+        case teamId
         case signingPubKey
         case created
         case isAdmin
@@ -338,6 +382,7 @@ extension TeamSession: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.id = try values.decode(String.self, forKey: .id)
+        self.teamId = try values.decode(String.self, forKey: .teamId)
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
         self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
         self.created = try values.decode(Bool.self, forKey: .created)

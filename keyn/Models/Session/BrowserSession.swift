@@ -13,6 +13,7 @@ enum Browser: String, Codable {
     case edge = "edge"
     case safari = "safari"
     case cli = "cli"
+    case brave = "brave"
 }
 
 /*
@@ -20,7 +21,6 @@ enum Browser: String, Codable {
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 struct BrowserSession: Session {
-    var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let browser: Browser
     let creationDate: Date
     let id: String
@@ -78,7 +78,7 @@ struct BrowserSession: Session {
 
     func cancelRequest(reason: KeynMessageType, browserTab: Int) -> Promise<[String: Any]> {
         do {
-            let response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason, pk: nil, d: nil, y: nil)
+            let response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason, pk: nil, d: nil, y: nil, i: nil)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             return try sendToVolatileQueue(ciphertext: ciphertext)
@@ -98,17 +98,17 @@ struct BrowserSession: Session {
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: newPassword, b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: newPassword, b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil, y: nil, i: nil)
         case .add, .addAndLogin, .updateAccount:
-            response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil, y: nil, i: nil)
         case .login, .addToExisting:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: nil, i: nil)
         case .getDetails:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: try account.notes(context: context))
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: try account.notes(context: context), i: nil)
         case .fill:
-            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .fill, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .fill, pk: nil, d: nil, y: nil, i: nil)
         case .register:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .register, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .register, pk: nil, d: nil, y: nil, i: nil)
         default:
             throw SessionError.unknownType
         }
@@ -122,22 +122,22 @@ struct BrowserSession: Session {
 
     // Simply acknowledge that the request is received
     mutating func sendBulkAddResponse(browserTab: Int, context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .addBulk, pk: nil, d: nil, y: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .addBulk, pk: nil, d: nil, y: nil, i: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
     }
 
     mutating func sendBulkLoginResponse(browserTab: Int, accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts, y: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts, y: nil, i: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
     }
 
-    mutating func sendTeamSeed(pubkey: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
+    mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: pubkey, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: id, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil, i: teamId))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
@@ -150,9 +150,9 @@ struct BrowserSession: Session {
         var response: KeynCredentialsResponse!
         switch type {
         case .webauthnCreate:
-            response = try KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: account.webAuthn!.algorithm, np: nil, b: browserTab, a: account.id, o: nil, t: .webauthnCreate, pk: account.webAuthnPubKey(), d: nil, y: nil)
+            response = try KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: account.webAuthn!.algorithm, np: nil, b: browserTab, a: account.id, o: nil, t: .webauthnCreate, pk: account.webAuthnPubKey(), d: nil, y: nil, i: nil)
         case .webauthnLogin:
-            response = KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnLogin, pk: nil, d: nil, y: nil)
+            response = KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnLogin, pk: nil, d: nil, y: nil, i: nil)
         default:
             throw SessionError.unknownType
         }
@@ -197,13 +197,10 @@ struct BrowserSession: Session {
     func updateSessionAccount(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
-        var message = [
+        let message = [
             "id": account.id,
             "data": ciphertext.base64
         ]
-        if let SharedAccount = account as? SharedAccount {
-            message["sessionPubKey"] = SharedAccount.sessionPubKey
-        }
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
     }
 
@@ -276,9 +273,9 @@ struct BrowserSession: Session {
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                when(fulfilled:
-                    try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type),
-                     session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type))
+                try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
+            }.then {
+                session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
@@ -351,7 +348,7 @@ struct BrowserSession: Session {
                 let accountData = try JSONEncoder().encode(SessionAccount(account: account))
                 return [
                     "data": try Crypto.shared.encrypt(accountData, key: sharedKey).base64,
-                    "sessionPubKey": account.sessionPubKey
+                    "sessionId": account.sessionId
                 ]
             }
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
@@ -389,40 +386,45 @@ struct BrowserSession: Session {
 extension BrowserSession: Codable {
 
     enum CodingKeys: CodingKey {
-          case backgroundTask
-          case browser
-          case creationDate
-          case id
-          case signingPubKey
-          case version
-          case title
-          case lastRequest
-      }
+        case browser
+        case creationDate
+        case id
+        case signingPubKey
+        case version
+        case title
+        case lastRequest
+    }
 
-      enum LegacyCodingKey: CodingKey {
-          case os
-      }
+    enum LegacyCodingKey: CodingKey {
+        case os
+    }
 
-      init(from decoder: Decoder) throws {
-          let values = try decoder.container(keyedBy: CodingKeys.self)
-          self.id = try values.decode(String.self, forKey: .id)
-          self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
-          self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-          self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
-          self.creationDate = try values.decode(Date.self, forKey: .creationDate)
-          self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
-          self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
-          let browser = try values.decode(Browser.self, forKey: .browser)
-          self.browser = browser
-          if let title = try values.decodeIfPresent(String.self, forKey: .title) {
-              self.title = title
-          } else {
-              let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
-              if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
-                  self.title = "\(browser.rawValue) on \(os)"
-              } else {
-                  self.title = browser.rawValue
-              }
-          }
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
+        self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
+        self.creationDate = try values.decode(Date.self, forKey: .creationDate)
+        self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
+        self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)
+        do {
+            let browser = try values.decode(Browser.self, forKey: .browser)
+            self.browser = browser
+        } catch {
+            guard let browser = try Browser(rawValue: values.decode(String.self, forKey: .browser).lowercased()) else {
+                throw error
+            }
+            self.browser = browser
+        }
+        if let title = try values.decodeIfPresent(String.self, forKey: .title) {
+            self.title = title
+        } else {
+            let legacyValues = try decoder.container(keyedBy: LegacyCodingKey.self)
+            if let os = try legacyValues.decodeIfPresent(String.self, forKey: .os) {
+                self.title = "\(browser.rawValue) on \(os)"
+            } else {
+                self.title = browser.rawValue
+            }
+        }
       }
 }
