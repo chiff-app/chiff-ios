@@ -21,7 +21,6 @@ enum Browser: String, Codable {
  * That is: sharedKey and sigingKeyPair.privKey.
  */
 struct BrowserSession: Session {
-    var backgroundTask: Int = UIBackgroundTaskIdentifier.invalid.rawValue
     let browser: Browser
     let creationDate: Date
     let id: String
@@ -274,9 +273,9 @@ struct BrowserSession: Session {
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                when(fulfilled:
-                    try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type),
-                     session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type))
+                try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
+            }.then {
+                session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
@@ -387,7 +386,6 @@ struct BrowserSession: Session {
 extension BrowserSession: Codable {
 
     enum CodingKeys: CodingKey {
-        case backgroundTask
         case browser
         case creationDate
         case id
@@ -406,7 +404,6 @@ extension BrowserSession: Codable {
         self.id = try values.decode(String.self, forKey: .id)
         self.title = try values.decodeIfPresent(String.self, forKey: .title) ?? ""
         self.signingPubKey = try values.decode(String.self, forKey: .signingPubKey)
-        self.backgroundTask = UIBackgroundTaskIdentifier.invalid.rawValue
         self.creationDate = try values.decode(Date.self, forKey: .creationDate)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.lastRequest = try values.decodeIfPresent(Date.self, forKey: .lastRequest)

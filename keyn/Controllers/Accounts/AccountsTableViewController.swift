@@ -260,7 +260,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func updateAccount(notification: Notification) {
-        guard let account = notification.userInfo?["account"] as? UserAccount else {
+        guard let account = notification.userInfo?["account"] as? Account else {
             return
         }
 

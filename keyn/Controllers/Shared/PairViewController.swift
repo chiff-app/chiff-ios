@@ -74,22 +74,27 @@ class PairViewController: QRViewController {
         switch error {
         case is LAError, is KeychainError:
             if let authenticationError = LocalAuthenticationManager.shared.handleError(error: error) {
-                self.showAlert(message: authenticationError, handler: super.errorHandler)
+                self.showAlert(message: authenticationError, handler: closeError)
             }
         case SessionError.invalid:
             Logger.shared.error("Invalid QR-code scanned", error: error)
-            self.showAlert(message: "errors.session_invalid".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.session_invalid".localized, handler: closeError)
         case SessionError.noEndpoint:
             Logger.shared.error("There is no endpoint in the session data.", error: error)
-            self.showAlert(message: "errors.session_error_no_endpoint".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.session_error_no_endpoint".localized, handler: closeError)
         case APIError.statusCode(let statusCode):
-            self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: super.errorHandler)
+            self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: closeError)
         case is APIError:
-            self.showAlert(message: "errors.api_error".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.api_error".localized, handler: closeError)
         default:
             Logger.shared.error("Unhandled QR code error during pairing.", error: error)
-            self.showAlert(message: "errors.generic_error".localized, handler: super.errorHandler)
+            self.showAlert(message: "errors.generic_error".localized, handler: closeError)
         }
+    }
+
+    private func closeError(_ action: UIAlertAction) {
+        super.errorHandler(action)
+        self.pairContainerDelegate.finishLoading()
     }
 
     private func removeNotifications() {
