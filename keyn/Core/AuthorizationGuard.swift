@@ -329,7 +329,7 @@ class AuthorizationGuard {
             startLoading()
             return teamSession.getTeamSeed().map { ($0, context) }
         }.then { seed, context  in
-            self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!)
+            self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!, organisationKey: nil)
         }.log("Error getting admin seed")
     }
 
@@ -346,7 +346,7 @@ class AuthorizationGuard {
             guard let teamSession = teamSession as? TeamSession else {
                 throw AuthorizationError.noTeamSessionFound
             }
-            return self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed, browserTab: self.browserTab, context: context!)
+            return self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed, browserTab: self.browserTab, context: context!, organisationKey: teamSession.organisationKey.base64)
         }.log("Error creating team")
     }
 
