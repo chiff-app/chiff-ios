@@ -99,7 +99,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     }
 
     private func reloadData(notification: Notification) {
-        guard let session = notification.userInfo?["session"] as? Session else {
+        guard let session = notification.userInfo?["session"] as? Session, session.id == self.session.id else {
             return
         }
         self.session = session
