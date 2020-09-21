@@ -135,9 +135,9 @@ struct BrowserSession: Session {
         try updateLastRequest()
     }
 
-    mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext) -> Promise<Void> {
+    mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext, organisationKey: String?) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: id, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .createOrganisation, pk: nil, d: nil, y: nil, i: teamId))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: id, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: organisationKey, t: .createOrganisation, pk: nil, d: nil, y: nil, i: teamId))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
