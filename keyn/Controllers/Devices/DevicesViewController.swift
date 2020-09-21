@@ -187,16 +187,17 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let session = notification.userInfo?["session"] as? Session,
             let index = self.sessions.firstIndex(where: { session.id == $0.id }) {
             sessions[index] = session
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         } else {
             do {
                 var sessions: [Session] = try BrowserSession.all()
                 sessions.append(contentsOf: try TeamSession.all())
                 self.sessions = sessions.sorted(by: { $0.creationDate < $1.creationDate })
+                tableView.reloadData()
             } catch {
                 Logger.shared.error("Could not get sessions.", error: error)
             }
         }
-        tableView.reloadData()
     }
 
     private func updateUi() {
