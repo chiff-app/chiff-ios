@@ -338,9 +338,7 @@ class AuthorizationGuard {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
             startLoading()
-            return Team.create(orderKey: self.orderKey, name: self.organisationName).map { (teamSession, seed) in
-                return (teamSession, seed, context)
-            }
+            return Team.create(orderKey: self.orderKey, name: self.organisationName).map { ($0, $1, context) }
         }.then { (teamSession, seed, context) -> Promise<Void> in
             NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))
             guard let teamSession = teamSession as? TeamSession else {
@@ -425,20 +423,16 @@ class AuthorizationGuard {
         }
     }
 
-    static func startAuthorization(reason: String, mainContext: Bool = false) -> Promise<LAContext?> {
+    static func authorizePairing(parameters: [String: String], reason: String, delegate: PairContainerDelegate) -> Promise<Session> {
         guard !authorizationInProgress else {
             return Promise(error: AuthorizationError.inProgress)
         }
         authorizationInProgress = true
         return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: mainContext)
-        }.ensure {
-            authorizationInProgress = false
-        }
-    }
-
-    static func authorizePairing(parameters: [String: String], context: LAContext?) -> Promise<Session> {
-        do {
+            LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false)
+        }.then { context -> Promise<Session> in
+            delegate.startLoading()
+            Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
             guard let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
                 throw SessionError.invalid
             }
@@ -460,13 +454,32 @@ class AuthorizationGuard {
                 }
                 return BrowserSession.initiate(pairingQueueSeed: pairingQueueSeed, browserPubKey: browserPubKey, browser: browser, os: os, version: version)
             }
-        } catch let error as KeychainError {
-            Logger.shared.error("Keychain error retrieving session", error: error)
-            return Promise(error: SessionError.invalid)
-        } catch {
-            return Promise(error: error)
+        }.recover { error -> Promise<Session> in
+            throw error is KeychainError ? SessionError.invalid : error
+        }.ensure {
+            authorizationInProgress = false
         }
     }
+
+    static func createTeam(parameters: [String: String], reason: String, delegate: PairContainerDelegate) -> Promise<Session> {
+        guard !authorizationInProgress else {
+            return Promise(error: AuthorizationError.inProgress)
+        }
+        authorizationInProgress = true
+        return firstly {
+            LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false)
+        }.then { context -> Promise<Session> in
+            delegate.startLoading()
+            Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
+            guard let orderKey = parameters["k"], let name = parameters["n"] else {
+                throw SessionError.invalid
+            }
+            return Team.create(orderKey: orderKey, name: name).map { $0.0 }
+        }.ensure {
+            authorizationInProgress = false
+        }
+    }
+
 
     private static func showError(errorMessage: String) {
         DispatchQueue.main.async {
