@@ -37,10 +37,14 @@ class PairViewController: QRViewController {
             guard url.host == "keyn.app" || url.host == "chiff.app" else {
                 throw URLError.invalidHost
             }
-            guard url.pathComponents[1] == "adduser" || url.pathComponents[1] == "pair" else {
+            switch url.pathComponents[1] {
+            case "pair", "adduser":
+                promise = self.pair(url: url)
+            case "create":
+                promise = self.createTeam(url: url)
+            default:
                 throw URLError.invalidPath
             }
-            promise = self.pair(url: url)
         default: throw URLError.invalidScheme
         }
         promise.done(on: .main) {
@@ -55,11 +59,16 @@ class PairViewController: QRViewController {
             return Promise(error: SessionError.invalid)
         }
         return firstly {
-            AuthorizationGuard.startAuthorization(reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).")
-        }.then(on: .main) { context -> Promise<Session> in
-            self.pairContainerDelegate.startLoading()
-            Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
-            return AuthorizationGuard.authorizePairing(parameters: parameters, context: context)
+            AuthorizationGuard.authorizePairing(parameters: parameters, reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", delegate: pairContainerDelegate)
+        }
+    }
+
+    private func createTeam(url: URL) -> Promise<Session> {
+        guard let parameters = url.queryParameters, let name = parameters["n"] else {
+            return Promise(error: SessionError.invalid)
+        }
+        return firstly {
+            AuthorizationGuard.createTeam(parameters: parameters, reason: "\("requests.create_team".localized) \(name)", delegate: pairContainerDelegate)
         }
     }
 
