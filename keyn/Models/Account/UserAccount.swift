@@ -30,15 +30,6 @@ struct UserAccount: Account, Equatable {
     var lastChange: Timestamp
     var shadowing: Bool = false // This is set when loading accounts if there exists a team account with the same ID.
 
-    var synced: Bool {
-        do {
-            return try Keychain.shared.isSynced(id: id, service: .account)
-        } catch {
-            Logger.shared.error("Error get account sync info", error: error)
-        }
-        return true // Defaults to true to prevent infinite cycles when an error occurs
-    }
-
     static let keychainService: KeychainService = .account
 
     init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil, offline: Bool = false) throws {

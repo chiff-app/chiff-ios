@@ -25,7 +25,6 @@ enum AccountError: Error {
 protocol Account: BaseAccount {
     var askToLogin: Bool? { get set }
     var askToChange: Bool? { get set }
-    var synced: Bool { get }
     var enabled: Bool { get }
     var timesUsed: Int { get set }
     var lastTimeUsed: Date? { get set }
@@ -124,12 +123,8 @@ extension Account {
                 throw CodingError.unexpectedData
             }
             let account = try decoder.decode(Self.self, from: accountData)
-            if sync, var account = account as? UserAccount {
-                if account.version == 0 {
-                    account.updateVersion(context: context)
-                } else if !account.synced {
-                    let _ = try? account.backup()
-                }
+            if sync, var account = account as? UserAccount, account.version == 0 {
+                account.updateVersion(context: context)
             }
             return (account.id, account)
             })
