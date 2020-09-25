@@ -387,6 +387,8 @@ errors:
     value: '%d van de %d accounts konden niet hersteld worden.'
   failed_accounts_title:
     value: Fout
+  failed_import_accounts:
+    value: '%d van de %d accounts konden niet geïmporteerd worden.'
   failed_teams_and_accounts_message:
     value: '%d van de %d accounts en %d van de %d teams konden niet hersteld worden.'
   failed_teams_message:
@@ -845,6 +847,16 @@ requests:
     value: Wachtwoord ophalen
   get_password_successful:
     value: Wachtwoord opgehaald
+  import_progress_1:
+    value: Accounts ophalen..
+  import_progress_2:
+    value: Metadata van websites ophalen..
+  import_progress_3:
+    value: Accounts versleutelen..
+  import_progress_4:
+    value: Backup-gegevens uploaden..
+  import_progress_5:
+    value: Klaar!
   keyn_for_teams:
     value: Chiff voor teams
   login_keyn_next_time:

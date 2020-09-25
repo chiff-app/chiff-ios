@@ -119,7 +119,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             let ciphertext = try teamAccount.encrypt(key: team.encryptionKey)
             let message: [String: Any] = [
                 "httpMethod": APIMethod.post.rawValue,
-                "timestamp": String(Int(Date().timeIntervalSince1970)),
+                "timestamp": String(Date.now),
                 "id": teamAccount.id,
                 "data": ciphertext,
                 "updateUsers": try team.usersForAccount(account: teamAccount),
