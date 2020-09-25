@@ -386,6 +386,8 @@ errors:
     value: Chiff was unable to restore %d of the %d accounts.
   failed_accounts_title:
     value: Recovery error
+  failed_import_accounts:
+    value: Chiff was unable to import %d of the %d accounts.
   failed_teams_and_accounts_message:
     value: Chiff was unable to restore %d of the %d accounts and  %d of the %d teams.
   failed_teams_message:
@@ -843,6 +845,16 @@ requests:
     value: Get password
   get_password_successful:
     value: Password retrieved
+  import_progress_1:
+    value: Fetching accounts..
+  import_progress_2:
+    value: Fetching website metadata..
+  import_progress_3:
+    value: Encrypting accounts..
+  import_progress_4:
+    value: Uploading backup data..
+  import_progress_5:
+    value: Done!
   keyn_for_teams:
     value: Chiff for teams
   login_keyn_next_time:

@@ -25,7 +25,7 @@ extension UserAccount {
             version = 1
             let accountData = try PropertyListEncoder().encode(self)
             try Keychain.shared.update(id: id, service: .account, secretData: nil, objectData: accountData, context: nil)
-            try backup()
+            _ = try backup()
         } catch {
             Logger.shared.warning("Error updating account version", error: error, userInfo: nil)
         }

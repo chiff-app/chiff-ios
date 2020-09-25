@@ -120,19 +120,7 @@ class KeychainTests: XCTestCase {
         XCTAssertNoThrow(try Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
-    func testIsSyncedThrowsIfNoSeed() {
-        XCTAssertThrowsError(try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
-    }
-    
-    func testIsSynced() {
-        TestHelper.createSeed()
-        XCTAssertFalse(try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
-    }
-    
-    func testSetSyncedThrowsIfNoSeed() {
-        XCTAssertThrowsError(try Keychain.shared.setSynced(value: true, id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
-    }
-    
+
     func testGetAsyncWithEmptySeed() {
         let expectation = XCTestExpectation(description: "Finish testGetAsyncWithEmptySeed")
         TestHelper.createEmptySeed()
@@ -291,13 +279,6 @@ class KeychainTests: XCTestCase {
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context))
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.password.identifier(for: .seed), service: .seed, context: context))
         XCTAssertNil(try Keychain.shared.get(id: KeyIdentifier.backup.identifier(for: .seed), service: .seed, context: context))
-    }
-    
-    func testSaveAndSetSyncAndIsSync() {
-        let initialData = "secretKey".data
-        XCTAssertNoThrow(try Keychain.shared.save(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, secretData: initialData))
-        XCTAssertNoThrow(try Keychain.shared.setSynced(value: true, id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
-        XCTAssertTrue(try Keychain.shared.isSynced(id: KeyIdentifier.master.identifier(for: .seed), service: .seed))
     }
     
     func testSaveAndGetAsync() {

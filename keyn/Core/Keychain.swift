@@ -72,12 +72,6 @@ enum KeychainService: String {
     }
 }
 
-fileprivate enum Synced: String {
-    case `true` = "true"
-    case `false` = "fals"  // Four characters
-}
-
-
 /// The interface needed for SecKey conversion.
 protocol SecKeyConvertible: CustomStringConvertible {
     /// Creates a key from an X9.63 representation.
@@ -122,7 +116,6 @@ struct Keychain {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrAccount as String: identifier,
                                     kSecAttrService as String: service.rawValue,
-                                    kSecAttrType as String: Synced.false.rawValue,
                                     kSecAttrAccessGroup as String: service.accessGroup]
         if let objectData = objectData {
             query[kSecAttrGeneric as String] = objectData
@@ -318,58 +311,6 @@ struct Keychain {
             query[kSecAttrLabel as String] = label
         }
         SecItemDelete(query as CFDictionary)
-    }
-
-    func isSynced(id identifier: String, service: KeychainService) throws -> Bool {
-        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
-                                    kSecMatchLimit as String: kSecMatchLimitOne,
-                                    kSecReturnAttributes as String: true,
-                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
-
-        if let defaultContext = service.defaultContext {
-            query[kSecUseAuthenticationContext as String] = defaultContext
-        }
-
-        var queryResult: AnyObject?
-        switch SecItemCopyMatching(query as CFDictionary, &queryResult) {
-        case errSecSuccess: break
-        case -26276, errSecInteractionNotAllowed:
-            throw KeychainError.interactionNotAllowed
-        case errSecItemNotFound:
-            throw KeychainError.notFound
-        case let status:
-            throw KeychainError.unhandledError(status.message)
-        }
-
-        guard let dataArray = queryResult as? [String: Any] else {
-            throw KeychainError.unexpectedData
-        }
-        guard let label = dataArray[kSecAttrType as String] as? String else {
-            return false
-        }
-        return label == Synced.true.rawValue
-    }
-
-    func setSynced(value: Bool, id identifier: String, service: KeychainService) throws {
-        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                    kSecAttrAccount as String: identifier,
-                                    kSecAttrService as String: service.rawValue,
-                                    kSecUseAuthenticationUI as String: kSecUseAuthenticationUIFail]
-
-        if let defaultContext = service.defaultContext {
-            query[kSecUseAuthenticationContext as String] = defaultContext
-        }
-
-        let attributes: [String: Any] = [kSecAttrType as String: value ? Synced.true.rawValue : Synced.false.rawValue]
-
-        switch SecItemUpdate(query as CFDictionary, attributes as CFDictionary) {
-        case errSecSuccess: return
-        case errSecItemNotFound: throw KeychainError.notFound
-        case let status:
-            throw KeychainError.unhandledError(status.message)
-        }
     }
 
     // MARK: - Authenticated Keychain operations
