@@ -30,6 +30,13 @@ enum PPDVersion: String, Codable {
     case v1_1 = "1.1"
 }
 
+struct PPDDescriptor: Codable {
+    let id: String
+    let url: String
+    let name: String
+    let redirects: [String]
+}
+
 struct PPD: Codable {
     let characterSets: [PPDCharacterSet]?
     let properties: PPDProperties? // Required. Represents the properties of the password.
@@ -61,6 +68,21 @@ struct PPD: Codable {
                 return .value(nil)
             }
             return .value(nil)
+        }
+    }
+
+    static func getDescriptors(organisationKeyPair: KeyPair?) -> Promise<[PPDDescriptor]> {
+        return firstly { () -> Promise<[JSONObject]> in
+            if let keyPair = organisationKeyPair {
+                return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(keyPair.pubKey.base64)/ppd", privKey: keyPair.privKey, body: nil, parameters: nil)
+            } else {
+                return API.shared.request(path: "ppd", parameters: nil, method: .get, signature: nil, body: nil)
+            }
+        }.map { result -> [PPDDescriptor] in
+            return try result.map {
+                let jsonData = try JSONSerialization.data(withJSONObject: $0, options: [])
+                return try JSONDecoder().decode(PPDDescriptor.self, from: jsonData)
+            }
         }
     }
 

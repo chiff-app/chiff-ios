@@ -31,6 +31,22 @@ class API: NSObject, APIProtocol {
         }
     }
 
+    func signedRequest<T>(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String:String]?) -> Promise<T> {
+        var message = message ?? [:]
+        message["httpMethod"] = method.rawValue
+        message["timestamp"] = String(Date.now)
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
+            var parameters = parameters ?? [:]
+            parameters["m"] = try Crypto.shared.convertToBase64(from: jsonData)
+            return request(path: path, parameters: parameters, method: method, signature: signature, body: body)
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
+
     func request(
         path: String,
         parameters: [String:String]?,
@@ -38,6 +54,18 @@ class API: NSObject, APIProtocol {
         signature: String? = nil,
         body: Data? = nil
     ) -> Promise<JSONObject> {
+        return firstly {
+            try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))
+        }
+    }
+
+    func request<T>(
+        path: String,
+        parameters: [String:String]?,
+        method: APIMethod,
+        signature: String? = nil,
+        body: Data? = nil
+    ) -> Promise<T> {
         return firstly {
             try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))
         }
@@ -77,7 +105,7 @@ class API: NSObject, APIProtocol {
     }
 
 
-    private func send(_ request: URLRequest) -> Promise<JSONObject> {
+    private func send<T>(_ request: URLRequest) -> Promise<T> {
         return firstly {
             return urlSession!.dataTask(with: request)
         }.map { response, data in
@@ -86,7 +114,7 @@ class API: NSObject, APIProtocol {
                     throw APIError.noData
                 }
                 let jsonData = try JSONSerialization.jsonObject(with: data, options: [])
-                guard let json = jsonData as? JSONObject else {
+                guard let json = jsonData as? T else {
                     throw APIError.jsonSerialization
                 }
                 return json
