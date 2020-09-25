@@ -31,6 +31,28 @@ extension UserAccount: Syncable {
         NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
     }
 
+
+    static func backup(accounts: [String: (UserAccount, String?)]) -> Promise<Void> {
+        do {
+            let encryptedAccounts: [String: String] = try accounts.mapValues {
+                let data = try JSONEncoder().encode(BackupUserAccount(account: $0.0, tokenURL: nil, tokenSecret: nil, notes: $0.1))
+                return try Crypto.shared.encryptSymmetric(data.compress() ?? data, secretKey: try encryptionKey()).base64
+            }
+            let message: [String: Any] = [
+                "httpMethod": APIMethod.put.rawValue,
+                "timestamp": String(Date.now),
+                "accounts": encryptedAccounts
+            ]
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: try privateKey()).base64
+            return firstly {
+                API.shared.request(path: "users/\(try publicKey())/accounts", parameters: nil, method: .put, signature: signature, body: jsonData)
+            }.asVoid().log("BackupManager cannot write bulk user accounts.")
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
     // MARK: - Init
 
     init(backupObject: BackupUserAccount, context: LAContext?) throws {
@@ -260,7 +282,7 @@ extension UserAccount: Syncable {
         }
         return true
     }
-    
+
 }
 
 struct BackupUserAccount: BaseAccount, BackupObject {

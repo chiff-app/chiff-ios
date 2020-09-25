@@ -19,6 +19,7 @@ enum AccountError: Error {
     case wrongRpId
     case noWebAuthn
     case notTOTP
+    case importError(failed: Int, total: Int)
 }
 
 protocol Account: BaseAccount {

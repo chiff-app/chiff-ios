@@ -193,7 +193,7 @@ struct BrowserSession: Session {
             API.shared.signedRequest(method: .delete, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil, parameters: nil)
         }.asVoid().log("Failed to delete password change confirmation from queue.")
     }
-
+    
     func updateSessionAccount(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
@@ -202,6 +202,27 @@ struct BrowserSession: Session {
             "data": ciphertext.base64
         ]
         API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
+    }
+
+    func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
+        do {
+            let encryptedAccounts: [String: String] = try accounts.mapValues {
+                let data = try JSONEncoder().encode(SessionAccount(account: $0))
+                return try Crypto.shared.encrypt(data, key: sharedKey()).base64
+            }
+            let message: [String: Any] = [
+                "httpMethod": APIMethod.put.rawValue,
+                "timestamp": String(Date.now),
+                "accounts": encryptedAccounts
+            ]
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: try signingPrivKey()).base64
+            return firstly {
+                API.shared.request(path: "sessions/\(signingPubKey)/accounts", parameters: nil, method: .put, signature: signature, body: jsonData)
+            }.asVoid().log("Session cannot write bulk session accounts.")
+        } catch {
+            return Promise(error: error)
+        }
     }
 
     func updateSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> Promise<Void> {
