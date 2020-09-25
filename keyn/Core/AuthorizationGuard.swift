@@ -92,7 +92,7 @@ class AuthorizationGuard {
 
     // MARK: - Handle request responses
 
-    func acceptRequest(startLoading: @escaping (() -> Void)) -> Promise<Account?> {
+    func acceptRequest(startLoading: @escaping ((_ status: String?) -> Void)) -> Promise<Account?> {
         var promise: Promise<Account?>
         switch type {
         case .add, .register, .addAndLogin:
@@ -108,7 +108,7 @@ class AuthorizationGuard {
                 AuthorizationGuard.authorizationInProgress = false
                 return Promise(error: AuthorizationError.cannotAddAccount)
             }
-            promise = addBulkSites().map { nil }
+            promise = addBulkSites(startLoading: startLoading).map { nil }
         case .change:
             promise = authorizeChange()
         case .login, .fill, .getDetails:
@@ -281,40 +281,60 @@ class AuthorizationGuard {
         }
     }
 
-    private func addBulkSites() -> Promise<Void> {
-        var success = false
-        var laContext: LAContext?
+    private func addBulkSites(startLoading: @escaping ((_ status: String?) -> Void)) -> Promise<Void> {
+        var succeeded: [String: (UserAccount, String?)] = [:]
+        var failed = 0
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
-        }.then { (context: LAContext?) -> Promise<[KeynPersistentQueueMessage]> in
-            laContext = context
-            return self.session.getPersistentQueueMessages(shortPolling: true)
-        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]> in
+        }.then { (context: LAContext?) -> Promise<([KeynPersistentQueueMessage], LAContext?)> in
+            startLoading("requests.import_progress_1".localized)
+            return self.session.getPersistentQueueMessages(shortPolling: true).map { ($0, context) }
+        }.then { (messages: [KeynPersistentQueueMessage], context: LAContext?) -> Promise<([BulkAccount], LAContext?)> in
             if let message = messages.first(where: { $0.type == .addBulk }), let receiptHandle = message.receiptHandle {
                 return self.session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
-                    message.accounts!
+                    (message.accounts!, context)
                 }
             } else {
                 throw CodingError.missingData
             }
-        }.then { accounts in
-            when(fulfilled: try accounts.map { account in
-                try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) }
-            })
-        }.map { (accounts) in
+        }.then { (accounts, context) in
+            try PPD.getDescriptors(organisationKeyPair: TeamSession.organisationKeyPair()).map { (accounts, $0, context) }
+        }.then { (accounts, ppdDescriptors: [PPDDescriptor], context) -> Promise<([(BulkAccount, PPD?)], LAContext?)> in
+            startLoading("requests.import_progress_2".localized)
+            return when(fulfilled: try accounts.map { account in
+                return ppdDescriptors.contains { $0.id == account.siteId } ?  try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) } : Promise.value((account, nil))
+            }).map { ($0, context) }
+        }.then { (accounts, context) -> Promise<(Int, LAContext?)> in
+            startLoading("requests.import_progress_3".localized)
             for (bulkAccount, ppd) in accounts {
-                let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                let _ = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, askToChange: nil, context: laContext)
+                do {
+                    let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
+                    let account = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, askToChange: nil, context: context, offline: true)
+                    succeeded[account.id] = (account, bulkAccount.notes)
+                } catch {
+                    failed += 1
+                }
             }
-            try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: laContext)
-            success = true
-            NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            var promises: [Promise<Void>] = try BrowserSession.all().map { $0.updateSessionAccounts(accounts: succeeded.mapValues { $0.0 }) }
+            promises.append(UserAccount.backup(accounts: succeeded))
+            startLoading("requests.import_progress_4".localized)
+            return when(fulfilled: promises).asVoid().map { (accounts.count, context) }
+        }.map { (total, context) in
+            try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
+            startLoading("requests.import_progress_5".localized)
+            if (succeeded.count > 0) {
+                NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
+            }
+            if (failed > 0) {
+                Logger.shared.warning("Failed to import \(failed) accounts")
+                throw AccountError.importError(failed: failed, total: total)
+            }
         }.ensure {
-            Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: success])
+            Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: succeeded.count > 0])
         }
     }
 
-    private func teamAdminLogin(startLoading: @escaping (() -> Void)) -> Promise<Void> {
+    private func teamAdminLogin(startLoading: @escaping ((_ status: String?) -> Void)) -> Promise<Void> {
         guard let teamSession = try? TeamSession.all().first else {
             AuthorizationGuard.showError(errorMessage: "errors.session_not_found".localized)
             return .value(())
@@ -326,18 +346,18 @@ class AuthorizationGuard {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { context -> Promise<(Data, LAContext?)> in
-            startLoading()
+            startLoading(nil)
             return teamSession.getTeamSeed().map { ($0, context) }
         }.then { seed, context  in
             self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!, organisationKey: nil)
         }.log("Error getting admin seed")
     }
 
-    private func createOrganisation(startLoading: @escaping (() -> Void)) -> Promise<Void> {
+    private func createOrganisation(startLoading: @escaping ((_ status: String?) -> Void)) -> Promise<Void> {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
-            startLoading()
+            startLoading(nil)
             return Team.create(orderKey: self.orderKey, name: self.organisationName).map { ($0, $1, context) }
         }.then { (teamSession, seed, context) -> Promise<Void> in
             NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))

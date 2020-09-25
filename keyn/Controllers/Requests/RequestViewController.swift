@@ -71,13 +71,18 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizationGuard.acceptRequest() {
+            authorizationGuard.acceptRequest() { message in
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicator.startAnimating()
+                    if let message = message {
+                        self?.accountsLeftLabel.isHidden = false
+                        self?.accountsLeftLabel.text = message
+                    }
                 }
             }
         }.done(on: .main) { account in
             self.activityIndicator.stopAnimating()
+            self.accountsLeftLabel.isHidden = true
             if var account = account {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
@@ -122,6 +127,11 @@ class RequestViewController: UIViewController {
                 }
             } else if let error = error as? PasswordGenerationError {
                 self.showAlert(message: "\("errors.password_generation".localized) \(error)")
+            } else if case AccountError.importError(failed: let failed, total: let total) = error {
+                self.showAlert(message: String(format: "errors.failed_accounts_message".localized, failed, total)) { action in
+                    self.dismiss()
+                    AuthenticationGuard.shared.hideLockWindow()
+                }
             } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
                 self.showAlert(message: errorMessage)
                 Logger.shared.error("Error authorizing request", error: error)

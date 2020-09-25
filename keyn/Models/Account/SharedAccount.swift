@@ -22,7 +22,6 @@ struct SharedAccount: Account {
     var askToChange: Bool? = false
     let enabled = true
     let sessionId: String
-    var synced = true
     var version: Int
     var timesUsed: Int
     var lastTimeUsed: Date?
