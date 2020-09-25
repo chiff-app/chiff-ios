@@ -41,7 +41,7 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil) throws {
+    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil, offline: Bool = false) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -73,7 +73,7 @@ struct UserAccount: Account, Equatable {
         }
         self.lastPasswordUpdateTryIndex = self.passwordIndex
         self.lastChange = Date.now
-        try save(password: generatedPassword, keyPair: keyPair)
+        try save(password: generatedPassword, keyPair: keyPair, offline: offline)
     }
 
     init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?, notes: String?) {
@@ -256,14 +256,16 @@ struct UserAccount: Account, Equatable {
         }.log("Error deleting accounts")
     }
 
-    func save(password: String?, keyPair: KeyPair?) throws {
+    func save(password: String?, keyPair: KeyPair?, offline: Bool = false) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password?.data, objectData: accountData)
         if let keyPair = keyPair {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
-        let _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
+        if !offline {
+            let _ = try backup()
+            try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
+        }
         saveToIdentityStore()
         Properties.accountCount += 1
     }
