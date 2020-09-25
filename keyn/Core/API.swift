@@ -106,7 +106,6 @@ class API: NSObject, APIProtocol {
 
 
     private func send<T>(_ request: URLRequest) -> Promise<T> {
-        print("Network request \(request.url?.path)")
         return firstly {
             return urlSession!.dataTask(with: request)
         }.map { response, data in
