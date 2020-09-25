@@ -116,11 +116,6 @@ extension UserAccount: Syncable {
         }
         return firstly {
             sendData(item: BackupUserAccount(account: self, tokenURL: tokenURL, tokenSecret: tokenSecret, notes: try notes()))
-        }.map { _ in
-            try Keychain.shared.setSynced(value: true, id: self.id, service: Self.keychainService)
-        }.recover { error in
-            try Keychain.shared.setSynced(value: false, id: self.id, service: Self.keychainService)
-            throw error
         }.log("Error setting account sync info")
     }
 

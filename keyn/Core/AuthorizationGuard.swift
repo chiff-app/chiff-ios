@@ -357,15 +357,8 @@ class AuthorizationGuard {
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
-<<<<<<< Updated upstream
-            startLoading()
-            return Team.create(orderKey: self.orderKey, name: self.organisationName).map { (teamSession, seed) in
-                return (teamSession, seed, context)
-            }
-=======
             startLoading(nil)
             return Team.create(orderKey: self.orderKey, name: self.organisationName).map { ($0, $1, context) }
->>>>>>> Stashed changes
         }.then { (teamSession, seed, context) -> Promise<Void> in
             NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))
             guard let teamSession = teamSession as? TeamSession else {
