@@ -82,6 +82,14 @@ class MockAPI: APIProtocol {
             }
         }
     }
+
+    func request<T>(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data? = nil) -> Promise<T> {
+        return Promise(error: MockAPIError.notImplemented)
+    }
+
+    func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, parameters: [String : String]?) -> Promise<T> {
+        return Promise(error: MockAPIError.notImplemented)
+    }
     
     private func questionnaire(method: APIMethod) -> Promise<JSONObject> {
         switch method {

@@ -31,16 +31,7 @@ class AccountTests: XCTestCase {
     }
     
     // MARK: - Unit tests
-    
-    func testSynced() {
-        do {
-            let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil, askToChange: nil)
-            XCTAssertFalse(account.synced)
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-    }
-    
+
     func testInitDoesntThrow() {
         XCTAssertNoThrow(try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil, askToChange: nil))
         XCTAssertNoThrow(try UserAccount(username: TestHelper.username + "2", sites: [TestHelper.sampleSite], password: "password", rpId: nil, algorithms: nil, notes: nil, askToChange: nil))
@@ -276,7 +267,6 @@ class AccountTests: XCTestCase {
             let account = try UserAccount(username: TestHelper.username, sites: [TestHelper.sampleSite], password: nil, rpId: nil, algorithms: nil, notes: nil, askToChange: nil)
             let accountId = account.id
             account.delete().done { (result) in
-                XCTAssertTrue(account.synced)
                 XCTAssertNil(try UserAccount.get(id: accountId, context: nil))
             }.ensure {
                 expectation.fulfill()
