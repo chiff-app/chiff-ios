@@ -14,6 +14,7 @@ enum PasswordGenerationError: Error {
     case ppdInconsistency
 }
 
+/// Deterministically passwords with or without a PPD.
 class PasswordGenerator {
 
     static let CRYPTO_CONTEXT = "keynpass"
@@ -25,6 +26,16 @@ class PasswordGenerator {
     let characters: [Character]
     let version: Int
 
+    /**
+     A password generator can be used to generate password or calulcate offsets.
+
+     - Parameters:
+        - username: The username is used to determine the key from which the password is derived.
+        - siteId: The siteId is used to determine the key from which the password is derived.
+        - ppd: A PPD can be provided to generate a password according to the rules of the PPD.
+        - passwordSeed: The seed from which the key for the password should be derived.
+        - version: For backwards compatibility, the version can be provided to re-generate password that used an older version of the algorithm. Defaults to the current version
+     */
     init(username: String, siteId: String, ppd: PPD?, passwordSeed: Data, version: Int = 1) {
         self.username = username
         self.siteId = siteId
@@ -52,6 +63,17 @@ class PasswordGenerator {
         }
     }
 
+    /**
+     Generates a password from the provided index. The provided index is not necessarily the same index as the one that will be
+     used to generate the password, because restrictions from the PPD may apply.
+
+     - Parameters:
+        - index: The index that is used to generate the password.
+        - offset: The offset that should be applied to the key before generating the password.
+
+     - Returns: A tuple of the password and the index.
+     - Postcondition: The returned index is higher or equal to the provided index.
+     */
     func generate(index passwordIndex: Int, offset: [Int]?) throws -> (String, Int) {
         let length = self.length(isCustomPassword: offset != nil)
         guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
@@ -68,10 +90,20 @@ class PasswordGenerator {
                 password = try generatePasswordCandidate(index: index, length: length, offset: offset)
             }
         }
-        
+
         return (password, index)
     }
 
+    /**
+     Generates an offset for the provided password. The offset can be used to generate user-chosen passwords using the deterministic
+     algorithm
+
+     - Parameters:
+        - index: The index that is used to generate the password.
+        - password: The password.
+
+     - Returns: The password offset as list of numbers, where each number is byte: `0 <= n <= 255`.
+     */
     func calculateOffset(index passwordIndex: Int, password: String) throws -> [Int] {
         let chars = PasswordValidator.MAXIMAL_CHARACTER_SET.sorted()
         let length = self.length(isCustomPassword: true)
@@ -98,6 +130,7 @@ class PasswordGenerator {
 
     // MARK: - Private
 
+    /// The password length. Depends on PPD or default value if no PPD is provided
     private func length(isCustomPassword: Bool) -> Int {
         var length = isCustomPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
         let chars = isCustomPassword ? PasswordValidator.MAXIMAL_CHARACTER_SET.sorted() : characters
