@@ -95,6 +95,8 @@ class PairViewController: QRViewController {
             self.showAlert(message: "\("errors.api_error".localized): \(statusCode)", handler: closeError)
         case is APIError:
             self.showAlert(message: "errors.api_error".localized, handler: closeError)
+        case let error as NSError where error.domain == NSURLErrorDomain:
+            self.showAlert(message: error.localizedDescription, handler: closeError)
         default:
             Logger.shared.error("Unhandled QR code error during pairing.", error: error)
             self.showAlert(message: "errors.generic_error".localized, handler: closeError)
