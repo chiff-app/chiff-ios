@@ -32,45 +32,28 @@ class NotificationProcessor {
 
         let keynRequest: KeynRequest = try session.decrypt(message: ciphertext)
         let siteName = keynRequest.siteName ?? "Unknown"
-
+        content.title = session.title
         switch keynRequest.type {
         case .add, .addAndLogin, .webauthnCreate:
-            content.title = "notifications.add_account".localized
-            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
+            content.body = String(format: "notifications.add_account".localized, siteName)
         case .addBulk:
-            content.title = "notifications.add_accounts".localized
-            content.body = String(format: "notifications.accounts_from".localized, keynRequest.count!, session.title)
+            content.body = String(format: "notifications.add_accounts".localized, keynRequest.count!)
         case .end:
-            content.title = "notifications.end_session".localized
-            content.body = session.title
+            content.body = "notifications.end_session".localized
         case .change:
-            content.title = "notifications.change_password".localized
-            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
+            content.body = String(format: "notifications.change_password".localized, siteName)
         case .updateAccount:
-            content.title = "notifications.update_account".localized
-            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
+            content.body = String(format: "notifications.update_account".localized, siteName)
         case .login, .addToExisting, .webauthnLogin:
-            content.title = "notifications.login".localized
-            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
+            content.body = String(format: "notifications.login".localized, siteName)
         case .fill, .getDetails:
-            content.title = "notifications.get_password".localized
-            content.body = String(format: "notifications.this_on_that".localized, siteName, session.title)
-        case .pair:
-            content.title = "notifications.pairing".localized
-            content.body = session.title
+            content.body = String(format: "notifications.get_password".localized, siteName)
         case .adminLogin:
-            content.title = "notifications.team_admin_login".localized
-            content.body = session.title
+            content.body = String(format: "notifications.team_admin_login".localized, (try? TeamSession.all().first?.title) ?? "notifications.team".localized)
         case .createOrganisation:
-            content.title = "notifications.create_organisation".localized
-            if let name = keynRequest.organisationName {
-                content.body = String(format: "notifications.this_on_that".localized, name, session.title)
-            } else {
-                content.body = session.title
-            }
+            content.body = String(format: "notifications.create_organisation".localized, keynRequest.organisationName!)
         case .bulkLogin:
-            content.title = "notifications.login".localized
-            content.body = String(format: "notifications.accounts_from".localized, keynRequest.accountIDs!.count, session.title)
+            content.body = String(format: "notifications.bulk_login".localized, keynRequest.accountIDs!.count, session.title)
         default:
             content.body = "Unknown request"
         }

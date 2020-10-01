@@ -606,24 +606,22 @@ initialization:
 
       Sensitive data is never shared and everything is anonymous.
 notifications:
-  accounts_from:
-    value: '%d accounts on %@.'
   add_account:
-    value: Add account
+    value: Do you want to add %@?
   add_accounts:
-    value: Add accounts
+    value: Do you want to add %d accounts?
   bulk_login:
-    value: ''
+    value: Do you want to log in to %d accounts?
   change_password:
-    value: Change password
+    value: Do you want to change the password for %@?
   create_organisation:
-    value: Create team
+    value: Do you want to create %@?
   end_session:
     value: Session ended
   get_password:
-    value: Get password
+    value: Do you want to retrieve %@?
   login:
-    value: Login
+    value: Do you want to log in to %@?
   onboarding_reminder_message:
     first:
       value: "You only have to pair your phone with your computer and you can log in without passwords! \U0001F389\U0001F389"
@@ -638,17 +636,12 @@ notifications:
       value: What are you waiting for?
     third:
       value: Are you still there?
-  pairing:
-    end: ''
-    start: '18'
-    value: Let's set up your computer!
+  team:
+    value: your team
   team_admin_login:
-    value: Chiff for teams login
-  this_on_that:
-    description: Chrome on MacOS
-    value: '%@ in %@.'
+    value: Do you want log in to %@?
   update_account:
-    value: Update account
+    value: Do you want to update %@?
 numbers:
   five:
     value: '5'

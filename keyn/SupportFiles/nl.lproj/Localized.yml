@@ -607,24 +607,22 @@ initialization:
 
       Er wordt nooit gevoelige informatie gedeeld en alle informatie is anoniem.
 notifications:
-  accounts_from:
-    value: '%d accounts op %@.'
   add_account:
-    value: Voeg account toe
+    value: Wil je %@ toevoegen?
   add_accounts:
-    value: Voeg accounts toe
+    value: Wil je %d accounts toevoegen %@?
   bulk_login:
-    value: ''
+    value: Wil je inloggen op %d accounts?
   change_password:
-    value: Verander wachtwoord
+    value: Wil je het wachtwoord veranderen voor %@?
   create_organisation:
-    value: Creëer team
+    value: Wil je %@ creëren
   end_session:
     value: Sessie beëindigd
   get_password:
-    value: Haal wachtwoord op
+    value: Wil je %@ ophalen?
   login:
-    value: Inloggen
+    value: Wil je inloggen bij %@?
   onboarding_reminder_message:
     first:
       value: "Je hoeft alleen nog maar je telefoon aan je computer te koppelen en je kunt overal inloggen zonder wachtwoorden! \U0001F389\U0001F389"
@@ -639,17 +637,12 @@ notifications:
       value: Waar wacht je op?
     third:
       value: Ben je er nog?
-  pairing:
-    end: ''
-    start: '26'
-    value: Koppelen
+  team:
+    value: je team
   team_admin_login:
-    value: Inloggen Chiff voor teams
-  this_on_that:
-    description: GitHub in Firefox op MacOS
-    value: '%@ in %@.'
+    value: Wil je inloggen bij %@?
   update_account:
-    value: Update account
+    value: Wil je %@ wijzigen?
 numbers:
   five:
     value: '5'
