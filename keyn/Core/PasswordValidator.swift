@@ -184,7 +184,8 @@ class PasswordValidator {
         var counter = 1
 
         for value in password.utf8 {
-            if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) { // TODO: Shouldn't this be characters instead of OPTIMAL_CHARACTER_SET?
+            // We use OPTIMAL_CHARACTER_SET because the order only makes sense for letters and numbers
+            if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) {
                 counter += 1
             } else {
                 counter = 1
@@ -203,11 +204,11 @@ class PasswordValidator {
         for characterSetSetting in characterSetSettings {
             if let characterSet = characterSetDictionary[characterSetSetting.name] {
                 let occurences = countCharacterOccurences(password: password, characterSet: characterSet)
-                if let minOccurs = characterSetSetting.minOccurs {
-                    guard occurences >= minOccurs else { return false }
+                if let minOccurs = characterSetSetting.minOccurs, occurences < minOccurs {
+                    return false
                 }
-                if let maxOccurs = characterSetSetting.maxOccurs {
-                    guard occurences <= maxOccurs else { return false }
+                if let maxOccurs = characterSetSetting.maxOccurs, occurences > maxOccurs {
+                    return false
                 }
             } else {
                 throw PasswordGenerationError.ppdInconsistency
@@ -221,8 +222,8 @@ class PasswordValidator {
             if let characterSet = characterSetDictionary[positionRestriction.characterSet] {
                 let occurences = checkPositions(password: password, positions: positionRestriction.positions, characterSet: characterSet)
                 guard occurences >= positionRestriction.minOccurs else { return false }
-                if let maxOccurs = positionRestriction.maxOccurs {
-                    guard occurences <= maxOccurs else { return false }
+                if let maxOccurs = positionRestriction.maxOccurs, occurences > maxOccurs {
+                    return false
                 }
             } else {
                 throw PasswordGenerationError.ppdInconsistency
