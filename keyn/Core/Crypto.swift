@@ -113,7 +113,7 @@ class Crypto {
         return key.data
     }
 
-    // MARK: - Base64 conversion functions
+    // MARK: - Conversion functions
 
     func convertFromBase64(from base64String: String) throws -> Data  {
         guard let bytes = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
@@ -129,6 +129,13 @@ class Crypto {
         }
 
         return b64String
+    }
+
+    func fromHex(_ message: String) throws -> Data {
+        guard let data = sodium.utils.hex2bin(message)?.data else {
+            throw CryptoError.convertFromHex
+        }
+        return data
     }
     
     // MARK: - Signing functions
@@ -218,13 +225,6 @@ class Crypto {
         }
 
         return hash
-    }
-
-    func fromHex(_ message: String) throws -> Data {
-        guard let data = sodium.utils.hex2bin(message)?.data else {
-            throw CryptoError.convertFromHex
-        }
-        return data
     }
 
     func sha1(from string: String) -> String {

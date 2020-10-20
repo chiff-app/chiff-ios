@@ -13,6 +13,10 @@ class CryptoTests: XCTestCase {
         XCTAssertNoThrow(try Crypto.shared.generateSeed())
     }
 
+    func testGenerateRandomIdDoesntThrow() {
+        XCTAssertNoThrow(try Crypto.shared.generateRandomId())
+    }
+
     func testGenerateReturnsSeedWithCorrectType() {
         do {
             let seed = try Crypto.shared.generateSeed()
@@ -114,6 +118,11 @@ class CryptoTests: XCTestCase {
     func testConverFromBase64Throws() {
         let base64String = "asoidhjaiodhash"
         XCTAssertThrowsError(try Crypto.shared.convertFromBase64(from: base64String))
+    }
+
+    func testConvertFromHex() {
+        let hexString = "5465737420737472696e67206e6f7420656e636f646564"
+        XCTAssertEqual(try Crypto.shared.fromHex(hexString), "Test string not encoded".data)
     }
     
     func testSign() {
@@ -305,6 +314,31 @@ class CryptoTests: XCTestCase {
             XCTFail("Error decrypting: \(error)")
         }
     }
+
+    // The ciphertext here was created with padding.
+    func testDecryptWithSharedKeyWithPadding() {
+        let plainText = "Test string not encrypted"
+        guard
+            let sharedKey = TestHelper.sharedKey.fromBase64,
+            let cipherText = "kQ58zt5qqPeVpx6rqo3g9BuLMJIbrCx-UNLFlhTdUCM1Or_secFlH49OvDt-_PZ54XWU4Sd02olDurn1cHkBQClA3K4GHpnL865guKxHSE2vVfs31Ezs4hHnBWkUokFAfot-WCKKSiIi4NSRK1YCKOM2x65dUqRAsf1rb-9hrG7Sn-7vRhrpX6gq-RFzXckq0yNKKM5iTY-Q0E9EljgPljSvBVO65lEOjaSyFfX29YqbD5PHeugPwGphreGrt0HSZ15801HJeG5m4xKXUaN2xVKJfZHCszUL7Xw-DQXcXTAvBPlD9vo91RJ5xLXmSW9-".fromBase64 else {
+                return XCTFail("Error getting data from base64 string")
+        }
+        do {
+            let (decryptedText, _) = try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 1)
+            XCTAssertEqual(plainText, String(data: decryptedText, encoding: .utf8))
+        } catch {
+            XCTFail("Error decrypting: \(error)")
+        }
+    }
+
+    func testDecryptWithSharedKeyThrowsWithSmallCiphertext() {
+        guard
+            let sharedKey = TestHelper.sharedKey.fromBase64,
+            let cipherText = "qVUK".fromBase64 else {
+                return XCTFail("Error getting data from base64 string")
+        }
+         XCTAssertThrowsError(try Crypto.shared.decrypt(cipherText, key: sharedKey, version: 0))
+    }
     
     func testSha1() {
         let hash = Crypto.shared.sha1(from: "String")
@@ -320,4 +354,11 @@ class CryptoTests: XCTestCase {
         let hash = Crypto.shared.sha256(from: "String".data)
         XCTAssertEqual(hash, "su8jDn9PMVoozcyGMCjaMfcRDzIJ_rdudv7Q83s9hYA".fromBase64)
     }
+
+    func testEquals() {
+        let hexString = "5465737420737472696e67206e6f7420656e636f646564"
+        let base64String = "VGVzdCBzdHJpbmcgbm90IGVuY29kZWQ"
+        XCTAssertTrue(Crypto.shared.equals(first: try Crypto.shared.convertFromBase64(from: base64String), second: try Crypto.shared.fromHex(hexString)))
+    }
+
 }
