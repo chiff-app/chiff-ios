@@ -2,7 +2,7 @@
  * Copyright © 2019 Keyn B.V.
  * All rights reserved.
  */
-import Foundation
+import UIKit
 import OneTimePassword
 import LocalAuthentication
 import PromiseKit

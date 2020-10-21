@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,7 +15,6 @@
 		01839A711FACA93A00698B69 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		01839A731FACA94300698B69 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
 		01B79AEF202C8E8000425BD5 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B79AEE202C8E8000425BD5 /* CryptoTests.swift */; };
-		3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */; };
 		4240A4072325EAB4002EBD4E /* SeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4062325EAB4002EBD4E /* SeedTests.swift */; };
 		4240A4092325EAC2002EBD4E /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4240A4082325EAC2002EBD4E /* AccountTests.swift */; };
 		42481A4823293ADE00EA3C3C /* PPDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42481A4723293ADD00EA3C3C /* PPDTests.swift */; };
@@ -74,6 +73,39 @@
 		493DB00C231577B70061CB5C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */; };
 		493DB00D231578380061CB5C /* KeynLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4905E09A230ECD3B00EE380E /* KeynLabel.swift */; };
 		493FCF741FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493FCF731FDADB0B00D31AE7 /* DateComponentUnitFormatter.swift */; };
+		4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */; };
+		4941AF1A2540365B00CEFDE9 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF192540365B00CEFDE9 /* FirebaseCore */; };
+		4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF212540371A00CEFDE9 /* TrustKit */; };
+		4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF292540377300CEFDE9 /* Amplitude */; };
+		4941AF3C254038F800CEFDE9 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF3B254038F800CEFDE9 /* Sodium */; };
+		4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF432540395C00CEFDE9 /* PromiseKit */; };
+		4941AF4C2540399F00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF4B2540399F00CEFDE9 /* DataCompression */; };
+		4941AF5425403A5B00CEFDE9 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF5325403A5B00CEFDE9 /* Down */; };
+		4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF5B25403AA600CEFDE9 /* MBProgressHUD */; };
+		4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6A25403C2A00CEFDE9 /* FirebaseCore */; };
+		4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */; };
+		4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF6E25403C2A00CEFDE9 /* TrustKit */; };
+		4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7025403C2A00CEFDE9 /* Amplitude */; };
+		4941AF7325403C2A00CEFDE9 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7225403C2A00CEFDE9 /* Sodium */; };
+		4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7425403C2A00CEFDE9 /* PromiseKit */; };
+		4941AF7725403C2A00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7625403C2A00CEFDE9 /* DataCompression */; };
+		4941AF7B25403C3E00CEFDE9 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7A25403C3E00CEFDE9 /* FirebaseCore */; };
+		4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */; };
+		4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF7E25403C3E00CEFDE9 /* TrustKit */; };
+		4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8025403C3E00CEFDE9 /* Amplitude */; };
+		4941AF8325403C3E00CEFDE9 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8225403C3E00CEFDE9 /* Sodium */; };
+		4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8425403C3E00CEFDE9 /* PromiseKit */; };
+		4941AF8725403C3E00CEFDE9 /* DataCompression in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8625403C3E00CEFDE9 /* DataCompression */; };
+		4941AF8925403C3E00CEFDE9 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF8825403C3E00CEFDE9 /* MBProgressHUD */; };
+		4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9225403DCF00CEFDE9 /* OneTimePassword */; };
+		4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9925403E0200CEFDE9 /* OneTimePassword */; };
+		4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AF9B25403E0B00CEFDE9 /* OneTimePassword */; };
+		4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFA32540423200CEFDE9 /* PMKFoundation */; };
+		4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAA2540425700CEFDE9 /* PMKFoundation */; };
+		4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFAC2540425F00CEFDE9 /* PMKFoundation */; };
+		4941AFFB25406C1600CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941AFFA25406C1600CEFDE9 /* Kronos */; };
+		4941B00225406C3200CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00125406C3200CEFDE9 /* Kronos */; };
+		4941B00925406C3E00CEFDE9 /* Kronos in Frameworks */ = {isa = PBXBuildFile; productRef = 4941B00825406C3E00CEFDE9 /* Kronos */; };
 		494AA2B624266BCF0068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		494AA2B724266BD00068FD46 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		4950262E22BBA2DC00545118 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4950262D22BBA2DC00545118 /* CircleView.swift */; };
@@ -234,7 +266,6 @@
 		49F45E882424DBA30080B248 /* KeynTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F45E872424DBA30080B248 /* KeynTableViewController.swift */; };
 		49F6F23323EDA60D0093AD56 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49FA7F761FB9E08E00EDB367 /* BrowserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */; };
-		5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */; };
 		6105598F1FDC55570030F871 /* BackupWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105598E1FDC55570030F871 /* BackupWizardViewController.swift */; };
 		611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611470F21FDC229D00AE7593 /* LoginViewController.swift */; };
 		611733DE215D1B2400F37B2A /* PasswordGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */; };
@@ -268,8 +299,6 @@
 		61D0BE9D1FF2A7920072631D /* DevicesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */; };
 		61F938C41FF4161300AF0880 /* PairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C31FF4161300AF0880 /* PairViewController.swift */; };
 		61F938C61FF4199900AF0880 /* DevicesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */; };
-		C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -327,12 +356,6 @@
 		01839A701FACA93A00698B69 /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		01839A721FACA94300698B69 /* Site.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		01B79AEE202C8E8000425BD5 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
-		07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.release.xcconfig"; sourceTree = "<group>"; };
-		1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keyn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.release.xcconfig"; sourceTree = "<group>"; };
-		2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.debug.xcconfig"; sourceTree = "<group>"; };
-		3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.debug.xcconfig"; sourceTree = "<group>"; };
 		4240A4062325EAB4002EBD4E /* SeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeedTests.swift; sourceTree = "<group>"; };
 		4240A4082325EAC2002EBD4E /* AccountTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
 		42481A4723293ADD00EA3C3C /* PPDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPDTests.swift; sourceTree = "<group>"; };
@@ -486,7 +509,6 @@
 		49F45E872424DBA30080B248 /* KeynTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynTableViewController.swift; sourceTree = "<group>"; };
 		49F6F23223EDA60D0093AD56 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSession.swift; sourceTree = "<group>"; };
-		5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynNotificationExtension/Pods-keynNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		6105598E1FDC55570030F871 /* BackupWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupWizardViewController.swift; sourceTree = "<group>"; };
 		611470F21FDC229D00AE7593 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
@@ -507,11 +529,6 @@
 		61D0BE9C1FF2A7920072631D /* DevicesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesViewCell.swift; sourceTree = "<group>"; };
 		61F938C31FF4161300AF0880 /* PairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairViewController.swift; sourceTree = "<group>"; };
 		61F938C51FF4199900AF0880 /* DevicesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesNavigationController.swift; sourceTree = "<group>"; };
-		64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynCredentialProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynCredentialProvider.release.xcconfig"; path = "Pods/Target Support Files/Pods-keynCredentialProvider/Pods-keynCredentialProvider.release.xcconfig"; sourceTree = "<group>"; };
-		7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keyn.release.xcconfig"; path = "Pods/Target Support Files/Pods-keyn/Pods-keyn.release.xcconfig"; sourceTree = "<group>"; };
-		8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-keynTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-keynTests/Pods-keynTests.debug.xcconfig"; sourceTree = "<group>"; };
-		936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_keynNotificationExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,7 +536,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E7B7F5167CC5276D550C032 /* Pods_keynNotificationExtension.framework in Frameworks */,
+				4941B00225406C3200CEFDE9 /* Kronos in Frameworks */,
+				4941AF7325403C2A00CEFDE9 /* Sodium in Frameworks */,
+				4941AF7525403C2A00CEFDE9 /* PromiseKit in Frameworks */,
+				4941AF6B25403C2A00CEFDE9 /* FirebaseCore in Frameworks */,
+				4941AF9A25403E0200CEFDE9 /* OneTimePassword in Frameworks */,
+				4941AF6D25403C2A00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
+				4941AFAB2540425700CEFDE9 /* PMKFoundation in Frameworks */,
+				4941AF7125403C2A00CEFDE9 /* Amplitude in Frameworks */,
+				4941AF7725403C2A00CEFDE9 /* DataCompression in Frameworks */,
+				4941AF6F25403C2A00CEFDE9 /* TrustKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,10 +553,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4941AFFB25406C1600CEFDE9 /* Kronos in Frameworks */,
 				49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */,
+				4941AF5425403A5B00CEFDE9 /* Down in Frameworks */,
+				4941AF1A2540365B00CEFDE9 /* FirebaseCore in Frameworks */,
+				4941AF9325403DCF00CEFDE9 /* OneTimePassword in Frameworks */,
+				4941AF222540371A00CEFDE9 /* TrustKit in Frameworks */,
+				4941AF442540395C00CEFDE9 /* PromiseKit in Frameworks */,
+				4941AF182540365B00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
+				4941AF3C254038F800CEFDE9 /* Sodium in Frameworks */,
+				4941AF4C2540399F00CEFDE9 /* DataCompression in Frameworks */,
+				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
+				4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */,
+				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
 				49C8B896225383D300639663 /* StoreKit.framework in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
-				C634D4585D0E39F1D7CFD71D /* Pods_keyn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +575,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4BDB10B6184405F80801EB3 /* Pods_keynTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,8 +589,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4941AF7D25403C3E00CEFDE9 /* FirebaseCrashlytics in Frameworks */,
+				4941AF7B25403C3E00CEFDE9 /* FirebaseCore in Frameworks */,
+				4941AF7F25403C3E00CEFDE9 /* TrustKit in Frameworks */,
+				4941AF8925403C3E00CEFDE9 /* MBProgressHUD in Frameworks */,
+				4941AF8725403C3E00CEFDE9 /* DataCompression in Frameworks */,
+				4941AF8125403C3E00CEFDE9 /* Amplitude in Frameworks */,
+				4941B00925406C3E00CEFDE9 /* Kronos in Frameworks */,
 				611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */,
-				5E0D3455715E5E879069B48E /* Pods_keynCredentialProvider.framework in Frameworks */,
+				4941AF9C25403E0B00CEFDE9 /* OneTimePassword in Frameworks */,
+				4941AF8525403C3E00CEFDE9 /* PromiseKit in Frameworks */,
+				4941AFAD2540425F00CEFDE9 /* PMKFoundation in Frameworks */,
+				4941AF8325403C3E00CEFDE9 /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,11 +623,7 @@
 			children = (
 				49A01CD922609C5E001794B8 /* WebKit.framework */,
 				49C8B895225383D300639663 /* StoreKit.framework */,
-				1EFCC86ABF14309C538B28A0 /* Pods_keyn.framework */,
-				936839EF1E3AA271EB71CBF9 /* Pods_keynNotificationExtension.framework */,
-				07D9909D3EED0CACA5F6A87B /* Pods_keynTests.framework */,
 				4906BDAF20E3C41300183664 /* AuthenticationServices.framework */,
-				64691CF1FA3375CD02729665 /* Pods_keynCredentialProvider.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -794,7 +836,6 @@
 				4919DAE520123FE50048B060 /* keynNotificationExtension */,
 				611F4B472146B47300B35A89 /* keynCredentialProvider */,
 				49E766511F7E6F420022C042 /* Products */,
-				D5C581DF5092A799CE55441A /* Pods */,
 				2A4E92B609DDA515653F86DA /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -980,21 +1021,6 @@
 			path = Devices;
 			sourceTree = "<group>";
 		};
-		D5C581DF5092A799CE55441A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */,
-				7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */,
-				5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */,
-				21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */,
-				8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */,
-				0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */,
-				2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */,
-				7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1002,7 +1028,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */;
 			buildPhases = (
-				ED5534BD03C4EAFF37244AD4 /* [CP] Check Pods Manifest.lock */,
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
 				4919DAE220123FE50048B060 /* Resources */,
@@ -1013,6 +1038,18 @@
 			dependencies = (
 			);
 			name = keynNotificationExtension;
+			packageProductDependencies = (
+				4941AF6A25403C2A00CEFDE9 /* FirebaseCore */,
+				4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */,
+				4941AF6E25403C2A00CEFDE9 /* TrustKit */,
+				4941AF7025403C2A00CEFDE9 /* Amplitude */,
+				4941AF7225403C2A00CEFDE9 /* Sodium */,
+				4941AF7425403C2A00CEFDE9 /* PromiseKit */,
+				4941AF7625403C2A00CEFDE9 /* DataCompression */,
+				4941AF9925403E0200CEFDE9 /* OneTimePassword */,
+				4941AFAA2540425700CEFDE9 /* PMKFoundation */,
+				4941B00125406C3200CEFDE9 /* Kronos */,
+			);
 			productName = keynNotificationExtension;
 			productReference = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1021,13 +1058,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
 			buildPhases = (
-				50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */,
 				49E7664C1F7E6F420022C042 /* Sources */,
 				49E7664D1F7E6F420022C042 /* Frameworks */,
 				49E7664E1F7E6F420022C042 /* Resources */,
 				4967F423225CBF950069330D /* Compile localized YAML files to PLIST */,
 				4919DAEF20123FE50048B060 /* Embed App Extensions */,
-				390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */,
 				49EB0A4922DE26E0000F05DD /* Crashlytics script */,
 			);
 			buildRules = (
@@ -1037,6 +1072,20 @@
 				611F4B502146B47300B35A89 /* PBXTargetDependency */,
 			);
 			name = keyn;
+			packageProductDependencies = (
+				4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */,
+				4941AF192540365B00CEFDE9 /* FirebaseCore */,
+				4941AF212540371A00CEFDE9 /* TrustKit */,
+				4941AF292540377300CEFDE9 /* Amplitude */,
+				4941AF3B254038F800CEFDE9 /* Sodium */,
+				4941AF432540395C00CEFDE9 /* PromiseKit */,
+				4941AF4B2540399F00CEFDE9 /* DataCompression */,
+				4941AF5325403A5B00CEFDE9 /* Down */,
+				4941AF5B25403AA600CEFDE9 /* MBProgressHUD */,
+				4941AF9225403DCF00CEFDE9 /* OneTimePassword */,
+				4941AFA32540423200CEFDE9 /* PMKFoundation */,
+				4941AFFA25406C1600CEFDE9 /* Kronos */,
+			);
 			productName = athena;
 			productReference = 49E766501F7E6F420022C042 /* keyn.app */;
 			productType = "com.apple.product-type.application";
@@ -1045,11 +1094,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynTests" */;
 			buildPhases = (
-				639DCD686255E348EB4F1E6C /* [CP] Check Pods Manifest.lock */,
 				49E766621F7E6F420022C042 /* Sources */,
 				49E766631F7E6F420022C042 /* Frameworks */,
 				49E766641F7E6F420022C042 /* Resources */,
-				ACA79335589604C2E5229084 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1083,7 +1130,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "keynCredentialProvider" */;
 			buildPhases = (
-				EBF1ED7B5DB4A469B7288E5E /* [CP] Check Pods Manifest.lock */,
 				611F4B412146B47300B35A89 /* Sources */,
 				611F4B422146B47300B35A89 /* Frameworks */,
 				611F4B432146B47300B35A89 /* Resources */,
@@ -1094,6 +1140,19 @@
 			dependencies = (
 			);
 			name = keynCredentialProvider;
+			packageProductDependencies = (
+				4941AF7A25403C3E00CEFDE9 /* FirebaseCore */,
+				4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */,
+				4941AF7E25403C3E00CEFDE9 /* TrustKit */,
+				4941AF8025403C3E00CEFDE9 /* Amplitude */,
+				4941AF8225403C3E00CEFDE9 /* Sodium */,
+				4941AF8425403C3E00CEFDE9 /* PromiseKit */,
+				4941AF8625403C3E00CEFDE9 /* DataCompression */,
+				4941AF8825403C3E00CEFDE9 /* MBProgressHUD */,
+				4941AF9B25403E0B00CEFDE9 /* OneTimePassword */,
+				4941AFAC2540425F00CEFDE9 /* PMKFoundation */,
+				4941B00825406C3E00CEFDE9 /* Kronos */,
+			);
 			productName = keynCredentialProvider;
 			productReference = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1185,6 +1244,19 @@
 				nl,
 			);
 			mainGroup = 49E766471F7E6F420022C042;
+			packageReferences = (
+				4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */,
+				4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */,
+				4941AF38254038F800CEFDE9 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+				4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */,
+				4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */,
+				4941AF5A25403AA600CEFDE9 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
+				4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */,
+				4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */,
+				4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */,
+			);
 			productRefGroup = 49E766511F7E6F420022C042 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1263,48 +1335,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		390705715801DAB636038B18 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Amplitude/Amplitude.framework",
-				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
-				"${BUILT_PRODUCTS_DIR}/DataCompression/DataCompression.framework",
-				"${BUILT_PRODUCTS_DIR}/Down/Down.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
-				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
-				"${BUILT_PRODUCTS_DIR}/TrueTime/TrueTime.framework",
-				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DataCompression.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Down.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrueTime.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keyn/Pods-keyn-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		494AA2B424266AF00068FD46 /* Compile localized YAML files to PLIST */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1379,119 +1409,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
-		};
-		50BEC674DEF27B05BC354B8C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keyn-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		639DCD686255E348EB4F1E6C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keynTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ACA79335589604C2E5229084 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Amplitude/Amplitude.framework",
-				"${BUILT_PRODUCTS_DIR}/Base32/Base32.framework",
-				"${BUILT_PRODUCTS_DIR}/DataCompression/DataCompression.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/OneTimePassword/OneTimePassword.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
-				"${BUILT_PRODUCTS_DIR}/Sodium/Sodium.framework",
-				"${BUILT_PRODUCTS_DIR}/TrueTime/TrueTime.framework",
-				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Amplitude.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base32.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DataCompression.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneTimePassword.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sodium.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrueTime.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-keynTests/Pods-keynTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EBF1ED7B5DB4A469B7288E5E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keynCredentialProvider-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ED5534BD03C4EAFF37244AD4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-keynNotificationExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "dir=$(dirname $(dirname ${BUILD_DIR}))\n\"$dir/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1834,7 +1752,6 @@
 /* Begin XCBuildConfiguration section */
 		4919DAEC20123FE50048B060 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FCC8514B96363F6515074B1 /* Pods-keynNotificationExtension.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1843,7 +1760,11 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1858,7 +1779,6 @@
 		};
 		4919DAED20123FE50048B060 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21D254F2F2B3B330A97BC552 /* Pods-keynNotificationExtension.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1867,7 +1787,11 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynNotificationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1988,15 +1912,15 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = keyn/KeynBridgingHeader.h;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		49E7667B1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3758AFB5F2DE308B84C7BB0D /* Pods-keyn.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
@@ -2008,7 +1932,10 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2017,53 +1944,19 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 					"-framework",
-					"\"Amplitude\"",
-					"-framework",
-					"\"Base32\"",
-					"-framework",
 					"\"CoreGraphics\"",
 					"-framework",
-					"\"FirebaseCrashlytics\"",
-					"-framework",
-					"\"Down\"",
-					"-framework",
-					"\"FIRAnalyticsConnector\"",
-					"-framework",
-					"\"FirebaseAnalytics\"",
-					"-framework",
-					"\"FirebaseCore\"",
-					"-framework",
-					"\"FirebaseCoreDiagnostics\"",
-					"-framework",
 					"\"Foundation\"",
-					"-framework",
-					"\"GoogleAppMeasurement\"",
-					"-framework",
-					"\"GoogleDataTransport\"",
-					"-framework",
-					"\"GoogleDataTransportCCTSupport\"",
-					"-framework",
-					"\"GoogleUtilities\"",
-					"-framework",
-					"\"MBProgressHUD\"",
-					"-framework",
-					"\"OneTimePassword\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
 					"\"Security\"",
 					"-framework",
-					"\"Sodium\"",
-					"-framework",
 					"\"StoreKit\"",
 					"-framework",
 					"\"SystemConfiguration\"",
 					"-framework",
-					"\"TrustKit\"",
-					"-framework",
 					"\"UIKit\"",
-					"-framework",
-					"\"nanopb\"",
 					"-weak_framework",
 					Cryptokit,
 				);
@@ -2080,7 +1973,6 @@
 		};
 		49E7667C1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BB8217581BC80C006119395 /* Pods-keyn.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
@@ -2091,7 +1983,10 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2100,53 +1995,19 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 					"-framework",
-					"\"Amplitude\"",
-					"-framework",
-					"\"Base32\"",
-					"-framework",
 					"\"CoreGraphics\"",
 					"-framework",
-					"\"FirebaseCrashlytics\"",
-					"-framework",
-					"\"Down\"",
-					"-framework",
-					"\"FIRAnalyticsConnector\"",
-					"-framework",
-					"\"FirebaseAnalytics\"",
-					"-framework",
-					"\"FirebaseCore\"",
-					"-framework",
-					"\"FirebaseCoreDiagnostics\"",
-					"-framework",
 					"\"Foundation\"",
-					"-framework",
-					"\"GoogleAppMeasurement\"",
-					"-framework",
-					"\"GoogleDataTransport\"",
-					"-framework",
-					"\"GoogleDataTransportCCTSupport\"",
-					"-framework",
-					"\"GoogleUtilities\"",
-					"-framework",
-					"\"MBProgressHUD\"",
-					"-framework",
-					"\"OneTimePassword\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
 					"\"Security\"",
 					"-framework",
-					"\"Sodium\"",
-					"-framework",
 					"\"StoreKit\"",
 					"-framework",
 					"\"SystemConfiguration\"",
 					"-framework",
-					"\"TrustKit\"",
-					"-framework",
 					"\"UIKit\"",
-					"-framework",
-					"\"nanopb\"",
 					"-weak_framework",
 					Cryptokit,
 				);
@@ -2163,7 +2024,6 @@
 		};
 		49E7667E1F7E6F420022C042 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8788E9B8F0B1D448D07B6870 /* Pods-keynTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2171,7 +2031,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2184,14 +2048,17 @@
 		};
 		49E7667F1F7E6F420022C042 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B4D5023D437FD60A62949C0 /* Pods-keynTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2210,7 +2077,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2229,7 +2100,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = keyn.keynUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2242,7 +2117,6 @@
 		};
 		611F4B522146B47300B35A89 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2989D06398E07DDCCCAD0B5F /* Pods-keynCredentialProvider.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2253,7 +2127,11 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
@@ -2268,7 +2146,6 @@
 		};
 		611F4B532146B47300B35A89 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B6030766CCC2D72412907E8 /* Pods-keynCredentialProvider.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -2279,7 +2156,11 @@
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
 				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.keyn.keyn.keynCredentialProvider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2349,6 +2230,265 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				branch = "6.31-spm-beta";
+				kind = branch;
+			};
+		};
+		4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/datatheorem/TrustKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
+		4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amplitude/Amplitude-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.1;
+			};
+		};
+		4941AF38254038F800CEFDE9 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
+		4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.13.3;
+			};
+		};
+		4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mw99/DataCompression.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.0;
+			};
+		};
+		4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iwasrobbed/Down.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.3;
+			};
+		};
+		4941AF5A25403AA600CEFDE9 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jdg/MBProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+		4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bas-d/OneTimePassword.git";
+			requirement = {
+				branch = spm;
+				kind = branch;
+			};
+		};
+		4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PromiseKit/Foundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.3.4;
+			};
+		};
+		4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lyft/Kronos.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		4941AF192540365B00CEFDE9 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4941AF212540371A00CEFDE9 /* TrustKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
+			productName = TrustKit;
+		};
+		4941AF292540377300CEFDE9 /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
+		};
+		4941AF3B254038F800CEFDE9 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF38254038F800CEFDE9 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+		4941AF432540395C00CEFDE9 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+		4941AF4B2540399F00CEFDE9 /* DataCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
+			productName = DataCompression;
+		};
+		4941AF5325403A5B00CEFDE9 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF5225403A5A00CEFDE9 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		4941AF5B25403AA600CEFDE9 /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF5A25403AA600CEFDE9 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		4941AF6A25403C2A00CEFDE9 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		4941AF6E25403C2A00CEFDE9 /* TrustKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
+			productName = TrustKit;
+		};
+		4941AF7025403C2A00CEFDE9 /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
+		};
+		4941AF7225403C2A00CEFDE9 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF38254038F800CEFDE9 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+		4941AF7425403C2A00CEFDE9 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+		4941AF7625403C2A00CEFDE9 /* DataCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
+			productName = DataCompression;
+		};
+		4941AF7A25403C3E00CEFDE9 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF162540365B00CEFDE9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		4941AF7E25403C3E00CEFDE9 /* TrustKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF202540371900CEFDE9 /* XCRemoteSwiftPackageReference "TrustKit" */;
+			productName = TrustKit;
+		};
+		4941AF8025403C3E00CEFDE9 /* Amplitude */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF282540377200CEFDE9 /* XCRemoteSwiftPackageReference "Amplitude-iOS" */;
+			productName = Amplitude;
+		};
+		4941AF8225403C3E00CEFDE9 /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF38254038F800CEFDE9 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+		4941AF8425403C3E00CEFDE9 /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF422540395C00CEFDE9 /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+		4941AF8625403C3E00CEFDE9 /* DataCompression */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF4A2540399F00CEFDE9 /* XCRemoteSwiftPackageReference "DataCompression" */;
+			productName = DataCompression;
+		};
+		4941AF8825403C3E00CEFDE9 /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF5A25403AA600CEFDE9 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		4941AF9225403DCF00CEFDE9 /* OneTimePassword */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
+			productName = OneTimePassword;
+		};
+		4941AF9925403E0200CEFDE9 /* OneTimePassword */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
+			productName = OneTimePassword;
+		};
+		4941AF9B25403E0B00CEFDE9 /* OneTimePassword */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AF9125403DCF00CEFDE9 /* XCRemoteSwiftPackageReference "OneTimePassword" */;
+			productName = OneTimePassword;
+		};
+		4941AFA32540423200CEFDE9 /* PMKFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
+			productName = PMKFoundation;
+		};
+		4941AFAA2540425700CEFDE9 /* PMKFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
+			productName = PMKFoundation;
+		};
+		4941AFAC2540425F00CEFDE9 /* PMKFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFA22540423200CEFDE9 /* XCRemoteSwiftPackageReference "Foundation" */;
+			productName = PMKFoundation;
+		};
+		4941AFFA25406C1600CEFDE9 /* Kronos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
+			productName = Kronos;
+		};
+		4941B00125406C3200CEFDE9 /* Kronos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
+			productName = Kronos;
+		};
+		4941B00825406C3E00CEFDE9 /* Kronos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4941AFF925406C1500CEFDE9 /* XCRemoteSwiftPackageReference "Kronos" */;
+			productName = Kronos;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 49E766481F7E6F420022C042 /* Project object */;
 }

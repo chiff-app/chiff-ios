@@ -10,21 +10,30 @@ import PromiseKit
 
 class SyncableTests: XCTestCase {
 
-    var context: LAContext!
+    static var context: LAContext!
+
+    override static func setUp() {
+        super.setUp()
+
+        if !LocalAuthenticationManager.shared.isAuthenticated {
+            LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { result in
+                context = result
+            }.catch { error in
+                fatalError("Failed to get context: \(error.localizedDescription)")
+            }
+        } else {
+            context = LocalAuthenticationManager.shared.mainContext
+        }
+
+        while context == nil {
+            RunLoop.current.run(mode: .default, before: Date.distantFuture)
+        }
+    }
 
     override func setUp() {
         super.setUp()
-        let exp = expectation(description: "Get an authenticated context")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { context in
-            self.context = context
-            TestHelper.createSeed()
-        }.catch { error in
-            fatalError("Failed to get context: \(error.localizedDescription)")
-        }.finally {
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 40, handler: nil)
         API.shared = MockAPI()
+        TestHelper.createSeed()
     }
 
     override func tearDown() {
@@ -87,7 +96,7 @@ class SyncableTests: XCTestCase {
                 throw KeychainError.notFound
             }
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData])
-            UserAccount.restore(context: self.context).catch { error in
+            UserAccount.restore(context: Self.context).catch { error in
                 XCTFail(error.localizedDescription)
             }.finally {
                 expectation.fulfill()
@@ -106,7 +115,7 @@ class SyncableTests: XCTestCase {
                 throw KeychainError.notFound
             }
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
-            UserAccount.restore(context: self.context).done { _ in
+            UserAccount.restore(context: Self.context).done { _ in
                 XCTFail("Should fail")
             }.ensure {
                 expectation.fulfill()
@@ -184,12 +193,12 @@ class SyncableTests: XCTestCase {
             }.map { _ in
                 try Keychain.shared.delete(id: account.id, service: .account)
             }.then { _ -> Promise<(Int,Int)>  in
-                UserAccount.restore(context: self.context)
+                UserAccount.restore(context: Self.context)
             }.done { (total, failed) in
                 XCTAssertEqual(total, 1)
                 XCTAssertEqual(failed, 0)
                 // GetBackupData automatically stores the account in the Keychain, so we verify if it is created correctly.
-                guard let account = try UserAccount.get(id: TestHelper.userID, context: self.context) else {
+                guard let account = try UserAccount.get(id: TestHelper.userID, context: Self.context) else {
                     return XCTFail("Account not found")
                 }
                 XCTAssertTrue(account.id == TestHelper.userID)
@@ -218,7 +227,7 @@ class SyncableTests: XCTestCase {
             firstly {
                 try account.backup()
             }.then { (result) -> Promise<(Int,Int)>  in
-                UserAccount.restore(context: self.context)
+                UserAccount.restore(context: Self.context)
             }.done { (succeeded, failed) in
                 XCTAssertEqual(succeeded, 0)
                 XCTAssertEqual(failed, 1)
