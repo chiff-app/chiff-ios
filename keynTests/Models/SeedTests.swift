@@ -75,7 +75,7 @@ class SeedTests: XCTestCase {
     func testMnemonicFailsIfNoData() {
         let expectation = XCTestExpectation(description: "Finish testMnemonicFailsIfNoData")
         TestHelper.deleteLocalData()
-        Seed.mnemonic().done { (result) in
+        _ = Seed.mnemonic().done { (result) in
              XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -88,7 +88,7 @@ class SeedTests: XCTestCase {
         let mockAPI = MockAPI(shouldFail: true)
         let expectation = XCTestExpectation(description: "Finish testCreateFailsIfAPIFails")
         API.shared = mockAPI
-        Seed.create(context: Self.context).done {
+        _ = Seed.create(context: Self.context).done {
             XCTFail("Must fail")
         }.ensure {
             expectation.fulfill()
@@ -181,7 +181,7 @@ class SeedTests: XCTestCase {
         TestHelper.createSeed()
         API.shared = MockAPI(pubKey: try! Seed.publicKey(), account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
         let expectation = XCTestExpectation(description: "Finish testDeleteBackupDataFailsIfAPIFails")
-        Seed.deleteBackupData().done {
+        _ = Seed.deleteBackupData().done {
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()

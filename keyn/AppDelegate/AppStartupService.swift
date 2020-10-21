@@ -243,7 +243,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             let organisationKey = teamSessions?.first?.organisationKey
             let organisationType = teamSessions?.first?.type
             let isAdmin = teamSessions?.contains(where: { $0.isAdmin }) ?? false
-            _ = BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+            BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         }
     }
 

@@ -244,11 +244,11 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
             firstly {
                 BrowserSession.deleteAll()
-            }.done {
+            }.then { (_) -> Promise<Void> in
                 TeamSession.purgeSessionDataFromKeychain()
                 UserAccount.deleteAll()
                 Seed.delete()
-                NotificationManager.shared.deleteEndpoint()
+                return NotificationManager.shared.deleteEndpoint()
             }.catchLog("Error deleting data")
         }))
         self.present(alert, animated: true, completion: nil)

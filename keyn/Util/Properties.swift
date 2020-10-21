@@ -252,7 +252,6 @@ struct Properties {
     static let PASTEBOARD_TIMEOUT = 60.0 // seconds
 
     static var firstLaunchTimestamp: Timestamp {
-        #warning("TODO: Not accurate, should it be updated?")
         let installTimestamp = "installTimestamp"
         if let installDate = UserDefaults.standard.object(forKey: installTimestamp) as? Date {
             return installDate.millisSince1970
