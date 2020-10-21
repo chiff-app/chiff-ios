@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/bas-d/Base32",
         "state": {
           "branch": "spm",
-          "revision": "fc8d5a04d3406010827eecda322837ef79fb052c",
+          "revision": "27f3abc61f3190aec471ca604e6f1db80f1a5dc1",
           "version": null
         }
       },
@@ -132,7 +132,7 @@
         "repositoryURL": "https://github.com/bas-d/OneTimePassword.git",
         "state": {
           "branch": "spm",
-          "revision": "a44ef83e9b6ecb3156d8e7672a6706e2e8f781e5",
+          "revision": "5f413e5f6574a4807c5383ff6b7b9e9533f429bb",
           "version": null
         }
       },
