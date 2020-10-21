@@ -175,10 +175,10 @@ class TestHelper {
     }
 
     static func deleteLocalData() {
-        let _ = BrowserSession.deleteAll()
+        BrowserSession.purgeSessionDataFromKeychain()
         UserAccount.deleteAll()
         Seed.delete()
-        NotificationManager.shared.deleteEndpoint()
+        NotificationManager.shared.deleteKeys()
         // Wipe the keychain, keychain tests do not work without this
         let secItemClasses =  [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         for itemClass in secItemClasses {

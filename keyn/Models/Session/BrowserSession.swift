@@ -324,9 +324,6 @@ struct BrowserSession: Session {
     // MARK: - Private
 
     private func decrypt(message message64: String) throws -> KeynPersistentQueueMessage {
-        // let ciphertext = try Crypto.shared.convertFromBase64(from: message64)
-        // let (data, _) = try Crypto.shared.decrypt(ciphertext, key: sharedKey(), version: version)
-        // return try JSONDecoder().decode(KeynPersistentQueueMessage.self, from: data)
         return try decryptMessage(message: message64)
     }
 

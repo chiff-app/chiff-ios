@@ -9,17 +9,28 @@ import LocalAuthentication
 
 class PasswordGeneratorTests: XCTestCase {
 
+    override static func setUp() {
+        super.setUp()
+
+        var finished = false
+        if !LocalAuthenticationManager.shared.isAuthenticated {
+            LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { result in
+                finished = true
+            }.catch { error in
+                fatalError("Failed to get context: \(error.localizedDescription)")
+            }
+        } else {
+            finished = true
+        }
+
+        while !finished {
+            RunLoop.current.run(mode: .default, before: Date.distantFuture)
+        }
+    }
+
     override func setUp() {
         super.setUp()
-        let exp = expectation(description: "Get an authenticated context")
-        LocalAuthenticationManager.shared.authenticate(reason: "Testing", withMainContext: true).done { context in
-            TestHelper.createSeed()
-        }.ensure {
-            exp.fulfill()
-        }.catch { error in
-            fatalError("Failed to get context: \(error.localizedDescription)")
-        }
-        waitForExpectations(timeout: 40, handler: nil)
+        TestHelper.createSeed()
     }
 
     override func tearDown() {

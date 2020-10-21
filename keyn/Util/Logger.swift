@@ -9,21 +9,18 @@
 import Foundation
 import FirebaseCrashlytics
 import Amplitude
-import Firebase
+import FirebaseCore
 
 struct Logger {
     
     static let shared = Logger()
     private let crashlytics = Crashlytics.crashlytics()
-    private let amplitude = Amplitude.instance()!
+    private let amplitude = Amplitude.instance()
 
     private init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
-        Analytics.setAnalyticsCollectionEnabled(false)
         FirebaseApp.configure()
         amplitude.initializeApiKey(Properties.amplitudeToken)
-        amplitude.disableIdfaTracking()
-        amplitude.disableLocationListening()
         amplitude.set(userProperties: [
             .accountCount: Properties.accountCount,
             .pairingCount: BrowserSession.count,

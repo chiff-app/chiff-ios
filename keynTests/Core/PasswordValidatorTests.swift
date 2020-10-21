@@ -13,14 +13,6 @@ import XCTest
  */
 class PasswordValidatorTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func testPPDWithoutCharacterSet() {
         let ppd = PPD(characterSets: nil, properties: nil, service: nil, version: .v1_1, timestamp: 0, url: "https://test.com", redirect: nil, name: "Test")
         let validator = PasswordValidator(ppd: ppd)
