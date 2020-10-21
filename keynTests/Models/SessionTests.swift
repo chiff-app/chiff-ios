@@ -58,7 +58,7 @@ class SessionTests: XCTestCase {
     func testInitiateFailsIfDuplicated() {
         let expectation = XCTestExpectation(description: "Finish testInitiate")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (result) in
+        _ = BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (result) in
             BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba")
         }.done { _ in
             XCTFail("Should fail")
@@ -70,7 +70,7 @@ class SessionTests: XCTestCase {
 
     func testInitiateThrowsIfNoEndpointKey() {
         let expectation = XCTestExpectation(description: "Finish testInitiateThrowsIfNoEndpointKey")
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { _ in
+        _ = BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -107,7 +107,7 @@ class SessionTests: XCTestCase {
     func testInitiateAndDeleteWithoutNotificationExtensionAndNoPrivateKey() {
         let expectation = XCTestExpectation(description: "Finish testInitiateAndDeleteWithoutNotificationExtensionAndNoPrivateKey")
         TestHelper.createEndpointKey()
-        BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (session) -> Promise<Void> in
+        _ = BrowserSession.initiate(pairingQueueSeed: TestHelper.pairingQueueSeed, browserPubKey: TestHelper.browserPublicKeyBase64, browser: .chrome, os: "prueba").then { (session) -> Promise<Void> in
             TestHelper.deleteLocalData()
             return session.delete(notify: false)
         }.done { _ in
@@ -169,7 +169,7 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.cancelRequest(reason: .disabled, browserTab: 0).done { _ in
+        _ = session.cancelRequest(reason: .disabled, browserTab: 0).done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -194,7 +194,7 @@ class SessionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testGetPersistentQueueMessagesFailsWithoutData")
         let (_, _, pubKey) = TestHelper.createSharedKey()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+        _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -207,7 +207,7 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(data: [["body": "gEys57UCuXijGtDFqlslsPktBd35zcugtt_WmTXdoCUVNmitUTGTGCJgAalrZFcwNQQz3_DQ7iW2yoxRfj0IJzEUvuApXQW6BCVuPAgwyI_q3gngrJI9nhDMf7PSNmQONPY9h8dON2G2yyfG_6IfxAX0xrEkD1NV4FryCSMON96KOr4Jpu1PPYmSyTCcGURoaQ45afI"]])
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+        _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -220,7 +220,7 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.getPersistentQueueMessages(shortPolling: true).done { _ in
+        _ = session.getPersistentQueueMessages(shortPolling: true).done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -245,7 +245,7 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         API.shared = MockAPI(shouldFail: true)
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
+        _ = session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -259,7 +259,7 @@ class SessionTests: XCTestCase {
         let (_, _, pubKey) = TestHelper.createSharedKey()
         TestHelper.deleteLocalData()
         let session = BrowserSession(id: TestHelper.browserPublicKeyBase64.hash, signingPubKey: pubKey, browser: .chrome, title: "Chrome @ test", version: 0)
-        session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
+        _ = session.deleteFromPersistentQueue(receiptHandle: "It doesn't matter").done { _ in
             XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()

@@ -115,7 +115,7 @@ class SyncableTests: XCTestCase {
                 throw KeychainError.notFound
             }
             API.shared = MockAPI(pubKey: pubKey.base64, account: [TestHelper.userID: TestHelper.userData], shouldFail: true)
-            UserAccount.restore(context: Self.context).done { _ in
+            _ = UserAccount.restore(context: Self.context).done { _ in
                 XCTFail("Should fail")
             }.ensure {
                 expectation.fulfill()

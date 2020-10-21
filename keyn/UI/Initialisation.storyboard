@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="24" translatesAutoresizingMaskIntoConstraints="NO" id="cYH-an-f33" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="138" width="335" height="101"/>
+                                <rect key="frame" x="20" y="138" width="335" height="153"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="wFq-E5-qbT"/>
                                 </constraints>
@@ -42,7 +42,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="desk" translatesAutoresizingMaskIntoConstraints="NO" id="4ye-iw-xa2">
                                 <rect key="frame" x="0.0" y="381" width="375" height="213"/>
                             </imageView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-Ka-Tah" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-Ka-Tah" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="96.666666666666686" y="674" width="182" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="182" id="5og-uA-XoT"/>
@@ -60,7 +60,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="VKc-Ti-Ljr" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="28" y="269" width="319" height="52"/>
+                                <rect key="frame" x="28" y="321" width="319" height="0.0"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="16"/>
                                 <color key="textColor" red="0.31230999999999998" green="0.33482000000000001" blue="0.58799999999999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -71,8 +71,8 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="initialization.welcome_text"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB" customClass="UnderlinedButton" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="110.66666666666669" y="738" width="154" height="20"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvP-ft-ZSB" customClass="UnderlinedButton" customModule="keyn" customModuleProvider="target">
+                                <rect key="frame" x="99.666666666666686" y="738" width="176" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="b0G-uf-Vuz"/>
                                 </constraints>
@@ -96,6 +96,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="gPL-Py-BTd"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="MHS-Ka-Tah" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4ye-iw-xa2" secondAttribute="bottom" constant="36" id="8K7-Gh-3GQ"/>
@@ -119,7 +120,6 @@
                             <constraint firstItem="MHS-Ka-Tah" firstAttribute="centerX" secondItem="gEp-N2-gPp" secondAttribute="centerX" id="nu9-iy-dc1"/>
                             <constraint firstItem="gPL-Py-BTd" firstAttribute="trailing" secondItem="cYH-an-f33" secondAttribute="trailing" constant="20" id="wy1-ma-gqS"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="gPL-Py-BTd"/>
                     </view>
                     <navigationItem key="navigationItem" id="haY-Vk-nsJ">
                         <nil key="title"/>
@@ -345,6 +345,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="5go-Ka-kjE"/>
                         <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -354,7 +355,6 @@
                             <constraint firstItem="Tzd-mZ-6gD" firstAttribute="leading" secondItem="c7M-Ze-aN8" secondAttribute="leading" id="rXq-wo-u8e"/>
                             <constraint firstItem="Tzd-mZ-6gD" firstAttribute="bottom" secondItem="c7M-Ze-aN8" secondAttribute="bottom" id="yZM-n8-JqO"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="5go-Ka-kjE"/>
                     </view>
                     <navigationItem key="navigationItem" id="NEf-C1-dpW">
                         <barButtonItem key="leftBarButtonItem" image="chevron_left_white" id="lg1-ge-ODb">
@@ -434,6 +434,7 @@
                                 <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </activityIndicatorView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="iuA-zX-KVZ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cVw-x3-Mcr" firstAttribute="centerY" secondItem="Kw5-0m-u7r" secondAttribute="centerY" id="G7a-zE-WFT"/>
@@ -443,7 +444,6 @@
                             <constraint firstItem="cVw-x3-Mcr" firstAttribute="centerX" secondItem="Kw5-0m-u7r" secondAttribute="centerX" id="qcd-0J-ynJ"/>
                             <constraint firstItem="NyX-GK-Zf6" firstAttribute="trailing" secondItem="iuA-zX-KVZ" secondAttribute="trailing" id="vtY-Lx-dJY"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="iuA-zX-KVZ"/>
                     </view>
                     <navigationItem key="navigationItem" id="Klj-lJ-TcA">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Mb3-V8-08K">
@@ -488,7 +488,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mGp-gb-OVx">
                                 <rect key="frame" x="40" y="638" width="295" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YpQ-vr-qYc" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YpQ-vr-qYc" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -501,7 +501,7 @@
                                             <action selector="disagree:" destination="nXW-29-59c" eventType="touchUpInside" id="1Hx-WR-CO0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="weg-oh-KUs" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="weg-oh-KUs" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="155" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -520,6 +520,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="DJ8-Lh-yki"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rIe-Is-zOc" firstAttribute="bottom" secondItem="DJ8-Lh-yki" secondAttribute="bottom" id="6pV-Oj-yYj"/>
@@ -535,7 +536,6 @@
                             <constraint firstItem="mGp-gb-OVx" firstAttribute="leading" secondItem="DJ8-Lh-yki" secondAttribute="leading" constant="40" id="mQR-ZA-rSO"/>
                             <constraint firstItem="rIe-Is-zOc" firstAttribute="leading" secondItem="DJ8-Lh-yki" secondAttribute="leading" id="wr9-Cc-WaU"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="DJ8-Lh-yki"/>
                     </view>
                     <navigationItem key="navigationItem" id="6q1-Sf-w5m">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="uDP-sm-lfJ">
@@ -573,7 +573,7 @@
                                     <constraint firstAttribute="height" constant="58" id="xzg-Tk-ApN"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-7v-dBp" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3w9-7v-dBp" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="107.66666666666669" y="704" width="160" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="IYO-KS-4vH"/>
@@ -617,12 +617,12 @@
                                         <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                 </subviews>
+                                <viewLayoutGuide key="safeArea" id="Rej-2b-uMf"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.4009548611" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="HYE-ff-kWv" firstAttribute="centerX" secondItem="dGi-3I-tnJ" secondAttribute="centerX" id="MvG-bV-R0L"/>
                                     <constraint firstItem="HYE-ff-kWv" firstAttribute="centerY" secondItem="dGi-3I-tnJ" secondAttribute="centerY" id="x8k-B3-JUa"/>
                                 </constraints>
-                                <viewLayoutGuide key="safeArea" id="Rej-2b-uMf"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="You're 1 minute away from forgetting your passwords." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="O94-HQ-lRE" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="16" y="169" width="343" height="51.333333333333343"/>
@@ -635,6 +635,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="n4m-XJ-WMR"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -661,7 +662,6 @@
                             <constraint firstItem="2en-HM-TBM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="O94-HQ-lRE" secondAttribute="bottom" constant="40" id="wih-qJ-C6S"/>
                             <constraint firstItem="O94-HQ-lRE" firstAttribute="leading" secondItem="n4m-XJ-WMR" secondAttribute="leading" constant="16" id="xEh-aY-Xe6"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="n4m-XJ-WMR"/>
                     </view>
                     <navigationItem key="navigationItem" id="Bnv-rw-NXd">
                         <barButtonItem key="backBarButtonItem" title=" " id="lls-fa-wDt"/>
@@ -692,7 +692,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fo9-YI-YeD" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fo9-YI-YeD" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="117.66666666666669" y="704" width="140" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="3SM-R7-aeW"/>
@@ -733,14 +733,15 @@
                                         <color key="color" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </activityIndicatorView>
                                 </subviews>
+                                <viewLayoutGuide key="safeArea" id="Kuh-EF-T0o"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.4009548611" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="5mj-pn-FKy" firstAttribute="centerY" secondItem="PTF-id-QPJ" secondAttribute="centerY" id="Elf-D0-Pqf"/>
                                     <constraint firstItem="5mj-pn-FKy" firstAttribute="centerX" secondItem="PTF-id-QPJ" secondAttribute="centerX" id="Qfo-wo-sD9"/>
                                 </constraints>
-                                <viewLayoutGuide key="safeArea" id="Kuh-EF-T0o"/>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="xGT-Ng-yLJ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Fo9-YI-YeD" firstAttribute="centerX" secondItem="HUa-JV-NuI" secondAttribute="centerX" id="1K9-iD-KT3"/>
@@ -758,7 +759,6 @@
                             <constraint firstItem="6r2-z2-GmB" firstAttribute="top" secondItem="HUa-JV-NuI" secondAttribute="top" constant="35" id="nx5-DB-rhi"/>
                             <constraint firstItem="PTF-id-QPJ" firstAttribute="trailing" secondItem="xGT-Ng-yLJ" secondAttribute="trailing" id="xAy-no-e5X"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="xGT-Ng-yLJ"/>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="PTF-id-QPJ"/>
@@ -814,7 +814,7 @@
                                     <constraint firstAttribute="width" constant="52" id="FXj-9w-pJX"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sMy-56-2qE" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sMy-56-2qE" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                 <rect key="frame" x="107.66666666666669" y="704" width="160" height="44"/>
                                 <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -834,7 +834,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help us to improve Keyn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="22" translatesAutoresizingMaskIntoConstraints="NO" id="M8I-e3-aXB" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="173" width="335" height="32"/>
+                                <rect key="frame" x="20" y="173" width="335" height="30.333333333333343"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="26"/>
                                 <color key="textColor" red="0.26099" green="0.13238" blue="0.74970999999999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -846,7 +846,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgW-c9-TVR" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="293.66666666666669" width="335" height="105"/>
+                                <rect key="frame" x="20" y="305.33333333333331" width="335" height="81.666666666666686"/>
                                 <string key="text">We're constantly working on new features and you can greatly help us by sharing usage statistics and error data with us. 
 Sensitive data is never shared and everything is anonymous.</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
@@ -860,7 +860,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can always change this later in settings." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1f-Mc-Tnt" customClass="KeynLabel" customModule="keyn" customModuleProvider="target">
-                                <rect key="frame" x="20" y="584.66666666666663" width="335" height="22"/>
+                                <rect key="frame" x="20" y="573" width="335" height="16.333333333333371"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" red="0.29803921568627451" green="0.33725490196078434" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -872,7 +872,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="Hge-wN-kmb">
-                                <rect key="frame" x="20" y="458.66666666666669" width="335" height="76.000000000000057"/>
+                                <rect key="frame" x="20" y="447" width="335" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="duW-jH-tOo">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="31"/>
@@ -932,6 +932,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 <rect key="frame" x="90" y="111" width="195" height="22"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="SKd-p7-vuQ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -959,7 +960,6 @@ Sensitive data is never shared and everything is anonymous.</string>
                             <constraint firstItem="M8I-e3-aXB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="v9y-T7-KrS" secondAttribute="bottom" constant="16" id="nNd-cr-vbg"/>
                             <constraint firstItem="bgW-c9-TVR" firstAttribute="centerY" secondItem="Aae-Us-eLh" secondAttribute="centerY" priority="749" constant="-60" id="znA-8P-6xO"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="SKd-p7-vuQ"/>
                     </view>
                     <navigationItem key="navigationItem" id="Np3-Rn-e8G"/>
                     <connections>
@@ -1048,7 +1048,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="5cL-4r-sqs">
                                 <rect key="frame" x="40" y="704" width="295" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdb-Fh-lQY" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdb-Fh-lQY" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1061,7 +1061,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                             <action selector="nextScreen:" destination="dPt-hG-AU2" eventType="touchUpInside" id="4it-0j-MpC"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oZY-7Q-lNd" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oZY-7Q-lNd" customClass="KeynButton" customModule="keyn" customModuleProvider="target">
                                         <rect key="frame" x="155" y="0.0" width="140" height="44"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="14"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1080,6 +1080,7 @@ Sensitive data is never shared and everything is anonymous.</string>
                                 </constraints>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="cha-6h-2XY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1104,7 +1105,6 @@ Sensitive data is never shared and everything is anonymous.</string>
                             <constraint firstItem="cha-6h-2XY" firstAttribute="bottom" secondItem="5cL-4r-sqs" secondAttribute="bottom" constant="30" id="rsa-KN-n9s"/>
                             <constraint firstItem="Cg7-fO-kPO" firstAttribute="top" secondItem="gb4-N4-qas" secondAttribute="bottom" constant="16" id="sRc-x7-OuN"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="cha-6h-2XY"/>
                     </view>
                     <navigationItem key="navigationItem" id="szS-9w-b9l">
                         <barButtonItem key="backBarButtonItem" title=" " id="amz-uJ-TqW"/>
@@ -1119,6 +1119,64 @@ Sensitive data is never shared and everything is anonymous.</string>
             <point key="canvasLocation" x="796.875" y="1709.1549295774648"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="3w9-7v-dBp">
+            <size key="intrinsicContentSize" width="92" height="29"/>
+        </designable>
+        <designable name="Bdb-Fh-lQY">
+            <size key="intrinsicContentSize" width="72" height="29"/>
+        </designable>
+        <designable name="C1f-Mc-Tnt">
+            <size key="intrinsicContentSize" width="276" height="16.333333333333332"/>
+        </designable>
+        <designable name="DvO-Ut-DMi">
+            <size key="intrinsicContentSize" width="530" height="25.666666666666668"/>
+        </designable>
+        <designable name="Fo9-YI-YeD">
+            <size key="intrinsicContentSize" width="50" height="29"/>
+        </designable>
+        <designable name="GvP-ft-ZSB">
+            <size key="intrinsicContentSize" width="176" height="29"/>
+        </designable>
+        <designable name="M8I-e3-aXB">
+            <size key="intrinsicContentSize" width="285.66666666666669" height="30.333333333333332"/>
+        </designable>
+        <designable name="MHS-Ka-Tah">
+            <size key="intrinsicContentSize" width="103" height="29"/>
+        </designable>
+        <designable name="O94-HQ-lRE">
+            <size key="intrinsicContentSize" width="530" height="25.666666666666668"/>
+        </designable>
+        <designable name="QBQ-qg-TDr">
+            <size key="intrinsicContentSize" width="137.66666666666666" height="16.333333333333332"/>
+        </designable>
+        <designable name="VKc-Ti-Ljr"/>
+        <designable name="YpQ-vr-qYc">
+            <size key="intrinsicContentSize" width="84" height="30"/>
+        </designable>
+        <designable name="bgW-c9-TVR">
+            <size key="intrinsicContentSize" width="756" height="32.666666666666664"/>
+        </designable>
+        <designable name="cYH-an-f33"/>
+        <designable name="gnx-Nq-zcW">
+            <size key="intrinsicContentSize" width="101.33333333333333" height="16.333333333333332"/>
+        </designable>
+        <designable name="nk6-TU-eK2">
+            <size key="intrinsicContentSize" width="407.66666666666669" height="16.333333333333332"/>
+        </designable>
+        <designable name="oZY-7Q-lNd">
+            <size key="intrinsicContentSize" width="73" height="29"/>
+        </designable>
+        <designable name="sMy-56-2qE">
+            <size key="intrinsicContentSize" width="104" height="29"/>
+        </designable>
+        <designable name="weg-oh-KUs">
+            <size key="intrinsicContentSize" width="84" height="30"/>
+        </designable>
+        <designable name="xlO-Tl-us3">
+            <size key="intrinsicContentSize" width="455.66666666666669" height="18.666666666666668"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="2id-oI-HUJ"/>
     </inferredMetricsTieBreakers>

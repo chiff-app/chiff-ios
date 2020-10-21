@@ -69,7 +69,7 @@ struct KeynPairingResponse: Codable {
     let analyticsLogging: Bool
     let version: Int
     let arn: String
-    let os: String = "ios"
+    var os: String = "ios"
     let appVersion: String?
     let organisationKey: String?
     let organisationType: OrganisationType?

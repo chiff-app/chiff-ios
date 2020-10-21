@@ -163,7 +163,7 @@ struct PPDProperties: Codable {
     let maxConsecutive: Int? // Indicates whether consecutive characters are allowed or not. A omitted value or 0 inidaces no limitation on consecutive characters.
     let minLength: Int? // Minimum length of the password.
     let maxLength: Int? // Maximum length of the password. A value of 0 means no maximum length.
-    let expires: Int = 0 // Password expiry in days. A value of 0 means no expiry.
+    var expires: Int = 0 // Password expiry in days. A value of 0 means no expiry.
 }
 
 struct PPDCharacterSettings: Codable {

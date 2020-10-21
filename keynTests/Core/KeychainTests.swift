@@ -189,7 +189,7 @@ class KeychainTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Finish testDeleteAsyncFailsIfInvalidContext")
         let context = LAContext()
         context.invalidate()
-        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: context).done { _ in
+        _ = Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded, with: context).done { _ in
              XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
@@ -199,7 +199,7 @@ class KeychainTests: XCTestCase {
     
     func testDeleteAsyncFailsIfNoSeed() {
         let expectation = XCTestExpectation(description: "Finish testDeleteAsyncFailsIfNoSeed")
-        Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded).done { _ in
+        _ = Keychain.shared.delete(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, reason: "Delete password", authenticationType: .ifNeeded).done { _ in
              XCTFail("Should fail")
         }.ensure {
             expectation.fulfill()
