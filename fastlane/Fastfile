@@ -47,7 +47,6 @@ platform :ios do
     lane :test do
         scan(
             scheme: scheme,
-            destination: 'platform=iOS,id=e28971092f1bbf0708071d08ba4c5d53f0fbfaec'
         )
     end
 
