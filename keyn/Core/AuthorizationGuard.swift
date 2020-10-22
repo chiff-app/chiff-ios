@@ -230,7 +230,7 @@ class AuthorizationGuard {
                 throw AccountError.notFound
             }
             try account.addSite(site: site)
-            #warning("This seems off. Can this crash? Should LocalAuthenticationManager return the context non-optional")
+            // TODO: This seems off. Can this crash? Should LocalAuthenticationManager return the context non-optional
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true

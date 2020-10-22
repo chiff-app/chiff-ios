@@ -170,10 +170,16 @@ extension Date {
         self.init(timeIntervalSince1970: TimeInterval(millisSince1970 / 1000))
     }
 
+    /**
+     The current timestamp in milliseconds (unsynced).
+     */
     var millisSince1970: Timestamp {
         return Timestamp(timeIntervalSince1970 * 1000)
     }
 
+    /**
+     The current timestamp in milliseconds, synced with NTP-server.
+     */
     static var now: Timestamp {
         return (Clock.now ?? Date()).millisSince1970
     }

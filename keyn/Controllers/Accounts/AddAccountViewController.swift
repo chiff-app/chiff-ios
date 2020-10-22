@@ -124,7 +124,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         }
     }
 
-    #warning("TODO: Fetch correct requirements from PPD and present to user.")
+    // TODO: Fetch correct requirements from PPD and present to user.
     private func updatePasswordRequirements(password: String) {
         if let passwordValidator = passwordValidator {
             requirementLabels[0].text = passwordValidator.validateMinLength(password: password) ? "" : "\u{26A0} The password needs to be at least \(8) characters."
@@ -138,7 +138,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         }
     }
 
-    #warning("TODO: How do we save accounts when there is no Site object? This happens when a user adds an account manually.")
+    // TODO: How do we save accounts when there is no Site object? This happens when a user adds an account manually.
     private func createAccount() {
         if let websiteName = siteNameField.text, let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), let username = usernameField.text, let password = passwordField.text {
             do {
