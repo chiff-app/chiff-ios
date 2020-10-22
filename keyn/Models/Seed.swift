@@ -15,9 +15,9 @@ enum SeedError: Error {
 
 struct Seed {
 
-    private static let SEED_CRYPTO_CONTEXT = "keynseed"
+    private static let seedCryptoContext = "keynseed"
     private static let paperBackupCompletedFlag = "paperBackupCompleted"
-    private static let BACKUP_CRYPTO_CONTEXT = "keynback"
+    private static let backupCryptoContext = "keynback"
 
     static var hasKeys: Bool {
         return Keychain.shared.has(id: KeyIdentifier.master.identifier(for: .seed), service: .seed) &&
@@ -83,7 +83,7 @@ struct Seed {
         }
     }
 
-    static func recover(context: LAContext, mnemonic: [String]) -> Promise<(Int, Int, Int, Int)> {
+    static func recover(context: LAContext, mnemonic: [String]) -> Promise<(RecoveryResult, RecoveryResult)> {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
         }
@@ -101,15 +101,14 @@ struct Seed {
                 when(fulfilled:
                     UserAccount.restore(context: context),
                     TeamSession.restore(context: context))
-            }.then { result in
+            }.then { (accountResult, sessionResult) in
                 TeamSession.updateAllTeamSessions(pushed: false).map { _ in
-                    return result
+                    return (accountResult, sessionResult)
                 }
-            }.map { result in
-                let ((accountsSucceeded, accountsFailed), (sessionsSucceeded, sessionsFailed)) = result
-                Properties.accountCount = accountsSucceeded
-                return (accountsSucceeded + accountsFailed, accountsFailed, sessionsSucceeded + sessionsFailed, sessionsFailed)
-            }.recover { error -> Promise<(Int, Int, Int, Int)> in
+            }.map { (accountResult, sessionResult) in
+                Properties.accountCount = accountResult.succeeded
+                return (accountResult, sessionResult)
+            }.recover { error -> Promise<(RecoveryResult, RecoveryResult)> in
                 NotificationManager.shared.deleteKeys()
                 delete()
                 throw error
@@ -140,7 +139,7 @@ struct Seed {
             guard let masterSeed = try Keychain.shared.get(id: KeyIdentifier.master.identifier(for: .seed), service: .seed, context: context) else {
                 throw SeedError.notFound
             }
-            let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: SEED_CRYPTO_CONTEXT)
+            let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: masterSeed, keyType: .webAuthnSeed, context: seedCryptoContext)
             try Keychain.shared.save(id: KeyIdentifier.webauthn.identifier(for: .seed), service: .seed, secretData: webAuthnSeed)
             return webAuthnSeed
         }
@@ -271,10 +270,10 @@ struct Seed {
     // MARK: - Private methods
 
     private static func createKeys(seed: Data) throws -> (KeyPair, String) {
-        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: SEED_CRYPTO_CONTEXT)
-        let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .webAuthnSeed, context: SEED_CRYPTO_CONTEXT)
-        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: SEED_CRYPTO_CONTEXT)
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: BACKUP_CRYPTO_CONTEXT)
+        let passwordSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .passwordSeed, context: seedCryptoContext)
+        let webAuthnSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .webAuthnSeed, context: seedCryptoContext)
+        let backupSeed = try Crypto.shared.deriveKeyFromSeed(seed: seed, keyType: .backupSeed, context: seedCryptoContext)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: backupSeed, context: backupCryptoContext)
         let keyPair = try Crypto.shared.createSigningKeyPair(seed: backupSeed)
         let base64PubKey = try Crypto.shared.convertToBase64(from: keyPair.pubKey)
         let userId = "\(base64PubKey)_KEYN_USER_ID".sha256

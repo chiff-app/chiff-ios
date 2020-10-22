@@ -9,5 +9,11 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
 force_cast: warning
 force_try: warning
-identifier_name: warning
+identifier_name:
+  excluded:
+    - id
+    - 'n'
+    - m
+    - 'v1_0'
+    - 'v1_1'
 line_length: 200

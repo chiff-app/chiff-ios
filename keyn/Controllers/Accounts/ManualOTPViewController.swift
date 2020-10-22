@@ -55,7 +55,7 @@ class ManualOTPViewController: KeynTableViewController, TokenController {
         }
         self.token = Token(generator: generator)
         firstly {
-            try AuthorizationGuard.addOTP(token: token!, account: account)
+            try AuthorizationGuard.shared.addOTP(token: token!, account: account)
         }.done(on: .main) {
             try self.account.setOtp(token: self.token!)
             self.performSegue(withIdentifier: "UnwindFromManualOTP", sender: self)

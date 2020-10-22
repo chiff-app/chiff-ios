@@ -19,6 +19,14 @@ enum SyncEndpoint: String {
     case accounts = "accounts"
 }
 
+struct RecoveryResult {
+    let succeeded: Int
+    let failed: Int
+    var total: Int {
+        return succeeded + failed
+    }
+}
+
 protocol BackupObject: Codable {
     var lastChange: Timestamp { get }
 }
@@ -140,7 +148,7 @@ extension Syncable {
         }.log("Syncing error")
     }
 
-    static func restore(context: LAContext) -> Promise<(Int, Int)> {
+    static func restore(context: LAContext) -> Promise<RecoveryResult> {
         return firstly { () -> Promise<[String: BackupType]> in
             getData(context: context)
         }.map { result in
@@ -155,7 +163,7 @@ extension Syncable {
                     Logger.shared.error("Could not restore data.", error: error)
                 }
             }
-            return (succeeded, failed)
+            return RecoveryResult(succeeded: succeeded, failed: failed)
         }
     }
 

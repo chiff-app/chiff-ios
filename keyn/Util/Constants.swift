@@ -23,21 +23,32 @@ enum AnalyticsEvent: String {
     case learnMoreClicked = "LearnMoreClicked"
     case seedCreated = "SeedCreated"
     case notificationPermission = "NotificationPermission"
-    case cameraPermission = "CameraPermission" // TODO
+    case cameraPermission = "CameraPermission"
     case tryLaterClicked = "Try later clicked"
 
     // Requests
     case loginRequestOpened = "LoginRequestOpened"
     case loginRequestAuthorized = "LoginRequestAuthorized"
+    case bulkLoginRequestOpened = "BulkLoginRequestOpened"
+    case bulkLoginRequestAuthorized = "BulkLoginRequestAuthorized"
     case addSiteRequestOpened = "AddSiteRequestOpened"
-    case addSiteRequstAuthorized = "AddSiteRequestAuthorized"
+    case addSiteRequestAuthorized = "AddSiteRequestAuthorized"
+    case addSiteToExistingRequestOpened = "AddSiteToExistingRequestOpened"
     case addSiteToExistingRequestAuthorized = "AddSiteToExistingRequestAuthorized"
     case addBulkSitesRequestOpened = "AddBulkSiteRequestOpened"
     case addBulkSitesRequestAuthorized = "AddBulkSiteRequestAuthorized"
     case changePasswordRequestOpened = "ChangePasswordRequestOpened"
     case changePasswordRequestAuthorized = "ChangePasswordRequestAuthorized"
-    case fillPassworddRequestOpened = "FillPasswordRequestOpened"
-    case fillPassworddRequestAuthorized = "FillPasswordRequestAuthorized"
+    case fillPasswordRequestOpened = "FillPasswordRequestOpened"
+    case fillPasswordRequestAuthorized = "FillPasswordRequestAuthorized"
+    case getDetailsRequestOpened = "GetDetailsRequestOpened"
+    case getDetailsRequestAuthorized = "GetDetailsRequestAuthorized"
+    case createOrganisationRequestOpened = "CreateOrganisationRequestOpened"
+    case createOrganisationRequestAuthorized = "CreateOrganisationRequestAuthorized"
+    case adminLoginRequestOpened = "adminLoginRequestOpened"
+    case adminLoginRequestAuthorized = "adminLoginRequestAuthorized"
+    case webAuthnCreateRequestOpened = "WebAuthnCreateRequestOpened"
+    case webAuthnLoginRequestOpened = "WebAuthnLoginRequestOpened"
     case webAuthnCreateRequestAuthorized = "WebAuthnCreateRequestAuthorized"
     case webAuthnLoginRequestAuthorized = "WebAuthnLoginRequestAuthorized"
     case updateAccountRequestOpened = "UpdateAccountRequestOpened"
@@ -99,10 +110,10 @@ enum BackgroundNotificationType: String {
 }
 
 enum NotificationCategory {
-    static let PASSWORD_REQUEST = "PASSWORD_REQUEST"
-    static let END_SESSION = "END_SESSION"
-    static let CHANGE_CONFIRMATION = "CHANGE_CONFIRMATION"
-    static let ONBOARDING_NUDGE = "ONBOARDING_NUDGE"
+    static let passwordRequest = "PASSWORD_REQUEST"
+    static let endSession = "END_SESSION"
+    static let changeConfirmation = "CHANGE_CONFIRMATION"
+    static let onboardingNudge = "ONBOARDING_NUDGE"
 }
 
 enum NotificationContentKey {
@@ -117,7 +128,7 @@ enum NotificationContentKey {
     static let username = "username"
 }
 
-/*
+/**
  * Keyn messages go app <-> browser
  *
  * They always have a type so the app/browser can determine course of action.

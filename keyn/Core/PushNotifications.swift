@@ -26,19 +26,19 @@ struct PushNotifications {
     }
 
     static func requestAuthorization() -> Guarantee<Bool> {
-        let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.PASSWORD_REQUEST,
+        let passwordRequest = UNNotificationCategory(identifier: NotificationCategory.passwordRequest,
                                                      actions: [],
                                                      intentIdentifiers: [],
                                                      options: .customDismissAction)
-        let endSession = UNNotificationCategory(identifier: NotificationCategory.END_SESSION,
+        let endSession = UNNotificationCategory(identifier: NotificationCategory.endSession,
                                                 actions: [],
                                                 intentIdentifiers: [],
                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let passwordChangeConfirmation = UNNotificationCategory(identifier: NotificationCategory.CHANGE_CONFIRMATION,
+        let passwordChangeConfirmation = UNNotificationCategory(identifier: NotificationCategory.changeConfirmation,
                                                                 actions: [],
                                                                 intentIdentifiers: [],
                                                                 options: UNNotificationCategoryOptions(rawValue: 0))
-        let nudge = UNNotificationCategory(identifier: NotificationCategory.ONBOARDING_NUDGE,
+        let nudge = UNNotificationCategory(identifier: NotificationCategory.onboardingNudge,
                                            actions: [],
                                            intentIdentifiers: [],
                                            options: .customDismissAction)

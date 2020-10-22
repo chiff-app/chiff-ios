@@ -14,7 +14,7 @@ class QueueHandler {
 
     static let shared = QueueHandler()
 
-    private let PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS = 5
+    private let pollingAttempts = 5
 
     private var listening = false
 
@@ -44,7 +44,7 @@ class QueueHandler {
         }
 
         firstly {
-            pollQueue(attempts: PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS, session: session, shortPolling: false)
+            pollQueue(attempts: pollingAttempts, session: session, shortPolling: false)
         }.catchLog("Error getting password change confirmation from persistent queue.")
     }
 

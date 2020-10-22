@@ -60,7 +60,7 @@ class PushNotificationViewController: UIViewController {
     private func scheduleNotification(id: Int, askInEvening: Bool, day: Int?) {
         let content = UNMutableNotificationContent()
         (content.title, content.body) = notificationMessages[id]
-        content.categoryIdentifier = NotificationCategory.ONBOARDING_NUDGE
+        content.categoryIdentifier = NotificationCategory.onboardingNudge
 
         var date: DateComponents!
         if let day = day {

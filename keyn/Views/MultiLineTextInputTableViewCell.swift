@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MultiLineTextInputTableViewCellDelegate {
+protocol MultiLineTextInputTableViewCellDelegate: AnyObject {
     var maxCharacters: Int { get }
     var placeholderText: String { get }
     func textViewHeightDidChange(_ cell: UITableViewCell)

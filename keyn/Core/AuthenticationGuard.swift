@@ -44,7 +44,7 @@ class AuthenticationGuard {
                 guard !self.authenticationInProgress &&
                     !self.lockWindowIsHidden &&
                     !LocalAuthenticationManager.shared.authenticationInProgress &&
-                    !AuthorizationGuard.authorizationInProgress else {
+                        !AuthorizationGuard.shared.authorizationInProgress else {
                     throw PMKError.cancelled
                 }
 

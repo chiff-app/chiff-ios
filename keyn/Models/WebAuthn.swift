@@ -17,7 +17,7 @@ enum WebAuthnError: Error {
 }
 
 enum WebAuthnAlgorithm: Int, Codable, Equatable {
-    case EdDSA = -8
+    case edDSA = -8
     case ECDSA = -7
 }
 
@@ -27,14 +27,14 @@ struct WebAuthn: Codable, Equatable {
     let salt: UInt64
     var counter: Int = 0
 
-    static let CRYPTO_CONTEXT = "webauthn"
+    static let cryptoContext = "webauthn"
 
     init(id: String, algorithms: [WebAuthnAlgorithm]) throws {
         var algorithm: WebAuthnAlgorithm?
         if #available(iOS 13.0, *) {
             algorithm = algorithms.first
-        } else if algorithms.contains(.EdDSA) {
-            algorithm = .EdDSA
+        } else if algorithms.contains(.edDSA) {
+            algorithm = .edDSA
         }
         guard let acceptedAlgorithm = algorithm else {
             throw WebAuthnError.notSupported
@@ -49,11 +49,11 @@ struct WebAuthn: Codable, Equatable {
     func generateKeyPair(accountId: String, context: LAContext?) throws -> KeyPair {
         var value: UInt64 = 0
         _ = withUnsafeMutableBytes(of: &value, { id.sha256Data.copyBytes(to: $0, from: 0..<8) })
-        let siteKey = try Crypto.shared.deriveKey(keyData: try Seed.getWebAuthnSeed(context: context), context: Self.CRYPTO_CONTEXT, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: try Seed.getWebAuthnSeed(context: context), context: Self.cryptoContext, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(accountId.sha256Data.base64.prefix(8)), index: salt)
         var keyPair: KeyPair
         switch algorithm {
-        case .EdDSA: keyPair = try Crypto.shared.createSigningKeyPair(seed: key)
+        case .edDSA: keyPair = try Crypto.shared.createSigningKeyPair(seed: key)
         case .ECDSA:
             if #available(iOS 13.0, *) {
                 keyPair = try Crypto.shared.createECDSASigningKeyPair(seed: key)
@@ -67,7 +67,7 @@ struct WebAuthn: Codable, Equatable {
 
     func pubKey(accountId: String) throws -> String {
         switch algorithm {
-        case .EdDSA:
+        case .edDSA:
             guard let dict = try Keychain.shared.attributes(id: accountId, service: .webauthn) else {
                 throw KeychainError.notFound
             }
@@ -88,7 +88,7 @@ struct WebAuthn: Codable, Equatable {
 
     func save(accountId: String, keyPair: KeyPair) throws {
         switch algorithm {
-        case .EdDSA: try Keychain.shared.save(id: accountId, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
+        case .edDSA: try Keychain.shared.save(id: accountId, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
         case .ECDSA:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -100,7 +100,7 @@ struct WebAuthn: Codable, Equatable {
 
     func delete(accountId: String) throws {
         switch algorithm {
-        case .EdDSA: try Keychain.shared.delete(id: accountId, service: .webauthn)
+        case .edDSA: try Keychain.shared.delete(id: accountId, service: .webauthn)
         case .ECDSA:
             guard #available(iOS 13.0, *) else {
                 throw WebAuthnError.notSupported
@@ -116,7 +116,7 @@ struct WebAuthn: Codable, Equatable {
         let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
         let data = try createAuthenticatorData() + challengeData
         switch algorithm {
-        case .EdDSA:
+        case .edDSA:
             guard let privKey: Data = try Keychain.shared.get(id: accountId, service: .webauthn) else {
                 throw KeychainError.notFound
             }

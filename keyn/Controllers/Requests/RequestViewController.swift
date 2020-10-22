@@ -20,7 +20,7 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var accountsLeftLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
-    var authorizationGuard: AuthorizationGuard!
+    var authorizer: Authorizer!
 
     private var authorized = false
     private var accounts = [Account]()
@@ -34,31 +34,7 @@ class RequestViewController: UIViewController {
         if Properties.hasFaceID {
             authenticateButton.setImage(UIImage(named: "face_id"), for: .normal)
         }
-        switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin, .webauthnLogin, .bulkLogin:
-            requestLabel.text = "requests.confirm_login".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.loginRequestOpened)
-        case .add, .addAndLogin, .webauthnCreate:
-            requestLabel.text = "requests.add_account".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.addSiteRequestOpened)
-        case .addBulk:
-            requestLabel.text = "requests.add_accounts".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.addBulkSitesRequestOpened)
-        case .change:
-            requestLabel.text = "requests.change_password".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.changePasswordRequestOpened)
-        case .fill, .getDetails:
-            requestLabel.text = "requests.get_password".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.fillPassworddRequestOpened)
-        case .updateAccount:
-            requestLabel.text = "requests.update_account".localized.capitalizedFirstLetter
-            Logger.shared.analytics(.fillPassworddRequestOpened)
-        case .createOrganisation:
-            requestLabel.text = "requests.create_team".localized.capitalizedFirstLetter
-            // TODO: analytics
-        default:
-            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
-        }
+        requestLabel.text = authorizer.requestText
         acceptRequest()
     }
 
@@ -70,7 +46,7 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizationGuard.acceptRequest { message in
+            authorizer.authorize { message in
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicator.startAnimating()
                     if let message = message {
@@ -79,6 +55,8 @@ class RequestViewController: UIViewController {
                     }
                 }
             }
+        }.ensure {
+            AuthorizationGuard.shared.authorizationInProgress = false
         }.done(on: .main) { account in
             self.activityIndicator.stopAnimating()
             self.accountsLeftLabel.isHidden = true
@@ -96,47 +74,52 @@ class RequestViewController: UIViewController {
             }
         }.catch(on: .main) { error in
             self.activityIndicator.stopAnimating()
-            if let error = error as? AuthorizationError {
-                switch error {
-                case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
-                case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
-                case .cannotChangeAccount:
-                    self.showAlert(message: "errors.shared_account_change".localized)
-                case .noTeamSessionFound:
-                    self.showAlert(message: "errors.no_team".localized)
-                case .notAdmin:
-                    self.showAlert(message: "errors.no_admin".localized)
-                case .inProgress:
-                    return
-                }
-                AuthenticationGuard.shared.hideLockWindow()
-            } else if let error = error as? APIError {
-                Logger.shared.error("APIError authorizing request", error: error)
-                guard self.authorizationGuard.type == .createOrganisation else {
-                    self.showAlert(message: "\("errors.api_error".localized): \(error)")
-                    return
-                }
-                switch error {
-                case APIError.statusCode(409):
-                    self.showAlert(message: "errors.organisation_exists".localized)
-                case APIError.statusCode(402):
-                    self.showAlert(message: "errors.payment_required".localized)
-                default:
-                    self.showAlert(message: "\("errors.api_error".localized): \(error)")
-                }
-            } else if let error = error as? PasswordGenerationError {
-                self.showAlert(message: "\("errors.password_generation".localized) \(error)")
-            } else if case AccountError.importError(failed: let failed, total: let total) = error {
-                self.showAlert(message: String(format: "errors.failed_accounts_message".localized, failed, total)) { _ in
-                    self.dismiss()
-                    AuthenticationGuard.shared.hideLockWindow()
-                }
-            } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                self.showAlert(message: errorMessage)
-                Logger.shared.error("Error authorizing request", error: error)
-            } else {
-                Logger.shared.error("Error authorizing request", error: error)
+            self.handleError(error: error)
+        }
+    }
+
+    private func handleError(error: Error) {
+        if let error = error as? AuthorizationError {
+            switch error {
+            case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter,
+                                                      description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
+            case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
+            case .cannotChangeAccount:
+                self.showAlert(message: "errors.shared_account_change".localized)
+            case .noTeamSessionFound:
+                self.showAlert(message: "errors.no_team".localized)
+            case .notAdmin:
+                self.showAlert(message: "errors.no_admin".localized)
+            case .inProgress, .missingData, .unknownType:
+                return
             }
+            AuthenticationGuard.shared.hideLockWindow()
+        } else if let error = error as? APIError {
+            Logger.shared.error("APIError authorizing request", error: error)
+            guard self.authorizer.type == .createOrganisation else {
+                self.showAlert(message: "\("errors.api_error".localized): \(error)")
+                return
+            }
+            switch error {
+            case APIError.statusCode(409):
+                self.showAlert(message: "errors.organisation_exists".localized)
+            case APIError.statusCode(402):
+                self.showAlert(message: "errors.payment_required".localized)
+            default:
+                self.showAlert(message: "\("errors.api_error".localized): \(error)")
+            }
+        } else if let error = error as? PasswordGenerationError {
+            self.showAlert(message: "\("errors.password_generation".localized) \(error)")
+        } else if case AccountError.importError(failed: let failed, total: let total) = error {
+            self.showAlert(message: String(format: "errors.failed_accounts_message".localized, failed, total)) { _ in
+                self.dismiss()
+                AuthenticationGuard.shared.hideLockWindow()
+            }
+        } else if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
+            self.showAlert(message: errorMessage)
+            Logger.shared.error("Error authorizing request", error: error)
+        } else {
+            Logger.shared.error("Error authorizing request", error: error)
         }
     }
 
@@ -168,41 +151,13 @@ class RequestViewController: UIViewController {
     }
 
     private func success() {
-        var autoClose = true
-        switch authorizationGuard.type {
-        case .login, .addToExisting, .adminLogin, .webauthnLogin, .bulkLogin:
-            successTextLabel.text = "requests.login_succesful".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-        case .add, .addAndLogin, .webauthnCreate:
-            successTextLabel.text = "requests.account_added".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-            autoClose = setAccountsLeft()
-        case .addBulk:
-            successTextLabel.text = "\(authorizationGuard.count!) \("requests.accounts_added".localized)"
-            successTextDetailLabel.text = "requests.login_keyn_next_time".localized.capitalizedFirstLetter
-            autoClose = setAccountsLeft()
-        case .change:
-            successTextLabel.text = "requests.new_password_generated".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "\("requests.return_to_computer".localized.capitalizedFirstLetter) \("requests.to_complete_process".localized)"
-        case .fill, .getDetails:
-            successTextLabel.text = "requests.get_password_successful".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-        case .updateAccount:
-            successTextLabel.text = "requests.account_updated".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-        case .createOrganisation:
-            successTextLabel.text = "requests.team_created".localized.capitalizedFirstLetter
-            successTextDetailLabel.text = "requests.return_to_computer".localized.capitalizedFirstLetter
-        default:
-            requestLabel.text = "requests.unknown_request".localized.capitalizedFirstLetter
-        }
+        successTextLabel.text = authorizer.successText
+        successTextDetailLabel.text = authorizer.succesDetailText
         self.authorized = true
         self.showSuccessView()
-        if autoClose {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
-                AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
-                self.dismiss()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.50) {
+            AuthenticationGuard.shared.hideLockWindow(delay: 0.15)
+            self.dismiss()
         }
     }
 
@@ -222,26 +177,6 @@ class RequestViewController: UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveLinear], animations: { self.successView.alpha = 1.0 })
     }
 
-    private func setAccountsLeft() -> Bool {
-        guard !Properties.hasValidSubscription else {
-            return true
-        }
-        upgradeStackView.isHidden = false
-        authenticateButton.isHidden = true
-        accountsLeftLabel.isHidden = false
-        let accountsLeft = Properties.accountCap - Properties.accountCount
-        // TODO: Use stringsdict for this
-        if accountsLeft == 0 {
-            accountsLeftLabel.attributedText = NSAttributedString(string: "requests.no_accounts_left".localized, attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
-        } else {
-            let attributedText = NSMutableAttributedString(string: "requests.accounts_left_1".localized, attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!])
-            attributedText.append(NSMutableAttributedString(string: " \(accountsLeft) \(accountsLeft == 1 ? "requests.accounts_left_2_single".localized : "requests.accounts_left_2_plural".localized) ", attributes: [NSAttributedString.Key.font: UIFont.primaryBold!]))
-            attributedText.append(NSMutableAttributedString(string: "requests.accounts_left_3".localized, attributes: [NSAttributedString.Key.font: UIFont.primaryMediumNormal!]))
-            accountsLeftLabel.attributedText = attributedText
-        }
-        return false
-    }
-
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
@@ -258,7 +193,7 @@ class RequestViewController: UIViewController {
     @IBAction func close(_ sender: UIButton) {
         guard authorized else {
             return firstly {
-                authorizationGuard.rejectRequest()
+                authorizer.rejectRequest()
             }.done(on: .main) {
                 self.dismiss()
             }.catchLog("Error rejecting request")

@@ -86,7 +86,7 @@ extension UserAccount: Syncable {
         if let webAuthn = webAuthn {
             let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
             switch webAuthn.algorithm {
-            case .EdDSA:
+            case .edDSA:
                 try Keychain.shared.save(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
             case .ECDSA:
                 guard #available(iOS 13.0, *) else {
@@ -228,7 +228,7 @@ extension UserAccount: Syncable {
         if let webAuthn = backupAccount.webAuthn {
             let keyPair = try webAuthn.generateKeyPair(accountId: id, context: context)
             switch webAuthn.algorithm {
-            case .EdDSA:
+            case .edDSA:
                 if self.webAuthn != nil {
                     try Keychain.shared.update(id: id, service: .webauthn, secretData: keyPair.privKey, objectData: keyPair.pubKey)
                 } else {
@@ -248,7 +248,7 @@ extension UserAccount: Syncable {
             self.webAuthn = webAuthn
         } else if let webAuthn = self.webAuthn {
             switch webAuthn.algorithm {
-            case .EdDSA:
+            case .edDSA:
                 try Keychain.shared.delete(id: id, service: .webauthn)
             case .ECDSA:
                 try Keychain.shared.deleteKey(id: id)
