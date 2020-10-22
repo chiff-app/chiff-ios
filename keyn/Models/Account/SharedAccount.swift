@@ -8,7 +8,6 @@ import LocalAuthentication
 import AuthenticationServices
 import PromiseKit
 
-
 /*
  * An account belongs to the user and can have one Site.
  */

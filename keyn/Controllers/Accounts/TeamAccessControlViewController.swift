@@ -43,7 +43,7 @@ class TeamAccessControlViewController: UIViewController, UIScrollViewDelegate {
     var allObjects: [AccessControllable]!
     var selectedObjects: [AccessControllable]!
     var type: AccessControlType!
-    var delegate: AccessControlDelegate!
+    weak var delegate: AccessControlDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()

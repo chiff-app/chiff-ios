@@ -22,7 +22,6 @@ class BackupWizardViewController: UIViewController {
         return .lightContent
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         wordLabel.text = mnemonic[counter]
@@ -42,7 +41,7 @@ class BackupWizardViewController: UIViewController {
         if counter < mnemonic!.count - 1 {
             counter += 1
             wordLabel.text = mnemonic![counter]
-            if (counter >= 1) {
+            if counter >= 1 {
                 previousButton.isEnabled = true
                 previousButton.alpha = 1.0
             }
@@ -57,7 +56,7 @@ class BackupWizardViewController: UIViewController {
         if counter > 0 {
             counter -= 1
             wordLabel.text = mnemonic![counter]
-            if (counter <= 0) {
+            if counter <= 0 {
                 previousButton.isEnabled = false
                 previousButton.alpha = 0.5
             }
@@ -67,7 +66,7 @@ class BackupWizardViewController: UIViewController {
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "\("popups.questions.cancel_backup".localized.capitalizedFirstLetter)", message: "popups.questions.cancel_backup_description".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.continue".localized.capitalizedFirstLetter, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalizedFirstLetter, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized.capitalizedFirstLetter, style: .destructive, handler: { _ in
             self.performSegue(withIdentifier: "UnwindToSettings", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)

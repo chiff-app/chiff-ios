@@ -10,7 +10,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint! // Should be raised to 1000 on keyboard show
     @IBOutlet weak var constraintMiddleDistance: NSLayoutConstraint!
-    
+
     private let FRAME_HEIGHT: CGFloat = 480
     private let HEIGHT_OFFSET: CGFloat = 64
     private let BOTTOM_OFFSET: CGFloat = 10
@@ -18,7 +18,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
     private let LOW_LAYOUT_PRIORITY: UILayoutPriority = UILayoutPriority(990)
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         textView.delegate = self
@@ -31,7 +31,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
 
         view.layoutIfNeeded()
         textView.layer.cornerRadius = 4.0
-        
+
         // Observe keyboard change
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -39,16 +39,16 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
-    
+
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         lastOffset = self.scrollView.contentOffset
         return true
     }
-    
+
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         return true
     }
-    
+
     @objc func keyboardWillShow(notification: NSNotification) {
         guard keyboardHeight == nil else {
             return
@@ -61,13 +61,13 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
                 self.constraintMiddleDistance.priority = self.HIGH_LAYOUT_PRIORITY
                 self.constraintContentHeight.constant += (self.keyboardHeight)
             })
-            
+
             let distanceToBottom = self.scrollView.frame.size.height - (textView.frame.origin.y) - (textView.frame.size.height)
 
             guard self.lastOffset != nil else {
                 return
             }
-            
+
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {
                 // scroll to the position above bottom 10 points
@@ -75,7 +75,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             })
         }
     }
-    
+
     @objc func keyboardWillHide(notification: NSNotification) {
         guard keyboardHeight != nil else {
             return
@@ -88,13 +88,13 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             self.constraintContentHeight.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = self.lastOffset
         }
-        
+
         keyboardHeight = nil
     }
 
     @IBAction func submit(_ sender: UIButton) {
         question?.response = String(textView.text)
-        
+
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.submitQuestion(index: questionIndex, question: question)
             navCon.nextQuestion()

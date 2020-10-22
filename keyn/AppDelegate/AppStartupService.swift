@@ -23,8 +23,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // AuthenticationGuard and Logger must be initialized first
-        let _ = Logger.shared
-        let _ = AuthenticationGuard.shared
+        _ = Logger.shared
+        _ = AuthenticationGuard.shared
 
 //        StoreObserver.shared.enable()
 //        if StoreObserver.shared.isAuthorizedForPayments {
@@ -150,7 +150,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 checkIfMigrated()
             }.then {
                 Properties.deniedPushNotifications ? .value(false) : PushNotifications.register()
-            }.done(on: .main) { result in
+            }.done(on: .main) { _ in
                 self.launchRootViewController()
             }.catchLog("Failed to initialize")
         } else {
@@ -221,7 +221,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 || FileManager.default.fileExists(atPath: "/usr/sbin/sshd")
                 || FileManager.default.fileExists(atPath: "/etc/apt")
                 || FileManager.default.fileExists(atPath: "/private/var/lib/apt/")
-                || UIApplication.shared.canOpenURL(URL(string:"cydia://package/com.example.package")!) {
+                || UIApplication.shared.canOpenURL(URL(string: "cydia://package/com.example.package")!) {
                 return true
             }
         }
@@ -229,7 +229,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         // Check 2 : Reading and writing in system directories (sandbox violation)
         let stringToWrite = "Jailbreak Test"
         do {
-            try stringToWrite.write(toFile:"/private/JailbreakTest.txt", atomically:true, encoding:String.Encoding.utf8)
+            try stringToWrite.write(toFile: "/private/JailbreakTest.txt", atomically: true, encoding: String.Encoding.utf8)
             //Device is jailbroken
             return true
         } catch {

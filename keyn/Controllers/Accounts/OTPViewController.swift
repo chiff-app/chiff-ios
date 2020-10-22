@@ -13,9 +13,9 @@ protocol TokenController {
 }
 
 class OTPViewController: QRViewController, TokenController {
-    
+
     private let OTP_URL_SCHEME = "otpauth"
-    
+
     @IBOutlet weak var instructionLabel: UILabel!
 
     var account: UserAccount!
@@ -31,7 +31,7 @@ class OTPViewController: QRViewController, TokenController {
             NSAttributedString.Key.font: UIFont.primaryBold!]))
         instructionLabel.attributedText = attributedText
     }
-    
+
     override func handleURL(url: URL) throws {
         guard let scheme = url.scheme, scheme == OTP_URL_SCHEME else {
             showAlert(message: "errors.session_invalid".localized, handler: errorHandler)
@@ -53,7 +53,7 @@ class OTPViewController: QRViewController, TokenController {
             self.showAlert(message: "errors.add_otp".localized, handler: super.errorHandler)
         }
     }
-    
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

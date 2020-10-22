@@ -15,12 +15,11 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint!
 
     var account: Account!
-    
+
     private let KEYBOARD_OFFSET: CGFloat = 80
     private let BOTTOM_OFFSET: CGFloat = 10
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,7 +96,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         change werkt \(changeReport.isOn ? "niet" : "wel")
         add werkt \(addReport.isOn ? "niet" : "wel")
         toevoegingen:
-        \(textView.text ?? "")  
+        \(textView.text ?? "")
 
         Groetjes!
         id: \(Properties.userId ?? "not set")

@@ -8,7 +8,7 @@ class QuestionnaireIntroductionViewController: UIViewController {
     @IBOutlet weak var introductionLabel: UILabel!
 
     var introduction: String!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         introductionLabel.text = introduction
@@ -27,7 +27,7 @@ class QuestionnaireIntroductionViewController: UIViewController {
             navCon.cancel()
         }
     }
-    
+
     @IBAction func start(_ sender: UIButton) {
         if let navCon = self.navigationController as? QuestionnaireController {
             navCon.nextQuestion()

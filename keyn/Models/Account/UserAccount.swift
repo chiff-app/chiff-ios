@@ -83,7 +83,6 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
     }
 
-
     mutating func nextPassword(context: LAContext? = nil) throws -> String {
         let offset: [Int]? = nil // Will it be possible to change to custom password?
         let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
@@ -103,7 +102,7 @@ struct UserAccount: Account, Equatable {
         } else {
             try Keychain.shared.save(id: id, service: .otp, secretData: secret, objectData: tokenData)
         }
-        let _ = try backup()
+        _ = try backup()
     }
 
     mutating func updateNotes(notes: String) throws {
@@ -117,14 +116,13 @@ struct UserAccount: Account, Equatable {
         } else if !notes.isEmpty {
             try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
         }
-        let _ = try backup()
+        _ = try backup()
     }
-
 
     mutating func deleteOtp() throws {
         self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: .otp)
-        let _ = try backup()
+        _ = try backup()
         try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
@@ -166,7 +164,7 @@ struct UserAccount: Account, Equatable {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
         if backup {
-            let _ = try self.backup()
+            _ = try self.backup()
         }
         try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
@@ -228,7 +226,7 @@ struct UserAccount: Account, Equatable {
 
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.update(id: id, service: .account, secretData: newPassword.data, objectData: accountData)
-        let _ = try backup()
+        _ = try backup()
         NotificationCenter.default.postMain(Notification(name: .accountUpdated, object: self, userInfo: ["account": self]))
     }
 
@@ -254,13 +252,12 @@ struct UserAccount: Account, Equatable {
             try webAuthn?.save(accountId: self.id, keyPair: keyPair)
         }
         if !offline {
-            let _ = try backup()
+            _ = try backup()
             try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
         }
         saveToIdentityStore()
         Properties.accountCount += 1
     }
-
 
     // MARK: - WebAuthn functions
 

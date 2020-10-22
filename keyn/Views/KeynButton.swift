@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 enum KeynButtonType: String {
     case primary
     case secondary
@@ -34,7 +33,7 @@ enum KeynButtonType: String {
     var activityIndicator: UIActivityIndicatorView!
 
     var type: KeynButtonType = .primary {
-        didSet {    
+        didSet {
             switch type {
             case .primary:
                 backgroundColor = UIColor.primary
@@ -88,7 +87,7 @@ enum KeynButtonType: String {
         originalButtonText = self.titleLabel?.text
         self.setTitle("", for: .normal)
 
-        if (activityIndicator == nil) {
+        if activityIndicator == nil {
             activityIndicator = createActivityIndicator()
         }
 

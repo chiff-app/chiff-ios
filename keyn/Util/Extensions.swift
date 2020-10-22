@@ -24,15 +24,15 @@ extension Int {
 }
 
 extension String {
-    
+
     var hash: String {
         return try! Crypto.shared.hash(self)
     }
-    
+
     var sha1: String {
         return Crypto.shared.sha1(from: self)
     }
-    
+
     var sha256: String {
         return Crypto.shared.sha256(from: self)
     }
@@ -40,7 +40,7 @@ extension String {
     var sha256Data: Data {
         return Crypto.shared.sha256(from: self.data)
     }
-    
+
     var fromBase64: Data? {
         return try? Crypto.shared.convertFromBase64(from: self)
     }
@@ -65,7 +65,6 @@ extension String {
         }
     }
 
-
     // TODO: Make functional
     func pad(toSize: Int) -> String {
         var padded = self
@@ -74,7 +73,7 @@ extension String {
         }
         return padded
     }
-    
+
     var lines: [String] {
         var result: [String] = []
         enumerateLines { line, _ in result.append(line) }
@@ -98,12 +97,12 @@ extension URL {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true), let queryItems = components.queryItems else {
             return nil
         }
-        
+
         var parameters = [String: String]()
         for item in queryItems {
             parameters[item.name] = item.value
         }
-        
+
         return parameters
     }
 }
@@ -114,16 +113,16 @@ extension Data {
         let rawValue: Int
         static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
     }
-    
+
     func hexEncodedString(options: HexEncodingOptions = []) -> String {
         let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
         return map { String(format: format, $0) }.joined()
     }
-    
+
     var bitstring: String {
         return self.reduce("", { $0 + String($1, radix: 2).pad(toSize: 8) })
     }
-    
+
     var hash: Data {
         return try! Crypto.shared.hash(self)
     }
@@ -198,7 +197,6 @@ extension Date {
 extension TimeInterval {
     static let ONE_DAY: TimeInterval = 3600 * 24
 }
-
 
 // MARK: - Notifications
 
@@ -293,7 +291,7 @@ extension UIViewController {
 }
 
 extension UIStoryboard {
-    
+
     enum StoryboardType: String {
         case main = "Main"
         case initialisation = "Initialisation"
@@ -301,11 +299,11 @@ extension UIStoryboard {
         case launchScreen = "LaunchScreen"
         case feedback = "Feedback"
     }
-    
+
     static var main: UIStoryboard {
         return get(.main)
     }
-    
+
     static func get(_ type: StoryboardType) -> UIStoryboard {
         return UIStoryboard(name: type.rawValue, bundle: nil)
     }
@@ -318,7 +316,7 @@ struct System {
         navBar.shadowImage = UIImage()
         navBar.isTranslucent = true
     }
-    
+
 }
 
 extension UIApplication {
@@ -326,23 +324,23 @@ extension UIApplication {
         guard let rootViewController = keyWindow?.rootViewController else {
             return nil
         }
-        
+
         return getVisibleViewController(rootViewController)
     }
-    
+
     private func getVisibleViewController(_ rootViewController: UIViewController) -> UIViewController? {
         if let presentedViewController = rootViewController.presentedViewController {
             return getVisibleViewController(presentedViewController)
         }
-        
+
         if let navigationController = rootViewController as? UINavigationController {
             return navigationController.contents
         }
-        
+
         if let tabBarController = rootViewController as? UITabBarController {
             return tabBarController.selectedViewController
         }
-        
+
         return rootViewController
     }
 
@@ -374,8 +372,8 @@ extension CALayer {
         default:
             break
         }
-        
-        border.backgroundColor = color.cgColor;
+
+        border.backgroundColor = color.cgColor
         addSublayer(border)
     }
 }
@@ -385,10 +383,10 @@ extension UIColor {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
-        
+
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
     }
-    
+
     convenience init(rgb: Int) {
         self.init(
             red: (rgb >> 16) & 0xFF,
@@ -459,7 +457,7 @@ extension UIImage {
         UIRectFill(rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
@@ -520,7 +518,7 @@ extension Amplitude {
     }
 
     func logEvent(event: AnalyticsEvent, properties: [AnalyticsEventProperty: Any]? = nil) {
-        if let properties = properties  {
+        if let properties = properties {
             self.logEvent(event.rawValue, withEventProperties: Dictionary(uniqueKeysWithValues: properties.map({ ($0.key.rawValue, $0.value) })))
         } else {
             self.logEvent(event.rawValue)
@@ -550,7 +548,6 @@ extension Array where Iterator.Element == UserAccount {
     }
 }
 
-
 // MARK: Printable PDFs
 
 extension WKWebView {
@@ -573,7 +570,7 @@ extension UIPrintPageRenderer {
     var pdf: NSData {
         let pdfData = NSMutableData()
         UIGraphicsBeginPDFContextToData(pdfData, self.paperRect, nil)
-        self.prepare(forDrawingPages: NSMakeRange(0, self.numberOfPages))
+        self.prepare(forDrawingPages: NSRange(location: 0, length: self.numberOfPages))
         let bounds = UIGraphicsGetPDFContextBounds()
         for i in 0..<self.numberOfPages {
             UIGraphicsBeginPDFPage()
@@ -611,7 +608,7 @@ extension NotificationCenter {
         }
     }
 
-    func postMain(name aName: NSNotification.Name, object anObject: Any?, userInfo aUserInfo: [AnyHashable : Any]? = nil) {
+    func postMain(name aName: NSNotification.Name, object anObject: Any?, userInfo aUserInfo: [AnyHashable: Any]? = nil) {
         DispatchQueue.main.async {
             self.post(name: aName, object: anObject, userInfo: aUserInfo)
         }
@@ -634,6 +631,3 @@ extension CatchMixin {
     }
 
 }
-
-
-

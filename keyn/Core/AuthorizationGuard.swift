@@ -146,7 +146,7 @@ class AuthorizationGuard {
     }
 
     // MARK: - Private functions
-    
+
     private func authorize() -> Promise<Account?> {
         var success = false
         return firstly {
@@ -322,10 +322,10 @@ class AuthorizationGuard {
         }.map { (total, context) in
             try self.session.sendBulkAddResponse(browserTab: self.browserTab, context: context)
             startLoading("requests.import_progress_5".localized)
-            if (succeeded.count > 0) {
+            if succeeded.count > 0 {
                 NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             }
-            if (failed > 0) {
+            if failed > 0 {
                 Logger.shared.warning("Failed to import \(failed) accounts")
                 throw AccountError.importError(failed: failed, total: total)
             }
@@ -404,7 +404,6 @@ class AuthorizationGuard {
         }
     }
 
-
     // MARK: - Static launch request view functions
 
     static func launchRequestView(with request: KeynRequest) {
@@ -450,7 +449,7 @@ class AuthorizationGuard {
         authorizationInProgress = true
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false)
-        }.then { context -> Promise<Session> in
+        }.then { _ -> Promise<Session> in
             delegate.startLoading()
             Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
             guard let browserPubKey = parameters["p"], let pairingQueueSeed = parameters["q"], let browser = parameters["b"]?.capitalizedFirstLetter, let os = parameters["o"]?.capitalizedFirstLetter else {
@@ -488,7 +487,7 @@ class AuthorizationGuard {
         authorizationInProgress = true
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: reason, withMainContext: false)
-        }.then { context -> Promise<Session> in
+        }.then { _ -> Promise<Session> in
             delegate.startLoading()
             Logger.shared.analytics(.qrCodeScanned, properties: [.value: true])
             guard let orderKey = parameters["k"], let name = parameters["n"] else {
@@ -499,7 +498,6 @@ class AuthorizationGuard {
             authorizationInProgress = false
         }
     }
-
 
     private static func showError(errorMessage: String) {
         DispatchQueue.main.async {

@@ -27,7 +27,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var auxiliaryLabel: UILabel!
     @IBOutlet weak var auxiliaryValueLabel: UILabel!
     @IBOutlet weak var sessionNameTextField: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.layer.borderColor = UIColor.primaryTransparant.cgColor
@@ -92,7 +92,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func deleteDevice(_ sender: UIButton) {
         let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
             self.performSegue(withIdentifier: "DeleteSession", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)

@@ -20,7 +20,6 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var accountsLeftLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
-
     var authorizationGuard: AuthorizationGuard!
 
     private var authorized = false
@@ -71,7 +70,7 @@ class RequestViewController: UIViewController {
 
     private func acceptRequest() {
         firstly {
-            authorizationGuard.acceptRequest() { message in
+            authorizationGuard.acceptRequest { message in
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicator.startAnimating()
                     if let message = message {
@@ -128,7 +127,7 @@ class RequestViewController: UIViewController {
             } else if let error = error as? PasswordGenerationError {
                 self.showAlert(message: "\("errors.password_generation".localized) \(error)")
             } else if case AccountError.importError(failed: let failed, total: let total) = error {
-                self.showAlert(message: String(format: "errors.failed_accounts_message".localized, failed, total)) { action in
+                self.showAlert(message: String(format: "errors.failed_accounts_message".localized, failed, total)) { _ in
                     self.dismiss()
                     AuthenticationGuard.shared.hideLockWindow()
                 }
@@ -146,14 +145,14 @@ class RequestViewController: UIViewController {
         successTextLabel.text = token!.currentPasswordSpaced
         checkmarkHeightContstraint.constant = 0
         switch token!.generator.factor {
-        case .counter(_):
+        case .counter:
             authenticateButton.setImage(UIImage(named: "refresh"), for: .normal)
             authenticateButton.imageView?.contentMode = .scaleAspectFit
         case .timer(let period):
             let start = Date().timeIntervalSince1970.truncatingRemainder(dividingBy: period)
             successView.removeCircleAnimation()
             successView.draw(color: UIColor.white.cgColor, backgroundColor: UIColor(red: 1, green: 1, blue: 1, alpha: 0.1).cgColor)
-            otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
+            otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (_) in
                 self.successTextLabel.text = self.token!.currentPasswordSpaced
                 self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
             })
@@ -246,7 +245,7 @@ class RequestViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func authenticate(_ sender: UIButton) {
-        if let factor = token?.generator.factor, case .counter(_) = factor, let newToken = token?.updatedToken() {
+        if let factor = token?.generator.factor, case .counter = factor, let newToken = token?.updatedToken() {
             self.token = newToken
             var userAccount = account as? UserAccount
             try? userAccount?.setOtp(token: newToken)

@@ -23,7 +23,7 @@ struct TeamRole: Codable, AccessControllable {
 
 extension TeamRole: Hashable {
 
-    static func == (lhs: TeamRole, rhs:TeamRole) -> Bool {
+    static func == (lhs: TeamRole, rhs: TeamRole) -> Bool {
         return lhs.id == rhs.id
     }
 

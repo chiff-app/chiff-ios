@@ -24,7 +24,7 @@ enum CryptoError: Error {
 }
 
 class Crypto {
-    
+
     private let SEED_SIZE = 16
     private let KEY_SIZE = 32
     private let CONTEXT_SIZE = 8
@@ -32,7 +32,7 @@ class Crypto {
     static let shared = Crypto()
 
     private let sodium = Sodium()
-    
+
     private init() {}
 
     // MARK: - Key generation functions
@@ -53,16 +53,16 @@ class Crypto {
     }
 
     func deriveKeyFromSeed(seed: Data, keyType: KeyType, context: String) throws -> Data {
-        
+
         guard context.count == 8 else {
             throw CryptoError.contextOverflow
         }
-        
+
         // This expands the 128-bit seed to 256 bits by hashing. Necessary for key derivation.
         guard let seedHash = sodium.genericHash.hash(message: seed.bytes) else {
             throw CryptoError.hashing
         }
-        
+
         // This derives a subkey from the seed for a given index and context.
         guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: KEY_SIZE, context: context) else {
             throw CryptoError.keyDerivation
@@ -98,10 +98,10 @@ class Crypto {
         guard let keyData = sodium.randomBytes.deterministic(length: length, seed: seed.bytes) else {
             throw CryptoError.keyDerivation
         }
-        
+
         return keyData.data
     }
-    
+
     func deriveKey(keyData: Data, context: String, index: UInt64 = 0) throws ->  Data {
         guard context.count <= 8 else {
             throw CryptoError.contextOverflow
@@ -109,13 +109,13 @@ class Crypto {
         guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: index, length: KEY_SIZE, context: context) else {
             throw CryptoError.keyDerivation
         }
-        
+
         return key.data
     }
 
     // MARK: - Conversion functions
 
-    func convertFromBase64(from base64String: String) throws -> Data  {
+    func convertFromBase64(from base64String: String) throws -> Data {
         guard let bytes = sodium.utils.base642bin(base64String, variant: .URLSAFE_NO_PADDING, ignore: nil) else {
             throw CryptoError.base64Decoding
         }
@@ -123,7 +123,7 @@ class Crypto {
         return bytes.data
     }
 
-    func convertToBase64(from data: Data) throws -> String  {
+    func convertToBase64(from data: Data) throws -> String {
         guard let b64String = sodium.utils.bin2base64(data.bytes, variant: .URLSAFE_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
@@ -137,7 +137,7 @@ class Crypto {
         }
         return data
     }
-    
+
     // MARK: - Signing functions
 
     func sign(message: Data, privKey: Data) throws -> Data {
@@ -147,12 +147,12 @@ class Crypto {
 
         return signedMessage.data
     }
-    
+
     func signature(message: Data, privKey: Data) throws -> Data {
         guard let signature = sodium.sign.signature(message: message.bytes, secretKey: privKey.bytes) else {
             throw CryptoError.signing
         }
-        
+
         return signature.data
     }
 
@@ -170,7 +170,7 @@ class Crypto {
         guard let plaintext: Bytes = sodium.secretBox.open(nonceAndAuthenticatedCipherText: ciphertext.bytes, secretKey: secretKey.bytes) else {
             throw CryptoError.encryption
         }
-        
+
         return plaintext.data
     }
 
@@ -228,7 +228,7 @@ class Crypto {
     }
 
     func sha1(from string: String) -> String {
-        var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
+        var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         _ = digest.withUnsafeMutableBytes { digestBytes in
             string.data.withUnsafeBytes { CC_SHA1($0.baseAddress, CC_LONG(string.data.count), digestBytes.bindMemory(to: UInt8.self).baseAddress) }
         }
@@ -236,7 +236,7 @@ class Crypto {
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
         return hexBytes.joined()
     }
-    
+
     func sha256(from string: String) -> String {
         let digest = sha256(from: string.data(using: String.Encoding.utf8)!)
         let hexBytes = digest.map { String(format: "%02hhx", $0) }
@@ -244,7 +244,7 @@ class Crypto {
     }
 
     func sha256(from data: Data) -> Data {
-        var digest = [UInt8](repeating: 0, count:Int(CC_SHA256_DIGEST_LENGTH))
+        var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
         _ = digest.withUnsafeMutableBytes { digestBytes in
             data.withUnsafeBytes { CC_SHA256($0.baseAddress, CC_LONG(data.count), digestBytes.bindMemory(to: UInt8.self).baseAddress) }
         }

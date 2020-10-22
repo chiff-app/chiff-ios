@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         shared.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
     }
 
-
     enum Service {
         case appStartup
         case pushNotification
@@ -42,16 +41,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         clearUserData()
 
         for service in services.values {
-            let _ = service.application?(application, didFinishLaunchingWithOptions: launchOptions)
+            _ = service.application?(application, didFinishLaunchingWithOptions: launchOptions)
         }
 
         return true
     }
 
     // This only executes if the app is opened from the keyn:// scheme
-    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         for service in services.values {
-            let _ = service.application?(application, open: url, options: options)
+            _ = service.application?(application, open: url, options: options)
         }
 
         return true
@@ -81,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         services[.pushNotification]?.application?(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
 

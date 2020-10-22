@@ -35,7 +35,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
     @IBOutlet weak var notesCell: MultiLineTextInputTableViewCell!
 
     private let ppd: PPD? = nil
-    private var passwordValidator: PasswordValidator? = nil
+    private var passwordValidator: PasswordValidator?
     private var passwordIsHidden = true
     var account: UserAccount?
 
@@ -55,7 +55,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         tableView.separatorColor = UIColor.primaryTransparant
 
         requirementLabels.sort(by: { $0.tag < $1.tag })
-        
+
         updateSaveButtonState()
         Logger.shared.analytics(.addAccountOpened)
         reEnableBarButtonFont()
@@ -81,10 +81,10 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
 
     // MARK: UITextFieldDelegate
 
-    @objc func textFieldDidChange(textField: UITextField){
+    @objc func textFieldDidChange(textField: UITextField) {
         updateSaveButtonState()
     }
-    
+
     // MARK: - Actions
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -105,7 +105,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
 
         updatePasswordRequirements(password: password)
 
-        if (siteName.isEmpty || siteURL.isEmpty || username.isEmpty || !isValidPassword(password: password)) {
+        if siteName.isEmpty || siteURL.isEmpty || username.isEmpty || !isValidPassword(password: password) {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
@@ -116,7 +116,7 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
         if password.isEmpty {
             return false
         }
-        
+
         if let passwordValidator = passwordValidator {
             return (try? passwordValidator.validate(password: password)) ?? false
         } else {

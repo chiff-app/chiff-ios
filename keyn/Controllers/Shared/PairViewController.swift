@@ -25,8 +25,8 @@ enum URLError: Error {
 
 class PairViewController: QRViewController {
 
-    var pairControllerDelegate: PairControllerDelegate!
-    var pairContainerDelegate: PairContainerDelegate!
+    weak var pairControllerDelegate: PairControllerDelegate!
+    weak var pairContainerDelegate: PairContainerDelegate!
 
     override func handleURL(url: URL) throws {
         var promise: Promise<Session>
@@ -78,7 +78,7 @@ class PairViewController: QRViewController {
         Logger.shared.analytics(.paired)
         self.removeNotifications()
     }
-    
+
     private func handleError(_ error: Error) {
         switch error {
         case is LAError, is KeychainError:

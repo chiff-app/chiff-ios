@@ -81,7 +81,7 @@ class PrivacyViewController: UITableViewController {
     @IBAction func resetKeyn(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.reset_keyn".localized, message: "settings.reset_keyn_warning".localized, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.reset".localized, style: .destructive, handler: { _ in
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             firstly {
                 self.deleteLocalData()
@@ -114,7 +114,7 @@ class PrivacyViewController: UITableViewController {
 
     // MARK: - Private functions
 
-    private func deleteRemoteData(action: UIAlertAction) -> Void {
+    private func deleteRemoteData(action: UIAlertAction) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         firstly {
             when(fulfilled: Seed.deleteBackupData(), TeamSession.deleteAll())

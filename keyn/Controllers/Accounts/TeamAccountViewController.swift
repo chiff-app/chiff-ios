@@ -61,7 +61,6 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
 
     // MARK: - Table view data source
 
-
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             switch selectedRoles.count {
@@ -77,7 +76,6 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             }
         }
     }
-
 
     // MARK: - Navigation
 

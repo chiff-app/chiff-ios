@@ -18,7 +18,7 @@ extension TeamSession: Syncable {
         return .sessions
     }
 
-    static func all(context: LAContext?) throws -> [String : TeamSession] {
+    static func all(context: LAContext?) throws -> [String: TeamSession] {
         return try Dictionary(uniqueKeysWithValues: all().map { ($0.id, $0) })
     }
 

@@ -54,9 +54,9 @@ class KeynTabBar: UITabBar {
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
         if #available(iOS 13.0, *) {
-            gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.3)]
+            gradientLayer.locations = [NSNumber(value: 0.0), NSNumber(value: 0.3)]
         } else {
-            gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 0.5)]
+            gradientLayer.locations = [NSNumber(value: 0.0), NSNumber(value: 0.5)]
         }
         gradientLayer.colors = colors
         gradientView.layer.insertSublayer(gradientLayer, at: 0)

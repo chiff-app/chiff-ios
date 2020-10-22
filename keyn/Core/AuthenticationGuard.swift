@@ -36,7 +36,6 @@ class AuthenticationGuard {
 
     // MARK: - LocalAuthentication
 
-
     func authenticateUser(cancelChecks: Bool) {
         firstly {
             after(seconds: 0.5)
@@ -124,28 +123,27 @@ class AuthenticationGuard {
                 let message = object["message"]?[localization] else {
                 return
             }
-            UIApplication.shared.visibleViewController?.showAlert(message: message, title: title, handler: { (action) in
+            UIApplication.shared.visibleViewController?.showAlert(message: message, title: title, handler: { (_) in
                 Properties.addReceivedNewsMessage(id: id)
             })
         }
     }
 
-
     // MARK: - UIApplication Notification Handlers
-    
+
     private func applicationWillEnterForeground(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
     }
-    
+
     private func applicationDidBecomeActive(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
         self.authenticateUser(cancelChecks: true)
     }
-    
+
     private func applicationDidEnterBackground(notification: Notification) {
         guard Seed.hasKeys else {
             return
@@ -154,22 +152,22 @@ class AuthenticationGuard {
         lockWindowIsHidden = false
         authenticationInProgress = false
         LocalAuthenticationManager.shared.mainContext.invalidate()
-        
+
         let lockView = UIView(frame: lockWindow.frame)
         lockView.translatesAutoresizingMaskIntoConstraints = false
         let keynLogoView = UIImageView(image: UIImage(named: "logo"))
         keynLogoView.translatesAutoresizingMaskIntoConstraints = false
         keynLogoView.tintColor = UIColor.white
-        
+
         keynLogoView.frame = CGRect(x: 0, y: 0, width: 100, height: 88)
         keynLogoView.contentMode = .scaleAspectFit
         lockView.addSubview(keynLogoView)
         lockView.backgroundColor = UIColor.primary
         lockView.tag = lockViewTag
-        
+
         lockWindow.addSubview(lockView)
         lockWindow.bringSubviewToFront(lockView)
-        
+
         lockView.topAnchor.constraint(equalTo: lockWindow.topAnchor).isActive = true
         lockView.bottomAnchor.constraint(equalTo: lockWindow.bottomAnchor).isActive = true
         lockView.leadingAnchor.constraint(equalTo: lockWindow.leadingAnchor).isActive = true
@@ -180,7 +178,7 @@ class AuthenticationGuard {
         keynLogoView.centerXAnchor.constraint(equalTo: lockView.centerXAnchor).isActive = true
         keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
     }
-    
+
     private func didFinishLaunchingWithOptions(notification: Notification) {
         guard Seed.hasKeys else {
             return

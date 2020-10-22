@@ -19,7 +19,7 @@ class AboutViewController: UITableViewController {
         tableView.separatorColor = UIColor.primaryTransparant
         setVersionText()
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0: return "settings.legal".localized
@@ -67,7 +67,6 @@ class AboutViewController: UITableViewController {
         }
     }
 
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -75,7 +74,6 @@ class AboutViewController: UITableViewController {
             destination.url = url
         }
     }
-
 
     // MARK: - Private functions
 

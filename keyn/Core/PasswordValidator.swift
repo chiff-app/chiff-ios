@@ -12,7 +12,7 @@ class PasswordValidator {
     static let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
     static let MAXIMAL_CHARACTER_SET = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" // All printable ASCII characters
     let ppd: PPD?
-    var characterSetDictionary = [String:String]()
+    var characterSetDictionary = [String: String]()
     var characters = ""
 
     init(ppd: PPD?) {
@@ -139,7 +139,7 @@ class PasswordValidator {
         }
         return true
     }
-    
+
 //    func validateBreaches(password: String, completionHandler: @escaping (Int) -> Void) {
 //        let hash = password.sha1.uppercased()
 //        let index = hash.index(hash.startIndex, offsetBy: 5)
@@ -254,7 +254,7 @@ class PasswordValidator {
                      throw PasswordGenerationError.ppdInconsistency
                 }
             }
-            guard validRules >= requirementGroup.minRules else  {
+            guard validRules >= requirementGroup.minRules else {
                 return false
             }
         }

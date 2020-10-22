@@ -135,12 +135,12 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
             .font: UIFont.primaryMediumNormal!
             ])
         let url = URL(string: "urls.jailbreak".localized)!
-        
+
         attributedString.setAttributes([
             .link: url,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .font: UIFont.primaryMediumNormal!
-            ], range: NSMakeRange(jailbreakWarning.count + 2, readMore.count))
+            ], range: NSRange(location: jailbreakWarning.count + 2, length: readMore.count))
         jailbreakWarningTextView.attributedText = attributedString
         jailbreakWarningTextView.linkTextAttributes = [
             .foregroundColor: UIColor.primary

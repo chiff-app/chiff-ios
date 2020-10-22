@@ -49,7 +49,7 @@ class LocalAuthenticationManager {
             localAuthenticationQueue.addOperation(task)
         }
     }
-    
+
     func authenticate(reason: String, withMainContext: Bool) -> Promise<LAContext?> {
         return Promise { seal in
             do {

@@ -5,7 +5,7 @@
 import UIKit
 
 class BackupCheckViewController: UIViewController, UITextFieldDelegate {
-    
+
     @IBOutlet weak var firstWordLabel: UILabel!
     @IBOutlet weak var secondWordLabel: UILabel!
     @IBOutlet weak var firstWordTextField: UITextField!
@@ -50,13 +50,13 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - UITextFieldDelegate
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
         textFieldHeight = textField.frame.size.height
         return true
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return true
     }
@@ -71,10 +71,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
         checkWords(for: textField)
     }
 
-    @objc func textFieldDidChange(textField: UITextField){
+    @objc func textFieldDidChange(textField: UITextField) {
         checkWords(for: textField)
     }
-    
+
     @objc func keyboardWillShow(notification: NSNotification) {
         guard keyboardHeight == nil else {
             return
@@ -86,14 +86,14 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.bottomConstraint.constant += (self.keyboardHeight)
                 })
-                
+
                 UIView.animate(withDuration: 0.3, animations: {
                     self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.origin.x, y: lowerBoundary)
                 })
             }
         }
     }
-    
+
     @objc func keyboardWillHide(notification: NSNotification) {
         guard keyboardHeight != nil else {
             return
@@ -102,7 +102,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             self.bottomConstraint.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         }
-        
+
         keyboardHeight = nil
     }
 

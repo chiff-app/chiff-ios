@@ -13,9 +13,9 @@ import os.log
  * Handles push notification that come from outside the app.
  */
 class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    
+
     private let PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS = 3
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         handlePendingNotifications()
@@ -28,7 +28,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Called when we set "content-available": 1
      * After this the userNotificationCenter function will also be called.
      */
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         do {
             guard let typeString = userInfo["type"] as? String, let type = BackgroundNotificationType(rawValue: typeString) else {
                 completionHandler(.failed)
@@ -95,7 +95,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      * Called whenever the app is opened by clicking on a notification.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let _ = handleNotification(response.notification)
+        _ = handleNotification(response.notification)
         completionHandler()
     }
 
@@ -175,7 +175,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     private func handlePendingNotifications() {
         UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
             for notification in notifications {
-                let _ = self.handleNotification(notification)
+                _ = self.handleNotification(notification)
             }
         }
     }

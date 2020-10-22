@@ -6,10 +6,8 @@ import UIKit
 import LocalAuthentication
 import PromiseKit
 
-
 class InitialisationViewController: UIViewController {
 
-    
     @IBOutlet weak var biometricLabel: UILabel!
     @IBOutlet weak var loadingView: UIView!
 
@@ -48,7 +46,7 @@ class InitialisationViewController: UIViewController {
             self.loadingView.isHidden = true
             if let error = error as? LAError {
                 if let errorMessage = LocalAuthenticationManager.shared.handleError(error: error) {
-                    self.showAlert(message:"\("errors.seed_creation".localized): \(errorMessage)")
+                    self.showAlert(message: "\("errors.seed_creation".localized): \(errorMessage)")
                 }
             } else {
                 self.showAlert(message: error.localizedDescription, title: "errors.seed_creation".localized)

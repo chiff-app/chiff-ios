@@ -67,7 +67,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
         }
     }
 
-    @objc private func textFieldDidChange(textField: UITextField){
+    @objc private func textFieldDidChange(textField: UITextField) {
         let name = textField.text ?? "anonymous"
         if !name.isEmpty {
             sendButton.isEnabled = true
@@ -148,7 +148,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
         \(userFeedback)
 
-        
+
         Groetjes,
 
         \(debugLogUser)

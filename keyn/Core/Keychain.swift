@@ -99,9 +99,8 @@ extension SecKeyConvertible {
 @available(iOS 13.0, *) extension P521.Signing.PrivateKey: SecKeyConvertible {}
 @available(iOS 13.0, *) extension P521.KeyAgreement.PrivateKey: SecKeyConvertible {}
 
-
 struct Keychain {
-    
+
     static let shared = Keychain()
 
     private init() {}
@@ -207,7 +206,7 @@ struct Keychain {
             query[kSecUseAuthenticationContext as String] = context ?? defaultContext
         }
 
-        guard (secretData != nil || objectData != nil) else {
+        guard secretData != nil || objectData != nil else {
             throw KeychainError.noData
         }
 
@@ -231,7 +230,7 @@ struct Keychain {
             throw KeychainError.unhandledError(status.message)
         }
     }
-    
+
     func all(service: KeychainService, context: LAContext? = nil, label: String? = nil) throws -> [[String: Any]]? {
         var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                     kSecAttrService as String: service.rawValue,
@@ -259,7 +258,7 @@ struct Keychain {
         guard let dataArray = queryResult as? [[String: Any]] else {
             throw KeychainError.unexpectedData
         }
-    
+
         return dataArray
     }
 
@@ -441,7 +440,7 @@ extension Keychain {
     func deleteKey(id identifier: String) throws {
         let query: [String: Any] = [kSecClass as String: kSecClassKey,
                                     kSecAttrApplicationLabel as String: identifier]
-        
+
         switch SecItemDelete(query as CFDictionary) {
         case errSecSuccess: break
         case errSecItemNotFound:

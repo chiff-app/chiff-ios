@@ -6,7 +6,6 @@ import Foundation
 import PromiseKit
 import PMKFoundation
 
-
 enum APIError: Error {
     case url
     case jsonSerialization
@@ -19,7 +18,6 @@ enum APIError: Error {
     case pinninigError
     case urlSize
 }
-
 
 enum APIMethod: String {
     case get = "GET"
@@ -41,11 +39,11 @@ extension URLSession {
     }
 }
 
-typealias JSONObject = Dictionary<String, Any>
+typealias JSONObject = [String: Any]
 
 protocol APIProtocol {
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String:String]?) -> Promise<JSONObject>
-    func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String:String]?) -> Promise<T>
-    func request(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
-    func request<T>(path: String, parameters: [String:String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<T>
+    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
+    func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String: String]?) -> Promise<T>
+    func request(path: String, parameters: [String: String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
+    func request<T>(path: String, parameters: [String: String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<T>
 }

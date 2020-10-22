@@ -40,15 +40,15 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         self.definesPresentationContext = true
 //        navigationItem.searchController = searchController
     }
-    
+
     // MARK: - Actions
-    
+
     @IBAction func cancel(_ sender: AnyObject?) {
         credentialExtensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.userCanceled.rawValue))
     }
-    
+
     // MARK: - SearchController
-    
+
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredAccounts = unfilteredAccounts.filter({ (account) -> Bool in
@@ -60,9 +60,9 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
 
         tableView.reloadData()
     }
-    
+
     // MARK: - Table view data source
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let accounts = filteredAccounts else {
             return 0
@@ -81,9 +81,9 @@ class CredentialProviderViewController: UIViewController, UITableViewDataSource,
         }
         return cell
     }
-    
+
     // MARK: - Table view delegate
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let account = filteredAccounts?[indexPath.row] {
             do {

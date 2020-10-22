@@ -8,13 +8,13 @@ class LikertQuestionViewController: QuestionViewController {
     @IBOutlet weak var likertValue: ExtendedUISegmentedControl!
     @IBOutlet weak var minLabel: UILabel!
     @IBOutlet weak var maxLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let font = UIFont(name: "Montserrat-Bold", size: 20.0)
         likertValue.setTitleTextAttributes([NSAttributedString.Key.font: font as Any], for: .normal)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let responseString = question?.response, let response = Int(responseString) {

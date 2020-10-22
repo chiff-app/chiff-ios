@@ -50,7 +50,6 @@ protocol Session: Codable {
     static var sessionCountFlag: String { get }
 }
 
-
 // Shared functions for BrowserSession and TeamSession
 extension Session {
 
@@ -86,7 +85,6 @@ extension Session {
     }
 
     // MARK: Static functions
-
 
     static func all() throws -> [Self] {
         var sessions = [Self]()
@@ -138,7 +136,7 @@ extension Session {
 
     static func deleteAll() -> Promise<Void> {
         return firstly {
-            when(resolved: try all().map() { session in
+            when(resolved: try all().map { session in
                 session.delete(notify: true).log("Error deleting sessions remotely.")
             }).asVoid()
         }

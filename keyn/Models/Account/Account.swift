@@ -158,7 +158,6 @@ extension Account {
         try UserAccount.get(id: id, context: context) ?? SharedAccount.get(id: id, context: context)
     }
 
-
     static func combinedSessionAccounts(context: LAContext? = nil) throws -> [String: SessionAccount] {
         return try allCombined(context: context).mapValues({ SessionAccount(account: $0) })
     }
@@ -175,7 +174,7 @@ extension Account {
 
     static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
         let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
-        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, sharedAccount) -> Account in
+        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, _) -> Account in
             guard var account = userAccount as? UserAccount else {
                 return userAccount
             }

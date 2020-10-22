@@ -12,7 +12,7 @@ class StartBackupViewController: UIViewController {
     override func viewDidLoad() {
         Logger.shared.analytics(.backupExplanationOpened)
     }
-    
+
     @IBAction func startBackup(_ sender: UIButton) {
         firstly {
             Seed.mnemonic()
