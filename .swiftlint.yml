@@ -1,10 +1,10 @@
 disabled_rules: # rule identifiers to exclude from running
   # - colon
 included: # paths to include during linting. `--path` is ignored if present.
-  - keyn
+  - chiff
   # - keynTests
-  - keynCredentialProvider
-  - keynNotificationExtension
+  - chiffCredentialProvider
+  - chiffNotificationExtension
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
 force_cast: warning

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "49E7664F1F7E6F420022C042"
-               BuildableName = "keyn.app"
-               BlueprintName = "keyn"
-               ReferencedContainer = "container:keyn.xcodeproj">
+               BuildableName = "chiff.app"
+               BlueprintName = "chiff"
+               ReferencedContainer = "container:chiff.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "49E766701F7E6F420022C042"
-               BuildableName = "keynUITests.xctest"
-               BlueprintName = "keynUITests"
-               ReferencedContainer = "container:keyn.xcodeproj">
+               BuildableName = "chiffUITests.xctest"
+               BlueprintName = "chiffUITests"
+               ReferencedContainer = "container:chiff.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,18 +47,18 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "49E7664F1F7E6F420022C042"
-            BuildableName = "keyn.app"
-            BlueprintName = "keyn"
-            ReferencedContainer = "container:keyn.xcodeproj">
+            BuildableName = "chiff.app"
+            BlueprintName = "chiff"
+            ReferencedContainer = "container:chiff.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "49E7664F1F7E6F420022C042"
-            BuildableName = "keyn.app"
-            BlueprintName = "keyn"
-            ReferencedContainer = "container:keyn.xcodeproj">
+            BuildableName = "chiff.app"
+            BlueprintName = "chiff"
+            ReferencedContainer = "container:chiff.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -67,9 +67,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "49E766651F7E6F420022C042"
-               BuildableName = "keynTests.xctest"
-               BlueprintName = "keynTests"
-               ReferencedContainer = "container:keyn.xcodeproj">
+               BuildableName = "chiffTests.xctest"
+               BlueprintName = "chiffTests"
+               ReferencedContainer = "container:chiff.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -89,9 +89,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "49E7664F1F7E6F420022C042"
-            BuildableName = "keyn.app"
-            BlueprintName = "keyn"
-            ReferencedContainer = "container:keyn.xcodeproj">
+            BuildableName = "chiff.app"
+            BlueprintName = "chiff"
+            ReferencedContainer = "container:chiff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -112,9 +112,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "49E7664F1F7E6F420022C042"
-            BuildableName = "keyn.app"
-            BlueprintName = "keyn"
-            ReferencedContainer = "container:keyn.xcodeproj">
+            BuildableName = "chiff.app"
+            BlueprintName = "chiff"
+            ReferencedContainer = "container:chiff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

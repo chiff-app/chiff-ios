@@ -1,7 +1,6 @@
 .DS_Store
-keyn.xcworkspace/xcuserdata/*xcuserdatad
-keyn.xcodeproj/xcuserdata/*.xcuserdatad
-keyn.xcodeproj/project.xcworkspace/xcuserdata/*
+chiff.xcodeproj/xcuserdata/*.xcuserdatad
+chiff.xcodeproj/project.xcworkspace/xcuserdata/*
 Pods
 provisioning
 vendor
