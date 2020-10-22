@@ -45,7 +45,7 @@
 		49191EE3239AA2430034EEE7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49191EE5239AA2430034EEE7 /* InfoPlist.strings */; };
 		491968051FC0DC6400206B75 /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491968041FC0DC6400206B75 /* Crypto.swift */; };
 		4919DAE720123FE50048B060 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAE620123FE50048B060 /* NotificationService.swift */; };
-		4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4919DAEB20123FE50048B060 /* chiffNotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4919DAF1201261FE0048B060 /* RequestViewController.swift */; };
 		491C485820249D3B00397071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 491C485720249D3B00397071 /* Assets.xcassets */; };
 		49214B7821032CFD00C793DE /* BrowserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */; };
@@ -285,7 +285,7 @@
 		611F4B402146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */; };
 		611F4B462146B47300B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; };
 		611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */; };
-		611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		611F4B512146B47300B35A89 /* chiffCredentialProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4906BDAF20E3C41300183664 /* AuthenticationServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		611F4B562146B52600B35A89 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A701FACA93A00698B69 /* Account.swift */; };
 		611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01839A721FACA94300698B69 /* Site.swift */; };
@@ -351,8 +351,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				4919DAEB20123FE50048B060 /* keynNotificationExtension.appex in Embed App Extensions */,
-				611F4B512146B47300B35A89 /* keynCredentialProvider.appex in Embed App Extensions */,
+				4919DAEB20123FE50048B060 /* chiffNotificationExtension.appex in Embed App Extensions */,
+				611F4B512146B47300B35A89 /* chiffCredentialProvider.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,7 +390,7 @@
 		49191EE4239AA2430034EEE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		49191EE6239AA2450034EEE7 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		491968041FC0DC6400206B75 /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
-		4919DAE420123FE50048B060 /* keynNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = chiffNotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4919DAE620123FE50048B060 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		4919DAE820123FE50048B060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4919DAF1201261FE0048B060 /* RequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestViewController.swift; sourceTree = "<group>"; };
@@ -468,7 +468,7 @@
 		497C85DE2315737100DC4F91 /* Feedback.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feedback.storyboard; sourceTree = "<group>"; };
 		497D21CA205AB0710040E0C0 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupCheckViewController.swift; sourceTree = "<group>"; };
-		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = keyn/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
+		497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = chiff/Controllers/Settings/SettingsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountHelpViewController.swift; sourceTree = "<group>"; };
 		498FF17B22B0F3490072C3AE /* TabBarGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarGradient.swift; sourceTree = "<group>"; };
 		49911E7F231413DA007905DF /* LocalizableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableButton.swift; sourceTree = "<group>"; };
@@ -514,12 +514,12 @@
 		49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Questionnaire.swift; sourceTree = "<group>"; };
 		49E75CAA20FF706800BC0D65 /* FinishQuestionnaireViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishQuestionnaireViewController.swift; sourceTree = "<group>"; };
 		49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextQuestionViewController.swift; sourceTree = "<group>"; };
-		49E766501F7E6F420022C042 /* keyn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = keyn.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E766501F7E6F420022C042 /* chiff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chiff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766531F7E6F420022C042 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49E766611F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49E766661F7E6F420022C042 /* keynTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E766661F7E6F420022C042 /* chiffTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chiffTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E7666C1F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		49E766711F7E6F420022C042 /* keynUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = keynUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49E766711F7E6F420022C042 /* chiffUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chiffUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		49E766751F7E6F420022C042 /* keynUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keynUITests.swift; sourceTree = "<group>"; };
 		49E766771F7E6F420022C042 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -538,13 +538,13 @@
 		611733DD215D1B2400F37B2A /* PasswordGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTests.swift; sourceTree = "<group>"; };
 		611733DF215D1B3500F37B2A /* PasswordValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidatorTests.swift; sourceTree = "<group>"; };
 		611F4B3F2146A6B400B35A89 /* QuestionnaireIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionnaireIntroductionViewController.swift; sourceTree = "<group>"; };
-		611F4B452146B47300B35A89 /* keynCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keynCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = chiffCredentialProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		611F4B4D2146B47300B35A89 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynCredentialProvider.entitlements; sourceTree = "<group>"; };
+		611F4B4E2146B47300B35A89 /* chiffCredentialProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chiffCredentialProvider.entitlements; sourceTree = "<group>"; };
 		611F4B652146C63F00B35A89 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		613C8A16200D213F005C7D61 /* keyn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keyn.entitlements; sourceTree = "<group>"; };
-		613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = keynNotificationExtension.entitlements; sourceTree = "<group>"; };
+		613C8A16200D213F005C7D61 /* chiff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chiff.entitlements; sourceTree = "<group>"; };
+		613CFB1C20136D5F00460CC6 /* chiffNotificationExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chiffNotificationExtension.entitlements; sourceTree = "<group>"; };
 		6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualOTPViewController.swift; sourceTree = "<group>"; };
 		61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewController.swift; sourceTree = "<group>"; };
 		61B5D4CD214C21E5004C93FE /* QRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
@@ -664,14 +664,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		4919DAE520123FE50048B060 /* keynNotificationExtension */ = {
+		4919DAE520123FE50048B060 /* chiffNotificationExtension */ = {
 			isa = PBXGroup;
 			children = (
-				613CFB1C20136D5F00460CC6 /* keynNotificationExtension.entitlements */,
+				613CFB1C20136D5F00460CC6 /* chiffNotificationExtension.entitlements */,
 				4919DAE620123FE50048B060 /* NotificationService.swift */,
 				4919DAE820123FE50048B060 /* Info.plist */,
 			);
-			path = keynNotificationExtension;
+			path = chiffNotificationExtension;
 			sourceTree = "<group>";
 		};
 		4919DAF32012620A0048B060 /* Requests */ = {
@@ -873,11 +873,11 @@
 		49E766471F7E6F420022C042 = {
 			isa = PBXGroup;
 			children = (
-				49E766521F7E6F420022C042 /* keyn */,
-				49E766691F7E6F420022C042 /* keynTests */,
-				49E766741F7E6F420022C042 /* keynUITests */,
-				4919DAE520123FE50048B060 /* keynNotificationExtension */,
-				611F4B472146B47300B35A89 /* keynCredentialProvider */,
+				49E766521F7E6F420022C042 /* chiff */,
+				49E766691F7E6F420022C042 /* chiffTests */,
+				49E766741F7E6F420022C042 /* chiffUITests */,
+				4919DAE520123FE50048B060 /* chiffNotificationExtension */,
+				611F4B472146B47300B35A89 /* chiffCredentialProvider */,
 				49E766511F7E6F420022C042 /* Products */,
 				2A4E92B609DDA515653F86DA /* Frameworks */,
 			);
@@ -886,16 +886,16 @@
 		49E766511F7E6F420022C042 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				49E766501F7E6F420022C042 /* keyn.app */,
-				49E766661F7E6F420022C042 /* keynTests.xctest */,
-				49E766711F7E6F420022C042 /* keynUITests.xctest */,
-				4919DAE420123FE50048B060 /* keynNotificationExtension.appex */,
-				611F4B452146B47300B35A89 /* keynCredentialProvider.appex */,
+				49E766501F7E6F420022C042 /* chiff.app */,
+				49E766661F7E6F420022C042 /* chiffTests.xctest */,
+				49E766711F7E6F420022C042 /* chiffUITests.xctest */,
+				4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */,
+				611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		49E766521F7E6F420022C042 /* keyn */ = {
+		49E766521F7E6F420022C042 /* chiff */ = {
 			isa = PBXGroup;
 			children = (
 				013438C5220C45F3000685B2 /* AppDelegate */,
@@ -908,10 +908,10 @@
 				499BE4F91FC0953C001038DF /* UI */,
 				4950262C22BBA29400545118 /* Views */,
 			);
-			path = keyn;
+			path = chiff;
 			sourceTree = "<group>";
 		};
-		49E766691F7E6F420022C042 /* keynTests */ = {
+		49E766691F7E6F420022C042 /* chiffTests */ = {
 			isa = PBXGroup;
 			children = (
 				495398F223298BA200567044 /* Resources */,
@@ -921,16 +921,16 @@
 				49983444232131680007BF12 /* MockAPI.swift */,
 				49E7666C1F7E6F420022C042 /* Info.plist */,
 			);
-			path = keynTests;
+			path = chiffTests;
 			sourceTree = "<group>";
 		};
-		49E766741F7E6F420022C042 /* keynUITests */ = {
+		49E766741F7E6F420022C042 /* chiffUITests */ = {
 			isa = PBXGroup;
 			children = (
 				49E766751F7E6F420022C042 /* keynUITests.swift */,
 				49E766771F7E6F420022C042 /* Info.plist */,
 			);
-			path = keynUITests;
+			path = chiffUITests;
 			sourceTree = "<group>";
 		};
 		49E7D3401FC318CD0059D97E /* Models */ = {
@@ -986,7 +986,7 @@
 				49235FFA23152C73003C4A0F /* Montserrat-Medium.ttf */,
 				49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */,
 				49E2FE0A22D390B3001AA622 /* ProductIds.plist */,
-				613C8A16200D213F005C7D61 /* keyn.entitlements */,
+				613C8A16200D213F005C7D61 /* chiff.entitlements */,
 				49191EE5239AA2430034EEE7 /* InfoPlist.strings */,
 				49E766611F7E6F420022C042 /* Info.plist */,
 				491C485720249D3B00397071 /* Assets.xcassets */,
@@ -1040,17 +1040,17 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
-		611F4B472146B47300B35A89 /* keynCredentialProvider */ = {
+		611F4B472146B47300B35A89 /* chiffCredentialProvider */ = {
 			isa = PBXGroup;
 			children = (
 				4955DE632315773500C66996 /* MainInterface.storyboard */,
 				498FF17B22B0F3490072C3AE /* TabBarGradient.swift */,
 				611F4B4D2146B47300B35A89 /* Info.plist */,
-				611F4B4E2146B47300B35A89 /* keynCredentialProvider.entitlements */,
+				611F4B4E2146B47300B35A89 /* chiffCredentialProvider.entitlements */,
 				611F4B482146B47300B35A89 /* CredentialProviderViewController.swift */,
 				611F4B652146C63F00B35A89 /* LoginViewController.swift */,
 			);
-			path = keynCredentialProvider;
+			path = chiffCredentialProvider;
 			sourceTree = "<group>";
 		};
 		61D0BE991FF2A26F0072631D /* Devices */ = {
@@ -1068,9 +1068,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4919DAE320123FE50048B060 /* keynNotificationExtension */ = {
+		4919DAE320123FE50048B060 /* chiffNotificationExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */;
+			buildConfigurationList = 4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "chiffNotificationExtension" */;
 			buildPhases = (
 				4919DAE020123FE50048B060 /* Sources */,
 				4919DAE120123FE50048B060 /* Frameworks */,
@@ -1081,7 +1081,7 @@
 			);
 			dependencies = (
 			);
-			name = keynNotificationExtension;
+			name = chiffNotificationExtension;
 			packageProductDependencies = (
 				4941AF6A25403C2A00CEFDE9 /* FirebaseCore */,
 				4941AF6C25403C2A00CEFDE9 /* FirebaseCrashlytics */,
@@ -1095,12 +1095,12 @@
 				4941B00125406C3200CEFDE9 /* Kronos */,
 			);
 			productName = keynNotificationExtension;
-			productReference = 4919DAE420123FE50048B060 /* keynNotificationExtension.appex */;
+			productReference = 4919DAE420123FE50048B060 /* chiffNotificationExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		49E7664F1F7E6F420022C042 /* keyn */ = {
+		49E7664F1F7E6F420022C042 /* chiff */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */;
+			buildConfigurationList = 49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiff" */;
 			buildPhases = (
 				4931BBF7254174990015277D /* SwiftLint */,
 				49E7664C1F7E6F420022C042 /* Sources */,
@@ -1116,7 +1116,7 @@
 				49214B872103327C00C793DE /* PBXTargetDependency */,
 				611F4B502146B47300B35A89 /* PBXTargetDependency */,
 			);
-			name = keyn;
+			name = chiff;
 			packageProductDependencies = (
 				4941AF172540365B00CEFDE9 /* FirebaseCrashlytics */,
 				4941AF192540365B00CEFDE9 /* FirebaseCore */,
@@ -1132,12 +1132,12 @@
 				4941AFFA25406C1600CEFDE9 /* Kronos */,
 			);
 			productName = athena;
-			productReference = 49E766501F7E6F420022C042 /* keyn.app */;
+			productReference = 49E766501F7E6F420022C042 /* chiff.app */;
 			productType = "com.apple.product-type.application";
 		};
-		49E766651F7E6F420022C042 /* keynTests */ = {
+		49E766651F7E6F420022C042 /* chiffTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynTests" */;
+			buildConfigurationList = 49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffTests" */;
 			buildPhases = (
 				49E766621F7E6F420022C042 /* Sources */,
 				49E766631F7E6F420022C042 /* Frameworks */,
@@ -1148,14 +1148,14 @@
 			dependencies = (
 				49E766681F7E6F420022C042 /* PBXTargetDependency */,
 			);
-			name = keynTests;
+			name = chiffTests;
 			productName = athenaTests;
-			productReference = 49E766661F7E6F420022C042 /* keynTests.xctest */;
+			productReference = 49E766661F7E6F420022C042 /* chiffTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		49E766701F7E6F420022C042 /* keynUITests */ = {
+		49E766701F7E6F420022C042 /* chiffUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynUITests" */;
+			buildConfigurationList = 49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffUITests" */;
 			buildPhases = (
 				49E7666D1F7E6F420022C042 /* Sources */,
 				49E7666E1F7E6F420022C042 /* Frameworks */,
@@ -1166,14 +1166,14 @@
 			dependencies = (
 				49E766731F7E6F420022C042 /* PBXTargetDependency */,
 			);
-			name = keynUITests;
+			name = chiffUITests;
 			productName = athenaUITests;
-			productReference = 49E766711F7E6F420022C042 /* keynUITests.xctest */;
+			productReference = 49E766711F7E6F420022C042 /* chiffUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		611F4B442146B47300B35A89 /* keynCredentialProvider */ = {
+		611F4B442146B47300B35A89 /* chiffCredentialProvider */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "keynCredentialProvider" */;
+			buildConfigurationList = 611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "chiffCredentialProvider" */;
 			buildPhases = (
 				611F4B412146B47300B35A89 /* Sources */,
 				611F4B422146B47300B35A89 /* Frameworks */,
@@ -1184,7 +1184,7 @@
 			);
 			dependencies = (
 			);
-			name = keynCredentialProvider;
+			name = chiffCredentialProvider;
 			packageProductDependencies = (
 				4941AF7A25403C3E00CEFDE9 /* FirebaseCore */,
 				4941AF7C25403C3E00CEFDE9 /* FirebaseCrashlytics */,
@@ -1199,7 +1199,7 @@
 				4941B00825406C3E00CEFDE9 /* Kronos */,
 			);
 			productName = keynCredentialProvider;
-			productReference = 611F4B452146B47300B35A89 /* keynCredentialProvider.appex */;
+			productReference = 611F4B452146B47300B35A89 /* chiffCredentialProvider.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -1280,7 +1280,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "keyn" */;
+			buildConfigurationList = 49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "chiff" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1306,11 +1306,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				49E7664F1F7E6F420022C042 /* keyn */,
-				49E766651F7E6F420022C042 /* keynTests */,
-				49E766701F7E6F420022C042 /* keynUITests */,
-				4919DAE320123FE50048B060 /* keynNotificationExtension */,
-				611F4B442146B47300B35A89 /* keynCredentialProvider */,
+				49E7664F1F7E6F420022C042 /* chiff */,
+				49E766651F7E6F420022C042 /* chiffTests */,
+				49E766701F7E6F420022C042 /* chiffUITests */,
+				4919DAE320123FE50048B060 /* chiffNotificationExtension */,
+				611F4B442146B47300B35A89 /* chiffCredentialProvider */,
 			);
 		};
 /* End PBXProject section */
@@ -1406,7 +1406,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/keyn/SupportFiles",
+				"$(SRCROOT)/chiff/SupportFiles",
 			);
 			name = "Compile localized YAML files to PLIST";
 			outputFileListPaths = (
@@ -1425,7 +1425,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/keyn/SupportFiles",
+				"$(SRCROOT)/chiff/SupportFiles",
 			);
 			name = "Compile localized YAML files to PLIST";
 			outputFileListPaths = (
@@ -1444,7 +1444,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/keyn/SupportFiles",
+				"$(SRCROOT)/chiff/SupportFiles",
 			);
 			name = "Compile localized YAML files to PLIST";
 			outputFileListPaths = (
@@ -1756,22 +1756,22 @@
 /* Begin PBXTargetDependency section */
 		49214B872103327C00C793DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4919DAE320123FE50048B060 /* keynNotificationExtension */;
+			target = 4919DAE320123FE50048B060 /* chiffNotificationExtension */;
 			targetProxy = 49214B862103327C00C793DE /* PBXContainerItemProxy */;
 		};
 		49E766681F7E6F420022C042 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 49E7664F1F7E6F420022C042 /* keyn */;
+			target = 49E7664F1F7E6F420022C042 /* chiff */;
 			targetProxy = 49E766671F7E6F420022C042 /* PBXContainerItemProxy */;
 		};
 		49E766731F7E6F420022C042 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 49E7664F1F7E6F420022C042 /* keyn */;
+			target = 49E7664F1F7E6F420022C042 /* chiff */;
 			targetProxy = 49E766721F7E6F420022C042 /* PBXContainerItemProxy */;
 		};
 		611F4B502146B47300B35A89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 611F4B442146B47300B35A89 /* keynCredentialProvider */;
+			target = 611F4B442146B47300B35A89 /* chiffCredentialProvider */;
 			targetProxy = 611F4B4F2146B47300B35A89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1828,12 +1828,12 @@
 		4919DAEC20123FE50048B060 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiffNotificationExtension/chiffNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
+				INFOPLIST_FILE = chiffNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1855,12 +1855,12 @@
 		4919DAED20123FE50048B060 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = keynNotificationExtension/keynNotificationExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiffNotificationExtension/chiffNotificationExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynNotificationExtension/Info.plist;
+				INFOPLIST_FILE = chiffNotificationExtension/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2000,14 +2000,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiff/SupportFiles/chiff.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
+				INFOPLIST_FILE = chiff/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2052,13 +2052,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = keyn/SupportFiles/keyn.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiff/SupportFiles/chiff.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keyn/SupportFiles/Info.plist;
+				INFOPLIST_FILE = chiff/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2119,7 +2119,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chiff.app/chiff";
 			};
 			name = Debug;
 		};
@@ -2142,7 +2142,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/keyn.app/keyn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chiff.app/chiff";
 			};
 			name = Release;
 		};
@@ -2197,12 +2197,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiffCredentialProvider/chiffCredentialProvider.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
+				INFOPLIST_FILE = chiffCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2226,12 +2226,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_ENTITLEMENTS = keynCredentialProvider/keynCredentialProvider.entitlements;
+				CODE_SIGN_ENTITLEMENTS = chiffCredentialProvider/chiffCredentialProvider.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 35MFYY2JY5;
-				INFOPLIST_FILE = keynCredentialProvider/Info.plist;
+				INFOPLIST_FILE = chiffCredentialProvider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2252,7 +2252,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "keynNotificationExtension" */ = {
+		4919DAEE20123FE50048B060 /* Build configuration list for PBXNativeTarget "chiffNotificationExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4919DAEC20123FE50048B060 /* Debug */,
@@ -2261,7 +2261,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "keyn" */ = {
+		49E7664B1F7E6F420022C042 /* Build configuration list for PBXProject "chiff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49E766781F7E6F420022C042 /* Debug */,
@@ -2270,7 +2270,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keyn" */ = {
+		49E7667A1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiff" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49E7667B1F7E6F420022C042 /* Debug */,
@@ -2279,7 +2279,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynTests" */ = {
+		49E7667D1F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49E7667E1F7E6F420022C042 /* Debug */,
@@ -2288,7 +2288,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "keynUITests" */ = {
+		49E766801F7E6F420022C042 /* Build configuration list for PBXNativeTarget "chiffUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				49E766811F7E6F420022C042 /* Debug */,
@@ -2297,7 +2297,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "keynCredentialProvider" */ = {
+		611F4B542146B47300B35A89 /* Build configuration list for PBXNativeTarget "chiffCredentialProvider" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				611F4B522146B47300B35A89 /* Debug */,
