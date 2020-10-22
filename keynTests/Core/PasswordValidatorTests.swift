@@ -48,7 +48,7 @@ class PasswordValidatorTests: XCTestCase {
         let ppdv1 = TestHelper.samplePPD(minLength: 8, maxLength: nil)
         let validatorV1_1 = PasswordValidator(ppd: ppdv1_1)
         let validatorV1 = PasswordValidator(ppd: ppdv1)
-        let password = String(repeating: "a", count: PasswordValidator.MAX_PASSWORD_LENGTH_BOUND + 1)
+        let password = String(repeating: "a", count: PasswordValidator.maxPasswordLength + 1)
 
         XCTAssertEqual(try validatorV1_1.validate(password: password), false)
         XCTAssertEqual(try validatorV1.validate(password: password), false)
@@ -59,7 +59,7 @@ class PasswordValidatorTests: XCTestCase {
         let ppdv1 = TestHelper.samplePPD(minLength: nil, maxLength: 32)
         let validatorV1_1 = PasswordValidator(ppd: ppdv1_1)
         let validatorV1 = PasswordValidator(ppd: ppdv1)
-        let password = String(repeating: "a", count: PasswordValidator.MIN_PASSWORD_LENGTH_BOUND - 1)
+        let password = String(repeating: "a", count: PasswordValidator.minPasswordLength - 1)
 
         XCTAssertEqual(try validatorV1_1.validate(password: password), false)
         XCTAssertEqual(try validatorV1.validate(password: password), false)

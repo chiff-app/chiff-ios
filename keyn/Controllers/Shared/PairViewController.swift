@@ -8,11 +8,11 @@ import LocalAuthentication
 import OneTimePassword
 import PromiseKit
 
-protocol PairControllerDelegate {
+protocol PairControllerDelegate: AnyObject {
     func sessionCreated(session: Session)
 }
 
-protocol PairContainerDelegate {
+protocol PairContainerDelegate: AnyObject {
     func startLoading()
     func finishLoading()
 }
@@ -59,7 +59,7 @@ class PairViewController: QRViewController {
             return Promise(error: SessionError.invalid)
         }
         return firstly {
-            AuthorizationGuard.authorizePairing(parameters: parameters, reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", delegate: pairContainerDelegate)
+            AuthorizationGuard.shared.authorizePairing(parameters: parameters, reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", delegate: pairContainerDelegate)
         }
     }
 
@@ -68,7 +68,7 @@ class PairViewController: QRViewController {
             return Promise(error: SessionError.invalid)
         }
         return firstly {
-            AuthorizationGuard.createTeam(parameters: parameters, reason: "\("requests.create_team".localized) \(name)", delegate: pairContainerDelegate)
+            AuthorizationGuard.shared.createTeam(parameters: parameters, reason: "\("requests.create_team".localized) \(name)", delegate: pairContainerDelegate)
         }
     }
 

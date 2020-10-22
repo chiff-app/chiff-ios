@@ -18,7 +18,7 @@ struct TeamUser: Codable, AccessControllable {
     let isAdmin: Bool
     let name: String
 
-    static let CRYPTO_CONTEXT = "keynteam"
+    static let cryptoContext = "keynteam"
 
     func encrypt(key: Data) throws -> String {
         let data = try JSONEncoder().encode(self)
@@ -33,8 +33,8 @@ struct TeamUser: Codable, AccessControllable {
         guard let key = key.fromBase64 else {
             throw CodingError.stringDecoding
         }
-        let passwordSeed = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.CRYPTO_CONTEXT, index: 0)
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.CRYPTO_CONTEXT, index: 1)
+        let passwordSeed = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.cryptoContext, index: 0)
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.cryptoContext, index: 1)
         let generator = PasswordGenerator(username: account.username, siteId: site.id, ppd: site.ppd, passwordSeed: passwordSeed)
         let offset = try generator.calculateOffset(index: 0, password: account.password(for: teamPasswordSeed))
         let backupAccount = BackupSharedAccount(id: account.id, username: account.username, sites: account.sites, passwordIndex: 0, passwordOffset: offset, tokenURL: account.tokenURL, tokenSecret: account.tokenSecret, version: account.version)

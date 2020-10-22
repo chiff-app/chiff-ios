@@ -33,7 +33,7 @@ class QuestionnaireController: UINavigationController {
     }
 
     func cancel() {
-        questionnaire?.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
+        questionnaire?.askAgainAt(date: Date(timeInterval: TimeInterval.oneDay, since: Date()))
         questionnaire?.save()
         dismiss(animated: true, completion: nil)
     }

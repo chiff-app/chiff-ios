@@ -25,10 +25,10 @@ enum CryptoError: Error {
 
 class Crypto {
 
-    private let SEED_SIZE = 16
-    private let KEY_SIZE = 32
-    private let CONTEXT_SIZE = 8
-    private let PADDING_BLOCK_SIZE = 200
+    private let seedSize = 16
+    private let keySize = 32
+    private let contextSize = 8
+    private let paddingBlockSize = 200
     static let shared = Crypto()
 
     private let sodium = Sodium()
@@ -38,7 +38,7 @@ class Crypto {
     // MARK: - Key generation functions
 
     func generateSeed(length: Int? = nil) throws -> Data {
-        guard let seed = sodium.randomBytes.buf(length: length ?? SEED_SIZE) else {
+        guard let seed = sodium.randomBytes.buf(length: length ?? seedSize) else {
             throw CryptoError.randomGeneration
         }
 
@@ -46,7 +46,7 @@ class Crypto {
     }
 
     func generateRandomId() throws -> String {
-        guard let seed = sodium.randomBytes.buf(length: KEY_SIZE), let id = sodium.utils.bin2hex(seed) else {
+        guard let seed = sodium.randomBytes.buf(length: keySize), let id = sodium.utils.bin2hex(seed) else {
             throw CryptoError.randomGeneration
         }
         return id
@@ -64,7 +64,7 @@ class Crypto {
         }
 
         // This derives a subkey from the seed for a given index and context.
-        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: KEY_SIZE, context: context) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: seedHash, index: keyType.rawValue, length: keySize, context: context) else {
             throw CryptoError.keyDerivation
         }
 
@@ -106,7 +106,7 @@ class Crypto {
         guard context.count <= 8 else {
             throw CryptoError.contextOverflow
         }
-        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: index, length: KEY_SIZE, context: context) else {
+        guard let key = sodium.keyDerivation.derive(secretKey: keyData.bytes, index: index, length: keySize, context: context) else {
             throw CryptoError.keyDerivation
         }
 
@@ -184,7 +184,7 @@ class Crypto {
 
     func encrypt(_ plaintext: Data, key: Data) throws -> Data {
         var data = plaintext.bytes
-        sodium.utils.pad(bytes: &data, blockSize: PADDING_BLOCK_SIZE)
+        sodium.utils.pad(bytes: &data, blockSize: paddingBlockSize)
         guard let ciphertext: Bytes = sodium.box.seal(message: data, beforenm: key.bytes) else {
             throw CryptoError.encryption
         }
@@ -201,7 +201,7 @@ class Crypto {
             throw CryptoError.decryption
         }
         if version > 0 {
-            sodium.utils.unpad(bytes: &plaintext, blockSize: PADDING_BLOCK_SIZE)
+            sodium.utils.unpad(bytes: &plaintext, blockSize: paddingBlockSize)
         }
 
         return (plaintext.data, nonce)

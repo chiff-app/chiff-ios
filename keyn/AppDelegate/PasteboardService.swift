@@ -30,7 +30,7 @@ class PasteboardService: NSObject, UIApplicationDelegate {
             backgroundTask = UIBackgroundTaskIdentifier.invalid
         })
 
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + Properties.PASTEBOARD_TIMEOUT) {
+        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + Properties.pasteboardTimeout) {
             if pasteboardVersion == pasteboard.changeCount {
                 pasteboard.string = ""
             }

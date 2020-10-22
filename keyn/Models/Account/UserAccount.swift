@@ -144,7 +144,7 @@ struct UserAccount: Account, Equatable {
             return
         }
         switch webAuthn.algorithm {
-        case .EdDSA:
+        case .edDSA:
             try Keychain.shared.delete(id: id, service: .webauthn)
         case .ECDSA:
             try Keychain.shared.deleteKey(id: id)

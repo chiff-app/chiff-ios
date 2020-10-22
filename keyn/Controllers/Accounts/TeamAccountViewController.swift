@@ -9,7 +9,7 @@
 import UIKit
 import PromiseKit
 
-protocol AccessControlDelegate {
+protocol AccessControlDelegate: AnyObject {
     func setObjects(objects: [AccessControllable], type: AccessControlType)
 }
 
@@ -64,14 +64,14 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             switch selectedRoles.count {
-            case let x where x == 1: cell.textLabel?.text = selectedRoles.first!.name
-            case let x where x > 1: cell.textLabel?.text = String(format: "accounts.number_of_roles".localized, "\(selectedRoles.count)")
+            case let roleCount where roleCount == 1: cell.textLabel?.text = selectedRoles.first!.name
+            case let roleCount where roleCount > 1: cell.textLabel?.text = String(format: "accounts.number_of_roles".localized, "\(selectedRoles.count)")
             default: cell.textLabel?.text = "accounts.add_role".localized
             }
         } else {
             switch selectedUsers.count {
-            case let x where x == 1: cell.textLabel?.text = selectedUsers.first!.name
-            case let x where x > 1: cell.textLabel?.text = String(format: "accounts.number_of_users".localized, "\(selectedUsers.count)")
+            case let userCount where userCount == 1: cell.textLabel?.text = selectedUsers.first!.name
+            case let userCount where userCount > 1: cell.textLabel?.text = String(format: "accounts.number_of_users".localized, "\(selectedUsers.count)")
             default: cell.textLabel?.text = "accounts.add_user".localized
             }
         }

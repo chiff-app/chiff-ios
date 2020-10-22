@@ -195,7 +195,7 @@ extension Date {
 }
 
 extension TimeInterval {
-    static let ONE_DAY: TimeInterval = 3600 * 24
+    static let oneDay: TimeInterval = 3600 * 24
 }
 
 // MARK: - Notifications
@@ -572,9 +572,9 @@ extension UIPrintPageRenderer {
         UIGraphicsBeginPDFContextToData(pdfData, self.paperRect, nil)
         self.prepare(forDrawingPages: NSRange(location: 0, length: self.numberOfPages))
         let bounds = UIGraphicsGetPDFContextBounds()
-        for i in 0..<self.numberOfPages {
+        for page in 0..<self.numberOfPages {
             UIGraphicsBeginPDFPage()
-            self.drawPage(at: i, in: bounds)
+            self.drawPage(at: page, in: bounds)
         }
         UIGraphicsEndPDFContext()
         return pdfData

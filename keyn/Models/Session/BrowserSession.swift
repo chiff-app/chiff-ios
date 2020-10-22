@@ -79,7 +79,7 @@ struct BrowserSession: Session {
 
     func cancelRequest(reason: KeynMessageType, browserTab: Int) -> Promise<[String: Any]> {
         do {
-            let response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: reason, pk: nil, d: nil, y: nil, i: nil)
+            let response = KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: reason, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             return try sendToVolatileQueue(ciphertext: ciphertext)
@@ -99,17 +99,17 @@ struct BrowserSession: Session {
         var response: KeynCredentialsResponse?
         switch type {
         case .change:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: newPassword, b: browserTab, a: account.id, o: nil, t: .change, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: newPassword, browserTab: browserTab, accountId: account.id, otp: nil, type: .change, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         case .add, .addAndLogin, .updateAccount:
-            response = KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: type, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: type, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         case .login, .addToExisting:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: try account.oneTimePasswordToken()?.currentPassword, type: type, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         case .getDetails:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: try account.oneTimePasswordToken()?.currentPassword, t: type, pk: nil, d: nil, y: try account.notes(context: context), i: nil)
+            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: try account.oneTimePasswordToken()?.currentPassword, type: type, pubKey: nil, accounts: nil, notes: try account.notes(context: context), teamId: nil)
         case .fill:
-            response = KeynCredentialsResponse(u: nil, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .fill, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: nil, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .fill, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         case .register:
-            response = KeynCredentialsResponse(u: account.username, p: try account.password(context: context), s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .register, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .register, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         default:
             throw SessionError.unknownType
         }
@@ -123,14 +123,14 @@ struct BrowserSession: Session {
 
     // Simply acknowledge that the request is received
     mutating func sendBulkAddResponse(browserTab: Int, context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .addBulk, pk: nil, d: nil, y: nil, i: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .addBulk, pubKey: nil, accounts: nil, notes: nil, teamId: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
     }
 
     mutating func sendBulkLoginResponse(browserTab: Int, accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(u: nil, p: nil, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .bulkLogin, pk: nil, d: accounts, y: nil, i: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .bulkLogin, pubKey: nil, accounts: accounts, notes: nil, teamId: nil))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
@@ -138,7 +138,7 @@ struct BrowserSession: Session {
 
     mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext, organisationKey: String?) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(u: id, p: seed, s: nil, n: nil, g: nil, np: nil, b: browserTab, a: nil, o: organisationKey, t: .createOrganisation, pk: nil, d: nil, y: nil, i: teamId))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(username: id, password: seed, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: organisationKey, type: .createOrganisation, pubKey: nil, accounts: nil, notes: nil, teamId: teamId))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
@@ -151,9 +151,9 @@ struct BrowserSession: Session {
         var response: KeynCredentialsResponse!
         switch type {
         case .webauthnCreate:
-            response = try KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: account.webAuthn!.algorithm, np: nil, b: browserTab, a: account.id, o: nil, t: .webauthnCreate, pk: account.webAuthnPubKey(), d: nil, y: nil, i: nil)
+            response = try KeynCredentialsResponse(username: nil, password: nil, signature: signature, counter: counter, algorithm: account.webAuthn!.algorithm, newPassword: nil, browserTab: browserTab, accountId: account.id, otp: nil, type: .webauthnCreate, pubKey: account.webAuthnPubKey(), accounts: nil, notes: nil, teamId: nil)
         case .webauthnLogin:
-            response = KeynCredentialsResponse(u: nil, p: nil, s: signature, n: counter, g: nil, np: nil, b: browserTab, a: nil, o: nil, t: .webauthnLogin, pk: nil, d: nil, y: nil, i: nil)
+            response = KeynCredentialsResponse(username: nil, password: nil, signature: signature, counter: counter, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .webauthnLogin, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         default:
             throw SessionError.unknownType
         }

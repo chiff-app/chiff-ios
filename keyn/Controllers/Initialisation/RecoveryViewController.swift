@@ -132,21 +132,21 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         activityViewContainer.isHidden = false
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true)
-        }.then { result -> Promise<(Int, Int, Int, Int)> in
+        }.then { result -> Promise<(RecoveryResult, RecoveryResult)> in
             guard let context = result else {
                 throw RecoveryError.unauthenticated
             }
             return Seed.recover(context: context, mnemonic: self.mnemonic)
         }.ensure(on: .main) {
             self.activityViewContainer.isHidden = true
-        }.done { accounts, accountsFailed, teams, teamsFailed in
+        }.done { (accountResult, teamResult) in
             var message: String?
-            if accountsFailed > 0 && teamsFailed > 0 {
-                message = String(format: "errors.failed_teams_and_accounts_message".localized, accountsFailed, accounts, teamsFailed, teams)
-            } else if accountsFailed > 0 {
-                message = String(format: "errors.failed_accounts_message".localized, accountsFailed, accounts)
-            } else if teamsFailed > 0 {
-                message = String(format: "errors.failed_teams_message".localized, teamsFailed, teams)
+            if accountResult.failed > 0 && teamResult.failed > 0 {
+                message = String(format: "errors.failed_teams_and_accounts_message".localized, accountResult.failed, accountResult.total, teamResult.failed, teamResult.total)
+            } else if accountResult.failed > 0 {
+                message = String(format: "errors.failed_accounts_message".localized, accountResult.failed, accountResult.total)
+            } else if teamResult.failed > 0 {
+                message = String(format: "errors.failed_teams_message".localized, teamResult.failed, teamResult.total)
             }
             if let message = message {
                 let alert = UIAlertController(title: "errors.failed_accounts_title".localized, message: message, preferredStyle: .alert)

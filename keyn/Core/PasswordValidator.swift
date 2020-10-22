@@ -6,11 +6,11 @@ import Foundation
 
 class PasswordValidator {
 
-    static let FALLBACK_PASSWORD_LENGTH = 22
-    static let MIN_PASSWORD_LENGTH_BOUND = 8
-    static let MAX_PASSWORD_LENGTH_BOUND = 50
-    static let OPTIMAL_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
-    static let MAXIMAL_CHARACTER_SET = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" // All printable ASCII characters
+    static let fallbackPasswordLength = 22
+    static let minPasswordLength = 8
+    static let maxPasswordLength = 50
+    static let optimalCharacterSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321"
+    static let allCharacterSet = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" // All printable ASCII characters
     let ppd: PPD?
     var characterSetDictionary = [String: String]()
     var characters = ""
@@ -42,7 +42,7 @@ class PasswordValidator {
                 self.characters = String(chars.sorted())
             }
         } else {
-            characters += PasswordValidator.OPTIMAL_CHARACTER_SET
+            characters += PasswordValidator.optimalCharacterSet
         }
     }
 
@@ -76,12 +76,12 @@ class PasswordValidator {
     }
 
     func validateMaxLength(password: String) -> Bool {
-        let maxLength = ppd?.properties?.maxLength ?? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND
+        let maxLength = ppd?.properties?.maxLength ?? PasswordValidator.maxPasswordLength
         return password.count <= maxLength
     }
 
     func validateMinLength(password: String) -> Bool {
-        let minLength = ppd?.properties?.minLength ?? PasswordValidator.MIN_PASSWORD_LENGTH_BOUND
+        let minLength = ppd?.properties?.minLength ?? PasswordValidator.minPasswordLength
         return password.count >= minLength
     }
 
@@ -185,7 +185,7 @@ class PasswordValidator {
 
         for value in password.utf8 {
             // We use OPTIMAL_CHARACTER_SET because the order only makes sense for letters and numbers
-            if value == lastValue + 1 && PasswordValidator.OPTIMAL_CHARACTER_SET.utf8.contains(value) {
+            if value == lastValue + 1 && PasswordValidator.optimalCharacterSet.utf8.contains(value) {
                 counter += 1
             } else {
                 counter = 1

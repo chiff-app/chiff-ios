@@ -16,9 +16,9 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint! // Should be raised to 1000 on keyboard show
     @IBOutlet weak var bottomDistanceConstraint: NSLayoutConstraint!
 
-    private let FRAME_HEIGHT: CGFloat = 480
-    private let HEIGHT_OFFSET: CGFloat = 68
-    private let BOTTOM_OFFSET: CGFloat = 10
+    private let frameHeight: CGFloat = 480
+    private let heightOffset: CGFloat = 68
+    private let bottomOffset: CGFloat = 10
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
 
@@ -39,7 +39,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
 
-        self.constraintContentHeight.constant = self.view.frame.size.height - HEIGHT_OFFSET
+        self.constraintContentHeight.constant = self.view.frame.size.height - heightOffset
 
         navigationItem.leftBarButtonItem?.setColor(color: .white)
         navigationItem.rightBarButtonItem?.setColor(color: .white)
@@ -110,7 +110,7 @@ class FeedbackViewController: UIViewController, UITextFieldDelegate, UITextViewD
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {
                 // scroll to the position above bottom 10 points
-                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.BOTTOM_OFFSET)
+                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.bottomOffset)
             })
         }
     }

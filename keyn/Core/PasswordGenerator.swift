@@ -17,7 +17,7 @@ enum PasswordGenerationError: Error {
 /// Deterministically passwords with or without a PPD.
 class PasswordGenerator {
 
-    static let CRYPTO_CONTEXT = "keynpass"
+    static let cryptoContext = "keynpass"
 
     let seed: Data
     let username: String
@@ -59,7 +59,7 @@ class PasswordGenerator {
                 }).sorted()
             }
         } else {
-            self.characters = PasswordValidator.OPTIMAL_CHARACTER_SET.sorted()
+            self.characters = PasswordValidator.optimalCharacterSet.sorted()
         }
     }
 
@@ -76,7 +76,7 @@ class PasswordGenerator {
      */
     func generate(index passwordIndex: Int, offset: [Int]?) throws -> (String, Int) {
         let length = self.length(isCustomPassword: offset != nil)
-        guard length >= PasswordValidator.MIN_PASSWORD_LENGTH_BOUND else {
+        guard length >= PasswordValidator.minPasswordLength else {
             throw PasswordGenerationError.tooShort
         }
 
@@ -105,7 +105,7 @@ class PasswordGenerator {
      - Returns: The password offset as list of numbers, where each number is byte: `0 <= n <= 255`.
      */
     func calculateOffset(index passwordIndex: Int, password: String) throws -> [Int] {
-        let chars = PasswordValidator.MAXIMAL_CHARACTER_SET.sorted()
+        let chars = PasswordValidator.allCharacterSet.sorted()
         let length = self.length(isCustomPassword: true)
         let validator = PasswordValidator(ppd: ppd)
         guard password.count <= 100 else {
@@ -117,7 +117,7 @@ class PasswordGenerator {
 
         let key = try generateKey(index: passwordIndex)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
-        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
+        let byteLength = roundUp(bitLength, (length * 8)) / 8
         let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
 
         let characters = Array(password)
@@ -132,30 +132,30 @@ class PasswordGenerator {
 
     /// The password length. Depends on PPD or default value if no PPD is provided
     private func length(isCustomPassword: Bool) -> Int {
-        var length = isCustomPassword ? PasswordValidator.MAX_PASSWORD_LENGTH_BOUND : PasswordValidator.FALLBACK_PASSWORD_LENGTH
-        let chars = isCustomPassword ? PasswordValidator.MAXIMAL_CHARACTER_SET.sorted() : characters
+        var length = isCustomPassword ? PasswordValidator.maxPasswordLength : PasswordValidator.fallbackPasswordLength
+        let chars = isCustomPassword ? PasswordValidator.allCharacterSet.sorted() : characters
         if let maxLength = ppd?.properties?.maxLength {
-            length = maxLength < PasswordValidator.MAX_PASSWORD_LENGTH_BOUND ? min(maxLength, PasswordValidator.MAX_PASSWORD_LENGTH_BOUND) : Int(ceil(128/log2(Double(chars.count))))
+            length = maxLength < PasswordValidator.maxPasswordLength ? min(maxLength, PasswordValidator.maxPasswordLength) : Int(ceil(128/log2(Double(chars.count))))
         }
         return length
     }
 
     private func generatePasswordCandidate(index passwordIndex: Int, length: Int, offset: [Int]?) throws -> String {
-        let chars = offset != nil ? PasswordValidator.MAXIMAL_CHARACTER_SET.sorted() : characters
+        let chars = offset != nil ? PasswordValidator.allCharacterSet.sorted() : characters
         let key = try generateKey(index: passwordIndex)
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
-        let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
+        let byteLength = roundUp(bitLength, (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
         let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
         let modulus = offset == nil ? chars.count : chars.count + 1
         let offset = offset ?? [Int](repeatElement(0, count: length))
 
-        return (0..<length).reduce("") { (pw, index) -> String in
+        return (0..<length).reduce("") { (password, index) -> String in
             let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)) %% modulus } + offset[index]) %% modulus
-            return charIndex == chars.count ? pw : pw + String(chars[charIndex])
+            return charIndex == chars.count ? password : password + String(chars[charIndex])
         }
     }
 
-    private func roundUp(n: Int, m: Int) -> Int {
+    private func roundUp(_ n: Int, _ m: Int) -> Int {
         return n >= 0 ? ((n + m - 1) / m) * m : (n / m) * m
     }
 
@@ -163,7 +163,7 @@ class PasswordGenerator {
         var value: UInt64 = 0
         _ = withUnsafeMutableBytes(of: &value, { version == 0 ? siteId.sha256.data.copyBytes(to: $0, from: 0..<8) : siteId.sha256Data.copyBytes(to: $0, from: 0..<8) })
 
-        let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
+        let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.cryptoContext, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(version == 0 ? username.sha256.prefix(8) : username.sha256Data.base64.prefix(8)), index: UInt64(passwordIndex))
         return key
     }

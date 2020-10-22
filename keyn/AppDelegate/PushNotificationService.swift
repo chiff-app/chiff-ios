@@ -14,8 +14,6 @@ import os.log
  */
 class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
-    private let PASSWORD_CHANGE_CONFIRMATION_POLLING_ATTEMPTS = 3
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UNUserNotificationCenter.current().delegate = self
         handlePendingNotifications()
@@ -112,7 +110,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
      */
     private func handleNotification(_ notification: UNNotification) -> UNNotificationPresentationOptions {
         switch notification.request.content.categoryIdentifier {
-        case NotificationCategory.ONBOARDING_NUDGE:
+        case NotificationCategory.onboardingNudge:
             DispatchQueue.main.async {
                 if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
                     vc.selectedIndex = 1
@@ -160,7 +158,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         }
 
         DispatchQueue.main.async {
-            AuthorizationGuard.launchRequestView(with: keynRequest)
+            AuthorizationGuard.shared.launchRequestView(with: keynRequest)
         }
 
         // This is disabled for now, because it causes requests to not appear if time of phone and device are not in sync

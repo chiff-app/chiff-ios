@@ -76,7 +76,7 @@ class RootViewController: UITabBarController {
             }))
         }
         alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
-            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
+            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.oneDay, since: Date()))
             questionnaire.save()
             Logger.shared.analytics(.questionnairePostponed)
         }))

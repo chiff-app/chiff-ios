@@ -46,7 +46,7 @@ struct TeamSession: Session {
         return Properties.getSharedAccountCount(teamId: id)
     }
 
-    static let CRYPTO_CONTEXT = "keynteam"
+    static let cryptoContext = "keynteam"
     static var signingService: KeychainService = .signingTeamSessionKey
     static var encryptionService: KeychainService = .sharedTeamSessionKey
     static var sessionCountFlag: String = "teamSessionCount"
@@ -104,9 +104,9 @@ struct TeamSession: Session {
     }
 
     static func createTeamSessionKeys(seed: Data) throws -> (Data, Data, KeyPair) {
-        let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 0) // Used to generate passwords
-        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 1) // Used to encrypt messages for this session
-        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: CRYPTO_CONTEXT, index: 2)) // Used to sign messages for the server
+        let passwordSeed =  try Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 0) // Used to generate passwords
+        let encryptionKey = try Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 1) // Used to encrypt messages for this session
+        let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.deriveKey(keyData: seed, context: cryptoContext, index: 2)) // Used to sign messages for the server
         return (passwordSeed, encryptionKey, signingKeyPair)
     }
 
@@ -358,6 +358,18 @@ struct TeamSession: Session {
             let (seed, _) = try Crypto.shared.decrypt(ciphertext, key: self.sharedKey(), version: self.version)
             return seed
         }.log("Error getting admin seed")
+    }
+
+    func getTeam() -> Promise<Team> {
+        return firstly {
+            getTeamSeed()
+        }.map { seed in
+            try Team.createTeamSeeds(seed: seed)
+        }.then { (teamEncryptionKey, teamKeyPair, teamPasswordSeed) -> Promise<Team> in
+            API.shared.signedRequest(method: .get, message: nil, path: "teams/\(self.teamId)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
+                .map { try Team(id: teamId, teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
+            }
+        }
     }
 
 }

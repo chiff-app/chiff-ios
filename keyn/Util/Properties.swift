@@ -248,7 +248,7 @@ struct Properties {
         }
     }
 
-    static let PASTEBOARD_TIMEOUT = 60.0 // seconds
+    static let pasteboardTimeout = 60.0 // seconds
 
     static var firstLaunchTimestamp: Timestamp {
         let installTimestamp = "installTimestamp"

@@ -11,11 +11,11 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
     @IBOutlet weak var constraintContentHeight: NSLayoutConstraint! // Should be raised to 1000 on keyboard show
     @IBOutlet weak var constraintMiddleDistance: NSLayoutConstraint!
 
-    private let FRAME_HEIGHT: CGFloat = 480
-    private let HEIGHT_OFFSET: CGFloat = 64
-    private let BOTTOM_OFFSET: CGFloat = 10
-    private let HIGH_LAYOUT_PRIORITY: UILayoutPriority = UILayoutPriority(999)
-    private let LOW_LAYOUT_PRIORITY: UILayoutPriority = UILayoutPriority(990)
+    private let frameHeight: CGFloat = 480
+    private let heightOffset: CGFloat = 64
+    private let bottomOffset: CGFloat = 10
+    private let hightLayoutPriority: UILayoutPriority = UILayoutPriority(999)
+    private let lowLayoutPriority: UILayoutPriority = UILayoutPriority(990)
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
 
@@ -23,10 +23,10 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
         super.viewDidLoad()
         textView.delegate = self
 
-        if self.view.frame.size.height > FRAME_HEIGHT {
-            self.constraintContentHeight.constant = self.view.frame.size.height - HEIGHT_OFFSET
+        if self.view.frame.size.height > frameHeight {
+            self.constraintContentHeight.constant = self.view.frame.size.height - heightOffset
         } else {
-            constraintMiddleDistance.priority = HIGH_LAYOUT_PRIORITY
+            constraintMiddleDistance.priority = hightLayoutPriority
         }
 
         view.layoutIfNeeded()
@@ -58,7 +58,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             keyboardHeight = keyboardSize.height
             // so increase contentView's height by keyboard height
             UIView.animate(withDuration: 0.3, animations: {
-                self.constraintMiddleDistance.priority = self.HIGH_LAYOUT_PRIORITY
+                self.constraintMiddleDistance.priority = self.hightLayoutPriority
                 self.constraintContentHeight.constant += (self.keyboardHeight)
             })
 
@@ -71,7 +71,7 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {
                 // scroll to the position above bottom 10 points
-                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.BOTTOM_OFFSET)
+                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.bottomOffset)
             })
         }
     }
@@ -82,8 +82,8 @@ class TextQuestionViewController: QuestionViewController, UITextViewDelegate {
         }
 
         UIView.animate(withDuration: 0.3) {
-            if self.view.frame.size.height > self.FRAME_HEIGHT {
-                self.constraintMiddleDistance.priority = self.LOW_LAYOUT_PRIORITY
+            if self.view.frame.size.height > self.frameHeight {
+                self.constraintMiddleDistance.priority = self.lowLayoutPriority
             }
             self.constraintContentHeight.constant -= (self.keyboardHeight)
             self.scrollView.contentOffset = self.lastOffset

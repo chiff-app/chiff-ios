@@ -16,8 +16,8 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
 
     var account: Account!
 
-    private let KEYBOARD_OFFSET: CGFloat = 80
-    private let BOTTOM_OFFSET: CGFloat = 10
+    private let keyboardOffset: CGFloat = 80
+    private let bottomOffset: CGFloat = 10
     private var lastOffset: CGPoint!
     private var keyboardHeight: CGFloat!
 
@@ -57,7 +57,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         }
 
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            keyboardHeight = keyboardSize.height - self.KEYBOARD_OFFSET
+            keyboardHeight = keyboardSize.height - self.keyboardOffset
             // so increase contentView's height by keyboard height
             UIView.animate(withDuration: 0.3, animations: {
                 self.constraintContentHeight.constant += self.keyboardHeight
@@ -68,7 +68,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
             // set new offset for scroll view
             UIView.animate(withDuration: 0.3, animations: {
                 // scroll to the position above bottom 10 points
-                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.BOTTOM_OFFSET)
+                self.scrollView.contentOffset = CGPoint(x: self.lastOffset.x, y: distanceToBottom + self.bottomOffset)
             })
         }
     }

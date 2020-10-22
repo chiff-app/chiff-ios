@@ -14,7 +14,7 @@ protocol TokenController {
 
 class OTPViewController: QRViewController, TokenController {
 
-    private let OTP_URL_SCHEME = "otpauth"
+    private let otpURLScheme = "otpauth"
 
     @IBOutlet weak var instructionLabel: UILabel!
 
@@ -33,7 +33,7 @@ class OTPViewController: QRViewController, TokenController {
     }
 
     override func handleURL(url: URL) throws {
-        guard let scheme = url.scheme, scheme == OTP_URL_SCHEME else {
+        guard let scheme = url.scheme, scheme == otpURLScheme else {
             showAlert(message: "errors.session_invalid".localized, handler: errorHandler)
             return
         }
@@ -44,7 +44,7 @@ class OTPViewController: QRViewController, TokenController {
             return
         }
         firstly {
-            try AuthorizationGuard.addOTP(token: token!, account: account)
+            try AuthorizationGuard.shared.addOTP(token: token!, account: account)
         }.done(on: .main) {
             try self.account.setOtp(token: self.token!)
             self.performSegue(withIdentifier: "UnwindFromOTP", sender: self)

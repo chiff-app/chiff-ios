@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SitesDelegate {
+protocol SitesDelegate: AnyObject {
     func updateAccount(account: UserAccount)
 }
 

@@ -140,20 +140,38 @@ struct BackupSharedAccount: Codable, Equatable {
 }
 
 struct KeynCredentialsResponse: Codable {
-    let u: String?            // Username
-    let p: String?            // Password
-    let s: String?            // Signagure
-    let n: Int?               // Counter
-    let g: WebAuthnAlgorithm? // Algorithm COSE identifier
-    let np: String?           // New password (for reset only! When registering p will be set)
-    let b: Int                // Browser tab id
-    let a: String?            // Account id (Only used with changePasswordRequests
-    let o: String?            // OTP code
-    let t: KeynMessageType    // One of the message types Keyn understands
-    let pk: String?           // Webauthn pubkey
-    let d: [Int: BulkLoginAccount?]?
-    let y: String?            // Notes
-    let i: String?            // Team id
+    let username: String?
+    let password: String?
+    let signature: String?
+    let counter: Int?
+    let algorithm: WebAuthnAlgorithm?
+    let newPassword: String?            // For reset only! When registering p will be set)
+    let browserTab: Int
+    let accountId: String?              // Only used with changePasswordRequests
+    let otp: String?
+    let type: KeynMessageType
+    let pubKey: String?
+    let accounts: [Int: BulkLoginAccount?]?
+    let notes: String?
+    let teamId: String?
+
+    enum CodingKeys: String, CodingKey {
+        case username = "u"
+        case password = "p"
+        case signature = "s"
+        case counter = "n"
+        case algorithm = "g"
+        case newPassword = "np"
+        case browserTab = "b"
+        case accountId = "a"
+        case otp = "o"
+        case type = "t"
+        case pubKey = "pk"
+        case accounts = "d"
+        case notes = "y"
+        case teamId = "i"
+    }
+
 }
 
 enum KeyType: UInt64 {
