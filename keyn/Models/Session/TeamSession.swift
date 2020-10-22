@@ -189,7 +189,7 @@ struct TeamSession: Session {
     mutating func updateSharedAccounts(accounts: [String: String]) throws -> Int {
         var changed = 0
         let key = try self.passwordSeed()
-        #warning("TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better")
+        //TODO: If an account already exists because of an earlier session, now throws keyn.KeychainError.unhandledError(-25299). Handle better
         var currentAccounts = try SharedAccount.all(context: nil, label: self.id)
         for (id, data) in accounts {
             currentAccounts.removeValue(forKey: id)
@@ -205,7 +205,7 @@ struct TeamSession: Session {
             }
         }
         for account in currentAccounts.values {
-            #warning("Check how to safely delete here in the background")
+            // TODO: Check how to safely delete here in the background
             try account.deleteSync()
             changed += 1
         }
