@@ -42,7 +42,7 @@ struct TeamAccount: BaseAccount {
         self.compromised = false
 
         if let token = try account.oneTimePasswordToken() {
-            guard case .timer(_) = token.generator.factor else {
+            guard case .timer = token.generator.factor else {
                 throw AccountError.notTOTP
             }
             self.tokenURL = try token.toURL()
@@ -77,7 +77,7 @@ struct TeamAccount: BaseAccount {
 
 extension TeamAccount: Hashable {
 
-    static func == (lhs: TeamAccount, rhs:TeamAccount) -> Bool {
+    static func == (lhs: TeamAccount, rhs: TeamAccount) -> Bool {
         return lhs.id == rhs.id
     }
 
@@ -87,7 +87,7 @@ extension TeamAccount: Hashable {
 }
 
 extension TeamAccount: Codable {
-    
+
     enum CodingKeys: CodingKey {
         case id
         case username

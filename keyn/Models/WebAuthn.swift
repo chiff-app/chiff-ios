@@ -42,13 +42,13 @@ struct WebAuthn: Codable, Equatable {
         self.algorithm = acceptedAlgorithm
         self.id = id
         var salt: UInt64 = 0
-        _ = try withUnsafeMutableBytes(of: &salt, { try Crypto.shared.generateSeed(length: 8).copyBytes(to: $0) } )
+        _ = try withUnsafeMutableBytes(of: &salt, { try Crypto.shared.generateSeed(length: 8).copyBytes(to: $0) })
         self.salt = salt
     }
 
     func generateKeyPair(accountId: String, context: LAContext?) throws -> KeyPair {
         var value: UInt64 = 0
-        _ = withUnsafeMutableBytes(of: &value, { id.sha256Data.copyBytes(to: $0, from: 0..<8) } )
+        _ = withUnsafeMutableBytes(of: &value, { id.sha256Data.copyBytes(to: $0, from: 0..<8) })
         let siteKey = try Crypto.shared.deriveKey(keyData: try Seed.getWebAuthnSeed(context: context), context: Self.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(accountId.sha256Data.base64.prefix(8)), index: salt)
         var keyPair: KeyPair
@@ -168,6 +168,5 @@ struct WebAuthn: Codable, Equatable {
         data.append(UInt8((counter >> 0) & 0xff))
         return data
     }
-    
-}
 
+}

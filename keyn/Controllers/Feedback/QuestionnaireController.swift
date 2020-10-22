@@ -5,11 +5,11 @@
 import UIKit
 
 class QuestionnaireController: UINavigationController {
-    
+
     var questionnaire: Questionnaire!
-    
+
     private var index = 0
-   
+
     override func viewDidLoad() {
         super.viewDidLoad()
         guard questionnaire != nil else {
@@ -21,23 +21,23 @@ class QuestionnaireController: UINavigationController {
             vc.introduction = questionnaire?.introduction
         }
     }
-    
+
     func previousQuestion() {
         self.index -= 1
     }
-    
+
     func submitQuestion(index: Int, question: Question?) {
         if let question = question {
            questionnaire.questions[index] = question
         }
     }
-    
+
     func cancel() {
         questionnaire?.askAgainAt(date: Date(timeInterval: TimeInterval.ONE_DAY, since: Date()))
         questionnaire?.save()
         dismiss(animated: true, completion: nil)
     }
-    
+
     func nextQuestion() {
         let storyboard: UIStoryboard = UIStoryboard.get(.feedback)
         if index < questionnaire.questions.count {
@@ -64,7 +64,7 @@ class QuestionnaireController: UINavigationController {
             pushViewController(viewController, animated: true)
         }
     }
-    
+
     func finish() {
         questionnaire.submit()
         dismiss(animated: true, completion: nil)

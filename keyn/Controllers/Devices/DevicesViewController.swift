@@ -22,7 +22,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
         nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
         nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
-        nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (notification) in
+        nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (_) in
             DispatchQueue.main.async {
                 self.updateUi()
             }
@@ -48,12 +48,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func deleteDevice(_ sender: UIButton) {
-        let buttonPosition = sender.convert(CGPoint(), to:tableView)
-        if let indexPath = tableView.indexPathForRow(at:buttonPosition) {
+        let buttonPosition = sender.convert(CGPoint(), to: tableView)
+        if let indexPath = tableView.indexPathForRow(at: buttonPosition) {
             let session = sessions[indexPath.row]
             let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
                 self.deleteSession(session: self.sessions[indexPath.row], indexPath: indexPath)
             }))
             self.present(alert, animated: true, completion: nil)
@@ -81,7 +81,6 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return sessions.count
     }
 
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath)
     }
@@ -96,7 +95,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             Logger.shared.warning("Unknown browser")
         }
     }
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let session = sessions[indexPath.row]
         if session is BrowserSession {
@@ -106,7 +105,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         return false
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let session = sessions[indexPath.row]
         if session is BrowserSession {
@@ -115,7 +114,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             deleteSession(at: indexPath)
         }
     }
-    
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -128,12 +127,12 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - Actions
-    
+
     func deleteSession(at indexPath: IndexPath) {
         let session = sessions[indexPath.row]
         let alert = UIAlertController(title: "\("popups.responses.delete".localized) \(session.title)?", message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
             self.deleteSession(session: session, indexPath: indexPath)
         }))
         self.present(alert, animated: true, completion: nil)
@@ -218,13 +217,13 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    private func addAddButton(){
+    private func addAddButton() {
         guard self.navigationItem.rightBarButtonItem == nil else {
             return
         }
 
         let button = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button.setImage(UIImage(named:"add_button"), for: .normal)
+        button.setImage(UIImage(named: "add_button"), for: .normal)
         button.addTarget(self, action: #selector(showAddSession), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = button.barButtonItem
     }

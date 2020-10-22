@@ -172,10 +172,10 @@ struct BrowserSession: Session {
         return firstly {
             API.shared.signedRequest(method: .get, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil, parameters: nil)
         }.map { result in
-            guard let sqsMessages = result["messages"] as? [[String:String]] else {
+            guard let sqsMessages = result["messages"] as? [[String: String]] else {
                throw CodingError.missingData
             }
-            return try sqsMessages.map() { message in
+            return try sqsMessages.map { message in
                 guard let body = message[MessageParameter.body], let receiptHandle = message[MessageParameter.receiptHandle] else {
                     throw CodingError.missingData
                 }
@@ -194,7 +194,7 @@ struct BrowserSession: Session {
             API.shared.signedRequest(method: .delete, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil, parameters: nil)
         }.asVoid().log("Failed to delete password change confirmation from queue.")
     }
-    
+
     func updateSessionAccount(account: Account) throws {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
@@ -283,16 +283,15 @@ struct BrowserSession: Session {
 
     }
 
-
     static func initiate(pairingQueueSeed: String, browserPubKey: String, browser: Browser, os: String, version: Int = 0) -> Promise<Session> {
-        do {    
+        do {
             let keyPairForSharedKey = try Crypto.shared.createSessionKeyPair()
             let browserPubKeyData = try Crypto.shared.convertFromBase64(from: browserPubKey)
             let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
 
-            let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)",version: version)
+            let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)", version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
                 try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
@@ -327,8 +326,7 @@ struct BrowserSession: Session {
         return try decryptMessage(message: message64)
     }
 
-
-    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, isAdmin: Bool?, organisationKey: Data?, organisationType: OrganisationType?) throws -> Promise<Void>{
+    private func createQueues(signingKeyPair keyPair: KeyPair, sharedKey: Data, isAdmin: Bool?, organisationKey: Data?, organisationType: OrganisationType?) throws -> Promise<Void> {
         guard let deviceEndpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }

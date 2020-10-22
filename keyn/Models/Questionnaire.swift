@@ -20,7 +20,7 @@ struct Question: Codable {
     let minLabel: String?
     let maxLabel: String?
     let mpcOptions: [String]?
-    
+
     enum CodingKeys: CodingKey {
         case id
         case type
@@ -30,7 +30,7 @@ struct Question: Codable {
         case maxLabel
         case mpcOptions
     }
-    
+
     init(id: String, type: QuestionType, text: String, response: String? = nil, minLabel: String? = nil, maxLabel: String? = nil, mpcOptions: [String]? = nil) {
         self.id = id
         self.type = type
@@ -43,9 +43,9 @@ struct Question: Codable {
 }
 
 class Questionnaire: Codable {
-    
+
     static let suite = "keynQuestionnaire"
-    
+
     let id: String
     let delay: Int
     let introduction: String
@@ -53,7 +53,7 @@ class Questionnaire: Codable {
     var askAgain: Date?
     var questions: [Question]
     let compulsory: Bool
-    
+
     enum CodingKeys: CodingKey {
         case id
         case delay
@@ -97,11 +97,11 @@ class Questionnaire: Codable {
         self.questions = try values.decode([Question].self, forKey: .questions)
         self.compulsory = Properties.environment == .prod ? false : try values.decodeIfPresent(Bool.self, forKey: .compulsory) ?? false // In production, questionnaire are never compulsory
     }
-    
+
     func askAgainAt(date: Date) {
         askAgain = date
     }
-    
+
     func shouldAsk() -> Bool {
         guard !isFinished else {
             return false
@@ -112,7 +112,7 @@ class Questionnaire: Codable {
             return true
         }
     }
-    
+
     func save() {
         do {
             let data = try JSONEncoder().encode(self)
@@ -124,7 +124,7 @@ class Questionnaire: Codable {
             Logger.shared.warning("Could not write questionnaire", error: error)
         }
     }
-    
+
     func submit() {
         for question in questions {
             let userInfo: [String: Any] = [
@@ -150,23 +150,23 @@ class Questionnaire: Codable {
         isFinished = true
         save()
     }
-    
+
     // MARK: - Static functions
-    
+
     static func get(id: String) -> Questionnaire? {
         let filemgr = FileManager.default
         let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
         let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(id).path
         return readFile(path: questionnairePath)
     }
-    
+
     static func exists(id: String) -> Bool {
         let filemgr = FileManager.default
         let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
         let questionnairePath = libraryURL.appendingPathComponent("questionnaires").appendingPathComponent(id).path
         return filemgr.fileExists(atPath: questionnairePath)
     }
-    
+
     static func all() -> [Questionnaire] {
         var questionnaires = [Questionnaire]()
         let filemgr = FileManager.default
@@ -183,7 +183,7 @@ class Questionnaire: Codable {
         }
         return questionnaires
     }
-    
+
     static func fetch() {
         firstly {
             API.shared.request(path: "questionnaires", parameters: nil, method: .get, signature: nil, body: nil)
@@ -203,7 +203,7 @@ class Questionnaire: Codable {
             }
         }.catchLog("Could not get questionnaire.")
     }
-    
+
     static func createQuestionnaireDirectory() {
         let filemgr = FileManager.default
         let libraryURL = filemgr.urls(for: .libraryDirectory, in: .userDomainMask)[0]
@@ -229,7 +229,7 @@ class Questionnaire: Codable {
         }
         return nil
     }
-    
+
     // DEBUGGING
     static func cleanFolder() {
         let filemgr = FileManager.default
@@ -242,5 +242,5 @@ class Questionnaire: Codable {
         } catch {
             Logger.shared.warning("Could not delete questionnaires", error: error)
         }
-    }    
+    }
 }

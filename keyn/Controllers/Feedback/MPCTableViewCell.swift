@@ -7,7 +7,7 @@ import UIKit
 class MPCTableViewCell: UITableViewCell {
 
     @IBOutlet weak var responseLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         layer.addBorder(edge: .left, color: UIColor(rgb: 0xFFB72F), thickness: 1)
@@ -25,7 +25,7 @@ class MPCTableViewCell: UITableViewCell {
         } else {
             backgroundColor = UIColor(rgb: 0x4932A2)
             responseLabel.textColor = UIColor(rgb: 0xFFB72F)
-        }  
+        }
     }
 
 }

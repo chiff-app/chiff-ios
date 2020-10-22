@@ -119,7 +119,7 @@ class PasswordGenerator {
         let bitLength = length * Int(ceil(log2(Double(chars.count)))) + (128 + length - (128 % length))
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8
         let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
-        
+
         let characters = Array(password)
         return (0..<length).map({ (index) -> Int in
             // This assumes only characters from ppd.chars are used, will fail otherwise. This is checked in guard statement above.
@@ -147,7 +147,7 @@ class PasswordGenerator {
         let byteLength = roundUp(n: bitLength, m: (length * 8)) / 8 // Round to nearest multiple of L * 8, so we can use whole bytes
         let keyData = try Crypto.shared.deterministicRandomBytes(seed: key, length: byteLength)
         let modulus = offset == nil ? chars.count : chars.count + 1
-        let offset = offset ?? Array<Int>(repeatElement(0, count: length))
+        let offset = offset ?? [Int](repeatElement(0, count: length))
 
         return (0..<length).reduce("") { (pw, index) -> String in
             let charIndex = (keyData[index..<index + (byteLength / length)].reduce(0) { ($0 << 8 + Int($1)) %% modulus } + offset[index]) %% modulus
@@ -161,7 +161,7 @@ class PasswordGenerator {
 
     private func generateKey(index passwordIndex: Int) throws -> Data {
         var value: UInt64 = 0
-        _ = withUnsafeMutableBytes(of: &value, { version == 0 ? siteId.sha256.data.copyBytes(to: $0, from: 0..<8) : siteId.sha256Data.copyBytes(to: $0, from: 0..<8) } )
+        _ = withUnsafeMutableBytes(of: &value, { version == 0 ? siteId.sha256.data.copyBytes(to: $0, from: 0..<8) : siteId.sha256Data.copyBytes(to: $0, from: 0..<8) })
 
         let siteKey = try Crypto.shared.deriveKey(keyData: seed, context: PasswordGenerator.CRYPTO_CONTEXT, index: value)
         let key = try Crypto.shared.deriveKey(keyData: siteKey, context: String(version == 0 ? username.sha256.prefix(8) : username.sha256Data.base64.prefix(8)), index: UInt64(passwordIndex))

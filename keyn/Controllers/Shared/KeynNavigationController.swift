@@ -40,7 +40,7 @@ import UIKit
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: navigationBar.centerXAnchor),
             logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -imageTopMargin),
-            logoImageView.heightAnchor.constraint(equalToConstant: height),
+            logoImageView.heightAnchor.constraint(equalToConstant: height)
         ])
     }
 
@@ -62,8 +62,8 @@ import UIKit
         }
     }
 
-    private func getImageFrom(gradientLayer:CAGradientLayer) -> UIImage? {
-        var gradientImage:UIImage?
+    private func getImageFrom(gradientLayer: CAGradientLayer) -> UIImage? {
+        var gradientImage: UIImage?
         UIGraphicsBeginImageContext(gradientLayer.frame.size)
         if let context = UIGraphicsGetCurrentContext() {
             gradientLayer.render(in: context)

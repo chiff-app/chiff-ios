@@ -45,7 +45,7 @@ struct TeamUser: Codable, AccessControllable {
 
 extension TeamUser: Hashable {
 
-    static func == (lhs: TeamUser, rhs:TeamUser) -> Bool {
+    static func == (lhs: TeamUser, rhs: TeamUser) -> Bool {
         return lhs.pubkey == rhs.pubkey
     }
 

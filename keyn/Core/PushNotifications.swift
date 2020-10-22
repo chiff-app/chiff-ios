@@ -20,7 +20,7 @@ struct PushNotifications {
                 UIApplication.shared.registerForRemoteNotifications()
             }
             return result
-        }.recover { error in
+        }.recover { _ in
             return .value(false)
         }
     }
@@ -46,11 +46,11 @@ struct PushNotifications {
         center.delegate = AppDelegate.notificationService
         center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, nudge])
         return Promise { seal in
-            center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            center.requestAuthorization(options: [.alert, .sound]) { (granted, _) in
                 Properties.deniedPushNotifications = !granted
                 seal.fulfill(granted)
             }
-        }.recover { error in
+        }.recover { _ in
             return .value(false)
         }
     }

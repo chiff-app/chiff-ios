@@ -42,7 +42,7 @@ protocol Syncable {
 }
 
 extension Syncable {
-    
+
     static func publicKey() throws -> String {
         guard let pubKey = try Keychain.shared.get(id: KeyIdentifier.pub.identifier(for: .backup), service: .backup) else {
             throw KeychainError.notFound
@@ -158,7 +158,6 @@ extension Syncable {
             return (succeeded, failed)
         }
     }
-    
 
     func sendData<T: BackupObject>(item: T) -> Promise<Void> where T == BackupType {
         do {

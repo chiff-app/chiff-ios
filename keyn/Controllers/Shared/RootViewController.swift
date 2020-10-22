@@ -32,10 +32,10 @@ class RootViewController: UITabBarController {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             let alert = UIAlertController(title: "popups.questions.terms".localized, message: "popups.questions.updated_terms_message".localized, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "popups.responses.dont_care".localized, style: .cancel) { action in
+            alert.addAction(UIAlertAction(title: "popups.responses.dont_care".localized, style: .cancel) { _ in
                 Properties.notifiedLatestTerms = true
             })
-            let agreeAction = UIAlertAction(title: "popups.responses.open".localized, style: .default, handler: { action in
+            let agreeAction = UIAlertAction(title: "popups.responses.open".localized, style: .default, handler: { _ in
                 let urlPath = Bundle.main.path(forResource: "terms_of_use", ofType: "md")
                 self.performSegue(withIdentifier: "ShowTerms", sender: URL(fileURLWithPath: urlPath!))
                 Properties.notifiedLatestTerms = true
@@ -48,8 +48,7 @@ class RootViewController: UITabBarController {
 
     func handleQuestionnaireNotification(notification: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() })
-            { self.presentQuestionAlert(questionnaire: questionnaire) }
+            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() }) { self.presentQuestionAlert(questionnaire: questionnaire) }
         }
     }
 
@@ -82,8 +81,8 @@ class RootViewController: UITabBarController {
             Logger.shared.analytics(.questionnairePostponed)
         }))
         self.present(alert, animated: true, completion: nil)
-    }    
-    
+    }
+
     private func launchQuestionnaire(questionnaire: Questionnaire) {
         let storyboard: UIStoryboard = UIStoryboard.get(.feedback)
         guard let modalViewController = storyboard.instantiateViewController(withIdentifier: "QuestionnaireController") as? QuestionnaireController else {

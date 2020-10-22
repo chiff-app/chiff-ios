@@ -46,7 +46,7 @@ struct PPD: Codable {
     let url: String // Relative path of the webpage where this PPD will be used. Can this be URL?
     let redirect: String?
     let name: String
-    
+
     static func get(id: String, organisationKeyPair: KeyPair?) -> Guarantee<PPD?> {
         let parameters = ["v": PPDVersion.v1_1.rawValue]
         return firstly { () -> Promise<JSONObject> in

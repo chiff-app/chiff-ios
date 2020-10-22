@@ -14,9 +14,9 @@ protocol XIBLocalizable {
 }
 
 private class Localizer {
-    
+
     static let shared = Localizer()
-    
+
     lazy var localizableDictionary: NSDictionary! = {
         #if !TARGET_INTERFACE_BUILDER
         let bundle = Bundle.main
@@ -28,7 +28,7 @@ private class Localizer {
         }
         fatalError("Localizable file not found.")
     }()
-    
+
     func localize(string: String) -> String {
         let localizableGroup = localizedGroup(string: string)
 
@@ -51,7 +51,7 @@ private class Localizer {
         let attributedString = NSMutableAttributedString(string: localizedString, attributes: attributes)
         if let startString = localizableGroup["start"] as? String,
             let start = Int(startString) {
-            var end: Int? = nil
+            var end: Int?
             if let endString = localizableGroup["end"] as? String {
                 end = Int(endString)
             }

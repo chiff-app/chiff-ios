@@ -74,7 +74,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return false
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
@@ -216,11 +216,11 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             fatalError("An extra section appeared!")
         }
     }
-    
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 1 && indexPath.row == 2 && token != nil && tableView.isEditing && account is UserAccount
     }
-    
+
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard var account = self.account as? UserAccount else {
             fatalError("Should not be able to edit sharedAccount")
@@ -256,19 +256,19 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             }
         }
     }
-    
+
     // MARK: - UITextFieldDelegate
-    
+
     // Hide the keyboard.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         view.addGestureRecognizer(tap)
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         view.removeGestureRecognizer(tap)
     }
@@ -288,7 +288,6 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         }
     }
 
-    
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
         if passwordLoaded && userPasswordTextField.isEnabled {
@@ -306,7 +305,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             try self.loadKeychainData()
         }.catchLog("Could not get account")
     }
-    
+
     @IBAction func addToTeam(_ sender: KeynButton) {
         sender.showLoading()
         guard let session = session else {
@@ -314,10 +313,10 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         }
         if let account = account as? SharedAccount {
             let alert = UIAlertController(title: "popups.questions.move_to_user_account_title".localized, message: "popups.questions.move_to_user_account_message".localized, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { action in
+            alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { _ in
                 sender.hideLoading()
             }))
-            alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: "popups.responses.move".localized, style: .destructive, handler: { _ in
                 firstly {
                     self.removeAccountFromTeam(session: session, account: account)
                 }.ensure {
@@ -346,7 +345,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
     @IBAction func deleteAccount(_ sender: UIButton) {
         let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
             self.performSegue(withIdentifier: "DeleteAccount", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
@@ -356,10 +355,10 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         tableView.setEditing(true, animated: true)
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target: self, action: #selector(update))
         doneButton.style = .done
-        
+
         navigationItem.setRightBarButton(doneButton, animated: true)
         reEnableBarButtonFont()
-        
+
         userNameTextField.isEnabled = true
         userPasswordTextField.isEnabled = true
         websiteNameTextField.isEnabled = true
@@ -373,7 +372,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                           options: .transitionCrossDissolve,
                           animations: { self.tableView.reloadData() })
     }
-    
+
     @objc func cancel() {
         endEditing()
         userPasswordTextField.text = password ?? "22characterplaceholder"
@@ -388,7 +387,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         }
         endEditing()
         func updateAccount() throws {
-            var newPassword: String? = nil
+            var newPassword: String?
             let newUsername = userNameTextField.text != account.username ? userNameTextField.text : nil
             let newSiteName = websiteNameTextField.text != account.site.name ? websiteNameTextField.text : nil
             if let oldPassword: String = password {
@@ -445,7 +444,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         loadAccountData(dismiss: false)
         NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
     }
-    
+
     // MARK: - Private
 
     private func removeAccountFromTeam(session: TeamSession, account: SharedAccount) -> Promise<Void> {
@@ -471,7 +470,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             return Promise(error: error)
         }
     }
-    
+
     private func endEditing() {
         tableView.setEditing(false, animated: true)
         userPasswordTextField.isSecureTextEntry = true
@@ -482,14 +481,14 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
         websiteURLTextField.isEnabled = false
         notesCell.textView.isEditable = false
         totpLoader?.isHidden = false
-        
+
         editingMode = false
         UIView.transition(with: tableView,
                           duration: 0.1,
                           options: .transitionCrossDissolve,
                           animations: { self.tableView.reloadData() })
     }
-    
+
     private func showHiddenPasswordPopup(password: String) {
         let showPasswordHUD = MBProgressHUD.showAdded(to: self.tableView.superview!, animated: true)
         showPasswordHUD.mode = .text
@@ -506,37 +505,37 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 action: #selector(showPasswordHUD.hide(animated:)))
         )
     }
-    
+
     private func copyToPasteboard(_ indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
-        
+
         if indexPath.row == 1 {
             Logger.shared.analytics(.passwordCopied)
         } else {
             Logger.shared.analytics(.otpCopied)
         }
-        
+
         let pasteBoard = UIPasteboard.general
         pasteBoard.string = indexPath.row == 1 ? userPasswordTextField.text : userCodeTextField.text
-        
+
         let copiedLabel = UILabel(frame: cell.bounds)
         copiedLabel.text = "accounts.copied".localized
         copiedLabel.font = copiedLabel.font.withSize(18)
         copiedLabel.textAlignment = .center
         copiedLabel.textColor = .white
         copiedLabel.backgroundColor = UIColor(displayP3Red: 0.85, green: 0.85, blue: 0.85, alpha: 1)
-        
+
         cell.addSubview(copiedLabel)
-        
+
         UIView.animate(withDuration: 0.5, delay: 1.0, options: [.curveLinear], animations: {
             copiedLabel.alpha = 0.0
         }) { if $0 { copiedLabel.removeFromSuperview() } }
     }
-    
+
     // MARK: OTP methods
-    
+
     private func updateOTPUI() {
         if let token = token {
             qrEnabled = false
@@ -545,7 +544,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             userCodeCell.accessoryView = nil
             userCodeTextField.text = token.currentPasswordSpaced
             switch token.generator.factor {
-            case .counter(_):
+            case .counter:
                 let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
                 button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
                 button.setImage(UIImage(named: "refresh"), for: .normal)
@@ -559,7 +558,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
                 self.loadingCircle = FilledCircle(frame: CGRect(x: 12, y: 12, width: 20, height: 20))
                 loadingCircle?.draw(color: UIColor.primary.cgColor, backgroundColor: UIColor.primary.cgColor)
                 totpLoader.addSubview(self.loadingCircle!)
-                self.otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (timer) in
+                self.otpCodeTimer = Timer.scheduledTimer(withTimeInterval: period - start, repeats: false, block: { (_) in
                     self.userCodeTextField.text = token.currentPasswordSpaced
                     self.otpCodeTimer = Timer.scheduledTimer(timeInterval: period, target: self, selector: #selector(self.updateTOTP), userInfo: nil, repeats: true)
                 })
@@ -577,7 +576,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             userCodeTextField.placeholder = "accounts.scan_qr".localized
         }
     }
-    
+
     @objc func updateHOTP() {
         if let token = token?.updatedToken(), var account = self.account as? UserAccount {
             self.token = token
@@ -585,7 +584,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             userCodeTextField.text = token.currentPasswordSpaced
         }
     }
-    
+
     @objc func updateTOTP() {
         userCodeTextField.text = token?.currentPasswordSpaced ?? ""
     }
@@ -602,7 +601,7 @@ class AccountViewController: KeynTableViewController, UITextFieldDelegate, Sites
             updateOTPUI()
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "reportSite", let destination = segue.destination.contents as? ReportSiteViewController {

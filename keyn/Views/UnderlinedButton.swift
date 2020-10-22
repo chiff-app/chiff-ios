@@ -16,7 +16,7 @@ import UIKit
                 UIView.performWithoutAnimation {
                     let attributedTitle = key.attributedLocalized(color: self.titleLabel?.textColor ?? UIColor.textColor,
                                                                   font: self.titleLabel?.font ?? UIFont.primaryMediumSmall,
-                                                                  attributes: [NSAttributedString.Key.underlineStyle : 1])
+                                                                  attributes: [NSAttributedString.Key.underlineStyle: 1])
                     self.setAttributedTitle(attributedTitle, for: .normal)
                     layoutIfNeeded()
                 }

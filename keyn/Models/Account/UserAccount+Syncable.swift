@@ -19,18 +19,17 @@ extension UserAccount: Syncable {
         return .accounts
     }
 
-    static func all(context: LAContext?) throws -> [String : UserAccount] {
+    static func all(context: LAContext?) throws -> [String: UserAccount] {
         return try all(context: context, sync: false, label: nil)
     }
 
     static func create(backupObject: BackupUserAccount, context: LAContext?) throws {
-        let _ = try UserAccount(backupObject: backupObject, context: context)
+        _ = try UserAccount(backupObject: backupObject, context: context)
     }
 
     static func notifyObservers() {
         NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
     }
-
 
     static func backup(accounts: [String: (UserAccount, String?)]) -> Promise<Void> {
         do {
@@ -71,7 +70,7 @@ extension UserAccount: Syncable {
         lastTimeUsed = nil
         lastChange = backupObject.lastChange
 
-        var password: String? = nil
+        var password: String?
         if passwordIndex >= 0 {
             let passwordGenerator = try PasswordGenerator(username: username, siteId: site.id, ppd: site.ppd, passwordSeed: Seed.getPasswordSeed(context: context))
             (password, _) = try passwordGenerator.generate(index: passwordIndex, offset: passwordOffset)
@@ -108,8 +107,8 @@ extension UserAccount: Syncable {
     }
 
     func backup() throws -> Promise<Void> {
-        var tokenURL: URL? = nil
-        var tokenSecret: Data? = nil
+        var tokenURL: URL?
+        var tokenSecret: Data?
         if let token = try oneTimePasswordToken() {
             tokenURL = try token.toURL()
             tokenSecret = token.generator.secret
@@ -201,8 +200,8 @@ extension UserAccount: Syncable {
     }
 
     private mutating func updateToken(with backupAccount: BackupUserAccount, context: LAContext?) throws -> Bool {
-        var tokenURL: URL? = nil
-        var tokenSecret: Data? = nil
+        var tokenURL: URL?
+        var tokenSecret: Data?
         if let token = try oneTimePasswordToken() {
             tokenURL = try token.toURL()
             tokenSecret = token.generator.secret

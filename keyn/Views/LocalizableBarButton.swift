@@ -21,11 +21,10 @@ import UIKit
         }
     }
 
-
     func showLoading() {
         originalButtonText = self.title
         self.title = ""
-        if (activityIndicator == nil) {
+        if activityIndicator == nil {
             activityIndicator = createActivityIndicator()
         }
 
@@ -48,5 +47,5 @@ import UIKit
         self.customView = activityIndicator
         activityIndicator.startAnimating()
     }
-    
+
 }

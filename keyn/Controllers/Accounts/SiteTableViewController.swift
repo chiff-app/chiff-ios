@@ -18,7 +18,7 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     var editingMode: Bool = false
     var account: UserAccount!
     var tap: UITapGestureRecognizer!
-    var delegate: SitesDelegate!
+    weak var delegate: SitesDelegate!
 
     override func viewDidLoad() {
         super.viewDidLoad()

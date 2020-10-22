@@ -62,7 +62,7 @@ class LoginViewController: ASCredentialProviderViewController {
             guard let account = try UserAccount.getAny(id: credentialIdentity.recordIdentifier!, context: nil), let password = try account.password(context: nil) else {
                 return self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.credentialIdentityNotFound.rawValue))
             }
-            
+
             let passwordCredential = ASPasswordCredential(user: account.username, password: password)
             self.extensionContext.completeRequest(withSelectedCredential: passwordCredential, completionHandler: nil)
         } catch KeychainError.interactionNotAllowed {
@@ -97,7 +97,7 @@ class LoginViewController: ASCredentialProviderViewController {
                     self.performSegue(withIdentifier: "showAccounts", sender: self)
                 }
             }
-        }.catch { error in
+        }.catch { _ in
             self.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.failed.rawValue))
         }
     }

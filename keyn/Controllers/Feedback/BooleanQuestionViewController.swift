@@ -10,7 +10,7 @@ class BooleanQuestionViewController: QuestionViewController {
     }
 
     // MARK: - Actions
-    
+
     @IBAction func yesButton(_ sender: UIButton) {
         question?.response = "popups.responses.yes".localized
         if let navCon = self.navigationController as? QuestionnaireController {
@@ -18,7 +18,7 @@ class BooleanQuestionViewController: QuestionViewController {
             navCon.nextQuestion()
         }
     }
-    
+
     @IBAction func noButton(_ sender: UIButton) {
         question?.response = String("popups.responses.no".localized)
         if let navCon = self.navigationController as? QuestionnaireController {

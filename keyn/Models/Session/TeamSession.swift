@@ -235,7 +235,7 @@ struct TeamSession: Session {
         let sessionData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
         if makeBackup {
-            let _ = backup()
+            _ = backup()
         }
     }
 
@@ -310,7 +310,7 @@ struct TeamSession: Session {
             } else {
                 return nil
             }
-        }.recover { (error) -> Promise<OrganisationType?> in
+        }.recover { (_) -> Promise<OrganisationType?> in
             return .value(nil)
         }
     }

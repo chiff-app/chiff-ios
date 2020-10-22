@@ -56,7 +56,7 @@ struct Team {
             ]
             let finalMessage: [String: Any] = [
                 "teamPubKey": teamKeyPair.pubKey.base64,
-                "signedMessage":try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: message, options: []), privKey: teamKeyPair.privKey).base64
+                "signedMessage": try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: message, options: []), privKey: teamKeyPair.privKey).base64
             ]
             return firstly {
                 API.shared.signedRequest(method: .post, message: finalMessage, path: "organisations/\(orderKeyPair.pubKey.base64)", privKey: orderKeyPair.privKey, body: nil, parameters: nil)
@@ -112,7 +112,7 @@ struct Team {
         self.keyPair = keyPair
     }
 
-    func usersForAccount(account: TeamAccount) throws -> [[String:Any]] {
+    func usersForAccount(account: TeamAccount) throws -> [[String: Any]] {
         let roleUsers = Set(self.roles.filter({ account.roles.contains($0.id) }).flatMap({ $0.users }))
         let ids = roleUsers.union(account.users)
         let users = self.users.filter({ ids.contains($0.id )})

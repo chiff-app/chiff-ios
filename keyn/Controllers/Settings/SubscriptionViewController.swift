@@ -108,12 +108,12 @@ class SubscriptionViewController: UIViewController, UICollectionViewDelegate, UI
             .link: termsOfServiceUrl,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .font: UIFont.primaryMediumSmall!
-            ], range: NSMakeRange(disclaimer.count + 1, termsOfService.count))
+            ], range: NSRange(location: disclaimer.count + 1, length: termsOfService.count))
         attributedString.setAttributes([
             .link: privacyPolicyUrl,
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .font: UIFont.primaryMediumSmall!
-            ], range: NSMakeRange(disclaimer.count + termsOfService.count + and.count + 3, privacyPolicy.count))
+            ], range: NSRange(location: disclaimer.count + termsOfService.count + and.count + 3, length: privacyPolicy.count))
         disclaimerTextView.attributedText = attributedString
         disclaimerTextView.linkTextAttributes = [
             .foregroundColor: UIColor.primary
@@ -271,4 +271,4 @@ extension SubscriptionViewController: UICollectionViewDelegateFlowLayout {
     }
 
 }
-    
+

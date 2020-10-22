@@ -10,12 +10,12 @@ import UIKit
 
 class PairContainerViewController: UIViewController, PairContainerDelegate {
 
-    var pairControllerDelegate: PairControllerDelegate!
+    weak var pairControllerDelegate: PairControllerDelegate!
     @IBOutlet weak var activityView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        reEnableBarButtonFont() 
+        reEnableBarButtonFont()
     }
 
     // MARK: - Navigation

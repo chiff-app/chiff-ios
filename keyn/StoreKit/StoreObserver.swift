@@ -80,7 +80,7 @@ class StoreObserver: NSObject {
     }
 
     /// This retrieves current subscription status for this seed from the Keyn server
-    func updateSubscriptions() -> Promise<Void>{
+    func updateSubscriptions() -> Promise<Void> {
         return firstly {
             API.shared.signedRequest(method: .get, message: nil, path: "subscriptions/\(try Seed.publicKey())", privKey: try Seed.privateKey(), body: nil, parameters: nil)
         }.done { jsonObject in
@@ -223,7 +223,7 @@ extension StoreObserver: SKRequestDelegate {
 extension StoreObserver: SKPaymentTransactionObserver {
 
     //Observe transaction updates.
-    func paymentQueue(_ queue: SKPaymentQueue,updatedTransactions transactions: [SKPaymentTransaction]) {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchasing: break
@@ -243,7 +243,7 @@ extension StoreObserver: SKPaymentTransactionObserver {
     /// Logs all transactions that have been removed from the payment queue.
     func paymentQueue(_ queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-            print ("\(transaction.payment.productIdentifier) \("storekit.removed".localized)")
+            print("\(transaction.payment.productIdentifier) \("storekit.removed".localized)")
         }
     }
 

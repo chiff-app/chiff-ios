@@ -44,7 +44,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         super.viewDidAppear(animated)
         UIView.animate(withDuration: 1.5, delay: 0.5, options: [.curveEaseOut], animations: { self.qrIconImageView.alpha = 0.0 })
     }
-    
+
     func handleURL(url: URL) throws {
         preconditionFailure("This method must be overridden")
     }
@@ -89,25 +89,25 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     func hideIcon() {
         UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveEaseOut], animations: { self.scanCheckmarkImageView.alpha = 0.0 })
     }
-    
+
     func scanQR() throws {
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {
             throw CameraError.noCamera
         }
-        
+
         guard let input = try? AVCaptureDeviceInput(device: captureDevice) else {
             throw CameraError.videoInputInitFailed
         }
-        
+
         let captureSession = AVCaptureSession()
         captureSession.addInput(input)
-        
+
         let captureMetadataOutput = AVCaptureMetadataOutput()
         captureSession.addOutput(captureMetadataOutput)
-        
+
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
         captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
-        
+
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         previewLayer?.frame = videoView.layer.bounds

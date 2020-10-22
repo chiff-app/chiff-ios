@@ -21,7 +21,7 @@ class TabBarGradient: UIView {
         var colors = [CGColor]()
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(0).cgColor)
         colors.append(UIColor.primaryVeryLight.withAlphaComponent(1).cgColor)
-        gradientLayer.locations = [NSNumber(value: 0.0),NSNumber(value: 1.0)]
+        gradientLayer.locations = [NSNumber(value: 0.0), NSNumber(value: 1.0)]
         gradientLayer.colors = colors
         layer.insertSublayer(gradientLayer, at: 0)
     }

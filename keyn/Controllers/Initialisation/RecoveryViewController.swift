@@ -11,7 +11,7 @@ enum RecoveryError: Error {
 
 class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet var wordTextFields: Array<UITextField>!
+    @IBOutlet var wordTextFields: [UITextField]!
     @IBOutlet weak var wordTextFieldsStack: UIStackView!
     @IBOutlet weak var finishButton: UIBarButtonItem!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -21,12 +21,12 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private let lowerBoundaryOffset: CGFloat = 15
     private let keyboardHeightOffset: CGFloat = 20
-    
+
     private var textFieldOffset: CGPoint!
     private var textFieldHeight: CGFloat!
     private var keyboardHeight: CGFloat?
-    
-    var mnemonic = Array<String>(repeating: "", count: 12) {
+
+    var mnemonic = [String](repeating: "", count: 12) {
         didSet {
             finishButton.isEnabled = checkMnemonic()
         }
@@ -46,7 +46,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         let nc = NotificationCenter.default
         nc.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main, using: keyboardWillShow)
         nc.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: keyboardWillHide)
-        
+
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
         Logger.shared.analytics(.restoreBackupOpened, override: true)
@@ -65,31 +65,31 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     // MARK: - UITextFieldDelegate
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         textFieldOffset = textField.convert(textField.frame.origin, to: self.scrollView)
         textFieldHeight = textField.frame.size.height
         return true
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         return true
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         checkWord(for: textField)
     }
 
-    @objc func textFieldDidChange(textField: UITextField){
+    @objc func textFieldDidChange(textField: UITextField) {
         checkWord(for: textField)
     }
-    
+
     func keyboardWillShow(notification: Notification) {
         guard keyboardHeight == nil else {
             return
@@ -106,7 +106,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             })
         }
     }
-    
+
     func keyboardWillHide(notification: Notification) {
         if let keyboardHeight = keyboardHeight {
             let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardHeight) + self.lowerBoundaryOffset
@@ -117,22 +117,22 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        
+
         keyboardHeight = nil
     }
 
     // MARK: - Actions
-    
+
     @IBAction func back(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func finish(_ sender: UIBarButtonItem) {
         view.endEditing(false)
         activityViewContainer.isHidden = false
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true)
-        }.then { result -> Promise<(Int,Int,Int,Int)> in
+        }.then { result -> Promise<(Int, Int, Int, Int)> in
             guard let context = result else {
                 throw RecoveryError.unauthenticated
             }
@@ -140,7 +140,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }.ensure(on: .main) {
             self.activityViewContainer.isHidden = true
         }.done { accounts, accountsFailed, teams, teamsFailed in
-            var message: String? = nil
+            var message: String?
             if accountsFailed > 0 && teamsFailed > 0 {
                 message = String(format: "errors.failed_teams_and_accounts_message".localized, accountsFailed, accounts, teamsFailed, teams)
             } else if accountsFailed > 0 {
@@ -163,7 +163,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             self.activityViewContainer.isHidden = true
         }
     }
-    
+
     // MARK: - Private
 
     private func onSeedRecoverySuccess() {
@@ -227,7 +227,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             checkMarkImageView.heightAnchor.constraint(equalToConstant: size.height).isActive = true
         }
 
-
         textfield.placeholder = "\("backup.word".localized.capitalizedFirstLetter) \(textfield.tag + 1)"
         textfield.rightViewMode = .always
         textfield.rightView = checkMarkImageView
@@ -238,10 +237,10 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
 
     private func seedExistsError() {
         let alert = UIAlertController(title: "errors.seed_exists".localized, message: "popups.questions.delete_existing".localized, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: { _ in
             self.navigationController?.popViewController(animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+        alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
             firstly {
                 BrowserSession.deleteAll()
             }.then { (_) -> Promise<Void> in

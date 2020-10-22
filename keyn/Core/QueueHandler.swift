@@ -72,13 +72,13 @@ class QueueHandler {
     }
 
     private func handlePersistentQueueMessage(keynMessage: KeynPersistentQueueMessage, session: BrowserSession) throws -> Promise<[BulkAccount]?> {
-        guard let receiptHandle = keynMessage.receiptHandle else  {
+        guard let receiptHandle = keynMessage.receiptHandle else {
             throw CodingError.missingData
         }
         var result: [BulkAccount]?
         switch keynMessage.type {
         case .confirm:
-            guard let accountId = keynMessage.accountID, let result = keynMessage.passwordSuccessfullyChanged else  {
+            guard let accountId = keynMessage.accountID, let result = keynMessage.passwordSuccessfullyChanged else {
                 throw CodingError.missingData
             }
             guard var account = try UserAccount.get(id: accountId, context: nil) else {
@@ -88,7 +88,7 @@ class QueueHandler {
                 try account.updatePasswordAfterConfirmation(context: nil)
             }
         case .preferences:
-            guard let accountId = keynMessage.accountID else  {
+            guard let accountId = keynMessage.accountID else {
                 throw CodingError.missingData
             }
             guard var account = try UserAccount.get(id: accountId, context: nil) else {
@@ -105,5 +105,4 @@ class QueueHandler {
         }
     }
 
-    
 }

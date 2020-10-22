@@ -83,7 +83,7 @@ struct Seed {
         }
     }
 
-    static func recover(context: LAContext, mnemonic: [String]) -> Promise<(Int,Int,Int,Int)> {
+    static func recover(context: LAContext, mnemonic: [String]) -> Promise<(Int, Int, Int, Int)> {
         guard !hasKeys else {
             return Promise(error: SeedError.exists)
         }
@@ -109,7 +109,7 @@ struct Seed {
                 let ((accountsSucceeded, accountsFailed), (sessionsSucceeded, sessionsFailed)) = result
                 Properties.accountCount = accountsSucceeded
                 return (accountsSucceeded + accountsFailed, accountsFailed, sessionsSucceeded + sessionsFailed, sessionsFailed)
-            }.recover { error -> Promise<(Int,Int,Int,Int)> in
+            }.recover { error -> Promise<(Int, Int, Int, Int)> in
                 NotificationManager.shared.deleteKeys()
                 delete()
                 throw error
@@ -193,7 +193,7 @@ struct Seed {
                     "message": try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: [
                             "timestamp": Date.now,
                             "data": try $0.encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin, migrated: true)
-                        ], options: []), privKey: try $0.signingPrivKey()).base64,
+                        ], options: []), privKey: try $0.signingPrivKey()).base64
                     ]
                 }
             ]
@@ -268,7 +268,6 @@ struct Seed {
         return checksum == String(seed.sha256.first!, radix: 2).pad(toSize: 8).prefix(checksumSize) || checksum == oldChecksum(seed: seed)
     }
 
-
     // MARK: - Private methods
 
     private static func createKeys(seed: Data) throws -> (KeyPair, String) {
@@ -306,7 +305,7 @@ struct Seed {
         let wordlistData = try String(contentsOfFile: Bundle.main.path(forResource: "wordlist", ofType: "txt")!, encoding: .utf8)
         return wordlistData.components(separatedBy: .newlines)
     }
-    
+
     static private func generateSeedFromMnemonic(mnemonic: [String]) throws -> (Substring, Data) {
         let wordlists = try self.wordlists()
         guard let wordlist = (wordlists.first { Set(mnemonic).isSubset(of: (Set($0))) }) else {
@@ -319,7 +318,7 @@ struct Seed {
             }
             return result + String(index, radix: 2).pad(toSize: 11)
         }
-        
+
         let checksum = bitstring.suffix(mnemonic.count / 3)
         let seedString = String(bitstring.prefix(bitstring.count - checksum.count))
         let seed = try seedString.components(withLength: 8).map { (byteString) throws -> UInt8 in
@@ -328,7 +327,7 @@ struct Seed {
             }
             return byte
         }
-        
+
         return (checksum, seed.data)
     }
 

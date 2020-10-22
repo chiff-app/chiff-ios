@@ -17,7 +17,6 @@ class PushNotificationViewController: UIViewController {
         ("notifications.onboarding_reminder_title.third".localized, "notifications.onboarding_reminder_message.third".localized)
     ]
 
-
     @IBAction func enablePushNotifications(_ sender: UIButton) {
         firstly {
             PushNotifications.requestAuthorization()

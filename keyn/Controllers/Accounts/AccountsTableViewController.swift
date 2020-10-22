@@ -20,7 +20,7 @@ enum Filters: Int {
 }
 
 class AccountsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-    
+
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableView: UITableView!
     var unfilteredAccounts: [Account]!
@@ -68,8 +68,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
 
         searchBar.placeholder = "accounts.search".localized
         searchBar.setScopeBarButtonTitleTextAttributes([
-            NSAttributedString.Key.font : UIFont.primaryMediumNormal as Any,
-            NSAttributedString.Key.foregroundColor : UIColor.primary,
+            NSAttributedString.Key.font: UIFont.primaryMediumNormal as Any,
+            NSAttributedString.Key.foregroundColor: UIColor.primary
         ], for: .normal)
         searchBar.scopeButtonTitles = [
             Filters.all.text(),
@@ -135,7 +135,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBAction func showSortValuesPicker(_ sender: Any) {
         sortingButton.becomeFirstResponder()
     }
-    
+
     func prepareAccounts() {
         filteredAccounts = searchAccounts(accounts: unfilteredAccounts)
         filteredAccounts = filterAccounts(accounts: filteredAccounts)
@@ -197,17 +197,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
         return accounts.count
     }
-    
+
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let account = filteredAccounts[indexPath.row]
         return account is UserAccount
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             let alert = UIAlertController(title: "popups.questions.delete_account".localized, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "popups.responses.cancel".localized, style: .cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: "popups.responses.delete".localized, style: .destructive, handler: { _ in
                 let account = self.filteredAccounts![indexPath.row]
                 self.deleteAccount(account: account, filteredIndexPath: indexPath)
             }))
@@ -283,7 +283,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
 
-
     func addAccount(account: UserAccount) {
         if let index = unfilteredAccounts.firstIndex(where: { ($0 as? SharedAccount)?.id == account.id }) {
             var account = account
@@ -304,7 +303,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     // MARK: - Actions
-    
+
     @IBAction func unwindToAccountOverview(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddAccountViewController, let account = sourceViewController.account {
             addAccount(account: account)
@@ -339,17 +338,17 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.updateUi()
     }
 
-    private func addBarButtons(enabled: Bool){
+    private func addBarButtons(enabled: Bool) {
         if addAccountButton == nil {
             addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            addAccountButton!.setImage(UIImage(named:"add_button"), for: .normal)
+            addAccountButton!.setImage(UIImage(named: "add_button"), for: .normal)
         }
         addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
 
         if sortingButton == nil {
             sortingButton = AccountsPickerButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            sortingButton!.setImage(UIImage(named:"filter_button"), for: .normal)
+            sortingButton!.setImage(UIImage(named: "filter_button"), for: .normal)
             sortingButton.picker.delegate = self
             sortingButton.picker.dataSource = self
             sortingButton.picker.selectRow(currentSortingValue.rawValue, inComponent: 0, animated: false)

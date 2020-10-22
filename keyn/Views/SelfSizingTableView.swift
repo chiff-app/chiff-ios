@@ -1,4 +1,3 @@
-
 //
 //  AccountTableViewCell.swift
 //  keyn
@@ -10,7 +9,7 @@
 import UIKit
 
 class SelfSizingTableView: UITableView {
-    override var contentSize:CGSize {
+    override var contentSize: CGSize {
         didSet {
             invalidateIntrinsicContentSize()
         }

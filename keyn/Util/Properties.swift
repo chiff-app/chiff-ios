@@ -44,7 +44,7 @@ struct Properties {
 
     static var isFirstLaunch: Bool {
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunchedBeforeFlag)
-        if (isFirstLaunch) {
+        if isFirstLaunch {
             UserDefaults.standard.set(true, forKey: hasBeenLaunchedBeforeFlag)
         }
         return isFirstLaunch
@@ -178,7 +178,7 @@ struct Properties {
             }
         }
     }
-    
+
     static let isDebug: Bool = {
         var debug = false
         #if DEBUG
@@ -216,13 +216,12 @@ struct Properties {
         return false
     }()
 
-
     static let browsers = ["Chrome", "Edge", "Firefox", "Tor"]
 
     static let systems = ["Windows", "Mac OS", "Debian", "Ubuntu"]
 
     static let keynApi = "api.chiff.dev"
-    
+
     static let accountCap = 8
 
     static let nudgeNotificationIdentifiers = [

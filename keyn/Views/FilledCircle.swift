@@ -23,7 +23,7 @@ class FilledCircle: CircleView {
 
     override func drawCircle(radius: CGFloat, color: CGColor, initialPosition: CGFloat) {
         let circleCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
-        let circlePath = UIBezierPath(arcCenter: circleCenter, radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle:CGFloat(3 * Double.pi / 2), clockwise: true)
+        let circlePath = UIBezierPath(arcCenter: circleCenter, radius: CGFloat(radius / 2), startAngle: CGFloat(0 - Double.pi / 2), endAngle: CGFloat(3 * Double.pi / 2), clockwise: true)
         circleLayer = CAShapeLayer()
         circleLayer.path = circlePath.cgPath
         circleLayer.fillColor = UIColor.clear.cgColor

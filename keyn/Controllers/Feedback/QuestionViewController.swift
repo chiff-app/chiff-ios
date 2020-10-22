@@ -6,8 +6,8 @@ import UIKit
 
 class QuestionViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!
-    
-    var question: Question? = nil
+
+    var question: Question?
     var questionIndex: Int = 0
     var isFirst = false
 

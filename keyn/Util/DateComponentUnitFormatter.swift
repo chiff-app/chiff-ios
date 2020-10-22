@@ -5,7 +5,7 @@
 import Foundation
 
 struct DateComponentUnitFormatter {
-    
+
     private struct DateComponentUnitFormat {
         let unit: Calendar.Component
         let localizationKey: String
@@ -33,7 +33,7 @@ struct DateComponentUnitFormatter {
         DateComponentUnitFormat(unit: .day, localizationKey: "day"),
         DateComponentUnitFormat(unit: .hour, localizationKey: "hour"),
         DateComponentUnitFormat(unit: .minute, localizationKey: "minute"),
-        DateComponentUnitFormat(unit: .second, localizationKey: "second"),
+        DateComponentUnitFormat(unit: .second, localizationKey: "second")
         ]
 
     func string(forDateComponents dateComponents: DateComponents, useNumericDates: Bool) -> String {

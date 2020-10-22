@@ -10,13 +10,13 @@ class API: NSObject, APIProtocol {
 
     private var urlSession: URLSession!
     static var shared: APIProtocol = API()
-    
+
     override init() {
         super.init()
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
-    
-    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String:String]?) -> Promise<JSONObject> {
+
+    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String: String]?) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
@@ -31,7 +31,7 @@ class API: NSObject, APIProtocol {
         }
     }
 
-    func signedRequest<T>(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String:String]?) -> Promise<T> {
+    func signedRequest<T>(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String: String]?) -> Promise<T> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
@@ -45,11 +45,10 @@ class API: NSObject, APIProtocol {
             return Promise(error: error)
         }
     }
-
 
     func request(
         path: String,
-        parameters: [String:String]?,
+        parameters: [String: String]?,
         method: APIMethod,
         signature: String? = nil,
         body: Data? = nil
@@ -61,7 +60,7 @@ class API: NSObject, APIProtocol {
 
     func request<T>(
         path: String,
-        parameters: [String:String]?,
+        parameters: [String: String]?,
         method: APIMethod,
         signature: String? = nil,
         body: Data? = nil
@@ -70,8 +69,8 @@ class API: NSObject, APIProtocol {
             try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))
         }
     }
-    
-    private func createRequest(path: String, parameters: [String:String]?, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
+
+    private func createRequest(path: String, parameters: [String: String]?, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
         components.host = path.starts(with: "questionnaire") ? "api.keyn.app" : Properties.keynApi
@@ -85,7 +84,7 @@ class API: NSObject, APIProtocol {
             }
             components.queryItems = queryItems
         }
-        
+
         guard let url = components.url else {
             throw APIError.url
         }
@@ -103,7 +102,6 @@ class API: NSObject, APIProtocol {
         }
         return request
     }
-
 
     private func send<T>(_ request: URLRequest) -> Promise<T> {
         return firstly {

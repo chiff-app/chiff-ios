@@ -18,7 +18,7 @@ class MultiLineTextInputTableViewCell: UITableViewCell {
 
     @IBOutlet var textView: UITextView!
 
-    var delegate: MultiLineTextInputTableViewCellDelegate!
+    weak var delegate: MultiLineTextInputTableViewCellDelegate!
 
     /// Custom setter so we can initialise the height of the text view
     var textString: String {
