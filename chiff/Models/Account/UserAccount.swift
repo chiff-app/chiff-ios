@@ -22,7 +22,6 @@ struct UserAccount: Account, Equatable {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
-    var enabled: Bool
     var version: Int
     var webAuthn: WebAuthn?
     var timesUsed: Int
@@ -37,7 +36,6 @@ struct UserAccount: Account, Equatable {
 
         self.sites = sites
         self.username = username
-        self.enabled = false
         self.version = 1
         self.askToChange = askToChange
         if let rpId = rpId, let algorithms = algorithms {
@@ -67,7 +65,7 @@ struct UserAccount: Account, Equatable {
         try save(password: generatedPassword, keyPair: keyPair, offline: offline)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool, version: Int, webAuthn: WebAuthn?, notes: String?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, version: Int, webAuthn: WebAuthn?, notes: String?) {
         self.id = id
         self.username = username
         self.sites = sites
@@ -76,7 +74,6 @@ struct UserAccount: Account, Equatable {
         self.passwordOffset = passwordOffset
         self.askToLogin = askToLogin
         self.askToChange = askToChange
-        self.enabled = enabled
         self.version = version
         self.webAuthn = webAuthn
         self.timesUsed = 0
@@ -170,7 +167,7 @@ struct UserAccount: Account, Equatable {
         saveToIdentityStore()
     }
 
-    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, enabled: Bool?, context: LAContext? = nil) throws {
+    mutating func update(username newUsername: String?, password newPassword: String?, siteName: String?, url: String?, askToLogin: Bool?, askToChange: Bool?, context: LAContext? = nil) throws {
         if let newUsername = newUsername {
             self.username = newUsername
         }
@@ -186,10 +183,6 @@ struct UserAccount: Account, Equatable {
         if let askToChange = askToChange {
             self.askToChange = askToChange
         }
-        if let enabled = enabled {
-            self.enabled = enabled
-        }
-
         if let newPassword = newPassword {
             if askToChange == nil {
                 self.askToChange = true
@@ -291,7 +284,6 @@ extension UserAccount: Codable {
         case passwordOffset
         case askToLogin
         case askToChange
-        case enabled
         case version
         case webAuthn
         case timesUsed
@@ -309,7 +301,6 @@ extension UserAccount: Codable {
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
-        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0
         self.webAuthn = try values.decodeIfPresent(WebAuthn.self, forKey: .webAuthn)
         self.timesUsed = try values.decodeIfPresent(Int.self, forKey: .timesUsed) ?? 0

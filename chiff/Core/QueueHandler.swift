@@ -94,7 +94,7 @@ class QueueHandler {
             guard var account = try UserAccount.get(id: accountId, context: nil) else {
                 throw AccountError.notFound
             }
-            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange, enabled: nil)
+            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: keynMessage.askToLogin, askToChange: keynMessage.askToChange)
         case .addBulk:
             result = keynMessage.accounts!
         default:

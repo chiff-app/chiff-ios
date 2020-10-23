@@ -19,7 +19,6 @@ struct SharedAccount: Account {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool? = false
-    let enabled = true
     let sessionId: String
     var version: Int
     var timesUsed: Int

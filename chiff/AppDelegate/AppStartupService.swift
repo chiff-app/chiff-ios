@@ -6,7 +6,6 @@
 import LocalAuthentication
 import UIKit
 import UserNotifications
-import StoreKit
 import PromiseKit
 import Kronos
 
@@ -26,11 +25,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
         _ = Logger.shared
         _ = AuthenticationGuard.shared
 
-//        StoreObserver.shared.enable()
-//        if StoreObserver.shared.isAuthorizedForPayments {
-//            StoreManager.shared.startProductRequest()
-//        }
-//        Questionnaire.fetch()
         UIFixes()
 
         launchInitialView()
@@ -78,10 +72,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return
         }
         NotificationManager.shared.registerDevice(token: deviceToken)
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        StoreObserver.shared.disable()
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

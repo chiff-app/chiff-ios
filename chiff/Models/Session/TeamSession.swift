@@ -88,7 +88,6 @@ struct TeamSession: Session {
                 do {
                     try session.save(sharedSeed: sharedSeed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed, sharedKeyPrivKey: keyPairForSharedKey.privKey)
                     TeamSession.count += 1
-                    NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
                     return session
                 } catch is KeychainError {
                     throw SessionError.exists
@@ -265,7 +264,6 @@ struct TeamSession: Session {
         try Keychain.shared.delete(id: SessionIdentifier.passwordSeed.identifier(for: id), service: TeamSession.signingService)
         try Keychain.shared.delete(id: SessionIdentifier.sharedKeyPrivKey.identifier(for: id), service: TeamSession.signingService)
         TeamSession.count -= 1
-        NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": Properties.hasValidSubscription])
         if backup {
             try deleteBackup()
         }
