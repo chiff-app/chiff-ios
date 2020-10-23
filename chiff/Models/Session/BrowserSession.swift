@@ -8,13 +8,13 @@ import LocalAuthentication
 import PromiseKit
 
 enum Browser: String, Codable {
-    case firefox = "firefox"
-    case chrome = "chrome"
-    case edge = "edge"
-    case safari = "safari"
-    case cli = "cli"
-    case brave = "brave"
-    case opera = "opera"
+    case firefox
+    case chrome
+    case edge
+    case safari
+    case cli
+    case brave
+    case opera
 }
 
 /*
@@ -79,7 +79,7 @@ struct BrowserSession: Session {
 
     func cancelRequest(reason: KeynMessageType, browserTab: Int) -> Promise<[String: Any]> {
         do {
-            let response = KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: reason, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
+            let response = KeynCredentialsResponse(type: reason, browserTab: browserTab)
             let jsonMessage = try JSONEncoder().encode(response)
             let ciphertext = try Crypto.shared.encrypt(jsonMessage, key: sharedKey())
             return try sendToVolatileQueue(ciphertext: ciphertext)
@@ -96,25 +96,31 @@ struct BrowserSession: Session {
     ///   - type: The response type
     ///   - context: The LocalAuthenticationContext. This should already be authenticated, otherwise this function will fail
     mutating func sendCredentials(account: Account, browserTab: Int, type: KeynMessageType, context: LAContext, newPassword: String?) throws {
-        var response: KeynCredentialsResponse?
+        var response: KeynCredentialsResponse = KeynCredentialsResponse(type: type, browserTab: browserTab)
         switch type {
-        case .change:
-            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: newPassword, browserTab: browserTab, accountId: account.id, otp: nil, type: .change, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
-        case .add, .addAndLogin, .updateAccount:
-            response = KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: type, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
-        case .login, .addToExisting:
-            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: try account.oneTimePasswordToken()?.currentPassword, type: type, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
         case .getDetails:
-            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: try account.oneTimePasswordToken()?.currentPassword, type: type, pubKey: nil, accounts: nil, notes: try account.notes(context: context), teamId: nil)
-        case .fill:
-            response = KeynCredentialsResponse(username: nil, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .fill, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
+            response.notes = try account.notes(context: context)
+            fallthrough
+        case .login, .addToExisting:
+            response.otp = try account.oneTimePasswordToken()?.currentPassword
+            fallthrough
         case .register:
-            response = KeynCredentialsResponse(username: account.username, password: try account.password(context: context), signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .register, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
+            response.username = account.username
+            fallthrough
+        case .fill:
+            response.password = try account.password(context: context)
+        case .change:
+            response.accountId = account.id
+            response.username = account.username
+            response.password = try account.password(context: context)
+            response.newPassword = newPassword
+        case .add, .addAndLogin, .updateAccount:
+            break
         default:
             throw SessionError.unknownType
         }
 
-        let message = try JSONEncoder().encode(response!)
+        let message = try JSONEncoder().encode(response)
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
 
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending credentials")
@@ -123,14 +129,14 @@ struct BrowserSession: Session {
 
     // Simply acknowledge that the request is received
     mutating func sendBulkAddResponse(browserTab: Int, context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .addBulk, pubKey: nil, accounts: nil, notes: nil, teamId: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .addBulk, browserTab: browserTab))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
     }
 
     mutating func sendBulkLoginResponse(browserTab: Int, accounts: [Int: BulkLoginAccount?], context: LAContext?) throws {
-        let message = try JSONEncoder().encode(KeynCredentialsResponse(username: nil, password: nil, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .bulkLogin, pubKey: nil, accounts: accounts, notes: nil, teamId: nil))
+        let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .bulkLogin, browserTab: browserTab, accounts: accounts))
         let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
         try self.sendToVolatileQueue(ciphertext: ciphertext).catchLog("Error sending bulk credentials")
         try updateLastRequest()
@@ -138,7 +144,12 @@ struct BrowserSession: Session {
 
     mutating func sendTeamSeed(id: String, teamId: String, seed: String, browserTab: Int, context: LAContext, organisationKey: String?) -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynCredentialsResponse(username: id, password: seed, signature: nil, counter: nil, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: organisationKey, type: .createOrganisation, pubKey: nil, accounts: nil, notes: nil, teamId: teamId))
+            let message = try JSONEncoder().encode(KeynCredentialsResponse(type: .createOrganisation,
+                                                                           browserTab: browserTab,
+                                                                           username: id,
+                                                                           password: seed,
+                                                                           otp: organisationKey,
+                                                                           teamId: teamId))
             let ciphertext = try Crypto.shared.encrypt(message, key: self.sharedKey())
             try self.updateLastRequest()
             return try self.sendToVolatileQueue(ciphertext: ciphertext).asVoid().log("Error sending credentials")
@@ -147,13 +158,24 @@ struct BrowserSession: Session {
         }
     }
 
-    mutating func sendWebAuthnResponse(account: UserAccount, browserTab: Int, type: KeynMessageType, context: LAContext, signature: String?, counter: Int?) throws {
+    mutating func sendWebAuthnResponse(account: UserAccount,
+                                       browserTab: Int,
+                                       type: KeynMessageType,
+                                       context: LAContext,
+                                       signature: String?,
+                                       counter: Int?) throws {
         var response: KeynCredentialsResponse!
         switch type {
         case .webauthnCreate:
-            response = try KeynCredentialsResponse(username: nil, password: nil, signature: signature, counter: counter, algorithm: account.webAuthn!.algorithm, newPassword: nil, browserTab: browserTab, accountId: account.id, otp: nil, type: .webauthnCreate, pubKey: account.webAuthnPubKey(), accounts: nil, notes: nil, teamId: nil)
+            response = try KeynCredentialsResponse(type: .webauthnCreate,
+                                                   browserTab: browserTab,
+                                                   signature: signature,
+                                                   counter: counter,
+                                                   algorithm: account.webAuthn!.algorithm,
+                                                   accountId: account.id,
+                                                   pubKey: account.webAuthnPubKey())
         case .webauthnLogin:
-            response = KeynCredentialsResponse(username: nil, password: nil, signature: signature, counter: counter, algorithm: nil, newPassword: nil, browserTab: browserTab, accountId: nil, otp: nil, type: .webauthnLogin, pubKey: nil, accounts: nil, notes: nil, teamId: nil)
+            response = KeynCredentialsResponse(type: .webauthnLogin, browserTab: browserTab, signature: signature, counter: counter)
         default:
             throw SessionError.unknownType
         }
@@ -202,7 +224,11 @@ struct BrowserSession: Session {
             "id": account.id,
             "data": ciphertext.base64
         ]
-        API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)", method: .put, privKey: try signingPrivKey(), message: message).catchLog("Failed to get privkey from Keychain")
+        API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)",
+                                 method: .put,
+                                 privKey: try signingPrivKey(),
+                                 message: message)
+            .catchLog("Failed to get privkey from Keychain")
     }
 
     func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
@@ -230,7 +256,12 @@ struct BrowserSession: Session {
         let message = [
             "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         ]
-        return API.shared.signedRequest(path: "sessions/\(signingPubKey)", method: .put,  privKey: try signingPrivKey(), message: message).asVoid().log("Failed to update session data.")
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)",
+                                        method: .put,
+                                        privKey: try signingPrivKey(),
+                                        message: message)
+            .asVoid()
+            .log("Failed to update session data.")
     }
 
     func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
@@ -268,7 +299,21 @@ struct BrowserSession: Session {
             guard let endpoint = Properties.endpoint else {
                 throw SessionError.noEndpoint
             }
-            let pairingResponse = KeynPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue, accounts: try UserAccount.combinedSessionAccounts(), type: .pair, errorLogging: Properties.errorLogging, analyticsLogging: Properties.analyticsLogging, version: version, arn: endpoint, appVersion: Properties.version, organisationKey: organisationKey?.base64, organisationType: organisationType, isAdmin: isAdmin)
+            let pairingResponse = KeynPairingResponse(sessionID: id,
+                                                      pubKey: sharedKeyPubkey,
+                                                      browserPubKey: browserPubKey.base64,
+                                                      userID: Properties.userId!,
+                                                      environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+                                                      accounts: try UserAccount.combinedSessionAccounts(),
+                                                      type: .pair,
+                                                      errorLogging: Properties.errorLogging,
+                                                      analyticsLogging: Properties.analyticsLogging,
+                                                      version: version,
+                                                      arn: endpoint,
+                                                      appVersion: Properties.version,
+                                                      organisationKey: organisationKey?.base64,
+                                                      organisationType: organisationType,
+                                                      isAdmin: isAdmin)
             let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
             let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
             let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -276,7 +321,11 @@ struct BrowserSession: Session {
                 "data": signedCiphertext.base64
             ]
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", method: .put, privKey: pairingKeyPair.privKey, message: nil, body: jsonData).log("Error sending pairing response.").asVoid()
+            return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing",
+                                            method: .put,
+                                            privKey: pairingKeyPair.privKey,
+                                            body: jsonData)
+                .log("Error sending pairing response.").asVoid()
         } catch {
             return Promise(error: error)
         }
@@ -294,9 +343,18 @@ struct BrowserSession: Session {
             let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)", version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             return firstly {
-                try session.createQueues(signingKeyPair: signingKeyPair, sharedKey: sharedKey, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
+                try session.createQueues(signingKeyPair: signingKeyPair,
+                                         sharedKey: sharedKey,
+                                         isAdmin: teamSession?.isAdmin,
+                                         organisationKey: teamSession?.organisationKey,
+                                         organisationType: teamSession?.type)
             }.then {
-                session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64, isAdmin: teamSession?.isAdmin, organisationKey: teamSession?.organisationKey, organisationType: teamSession?.type)
+                session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair,
+                                                browserPubKey: browserPubKeyData,
+                                                sharedKeyPubkey: keyPairForSharedKey.pubKey.base64,
+                                                isAdmin: teamSession?.isAdmin,
+                                                organisationKey: teamSession?.organisationKey,
+                                                organisationType: teamSession?.type)
             }.map {
                 do {
                     try session.save(key: sharedKey, signingKeyPair: signingKeyPair)
@@ -385,9 +443,20 @@ struct BrowserSession: Session {
 
     private func sendByeToPersistentQueue() -> Promise<Void> {
         do {
-            let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
+            let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil,
+                                                                              accountID: nil,
+                                                                              type: .end,
+                                                                              askToLogin: nil,
+                                                                              askToChange: nil,
+                                                                              accounts: nil,
+                                                                              receiptHandle: nil))
             let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-            return API.shared.signedRequest(path: "sessions/\(signingPubKey)/app-to-browser", method: .put, privKey: try signingPrivKey(), message: ["data": ciphertext.base64]).asVoid().log("Failed to send bye to persistent queue.")
+            return API.shared.signedRequest(path: "sessions/\(signingPubKey)/app-to-browser",
+                                            method: .put,
+                                            privKey: try signingPrivKey(),
+                                            message: ["data": ciphertext.base64])
+                .asVoid()
+                .log("Failed to send bye to persistent queue.")
         } catch {
             return Promise(error: error)
         }

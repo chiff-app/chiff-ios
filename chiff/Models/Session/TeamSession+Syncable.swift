@@ -87,7 +87,15 @@ extension TeamSession: Syncable {
                 return .value(())
             }
             return firstly {
-                sendData(item: BackupTeamSession(id: id, teamId: teamId, seed: seed, title: title, version: version, lastChange: lastChange, creationDate: creationDate, organisationKey: organisationKey, privKey: privKey))
+                sendData(item: BackupTeamSession(id: id,
+                                                 teamId: teamId,
+                                                 seed: seed,
+                                                 title: title,
+                                                 version: version,
+                                                 lastChange: lastChange,
+                                                 creationDate: creationDate,
+                                                 organisationKey: organisationKey,
+                                                 privKey: privKey))
             }.log("Error updating team session backup state")
         } catch {
             Logger.shared.error("Error updating team session backup state", error: error)

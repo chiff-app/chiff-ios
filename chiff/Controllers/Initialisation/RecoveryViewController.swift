@@ -33,7 +33,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     var isInitialSetup = true
-    let wordlists = try! Seed.wordlists()
+    var wordlists: [[String]]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +42,16 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
             initialize(textfield: textField)
         }
 
+        do {
+            self.wordlists = try Seed.wordlists()
+        } catch {
+            showAlert(message: "errors.loading_wordlist".localized)
+        }
+
         // Observe keyboard change
         let nc = NotificationCenter.default
-        nc.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main, using: keyboardWillShow)
-        nc.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: keyboardWillHide)
+        nc.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         navigationItem.rightBarButtonItem?.setColor(color: .white)
@@ -90,7 +96,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         checkWord(for: textField)
     }
 
-    func keyboardWillShow(notification: Notification) {
+    @objc func keyboardWillShow(notification: Notification) {
         guard keyboardHeight == nil else {
             return
         }
@@ -107,7 +113,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    func keyboardWillHide(notification: Notification) {
+    @objc func keyboardWillHide(notification: Notification) {
         if let keyboardHeight = keyboardHeight {
             let distanceToKeyboard = (textFieldOffset.y + textFieldHeight) - (scrollView.frame.size.height - keyboardHeight) + self.lowerBoundaryOffset
             UIView.animate(withDuration: 0.3) {
@@ -167,14 +173,6 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Private
 
     private func onSeedRecoverySuccess() {
-//        StoreObserver.shared.updateSubscriptions() { result in
-//            if case let .failure(error) = result {
-//                Logger.shared.error("Error updating subscriptions", error: error)
-//            }
-//            Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
-//            self.registerForPushNotifications()
-//            Logger.shared.analytics(.backupRestored, override: true)
-//        }
         Properties.agreedWithTerms = true // If a seed is recovered, user has agreed at that time.
         self.registerForPushNotifications()
         Logger.shared.analytics(.backupRestored, override: true)
@@ -184,20 +182,20 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         guard let window = AppDelegate.startupService.window else {
             return
         }
-        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+        guard let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
             Logger.shared.error("Unexpected root view controller type")
             fatalError("Unexpected root view controller type")
         }
         UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: {
             DispatchQueue.main.async {
-                window.rootViewController = vc
+                window.rootViewController = rootController
             }
         })
     }
 
     private func checkMnemonic() -> Bool {
-        for word in mnemonic {
-            if word == "" { return false }
+        guard mnemonic.allSatisfy({ !$0.isEmpty }) else {
+            return false
         }
         return Seed.validate(mnemonic: mnemonic)
     }

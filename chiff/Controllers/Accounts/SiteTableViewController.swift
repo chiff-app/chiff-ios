@@ -54,7 +54,10 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "URLCell", for: indexPath) as! SiteTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "URLCell", for: indexPath) as? SiteTableViewCell else {
+            Logger.shared.error("Expected SiteTableViewCellelse, but found something else.")
+            return UITableViewCell()
+        }
         cell.websiteURLTextField.text = account.sites[indexPath.row].url
         cell.index = indexPath.row
         cell.websiteURLTextField.delegate = self
@@ -62,7 +65,10 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
+        guard let header = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
@@ -71,7 +77,10 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as! UITableViewHeaderFooterView
+        guard let footer = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
@@ -82,7 +91,10 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCell.EditingStyle.delete {
             do {
-                let cell = tableView.cellForRow(at: indexPath) as! SiteTableViewCell
+                guard let cell = tableView.cellForRow(at: indexPath) as? SiteTableViewCell else {
+                    Logger.shared.error("Expected SiteTableViewCellelse, but found something else.")
+                    throw TypeError.wrongViewControllerType
+                }
                 try account.removeSite(forIndex: cell.index)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 delegate.updateAccount(account: account)

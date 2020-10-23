@@ -15,8 +15,8 @@ enum SyncError: Error {
 }
 
 enum SyncEndpoint: String {
-    case sessions = "sessions"
-    case accounts = "accounts"
+    case sessions
+    case accounts
 }
 
 struct RecoveryResult {
@@ -185,7 +185,12 @@ extension Syncable {
     }
 
     func deleteBackup() throws {
-        API.shared.signedRequest(path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)", method: .delete, privKey: try Self.privateKey(), message: ["id": self.id]).asVoid().catchLog("Cannot delete backup.")
+        API.shared.signedRequest(path: "users/\(try Self.publicKey())/\(Self.syncEndpoint.rawValue)/\(self.id)",
+                                 method: .delete,
+                                 privKey: try Self.privateKey(),
+                                 message: ["id": self.id])
+            .asVoid()
+            .catchLog("Cannot delete backup.")
     }
 
 }

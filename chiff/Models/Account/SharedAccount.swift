@@ -63,7 +63,11 @@ struct SharedAccount: Account {
                 try Keychain.shared.save(id: id, service: .notes, secretData: notes.data, objectData: nil)
             }
         }
-        guard notesChanged || passwordIndex != backupAccount.passwordIndex || passwordOffset != backupAccount.passwordOffset || username != backupAccount.username || sites != backupAccount.sites else {
+        guard notesChanged
+                || passwordIndex != backupAccount.passwordIndex
+                || passwordOffset != backupAccount.passwordOffset
+                || username != backupAccount.username
+                || sites != backupAccount.sites else {
             return false
         }
         self.username = backupAccount.username

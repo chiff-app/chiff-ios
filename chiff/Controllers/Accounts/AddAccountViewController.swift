@@ -131,7 +131,9 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
             requirementLabels[1].text = passwordValidator.validateMaxLength(password: password) ? "" : "\u{26A0} The password can have no more than \(50) characters."
             requirementLabels[2].text = passwordValidator.validateCharacters(password: password) ? "" : "\u{26A0} The password has invalid characters."
             requirementLabels[3].text = (try? passwordValidator.validateCharacterSet(password: password)) ?? false ? "" : "\u{26A0} CharacterSet constraint"
-            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password) ? "" : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
+            requirementLabels[4].text = passwordValidator.validateConsecutiveCharacters(password: password)
+                ? ""
+                : "\u{26A0} The password can't have more than n consecutive characters like aaa or ***."
             requirementLabels[5].text = (try? passwordValidator.validatePositionRestrictions(password: password)) ?? false ? "" : "\u{26A0} The password needs to start with a mysterious character."
             requirementLabels[6].text = (try? passwordValidator.validateRequirementGroups(password: password)) ?? false ? "" : "\u{26A0} There are complicted rules for this PPD. Just try something."
             requirementLabels[7].text = passwordValidator.validateConsecutiveOrderedCharacters(password: password) ? "" : "\u{26A0} The password can't have consecutive characters like abc pr 0123."
@@ -140,7 +142,10 @@ class AddAccountViewController: KeynTableViewController, UITextFieldDelegate {
 
     // TODO: How do we save accounts when there is no Site object? This happens when a user adds an account manually.
     private func createAccount() {
-        if let websiteName = siteNameField.text, let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), let username = usernameField.text, let password = passwordField.text {
+        if let websiteName = siteNameField.text,
+           let websiteURL = siteURLField.text?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+           let username = usernameField.text,
+           let password = passwordField.text {
             do {
                 guard let url = URL(string: websiteURL) ?? URL(string: "https://\(websiteURL)") else {
                     throw AccountError.invalidURL

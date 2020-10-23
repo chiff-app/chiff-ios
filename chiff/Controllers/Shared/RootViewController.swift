@@ -8,7 +8,7 @@ class RootViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: handleQuestionnaireNotification)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleQuestionnaireNotification(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         setBadge(completed: Seed.paperBackupCompleted)
         selectedIndex = Properties.deniedPushNotifications || !Properties.firstPairingCompleted ? 1 : 0
         tabBar.items?[0].title = "tabs.accounts".localized
@@ -46,7 +46,7 @@ class RootViewController: UITabBarController {
         }
     }
 
-    func handleQuestionnaireNotification(notification: Notification) {
+    @objc func handleQuestionnaireNotification(notification: Notification) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() }) { self.presentQuestionAlert(questionnaire: questionnaire) }
         }

@@ -16,7 +16,7 @@ class API: NSObject, APIProtocol {
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
 
-    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject> {
+    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
@@ -25,13 +25,13 @@ class API: NSObject, APIProtocol {
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
             var parameters = parameters ?? [:]
             parameters["m"] = try Crypto.shared.convertToBase64(from: jsonData)
-            return request(path: path,  method: method, signature: signature, body: body, parameters: parameters)
+            return request(path: path, method: method, signature: signature, body: body, parameters: parameters)
         } catch {
             return Promise(error: error)
         }
     }
 
-    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<T> {
+    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<T> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)

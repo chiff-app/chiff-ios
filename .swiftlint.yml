@@ -1,10 +1,13 @@
 disabled_rules: # rule identifiers to exclude from running
-  # - colon
+  - reduce_boolean
+  - todo
+  - force_cast
+  - force_try
 included: # paths to include during linting. `--path` is ignored if present.
   - chiff
-  # - keynTests
-  - chiffCredentialProvider
-  - chiffNotificationExtension
+  # - chiffTests
+  # - chiffCredentialProvider
+  # - chiffNotificationExtension
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Pods
 force_cast: warning
@@ -14,6 +17,17 @@ identifier_name:
     - id
     - 'n'
     - m
+    - nc
     - 'v1_0'
     - 'v1_1'
+    - os
+    - a4
+cyclomatic_complexity:
+  warning: 12
+  ignores_case_statements: true
+large_tuple:
+  warning: 3
+  error: 4
+function_parameter_count:
+  warning: 6
 line_length: 200

@@ -45,7 +45,7 @@ class TeamAdminLoginAuthorizer: Authorizer {
             return teamSession.getTeamSeed().map { ($0, context) }
         }.then { seed, context  in
             self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!, organisationKey: nil).map { nil }
-        }.ensure{
+        }.ensure {
             Logger.shared.analytics(.adminLoginRequestAuthorized)
         }.log("Error getting admin seed")
     }

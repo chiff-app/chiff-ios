@@ -22,11 +22,13 @@ class QueueHandler {
         guard !listening else {
             return
         }
-        NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: nil) { (notification) in
-            _ = self.checkPersistentQueue(notification: notification)
-        }
-        NotificationCenter.default.addObserver(forName: .passwordChangeConfirmation, object: nil, queue: nil, using: waitForPasswordChangeConfirmation)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkPersistentQueueListener(notification:)), name: .accountsLoaded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(waitForPasswordChangeConfirmation(notification:)), name: .passwordChangeConfirmation, object: nil)
         listening = true
+    }
+
+    @objc func checkPersistentQueueListener(notification: Notification?) {
+        _ = self.checkPersistentQueue(notification: notification)
     }
 
     func checkPersistentQueue(notification: Notification?) -> Promise<Void> {
@@ -37,7 +39,7 @@ class QueueHandler {
         }.log("Error checking persistent queue for messages")
     }
 
-    private func waitForPasswordChangeConfirmation(notification: Notification) {
+    @objc private func waitForPasswordChangeConfirmation(notification: Notification) {
         guard let session = notification.object as? BrowserSession else {
             Logger.shared.warning("Received notification from unexpected object")
             return

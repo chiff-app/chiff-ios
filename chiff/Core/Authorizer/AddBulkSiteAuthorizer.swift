@@ -39,30 +39,22 @@ class AddBulkSiteAuthorizer: Authorizer {
         var failed = 0
         return firstly {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
-        }.then { (context: LAContext?) -> Promise<([KeynPersistentQueueMessage], LAContext?)> in
-            startLoading?("requests.import_progress_1".localized)
-            return self.session.getPersistentQueueMessages(shortPolling: true).map { ($0, context) }
-        }.then { (messages: [KeynPersistentQueueMessage], context: LAContext?) -> Promise<([BulkAccount], LAContext?)> in
-            if let message = messages.first(where: { $0.type == .addBulk }), let receiptHandle = message.receiptHandle {
-                return self.session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
-                    (message.accounts!, context)
-                }
-            } else {
-                throw CodingError.missingData
-            }
-        }.then { (accounts, context) in
-            try PPD.getDescriptors(organisationKeyPair: TeamSession.organisationKeyPair()).map { (accounts, $0, context) }
-        }.then { (accounts, ppdDescriptors: [PPDDescriptor], context) -> Promise<([(BulkAccount, PPD?)], LAContext?)> in
-            startLoading?("requests.import_progress_2".localized)
-            return when(fulfilled: try accounts.map { account in
-                return ppdDescriptors.contains { $0.id == account.siteId } ?  try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) } : Promise.value((account, nil))
-            }).map { ($0, context) }
+        }.then { (context: LAContext?) -> Promise<([(BulkAccount, PPD?)], LAContext?)> in
+            self.getAccounts(startLoading: startLoading).map { ($0, context) }
         }.then { (accounts, context) -> Promise<(Int, LAContext?)> in
             startLoading?("requests.import_progress_3".localized)
             for (bulkAccount, ppd) in accounts {
                 do {
                     let site = Site(name: bulkAccount.siteName, id: bulkAccount.siteId, url: bulkAccount.siteURL, ppd: ppd)
-                    let account = try UserAccount(username: bulkAccount.username, sites: [site], password: bulkAccount.password, rpId: nil, algorithms: nil, notes: bulkAccount.notes, askToChange: nil, context: context, offline: true)
+                    let account = try UserAccount(username: bulkAccount.username,
+                                                  sites: [site],
+                                                  password: bulkAccount.password,
+                                                  rpId: nil,
+                                                  algorithms: nil,
+                                                  notes: bulkAccount.notes,
+                                                  askToChange: nil,
+                                                  context: context,
+                                                  offline: true)
                     succeeded[account.id] = (account, bulkAccount.notes)
                 } catch {
                     failed += 1
@@ -85,6 +77,35 @@ class AddBulkSiteAuthorizer: Authorizer {
             return nil
         }.ensure {
             Logger.shared.analytics(.addBulkSitesRequestAuthorized, properties: [.value: succeeded.count > 0])
+        }
+    }
+
+    private func getAccounts(startLoading: ((String?) -> Void)?) -> Promise<[(BulkAccount, PPD?)]> {
+        startLoading?("requests.import_progress_1".localized)
+        return firstly {
+            return self.session.getPersistentQueueMessages(shortPolling: true)
+        }.then { (messages: [KeynPersistentQueueMessage]) -> Promise<[BulkAccount]> in
+            if let message = messages.first(where: { $0.type == .addBulk }), let receiptHandle = message.receiptHandle {
+                return self.session.deleteFromPersistentQueue(receiptHandle: receiptHandle).map { _ in
+                    message.accounts!
+                }
+            } else {
+                throw CodingError.missingData
+            }
+        }.then { (accounts) in
+            try PPD.getDescriptors(organisationKeyPair: TeamSession.organisationKeyPair()).map { (accounts, $0) }
+        }.then { (accounts, ppdDescriptors: [PPDDescriptor]) -> Promise<[(BulkAccount, PPD?)]> in
+            startLoading?("requests.import_progress_2".localized)
+            return when(fulfilled: accounts.map { self.getPPD(account: $0, ppdDescriptors: ppdDescriptors )})
+        }
+    }
+
+    private func getPPD(account: BulkAccount, ppdDescriptors: [PPDDescriptor]) -> Promise<(BulkAccount, PPD?)> {
+        guard (ppdDescriptors.contains { $0.id == account.siteId }) else {
+            return Promise.value((account, nil))
+        }
+        return firstly {
+            try PPD.get(id: account.siteId, organisationKeyPair: TeamSession.organisationKeyPair()).map { (account, $0) }
         }
     }
 

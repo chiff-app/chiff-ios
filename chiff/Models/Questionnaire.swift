@@ -6,10 +6,10 @@ import Foundation
 import PromiseKit
 
 enum QuestionType: String, Codable {
-    case likert = "likert"
-    case boolean = "boolean"
-    case text = "text"
-    case mpc = "mpc"
+    case likert
+    case boolean
+    case text
+    case mpc
 }
 
 struct Question: Codable {

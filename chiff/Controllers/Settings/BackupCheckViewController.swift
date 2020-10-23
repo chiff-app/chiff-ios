@@ -130,7 +130,10 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func loadRootController() {
-        let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as! RootViewController
+        guard let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+            Logger.shared.error("Wrong RootController type")
+            return
+        }
         rootController.selectedIndex = 1
         AppDelegate.startupService.window?.rootViewController = rootController
     }
