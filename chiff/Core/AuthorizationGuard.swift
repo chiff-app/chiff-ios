@@ -105,7 +105,8 @@ class AuthorizationGuard {
             guard let orderKey = parameters["k"], let name = parameters["n"] else {
                 throw SessionError.invalid
             }
-            return Team.create(orderKey: orderKey, name: name).map { $0.0 }
+            let team = try Team(name: name)
+            return team.create(orderKey: orderKey)
         }.ensure {
             self.authorizationInProgress = false
         }

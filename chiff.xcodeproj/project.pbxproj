@@ -232,6 +232,12 @@
 		49B2A96B25433507001BA6EE /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49B2A96C2543350A001BA6EE /* TeamKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamKeys.swift */; };
 		49B2A96D2543350B001BA6EE /* TeamKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamKeys.swift */; };
+		49B2A974254345F3001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
+		49B2A97A25434608001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
+		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
+		49B2A9872543471D001BA6EE /* Seed+BetaMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */; };
+		49B2A98D25434734001BA6EE /* Seed+BetaMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */; };
+		49B2A99325434735001BA6EE /* Seed+BetaMigration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
@@ -508,6 +514,8 @@
 		49B2A91825432CD2001BA6EE /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		49B2A91F25432CEC001BA6EE /* CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreExtensions.swift; sourceTree = "<group>"; };
 		49B2A93A25433478001BA6EE /* TeamKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamKeys.swift; sourceTree = "<group>"; };
+		49B2A973254345F3001BA6EE /* Team+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Creation.swift"; sourceTree = "<group>"; };
+		49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seed+BetaMigration.swift"; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -883,6 +891,7 @@
 			isa = PBXGroup;
 			children = (
 				49F6F23223EDA60D0093AD56 /* Team.swift */,
+				49B2A973254345F3001BA6EE /* Team+Creation.swift */,
 				496869402421008500B9BEE9 /* TeamAccount.swift */,
 				49B2A93A25433478001BA6EE /* TeamKeys.swift */,
 				49686956242103E600B9BEE9 /* TeamUser.swift */,
@@ -980,6 +989,7 @@
 				4908103520598AC700C770F1 /* PPD.swift */,
 				49E75CA820FF34AF00BC0D65 /* Questionnaire.swift */,
 				49B6C1851FCF2A5C0062D717 /* Seed.swift */,
+				49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */,
 				01839A721FACA94300698B69 /* Site.swift */,
 				49B2A9392543346C001BA6EE /* Teams */,
 				4966FF1623FEDAF300D7C232 /* WebAuthn.swift */,
@@ -1519,6 +1529,7 @@
 			files = (
 				496869542421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */,
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
+				49B2A98D25434734001BA6EE /* Seed+BetaMigration.swift in Sources */,
 				49B1CD7E243623960097DBBD /* Syncable.swift in Sources */,
 				49B2A95E25433502001BA6EE /* TeamAccount.swift in Sources */,
 				496869392420FD0300B9BEE9 /* Account+AuthenticationServices.swift in Sources */,
@@ -1526,6 +1537,7 @@
 				49214B7821032CFD00C793DE /* BrowserSession.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
 				49B2A955254334ED001BA6EE /* TeamUser.swift in Sources */,
+				49B2A97A25434608001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7A23604C2D0010AC32 /* NotificationManager.swift in Sources */,
 				49F45E852424C4640080B248 /* Protocols.swift in Sources */,
 				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
@@ -1616,6 +1628,7 @@
 				4950263022BBA2FC00545118 /* BackupCircle.swift in Sources */,
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				49F6F23323EDA60D0093AD56 /* Team.swift in Sources */,
+				49B2A974254345F3001BA6EE /* Team+Creation.swift in Sources */,
 				49B2A92025432CEC001BA6EE /* CoreExtensions.swift in Sources */,
 				49B2A8B325430666001BA6EE /* Keychain+SecKey.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
@@ -1645,6 +1658,7 @@
 				49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */,
 				49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */,
 				49B2A8EB254327E4001BA6EE /* AccountViewController+TableView.swift in Sources */,
+				49B2A9872543471D001BA6EE /* Seed+BetaMigration.swift in Sources */,
 				611470F31FDC229D00AE7593 /* LoginViewController.swift in Sources */,
 				49774C142266044D0094D3ED /* SiteTableViewCell.swift in Sources */,
 				4950263222BBA31200545118 /* FilledCircle.swift in Sources */,
@@ -1771,6 +1785,7 @@
 				611F4B5C2146B61300B35A89 /* Crypto.swift in Sources */,
 				49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */,
 				4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */,
+				49B2A99325434735001BA6EE /* Seed+BetaMigration.swift in Sources */,
 				49E5FA0F2302C4DC009C964E /* Session.swift in Sources */,
 				49062C5A221449C700A30669 /* BrowserSession.swift in Sources */,
 				611F4B612146B63E00B35A89 /* PPD.swift in Sources */,
@@ -1792,6 +1807,7 @@
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
 				49B2A96D2543350B001BA6EE /* TeamKeys.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
+				49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,
 				611F4B5E2146B61900B35A89 /* PasswordGenerator.swift in Sources */,
 			);
