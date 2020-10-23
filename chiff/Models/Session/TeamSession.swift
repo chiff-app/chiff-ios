@@ -389,12 +389,8 @@ struct TeamSession: Session {
     func getTeam() -> Promise<Team> {
         return firstly {
             getTeamSeed()
-        }.map { seed in
-            try Team.createTeamSeeds(seed: seed)
-        }.then { (teamEncryptionKey, teamKeyPair, teamPasswordSeed) -> Promise<Team> in
-            API.shared.signedRequest(path: "teams/\(self.teamId)", method: .get, privKey: teamKeyPair.privKey)
-                .map { try Team(id: teamId, teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
-            }
+        }.then { seed in
+            Team.get(id: self.teamId, seed: seed)
         }
     }
 

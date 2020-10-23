@@ -37,7 +37,14 @@ struct TeamUser: Codable, AccessControllable {
         let encryptionKey = try Crypto.shared.deriveKey(keyData: key, context: TeamUser.cryptoContext, index: 1)
         let generator = PasswordGenerator(username: account.username, siteId: site.id, ppd: site.ppd, passwordSeed: passwordSeed)
         let offset = try generator.calculateOffset(index: 0, password: account.password(for: teamPasswordSeed))
-        let backupAccount = BackupSharedAccount(id: account.id, username: account.username, sites: account.sites, passwordIndex: 0, passwordOffset: offset, tokenURL: account.tokenURL, tokenSecret: account.tokenSecret, version: account.version)
+        let backupAccount = BackupSharedAccount(id: account.id,
+                                                username: account.username,
+                                                sites: account.sites,
+                                                passwordIndex: 0,
+                                                passwordOffset: offset,
+                                                tokenURL: account.tokenURL,
+                                                tokenSecret: account.tokenSecret,
+                                                version: account.version)
         let data = try JSONEncoder().encode(backupAccount)
         return try Crypto.shared.encrypt(data, key: encryptionKey).base64
     }

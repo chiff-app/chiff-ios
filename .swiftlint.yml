@@ -1,8 +1,5 @@
 disabled_rules: # rule identifiers to exclude from running
   - reduce_boolean
-  - todo
-  - force_cast
-  - force_try
 included: # paths to include during linting. `--path` is ignored if present.
   - chiff
   # - chiffTests

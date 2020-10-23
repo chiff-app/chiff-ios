@@ -40,7 +40,8 @@ class CreateOrganisationAuthorizer: Authorizer {
             LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
         }.then { (context) -> Promise<(Session, String, LAContext?)> in
             startLoading?(nil)
-            return Team.create(orderKey: self.orderKey, name: self.organisationName).map { ($0, $1, context) }
+            let team = try Team(name: self.organisationName)
+            return team.create(orderKey: self.orderKey).map { ($0, team.seed.base64, context) }
         }.then { (teamSession, seed, context) -> Promise<Account?> in
             NotificationCenter.default.postMain(Notification(name: .sessionStarted, object: nil, userInfo: ["session": teamSession]))
             guard let teamSession = teamSession as? TeamSession else {
