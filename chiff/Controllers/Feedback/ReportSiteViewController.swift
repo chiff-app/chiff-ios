@@ -102,7 +102,7 @@ class ReportSiteViewController: UIViewController, UITextViewDelegate {
         id: \(Properties.userId ?? "not set")
         """
         firstly {
-            API.shared.request(path: "analytics", parameters: nil, method: .put, signature: nil, body: message.data)
+            API.shared.request(path: "analytics", method: .put, body: message.data)
         }.ensure(on: DispatchQueue.main) {
             self.dismiss(animated: true, completion: nil)
         }.catchLog("Error posting feedback")

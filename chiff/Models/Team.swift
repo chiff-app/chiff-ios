@@ -66,7 +66,7 @@ struct Team {
                 "signedMessage": try Crypto.shared.sign(message: JSONSerialization.data(withJSONObject: message, options: []), privKey: teamKeyPair.privKey).base64
             ]
             return firstly {
-                API.shared.signedRequest(method: .post, message: finalMessage, path: "organisations/\(orderKeyPair.pubKey.base64)", privKey: orderKeyPair.privKey, body: nil, parameters: nil)
+                API.shared.signedRequest(path: "organisations/\(orderKeyPair.pubKey.base64)", method: .post, privKey: orderKeyPair.privKey, message: finalMessage)
             }.then { (_) -> Promise<TeamSession> in
                 do {
                     let session = TeamSession(id: browserKeyPair.pubKey.base64.hash,
@@ -135,7 +135,7 @@ struct Team {
 
     func deleteAccount(id: String) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: ["id": id], path: "teams/\(self.id)/accounts/\(id)", privKey: keyPair.privKey, body: nil, parameters: nil)
+            API.shared.signedRequest(path: "teams/\(self.id)/accounts/\(id)", method: .delete, privKey: keyPair.privKey, message: ["id": id])
         }.asVoid()
     }
 

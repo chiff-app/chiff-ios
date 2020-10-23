@@ -127,7 +127,7 @@ class TeamAccountViewController: KeynTableViewController, AccessControlDelegate 
             let signature = try Crypto.shared.signature(message: jsonData, privKey: team.keyPair.privKey).base64
             barButtonItem?.showLoading()
             firstly {
-                API.shared.request(path: "teams/\(team.id)/accounts/\(teamAccount.id)", parameters: nil, method: .post, signature: signature, body: jsonData)
+                API.shared.request(path: "teams/\(team.id)/accounts/\(teamAccount.id)", method: .post, signature: signature, body: jsonData)
             }.then { _ in
                 self.account.delete()
             }.then { _ in

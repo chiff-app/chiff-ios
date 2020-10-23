@@ -45,7 +45,7 @@ extension UserAccount: Syncable {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: try privateKey()).base64
             return firstly {
-                API.shared.request(path: "users/\(try publicKey())/accounts", parameters: nil, method: .put, signature: signature, body: jsonData)
+                API.shared.request(path: "users/\(try publicKey())/accounts", method: .put, signature: signature, body: jsonData, parameters: nil)
             }.asVoid().log("BackupManager cannot write bulk user accounts.")
         } catch {
             return Promise(error: error)

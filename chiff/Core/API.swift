@@ -16,7 +16,7 @@ class API: NSObject, APIProtocol {
         urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral, delegate: self, delegateQueue: nil)
     }
 
-    func signedRequest(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String: String]?) -> Promise<JSONObject> {
+    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
@@ -25,13 +25,13 @@ class API: NSObject, APIProtocol {
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
             var parameters = parameters ?? [:]
             parameters["m"] = try Crypto.shared.convertToBase64(from: jsonData)
-            return request(path: path, parameters: parameters, method: method, signature: signature, body: body)
+            return request(path: path,  method: method, signature: signature, body: body, parameters: parameters)
         } catch {
             return Promise(error: error)
         }
     }
 
-    func signedRequest<T>(method: APIMethod, message: JSONObject? = nil, path: String, privKey: Data, body: Data? = nil, parameters: [String: String]?) -> Promise<T> {
+    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<T> {
         var message = message ?? [:]
         message["httpMethod"] = method.rawValue
         message["timestamp"] = String(Date.now)
@@ -40,7 +40,7 @@ class API: NSObject, APIProtocol {
             let signature = (try Crypto.shared.signature(message: jsonData, privKey: privKey)).base64
             var parameters = parameters ?? [:]
             parameters["m"] = try Crypto.shared.convertToBase64(from: jsonData)
-            return request(path: path, parameters: parameters, method: method, signature: signature, body: body)
+            return request(path: path, method: method, signature: signature, body: body, parameters: parameters)
         } catch {
             return Promise(error: error)
         }
@@ -48,10 +48,10 @@ class API: NSObject, APIProtocol {
 
     func request(
         path: String,
-        parameters: [String: String]?,
         method: APIMethod,
         signature: String? = nil,
-        body: Data? = nil
+        body: Data? = nil,
+        parameters: [String: String]? = nil
     ) -> Promise<JSONObject> {
         return firstly {
             try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))
@@ -60,10 +60,10 @@ class API: NSObject, APIProtocol {
 
     func request<T>(
         path: String,
-        parameters: [String: String]?,
         method: APIMethod,
         signature: String? = nil,
-        body: Data? = nil
+        body: Data? = nil,
+        parameters: [String: String]? = nil
     ) -> Promise<T> {
         return firstly {
             try self.send(createRequest(path: path, parameters: parameters, signature: signature, method: method, body: body))

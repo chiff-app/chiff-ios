@@ -133,7 +133,7 @@ struct TeamSession: Session {
             makeBackup = true
         }
         return firstly {
-            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(session.teamId)/\(session.id)", privKey: try session.signingPrivKey(), body: nil, parameters: nil))
+            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get,  privKey: try session.signingPrivKey()))
         }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
             if let keys = result["keys"] as? [String] {
                 return session.updateKeys(keys: keys).map { (type, result, $0) }
@@ -224,7 +224,7 @@ struct TeamSession: Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        return API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData, parameters: nil).asVoid().log("Error sending pairing response.")
+        return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", method: .put, privKey: pairingKeyPair.privKey, message: nil, body: jsonData, parameters: nil).asVoid().log("Error sending pairing response.")
     }
 
     mutating func update(makeBackup: Bool) throws {
@@ -240,7 +240,7 @@ struct TeamSession: Session {
 
     func delete(notify: Bool) -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "teams/users/\(teamId)/\(id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "teams/users/\(teamId)/\(id)", method: .delete, privKey: try signingPrivKey())
         }.map { _ in
             try self.delete()
         }.asVoid().recover { error -> Void in
@@ -292,7 +292,7 @@ struct TeamSession: Session {
         }
         return firstly { () -> Promise<JSONObject> in
             let organisationKeyPair = try Crypto.shared.createSigningKeyPair(seed: organisationKey)
-            return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(organisationKeyPair.pubKey.base64)", privKey: organisationKeyPair.privKey, body: nil, parameters: nil)
+            return API.shared.signedRequest(path: "organisations/\(organisationKeyPair.pubKey.base64)", method: .get, privKey: organisationKeyPair.privKey)
         }.map { result in
             if let logo = result["logo"] as? String {
                 guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
@@ -328,7 +328,7 @@ struct TeamSession: Session {
             }
             if let sharedSeed = sharedSeed, let passwordSeed = passwordSeed, let signingKeyPair = signingKeyPair {
                 return firstly {
-                    API.shared.signedRequest(method: .patch, message: ["id": self.id, "pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64], path: "teams/users/\(teamId)/\(self.id)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+                    API.shared.signedRequest( path: "teams/users/\(teamId)/\(self.id)", method: .patch,  privKey: try signingPrivKey(), message: ["id": self.id, "pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64])
                 }.map { _ in
                     try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: TeamSession.encryptionService, secretData: encryptionKey, objectData: nil)
                     try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)
@@ -347,7 +347,7 @@ struct TeamSession: Session {
 
     func getTeamSeed() -> Promise<Data> {
         return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/users/\(teamId)/\(id)/admin", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "teams/users/\(teamId)/\(id)/admin", method: .get, privKey: try signingPrivKey())
         }.map { result in
             guard let teamSeed = result["team_seed"] as? String else {
                 throw CodingError.unexpectedData
@@ -364,7 +364,7 @@ struct TeamSession: Session {
         }.map { seed in
             try Team.createTeamSeeds(seed: seed)
         }.then { (teamEncryptionKey, teamKeyPair, teamPasswordSeed) -> Promise<Team> in
-            API.shared.signedRequest(method: .get, message: nil, path: "teams/\(self.teamId)", privKey: teamKeyPair.privKey, body: nil, parameters: nil)
+            API.shared.signedRequest(path: "teams/\(self.teamId)", method: .get, privKey: teamKeyPair.privKey)
                 .map { try Team(id: teamId, teamData: $0, encryptionKey: teamEncryptionKey, passwordSeed: teamPasswordSeed, keyPair: teamKeyPair)
             }
         }

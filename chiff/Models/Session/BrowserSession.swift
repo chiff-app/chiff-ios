@@ -170,7 +170,7 @@ struct BrowserSession: Session {
             "waitTime": shortPolling ? "0" : "20"
         ]
         return firstly {
-            API.shared.signedRequest(method: .get, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "sessions/\(signingPubKey)/browser-to-app", method: .get, privKey: try signingPrivKey(), message: message)
         }.map { result in
             guard let sqsMessages = result["messages"] as? [[String: String]] else {
                throw CodingError.missingData
@@ -191,7 +191,7 @@ struct BrowserSession: Session {
             "receiptHandle": receiptHandle
         ]
         return firstly {
-            API.shared.signedRequest(method: .delete, message: message, path: "sessions/\(signingPubKey)/browser-to-app", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "sessions/\(signingPubKey)/browser-to-app", method: .delete, privKey: try signingPrivKey(), message: message)
         }.asVoid().log("Failed to delete password change confirmation from queue.")
     }
 
@@ -202,7 +202,7 @@ struct BrowserSession: Session {
             "id": account.id,
             "data": ciphertext.base64
         ]
-        API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)/accounts/\(account.id)", privKey: try signingPrivKey(), body: nil, parameters: nil).catchLog("Failed to get privkey from Keychain")
+        API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)", method: .put, privKey: try signingPrivKey(), message: message).catchLog("Failed to get privkey from Keychain")
     }
 
     func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
@@ -219,7 +219,7 @@ struct BrowserSession: Session {
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: try signingPrivKey()).base64
             return firstly {
-                API.shared.request(path: "sessions/\(signingPubKey)/accounts", parameters: nil, method: .put, signature: signature, body: jsonData)
+                API.shared.request(path: "sessions/\(signingPubKey)/accounts", method: .put, signature: signature, body: jsonData)
             }.asVoid().log("Session cannot write bulk session accounts.")
         } catch {
             return Promise(error: error)
@@ -230,7 +230,7 @@ struct BrowserSession: Session {
         let message = [
             "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         ]
-        return API.shared.signedRequest(method: .put, message: message, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to update session data.")
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)", method: .put,  privKey: try signingPrivKey(), message: message).asVoid().log("Failed to update session data.")
     }
 
     func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
@@ -252,7 +252,7 @@ struct BrowserSession: Session {
 
     func deleteAccount(accountId: String) {
         firstly {
-            API.shared.signedRequest(method: .delete, message: ["id": accountId], path: "sessions/\(signingPubKey)/accounts/\(accountId)", privKey: try signingPrivKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(accountId)", method: .delete, privKey: try signingPrivKey(), message: ["id": accountId])
         }.catchLog("Failed to send account list to persistent queue.")
     }
 
@@ -276,7 +276,7 @@ struct BrowserSession: Session {
                 "data": signedCiphertext.base64
             ]
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-            return API.shared.signedRequest(method: .put, message: nil, path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", privKey: pairingKeyPair.privKey, body: jsonData, parameters: nil).log("Error sending pairing response.").asVoid()
+            return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", method: .put, privKey: pairingKeyPair.privKey, message: nil, body: jsonData).log("Error sending pairing response.").asVoid()
         } catch {
             return Promise(error: error)
         }
@@ -370,7 +370,7 @@ struct BrowserSession: Session {
             }
             let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
             let signature = try Crypto.shared.signature(message: jsonData, privKey: keyPair.privKey).base64
-            return API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", parameters: nil, method: .post, signature: signature, body: jsonData).asVoid().log("Cannot create SQS queues and SNS endpoint.")
+            return API.shared.request(path: "sessions/\(keyPair.pubKey.base64)", method: .post, signature: signature, body: jsonData).asVoid().log("Cannot create SQS queues and SNS endpoint.")
         } catch {
             return Promise(error: error)
         }
@@ -380,14 +380,14 @@ struct BrowserSession: Session {
         let message = [
             "data": try Crypto.shared.convertToBase64(from: ciphertext)
         ]
-        return API.shared.signedRequest( method: .put, message: message, path: "sessions/\(signingPubKey)/volatile", privKey: try signingPrivKey(), body: nil, parameters: nil)
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)/volatile", method: .put, privKey: try signingPrivKey(), message: message)
     }
 
     private func sendByeToPersistentQueue() -> Promise<Void> {
         do {
             let message = try JSONEncoder().encode(KeynPersistentQueueMessage(passwordSuccessfullyChanged: nil, accountID: nil, type: .end, askToLogin: nil, askToChange: nil, accounts: nil, receiptHandle: nil))
             let ciphertext = try Crypto.shared.encrypt(message, key: sharedKey())
-            return API.shared.signedRequest(method: .put, message: ["data": ciphertext.base64], path: "sessions/\(signingPubKey)/app-to-browser", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid().log("Failed to send bye to persistent queue.")
+            return API.shared.signedRequest(path: "sessions/\(signingPubKey)/app-to-browser", method: .put, privKey: try signingPrivKey(), message: ["data": ciphertext.base64]).asVoid().log("Failed to send bye to persistent queue.")
         } catch {
             return Promise(error: error)
         }

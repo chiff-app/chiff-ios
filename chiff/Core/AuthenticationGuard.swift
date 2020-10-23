@@ -114,7 +114,7 @@ class AuthenticationGuard {
 
     private func updateNews() -> Promise<Void> {
         return firstly {
-            API.shared.request(path: "news", parameters: ["t": "\(Properties.firstLaunchTimestamp)"], method: .get, signature: nil, body: nil)
+            API.shared.request(path: "news", method: .get, parameters: ["t": "\(Properties.firstLaunchTimestamp)"])
         }.map { messages in
             let localization = Locale.current.languageCode ?? "en"
             guard let (id, news) = messages.first(where: { !Properties.receivedNewsMessage(id: $0.key) }),
