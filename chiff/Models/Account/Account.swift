@@ -25,7 +25,6 @@ enum AccountError: Error {
 protocol Account: BaseAccount {
     var askToLogin: Bool? { get set }
     var askToChange: Bool? { get set }
-    var enabled: Bool { get }
     var timesUsed: Int { get set }
     var lastTimeUsed: Date? { get set }
 

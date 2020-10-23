@@ -63,7 +63,6 @@ extension UserAccount: Syncable {
         passwordOffset = backupObject.passwordOffset
         askToLogin = backupObject.askToLogin
         askToChange = backupObject.askToChange
-        enabled = backupObject.enabled
         version = backupObject.version
         webAuthn = backupObject.webAuthn
         timesUsed = 0
@@ -188,10 +187,6 @@ extension UserAccount: Syncable {
             self.askToChange = backupAccount.askToChange
             changed = true
         }
-        if backupAccount.enabled != enabled {
-            self.enabled = backupAccount.enabled
-            changed = true
-        }
         if backupAccount.version != version {
             self.version = backupAccount.version
             changed = true
@@ -287,7 +282,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
     var passwordOffset: [Int]?
     var askToLogin: Bool?
     var askToChange: Bool?
-    var enabled: Bool
+    var enabled: Bool       // Deprecated
     var tokenURL: URL?
     var tokenSecret: Data?
     var version: Int
@@ -320,7 +315,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.passwordOffset = account.passwordOffset
         self.askToLogin = account.askToLogin
         self.askToChange = account.askToChange
-        self.enabled = account.enabled
+        self.enabled = false
         self.tokenURL = tokenURL
         self.tokenSecret = tokenSecret
         self.version = account.version
@@ -338,7 +333,7 @@ struct BackupUserAccount: BaseAccount, BackupObject {
         self.passwordOffset = try values.decodeIfPresent([Int].self, forKey: .passwordOffset)
         self.askToLogin = try values.decodeIfPresent(Bool.self, forKey: .askToLogin)
         self.askToChange = try values.decodeIfPresent(Bool.self, forKey: .askToChange)
-        self.enabled = try values.decodeIfPresent(Bool.self, forKey: .enabled) ?? false
+        self.enabled = false
         self.tokenURL = try values.decodeIfPresent(URL.self, forKey: .tokenURL)
         self.tokenSecret = try values.decodeIfPresent(Data.self, forKey: .tokenSecret)
         self.version = try values.decodeIfPresent(Int.self, forKey: .version) ?? 0

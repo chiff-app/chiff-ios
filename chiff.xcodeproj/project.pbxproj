@@ -58,8 +58,6 @@
 		49236000231534F2003C4A0F /* terms_of_use.md in Resources */ = {isa = PBXBuildFile; fileRef = 49236002231534F2003C4A0F /* terms_of_use.md */; };
 		4923600523156893003C4A0F /* LocalizableBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4923600423156893003C4A0F /* LocalizableBarButton.swift */; };
 		4923600623156A68003C4A0F /* LocalizableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49911E7F231413DA007905DF /* LocalizableButton.swift */; };
-		49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
-		49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
 		4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4927D8152253E50F00BFEDD1 /* KeynBarButton.swift */; };
 		492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EC840224907FA0088F73D /* SelfSizingTableView.swift */; };
@@ -213,21 +211,14 @@
 		49B1CD7E243623960097DBBD /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1CD7C24360BFE0097DBBD /* Syncable.swift */; };
 		49B1CD7F243623970097DBBD /* Syncable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B1CD7C24360BFE0097DBBD /* Syncable.swift */; };
 		49B6C1861FCF2A5C0062D717 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C1851FCF2A5C0062D717 /* Seed.swift */; };
-		49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */; };
 		49C03F2722EAE2C200B8C2DB /* RadioButtton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */; };
-		49C8B896225383D300639663 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49C8B895225383D300639663 /* StoreKit.framework */; };
 		49CF311320628E9100272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CF311220628E9100272277 /* PasswordValidator.swift */; };
 		49DCA6992063E44D008F4DF2 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DCA6982063E44D008F4DF2 /* Properties.swift */; };
-		49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */; };
-		49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */; };
 		49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E236582073C873002CC9A4 /* FeedbackViewController.swift */; };
 		49E28AEE24194CEA008F0661 /* TeamAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */; };
 		49E28AEF241A4599008F0661 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49E28AF0241A4599008F0661 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
-		49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
-		49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0422D35A39001AA622 /* StoreManager.swift */; };
-		49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */; };
 		49E2FE0B22D390B3001AA622 /* ProductIds.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49E2FE0A22D390B3001AA622 /* ProductIds.plist */; };
 		49E4A1DD223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
 		49E4A1DE223E8031005E8EBF /* LocalAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */; };
@@ -255,8 +246,6 @@
 		49E75CAD210099B300BC0D65 /* TextQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E75CAC210099B300BC0D65 /* TextQuestionViewController.swift */; };
 		49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766531F7E6F420022C042 /* AppDelegate.swift */; };
 		49E766761F7E6F420022C042 /* keynUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E766751F7E6F420022C042 /* keynUITests.swift */; };
-		49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
-		49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E2FE0222D347E1001AA622 /* StoreObserver.swift */; };
 		49EB0A4622DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4722DE03AC000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
 		49EB0A4822DE05D0000F05DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49EB0A4522DE03A1000F05DD /* GoogleService-Info.plist */; };
@@ -488,18 +477,12 @@
 		49B1733B229FFDFC0029FD2B /* LoggingPreferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingPreferenceViewController.swift; sourceTree = "<group>"; };
 		49B1CD7C24360BFE0097DBBD /* Syncable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncable.swift; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
-		49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewOverlappingLayout.swift; sourceTree = "<group>"; };
 		49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtton.swift; sourceTree = "<group>"; };
 		49C8B895225383D300639663 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		49CF311220628E9100272277 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		49DCA6982063E44D008F4DF2 /* Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
-		49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubscriptionViewController.swift; sourceTree = "<group>"; };
-		49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		49E236582073C873002CC9A4 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		49E28AED24194CEA008F0661 /* TeamAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamAccountViewController.swift; sourceTree = "<group>"; };
-		49E2FE0222D347E1001AA622 /* StoreObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
-		49E2FE0422D35A39001AA622 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
-		49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
 		49E2FE0A22D390B3001AA622 /* ProductIds.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ProductIds.plist; sourceTree = "<group>"; };
 		49E4A1DC223E8031005E8EBF /* LocalAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationManager.swift; sourceTree = "<group>"; };
 		49E4A1E622425904005E8EBF /* KeynButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeynButton.swift; sourceTree = "<group>"; };
@@ -590,7 +573,6 @@
 				4941AF2A2540377300CEFDE9 /* Amplitude in Frameworks */,
 				4941AF5C25403AA600CEFDE9 /* MBProgressHUD in Frameworks */,
 				4941AFA42540423200CEFDE9 /* PMKFoundation in Frameworks */,
-				49C8B896225383D300639663 /* StoreKit.framework in Frameworks */,
 				611F4B552146B4E900B35A89 /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -739,7 +721,6 @@
 				4923600423156893003C4A0F /* LocalizableBarButton.swift */,
 				497B4E8F231027F400ED7E4A /* LocalizableTextField.swift */,
 				492EC840224907FA0088F73D /* SelfSizingTableView.swift */,
-				49C03F2422E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift */,
 				49F2A0F622142F0400429875 /* FormTextField.swift */,
 				49C03F2622EAE2C200B8C2DB /* RadioButtton.swift */,
 				490D96352445CB7300E0ADCD /* MultiLineTextInputTableViewCell.swift */,
@@ -805,10 +786,8 @@
 				497FDD881FF93C6E00AAB0DA /* BackupCheckViewController.swift */,
 				4967F429225E318A0069330D /* BackupFinishViewController.swift */,
 				497FDD8D1FFBDBA700AAB0DA /* SettingsViewController.swift */,
-				49E2FE0622D35CDD001AA622 /* SubscriptionViewController.swift */,
 				49774C1722664DC30094D3ED /* StartBackupViewController.swift */,
 				49B17337229ECADC0029FD2B /* PrivacyViewController.swift */,
-				49DF34DA22E8A5AF006283C3 /* ProductCollectionViewCell.swift */,
 				49B17339229ED29A0029FD2B /* WebViewController.swift */,
 				4973BB7822F866D90004E365 /* AccessoryTableViewCell.swift */,
 				4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */,
@@ -841,15 +820,6 @@
 				497C85DD2315737100DC4F91 /* Request.storyboard */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		49E2FE0822D361B8001AA622 /* StoreKit */ = {
-			isa = PBXGroup;
-			children = (
-				49E2FE0422D35A39001AA622 /* StoreManager.swift */,
-				49E2FE0222D347E1001AA622 /* StoreObserver.swift */,
-			);
-			path = StoreKit;
 			sourceTree = "<group>";
 		};
 		49E75C9F20FF280E00BC0D65 /* Feedback */ = {
@@ -902,7 +872,6 @@
 				499BE4F31FC0929C001038DF /* Controllers */,
 				49F2A1002214336900429875 /* Core */,
 				49E7D3401FC318CD0059D97E /* Models */,
-				49E2FE0822D361B8001AA622 /* StoreKit */,
 				49F2A106221434C600429875 /* SupportFiles */,
 				495E72B9221186DA003132ED /* Util */,
 				499BE4F91FC0953C001038DF /* UI */,
@@ -1016,7 +985,6 @@
 				495E5B591FAC9887002E6AC6 /* AccountViewController.swift */,
 				61AEFCC41FADAEBB00B7AE62 /* AddAccountViewController.swift */,
 				4986D7822272E42800917B05 /* AddAccountHelpViewController.swift */,
-				49DF34D822E89A37006283C3 /* AddSubscriptionViewController.swift */,
 				61B5D4CF214C253F004C93FE /* OTPViewController.swift */,
 				6182D49E2151239B00D0E190 /* ManualOTPViewController.swift */,
 				495E09EB22451BF500BDFBB1 /* AccountTableViewCell.swift */,
@@ -1486,7 +1454,6 @@
 				49B1CD7E243623960097DBBD /* Syncable.swift in Sources */,
 				496869392420FD0300B9BEE9 /* Account+AuthenticationServices.swift in Sources */,
 				49CF311420629A4F00272277 /* PasswordValidator.swift in Sources */,
-				49265C9F2325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49214B7821032CFD00C793DE /* BrowserSession.swift in Sources */,
 				49686958242103EA00B9BEE9 /* TeamUser.swift in Sources */,
 				497D21B7205A80800040E0C0 /* PPD.swift in Sources */,
@@ -1495,7 +1462,6 @@
 				49E28AEF241A4599008F0661 /* Team.swift in Sources */,
 				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
-				49EB0A3F22D753D7000F05DD /* StoreObserver.swift in Sources */,
 				49686950242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				49686942242100D800B9BEE9 /* TeamAccount.swift in Sources */,
 				4968693D2420FD2900B9BEE9 /* UserAccount+Migration.swift in Sources */,
@@ -1550,15 +1516,12 @@
 				013438CB220C4922000685B2 /* PushNotificationService.swift in Sources */,
 				49F45E842424C4570080B248 /* Protocols.swift in Sources */,
 				49F2A0F522142EB900429875 /* Extensions.swift in Sources */,
-				49C03F2522E9F29900B8C2DB /* CollectionViewOverlappingLayout.swift in Sources */,
 				4931BC25254190350015277D /* LoginAuthorizer.swift in Sources */,
 				49CF311320628E9100272277 /* PasswordValidator.swift in Sources */,
-				49E2FE0722D35CDD001AA622 /* SubscriptionViewController.swift in Sources */,
 				49057731221AE04B006D98C0 /* AuthorizationGuard.swift in Sources */,
 				4931BC482541909B0015277D /* WebAuthnLoginAuthorizer.swift in Sources */,
 				4919DAF2201261FE0048B060 /* RequestViewController.swift in Sources */,
 				496886E61FBF4E9400837045 /* Keychain.swift in Sources */,
-				49E2FE0322D347E1001AA622 /* StoreObserver.swift in Sources */,
 				495E09EC22451BF500BDFBB1 /* AccountTableViewCell.swift in Sources */,
 				49E766541F7E6F420022C042 /* AppDelegate.swift in Sources */,
 				497B4E90231027F400ED7E4A /* LocalizableTextField.swift in Sources */,
@@ -1566,7 +1529,6 @@
 				4931BC3A2541906C0015277D /* TeamAdminLoginAuthorizer.swift in Sources */,
 				4967F42A225E318A0069330D /* BackupFinishViewController.swift in Sources */,
 				4931BC17254190100015277D /* AddBulkSiteAuthorizer.swift in Sources */,
-				49DF34D922E89A37006283C3 /* AddSubscriptionViewController.swift in Sources */,
 				49E5FA132302E529009C964E /* UserAccount.swift in Sources */,
 				4973BB7722F84C490004E365 /* AboutViewController.swift in Sources */,
 				4931BC56254190B70015277D /* CreateOrganisationAuthorizer.swift in Sources */,
@@ -1586,7 +1548,6 @@
 				49E75CA520FF2E2900BC0D65 /* BooleanQuestionViewController.swift in Sources */,
 				49F2A0F9221431C700429875 /* DataStructures.swift in Sources */,
 				49F273BC225F31F800FB9D7F /* LearnMoreViewController.swift in Sources */,
-				49DF34DB22E8A5B0006283C3 /* ProductCollectionViewCell.swift in Sources */,
 				4905E09B230ECD3B00EE380E /* KeynLabel.swift in Sources */,
 				496F0DED22429C2F007C4152 /* KeynTabButton.swift in Sources */,
 				4931BC10254189DB0015277D /* AddSiteAuthorizer.swift in Sources */,
@@ -1624,7 +1585,6 @@
 				492EC841224907FA0088F73D /* SelfSizingTableView.swift in Sources */,
 				497D21CB205AB0710040E0C0 /* PasswordGenerator.swift in Sources */,
 				497FDD891FF93C6E00AAB0DA /* BackupCheckViewController.swift in Sources */,
-				49E2FE0522D35A39001AA622 /* StoreManager.swift in Sources */,
 				4927D8162253E50F00BFEDD1 /* KeynBarButton.swift in Sources */,
 				49774C1822664DC30094D3ED /* StartBackupViewController.swift in Sources */,
 				496869382420FBB400B9BEE9 /* UserAccount+Migration.swift in Sources */,
@@ -1716,7 +1676,6 @@
 				49F45E862424C4640080B248 /* Protocols.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
 				49E5FA192302E9DE009C964E /* SharedAccount.swift in Sources */,
-				49EB0A4022D753D8000F05DD /* StoreObserver.swift in Sources */,
 				42497C14231EF4B000ECBDB4 /* APIProtocol.swift in Sources */,
 				49F2A1052214343600429875 /* NotificationProcessor.swift in Sources */,
 				4927D8172253E56B00BFEDD1 /* KeynBarButton.swift in Sources */,
@@ -1737,7 +1696,6 @@
 				49E28AF0241A4599008F0661 /* Team.swift in Sources */,
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
-				49265CA02325336400E1C3F1 /* StoreManager.swift in Sources */,
 				49E5FA152302E52F009C964E /* UserAccount.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,

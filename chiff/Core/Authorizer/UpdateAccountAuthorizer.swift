@@ -58,7 +58,7 @@ class UpdateAccountAuthorizer: Authorizer {
                     throw AccountError.notFound
                 }
             }
-            try account.update(username: self.username, password: self.password, siteName: self.newSiteName, url: self.siteURL, askToLogin: nil, askToChange: nil, enabled: nil)
+            try account.update(username: self.username, password: self.password, siteName: self.newSiteName, url: self.siteURL, askToLogin: nil, askToChange: nil)
             if let notes = self.notes {
                 try account.updateNotes(notes: notes)
             }

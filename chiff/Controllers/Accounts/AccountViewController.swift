@@ -22,8 +22,7 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
         return [
             shadowing ? "accounts.shadowing_warning".localized : webAuthnEnabled ? "accounts.webauthn_enabled".localized.capitalizedFirstLetter : "accounts.url_warning".localized.capitalizedFirstLetter,
             "accounts.2fa_description".localized.capitalizedFirstLetter,
-            String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters),
-            showAccountEnableButton ? "accounts.footer_account_enabled".localized.capitalizedFirstLetter : nil
+            String(format: "accounts.notes_footer".localized.capitalizedFirstLetter, maxCharacters)
         ]
     }
 
@@ -36,7 +35,6 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
     @IBOutlet weak var userCodeCell: UITableViewCell!
     @IBOutlet weak var totpLoader: UIView!
     @IBOutlet weak var totpLoaderWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var enabledSwitch: UISwitch!
     @IBOutlet weak var bottomSpacer: UIView!
     @IBOutlet weak var addToTeamButton: KeynButton!
     @IBOutlet weak var notesCell: MultiLineTextInputTableViewCell!
@@ -49,8 +47,6 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
     var editingMode: Bool = false
     var token: Token?
     var loadingCircle: FilledCircle?
-    var showAccountEnableButton: Bool = false
-    var canEnableAccount: Bool = true
     var session: TeamSession?   // Only set if user is team admin
     var team: Team?             // Only set if user is team admin
 
@@ -78,7 +74,6 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
         super.viewDidLoad()
         editButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.edit, target: self, action: #selector(edit))
         editButton.isEnabled = account is UserAccount
-        canEnableAccount = account is UserAccount
         navigationItem.rightBarButtonItem = editButton
         notesCell.textView.isEditable = false
         notesCell.delegate = self
@@ -109,7 +104,7 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
         } else {
             addToTeamButton.isEnabled = false
             addToTeamButton.isHidden = true
-            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: showAccountEnableButton ? 40.0 : 0)
+            bottomSpacer.frame = CGRect(x: bottomSpacer.frame.minX, y: bottomSpacer.frame.minY, width: bottomSpacer.frame.width, height: 0)
         }
     }
 
@@ -148,8 +143,6 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
         websiteNameTextField.text = account.site.name
         websiteURLTextField.text = account.site.url
         userNameTextField.text = account.username
-        enabledSwitch.isOn = account.enabled
-        enabledSwitch.isEnabled = account.enabled || canEnableAccount
         websiteNameTextField.delegate = self
         websiteURLTextField.delegate = self
         userNameTextField.delegate = self
@@ -185,19 +178,6 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
     }
 
     // MARK: - Actions
-
-    @IBAction func enableSwitchChanged(_ sender: UISwitch) {
-        guard var account = self.account as? UserAccount else {
-            return
-        }
-        do {
-            try account.update(username: nil, password: nil, siteName: nil, url: nil, askToLogin: nil, askToChange: nil, enabled: sender.isOn)
-            NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
-        } catch {
-            Logger.shared.error("Failed to update enabled state in account")
-            sender.isOn = account.enabled
-        }
-    }
 
     @IBAction func showPassword(_ sender: UIButton) {
         //TODO: THis function should be disabled if there's no password
@@ -311,7 +291,7 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
             guard newPassword != nil || newUsername != nil || newSiteName != nil || newUrl != nil else {
                 return
             }
-            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil, enabled: nil)
+            try account.update(username: newUsername, password: newPassword, siteName: newSiteName, url: newUrl, askToLogin: nil, askToChange: nil)
             NotificationCenter.default.postMain(name: .accountUpdated, object: self, userInfo: ["account": account])
             if newPassword != nil {
                 showPasswordButton.isHidden = false
@@ -456,12 +436,7 @@ class AccountViewController: KeynTableViewController, SitesDelegate {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if segue.identifier == "reportSite", let destination = segue.destination.contents as? ReportSiteViewController {
-            guard let account = account else {
-                return
-            }
-            destination.account = account
-        } else if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
+        if segue.identifier == "showQR", let destination = segue.destination as? OTPViewController {
             self.loadingCircle?.removeCircleAnimation()
             guard let account = account as? UserAccount else {
                 fatalError("Should not be able to open OTP controller on shared account")
@@ -492,22 +467,21 @@ extension AccountViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return editingMode || showAccountEnableButton ? 4 : 3
+        return editingMode ? 4 : 3
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         super.tableView(tableView, willDisplayFooterView: view, forSection: section)
-        guard section < 2 || showAccountEnableButton else {
+        guard let footer = view as? UITableViewHeaderFooterView else {
             return
         }
-        let footer = view as! UITableViewHeaderFooterView
         switch section {
         case 0:
             footer.textLabel?.isHidden = !(shadowing || webAuthnEnabled || tableView.isEditing)
         case 1:
             footer.textLabel?.isHidden = false
         case 2:
-            footer.textLabel?.isHidden = true
+            footer.textLabel?.isHidden = false
         case 3:
             footer.textLabel?.isHidden = false
         default:
@@ -533,11 +507,6 @@ extension AccountViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 3 && showAccountEnableButton && indexPath.row > 0 {
-            return editingMode ? tableView.rowHeight : 0
-        } else if indexPath.section == 3 && !showAccountEnableButton && indexPath.row == 0 {
-            return 0.5 // So we still have a border
-        }
         return indexPath.section == 2 ? UITableView.automaticDimension : 44
     }
 

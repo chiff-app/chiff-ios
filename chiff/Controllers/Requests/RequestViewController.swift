@@ -15,9 +15,8 @@ class RequestViewController: UIViewController {
     @IBOutlet weak var successTextDetailLabel: UILabel!
     @IBOutlet weak var checkmarkHeightContstraint: NSLayoutConstraint!
     @IBOutlet weak var authenticateButton: UIButton!
+    @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var successImageView: UIImageView!
-    @IBOutlet weak var upgradeStackView: UIView!
-    @IBOutlet weak var accountsLeftLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     var authorizer: Authorizer!
@@ -50,8 +49,8 @@ class RequestViewController: UIViewController {
                 DispatchQueue.main.async { [weak self] in
                     self?.activityIndicator.startAnimating()
                     if let message = message {
-                        self?.accountsLeftLabel.isHidden = false
-                        self?.accountsLeftLabel.text = message
+                        self?.progressLabel.isHidden = false
+                        self?.progressLabel.text = message
                     }
                 }
             }
@@ -59,7 +58,7 @@ class RequestViewController: UIViewController {
             AuthorizationGuard.shared.authorizationInProgress = false
         }.done(on: .main) { account in
             self.activityIndicator.stopAnimating()
-            self.accountsLeftLabel.isHidden = true
+            self.progressLabel.isHidden = true
             if var account = account {
                 account.increaseUse()
                 NotificationCenter.default.post(name: .accountUpdated, object: self, userInfo: ["account": account])
@@ -81,9 +80,6 @@ class RequestViewController: UIViewController {
     private func handleError(error: Error) {
         if let error = error as? AuthorizationError {
             switch error {
-            case .accountOverflow: self.shouldUpgrade(title: "requests.account_disabled".localized.capitalizedFirstLetter,
-                                                      description: "requests.upgrade_keyn_for_request".localized.capitalizedFirstLetter)
-            case .cannotAddAccount: self.shouldUpgrade(title: "requests.cannot_add".localized.capitalizedFirstLetter, description: "requests.upgrade_keyn_for_add".localized.capitalizedFirstLetter)
             case .cannotChangeAccount:
                 self.showAlert(message: "errors.shared_account_change".localized)
             case .noTeamSessionFound:
@@ -161,16 +157,6 @@ class RequestViewController: UIViewController {
         }
     }
 
-    private func shouldUpgrade(title: String, description: String) {
-        authenticateButton.isHidden = true
-        upgradeStackView.isHidden = false
-        successImageView.image = UIImage(named: "unhappy")
-        requestLabel.text = title
-        successTextLabel.text = ""
-        successTextDetailLabel.text = description
-        self.showSuccessView()
-    }
-
     private func showSuccessView() {
         self.successView.alpha = 0.0
         self.successView.isHidden = false
@@ -203,12 +189,6 @@ class RequestViewController: UIViewController {
     }
 
     // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination.contents as? SubscriptionViewController {
-            destination.presentedModally = true
-        }
-    }
 
     func dismiss() {
         presentingViewController?.dismiss(animated: true, completion: nil) ?? dismiss(animated: true, completion: nil)

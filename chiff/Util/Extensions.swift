@@ -7,7 +7,6 @@ import Sodium
 import UserNotifications
 import OneTimePassword
 import Amplitude
-import StoreKit
 import WebKit
 import PromiseKit
 import Kronos
@@ -209,7 +208,6 @@ extension Notification.Name {
     static let sharedAccountsChanged = Notification.Name("SharedAccountsChanged")
     static let accountUpdated = Notification.Name("AccountUpdated")
     static let notificationSettingsUpdated = Notification.Name("NotificationSettingsUpdated")
-    static let subscriptionUpdated = Notification.Name("SubscriptionUpdated")
     static let backupCompleted = Notification.Name("BackupCompleted")
     static let newsMessage = Notification.Name("NewsMessage")
 }
@@ -523,28 +521,6 @@ extension Amplitude {
         } else {
             self.logEvent(event.rawValue)
         }
-    }
-}
-
-// MARK: - SKProduct
-extension SKProduct {
-    /// - returns: The cost of the product formatted in the local currency.
-    var regularPrice: String? {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = self.priceLocale
-        return formatter.string(from: self.price)
-    }
-
-    var euroPrice: NSDecimalNumber {
-        // For now just return price since we only have Euros. Fix this later
-        return self.price
-    }
-}
-
-extension Array where Iterator.Element == UserAccount {
-    var enabledCount: Int {
-        return Properties.accountOverflow ? self.filter({ $0.enabled }).count : self.count
     }
 }
 

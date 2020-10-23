@@ -118,21 +118,7 @@ struct Properties {
     }
 
     static var isJailbroken = false
-    static var subscriptionExiryDate: TimeInterval {
-        get { return UserDefaults.standard.double(forKey: subscriptionExiryDateFlag) }
-        set {
-            UserDefaults.standard.set(newValue, forKey: subscriptionExiryDateFlag)
-            NotificationCenter.default.postMain(name: .subscriptionUpdated, object: nil, userInfo: ["status": hasValidSubscription])
-        }
-    }
-    static var subscriptionProduct: String? {
-        get { return UserDefaults.standard.string(forKey: subscriptionProductFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: subscriptionProductFlag) }
-    }
-    static var hasValidSubscription: Bool {
-        return true
-//        return environment == .beta || TeamSession.count > 0 || subscriptionExiryDate > Date.now
-    }
+
     static var accountCount: Int {
         get { return UserDefaults.standard.integer(forKey: accountCountFlag) }
         set { UserDefaults.standard.set(newValue, forKey: accountCountFlag) }
@@ -151,13 +137,6 @@ struct Properties {
         } else {
             UserDefaults.standard.set([teamId: count], forKey: teamAccountCountFlag)
         }
-    }
-
-    static var accountOverflow: Bool {
-        return accountCount > accountCap
-    }
-    static var canAddAccount: Bool {
-        return hasValidSubscription || accountCount < accountCap
     }
 
     static func purgePreferences() {

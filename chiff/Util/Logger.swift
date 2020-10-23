@@ -24,7 +24,6 @@ struct Logger {
         amplitude.set(userProperties: [
             .accountCount: Properties.accountCount,
             .pairingCount: BrowserSession.count,
-            .subscribed: Properties.hasValidSubscription,
             .backupCompleted: Seed.paperBackupCompleted
         ])
         if let userId = Properties.userId {

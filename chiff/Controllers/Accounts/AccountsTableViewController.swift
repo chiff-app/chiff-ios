@@ -29,9 +29,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var addAccountContainerView: UIView!
     @IBOutlet weak var tableViewFooter: UILabel!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
-    @IBOutlet weak var upgradeButton: KeynButton!
-    @IBOutlet weak var upgradeButtonHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomMarginConstraint: NSLayoutConstraint!
     @IBOutlet weak var sortLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
 
@@ -62,7 +59,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         NotificationCenter.default.addObserver(forName: .accountsLoaded, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .sharedAccountsChanged, object: nil, queue: OperationQueue.main, using: loadAccounts)
         NotificationCenter.default.addObserver(forName: .accountUpdated, object: nil, queue: OperationQueue.main, using: updateAccount)
-        NotificationCenter.default.addObserver(forName: .subscriptionUpdated, object: nil, queue: OperationQueue.main, using: updateSubscriptionStatus)
 
         setFooter()
 
@@ -83,10 +79,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         performSegue(withIdentifier: "ShowAddAccount", sender: self)
     }
 
-    @objc func showAddSubscription() {
-        performSegue(withIdentifier: "ShowAddSubscription", sender: self)
-    }
-
     private func loadAccounts(notification: Notification?) {
         DispatchQueue.main.async {
             if let accounts = try? notification?.userInfo as? [String: Account] ?? UserAccount.allCombined(context: nil) {
@@ -103,11 +95,8 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let accounts = filteredAccounts, !accounts.isEmpty {
             tableViewContainer.isHidden = false
             addAccountContainerView.isHidden = true
-            addBarButtons(enabled: Properties.hasValidSubscription || accounts.count < Properties.accountCap)
+            addBarButtons()
             setFooter()
-            upgradeButton.isHidden = Properties.hasValidSubscription
-            upgradeButtonHeightConstraint.constant = Properties.hasValidSubscription ? 0 : 44
-            bottomMarginConstraint.constant = Properties.hasValidSubscription ? 0 : 38
         } else {
             navigationItem.rightBarButtonItem = nil
             tableViewContainer.isHidden = true
@@ -115,21 +104,9 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
 
-    private func updateSubscriptionStatus(notification: Notification) {
-        DispatchQueue.main.async {
-            self.prepareAccounts()
-            self.tableView.reloadData()
-            self.setFooter()
-            self.updateUi()
-        }
-    }
-
     private func setFooter() {
-        if Properties.hasValidSubscription {
-            tableViewFooter.text = "accounts.footer_unlimited".localized
-        } else {
-            tableViewFooter.text = Properties.accountOverflow ? "accounts.footer_account_overflow".localized : "accounts.footer".localized
-        }
+        // TODO: Simplify this.
+        tableViewFooter.text = "accounts.footer_unlimited".localized
     }
 
     @IBAction func showSortValuesPicker(_ sender: Any) {
@@ -223,9 +200,6 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         if let cell = cell as? AccountTableViewCell {
             let account = filteredAccounts[indexPath.row]
             cell.titleLabel.text = account.site.name
-            let showEnabled = account.enabled || Properties.hasValidSubscription || filteredAccounts.count <= Properties.accountCap
-            cell.titleLabel.alpha = showEnabled ? 1 : 0.5
-            cell.icon.alpha = showEnabled ? 1 : 0.5
             if #available(iOS 13.0, *) {
                 cell.teamIcon.image = UIImage(systemName: "person.2.fill")
             }
@@ -251,11 +225,7 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
                let indexPath = tableView.indexPath(for: cell) {
                 let account = filteredAccounts[indexPath.row]
                 controller.account = account
-                controller.showAccountEnableButton = !Properties.hasValidSubscription && filteredAccounts.count > Properties.accountCap
-                controller.canEnableAccount = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
             }
-        } else if segue.identifier == "ShowAddSubscription", let destination = segue.destination.contents as? SubscriptionViewController {
-            destination.presentedModally = true
         }
     }
 
@@ -272,15 +242,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         // The updated account will be now included
         prepareAccounts()
         tableView.reloadData()
-        // For this to work we should use diffing on the data source.
+        // TODO: For this to work we should use diffing on the data source.
         // Because in cases where the order of the rows change, for example recent use, this will not be correct.
 //        if let filteredIndex = filteredAccounts.firstIndex(where: { account.id == $0.id }) {
 //            let indexPath = IndexPath(row: filteredIndex, section: 0)
 //             tableView.reloadRows(at: [indexPath], with: .automatic)
 //        }
-        if !Properties.hasValidSubscription && Properties.accountOverflow {
-            addAccountButton?.isEnabled = filteredAccounts.filter({ $0.enabled }).count < Properties.accountCap
-        }
     }
 
     func addAccount(account: UserAccount) {
@@ -338,12 +305,12 @@ class AccountsTableViewController: UIViewController, UITableViewDelegate, UITabl
         self.updateUi()
     }
 
-    private func addBarButtons(enabled: Bool) {
+    private func addBarButtons() {
         if addAccountButton == nil {
             addAccountButton = KeynBarButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             addAccountButton!.setImage(UIImage(named: "add_button"), for: .normal)
         }
-        addAccountButton!.addTarget(self, action: enabled ? #selector(showAddAccount) : #selector(showAddSubscription), for: .touchUpInside)
+        addAccountButton!.addTarget(self, action: #selector(showAddAccount), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = addAccountButton!.barButtonItem
 
         if sortingButton == nil {

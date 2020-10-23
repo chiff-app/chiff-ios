@@ -75,10 +75,6 @@ class LoginAuthorizer: Authorizer {
                 throw AccountError.notFound
             }
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
-            guard Properties.hasValidSubscription || account.enabled || !Properties.accountOverflow else {
-                self.session.cancelRequest(reason: .disabled, browserTab: self.browserTab).catchLog("Error rejecting request")
-                throw AuthorizationError.accountOverflow
-            }
             try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
             success = true
             return account

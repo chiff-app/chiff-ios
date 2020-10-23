@@ -12,8 +12,6 @@ import LocalAuthentication
 import PromiseKit
 
 enum AuthorizationError: Error {
-    case accountOverflow
-    case cannotAddAccount
     case cannotChangeAccount
     case noTeamSessionFound
     case notAdmin
