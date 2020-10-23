@@ -44,7 +44,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(method: .delete, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .delete, privKey: try Seed.privateKey(), message: message)
         }.done { _ in
             NotificationManager.shared.deleteKeys()
         }.log("Failed to delete ARN @ AWS.")
@@ -73,7 +73,7 @@ struct NotificationManager {
             if let deviceToken = deviceToken {
                 message["deviceToken"] = deviceToken
             }
-            return API.shared.signedRequest(method: .post, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
+            return API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .post, privKey: try Seed.privateKey(), message: message)
         }
     }
 
@@ -85,7 +85,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(method: .put, message: message, path: "users/\(try Seed.publicKey())/devices/\(id)", privKey: try Seed.privateKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .delete, privKey: try Seed.privateKey(), message: message)
         }
     }
 

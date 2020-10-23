@@ -53,7 +53,7 @@ struct Seed {
             let seed = try Crypto.shared.generateSeed()
             let (keyPair, userId) = try createKeys(seed: seed)
             return firstly {
-                API.shared.signedRequest(method: .post, message: ["userId": userId], path: "users/\(keyPair.pubKey.base64)", privKey: keyPair.privKey, body: nil, parameters: nil)
+                API.shared.signedRequest(path: "users/\(keyPair.pubKey.base64)", method: .post, privKey: keyPair.privKey, message: ["userId": userId])
             }.asVoid().recover { error in
                 NotificationManager.shared.deleteKeys()
                 delete()
@@ -68,7 +68,7 @@ struct Seed {
 
     static func recreateBackup() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .post, message: ["userId": Properties.userId as Any], path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "users/\(try publicKey())", method: .post, privKey: try privateKey(), message: ["userId": Properties.userId as Any])
         }.asVoid().then { () -> Promise<Void> in
             var promises: [Promise<Void>] = []
             for account in try UserAccount.all(context: nil).values {
@@ -154,28 +154,9 @@ struct Seed {
 
     static func deleteBackupData() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "/users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "/users/\(try publicKey())", method: .delete, privKey: try privateKey())
         }.asVoid().log("BackupManager cannot delete account.")
     }
-
-    //    private func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
-    //        let teamSessions = try TeamSession.all()
-    //        var data: [String: Any] = [
-    //            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
-    //            "isAdmin": teamSessions.contains(where: { $0.isAdmin })
-    //        ]
-    //        if let appVersion = Properties.version {
-    //            data["appVersion"] = appVersion
-    //        }
-    //        if let organisationKey = organisationKey {
-    //            data["organisationKey"] = organisationKey.base64
-//                data["organisationType"] = teamSessions.reduce(0, { (result, session) -> Int in
-//                    return session.type.rawValue > result ? session.type.rawValue : result
-//                })
-    //        }
-    //     teamSessions.contains(where: { $0.isAdmin })
-    //        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
-    //    }
 
     static func moveToProduction() -> Promise<Void> {
         do {
@@ -197,7 +178,7 @@ struct Seed {
                 }
             ]
             return firstly {
-                API.shared.signedRequest(method: .patch, message: message, path: "users/\(try publicKey())", privKey: try privateKey(), body: nil, parameters: nil)
+                API.shared.signedRequest(path: "users/\(try publicKey())", method: .patch, privKey: try privateKey(), message: message)
             }.asVoid().done {
                 Properties.migrated = true
             }
@@ -211,7 +192,7 @@ struct Seed {
             return .value(())
         }
         return firstly {
-            API.shared.signedRequest(method: .get, message: nil, path: "users/\(try publicKey())/migrated", privKey: try privateKey(), body: nil, parameters: nil)
+            API.shared.signedRequest(path: "users/\(try publicKey())/migrated", method: .get, privKey: try privateKey())
         }.map { result in
             guard let migrated = result["migrated"] as? Bool else {
                 Logger.shared.warning("Error parsing migrated status")

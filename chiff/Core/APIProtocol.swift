@@ -42,8 +42,26 @@ extension URLSession {
 typealias JSONObject = [String: Any]
 
 protocol APIProtocol {
-    func signedRequest(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
-    func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data?, parameters: [String: String]?) -> Promise<T>
-    func request(path: String, parameters: [String: String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<JSONObject>
-    func request<T>(path: String, parameters: [String: String]?, method: APIMethod, signature: String?, body: Data?) -> Promise<T>
+    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
+    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject?, body: Data?, parameters: [String: String]?) -> Promise<T>
+    func request(path: String, method: APIMethod, signature: String?, body: Data?, parameters: [String: String]?) -> Promise<JSONObject>
+    func request<T>(path: String, method: APIMethod, signature: String?, body: Data?, parameters: [String: String]?) -> Promise<T>
+}
+
+extension APIProtocol {
+    func signedRequest(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<JSONObject> {
+        return signedRequest(path: path, method: method, privKey: privKey, message: message, body: body, parameters: parameters)
+    }
+
+    func signedRequest<T>(path: String, method: APIMethod, privKey: Data, message: JSONObject? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<T> {
+        return signedRequest(path: path, method: method, privKey: privKey, message: message, body: body, parameters: parameters)
+    }
+
+    func request(path: String, method: APIMethod, signature: String? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<JSONObject> {
+        return request(path: path, method: method, signature: signature, body: body, parameters: parameters)
+    }
+
+    func request<T>(path: String, method: APIMethod, signature: String? = nil, body: Data? = nil, parameters: [String: String]? = nil) -> Promise<T> {
+        return request(path: path, method: method, signature: signature, body: body, parameters: parameters)
+    }
 }

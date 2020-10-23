@@ -139,7 +139,7 @@ class Questionnaire: Codable {
                 break
             }
             firstly {
-                API.shared.request(path: "questionnaires", parameters: nil, method: .post, signature: nil, body: jsonData)
+                API.shared.request(path: "questionnaires", method: .post, body: jsonData)
             }.catch { error in
                 if let error = error as? APIError, case .noData = error {
                     return
@@ -186,7 +186,7 @@ class Questionnaire: Codable {
 
     static func fetch() {
         firstly {
-            API.shared.request(path: "questionnaires", parameters: nil, method: .get, signature: nil, body: nil)
+            API.shared.request(path: "questionnaires", method: .get, parameters: nil)
         }.done { result in
             if let questionnaires = result["questionnaires"] as? [Any] {
                 for object in questionnaires {

@@ -52,7 +52,7 @@ class CreateOrganisationAuthorizer: Authorizer {
                                              browserTab: self.browserTab,
                                              context: context!,
                                              organisationKey: teamSession.organisationKey.base64).map { nil }
-        }.ensure{
+        }.ensure {
             Logger.shared.analytics(.createOrganisationRequestAuthorized)
         }.log("Error creating team")
     }

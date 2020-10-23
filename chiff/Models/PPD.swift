@@ -51,9 +51,9 @@ struct PPD: Codable {
         let parameters = ["v": PPDVersion.v1_1.rawValue]
         return firstly { () -> Promise<JSONObject> in
             if let keyPair = organisationKeyPair {
-                return API.shared.signedRequest(method: .get, message: ["id": id], path: "organisations/\(keyPair.pubKey.base64)/ppd/\(id)", privKey: keyPair.privKey, body: nil, parameters: parameters)
+                return API.shared.signedRequest(path: "organisations/\(keyPair.pubKey.base64)/ppd/\(id)", method: .get,  privKey: keyPair.privKey, message: ["id": id], parameters: parameters)
             } else {
-                return API.shared.request(path: "ppd/\(id)", parameters: parameters, method: .get, signature: nil, body: nil)
+                return API.shared.request(path: "ppd/\(id)", method: .get, parameters: parameters)
             }
         }.map { result -> PPD? in
             guard let ppd = result["ppds"] as? [Any] else {
@@ -74,9 +74,9 @@ struct PPD: Codable {
     static func getDescriptors(organisationKeyPair: KeyPair?) -> Promise<[PPDDescriptor]> {
         return firstly { () -> Promise<[JSONObject]> in
             if let keyPair = organisationKeyPair {
-                return API.shared.signedRequest(method: .get, message: nil, path: "organisations/\(keyPair.pubKey.base64)/ppd", privKey: keyPair.privKey, body: nil, parameters: nil)
+                return API.shared.signedRequest(path: "organisations/\(keyPair.pubKey.base64)/ppd", method: .get, privKey: keyPair.privKey)
             } else {
-                return API.shared.request(path: "ppd", parameters: nil, method: .get, signature: nil, body: nil)
+                return API.shared.request(path: "ppd", method: .get)
             }
         }.map { result -> [PPDDescriptor] in
             return try result.map {

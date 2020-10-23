@@ -80,7 +80,7 @@ extension Session {
 
     func deleteQueuesAtAWS() -> Promise<Void> {
         return firstly {
-            API.shared.signedRequest(method: .delete, message: nil, path: "sessions/\(signingPubKey)", privKey: try signingPrivKey(), body: nil, parameters: nil).asVoid()
+            API.shared.signedRequest(path: "sessions/\(signingPubKey)", method: .delete, privKey: try signingPrivKey()).asVoid()
         }.log("Cannot delete endpoint at AWS.")
     }
 
