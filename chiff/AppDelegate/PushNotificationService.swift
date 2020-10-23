@@ -84,7 +84,9 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
     /*
      * Called whenever the app is in the foreground and notification comes in.
      */
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let presentationOptions = handleNotification(notification)
         completionHandler(presentationOptions)
     }
@@ -112,8 +114,8 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         switch notification.request.content.categoryIdentifier {
         case NotificationCategory.onboardingNudge:
             DispatchQueue.main.async {
-                if let vc = AppDelegate.startupService.window?.rootViewController as? RootViewController {
-                    vc.selectedIndex = 1
+                if let rootController = AppDelegate.startupService.window?.rootViewController as? RootViewController {
+                    rootController.selectedIndex = 1
                 }
             }
             return [.alert]

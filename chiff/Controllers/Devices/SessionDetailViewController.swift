@@ -40,9 +40,10 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         iconView.image = session.logo ?? UIImage(named: "logo_purple")
         setAuxiliaryLabel(count: nil)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+
         let nc = NotificationCenter.default
-        nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
-        nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: dismiss)
+        nc.addObserver(self, selector: #selector(reloadData(notification:)), name: .sessionUpdated, object: nil)
+        nc.addObserver(self, selector: #selector(dismiss(notification:)), name: .sessionEnded, object: nil)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -69,7 +70,10 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         guard section == 0 else {
              return
         }
-        let header = view as! UITableViewHeaderFooterView
+        guard let header = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
@@ -81,7 +85,10 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         guard (session as? TeamSession)?.isAdmin ?? false || section == 1 else {
             return
         }
-        let footer = view as! UITableViewHeaderFooterView
+        guard let footer = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
@@ -98,7 +105,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
 
-    private func reloadData(notification: Notification) {
+    @objc private func reloadData(notification: Notification) {
         guard let session = notification.userInfo?["session"] as? Session, session.id == self.session.id else {
             return
         }
@@ -117,7 +124,7 @@ class SessionDetailViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    private func dismiss(notification: Notification) {
+    @objc private func dismiss(notification: Notification) {
         guard let sessionID = notification.userInfo?["sessionID"] as? String,
             session.id == sessionID,
             let navCon = navigationController else {

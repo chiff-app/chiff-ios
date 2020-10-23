@@ -71,7 +71,13 @@ struct Logger {
         crashlytics.record(error: error ?? KeynError())
     }
 
-    func error(_ message: String, error: Error? = nil, userInfo: [String: Any]? = nil, override: Bool = false, _ file: StaticString = #file, _ function: StaticString = #function, _ line: UInt = #line) {
+    func error(_ message: String,
+               error: Error? = nil,
+               userInfo: [String: Any]? = nil,
+               override: Bool = false,
+               _ file: StaticString = #file,
+               _ function: StaticString = #function,
+               _ line: UInt = #line) {
         #if DEBUG
         print("--------- ☠️ ERROR: \(String(describing: error)). \(message) --------- ")
         #endif

@@ -81,7 +81,14 @@ struct TeamSession: Session {
             let sharedSeed = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let (passwordSeed, encryptionKey, signingKeyPair) = try createTeamSessionKeys(seed: sharedSeed)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed)) // Used for pairing
-            let session = TeamSession(id: browserPubKey.hash, teamId: teamId, signingPubKey: signingKeyPair.pubKey, title: "\(role) @ \(team)", version: 2, isAdmin: false, lastChange: Date.now, organisationKey: organisationKeyData)
+            let session = TeamSession(id: browserPubKey.hash,
+                                      teamId: teamId,
+                                      signingPubKey: signingKeyPair.pubKey,
+                                      title: "\(role) @ \(team)",
+                                      version: 2,
+                                      isAdmin: false,
+                                      lastChange: Date.now,
+                                      organisationKey: organisationKeyData)
             return firstly {
                 try session.acknowledgeSessionStart(pairingKeyPair: pairingKeyPair, browserPubKey: browserPubKeyData, sharedKeyPubkey: keyPairForSharedKey.pubKey.base64)
             }.map { _ in
@@ -133,7 +140,7 @@ struct TeamSession: Session {
             makeBackup = true
         }
         return firstly {
-            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get,  privKey: try session.signingPrivKey()))
+            when(fulfilled: session.getOrganisationData(), API.shared.signedRequest(path: "teams/users/\(session.teamId)/\(session.id)", method: .get, privKey: try session.signingPrivKey()))
         }.then { (type, result) -> Promise<(OrganisationType?, JSONObject, String?)> in
             if let keys = result["keys"] as? [String] {
                 return session.updateKeys(keys: keys).map { (type, result, $0) }
@@ -216,7 +223,15 @@ struct TeamSession: Session {
         guard let endpoint = Properties.endpoint else {
             throw SessionError.noEndpoint
         }
-        let pairingResponse = KeynTeamPairingResponse(sessionID: id, pubKey: sharedKeyPubkey, browserPubKey: browserPubKey.base64, userID: Properties.userId!, environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue, type: .pair, version: version, userPubKey: try Seed.publicKey(), arn: endpoint)
+        let pairingResponse = KeynTeamPairingResponse(sessionID: id,
+                                                      pubKey: sharedKeyPubkey,
+                                                      browserPubKey: browserPubKey.base64,
+                                                      userID: Properties.userId!,
+                                                      environment: Properties.migrated ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+                                                      type: .pair,
+                                                      version: version,
+                                                      userPubKey: try Seed.publicKey(),
+                                                      arn: endpoint)
         let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
         let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
         let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
@@ -224,7 +239,12 @@ struct TeamSession: Session {
             "data": signedCiphertext.base64
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
-        return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing", method: .put, privKey: pairingKeyPair.privKey, message: nil, body: jsonData, parameters: nil).asVoid().log("Error sending pairing response.")
+        return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing",
+                                        method: .put,
+                                        privKey: pairingKeyPair.privKey,
+                                        body: jsonData)
+            .asVoid()
+            .log("Error sending pairing response.")
     }
 
     mutating func update(makeBackup: Bool) throws {
@@ -295,7 +315,7 @@ struct TeamSession: Session {
             return API.shared.signedRequest(path: "organisations/\(organisationKeyPair.pubKey.base64)", method: .get, privKey: organisationKeyPair.privKey)
         }.map { result in
             if let logo = result["logo"] as? String {
-                guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), let _ = UIImage(data: data) else {
+                guard let data = Data(base64Encoded: logo, options: .ignoreUnknownCharacters), UIImage(data: data) != nil else {
                     throw CodingError.unexpectedData
                 }
                 if filemgr.fileExists(atPath: path) {
@@ -328,7 +348,15 @@ struct TeamSession: Session {
             }
             if let sharedSeed = sharedSeed, let passwordSeed = passwordSeed, let signingKeyPair = signingKeyPair {
                 return firstly {
-                    API.shared.signedRequest( path: "teams/users/\(teamId)/\(self.id)", method: .patch,  privKey: try signingPrivKey(), message: ["id": self.id, "pubKey": signingPubKey, "length": keys.count, "newPubKey": signingKeyPair.pubKey.base64])
+                    API.shared.signedRequest(path: "teams/users/\(teamId)/\(self.id)",
+                                             method: .patch,
+                                             privKey: try signingPrivKey(),
+                                             message: [
+                                                "id": self.id,
+                                                "pubKey": signingPubKey,
+                                                "length": keys.count,
+                                                "newPubKey": signingKeyPair.pubKey.base64
+                                             ])
                 }.map { _ in
                     try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: TeamSession.encryptionService, secretData: encryptionKey, objectData: nil)
                     try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: self.id), service: TeamSession.signingService, secretData: signingKeyPair.privKey)

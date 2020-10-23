@@ -23,7 +23,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
         tableView.separatorColor = UIColor.primaryTransparant
         paperBackupAlertIcon.isHidden = Seed.paperBackupCompleted
         setJailbreakText()
-        NotificationCenter.default.addObserver(forName: .backupCompleted, object: nil, queue: OperationQueue.main, using: updateBackupFooter)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateBackupFooter(notification:)), name: .backupCompleted, object: nil)
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -35,7 +35,10 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header = view as! UITableViewHeaderFooterView
+        guard let header = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
@@ -44,7 +47,10 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as! UITableViewHeaderFooterView
+        guard let footer = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
@@ -78,7 +84,7 @@ class SettingsViewController: UITableViewController, UITextViewDelegate {
 
     // MARK: - Private
 
-    private func updateBackupFooter(notification: Notification) {
+    @objc private func updateBackupFooter(notification: Notification) {
         tableView.reloadData()
     }
 

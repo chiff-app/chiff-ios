@@ -11,8 +11,7 @@ class DevicesNavigationController: UINavigationController {
             if try !BrowserSession.all().isEmpty {
                 let devicesViewController = storyboard?.instantiateViewController(withIdentifier: "Devices Controller")
                 pushViewController(devicesViewController!, animated: false)
-            } else {
-                let pairViewController = storyboard?.instantiateViewController(withIdentifier: "Pair Controller") as! PairViewController
+            } else if let pairViewController = storyboard?.instantiateViewController(withIdentifier: "Pair Controller") as? PairViewController {
                 pushViewController(pairViewController, animated: false)
             }
         } catch {

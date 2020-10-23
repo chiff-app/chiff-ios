@@ -140,20 +140,50 @@ struct BackupSharedAccount: Codable, Equatable {
 }
 
 struct KeynCredentialsResponse: Codable {
-    let username: String?
-    let password: String?
-    let signature: String?
-    let counter: Int?
-    let algorithm: WebAuthnAlgorithm?
-    let newPassword: String?            // For reset only! When registering p will be set)
-    let browserTab: Int
-    let accountId: String?              // Only used with changePasswordRequests
-    let otp: String?
     let type: KeynMessageType
-    let pubKey: String?
-    let accounts: [Int: BulkLoginAccount?]?
-    let notes: String?
-    let teamId: String?
+    let browserTab: Int
+    var username: String?
+    var password: String?
+    var signature: String?
+    var counter: Int?
+    var algorithm: WebAuthnAlgorithm?
+    var newPassword: String?          // For reset only! When registering p will be set)
+    var accountId: String?            // Only used with changePasswordRequests
+    var otp: String?
+    var pubKey: String?
+    var accounts: [Int: BulkLoginAccount?]?
+    var notes: String?
+    var teamId: String?
+//
+//    init (type: KeynMessageType,
+//          browserTab: Int,
+//          username: String? = nil,
+//          password: String? = nil,
+//          signature: String? = nil,
+//          counter: Int? = nil,
+//          algorithm: WebAuthnAlgorithm? = nil,
+//          newPassword: String? = nil,
+//          accountId: String? = nil,
+//          otp: String? = nil,
+//          pubKey: String? = nil,
+//          accounts: [Int: BulkLoginAccount?]? = nil,
+//          notes: String? = nil,
+//          teamId: String? = nil) {
+//        self.type = type
+//        self.browserTab = browserTab
+//        self.username = username
+//        self.password = password
+//        self.signature = signature
+//        self.counter = counter
+//        self.algorithm = algorithm
+//        self.newPassword = newPassword
+//        self.accountId = accountId
+//        self.otp = otp
+//        self.pubKey = pubKey
+//        self.accounts = accounts
+//        self.notes = notes
+//        self.teamId = teamId
+//    }
 
     enum CodingKeys: String, CodingKey {
         case username = "u"
@@ -190,46 +220,30 @@ struct KeyPair {
     let privKey: Data
 }
 
-// MARK: - StoreKit
-
-struct ProductIdentifiers {
-    private let name = "ProductIds"
-    private let fileExtension = "plist"
-
-    var isEmpty: String {
-        return "\(name).\(fileExtension) is empty. \("storekit.updateResource".localized)"
-    }
-
-    var wasNotFound: String {
-        return "\("storekit.couldNotFind".localized) \(name).\(fileExtension)."
-    }
-
-    /// - returns: An array with the product identifiers to be queried.
-    var identifiers: [String]? {
-        guard let path = Bundle.main.path(forResource: self.name, ofType: self.fileExtension) else { return nil }
-        return NSArray(contentsOfFile: path) as? [String]
-    }
-}
-
 enum KeyIdentifier: String, Codable {
     // Seed
-    case password = "password"
-    case backup = "backup"
-    case master = "master"
-    case webauthn = "webauthn"
+    case password
+    case backup
+    case master
+    case webauthn
 
     // BackupManager
-    case priv = "priv"
-    case pub = "pub"
-    case encryption = "encryption"
+    case priv
+    case pub
+    case encryption
 
     // NotificationManager
-    case subscription = "subscription"
-    case endpoint = "endpoint"
+    case subscription
+    case endpoint
 
     func identifier(for keychainService: KeychainService) -> String {
         return "\(keychainService.rawValue).\(self.rawValue)"
     }
+}
+
+enum TypeError: Error {
+    case wrongViewControllerType
+    case wrongViewType
 }
 
 enum SortingValue: Int {

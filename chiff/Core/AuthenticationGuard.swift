@@ -25,13 +25,16 @@ class AuthenticationGuard {
         lockWindow = UIWindow(frame: UIScreen.main.bounds)
         lockWindow.windowLevel = UIWindow.Level.alert
         lockWindow.screen = UIScreen.main
-        lockWindow.rootViewController = UIStoryboard.main.instantiateViewController(withIdentifier: "LoginController") as! LoginViewController
+        if let loginController =  UIStoryboard.main.instantiateViewController(withIdentifier: "LoginController") as? LoginViewController {
+            lockWindow.rootViewController = loginController
+        }
 
         let nc = NotificationCenter.default
-        nc.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: OperationQueue.main, using: applicationDidEnterBackground)
-        nc.addObserver(forName: UIApplication.didFinishLaunchingNotification, object: nil, queue: OperationQueue.main, using: didFinishLaunchingWithOptions)
-        nc.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
-        nc.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: OperationQueue.main, using: applicationDidBecomeActive)
+        nc.addObserver(self, selector: #selector(applicationDidEnterBackground(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        nc.addObserver(self, selector: #selector(didFinishLaunchingWithOptions(notification:)), name: UIApplication.didFinishLaunchingNotification, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillEnterForeground(notification:)), name: UIApplication.willEnterForegroundNotification, object: nil)
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive(notification:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+
     }
 
     // MARK: - LocalAuthentication
@@ -104,12 +107,13 @@ class AuthenticationGuard {
     private func showDataDeleted() {
         UIView.animate(withDuration: 0.25, animations: {
             self.lockWindow.alpha = 1.0
-        }) { if $0 {
-            self.lockWindow.makeKeyAndVisible()
-            self.lockWindowIsHidden = false
-            (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
+        }, completion: { result in
+            if result {
+                self.lockWindow.makeKeyAndVisible()
+                self.lockWindowIsHidden = false
+                (self.lockWindow.rootViewController as? LoginViewController)?.showDataDeleted()
             }
-        }
+        })
     }
 
     private func updateNews() -> Promise<Void> {
@@ -131,20 +135,20 @@ class AuthenticationGuard {
 
     // MARK: - UIApplication Notification Handlers
 
-    private func applicationWillEnterForeground(notification: Notification) {
+    @objc private func applicationWillEnterForeground(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
     }
 
-    private func applicationDidBecomeActive(notification: Notification) {
+    @objc private func applicationDidBecomeActive(notification: Notification) {
         if let lockView = lockWindow.viewWithTag(lockViewTag) {
             lockView.removeFromSuperview()
         }
         self.authenticateUser(cancelChecks: true)
     }
 
-    private func applicationDidEnterBackground(notification: Notification) {
+    @objc private func applicationDidEnterBackground(notification: Notification) {
         guard Seed.hasKeys else {
             return
         }
@@ -179,7 +183,7 @@ class AuthenticationGuard {
         keynLogoView.centerYAnchor.constraint(equalTo: lockView.centerYAnchor).isActive = true
     }
 
-    private func didFinishLaunchingWithOptions(notification: Notification) {
+    @objc private func didFinishLaunchingWithOptions(notification: Notification) {
         guard Seed.hasKeys else {
             return
         }

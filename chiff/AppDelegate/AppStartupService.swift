@@ -57,8 +57,8 @@ class AppStartupService: NSObject, UIApplicationDelegate {
                 // o and b are validated in authorizepairing, p and q are validated by libsodium
                 return false
         }
-        if let vc = self.window?.rootViewController as? RootViewController {
-            vc.selectedIndex = 1
+        if let rootController = self.window?.rootViewController as? RootViewController {
+            rootController.selectedIndex = 1
         } else {
             openedFromUrl = true
         }
@@ -151,17 +151,17 @@ class AppStartupService: NSObject, UIApplicationDelegate {
     }
 
     private func launchRootViewController() {
-        guard let vc = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
+        guard let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {
             Logger.shared.error("Unexpected root view controller type")
             fatalError("Unexpected root view controller type")
         }
 
         // We just open the devices tab instead of accounts when opened from a pairing url.
         if self.openedFromUrl {
-            vc.selectedIndex = 1
+            rootController.selectedIndex = 1
             self.openedFromUrl = false
         }
-        self.window?.rootViewController = vc
+        self.window?.rootViewController = rootController
         self.window?.makeKeyAndVisible()
     }
 

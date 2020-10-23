@@ -15,18 +15,20 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     var sessions = [Session]()
 
+    var observers = [NSObjectProtocol]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let nc = NotificationCenter.default
-        nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession)
-        nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession)
-        nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData)
-        nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (_) in
+        observers.append(nc.addObserver(forName: .sessionStarted, object: nil, queue: OperationQueue.main, using: addSession))
+        observers.append(nc.addObserver(forName: .sessionEnded, object: nil, queue: OperationQueue.main, using: removeSession))
+        observers.append(nc.addObserver(forName: .sessionUpdated, object: nil, queue: OperationQueue.main, using: reloadData))
+        observers.append(nc.addObserver(forName: .notificationSettingsUpdated, object: nil, queue: OperationQueue.main) { (_) in
             DispatchQueue.main.async {
                 self.updateUi()
             }
-        }
+        })
 
         scrollView.delegate = self
         tableView.dataSource = self
@@ -39,6 +41,13 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.sessions = sessions.sorted(by: { $0.creationDate < $1.creationDate })
         } catch {
             Logger.shared.error("Could not get sessions.", error: error)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        for observer in observers {
+            NotificationCenter.default.removeObserver(observer)
         }
     }
 
@@ -60,7 +69,7 @@ class DevicesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func removeSession(_ notification: Notification) {
+    @objc func removeSession(_ notification: Notification) {
         guard let sessionID = notification.userInfo?["sessionID"] as? String else {
             Logger.shared.warning("Userinfo was nil when trying to remove session from view.")
             return

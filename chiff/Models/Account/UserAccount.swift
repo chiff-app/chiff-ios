@@ -31,7 +31,15 @@ struct UserAccount: Account, Equatable {
 
     static let keychainService: KeychainService = .account
 
-    init(username: String, sites: [Site], password: String?, rpId: String?, algorithms: [WebAuthnAlgorithm]?, notes: String?, askToChange: Bool?, context: LAContext? = nil, offline: Bool = false) throws {
+    init(username: String,
+         sites: [Site],
+         password: String?,
+         rpId: String?,
+         algorithms: [WebAuthnAlgorithm]?,
+         notes: String?,
+         askToChange: Bool?,
+         context: LAContext? = nil,
+         offline: Bool = false) throws {
         id = "\(sites[0].id)_\(username)".hash
 
         self.sites = sites
@@ -65,7 +73,8 @@ struct UserAccount: Account, Equatable {
         try save(password: generatedPassword, keyPair: keyPair, offline: offline)
     }
 
-    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int, passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, version: Int, webAuthn: WebAuthn?, notes: String?) {
+    init(id: String, username: String, sites: [Site], passwordIndex: Int, lastPasswordTryIndex: Int,
+         passwordOffset: [Int]?, askToLogin: Bool?, askToChange: Bool?, version: Int, webAuthn: WebAuthn?, notes: String?) {
         self.id = id
         self.username = username
         self.sites = sites

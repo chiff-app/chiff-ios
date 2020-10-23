@@ -17,8 +17,8 @@ class QuestionnaireController: UINavigationController {
             dismiss(animated: true, completion: nil)
             return
         }
-        if let vc = visibleViewController as? QuestionnaireIntroductionViewController {
-            vc.introduction = questionnaire?.introduction
+        if let viewController = visibleViewController as? QuestionnaireIntroductionViewController {
+            viewController.introduction = questionnaire?.introduction
         }
     }
 

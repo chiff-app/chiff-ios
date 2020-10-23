@@ -34,10 +34,10 @@ class PrivacyViewController: UITableViewController {
     // This gets overrided by willDisplayFooterView, but this sets the correct height
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
-            case 0: return footerText
-            case 1: return "settings.reset_warning".localized
-            case 2: return "settings.delete_warning".localized
-            default: fatalError("Too many sections")
+        case 0: return footerText
+        case 1: return "settings.reset_warning".localized
+        case 2: return "settings.delete_warning".localized
+        default: fatalError("Too many sections")
         }
     }
 
@@ -46,7 +46,10 @@ class PrivacyViewController: UITableViewController {
             return
         }
 
-        let header = view as! UITableViewHeaderFooterView
+        guard let header = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         header.textLabel?.textColor = UIColor.primaryHalfOpacity
         header.textLabel?.font = UIFont.primaryBold
         header.textLabel?.textAlignment = NSTextAlignment.left
@@ -55,16 +58,19 @@ class PrivacyViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        let footer = view as! UITableViewHeaderFooterView
+        guard let footer = view as? UITableViewHeaderFooterView else {
+            Logger.shared.error("Expected UITableViewHeaderFooterView, but found \(type(of: view)).")
+            return
+        }
         footer.textLabel?.textColor = UIColor.textColorHalfOpacity
         footer.textLabel?.font = UIFont.primaryMediumSmall
         footer.textLabel?.textAlignment = NSTextAlignment.left
         footer.textLabel?.frame = footer.frame
         switch section {
-            case 0: footer.textLabel?.text = footerText
-            case 1: footer.textLabel?.text = "settings.reset_warning".localized
-            case 2: footer.textLabel?.text = "settings.delete_warning".localized
-            default: fatalError("Too many sections")
+        case 0: footer.textLabel?.text = footerText
+        case 1: footer.textLabel?.text = "settings.reset_warning".localized
+        case 2: footer.textLabel?.text = "settings.delete_warning".localized
+        default: fatalError("Too many sections")
         }
     }
 

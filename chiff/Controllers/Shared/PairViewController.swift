@@ -59,7 +59,9 @@ class PairViewController: QRViewController {
             return Promise(error: SessionError.invalid)
         }
         return firstly {
-            AuthorizationGuard.shared.authorizePairing(parameters: parameters, reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).", delegate: pairContainerDelegate)
+            AuthorizationGuard.shared.authorizePairing(parameters: parameters,
+                                                       reason: "\("requests.pair_with".localized) \(browser) \("requests.on".localized) \(os).",
+                                                       delegate: pairContainerDelegate)
         }
     }
 

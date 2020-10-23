@@ -103,7 +103,7 @@ extension Session {
                 sessions.append(session)
             } catch {
                 Logger.shared.error("Can not decode session", error: error)
-                guard let sessionId = dict[kSecAttrAccount as String] as? String, let _ = try? Keychain.shared.delete(id: sessionId, service: Self.encryptionService) else {
+                guard let sessionId = dict[kSecAttrAccount as String] as? String, (try? Keychain.shared.delete(id: sessionId, service: Self.encryptionService)) != nil else {
                     purgeSessionDataFromKeychain()
                     return []
                 }

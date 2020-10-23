@@ -402,6 +402,8 @@ errors:
     value: The secret should consist of characters A-Z and numbers 2-7.
   invalid_url:
     value: This URL does not seem to be valid.
+  loading_wordlists:
+    value: Error loading wordlists.
   local_authentication:
     biometry_not_available:
       value: >-

@@ -51,7 +51,7 @@ struct PPD: Codable {
         let parameters = ["v": PPDVersion.v1_1.rawValue]
         return firstly { () -> Promise<JSONObject> in
             if let keyPair = organisationKeyPair {
-                return API.shared.signedRequest(path: "organisations/\(keyPair.pubKey.base64)/ppd/\(id)", method: .get,  privKey: keyPair.privKey, message: ["id": id], parameters: parameters)
+                return API.shared.signedRequest(path: "organisations/\(keyPair.pubKey.base64)/ppd/\(id)", method: .get, privKey: keyPair.privKey, message: ["id": id], parameters: parameters)
             } else {
                 return API.shared.request(path: "ppd/\(id)", method: .get, parameters: parameters)
             }
@@ -159,17 +159,30 @@ struct PPDCharacterSet: Codable {
 }
 
 struct PPDProperties: Codable {
-    let characterSettings: PPDCharacterSettings? // Parent node for character settings. If the node is omitted, all characters defined in the characterSets element are treated as available for use with no restrictions on minimum and maximum ocurrences.
-    let maxConsecutive: Int? // Indicates whether consecutive characters are allowed or not. A omitted value or 0 inidaces no limitation on consecutive characters.
-    let minLength: Int? // Minimum length of the password.
-    let maxLength: Int? // Maximum length of the password. A value of 0 means no maximum length.
-    var expires: Int = 0 // Password expiry in days. A value of 0 means no expiry.
+    /// Parent node for character settings. If the node is omitted,
+    /// all characters defined in the characterSets element are treated
+    /// as available for use with no restrictions on minimum and maximum ocurrences.
+    let characterSettings: PPDCharacterSettings?
+    /// Indicates whether consecutive characters are allowed or not.
+    /// A omitted value or 0 inidaces no limitation on consecutive characters.
+    let maxConsecutive: Int?
+    /// Minimum length of the password.
+    let minLength: Int?
+    /// Maximum length of the password. A value of 0 means no maximum length.
+    let maxLength: Int?
+    /// Password expiry in days. A value of 0 means no expiry.
+    var expires: Int = 0
 }
 
 struct PPDCharacterSettings: Codable {
-    let characterSetSettings: [PPDCharacterSetSettings] // Settings element for a globally available character set.
-    let requirementGroups: [PPDRequirementGroup]? // Character sets specified in the requirement groups are implicitly added to the available character sets for the given position (or all position if no positions are specified) if they were not allowed previously.
-    let positionRestrictions: [PPDPositionRestriction]? // Restriction element used to restrict the allowed characters for a given character position.
+    /// Settings element for a globally available character set.
+    let characterSetSettings: [PPDCharacterSetSettings]
+    /// Character sets specified in the requirement groups are implicitly added
+    /// to the available character sets for the given position
+    /// (or all position if no positions are specified) if they were not allowed previously.
+    let requirementGroups: [PPDRequirementGroup]?
+    /// Restriction element used to restrict the allowed characters for a given character position.
+    let positionRestrictions: [PPDPositionRestriction]?
 
     init(characterSetSettings: [PPDCharacterSetSettings]?, requirementGroups: [PPDRequirementGroup]?, positionRestrictions: [PPDPositionRestriction]?) {
         self.characterSetSettings = characterSetSettings ?? [PPDCharacterSetSettings]()
@@ -179,14 +192,23 @@ struct PPDCharacterSettings: Codable {
 }
 
 struct PPDCharacterSetSettings: Codable {
-    let minOccurs: Int? // Minimum password global occurrences of the character set. Omitted for no restrictions on minimum occurences. This includes the complete password even for positions with restrictions.
-    let maxOccurs: Int? // Maximum password global occurrences of the character set. Omitted for no restrictions on maximum occurences. This includes the complete password even for positions with restrictions.
+    /// Minimum password global occurrences of the character set. Omitted for no restrictions on minimum occurences. This includes the complete password even for positions with restrictions.
+    let minOccurs: Int?
+    /// Maximum password global occurrences of the character set. Omitted for no restrictions on maximum occurences. This includes the complete password even for positions with restrictions.
+    let maxOccurs: Int?
     let name: String
 }
 
 struct PPDPositionRestriction: Codable {
-    let positions: String // Comma separated list of character positions the restriction is applied to. Each position can be a character position starting with 0. Negative character positions can be used to specify the position beginning from the end of the password. A value in the interval (0,1) can be used to specify a position by ratio. E.g. 0.5 refers to the center position of the password.
-    let minOccurs: Int // Minimum occurences of the character set for the given positions. A value of 0 means no restrictions of minimum occurences.
+    /**
+     * Comma separated list of character positions the restriction is applied to.
+     * Each position can be a character position starting with 0.
+     * Negative character positions can be used to specify the position beginning from the end of the password.
+     * A value in the interval (0,1) can be used to specify a position by ratio. E.g. 0.5 refers to the center position of the password.
+     */
+    let positions: String
+    /// Minimum occurences of the character set for the given positions. A value of 0 means no restrictions of minimum occurences.
+    let minOccurs: Int
     let maxOccurs: Int?
     let characterSet: String
 
@@ -199,7 +221,8 @@ struct PPDPositionRestriction: Codable {
 }
 
 struct PPDRequirementGroup: Codable {
-    let minRules: Int // Minimum number of rules that must be fulfilled.
+    /// Minimum number of rules that must be fulfilled.
+    let minRules: Int
     let requirementRules: [PPDRequirementRule]
 
     init(minRules: Int = 1, requirementRules: [PPDRequirementRule]) {
@@ -209,9 +232,12 @@ struct PPDRequirementGroup: Codable {
 }
 
 struct PPDRequirementRule: Codable {
-    let positions: String? //List of character positions this rule applies to as defined in the PositionRestriction type.
-    let minOccurs: Int // Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
-    let maxOccurs: Int? // Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
+    /// List of character positions this rule applies to as defined in the PositionRestriction type.
+    let positions: String?
+    /// Minimum occurrences of the given character set. A value of 0 means no minimum occurrences.
+    let minOccurs: Int
+    /// Maximum occurrences of the given character set. Ommitted for no maximum occurrences.
+    let maxOccurs: Int?
     let characterSet: String
 
     init(positions: String?, minOccurs: Int = 0, maxOccurs: Int?, characterSet: String) {
@@ -234,13 +260,3 @@ struct PPDLogin: Codable {
 struct PPDPasswordChange: Codable {
     let url: String?
 }
-
-//struct PPDRegister: Codable {
-//    let url: String
-//}
-//
-//struct PPDPasswordReset: Codable {
-//    let url: String
-//    let maxTries: Int
-//    let routines: [PPDPasswordResetRoutines]
-//}

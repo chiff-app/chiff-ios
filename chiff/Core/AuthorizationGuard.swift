@@ -7,7 +7,6 @@ import OneTimePassword
 import LocalAuthentication
 import PromiseKit
 
-
 class AuthorizationGuard {
 
     static let shared = AuthorizationGuard()
@@ -25,7 +24,9 @@ class AuthorizationGuard {
                 throw SessionError.doesntExist
             }
             let storyboard: UIStoryboard = UIStoryboard.get(.request)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as! RequestViewController
+            guard let viewController = storyboard.instantiateViewController(withIdentifier: "PasswordRequest") as? RequestViewController else {
+                throw TypeError.wrongViewControllerType
+            }
             viewController.authorizer = try createAuthorizer(request: request, session: session)
             UIApplication.shared.visibleViewController?.present(viewController, animated: true, completion: nil)
         } catch {

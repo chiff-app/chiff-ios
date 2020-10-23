@@ -10,9 +10,9 @@ struct Properties {
     init() {}
 
     enum Environment: String {
-        case dev = "dev"
-        case beta = "beta"
-        case prod = "prod"
+        case dev
+        case beta
+        case prod
 
         var path: String {
             switch self {

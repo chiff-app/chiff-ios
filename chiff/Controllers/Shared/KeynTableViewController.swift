@@ -33,8 +33,9 @@ class KeynTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerText = headers[safe: section], let text = headerText {
-            let header = view as! UITableViewHeaderFooterView
+        if let headerText = headers[safe: section],
+           let text = headerText,
+           let header = view as? UITableViewHeaderFooterView {
             header.textLabel?.textColor = UIColor.primaryHalfOpacity
             header.textLabel?.font = UIFont.primaryBold
             header.textLabel?.textAlignment = NSTextAlignment.left
@@ -44,8 +45,9 @@ class KeynTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if let footerText = footers[safe: section], let text = footerText {
-            let footer = view as! UITableViewHeaderFooterView
+        if let footerText = footers[safe: section],
+           let text = footerText,
+           let footer = view as? UITableViewHeaderFooterView {
             footer.textLabel?.textColor = UIColor.textColorHalfOpacity
             footer.textLabel?.font = UIFont.primaryMediumSmall
             footer.textLabel?.textAlignment = NSTextAlignment.left

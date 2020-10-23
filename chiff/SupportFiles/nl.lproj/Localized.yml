@@ -403,6 +403,8 @@ errors:
     value: Het geheim moet bestaan uit de karakters A-Z en cijfers 2-7.
   invalid_url:
     value: Deze URL lijkt niet geldig te zijn.
+  loading_wordlists:
+    value: Fout bij het laden van de woordlijsten.
   local_authentication:
     biometry_not_available:
       value: >-

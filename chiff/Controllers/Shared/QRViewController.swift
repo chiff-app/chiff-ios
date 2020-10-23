@@ -50,8 +50,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     }
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        if metadataObjects.count > 0 {
-            let machineReadableCode = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        if metadataObjects.count > 0, let machineReadableCode = metadataObjects[0] as? AVMetadataMachineReadableCodeObject {
             if machineReadableCode.type == AVMetadataObject.ObjectType.qr {
                 if let urlString = machineReadableCode.stringValue, !qrFound {
                     qrFound = true

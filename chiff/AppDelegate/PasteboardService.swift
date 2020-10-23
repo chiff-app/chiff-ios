@@ -10,13 +10,11 @@ import UIKit
 class PasteboardService: NSObject, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let nc = NotificationCenter.default
-        nc.addObserver(forName: UIPasteboard.changedNotification, object: nil, queue: nil, using: handlePasteboardChangeNotification)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(handlePasteboardChangeNotification(notification:)), name: UIPasteboard.changedNotification, object: nil)
         return true
     }
 
-    private func handlePasteboardChangeNotification(notification: Notification) {
+    @objc private func handlePasteboardChangeNotification(notification: Notification) {
         let pasteboard = UIPasteboard.general
         guard let text = pasteboard.string, text != "" else {
             return
