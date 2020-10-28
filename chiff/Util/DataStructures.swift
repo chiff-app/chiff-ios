@@ -52,47 +52,6 @@ struct KeynPersistentQueueMessage: Codable {
     }
 }
 
-/*
- * Keyn Responses.
- *
- * Direction: app -> browser
- */
-struct KeynPairingResponse: Codable {
-    let sessionID: String
-    let pubKey: String
-    let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
-    let userID: String
-    let environment: String
-    let accounts: [String: SessionAccount]
-    let type: KeynMessageType
-    let errorLogging: Bool
-    let analyticsLogging: Bool
-    let version: Int
-    let arn: String
-    var os: String = "ios"
-    let appVersion: String?
-    let organisationKey: String?
-    let organisationType: OrganisationType?
-    let isAdmin: Bool?
-}
-
-/*
- * Keyn Responses.
- *
- * Direction: app -> browser
- */
-struct KeynTeamPairingResponse: Codable {
-    let sessionID: String
-    let pubKey: String
-    let browserPubKey: String // This is sent back so it is signed together with the app's pubkey
-    let userID: String
-    let environment: String
-    let type: KeynMessageType
-    let version: Int
-    let userPubKey: String
-    let arn: String
-}
-
 struct SessionAccount: Codable {
     let id: String
     let askToLogin: Bool?
@@ -154,36 +113,6 @@ struct KeynCredentialsResponse: Codable {
     var accounts: [Int: BulkLoginAccount?]?
     var notes: String?
     var teamId: String?
-//
-//    init (type: KeynMessageType,
-//          browserTab: Int,
-//          username: String? = nil,
-//          password: String? = nil,
-//          signature: String? = nil,
-//          counter: Int? = nil,
-//          algorithm: WebAuthnAlgorithm? = nil,
-//          newPassword: String? = nil,
-//          accountId: String? = nil,
-//          otp: String? = nil,
-//          pubKey: String? = nil,
-//          accounts: [Int: BulkLoginAccount?]? = nil,
-//          notes: String? = nil,
-//          teamId: String? = nil) {
-//        self.type = type
-//        self.browserTab = browserTab
-//        self.username = username
-//        self.password = password
-//        self.signature = signature
-//        self.counter = counter
-//        self.algorithm = algorithm
-//        self.newPassword = newPassword
-//        self.accountId = accountId
-//        self.otp = otp
-//        self.pubKey = pubKey
-//        self.accounts = accounts
-//        self.notes = notes
-//        self.teamId = teamId
-//    }
 
     enum CodingKeys: String, CodingKey {
         case username = "u"

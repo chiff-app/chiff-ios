@@ -34,11 +34,11 @@ extension TeamSession: Syncable {
     }
 
     init(from backupSession: BackupTeamSession, context: LAContext?) throws {
-        let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: backupSession.seed)
+        let seeds = try TeamSessionSeeds(seed: backupSession.seed)
         creationDate = Date(millisSince1970: backupSession.creationDate)
         id = backupSession.id
         teamId = backupSession.teamId
-        signingPubKey = signingKeyPair.pubKey.base64
+        signingPubKey = seeds.signingKeyPair.pubKey.base64
         title = backupSession.title
         version = backupSession.version
         isAdmin = false
@@ -46,7 +46,7 @@ extension TeamSession: Syncable {
         lastChange = Date.now
         organisationKey = backupSession.organisationKey
 
-        try save(sharedSeed: backupSession.seed, key: encryptionKey, signingKeyPair: signingKeyPair, passwordSeed: passwordSeed, sharedKeyPrivKey: backupSession.privKey)
+        try save(keys: seeds, privKey: backupSession.privKey)
     }
 
     mutating func update(with backupObject: BackupTeamSession, context: LAContext?) throws -> Bool {
@@ -63,11 +63,8 @@ extension TeamSession: Syncable {
         lastChange = backupObject.lastChange
         let sessionData = try PropertyListEncoder().encode(self as Self)
         if let seed = newSeed {
-            let (passwordSeed, encryptionKey, signingKeyPair) = try TeamSession.createTeamSessionKeys(seed: seed)
-            try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: self.id), service: Self.encryptionService, secretData: encryptionKey, objectData: sessionData)
-            try Keychain.shared.update(id: SessionIdentifier.signingKeyPair.identifier(for: id), service: Self.signingService, secretData: signingKeyPair.privKey)
-            try Keychain.shared.update(id: SessionIdentifier.passwordSeed.identifier(for: id), service: Self.signingService, secretData: passwordSeed)
-            try Keychain.shared.update(id: SessionIdentifier.sharedSeed.identifier(for: id), service: Self.signingService, secretData: seed)
+            let seeds = try TeamSessionSeeds(seed: seed)
+            try seeds.update(id: self.id, data: sessionData)
         } else {
             try Keychain.shared.update(id: SessionIdentifier.sharedKey.identifier(for: id), service: Self.encryptionService, objectData: sessionData)
         }

@@ -113,6 +113,26 @@ extension Session {
         return sessions
     }
 
+    func acknowledgeSessionStart<T: PairingResponse>(pairingKeyPair: KeyPair, browserPubKey: Data, pairingResponse: T) -> Promise<Void> {
+        do {
+            let jsonPairingResponse = try JSONEncoder().encode(pairingResponse)
+            let ciphertext = try Crypto.shared.encrypt(jsonPairingResponse, pubKey: browserPubKey)
+            let signedCiphertext = try Crypto.shared.sign(message: ciphertext, privKey: pairingKeyPair.privKey)
+            let message = [
+                "data": signedCiphertext.base64
+            ]
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            return API.shared.signedRequest(path: "sessions/\(pairingKeyPair.pubKey.base64)/pairing",
+                                            method: .put,
+                                            privKey: pairingKeyPair.privKey,
+                                            body: jsonData)
+                .asVoid()
+                .log("Error sending pairing response.")
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
     static func purgeSessionDataFromKeychain() {
         Keychain.shared.deleteAll(service: encryptionService)
         Keychain.shared.deleteAll(service: signingService)
