@@ -192,6 +192,18 @@
 		4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */; };
 		49983445232131680007BF12 /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49983444232131680007BF12 /* MockAPI.swift */; };
 		49A01CDA22609C5E001794B8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49A01CD922609C5E001794B8 /* WebKit.framework */; };
+		49A2187B254961BD0036D42B /* TeamSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2187A254961BD0036D42B /* TeamSession+Updating.swift */; };
+		49A218812549623C0036D42B /* TeamSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2187A254961BD0036D42B /* TeamSession+Updating.swift */; };
+		49A218872549623D0036D42B /* TeamSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2187A254961BD0036D42B /* TeamSession+Updating.swift */; };
+		49A21893254986C10036D42B /* BrowserSession+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A21892254986C10036D42B /* BrowserSession+Creation.swift */; };
+		49A2189A25498D460036D42B /* BrowserSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2189925498D460036D42B /* BrowserSession+Updating.swift */; };
+		49A218A525498DA80036D42B /* BrowserSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2189925498D460036D42B /* BrowserSession+Updating.swift */; };
+		49A218AB25498DA80036D42B /* BrowserSession+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2189925498D460036D42B /* BrowserSession+Updating.swift */; };
+		49A218B125498DAC0036D42B /* BrowserSession+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A21892254986C10036D42B /* BrowserSession+Creation.swift */; };
+		49A218B225498DAD0036D42B /* BrowserSession+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A21892254986C10036D42B /* BrowserSession+Creation.swift */; };
+		49A218B925498F750036D42B /* PairingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A218B825498F750036D42B /* PairingResponse.swift */; };
+		49A218BA25498F750036D42B /* PairingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A218B825498F750036D42B /* PairingResponse.swift */; };
+		49A218BB25498F750036D42B /* PairingResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A218B825498F750036D42B /* PairingResponse.swift */; };
 		49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257221086EF30018677C /* ReportSiteViewController.swift */; };
 		49A32575210885F80018677C /* MPCQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A32574210885F80018677C /* MPCQuestionViewController.swift */; };
 		49A3257721089AAC0018677C /* MPCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A3257621089AAC0018677C /* MPCTableViewCell.swift */; };
@@ -221,7 +233,7 @@
 		49B2A92C25432E76001BA6EE /* UIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91825432CD2001BA6EE /* UIExtensions.swift */; };
 		49B2A93225432E79001BA6EE /* CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91F25432CEC001BA6EE /* CoreExtensions.swift */; };
 		49B2A93325432E79001BA6EE /* CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A91F25432CEC001BA6EE /* CoreExtensions.swift */; };
-		49B2A93B25433478001BA6EE /* TeamKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamKeys.swift */; };
+		49B2A93B25433478001BA6EE /* TeamSessionKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */; };
 		49B2A955254334ED001BA6EE /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
 		49B2A956254334ED001BA6EE /* TeamRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4968695A2421046200B9BEE9 /* TeamRole.swift */; };
 		49B2A957254334EF001BA6EE /* TeamUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49686956242103E600B9BEE9 /* TeamUser.swift */; };
@@ -230,8 +242,8 @@
 		49B2A96425433502001BA6EE /* TeamAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496869402421008500B9BEE9 /* TeamAccount.swift */; };
 		49B2A96A25433506001BA6EE /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
 		49B2A96B25433507001BA6EE /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6F23223EDA60D0093AD56 /* Team.swift */; };
-		49B2A96C2543350A001BA6EE /* TeamKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamKeys.swift */; };
-		49B2A96D2543350B001BA6EE /* TeamKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamKeys.swift */; };
+		49B2A96C2543350A001BA6EE /* TeamSessionKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */; };
+		49B2A96D2543350B001BA6EE /* TeamSessionKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */; };
 		49B2A974254345F3001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49B2A97A25434608001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
 		49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B2A973254345F3001BA6EE /* Team+Creation.swift */; };
@@ -494,6 +506,10 @@
 		4995D48E239A50D400267E6A /* MobileExplanationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileExplanationViewController.swift; sourceTree = "<group>"; };
 		49983444232131680007BF12 /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
 		49A01CD922609C5E001794B8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		49A2187A254961BD0036D42B /* TeamSession+Updating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamSession+Updating.swift"; sourceTree = "<group>"; };
+		49A21892254986C10036D42B /* BrowserSession+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserSession+Creation.swift"; sourceTree = "<group>"; };
+		49A2189925498D460036D42B /* BrowserSession+Updating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrowserSession+Updating.swift"; sourceTree = "<group>"; };
+		49A218B825498F750036D42B /* PairingResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingResponse.swift; sourceTree = "<group>"; };
 		49A3257221086EF30018677C /* ReportSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSiteViewController.swift; sourceTree = "<group>"; };
 		49A32574210885F80018677C /* MPCQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCQuestionViewController.swift; sourceTree = "<group>"; };
 		49A3257621089AAC0018677C /* MPCTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPCTableViewCell.swift; sourceTree = "<group>"; };
@@ -513,7 +529,7 @@
 		49B2A91025432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountsTableViewController+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		49B2A91825432CD2001BA6EE /* UIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtensions.swift; sourceTree = "<group>"; };
 		49B2A91F25432CEC001BA6EE /* CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreExtensions.swift; sourceTree = "<group>"; };
-		49B2A93A25433478001BA6EE /* TeamKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamKeys.swift; sourceTree = "<group>"; };
+		49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSessionKeys.swift; sourceTree = "<group>"; };
 		49B2A973254345F3001BA6EE /* Team+Creation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Creation.swift"; sourceTree = "<group>"; };
 		49B2A9862543471D001BA6EE /* Seed+BetaMigration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seed+BetaMigration.swift"; sourceTree = "<group>"; };
 		49B6C1851FCF2A5C0062D717 /* Seed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
@@ -812,8 +828,13 @@
 			isa = PBXGroup;
 			children = (
 				49FA7F751FB9E08E00EDB367 /* BrowserSession.swift */,
+				49A21892254986C10036D42B /* BrowserSession+Creation.swift */,
+				49A2189925498D460036D42B /* BrowserSession+Updating.swift */,
+				49A218B825498F750036D42B /* PairingResponse.swift */,
 				49E5FA0C2302C482009C964E /* Session.swift */,
 				49E5FA0623015DEC009C964E /* TeamSession.swift */,
+				49B2A93A25433478001BA6EE /* TeamSessionKeys.swift */,
+				49A2187A254961BD0036D42B /* TeamSession+Updating.swift */,
 				496869522421032F00B9BEE9 /* TeamSession+Syncable.swift */,
 			);
 			path = Session;
@@ -893,7 +914,6 @@
 				49F6F23223EDA60D0093AD56 /* Team.swift */,
 				49B2A973254345F3001BA6EE /* Team+Creation.swift */,
 				496869402421008500B9BEE9 /* TeamAccount.swift */,
-				49B2A93A25433478001BA6EE /* TeamKeys.swift */,
 				49686956242103E600B9BEE9 /* TeamUser.swift */,
 				4968695A2421046200B9BEE9 /* TeamRole.swift */,
 			);
@@ -1527,7 +1547,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A218B125498DAC0036D42B /* BrowserSession+Creation.swift in Sources */,
 				496869542421033300B9BEE9 /* TeamSession+Syncable.swift in Sources */,
+				49A218BA25498F750036D42B /* PairingResponse.swift in Sources */,
 				49062C582214499A00A30669 /* Properties.swift in Sources */,
 				49B2A98D25434734001BA6EE /* Seed+BetaMigration.swift in Sources */,
 				49B1CD7E243623960097DBBD /* Syncable.swift in Sources */,
@@ -1542,7 +1564,7 @@
 				49F45E852424C4640080B248 /* Protocols.swift in Sources */,
 				49E5FA182302E9DE009C964E /* SharedAccount.swift in Sources */,
 				613CFB0B201360DB00460CC6 /* Site.swift in Sources */,
-				49B2A96C2543350A001BA6EE /* TeamKeys.swift in Sources */,
+				49B2A96C2543350A001BA6EE /* TeamSessionKeys.swift in Sources */,
 				49686950242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				4968693D2420FD2900B9BEE9 /* UserAccount+Migration.swift in Sources */,
 				49E4A1DF223E80E9005E8EBF /* LocalAuthenticationManager.swift in Sources */,
@@ -1550,6 +1572,7 @@
 				49062C6E2214679400A30669 /* Localizer.swift in Sources */,
 				4968696424211F1200B9BEE9 /* KeynRequest.swift in Sources */,
 				613CFB09201360D200460CC6 /* Seed.swift in Sources */,
+				49A218812549623C0036D42B /* TeamSession+Updating.swift in Sources */,
 				49F2A1042214343600429875 /* NotificationProcessor.swift in Sources */,
 				49F2A0FE2214322600429875 /* DataStructures.swift in Sources */,
 				493A35B32215660E002EB043 /* Constants.swift in Sources */,
@@ -1567,6 +1590,7 @@
 				49B2A93225432E79001BA6EE /* CoreExtensions.swift in Sources */,
 				49214B882103359B00C793DE /* Crypto.swift in Sources */,
 				49E5FA0E2302C4DB009C964E /* Session.swift in Sources */,
+				49A218A525498DA80036D42B /* BrowserSession+Updating.swift in Sources */,
 				49B2A8B9254306AD001BA6EE /* Keychain+SecKey.swift in Sources */,
 				49F2A0FA2214321900429875 /* Extensions.swift in Sources */,
 				49E5FA102302D3E1009C964E /* TeamSession.swift in Sources */,
@@ -1580,6 +1604,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4931BC092541897C0015277D /* Authorizer.swift in Sources */,
+				49A2189A25498D460036D42B /* BrowserSession+Updating.swift in Sources */,
 				01839A731FACA94300698B69 /* Site.swift in Sources */,
 				01839A711FACA93A00698B69 /* Account.swift in Sources */,
 				49E75CAB20FF706800BC0D65 /* FinishQuestionnaireViewController.swift in Sources */,
@@ -1620,7 +1645,7 @@
 				49B2A8F2254328A4001BA6EE /* AcountViewController+Teams.swift in Sources */,
 				4931BC56254190B70015277D /* CreateOrganisationAuthorizer.swift in Sources */,
 				61B5D4CE214C21E5004C93FE /* QRViewController.swift in Sources */,
-				49B2A93B25433478001BA6EE /* TeamKeys.swift in Sources */,
+				49B2A93B25433478001BA6EE /* TeamSessionKeys.swift in Sources */,
 				49E236592073C873002CC9A4 /* FeedbackViewController.swift in Sources */,
 				496869412421008500B9BEE9 /* TeamAccount.swift in Sources */,
 				4968695B2421046200B9BEE9 /* TeamRole.swift in Sources */,
@@ -1629,6 +1654,7 @@
 				499569BC1FED278B00D75848 /* InitialisationViewController.swift in Sources */,
 				49F6F23323EDA60D0093AD56 /* Team.swift in Sources */,
 				49B2A974254345F3001BA6EE /* Team+Creation.swift in Sources */,
+				49A218B925498F750036D42B /* PairingResponse.swift in Sources */,
 				49B2A92025432CEC001BA6EE /* CoreExtensions.swift in Sources */,
 				49B2A8B325430666001BA6EE /* Keychain+SecKey.swift in Sources */,
 				495E5B561FAC8EFA002E6AC6 /* AccountsTableViewController.swift in Sources */,
@@ -1650,6 +1676,7 @@
 				0153C8B222119276001B6853 /* ErrorViewController.swift in Sources */,
 				499569C81FED5E0A00D75848 /* RecoveryViewController.swift in Sources */,
 				493604A020861286009E3029 /* AuthenticationGuard.swift in Sources */,
+				49A2187B254961BD0036D42B /* TeamSession+Updating.swift in Sources */,
 				497FDD8E1FFBDBA700AAB0DA /* SettingsViewController.swift in Sources */,
 				49911E80231413DA007905DF /* LocalizableButton.swift in Sources */,
 				4995D48F239A50D400267E6A /* MobileExplanationViewController.swift in Sources */,
@@ -1702,6 +1729,7 @@
 				49214B8D21033B2B00C793DE /* NotificationProcessor.swift in Sources */,
 				49A3257321086EF30018677C /* ReportSiteViewController.swift in Sources */,
 				42A1FD6F24221A4E00D05203 /* AccountsPickerButton.swift in Sources */,
+				49A21893254986C10036D42B /* BrowserSession+Creation.swift in Sources */,
 				49E5FA0723015DEC009C964E /* TeamSession.swift in Sources */,
 				49E5FA172302E9DE009C964E /* SharedAccount.swift in Sources */,
 				49B2A91125432A90001BA6EE /* AccountsTableViewController+UISearchBarDelegate.swift in Sources */,
@@ -1759,6 +1787,7 @@
 				611F4B662146C63F00B35A89 /* LoginViewController.swift in Sources */,
 				493DB00D231578380061CB5C /* KeynLabel.swift in Sources */,
 				611F4B622146B65200B35A89 /* API.swift in Sources */,
+				49A218B225498DAD0036D42B /* BrowserSession+Creation.swift in Sources */,
 				611F4B492146B47300B35A89 /* CredentialProviderViewController.swift in Sources */,
 				611F4B632146B65500B35A89 /* Seed.swift in Sources */,
 				611F4B5D2146B61600B35A89 /* PasswordValidator.swift in Sources */,
@@ -1771,6 +1800,7 @@
 				4968693E2420FD2A00B9BEE9 /* UserAccount+Migration.swift in Sources */,
 				611F4B5B2146B61000B35A89 /* Keychain.swift in Sources */,
 				4966FF1923FEE2C800D7C232 /* WebAuthn.swift in Sources */,
+				49A218AB25498DA80036D42B /* BrowserSession+Updating.swift in Sources */,
 				49B2A958254334EF001BA6EE /* TeamRole.swift in Sources */,
 				49F45E862424C4640080B248 /* Protocols.swift in Sources */,
 				495E72BD22118F9E003132ED /* Logger.swift in Sources */,
@@ -1798,6 +1828,8 @@
 				495E09EF22453BD500BDFBB1 /* KeynNavigationController.swift in Sources */,
 				49F2A0FB2214321A00429875 /* Extensions.swift in Sources */,
 				49E5FA152302E52F009C964E /* UserAccount.swift in Sources */,
+				49A218872549623D0036D42B /* TeamSession+Updating.swift in Sources */,
+				49A218BB25498F750036D42B /* PairingResponse.swift in Sources */,
 				611F4B5A2146B5FE00B35A89 /* Site.swift in Sources */,
 				49B2A96B25433507001BA6EE /* Team.swift in Sources */,
 				4967F427225CE9270069330D /* AccountTableViewCell.swift in Sources */,
@@ -1805,7 +1837,7 @@
 				49B1CD7F243623970097DBBD /* Syncable.swift in Sources */,
 				49686951242102C000B9BEE9 /* UserAccount+Syncable.swift in Sources */,
 				611F4B562146B52600B35A89 /* Account.swift in Sources */,
-				49B2A96D2543350B001BA6EE /* TeamKeys.swift in Sources */,
+				49B2A96D2543350B001BA6EE /* TeamSessionKeys.swift in Sources */,
 				498FF17C22B0F3490072C3AE /* TabBarGradient.swift in Sources */,
 				49B2A98025434609001BA6EE /* Team+Creation.swift in Sources */,
 				49AC6E7B23604C2E0010AC32 /* NotificationManager.swift in Sources */,

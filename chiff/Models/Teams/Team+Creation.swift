@@ -19,9 +19,9 @@ extension Team {
         self.encryptionKey = teamEncryptionKey
         self.keyPair = teamKeyPair
         self.passwordSeed = teamPasswordSeed
-        self.adminSessionKeys = try AdminSessionKeys()
+        self.teamSessionKeys = try TeamSessionKeys()
         self.accounts = Set()
-        let user = try self.adminSessionKeys.createAdmin()
+        let user = try self.teamSessionKeys.createAdmin()
         self.users = Set([user])
         self.roles = Set([TeamRole(id: try Crypto.shared.generateRandomId(), name: "Admins", admins: true, users: [user.id])])
     }
@@ -35,21 +35,16 @@ extension Team {
                 API.shared.signedRequest(path: "organisations/\(orderKeyPair.pubKey.base64)", method: .post, privKey: orderKeyPair.privKey, message: message)
             }.then { (_) -> Promise<TeamSession> in
                 do {
-                    let session = TeamSession(id: adminSessionKeys.userId,
+                    let session = TeamSession(id: teamSessionKeys.sessionId,
                                        teamId: id,
-                                       signingPubKey: adminSessionKeys.signingKeyPair.pubKey,
+                                       signingPubKey: teamSessionKeys.signingKeyPair.pubKey,
                                        title: "\("devices.admin".localized) @ \(name)",
                                        version: 2,
                                        isAdmin: true,
                                        created: true,
                                        lastChange: Date.now,
                                        organisationKey: orgKey)
-                    try session.save(sharedSeed: adminSessionKeys.seed,
-                                     key: adminSessionKeys.encryptionKey,
-                                     signingKeyPair: adminSessionKeys.signingKeyPair,
-                                     passwordSeed: adminSessionKeys.passwordSeed,
-                                     sharedKeyPrivKey: adminSessionKeys
-                                        .sharedKeyKeyPair.privKey)
+                    try session.save(keys: teamSessionKeys)
                     TeamSession.count += 1
                     return session.backup().map { session }
                 } catch is KeychainError {
@@ -70,9 +65,9 @@ extension Team {
     // MARK: - Private functions
 
     private func createTeamSession(teamId: String, name: String, orgKey: Data) throws -> TeamSession {
-        return TeamSession(id: adminSessionKeys.userId,
+        return TeamSession(id: teamSessionKeys.sessionId,
                            teamId: id,
-                           signingPubKey: adminSessionKeys.signingKeyPair.pubKey,
+                           signingPubKey: teamSessionKeys.signingKeyPair.pubKey,
                            title: "\("devices.admin".localized) @ \(name)",
                            version: 2,
                            isAdmin: true,
@@ -105,7 +100,7 @@ extension Team {
             "userSyncPubkey": user.userSyncPubkey,
             "roleData": try role.encrypt(key: encryptionKey),
             "userData": try user.encrypt(key: encryptionKey),
-            "seed": try adminSessionKeys.encrypt(seed: seed),
+            "seed": try teamSessionKeys.encrypt(seed: seed),
             "orgPubKey": orgKeyPair.pubKey.base64
         ]
         return [

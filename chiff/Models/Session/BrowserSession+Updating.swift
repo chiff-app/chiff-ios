@@ -1,0 +1,94 @@
+//
+//  BrowserSession+Updating.swift
+//  chiff
+//
+//  Created by Bas Doorn on 28/10/2020.
+//  Copyright © 2020 keyn. All rights reserved.
+//
+
+import Foundation
+import PromiseKit
+
+extension BrowserSession {
+
+    // MARK: - Static methods
+
+    // TODO: Shouldn't this retun the Promise?
+    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) {
+        firstly {
+            when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin) })
+        }.catchLog("Failed to update session data.")
+    }
+
+    // TODO: Shouldn't this retun the Promise?
+    func updateSessionAccount(account: Account) throws {
+        let accountData = try JSONEncoder().encode(SessionAccount(account: account))
+        let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
+        let message = [
+            "id": account.id,
+            "data": ciphertext.base64
+        ]
+        API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)",
+                                 method: .put,
+                                 privKey: try signingPrivKey(),
+                                 message: message)
+            .catchLog("Failed to get privkey from Keychain")
+    }
+
+    func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
+        do {
+            let encryptedAccounts: [String: String] = try accounts.mapValues {
+                let data = try JSONEncoder().encode(SessionAccount(account: $0))
+                return try Crypto.shared.encrypt(data, key: sharedKey()).base64
+            }
+            let message: [String: Any] = [
+                "httpMethod": APIMethod.put.rawValue,
+                "timestamp": String(Date.now),
+                "accounts": encryptedAccounts
+            ]
+            let jsonData = try JSONSerialization.data(withJSONObject: message, options: [])
+            let signature = try Crypto.shared.signature(message: jsonData, privKey: try signingPrivKey()).base64
+            return firstly {
+                API.shared.request(path: "sessions/\(signingPubKey)/accounts", method: .put, signature: signature, body: jsonData)
+            }.asVoid().log("Session cannot write bulk session accounts.")
+        } catch {
+            return Promise(error: error)
+        }
+    }
+
+    func updateSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) throws -> Promise<Void> {
+        let message = [
+            "data": try encryptSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+        ]
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)",
+                                        method: .put,
+                                        privKey: try signingPrivKey(),
+                                        message: message)
+            .asVoid()
+            .log("Failed to update session data.")
+    }
+
+    func encryptSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool, migrated: Bool? = nil) throws -> String {
+        var data: [String: Any] = [
+            "environment": (migrated ?? Properties.migrated) ? Properties.Environment.prod.rawValue : Properties.environment.rawValue,
+            "isAdmin": isAdmin
+        ]
+        if let appVersion = Properties.version {
+            data["appVersion"] = appVersion
+        }
+        if let organisationKey = organisationKey {
+            data["organisationKey"] = organisationKey.base64
+        }
+        if let organisationType = organisationType {
+            data["organisationType"] = organisationType.rawValue
+        }
+        return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
+    }
+
+    // TODO: Shouldn't this retun the Promise?
+    func deleteAccount(accountId: String) {
+        firstly {
+            API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(accountId)", method: .delete, privKey: try signingPrivKey(), message: ["id": accountId])
+        }.catchLog("Failed to send account list to persistent queue.")
+    }
+}

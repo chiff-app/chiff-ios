@@ -24,7 +24,7 @@ struct Team {
     let encryptionKey: Data
     let passwordSeed: Data
     let keyPair: KeyPair
-    let adminSessionKeys: AdminSessionKeys
+    let teamSessionKeys: TeamSessionKeys
 
     static let cryptoContext = "teamseed"
 
@@ -35,7 +35,7 @@ struct Team {
         self.encryptionKey = encryptionKey
         self.passwordSeed = passwordSeed
         self.keyPair = keyPair
-        self.adminSessionKeys = try AdminSessionKeys()
+        self.teamSessionKeys = try TeamSessionKeys()
 
         guard let accountData = teamData["accounts"] as? [String: String], let roleData = teamData["roles"] as? [String: String], let userData = teamData["users"] as? [String: [String: Any]] else {
             throw CodingError.missingData
