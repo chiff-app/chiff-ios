@@ -424,6 +424,10 @@ errors:
     value: Fout bij verplaatsen account van team
   moving_data:
     value: Fout bij verhuizen backup data.
+  multiple_admins:
+    value: >-
+      Je bent beheerder van %d teams. Deze functionaliteit wordt nog niet
+      ondersteund.
   no_admin:
     value: Je bent geen beheerder van dit team.
   no_camera:

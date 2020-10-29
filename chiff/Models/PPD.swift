@@ -260,3 +260,16 @@ struct PPDLogin: Codable {
 struct PPDPasswordChange: Codable {
     let url: String?
 }
+
+extension PPD: Equatable {
+
+    static func == (lhs: PPD, rhs: PPD) -> Bool {
+        let encoder = JSONEncoder()
+        guard let lhHash = try? encoder.encode(lhs).hash,
+              let rhHash = try? encoder.encode(rhs).hash else {
+            return false
+        }
+        return Crypto.shared.equals(first: lhHash, second: rhHash)
+    }
+
+}

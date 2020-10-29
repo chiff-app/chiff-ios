@@ -40,8 +40,10 @@ struct UserAccount: Account, Equatable {
          askToChange: Bool?,
          context: LAContext? = nil,
          offline: Bool = false) throws {
-        id = "\(sites[0].id)_\(username)".hash
-
+        guard let id = "\(sites[0].id)_\(username)".hash else {
+            throw CryptoError.hashing
+        }
+        self.id = id
         self.sites = sites
         self.username = username
         self.version = 1

@@ -21,8 +21,8 @@ extension Int {
 
 extension String {
 
-    var hash: String {
-        return try! Crypto.shared.hash(self)
+    var hash: String? {
+        return try? Crypto.shared.hash(self)
     }
 
     var sha1: String {
@@ -61,7 +61,6 @@ extension String {
         }
     }
 
-    // TODO: Make functional
     func pad(toSize: Int) -> String {
         var padded = self
         for _ in 0..<(toSize - self.count) {
@@ -119,8 +118,8 @@ extension Data {
         return self.reduce("", { $0 + String($1, radix: 2).pad(toSize: 8) })
     }
 
-    var hash: Data {
-        return try! Crypto.shared.hash(self)
+    var hash: Data? {
+        return try? Crypto.shared.hash(self)
     }
 
     var sha256: Data {
@@ -128,7 +127,11 @@ extension Data {
     }
 
     var base64: String {
-        return try! Crypto.shared.convertToBase64(from: self)
+        var result = base64EncodedString()
+        result = result.replacingOccurrences(of: "+", with: "-")
+        result = result.replacingOccurrences(of: "/", with: "_")
+        result = result.replacingOccurrences(of: "=", with: "")
+        return result
     }
 
     var bytes: Bytes { return Bytes(self) }
@@ -179,7 +182,6 @@ extension Date {
         return (Clock.now ?? Date()).millisSince1970
     }
 
-    // TODO: localize this
     func timeAgoSinceNow(useNumericDates: Bool = false) -> String {
         let calendar = Calendar.current
         let unitFlags: Set<Calendar.Component> = [.minute, .hour, .day, .weekOfYear, .month, .year, .second]

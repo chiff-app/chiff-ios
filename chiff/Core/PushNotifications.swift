@@ -43,7 +43,7 @@ struct PushNotifications {
                                            intentIdentifiers: [],
                                            options: .customDismissAction)
         let center = UNUserNotificationCenter.current()
-        center.delegate = AppDelegate.notificationService
+        center.delegate = AppDelegate.shared.notificationService
         center.setNotificationCategories([passwordRequest, endSession, passwordChangeConfirmation, nudge])
         return Promise { seal in
             center.requestAuthorization(options: [.alert, .sound]) { (granted, _) in

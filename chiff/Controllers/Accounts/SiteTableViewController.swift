@@ -139,8 +139,11 @@ class SiteTableViewController: UITableViewController, UITextFieldDelegate {
     @objc func update() {
         endEditing()
         do {
-            for cell in tableView.visibleCells.map({ $0 as! SiteTableViewCell }) {
-                if cell.isChanged, let index = tableView.indexPath(for: cell)?.row, let newUrl = cell.websiteURLTextField.text {
+            for cell in tableView.visibleCells {
+                if let cell = cell as? SiteTableViewCell,
+                   cell.isChanged,
+                   let index = tableView.indexPath(for: cell)?.row,
+                   let newUrl = cell.websiteURLTextField.text {
                     try account.updateSite(url: newUrl, forIndex: index)
                     delegate.updateAccount(account: account)
                     cell.isChanged = false

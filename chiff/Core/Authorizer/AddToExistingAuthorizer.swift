@@ -53,8 +53,7 @@ class AddToExistingAuthorizer: Authorizer {
                 throw AccountError.notFound
             }
             try account.addSite(site: site)
-            // TODO: This seems off. Can this crash? Should LocalAuthenticationManager return the context non-optional
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, newPassword: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
             return nil

@@ -138,11 +138,8 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
         activityViewContainer.isHidden = false
         firstly {
             LocalAuthenticationManager.shared.authenticate(reason: "popups.questions.restore_accounts".localized, withMainContext: true)
-        }.then { result -> Promise<(RecoveryResult, RecoveryResult)> in
-            guard let context = result else {
-                throw RecoveryError.unauthenticated
-            }
-            return Seed.recover(context: context, mnemonic: self.mnemonic)
+        }.then { context -> Promise<(RecoveryResult, RecoveryResult)> in
+            Seed.recover(context: context, mnemonic: self.mnemonic)
         }.ensure(on: .main) {
             self.activityViewContainer.isHidden = true
         }.done { (accountResult, teamResult) in
@@ -179,7 +176,7 @@ class RecoveryViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func showRootController() {
-        guard let window = AppDelegate.startupService.window else {
+        guard let window = AppDelegate.shared.startupService.window else {
             return
         }
         guard let rootController = UIStoryboard.main.instantiateViewController(withIdentifier: "RootController") as? RootViewController else {

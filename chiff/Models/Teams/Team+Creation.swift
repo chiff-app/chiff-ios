@@ -52,9 +52,8 @@ extension Team {
                 } catch is CryptoError {
                     throw SessionError.invalid
                 }
-            }.map { session in
-                BrowserSession.updateAllSessionData(organisationKey: orgKey, organisationType: .team, isAdmin: true)
-                return session
+            }.then { session in
+                BrowserSession.updateAllSessionData(organisationKey: orgKey, organisationType: .team, isAdmin: true).map { session }
             }
         } catch {
             Logger.shared.error("errors.creating_team".localized, error: error)

@@ -13,11 +13,10 @@ extension BrowserSession {
 
     // MARK: - Static methods
 
-    // TODO: Shouldn't this retun the Promise?
-    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) {
-        firstly {
+    static func updateAllSessionData(organisationKey: Data?, organisationType: OrganisationType?, isAdmin: Bool) -> Promise<Void> {
+        return firstly {
             when(fulfilled: try all().map { try $0.updateSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin) })
-        }.catchLog("Failed to update session data.")
+        }.asVoid().log("Failed to update session data.")
     }
 
     // TODO: Shouldn't this retun the Promise?

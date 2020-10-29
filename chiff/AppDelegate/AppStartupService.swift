@@ -32,8 +32,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
 
         Clock.sync()
 
-        checkIfUpgraded()
-
         // Start listening for password change notifications
         QueueHandler.shared.start()
 
@@ -139,7 +137,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             firstly {
                 checkIfMigrated()
             }.then {
-                Properties.deniedPushNotifications ? .value(false) : PushNotifications.register()
+                Properties.deniedPushNotifications ? .value(()) : PushNotifications.register().asVoid()
             }.done(on: .main) { _ in
                 self.launchRootViewController()
             }.catchLog("Failed to initialize")
@@ -224,16 +222,6 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             return true
         } catch {
             return false
-        }
-    }
-
-    private func checkIfUpgraded() {
-        if Properties.isUpgraded {
-            let teamSessions = try? TeamSession.all()
-            let organisationKey = teamSessions?.first?.organisationKey
-            let organisationType = teamSessions?.first?.type
-            let isAdmin = teamSessions?.contains(where: { $0.isAdmin }) ?? false
-            BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
         }
     }
 

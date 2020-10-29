@@ -53,7 +53,7 @@ class WebAuthnLoginAuthorizer: Authorizer {
                 throw AccountError.notFound
             }
             let (signature, counter) = try account.webAuthnSign(challenge: self.challenge, rpId: self.relyingPartyId)
-            try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: signature, counter: counter)
+            try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context, signature: signature, counter: counter)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
             return nil

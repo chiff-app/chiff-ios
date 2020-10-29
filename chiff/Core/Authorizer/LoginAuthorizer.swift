@@ -75,7 +75,7 @@ class LoginAuthorizer: Authorizer {
                 throw AccountError.notFound
             }
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: nil)
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, newPassword: nil)
             success = true
             return account
         }.ensure {

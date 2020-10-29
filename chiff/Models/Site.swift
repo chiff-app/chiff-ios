@@ -14,8 +14,7 @@ struct Site: Codable {
 extension Site: Equatable {
 
     static func == (lhs: Site, rhs: Site) -> Bool {
-        return rhs.id == lhs.id && rhs.name == lhs.name && rhs.url == lhs.url
-        // TODO: Compare PPDS?
+        return rhs.id == lhs.id && rhs.name == lhs.name && rhs.url == lhs.url && rhs.ppd == lhs.ppd
     }
 
 }

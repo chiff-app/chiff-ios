@@ -50,7 +50,7 @@ class LocalAuthenticationManager {
         }
     }
 
-    func authenticate(reason: String, withMainContext: Bool) -> Promise<LAContext?> {
+    func authenticate(reason: String, withMainContext: Bool) -> Promise<LAContext> {
         return Promise { seal in
             do {
                 if withMainContext {
@@ -58,14 +58,11 @@ class LocalAuthenticationManager {
                 }
                 let context = withMainContext ? mainContext : LAContext()
                 context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (evaluationResult, error) in
-                    if let error = error {
-                        return seal.reject(error)
-                    }
                     if evaluationResult {
                         self.mainContext = context
                         return seal.fulfill(context)
                     } else {
-                        return seal.fulfill(nil)
+                        return seal.reject(error!)
                     }
                 }
             } catch {
@@ -142,7 +139,6 @@ class AuthenticationOperation: Operation {
 
     override func cancel() {
         super.cancel()
-        // TODO: differentiate in type of operation for cancelling
         context.invalidate()
     }
 }

@@ -56,7 +56,7 @@ class ChangeAuthorizer: Authorizer {
             }
             account.sites[0].ppd = ppd
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
-            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context!, newPassword: account.nextPassword(context: context))
+            try self.session.sendCredentials(account: account, browserTab: self.browserTab, type: self.type, context: context, newPassword: account.nextPassword(context: context))
             success = true
             NotificationCenter.default.postMain(name: .passwordChangeConfirmation, object: self.session, userInfo: ["context": context as Any])
             return account

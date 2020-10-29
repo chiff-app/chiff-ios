@@ -114,7 +114,7 @@ class PushNotificationService: NSObject, UIApplicationDelegate, UNUserNotificati
         switch notification.request.content.categoryIdentifier {
         case NotificationCategory.onboardingNudge:
             DispatchQueue.main.async {
-                if let rootController = AppDelegate.startupService.window?.rootViewController as? RootViewController {
+                if let rootController = AppDelegate.shared.startupService.window?.rootViewController as? RootViewController {
                     rootController.selectedIndex = 1
                 }
             }

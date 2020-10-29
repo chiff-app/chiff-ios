@@ -234,11 +234,12 @@ extension UserAccount: Syncable {
                     throw WebAuthnError.notSupported
                 }
                 let privKey = try P256.Signing.PrivateKey(rawRepresentation: keyPair.privKey)
-                // TODO: Add key update function to keychain
+                // TODO: Test updateKey
                 if self.webAuthn != nil {
-                    try Keychain.shared.deleteKey(id: id)
+                    try Keychain.shared.updateKey(id: id, key: privKey, context: context)
+                } else {
+                    try Keychain.shared.saveKey(id: id, key: privKey)
                 }
-                try Keychain.shared.saveKey(id: id, key: privKey)
             }
             self.webAuthn = webAuthn
         } else if let webAuthn = self.webAuthn {

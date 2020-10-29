@@ -11,96 +11,83 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     static let shared: AppDelegate = {
+        // swiftlint:disable:next force_cast
         UIApplication.shared.delegate as! AppDelegate
     }()
-    static var notificationService: PushNotificationService {
-        shared.services.first(where: { $0.key == .pushNotification })!.value as! PushNotificationService
-    }
-    static var startupService: AppStartupService {
-        shared.services.first(where: { $0.key == .appStartup })!.value as! AppStartupService
-    }
 
-    enum Service {
-        case appStartup
-        case pushNotification
-        case pasteBoard
-    }
-
-    let services: [Service: UIApplicationDelegate] = [
-        .appStartup: AppStartupService(),
-        .pushNotification: PushNotificationService(),
-        .pasteBoard: PasteboardService()
-    ]
+    let startupService = AppStartupService()
+    let notificationService = PushNotificationService()
+    let pasteBoardService = PasteboardService()
 
     override init() {
         super.init()
-        (services[.appStartup] as! AppStartupService).pushNotificationService = (services[.pushNotification] as! PushNotificationService)
+        startupService.pushNotificationService = notificationService
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         clearUserData()
-
-        for service in services.values {
-            _ = service.application?(application, didFinishLaunchingWithOptions: launchOptions)
-        }
-
+        _ = startupService.application(application, didFinishLaunchingWithOptions: launchOptions)
+        _ = notificationService.application(application, didFinishLaunchingWithOptions: launchOptions)
+        _ = pasteBoardService.application(application, didFinishLaunchingWithOptions: launchOptions)
         return true
     }
 
     // This only executes if the app is opened from the keyn:// scheme
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        for service in services.values {
-            _ = service.application?(application, open: url, options: options)
-        }
-
+        _ = (startupService as UIApplicationDelegate).application?(application, open: url, options: options)
+        _ = (notificationService as UIApplicationDelegate).application?(application, open: url, options: options)
+        _ = (pasteBoardService as UIApplicationDelegate).application?(application, open: url, options: options)
         return true
     }
 
     // This executes when opened from https://keyn.app/pair
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        for service in services.values {
-            if let result = service.application?(application, continue: userActivity, restorationHandler: restorationHandler) {
-                // If this method is implemented in the service, it should return the result of the method
-                return result
-            }
+        var response = false
+        if let result = (startupService as UIApplicationDelegate).application?(application, continue: userActivity, restorationHandler: restorationHandler) {
+            response = response || result
         }
-
-        return false
+        if let result = (notificationService as UIApplicationDelegate).application?(application, continue: userActivity, restorationHandler: restorationHandler) {
+            response = response || result
+        }
+        if let result = (pasteBoardService as UIApplicationDelegate).application?(application, continue: userActivity, restorationHandler: restorationHandler) {
+            response = response || result
+        }
+        return response
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        for service in services.values {
-            service.application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-        }
+        _ = (startupService as UIApplicationDelegate).application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        _ = (notificationService as UIApplicationDelegate).application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        _ = (pasteBoardService as UIApplicationDelegate).application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        for service in services.values {
-            service.application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
-        }
+        _ = (startupService as UIApplicationDelegate).application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        _ = (notificationService as UIApplicationDelegate).application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        _ = (pasteBoardService as UIApplicationDelegate).application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        services[.pushNotification]?.application?(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+        (notificationService as UIApplicationDelegate).application?(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
 
     // Called as part of the transition from the background to the active state
     func applicationWillEnterForeground(_ application: UIApplication) {
-        for service in services.values {
-            service.applicationWillEnterForeground?(application)
-        }
+        _ = (startupService as UIApplicationDelegate).applicationWillEnterForeground?(application)
+        _ = (notificationService as UIApplicationDelegate).applicationWillEnterForeground?(application)
+        _ = (pasteBoardService as UIApplicationDelegate).applicationWillEnterForeground?(application)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        for service in services.values {
-            service.applicationDidEnterBackground?(application)
-        }
+        _ = (startupService as UIApplicationDelegate).applicationDidEnterBackground?(application)
+        _ = (notificationService as UIApplicationDelegate).applicationDidEnterBackground?(application)
+        _ = (pasteBoardService as UIApplicationDelegate).applicationDidEnterBackground?(application)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        for service in services.values {
-            service.applicationWillTerminate?(application)
-        }
+        _ = (startupService as UIApplicationDelegate).applicationWillTerminate?(application)
+        _ = (notificationService as UIApplicationDelegate).applicationWillTerminate?(application)
+        _ = (pasteBoardService as UIApplicationDelegate).applicationWillTerminate?(application)
     }
 
     // MARK: - Private
