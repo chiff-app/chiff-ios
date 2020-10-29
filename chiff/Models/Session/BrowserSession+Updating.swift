@@ -19,19 +19,19 @@ extension BrowserSession {
         }.asVoid().log("Failed to update session data.")
     }
 
-    // TODO: Shouldn't this retun the Promise?
-    func updateSessionAccount(account: Account) throws {
+    func updateSessionAccount(account: Account) throws -> Promise<Void> {
         let accountData = try JSONEncoder().encode(SessionAccount(account: account))
         let ciphertext = try Crypto.shared.encrypt(accountData, key: sharedKey())
         let message = [
             "id": account.id,
             "data": ciphertext.base64
         ]
-        API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)",
+        return API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(account.id)",
                                  method: .put,
                                  privKey: try signingPrivKey(),
                                  message: message)
-            .catchLog("Failed to get privkey from Keychain")
+            .asVoid()
+            .log("Failed to update session account")
     }
 
     func updateSessionAccounts(accounts: [String: UserAccount]) -> Promise<Void> {
@@ -84,10 +84,9 @@ extension BrowserSession {
         return try Crypto.shared.encrypt(JSONSerialization.data(withJSONObject: data, options: []), key: try sharedKey()).base64
     }
 
-    // TODO: Shouldn't this retun the Promise?
-    func deleteAccount(accountId: String) {
-        firstly {
+    func deleteAccount(accountId: String) -> Promise<Void> {
+        return firstly {
             API.shared.signedRequest(path: "sessions/\(signingPubKey)/accounts/\(accountId)", method: .delete, privKey: try signingPrivKey(), message: ["id": accountId])
-        }.catchLog("Failed to send account list to persistent queue.")
+        }.asVoid().log("Failed to delete session account.")
     }
 }

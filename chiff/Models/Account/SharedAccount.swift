@@ -86,22 +86,23 @@ struct SharedAccount: Account {
             Keychain.shared.delete(id: id, service: SharedAccount.keychainService, reason: String(format: "popups.questions.delete_x".localized, site.name), authenticationType: .ifNeeded)
         }.map { _ in
             try? Keychain.shared.delete(id: self.id, service: .notes)
-            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
+        }.then {
+            when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
         }.log("Error deleting accounts")
     }
 
     func update(secret: Data?, backup: Bool = false) throws {
         let accountData = try PropertyListEncoder().encode(self as Self)
         try Keychain.shared.update(id: id, service: Self.keychainService, secretData: secret, objectData: accountData, context: nil)
-        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
+        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
     }
 
     func save(password: String, sessionId: String) throws {
         let accountData = try PropertyListEncoder().encode(self)
         try Keychain.shared.save(id: id, service: Self.keychainService, secretData: password.data, objectData: accountData, label: sessionId)
-        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
+        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 
@@ -135,7 +136,7 @@ struct SharedAccount: Account {
     static func deleteAll(for sessionId: String) {
         if let accounts = try? all(context: nil, sync: false, label: sessionId), let sessions = try? BrowserSession.all() {
             for id in accounts.keys {
-                sessions.forEach({ $0.deleteAccount(accountId: id) })
+                sessions.forEach({ _ = $0.deleteAccount(accountId: id) })
             }
         }
         Keychain.shared.deleteAll(service: Self.keychainService, label: sessionId)

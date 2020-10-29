@@ -131,7 +131,7 @@ struct UserAccount: Account, Equatable {
         self.lastChange = Date.now
         try Keychain.shared.delete(id: id, service: .otp)
         _ = try backup()
-        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
+        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
         saveToIdentityStore()
     }
 
@@ -174,7 +174,7 @@ struct UserAccount: Account, Equatable {
         if backup {
             _ = try self.backup()
         }
-        try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self as Self) })
+        try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self as Self) })
         saveToIdentityStore()
     }
 
@@ -242,10 +242,11 @@ struct UserAccount: Account, Equatable {
             try? Keychain.shared.delete(id: self.id, service: .notes)
             try? Keychain.shared.delete(id: self.id, service: .otp)
             try self.deleteBackup()
-            try BrowserSession.all().forEach({ $0.deleteAccount(accountId: self.id) })
             self.deleteFromToIdentityStore()
             Logger.shared.analytics(.accountDeleted)
             Properties.accountCount -= 1
+        }.then {
+            when(fulfilled: try BrowserSession.all().map({ $0.deleteAccount(accountId: self.id) }))
         }.log("Error deleting accounts")
     }
 
@@ -257,7 +258,7 @@ struct UserAccount: Account, Equatable {
         }
         if !offline {
             _ = try backup()
-            try BrowserSession.all().forEach({ try $0.updateSessionAccount(account: self) })
+            try BrowserSession.all().forEach({ _ = try $0.updateSessionAccount(account: self) })
         }
         saveToIdentityStore()
         Properties.accountCount += 1

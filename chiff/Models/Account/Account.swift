@@ -123,7 +123,7 @@ extension Account {
         try? Keychain.shared.delete(id: id, service: .webauthn)
         try? Keychain.shared.delete(id: id, service: .notes)
         try? Keychain.shared.delete(id: id, service: .otp)
-        try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
+        try BrowserSession.all().forEach({ _ = $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
     }
 
