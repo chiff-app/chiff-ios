@@ -61,8 +61,7 @@ class WebAuthnRegistrationAuthorizer: Authorizer {
                                           notes: nil,
                                           askToChange: false,
                                           context: context)
-            // TODO: Handle packed attestation format by called signWebAuthnAttestation and returning signature + counter
-            try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context!, signature: nil, counter: nil)
+            try self.session.sendWebAuthnResponse(account: account, browserTab: self.browserTab, type: self.type, context: context, signature: nil, counter: nil)
             NotificationCenter.default.postMain(name: .accountsLoaded, object: nil)
             success = true
             return nil

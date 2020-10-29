@@ -264,6 +264,6 @@ struct Seed {
     // MARK: - temporary
 
     static private func oldChecksum(seed: Data) -> String {
-        return String(seed.hash.first!, radix: 2).prefix(seed.count / 4).pad(toSize: seed.count / 4)
+        return String(seed.hash!.first!, radix: 2).prefix(seed.count / 4).pad(toSize: seed.count / 4)
     }
 }

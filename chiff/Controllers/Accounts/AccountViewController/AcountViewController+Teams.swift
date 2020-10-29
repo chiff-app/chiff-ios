@@ -46,7 +46,6 @@ extension AccountViewController {
     }
 
     func setAddToTeamButton() {
-        // TODO: Handle situation where there are multiple admin sessions
         if let session = (try? TeamSession.all())?.first(where: { $0.isAdmin }) {
             addToTeamButton.isHidden = false
             addToTeamButton.isEnabled = true

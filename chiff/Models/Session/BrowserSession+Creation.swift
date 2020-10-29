@@ -18,8 +18,10 @@ extension BrowserSession {
             let sharedKey = try Crypto.shared.generateSharedKey(pubKey: browserPubKeyData, privKey: keyPairForSharedKey.privKey)
             let signingKeyPair = try Crypto.shared.createSigningKeyPair(seed: sharedKey)
             let pairingKeyPair = try Crypto.shared.createSigningKeyPair(seed: Crypto.shared.convertFromBase64(from: pairingQueueSeed))
-
-            let session = BrowserSession(id: browserPubKey.hash, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)", version: version)
+            guard let id = browserPubKey.hash else {
+                throw CryptoError.hashing
+            }
+            let session = BrowserSession(id: id, signingPubKey: signingKeyPair.pubKey, browser: browser, title: "\(browser.rawValue.capitalizedFirstLetter) @ \(os)", version: version)
             let teamSession = try TeamSession.all().first // Get first for now, perhaps handle unlikely scenario where user belongs to multiple organisation in the future.
             let response = try BrowserPairingResponse(id: session.id, pubKey: keyPairForSharedKey.pubKey.base64, browserPubKey: browserPubKey,
                                                       version: session.version, organisationKey: teamSession?.organisationKey.base64,

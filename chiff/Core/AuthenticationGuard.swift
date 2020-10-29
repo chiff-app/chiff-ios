@@ -42,7 +42,7 @@ class AuthenticationGuard {
     func authenticateUser(cancelChecks: Bool) {
         firstly {
             after(seconds: 0.5)
-        }.then(on: .main) { (_) -> Promise<LAContext?> in
+        }.then(on: .main) { (_) -> Promise<LAContext> in
             if cancelChecks {
                 guard !self.authenticationInProgress &&
                     !self.lockWindowIsHidden &&
@@ -59,7 +59,7 @@ class AuthenticationGuard {
             }
             self.authenticationInProgress = true
             return LocalAuthenticationManager.shared.authenticate(reason: "requests.unlock_keyn".localized, withMainContext: true)
-        }.map(on: .main) { (context) -> LAContext? in
+        }.map(on: .main) { (context) -> LAContext in
             let accounts = try UserAccount.allCombined(context: context, sync: true)
             if #available(iOS 12.0, *), Properties.reloadAccounts {
                 UserAccount.reloadIdentityStore()

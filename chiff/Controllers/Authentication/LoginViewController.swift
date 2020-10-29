@@ -64,7 +64,7 @@ class LoginViewController: UIViewController {
         Seed.delete()
         _ = NotificationManager.shared.deleteEndpoint()
         let storyboard: UIStoryboard = UIStoryboard.get(.initialisation)
-        AppDelegate.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
+        AppDelegate.shared.startupService.window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "InitialisationViewController")
         AuthenticationGuard.shared.hideLockWindow()
     }
 

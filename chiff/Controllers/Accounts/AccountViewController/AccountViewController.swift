@@ -164,7 +164,6 @@ class AccountViewController: KeynTableViewController {
     // MARK: - Navigation
 
     @IBAction func unwindToAccountViewController(sender: UIStoryboardSegue) {
-        // TODO: This could also be used instead of canAddOtp delegate
         if let source = sender.source as? TokenController {
             if editingMode {
                 endEditing()

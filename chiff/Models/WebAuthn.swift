@@ -134,27 +134,6 @@ struct WebAuthn: Codable, Equatable {
         }
     }
 
-        // TODO: Implement attestation
-    //    mutating func signAttestation(rpId: String, challenge: String) throws -> (String, Int) {
-    //        guard let rp = self.site.rpId, rpId == rp else {
-    //            throw AccountError.wrongRpId
-    //        }
-    //        let challengeData = try Crypto.shared.convertFromBase64(from: challenge)
-    //        guard let privKey = try Keychain.shared.get(id: id, service: .webauthn) else {
-    //            throw KeychainError.notFound
-    //        }
-    //        let idData = try Crypto.shared.fromHex(id)
-    //        var data = try createAuthenticatorData(rpId: rpId)
-    //        data.append(UInt8((idData.count >> 8) & 0xff))
-    //        data.append(UInt8(idData.count & 0xff))
-    //
-    //
-    //        data.append(challengeData)
-    //        let signature = try Crypto.shared.signature(message: data, privKey: privKey)
-    //
-    //        return (signature.base64, webAuthnCounter)
-    //    }
-
     // MARK: - Private functions
 
     private mutating func createAuthenticatorData() throws -> Data {

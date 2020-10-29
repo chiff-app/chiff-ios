@@ -135,7 +135,7 @@ class BackupCheckViewController: UIViewController, UITextFieldDelegate {
             return
         }
         rootController.selectedIndex = 1
-        AppDelegate.startupService.window?.rootViewController = rootController
+        AppDelegate.shared.startupService.window?.rootViewController = rootController
     }
 
     private func initialize(textfield: UITextField, label: UILabel, index: Int) {

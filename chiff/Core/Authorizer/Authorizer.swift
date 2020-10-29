@@ -18,6 +18,7 @@ enum AuthorizationError: Error {
     case inProgress
     case unknownType
     case missingData
+    case multipleAdminSessionsFound(count: Int)
 }
 
 protocol Authorizer {

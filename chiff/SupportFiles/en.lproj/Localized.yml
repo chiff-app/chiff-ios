@@ -423,6 +423,8 @@ errors:
     value: Error moving account from team
   moving_data:
     value: Error moving backup data.
+  multiple_admins:
+    value: You are admin of %d teams. This is not supported yet.
   no_admin:
     value: You are not the team admin.
   no_camera:

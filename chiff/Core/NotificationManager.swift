@@ -14,7 +14,7 @@ struct NotificationManager {
     func registerDevice(token pushToken: Data) {
         let token = pushToken.hexEncodedString()
         guard let id = UIDevice.current.identifierForVendor?.uuidString else {
-            return // TODO: How to handle this?
+            return
         }
         firstly { () -> Promise<JSONObject> in
             if let endpoint = Properties.endpoint {
@@ -85,7 +85,7 @@ struct NotificationManager {
             "id": id
         ]
         return firstly {
-            API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .delete, privKey: try Seed.privateKey(), message: message)
+            API.shared.signedRequest(path: "users/\(try Seed.publicKey())/devices/\(id)", method: .put, privKey: try Seed.privateKey(), message: message)
         }
     }
 

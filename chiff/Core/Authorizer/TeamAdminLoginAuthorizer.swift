@@ -30,24 +30,38 @@ class TeamAdminLoginAuthorizer: Authorizer {
     }
 
     func authorize(startLoading: ((String?) -> Void)?) -> Promise<Account?> {
-        guard let teamSession = try? TeamSession.all().first else {
-            AuthorizationGuard.shared.showError(errorMessage: "errors.session_not_found".localized)
-            return .value(nil)
-        } // TODO: What if there's more than 1?
-        guard teamSession.isAdmin else {
-            AuthorizationGuard.shared.showError(errorMessage: "errors.only_admins".localized)
-            return .value(nil)
+        do {
+            let teamSession = try getTeamSession()
+            return firstly {
+                LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
+            }.then { context -> Promise<(Data, LAContext?)> in
+                startLoading?(nil)
+                return teamSession.getTeamSeed().map { ($0, context) }
+            }.then { seed, context  in
+                self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!, organisationKey: nil).map { nil }
+            }.ensure {
+                Logger.shared.analytics(.adminLoginRequestAuthorized)
+            }.log("Error getting admin seed")
+        } catch {
+            return Promise(error: error)
         }
-        return firstly {
-            LocalAuthenticationManager.shared.authenticate(reason: self.authenticationReason, withMainContext: false)
-        }.then { context -> Promise<(Data, LAContext?)> in
-            startLoading?(nil)
-            return teamSession.getTeamSeed().map { ($0, context) }
-        }.then { seed, context  in
-            self.session.sendTeamSeed(id: teamSession.id, teamId: teamSession.teamId, seed: seed.base64, browserTab: self.browserTab, context: context!, organisationKey: nil).map { nil }
-        }.ensure {
-            Logger.shared.analytics(.adminLoginRequestAuthorized)
-        }.log("Error getting admin seed")
+    }
+
+    // MARK: - Private methods
+
+    private func getTeamSession() throws -> TeamSession {
+        let teamSessions = try TeamSession.all()
+        guard !teamSessions.isEmpty else {
+            throw AuthorizationError.noTeamSessionFound
+        }
+        let adminSessions = teamSessions.filter({ $0.isAdmin })
+        guard !adminSessions.isEmpty else {
+            throw AuthorizationError.notAdmin
+        }
+        guard adminSessions.count == 1 else {
+            throw AuthorizationError.multipleAdminSessionsFound(count: adminSessions.count)
+        }
+        return adminSessions.first!
     }
 
 }

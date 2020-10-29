@@ -111,36 +111,11 @@ extension Account {
     // MARK: - Static functions
 
     static func all(context: LAContext?, sync: Bool = false, label: String? = nil) throws -> [String: Self] {
-        guard let dataArray = try Keychain.shared.all(service: Self.keychainService, context: context, label: label) else {
-            return [:]
-        }
-        Properties.accountCount = dataArray.count
-        let decoder = PropertyListDecoder()
-
-        return Dictionary(uniqueKeysWithValues: try dataArray.map { (dict) in
-            guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-                throw CodingError.unexpectedData
-            }
-            let account = try decoder.decode(Self.self, from: accountData)
-            if sync, var account = account as? UserAccount, account.version == 0 {
-                account.updateVersion(context: context)
-            }
-            return (account.id, account)
-            })
+        return try all(context: context, service: Self.keychainService, sync: sync, label: label)
     }
 
     static func get(id: String, context: LAContext?) throws -> Self? {
-        guard let dict = try Keychain.shared.attributes(id: id, service: Self.keychainService, context: context) else {
-            return nil
-        }
-
-        let decoder = PropertyListDecoder()
-
-        guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
-            throw CodingError.unexpectedData
-        }
-
-        return try decoder.decode(Self.self, from: accountData)
+        return try get(id: id, context: context, service: Self.keychainService)
     }
 
     func deleteSync() throws {
@@ -150,15 +125,6 @@ extension Account {
         try? Keychain.shared.delete(id: id, service: .otp)
         try BrowserSession.all().forEach({ $0.deleteAccount(accountId: id) })
         self.deleteFromToIdentityStore()
-    }
-
-    // TODO: kinda weird
-    static func getAny(id: String, context: LAContext?) throws -> Account? {
-        try UserAccount.get(id: id, context: context) ?? SharedAccount.get(id: id, context: context)
-    }
-
-    static func combinedSessionAccounts(context: LAContext? = nil) throws -> [String: SessionAccount] {
-        return try allCombined(context: context).mapValues({ SessionAccount(account: $0) })
     }
 
     static func deleteAll() {
@@ -171,14 +137,64 @@ extension Account {
         }
     }
 
+    static func getAny(id: String, context: LAContext?) throws -> Account? {
+        if let userAccount: UserAccount = try get(id: id, context: context, service: .account) {
+            return userAccount
+        } else if let sharedAccount: SharedAccount = try get(id: id, context: context, service: .sharedAccount) {
+            return sharedAccount
+        } else {
+            return nil
+        }
+    }
+
+    static func combinedSessionAccounts(context: LAContext? = nil) throws -> [String: SessionAccount] {
+        return try allCombined(context: context).mapValues { SessionAccount(account: $0) }
+    }
+
     static func allCombined(context: LAContext?, sync: Bool = false) throws -> [String: Account] {
-        let userAccounts: [String: Account] = try UserAccount.all(context: context, sync: sync)
-        return try userAccounts.merging(SharedAccount.all(context: context, sync: sync), uniquingKeysWith: { (userAccount, _) -> Account in
+        let userAccounts: [String: Account] = try all(context: context, service: .account, sync: sync) as [String: UserAccount]
+        let sharedAccounts: [String: Account] = try all(context: context, service: .sharedAccount, sync: sync) as [String: SharedAccount]
+        return userAccounts.merging(sharedAccounts, uniquingKeysWith: { (userAccount, _) -> Account in
             guard var account = userAccount as? UserAccount else {
                 return userAccount
             }
             account.shadowing = true
             return account
+        })
+    }
+
+    // MARK: - Private methods
+
+    private static func get<T: Account>(id: String, context: LAContext?, service: KeychainService) throws -> T? {
+        guard let dict = try Keychain.shared.attributes(id: id, service: service, context: context) else {
+            return nil
+        }
+
+        let decoder = PropertyListDecoder()
+
+        guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
+            throw CodingError.unexpectedData
+        }
+
+        return try decoder.decode(T.self, from: accountData)
+    }
+
+    private static func all<T: Account>(context: LAContext?, service: KeychainService, sync: Bool = false, label: String? = nil) throws -> [String: T] {
+        guard let dataArray = try Keychain.shared.all(service: service, context: context, label: label) else {
+            return [:]
+        }
+        Properties.accountCount = dataArray.count
+        let decoder = PropertyListDecoder()
+
+        return Dictionary(uniqueKeysWithValues: try dataArray.map { (dict) in
+            guard let accountData = dict[kSecAttrGeneric as String] as? Data else {
+                throw CodingError.unexpectedData
+            }
+            let account = try decoder.decode(T.self, from: accountData)
+            if sync, var account = account as? UserAccount, account.version == 0 {
+                account.updateVersion(context: context)
+            }
+            return (account.id, account)
         })
     }
 

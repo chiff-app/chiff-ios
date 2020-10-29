@@ -86,14 +86,14 @@ struct TeamSession: Session {
                 do {
                     try session.save(keys: keys)
                     TeamSession.count += 1
-                    return session
                 } catch is KeychainError {
                     throw SessionError.exists
                 } catch is CryptoError {
                     throw SessionError.invalid
                 }
+            }.then {
+                BrowserSession.updateAllSessionData(organisationKey: organisationKeyData, organisationType: .team, isAdmin: true).map { session }
             }
-            // TODO: Update existing browser sessions.
         } catch {
             Logger.shared.error("Error initiating session", error: error)
             return Promise(error: error)

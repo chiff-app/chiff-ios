@@ -16,15 +16,17 @@ extension TeamSession {
     static func updateAllTeamSessions(pushed: Bool) -> Promise<Void> {
         return firstly {
             when(fulfilled: try TeamSession.all().map { updateTeamSession(session: $0, pushed: pushed) })
-        }.map { results in
+        }.then { (results) -> Promise<Void> in
             if results.reduce(false, { $0 ? $0 : $1 }) {
                 let teamSessions = try TeamSession.all()
                 let organisationKey = teamSessions.first?.organisationKey
                 let organisationType = teamSessions.first?.type
                 let isAdmin = teamSessions.contains(where: { $0.isAdmin })
-                BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+                return BrowserSession.updateAllSessionData(organisationKey: organisationKey, organisationType: organisationType, isAdmin: isAdmin)
+            } else {
+                return .value(())
             }
-        }.asVoid()
+        }
     }
 
     static func updateTeamSession(session: TeamSession, pushed: Bool = false) -> Promise<Bool> {

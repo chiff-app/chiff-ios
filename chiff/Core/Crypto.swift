@@ -127,7 +127,6 @@ class Crypto {
         guard let b64String = sodium.utils.bin2base64(data.bytes, variant: .URLSAFE_NO_PADDING) else {
             throw CryptoError.base64Encoding
         }
-
         return b64String
     }
 

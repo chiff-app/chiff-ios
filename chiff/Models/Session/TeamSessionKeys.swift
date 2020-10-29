@@ -64,7 +64,7 @@ class TeamSessionKeys: TeamSessionSeeds {
     let sharedKeyKeyPair: KeyPair
 
     var sessionId: String {
-        return browserPubKey.base64.hash
+        return browserPubKey.base64.hash!
     }
 
     var pubKey: String {

@@ -86,6 +86,8 @@ class RequestViewController: UIViewController {
                 self.showAlert(message: "errors.no_team".localized)
             case .notAdmin:
                 self.showAlert(message: "errors.no_admin".localized)
+            case .multipleAdminSessionsFound(count: let count):
+                self.showAlert(message: String(format: "errors.multiple_admins".localized, count))
             case .inProgress, .missingData, .unknownType:
                 return
             }

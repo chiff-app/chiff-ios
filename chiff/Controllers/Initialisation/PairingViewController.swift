@@ -14,7 +14,6 @@ class PairingViewController: UIViewController, PairControllerDelegate, PairConta
 
     func sessionCreated(session: Session) {
         DispatchQueue.main.async {
-            // TODO: - check if notification is still needed if delegate is
             self.start()
         }
     }
