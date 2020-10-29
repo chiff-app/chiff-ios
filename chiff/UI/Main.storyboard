@@ -590,72 +590,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94117647058823528" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                        <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="7ks-L0-j3t" userLabel="Requirements">
-                            <rect key="frame" x="0.0" y="405.5" width="375" height="198"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qKW-6i-oLI">
-                                    <rect key="frame" x="16" y="0.0" width="339" height="198"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jAz-0i-czw">
-                                            <rect key="frame" x="0.0" y="0.0" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Hf-8t-MQF">
-                                            <rect key="frame" x="0.0" y="25.5" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAX-v8-gVe">
-                                            <rect key="frame" x="0.0" y="51" width="339" height="20"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWG-ik-zwg">
-                                            <rect key="frame" x="0.0" y="76" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSc-Nl-L0u">
-                                            <rect key="frame" x="0.0" y="101.5" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9g-e7-kOV">
-                                            <rect key="frame" x="0.0" y="127" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wGk-Cf-GSs">
-                                            <rect key="frame" x="0.0" y="152.5" width="339" height="20"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="7" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yii-AY-ztL">
-                                            <rect key="frame" x="0.0" y="177.5" width="339" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.98142343759999995" green="0.2631598067" blue="0.2176741532" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </stackView>
-                            </subviews>
-                            <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
-                            <constraints>
-                                <constraint firstItem="qKW-6i-oLI" firstAttribute="top" secondItem="7ks-L0-j3t" secondAttribute="top" id="N75-DO-q7v"/>
-                                <constraint firstItem="qKW-6i-oLI" firstAttribute="leading" secondItem="7ks-L0-j3t" secondAttribute="leading" constant="16" id="hmy-IN-KTh"/>
-                                <constraint firstAttribute="height" secondItem="qKW-6i-oLI" secondAttribute="height" id="hsh-tY-4as"/>
-                                <constraint firstAttribute="trailing" secondItem="qKW-6i-oLI" secondAttribute="trailing" constant="20" id="n1O-Iy-rTh"/>
-                            </constraints>
-                        </view>
                         <sections>
                             <tableViewSection headerTitle="Accounts details" id="EW1-vD-FXR">
                                 <cells>
@@ -913,21 +847,11 @@
                     <connections>
                         <outlet property="notesCell" destination="vFn-ZH-ewb" id="psu-ix-NE7"/>
                         <outlet property="passwordField" destination="6JE-Jy-rlX" id="hVA-RM-sjw"/>
-                        <outlet property="requirementLabelsStackView" destination="qKW-6i-oLI" id="mYU-Kb-RYd"/>
-                        <outlet property="requirementsView" destination="7ks-L0-j3t" id="5zQ-yn-uY8"/>
                         <outlet property="saveButton" destination="Spf-Be-diS" id="usN-n4-pik"/>
                         <outlet property="showPasswordButton" destination="cS5-fw-3OX" id="QFq-Xg-Qei"/>
                         <outlet property="siteNameField" destination="2ko-9K-nBH" id="yj2-pe-uzN"/>
                         <outlet property="siteURLField" destination="0HP-Ad-Fbl" id="7Rb-zy-AnP"/>
                         <outlet property="usernameField" destination="c9B-ZA-BTt" id="7IW-yD-nH9"/>
-                        <outletCollection property="requirementLabels" destination="jAz-0i-czw" collectionClass="NSMutableArray" id="xtU-vc-GWV"/>
-                        <outletCollection property="requirementLabels" destination="7Hf-8t-MQF" collectionClass="NSMutableArray" id="84j-wa-Hrj"/>
-                        <outletCollection property="requirementLabels" destination="PAX-v8-gVe" collectionClass="NSMutableArray" id="tV5-td-bvR"/>
-                        <outletCollection property="requirementLabels" destination="GSc-Nl-L0u" collectionClass="NSMutableArray" id="orI-Px-R9S"/>
-                        <outletCollection property="requirementLabels" destination="RWG-ik-zwg" collectionClass="NSMutableArray" id="pDU-NY-ZfW"/>
-                        <outletCollection property="requirementLabels" destination="m9g-e7-kOV" collectionClass="NSMutableArray" id="td8-4g-w2s"/>
-                        <outletCollection property="requirementLabels" destination="wGk-Cf-GSs" collectionClass="NSMutableArray" id="8WU-kY-iVR"/>
-                        <outletCollection property="requirementLabels" destination="yii-AY-ztL" collectionClass="NSMutableArray" id="8MK-A3-7It"/>
                         <segue destination="ryf-Id-zJW" kind="unwind" identifier="UnwindToAccountOverview" unwindAction="unwindToAccountOverviewWithSender:" id="4Gf-Jo-HFc"/>
                     </connections>
                 </tableViewController>
@@ -4639,9 +4563,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <image name="scan_overlay" width="176" height="171"/>
         <image name="settings_tab" width="25" height="25"/>
         <image name="team_icon" width="25" height="17"/>
-        <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
