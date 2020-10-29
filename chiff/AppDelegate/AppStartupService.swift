@@ -126,12 +126,7 @@ class AppStartupService: NSObject, UIApplicationDelegate {
             }.done {
                 Seed.delete()
                 Logger.shared.analytics(.appFirstOpened, properties: [.timestamp: Properties.firstLaunchTimestamp ], override: true)
-                UserDefaults.standard.addSuite(named: Questionnaire.suite)
-                Questionnaire.createQuestionnaireDirectory()
             }.catchLog("Failed to purge keychain on launch")
-        } else if !Properties.questionnaireDirPurged {
-            Questionnaire.cleanFolder()
-            Properties.questionnaireDirPurged = true
         }
         if Seed.hasKeys {
             firstly {

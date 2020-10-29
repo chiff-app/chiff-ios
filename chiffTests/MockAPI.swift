@@ -77,7 +77,6 @@ class MockAPI: APIProtocol {
             switch components[0] {
             case "sessions": return messageCall(path: path, parameters: parameters, method: method, signature: signature, body: body)
             case "ppd": return ppdCall(id: String(components[1]))
-            case "questionnaires": return questionnaire(method: method)
             default: return Promise(error: MockAPIError.notImplemented)
             }
         }
@@ -89,32 +88,6 @@ class MockAPI: APIProtocol {
 
     func signedRequest<T>(method: APIMethod, message: JSONObject?, path: String, privKey: Data, body: Data? = nil, parameters: [String : String]?) -> Promise<T> {
         return Promise(error: MockAPIError.notImplemented)
-    }
-    
-    private func questionnaire(method: APIMethod) -> Promise<JSONObject> {
-        switch method {
-        case .post:
-            return .value(JSONObject())
-        case .get:
-            if let data = customData {
-                return .value(["nothing": data])
-            } else {
-                if let path = Bundle(for: type(of: self)).path(forResource: "questionnaire", ofType: "json") {
-                    do {
-                        let fileUrl = URL(fileURLWithPath: path)
-                        let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
-                        let jsonData = try JSONSerialization.jsonObject(with: data) as! JSONObject
-                        return .value(["questionnaires": [jsonData]])
-                    } catch {
-                        fatalError(error.localizedDescription)
-                    }
-                } else {
-                    return .value(JSONObject())
-                }
-            }
-        default:
-            fatalError("This method is not availble on the API")
-        }
     }
     
     private func ppdCall(id: String?) -> Promise<JSONObject> {

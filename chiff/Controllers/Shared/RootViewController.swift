@@ -8,7 +8,6 @@ class RootViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleQuestionnaireNotification(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         setBadge(completed: Seed.paperBackupCompleted)
         selectedIndex = Properties.deniedPushNotifications || !Properties.firstPairingCompleted ? 1 : 0
         tabBar.items?[0].title = "tabs.accounts".localized
@@ -46,12 +45,6 @@ class RootViewController: UITabBarController {
         }
     }
 
-    @objc func handleQuestionnaireNotification(notification: Notification) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            if let questionnaire = Questionnaire.all().first(where: { $0.shouldAsk() }) { self.presentQuestionAlert(questionnaire: questionnaire) }
-        }
-    }
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,39 +52,6 @@ class RootViewController: UITabBarController {
             destination.presentedModally = true
             destination.url = url
         }
-    }
-
-    // MARK: - Private functions
-
-    private func presentQuestionAlert(questionnaire: Questionnaire) {
-        let alert = UIAlertController(title: "popups.questions.questionnaire_popup_title".localized, message: "popups.questions.questionnaire_permission".localized, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "\("popups.responses.yes".localized.capitalizedFirstLetter)!", style: .default, handler: { _ in
-            self.launchQuestionnaire(questionnaire: questionnaire)
-        }))
-        if !questionnaire.compulsory {
-            alert.addAction(UIAlertAction(title: "popups.responses.questionnaire_deny".localized, style: .cancel, handler: { _ in
-                questionnaire.isFinished = true
-                questionnaire.save()
-                Logger.shared.analytics(.questionnaireDeclined)
-            }))
-        }
-        alert.addAction(UIAlertAction(title: "Remind me later", style: .default, handler: { _ in
-            questionnaire.askAgainAt(date: Date(timeInterval: TimeInterval.oneDay, since: Date()))
-            questionnaire.save()
-            Logger.shared.analytics(.questionnairePostponed)
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
-
-    private func launchQuestionnaire(questionnaire: Questionnaire) {
-        let storyboard: UIStoryboard = UIStoryboard.get(.feedback)
-        guard let modalViewController = storyboard.instantiateViewController(withIdentifier: "QuestionnaireController") as? QuestionnaireController else {
-            Logger.shared.error("ViewController has wrong type.")
-            return
-        }
-        modalViewController.questionnaire = questionnaire
-        modalViewController.modalPresentationStyle = .fullScreen
-        self.present(modalViewController, animated: true, completion: nil)
     }
 
 }

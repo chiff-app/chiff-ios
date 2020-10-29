@@ -712,12 +712,6 @@ popups:
         account.
     move_to_user_account_title:
       value: Verplaats uit team
-    questionnaire_permission:
-      comment: Ask the user to answer some questions
-      value: Heb je tijd om een paar vragen te beantwoorden? Het duurt maar even.
-    questionnaire_popup_title:
-      comment: The title of the popup that asks the user fill a questionnaire
-      value: Vragenrondje!
     reset_keyn:
       comment: Resets Chiff and deletes all data
       value: Reset Chiff?
@@ -761,9 +755,6 @@ popups:
       value: 'no'
     open:
       value: Laat zien
-    questionnaire_deny:
-      comment: Deny the questionnaire
-      value: 'Nee, bedankt'
     reset:
       comment: Resets something
       value: Reset

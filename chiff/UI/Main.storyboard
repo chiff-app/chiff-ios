@@ -2802,14 +2802,6 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="5591.304347826087" y="1074.4565217391305"/>
         </scene>
-        <!--Feedback-->
-        <scene sceneID="8ZZ-tg-kfI">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Feedback" referencedIdentifier="Feedback" id="edD-lG-IvQ" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nJQ-2M-cBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1468" y="3133"/>
-        </scene>
         <!--Site Table View Controller-->
         <scene sceneID="64j-9P-sYY">
             <objects>
@@ -3327,7 +3319,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
-                                            <segue destination="edD-lG-IvQ" kind="show" id="j5N-eZ-b2s"/>
+                                            <segue destination="uen-CQ-Db6" kind="show" id="V2S-Mt-4Iy"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -4252,6 +4244,161 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
             </objects>
             <point key="canvasLocation" x="8252" y="-949.47526236881572"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wWa-4W-Plv">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Scr-i3-u3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController storyboardIdentifier="Feedback" automaticallyAdjustsScrollViewInsets="NO" id="uen-CQ-Db6" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="ISi-dU-XUZ"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="387-pb-IXK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="pSe-JL-PVq" kind="relationship" relationship="rootViewController" id="HcK-jA-QDQ"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="1468" y="3516"/>
+        </scene>
+        <!--Feedback View Controller-->
+        <scene sceneID="wsb-H7-RNF">
+            <objects>
+                <viewController id="pSe-JL-PVq" customClass="FeedbackViewController" customModule="chiff" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IDp-wn-QUB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j0R-i1-JDw">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P8E-j5-rtL">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="670"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Prb-pq-8es">
+                                                <rect key="frame" x="0.0" y="-26" width="375" height="58"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="58" id="fg4-FT-yKA"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Did you find a bug? Please let us know! We're also happy to hear your opinion on Keyn or suggestions for improvements." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="12" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uN-Pp-W6q" customClass="KeynLabel" customModule="chiff" customModuleProvider="target">
+                                                <rect key="frame" x="35" y="52" width="305" height="49"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.feedback"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isAttributed" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
+                                                        <real key="value" value="22"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="vS5-iI-zNX" customClass="FormTextField" customModule="chiff" customModuleProvider="target">
+                                                <rect key="frame" x="30" y="121" width="315" height="35"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="qmV-XA-DSd"/>
+                                                </constraints>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="inset">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="accounts.name"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </textField>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bHM-36-TUz">
+                                                <rect key="frame" x="30" y="186" width="315" height="454"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" red="0.27801156040000002" green="0.13127481939999999" blue="0.76544374230000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.29803921570000003" green="0.33725490200000002" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes"/>
+                                            </textView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="vS5-iI-zNX" firstAttribute="trailing" secondItem="bHM-36-TUz" secondAttribute="trailing" id="5sE-xy-5jm"/>
+                                            <constraint firstItem="bHM-36-TUz" firstAttribute="leading" secondItem="P8E-j5-rtL" secondAttribute="leading" constant="30" id="7Au-Iu-Fch"/>
+                                            <constraint firstItem="4uN-Pp-W6q" firstAttribute="leading" secondItem="P8E-j5-rtL" secondAttribute="leading" constant="35" id="7pN-nt-A5X"/>
+                                            <constraint firstAttribute="trailing" secondItem="bHM-36-TUz" secondAttribute="trailing" constant="30" id="CDY-YL-pEJ"/>
+                                            <constraint firstItem="bHM-36-TUz" firstAttribute="top" secondItem="vS5-iI-zNX" secondAttribute="bottom" constant="30" id="DLI-PE-w95"/>
+                                            <constraint firstItem="Prb-pq-8es" firstAttribute="top" secondItem="P8E-j5-rtL" secondAttribute="top" constant="-26" id="I7W-sP-SZ1"/>
+                                            <constraint firstAttribute="trailing" secondItem="Prb-pq-8es" secondAttribute="trailing" id="KC1-ib-d51"/>
+                                            <constraint firstAttribute="bottom" secondItem="bHM-36-TUz" secondAttribute="bottom" constant="30" id="QsN-Z6-5Fx"/>
+                                            <constraint firstItem="vS5-iI-zNX" firstAttribute="leading" secondItem="bHM-36-TUz" secondAttribute="leading" id="UxB-jt-XOs"/>
+                                            <constraint firstItem="vS5-iI-zNX" firstAttribute="top" secondItem="4uN-Pp-W6q" secondAttribute="bottom" constant="20" id="X2n-pj-tvy"/>
+                                            <constraint firstAttribute="trailing" secondItem="4uN-Pp-W6q" secondAttribute="trailing" constant="35" id="fiQ-bZ-KCj"/>
+                                            <constraint firstAttribute="height" constant="670" id="gQI-GK-vxr"/>
+                                            <constraint firstItem="4uN-Pp-W6q" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Prb-pq-8es" secondAttribute="bottom" constant="10" id="lkc-SV-Uig"/>
+                                            <constraint firstItem="Prb-pq-8es" firstAttribute="leading" secondItem="P8E-j5-rtL" secondAttribute="leading" id="xBI-IN-2A4"/>
+                                            <constraint firstItem="4uN-Pp-W6q" firstAttribute="top" secondItem="Prb-pq-8es" secondAttribute="bottom" constant="20" id="yqw-W4-7e5"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="P8E-j5-rtL" secondAttribute="bottom" id="O5t-nt-2je"/>
+                                    <constraint firstItem="P8E-j5-rtL" firstAttribute="leading" secondItem="j0R-i1-JDw" secondAttribute="leading" id="Wzr-cT-4mn"/>
+                                    <constraint firstAttribute="trailing" secondItem="P8E-j5-rtL" secondAttribute="trailing" id="Ypy-Sr-Ooh"/>
+                                    <constraint firstItem="P8E-j5-rtL" firstAttribute="top" secondItem="j0R-i1-JDw" secondAttribute="top" id="zKn-OH-drp"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="2tZ-Gc-m6d"/>
+                        <color key="backgroundColor" red="0.2784313725" green="0.1333333333" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="2tZ-Gc-m6d" firstAttribute="trailing" secondItem="j0R-i1-JDw" secondAttribute="trailing" id="04U-pI-dmV"/>
+                            <constraint firstItem="P8E-j5-rtL" firstAttribute="height" secondItem="IDp-wn-QUB" secondAttribute="height" priority="250" id="Xte-Ul-1Mv"/>
+                            <constraint firstItem="j0R-i1-JDw" firstAttribute="leading" secondItem="2tZ-Gc-m6d" secondAttribute="leading" id="foW-ZF-ZzR"/>
+                            <constraint firstItem="j0R-i1-JDw" firstAttribute="top" secondItem="IDp-wn-QUB" secondAttribute="top" id="gD1-et-UUo"/>
+                            <constraint firstItem="P8E-j5-rtL" firstAttribute="width" secondItem="IDp-wn-QUB" secondAttribute="width" id="jwK-SO-mVE"/>
+                            <constraint firstAttribute="bottom" secondItem="j0R-i1-JDw" secondAttribute="bottom" id="yUS-6E-nlY"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="tZW-JL-wJ3">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nFu-XI-oEM">
+                            <connections>
+                                <segue destination="OUe-36-htk" kind="unwind" unwindAction="dismissModallyAnimatedWithSender:" id="7Ci-fJ-tPT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="zJ8-tt-OVb" customClass="LocalizableBarButton" customModule="chiff" customModuleProvider="target">
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizationKey" value="feedback.send"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="sendFeedback:" destination="pSe-JL-PVq" id="QF1-B8-ogz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="bottomDistanceConstraint" destination="QsN-Z6-5Fx" id="CWO-cu-ch9"/>
+                        <outlet property="constraintContentHeight" destination="gQI-GK-vxr" id="aQp-kG-yxv"/>
+                        <outlet property="contentView" destination="P8E-j5-rtL" id="1XP-QZ-Edj"/>
+                        <outlet property="nameTextField" destination="vS5-iI-zNX" id="CJc-v4-QZ1"/>
+                        <outlet property="scrollView" destination="j0R-i1-JDw" id="w0t-oe-X69"/>
+                        <outlet property="sendButton" destination="zJ8-tt-OVb" id="pDE-tH-1fk"/>
+                        <outlet property="textView" destination="bHM-36-TUz" id="66Q-TR-mnd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eH0-tD-QZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="OUe-36-htk" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2534" y="3516"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="0HP-Ad-Fbl">
@@ -4271,6 +4418,9 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         </designable>
         <designable name="4ML-a9-Tg7">
             <size key="intrinsicContentSize" width="658.5" height="19"/>
+        </designable>
+        <designable name="4uN-Pp-W6q">
+            <size key="intrinsicContentSize" width="757" height="16.5"/>
         </designable>
         <designable name="6Gl-9s-KbW">
             <size key="intrinsicContentSize" width="104.5" height="19"/>
@@ -4503,6 +4653,9 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
         <designable name="uhM-gL-Cgz">
             <size key="intrinsicContentSize" width="54" height="34"/>
         </designable>
+        <designable name="vS5-iI-zNX">
+            <size key="intrinsicContentSize" width="37.5" height="18"/>
+        </designable>
         <designable name="vVP-N1-u9d">
             <size key="intrinsicContentSize" width="581" height="16.5"/>
         </designable>
@@ -4530,7 +4683,7 @@ You can allow Keyn to send notifications via Settings &gt; Keyn &gt; Notificatio
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="caV-0j-FSc"/>
-        <segue reference="hce-pK-xEM"/>
+        <segue reference="bFG-cG-0Z9"/>
         <segue reference="3VT-CT-bmu"/>
         <segue reference="H1z-FM-r4q"/>
     </inferredMetricsTieBreakers>

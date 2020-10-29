@@ -73,7 +73,7 @@ class API: NSObject, APIProtocol {
     private func createRequest(path: String, parameters: [String: String]?, signature: String?, method: APIMethod, body: Data?) throws -> URLRequest {
         var components = URLComponents()
         components.scheme = "https"
-        components.host = path.starts(with: "questionnaire") ? "api.keyn.app" : Properties.keynApi
+        components.host = Properties.keynApi
         components.path = "/\(Properties.environment.path)/\(path)"
 
         if let parameters = parameters {
