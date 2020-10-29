@@ -24,7 +24,6 @@ struct Properties {
     }
 
     static private let receivedNewsMessagesFlag = "receivedNewsMessagesFlag"
-    static private let questionnaireDirPurgedFlag = "questionnaireDirPurged"
     static private let errorLoggingFlag = "errorLogging"
     static private let analyticsLoggingFlag = "analyticsLogging"
     static private let userIdFlag = "userID"
@@ -82,10 +81,6 @@ struct Properties {
                 UserDefaults.standard.set(termsOfUseVersion, forKey: agreedWithTermsFlag)
             }
         }
-    }
-    static var questionnaireDirPurged: Bool {
-        get { return UserDefaults.standard.bool(forKey: questionnaireDirPurgedFlag) }
-        set { UserDefaults.standard.set(newValue, forKey: questionnaireDirPurgedFlag) }
     }
     static var errorLogging: Bool {
         get { return environment == .beta || UserDefaults.standard.bool(forKey: errorLoggingFlag) }
@@ -145,9 +140,6 @@ struct Properties {
         UserDefaults.standard.removeObject(forKey: userIdFlag)
         UserDefaults.standard.removeObject(forKey: sortingPreferenceFlag)
         UserDefaults.standard.removeObject(forKey: migratedFlag)
-//        UserDefaults.standard.removeObject(forKey: accountCountFlag)
-//        UserDefaults.standard.removeObject(forKey: sessionCountFlag)
-        // We're keeping: questionnaireDirPurgedFlag, subscriptionExiryDateFlag, subscriptionProductFlag, agreedWithTermsFlag, firstPairingCompletedFlag
     }
 
     static var deniedPushNotifications = false {

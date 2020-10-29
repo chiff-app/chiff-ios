@@ -82,10 +82,6 @@ enum AnalyticsEvent: String {
     case resetKeyn = "ResetKeyn"
     case deleteData = "DeleteData"
     case analytics = "Analytics"
-
-    // Questionnaire
-    case questionnaireDeclined = "QuestionnaireDeclined"
-    case questionnairePostponed = "QuestionnairePostponed"
 }
 
 enum AnalyticsEventProperty: String {

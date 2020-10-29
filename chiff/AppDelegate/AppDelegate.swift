@@ -103,7 +103,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Keychain.shared.deleteAll(service: TeamSession.signingService)
         //NotificationManager.shared.deleteKeys()
         //BackupManager.deleteAll()
-        //Questionnaire.cleanFolder()
         //UserDefaults.standard.removeObject(forKey: "hasBeenLaunchedBeforeFlag")
         #endif
     }
